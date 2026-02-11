@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.managedops.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.managedops.models.AzureMonitorConfiguration;
-import com.azure.resourcemanager.managedops.models.ChangeTrackingConfiguration;
-import com.azure.resourcemanager.managedops.models.DesiredConfiguration;
 import com.azure.resourcemanager.managedops.models.DesiredConfigurationDefenderForServers;
+import com.azure.resourcemanager.managedops.models.DesiredConfigurationUpdate;
 import com.azure.resourcemanager.managedops.models.ManagedOpUpdate;
 import com.azure.resourcemanager.managedops.models.ManagedOpUpdateProperties;
 import org.junit.jupiter.api.Assertions;
@@ -17,37 +15,24 @@ public final class ManagedOpUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedOpUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"desiredConfiguration\":{\"changeTrackingAndInventory\":{\"logAnalyticsWorkspaceId\":\"kjfkg\"},\"azureMonitorInsights\":{\"azureMonitorWorkspaceId\":\"awxklr\"},\"userAssignedManagedIdentityId\":\"plwckbas\",\"defenderForServers\":\"Disable\",\"defenderCspm\":\"Disable\"}}}")
+            "{\"properties\":{\"desiredConfiguration\":{\"defenderForServers\":\"Enable\",\"defenderCspm\":\"Enable\"}}}")
             .toObject(ManagedOpUpdate.class);
-        Assertions.assertEquals("kjfkg",
-            model.properties().desiredConfiguration().changeTrackingAndInventory().logAnalyticsWorkspaceId());
-        Assertions.assertEquals("awxklr",
-            model.properties().desiredConfiguration().azureMonitorInsights().azureMonitorWorkspaceId());
-        Assertions.assertEquals("plwckbas", model.properties().desiredConfiguration().userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
             model.properties().desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
             model.properties().desiredConfiguration().defenderCspm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedOpUpdate model = new ManagedOpUpdate()
-            .withProperties(new ManagedOpUpdateProperties().withDesiredConfiguration(new DesiredConfiguration()
-                .withChangeTrackingAndInventory(new ChangeTrackingConfiguration().withLogAnalyticsWorkspaceId("kjfkg"))
-                .withAzureMonitorInsights(new AzureMonitorConfiguration().withAzureMonitorWorkspaceId("awxklr"))
-                .withUserAssignedManagedIdentityId("plwckbas")
-                .withDefenderForServers(DesiredConfigurationDefenderForServers.DISABLE)
-                .withDefenderCspm(DesiredConfigurationDefenderForServers.DISABLE)));
+        ManagedOpUpdate model
+            = new ManagedOpUpdate().withProperties(new ManagedOpUpdateProperties().withDesiredConfiguration(
+                new DesiredConfigurationUpdate().withDefenderForServers(DesiredConfigurationDefenderForServers.ENABLE)
+                    .withDefenderCspm(DesiredConfigurationDefenderForServers.ENABLE)));
         model = BinaryData.fromObject(model).toObject(ManagedOpUpdate.class);
-        Assertions.assertEquals("kjfkg",
-            model.properties().desiredConfiguration().changeTrackingAndInventory().logAnalyticsWorkspaceId());
-        Assertions.assertEquals("awxklr",
-            model.properties().desiredConfiguration().azureMonitorInsights().azureMonitorWorkspaceId());
-        Assertions.assertEquals("plwckbas", model.properties().desiredConfiguration().userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
             model.properties().desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
             model.properties().desiredConfiguration().defenderCspm());
     }
 }

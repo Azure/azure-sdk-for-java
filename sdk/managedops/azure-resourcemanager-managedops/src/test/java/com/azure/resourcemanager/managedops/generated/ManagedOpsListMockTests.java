@@ -23,7 +23,7 @@ public final class ManagedOpsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"idf\",\"tier\":\"zwdzuh\"},\"provisioningState\":\"Failed\",\"desiredConfiguration\":{\"changeTrackingAndInventory\":{\"logAnalyticsWorkspaceId\":\"wisdkft\"},\"azureMonitorInsights\":{\"azureMonitorWorkspaceId\":\"wxmnteiwao\"},\"userAssignedManagedIdentityId\":\"vkmijcmmxdcuf\",\"defenderForServers\":\"Enable\",\"defenderCspm\":\"Disable\"},\"services\":{\"changeTrackingAndInventory\":{\"dcrId\":\"zidnsezcxtbzsgfy\",\"enablementStatus\":\"Enabled\"},\"azureMonitorInsights\":{\"dcrId\":\"newmdwzjeiachbo\",\"enablementStatus\":\"Failed\"},\"azureUpdateManager\":{\"enablementStatus\":\"InProgress\"},\"azurePolicyAndMachineConfiguration\":{\"enablementStatus\":\"Enabled\"},\"defenderForServers\":{\"enablementStatus\":\"Failed\"},\"defenderCspm\":{\"enablementStatus\":\"InProgress\"}},\"policyAssignmentProperties\":{\"policyInitiativeAssignmentId\":\"t\"}},\"id\":\"hzzvypyq\",\"name\":\"i\",\"type\":\"z\"}]}";
+            = "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"erkujys\",\"tier\":\"l\"},\"provisioningState\":\"Provisioning\",\"desiredConfiguration\":{\"changeTrackingAndInventory\":{\"logAnalyticsWorkspaceId\":\"vfqawrlyxwjkcpr\"},\"azureMonitorInsights\":{\"azureMonitorWorkspaceId\":\"nwbxgjvtbvpyssz\"},\"userAssignedManagedIdentityId\":\"nruj\",\"defenderForServers\":\"Disable\",\"defenderCspm\":\"Enable\"},\"services\":{\"changeTrackingAndInventory\":{\"dcrId\":\"uqfprwzw\",\"enablementStatus\":\"Disabled\"},\"azureMonitorInsights\":{\"dcrId\":\"uitnwuiz\",\"enablementStatus\":\"Enabled\"},\"azureUpdateManager\":{\"enablementStatus\":\"Enabled\"},\"azurePolicyAndMachineConfiguration\":{\"enablementStatus\":\"InProgress\"},\"defenderForServers\":{\"enablementStatus\":\"InProgress\"},\"defenderCspm\":{\"enablementStatus\":\"InProgress\"}},\"policyAssignmentProperties\":{\"policyInitiativeAssignmentId\":\"y\"}},\"id\":\"hr\",\"name\":\"idf\",\"type\":\"zwdzuh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,25 +34,25 @@ public final class ManagedOpsListMockTests {
 
         PagedIterable<ManagedOp> response = manager.managedOps().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wisdkft",
+        Assertions.assertEquals("vfqawrlyxwjkcpr",
             response.iterator()
                 .next()
                 .properties()
                 .desiredConfiguration()
                 .changeTrackingAndInventory()
                 .logAnalyticsWorkspaceId());
-        Assertions.assertEquals("wxmnteiwao",
+        Assertions.assertEquals("nwbxgjvtbvpyssz",
             response.iterator()
                 .next()
                 .properties()
                 .desiredConfiguration()
                 .azureMonitorInsights()
                 .azureMonitorWorkspaceId());
-        Assertions.assertEquals("vkmijcmmxdcuf",
+        Assertions.assertEquals("nruj",
             response.iterator().next().properties().desiredConfiguration().userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
-            response.iterator().next().properties().desiredConfiguration().defenderForServers());
         Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+            response.iterator().next().properties().desiredConfiguration().defenderForServers());
+        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
             response.iterator().next().properties().desiredConfiguration().defenderCspm());
     }
 }

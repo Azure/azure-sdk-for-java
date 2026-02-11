@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The type used for update operations of the ManagedOp.
+ * ManagedOps model for update operations.
  */
 @Fluent
 public final class ManagedOpUpdate implements JsonSerializable<ManagedOpUpdate> {
     /*
-     * The resource-specific properties for this resource.
+     * Updatable properties in the ManagedOps resource.
      */
     private ManagedOpUpdateProperties properties;
 
@@ -28,7 +28,7 @@ public final class ManagedOpUpdate implements JsonSerializable<ManagedOpUpdate> 
     }
 
     /**
-     * Get the properties property: The resource-specific properties for this resource.
+     * Get the properties property: Updatable properties in the ManagedOps resource.
      * 
      * @return the properties value.
      */
@@ -37,7 +37,7 @@ public final class ManagedOpUpdate implements JsonSerializable<ManagedOpUpdate> 
     }
 
     /**
-     * Set the properties property: The resource-specific properties for this resource.
+     * Set the properties property: Updatable properties in the ManagedOps resource.
      * 
      * @param properties the properties value to set.
      * @return the ManagedOpUpdate object itself.

@@ -141,9 +141,9 @@ public interface ManagedOp {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: The resource-specific properties for this resource..
+             * Specifies the properties property: Updatable properties in the ManagedOps resource..
              * 
-             * @param properties The resource-specific properties for this resource.
+             * @param properties Updatable properties in the ManagedOps resource.
              * @return the next definition stage.
              */
             Update withProperties(ManagedOpUpdateProperties properties);

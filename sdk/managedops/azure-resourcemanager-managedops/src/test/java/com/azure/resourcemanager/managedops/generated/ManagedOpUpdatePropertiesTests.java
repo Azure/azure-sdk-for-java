@@ -5,49 +5,32 @@
 package com.azure.resourcemanager.managedops.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.managedops.models.AzureMonitorConfiguration;
-import com.azure.resourcemanager.managedops.models.ChangeTrackingConfiguration;
-import com.azure.resourcemanager.managedops.models.DesiredConfiguration;
 import com.azure.resourcemanager.managedops.models.DesiredConfigurationDefenderForServers;
+import com.azure.resourcemanager.managedops.models.DesiredConfigurationUpdate;
 import com.azure.resourcemanager.managedops.models.ManagedOpUpdateProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class ManagedOpUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedOpUpdateProperties model = BinaryData.fromString(
-            "{\"desiredConfiguration\":{\"changeTrackingAndInventory\":{\"logAnalyticsWorkspaceId\":\"hsgcbacphejkot\"},\"azureMonitorInsights\":{\"azureMonitorWorkspaceId\":\"nqgoulzndli\"},\"userAssignedManagedIdentityId\":\"wyqkgfgibm\",\"defenderForServers\":\"Enable\",\"defenderCspm\":\"Disable\"}}")
+        ManagedOpUpdateProperties model = BinaryData
+            .fromString("{\"desiredConfiguration\":{\"defenderForServers\":\"Enable\",\"defenderCspm\":\"Enable\"}}")
             .toObject(ManagedOpUpdateProperties.class);
-        Assertions.assertEquals("hsgcbacphejkot",
-            model.desiredConfiguration().changeTrackingAndInventory().logAnalyticsWorkspaceId());
-        Assertions.assertEquals("nqgoulzndli",
-            model.desiredConfiguration().azureMonitorInsights().azureMonitorWorkspaceId());
-        Assertions.assertEquals("wyqkgfgibm", model.desiredConfiguration().userAssignedManagedIdentityId());
         Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
             model.desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
             model.desiredConfiguration().defenderCspm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedOpUpdateProperties model
-            = new ManagedOpUpdateProperties().withDesiredConfiguration(new DesiredConfiguration()
-                .withChangeTrackingAndInventory(
-                    new ChangeTrackingConfiguration().withLogAnalyticsWorkspaceId("hsgcbacphejkot"))
-                .withAzureMonitorInsights(new AzureMonitorConfiguration().withAzureMonitorWorkspaceId("nqgoulzndli"))
-                .withUserAssignedManagedIdentityId("wyqkgfgibm")
-                .withDefenderForServers(DesiredConfigurationDefenderForServers.ENABLE)
-                .withDefenderCspm(DesiredConfigurationDefenderForServers.DISABLE));
+        ManagedOpUpdateProperties model = new ManagedOpUpdateProperties().withDesiredConfiguration(
+            new DesiredConfigurationUpdate().withDefenderForServers(DesiredConfigurationDefenderForServers.ENABLE)
+                .withDefenderCspm(DesiredConfigurationDefenderForServers.ENABLE));
         model = BinaryData.fromObject(model).toObject(ManagedOpUpdateProperties.class);
-        Assertions.assertEquals("hsgcbacphejkot",
-            model.desiredConfiguration().changeTrackingAndInventory().logAnalyticsWorkspaceId());
-        Assertions.assertEquals("nqgoulzndli",
-            model.desiredConfiguration().azureMonitorInsights().azureMonitorWorkspaceId());
-        Assertions.assertEquals("wyqkgfgibm", model.desiredConfiguration().userAssignedManagedIdentityId());
         Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
             model.desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
             model.desiredConfiguration().defenderCspm());
     }
 }

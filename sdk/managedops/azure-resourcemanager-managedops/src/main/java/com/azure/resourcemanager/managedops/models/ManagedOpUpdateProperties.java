@@ -12,14 +12,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The updatable properties of the ManagedOp.
+ * Updatable properties in the ManagedOps resource.
  */
 @Fluent
 public final class ManagedOpUpdateProperties implements JsonSerializable<ManagedOpUpdateProperties> {
     /*
      * Desired configuration input by the user.
      */
-    private DesiredConfiguration desiredConfiguration;
+    private DesiredConfigurationUpdate desiredConfiguration;
 
     /**
      * Creates an instance of ManagedOpUpdateProperties class.
@@ -32,7 +32,7 @@ public final class ManagedOpUpdateProperties implements JsonSerializable<Managed
      * 
      * @return the desiredConfiguration value.
      */
-    public DesiredConfiguration desiredConfiguration() {
+    public DesiredConfigurationUpdate desiredConfiguration() {
         return this.desiredConfiguration;
     }
 
@@ -42,7 +42,7 @@ public final class ManagedOpUpdateProperties implements JsonSerializable<Managed
      * @param desiredConfiguration the desiredConfiguration value to set.
      * @return the ManagedOpUpdateProperties object itself.
      */
-    public ManagedOpUpdateProperties withDesiredConfiguration(DesiredConfiguration desiredConfiguration) {
+    public ManagedOpUpdateProperties withDesiredConfiguration(DesiredConfigurationUpdate desiredConfiguration) {
         this.desiredConfiguration = desiredConfiguration;
         return this;
     }
@@ -63,6 +63,7 @@ public final class ManagedOpUpdateProperties implements JsonSerializable<Managed
      * @param jsonReader The JsonReader being read.
      * @return An instance of ManagedOpUpdateProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ManagedOpUpdateProperties.
      */
     public static ManagedOpUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -73,7 +74,8 @@ public final class ManagedOpUpdateProperties implements JsonSerializable<Managed
                 reader.nextToken();
 
                 if ("desiredConfiguration".equals(fieldName)) {
-                    deserializedManagedOpUpdateProperties.desiredConfiguration = DesiredConfiguration.fromJson(reader);
+                    deserializedManagedOpUpdateProperties.desiredConfiguration
+                        = DesiredConfigurationUpdate.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
