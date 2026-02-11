@@ -28,7 +28,9 @@ import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.implementation.Constants;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -458,6 +460,15 @@ public final class StorageCommonTestUtils {
         //assert sas token exists in URL + auth header exists
         assertTrue(response.getRequest().getHeaders().stream().anyMatch(h -> h.getName().equals("Authorization")));
         assertTrue(response.getRequest().getUrl().toString().contains("sv=" + Constants.SAS_SERVICE_VERSION));
+    }
+
+    public static <T> void verifySasAndTokenInRequest(Mono<Response<T>> response) {
+        StepVerifier.create(response)
+            .assertNext(r -> {
+                assertTrue(r.getRequest().getHeaders().stream().anyMatch(h -> h.getName().equals("Authorization")));
+                assertTrue(r.getRequest().getUrl().toString().contains("sv=" + Constants.SAS_SERVICE_VERSION));
+            })
+            .verifyComplete();
     }
 
     public static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {

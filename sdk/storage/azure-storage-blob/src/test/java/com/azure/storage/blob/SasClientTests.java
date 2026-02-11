@@ -40,7 +40,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -538,10 +537,7 @@ public class SasClientTests extends BlobTestBase {
             assertNotNull(userDelegationKey);
             assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
 
-            // Upload test data to blob
             BlockBlobClient testBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-            byte[] testData = "cross-tenant-test-data".getBytes();
-            testBlob.upload(new ByteArrayInputStream(testData), testData.length);
 
             // Generate blob SAS with delegated user object ID
             BlobServiceSasSignatureValues sasValues
@@ -583,11 +579,7 @@ public class SasClientTests extends BlobTestBase {
             assertNotNull(userDelegationKey);
             assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
 
-            // Upload test data to blob
-            String testBlobName = generateBlobName();
-            BlockBlobClient testBlob = cc.getBlobClient(testBlobName).getBlockBlobClient();
-            byte[] testData = "cross-tenant-test-data".getBytes();
-            testBlob.upload(new ByteArrayInputStream(testData), testData.length);
+            BlockBlobClient testBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
             // Generate blob SAS with delegated user object ID
             BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiresOn, permissions);
