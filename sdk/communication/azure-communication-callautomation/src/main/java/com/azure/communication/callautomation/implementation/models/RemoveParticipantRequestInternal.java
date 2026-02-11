@@ -18,7 +18,9 @@ import java.io.IOException;
 @Fluent
 public final class RemoveParticipantRequestInternal implements JsonSerializable<RemoveParticipantRequestInternal> {
     /*
-     * The participants to be removed from the call.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel participantToRemove;
@@ -44,7 +46,9 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
     }
 
     /**
-     * Get the participantToRemove property: The participants to be removed from the call.
+     * Get the participantToRemove property: Identifies a participant in Azure Communication services. A participant is,
+     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
+     * at most one further property may be set which must match the kind enum value.
      * 
      * @return the participantToRemove value.
      */
@@ -54,7 +58,9 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
     }
 
     /**
-     * Set the participantToRemove property: The participants to be removed from the call.
+     * Set the participantToRemove property: Identifies a participant in Azure Communication services. A participant is,
+     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
+     * at most one further property may be set which must match the kind enum value.
      * 
      * @param participantToRemove the participantToRemove value to set.
      * @return the RemoveParticipantRequestInternal object itself.

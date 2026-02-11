@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Voice kind type.
+ * Audio kind type.
  */
 public final class VoiceKindInternal extends ExpandableStringEnum<VoiceKindInternal> {
     /**
