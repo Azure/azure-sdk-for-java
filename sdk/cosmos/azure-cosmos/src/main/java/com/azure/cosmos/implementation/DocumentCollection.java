@@ -539,7 +539,9 @@ public final class DocumentCollection extends Resource {
 
         private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
             Object obj = objectInputStream.readObject();
-            // Security fix: Validate that the deserialized object is the expected type
+            // Security fix: Validate that the deserialized object is the expected type before casting.
+            // Without this check, an attacker could provide a malicious object that would be blindly cast to ObjectNode,
+            // potentially leading to code execution vulnerabilities.
             if (!(obj instanceof ObjectNode)) {
                 throw new InvalidClassException(
                     "Expected ObjectNode but got " + 
