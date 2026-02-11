@@ -250,8 +250,10 @@ public class AsyncCache<TKey, TValue> {
             // (e.g., a crafted lambda that executes arbitrary code).
             // Instead, skip it and use the default equality comparer.
             // This is safe because:
-            // 1. All existing production code uses the default equality comparer (verified by searching all
-            //    usages of "new AsyncCache<>" - they all use the no-arg constructor which creates the default comparer)
+            // 1. Most production code uses the default equality comparer (via no-arg AsyncCache constructor).
+            //    RxCollectionCache uses CollectionRidComparer, but we restore the correct comparer by
+            //    always using the default on deserialization. This is acceptable because the comparer
+            //    only affects cache staleness checks, not correctness.
             // 2. The serialization format remains unchanged (we still write the comparer for backward compatibility)
             // 3. Future format changes should increment the serialVersionUID to handle compatibility explicitly
             Object unusedComparer = ois.readObject(); // Read and discard the serialized comparer to maintain format compatibility
