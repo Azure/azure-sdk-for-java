@@ -26,7 +26,9 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 
 import java.util.stream.Collectors;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.jms.ServiceBusJmsConnectionFactoryConfiguration.*;
+import static com.azure.spring.cloud.autoconfigure.implementation.jms.ServiceBusJmsConnectionFactoryConfiguration.CACHE;
+import static com.azure.spring.cloud.autoconfigure.implementation.jms.ServiceBusJmsConnectionFactoryConfiguration.POOL;
+import static com.azure.spring.cloud.autoconfigure.implementation.jms.ServiceBusJmsConnectionFactoryConfiguration.SERVICE_BUS;
 import static com.azure.spring.cloud.autoconfigure.implementation.jms.ServiceBusJmsConnectionFactoryConfiguration.Registrar.getFactoryType;
 
 @Configuration(proxyBeanMethods = false)
