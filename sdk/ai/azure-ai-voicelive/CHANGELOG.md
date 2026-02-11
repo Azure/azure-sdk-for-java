@@ -15,6 +15,13 @@
 - Added `outputAuditAudio` property to `AvatarConfiguration` to enable audit audio forwarding via WebSocket for review/debugging purposes
 - Added `ServerEventWarning` and `ServerEventWarningDetails` classes for non-interrupting warning events
 - Added `ServerEventType.WARNING` enum value
+- Added interim response configuration for handling latency and tool calls (replaces filler response):
+  - `InterimResponseConfigBase` base class for interim response configurations
+  - `StaticInterimResponseConfig` for static/random text interim responses
+  - `LlmInterimResponseConfig` for LLM-generated context-aware interim responses
+  - `InterimResponseConfigType` enum (static_interim_response, llm_interim_response)
+  - `InterimResponseTrigger` enum for trigger conditions (latency, tool)
+  - Added `interimResponse` property to `VoiceLiveSessionOptions` and `VoiceLiveSessionResponse`
 
 ### Breaking Changes
 
@@ -26,6 +33,14 @@
 - Removed `ItemType.FOUNDRY_AGENT_CALL` enum value
 - Removed `ToolType.FOUNDRY_AGENT` enum value
 - Removed `ServerEventType.MCP_APPROVAL_REQUEST` and `ServerEventType.MCP_APPROVAL_RESPONSE` enum values
+- Renamed filler response API to interim response:
+  - `FillerResponseConfigBase` → `InterimResponseConfigBase`
+  - `BasicFillerResponseConfig` → `StaticInterimResponseConfig`
+  - `LlmFillerResponseConfig` → `LlmInterimResponseConfig`
+  - `FillerResponseConfigType` → `InterimResponseConfigType`
+  - `FillerTrigger` → `InterimResponseTrigger`
+  - `VoiceLiveSessionOptions.getFillerResponse()`/`setFillerResponse()` → `getInterimResponse()`/`setInterimResponse()`
+  - Type values changed: `static_filler` → `static_interim_response`, `llm_filler` → `llm_interim_response`
 
 ### Bugs Fixed
 
@@ -49,7 +64,7 @@
   - `ResponseFoundryAgentCallItem` for tracking Foundry agent call responses
   - Foundry agent call lifecycle events: `ServerEventResponseFoundryAgentCallArgumentsDelta`, `ServerEventResponseFoundryAgentCallArgumentsDone`, `ServerEventResponseFoundryAgentCallInProgress`, `ServerEventResponseFoundryAgentCallCompleted`, `ServerEventResponseFoundryAgentCallFailed`
   - `ItemType.FOUNDRY_AGENT_CALL` and `ToolType.FOUNDRY_AGENT` discriminator values
-- Added filler response configuration for handling latency and tool calls:
+- Added filler response configuration for handling latency and tool calls (renamed to interim response in 1.0.0-beta.5):
   - `FillerResponseConfigBase` base class for filler response configurations
   - `BasicFillerResponseConfig` for static/random text filler responses
   - `LlmFillerResponseConfig` for LLM-generated context-aware filler responses

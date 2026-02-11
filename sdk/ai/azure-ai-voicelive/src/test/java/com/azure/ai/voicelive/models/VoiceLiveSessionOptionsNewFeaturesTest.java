@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 /**
  * Unit tests for new session options features:
  * - ReasoningEffort configuration
- * - FillerResponse configuration
+ * - InterimResponse configuration (formerly FillerResponse)
  */
 class VoiceLiveSessionOptionsNewFeaturesTest {
 
@@ -44,21 +44,21 @@ class VoiceLiveSessionOptionsNewFeaturesTest {
     }
 
     @Test
-    void testSetAndGetFillerResponse() {
+    void testSetAndGetInterimResponse() {
         // Arrange
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions();
-        BasicFillerResponseConfig fillerConfig
-            = new BasicFillerResponseConfig().setTexts(Arrays.asList("Please wait...", "One moment..."))
-                .setTriggers(Arrays.asList(FillerTrigger.LATENCY))
+        StaticInterimResponseConfig interimConfig
+            = new StaticInterimResponseConfig().setTexts(Arrays.asList("Please wait...", "One moment..."))
+                .setTriggers(Arrays.asList(InterimResponseTrigger.LATENCY))
                 .setLatencyThresholdMs(2000);
-        BinaryData fillerData = BinaryData.fromObject(fillerConfig);
+        BinaryData interimData = BinaryData.fromObject(interimConfig);
 
         // Act
-        VoiceLiveSessionOptions result = options.setFillerResponse(fillerData);
+        VoiceLiveSessionOptions result = options.setInterimResponse(interimData);
 
         // Assert
         assertSame(options, result);
-        assertNotNull(options.getFillerResponse());
+        assertNotNull(options.getInterimResponse());
     }
 
     @Test
@@ -77,16 +77,16 @@ class VoiceLiveSessionOptionsNewFeaturesTest {
     }
 
     @Test
-    void testFillerResponseJsonSerialization() {
+    void testInterimResponseJsonSerialization() {
         // Arrange
-        LlmFillerResponseConfig fillerConfig = new LlmFillerResponseConfig().setModel("gpt-4.1-mini")
+        LlmInterimResponseConfig interimConfig = new LlmInterimResponseConfig().setModel("gpt-4.1-mini")
             .setInstructions("Generate brief waiting messages")
             .setMaxCompletionTokens(50)
-            .setTriggers(Arrays.asList(FillerTrigger.TOOL))
+            .setTriggers(Arrays.asList(InterimResponseTrigger.TOOL))
             .setLatencyThresholdMs(1500);
 
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview")
-            .setFillerResponse(BinaryData.fromObject(fillerConfig));
+            .setInterimResponse(BinaryData.fromObject(interimConfig));
 
         // Act
         BinaryData serialized = BinaryData.fromObject(options);
@@ -94,27 +94,28 @@ class VoiceLiveSessionOptionsNewFeaturesTest {
 
         // Assert
         assertEquals(options.getModel(), deserialized.getModel());
-        assertNotNull(deserialized.getFillerResponse());
+        assertNotNull(deserialized.getInterimResponse());
     }
 
     @Test
     void testMethodChainingWithNewFeatures() {
         // Arrange
-        BasicFillerResponseConfig fillerConfig = new BasicFillerResponseConfig().setTexts(Arrays.asList("Hold on..."))
-            .setTriggers(Arrays.asList(FillerTrigger.LATENCY, FillerTrigger.TOOL));
+        StaticInterimResponseConfig interimConfig
+            = new StaticInterimResponseConfig().setTexts(Arrays.asList("Hold on..."))
+                .setTriggers(Arrays.asList(InterimResponseTrigger.LATENCY, InterimResponseTrigger.TOOL));
 
         // Act
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview")
             .setInstructions("Test instructions")
             .setReasoningEffort(ReasoningEffort.LOW)
-            .setFillerResponse(BinaryData.fromObject(fillerConfig))
+            .setInterimResponse(BinaryData.fromObject(interimConfig))
             .setTemperature(0.8);
 
         // Assert
         assertEquals("gpt-4o-realtime-preview", options.getModel());
         assertEquals("Test instructions", options.getInstructions());
         assertEquals(ReasoningEffort.LOW, options.getReasoningEffort());
-        assertNotNull(options.getFillerResponse());
+        assertNotNull(options.getInterimResponse());
         assertEquals(0.8, options.getTemperature());
     }
 
@@ -133,10 +134,10 @@ class VoiceLiveSessionOptionsNewFeaturesTest {
     }
 
     @Test
-    void testVoiceLiveSessionResponseFillerResponse() {
+    void testVoiceLiveSessionResponseInterimResponse() {
         // Arrange
         String json
-            = "{\"id\":\"session456\",\"filler_response\":{\"type\":\"static_filler\",\"texts\":[\"Wait...\"]}}";
+            = "{\"id\":\"session456\",\"interim_response\":{\"type\":\"static_interim_response\",\"texts\":[\"Wait...\"]}}";
         BinaryData data = BinaryData.fromString(json);
 
         // Act
@@ -144,6 +145,6 @@ class VoiceLiveSessionOptionsNewFeaturesTest {
 
         // Assert
         assertNotNull(response);
-        assertNotNull(response.getFillerResponse());
+        assertNotNull(response.getInterimResponse());
     }
 }
