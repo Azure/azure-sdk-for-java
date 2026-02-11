@@ -6,21 +6,19 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.WorkflowRunActionInner;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
 /**
  * The response of a WorkflowRunAction list operation.
  */
 @Fluent
-public final class WorkflowRunActionListResult implements XmlSerializable<WorkflowRunActionListResult> {
+public final class WorkflowRunActionListResult implements JsonSerializable<WorkflowRunActionListResult> {
     /*
      * The WorkflowRunAction items on this page
      */
@@ -43,9 +41,6 @@ public final class WorkflowRunActionListResult implements XmlSerializable<Workfl
      * @return the value value.
      */
     public List<WorkflowRunActionInner> value() {
-        if (this.value == null) {
-            this.value = new ArrayList<>();
-        }
         return this.value;
     }
 
@@ -97,74 +92,41 @@ public final class WorkflowRunActionListResult implements XmlSerializable<Workfl
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkflowRunActionListResult.class);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "ResourceListResult" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        if (this.value != null) {
-            xmlWriter.writeStartElement("value");
-            for (WorkflowRunActionInner element : this.value) {
-                xmlWriter.writeXml(element, "WorkflowRunAction");
-            }
-            xmlWriter.writeEndElement();
-        }
-        xmlWriter.writeStringElement("nextLink", this.nextLink);
-        return xmlWriter.writeEndElement();
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of WorkflowRunActionListResult from the XmlReader.
+     * Reads an instance of WorkflowRunActionListResult from the JsonReader.
      * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of WorkflowRunActionListResult if the XmlReader was pointing to an instance of it, or null if
-     * it was pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the WorkflowRunActionListResult.
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowRunActionListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkflowRunActionListResult.
      */
-    public static WorkflowRunActionListResult fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of WorkflowRunActionListResult from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of WorkflowRunActionListResult if the XmlReader was pointing to an instance of it, or null if
-     * it was pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the WorkflowRunActionListResult.
-     */
-    public static WorkflowRunActionListResult fromXml(XmlReader xmlReader, String rootElementName)
-        throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "ResourceListResult" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
+    public static WorkflowRunActionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
             WorkflowRunActionListResult deserializedWorkflowRunActionListResult = new WorkflowRunActionListResult();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                if ("value".equals(elementName.getLocalPart())) {
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        elementName = reader.getElementName();
-                        if ("WorkflowRunAction".equals(elementName.getLocalPart())) {
-                            if (deserializedWorkflowRunActionListResult.value == null) {
-                                deserializedWorkflowRunActionListResult.value = new ArrayList<>();
-                            }
-                            deserializedWorkflowRunActionListResult.value
-                                .add(WorkflowRunActionInner.fromXml(reader, "WorkflowRunAction"));
-                        } else {
-                            reader.skipElement();
-                        }
-                    }
-                } else if ("nextLink".equals(elementName.getLocalPart())) {
-                    deserializedWorkflowRunActionListResult.nextLink = reader.getStringElement();
+                if ("value".equals(fieldName)) {
+                    List<WorkflowRunActionInner> value
+                        = reader.readArray(reader1 -> WorkflowRunActionInner.fromJson(reader1));
+                    deserializedWorkflowRunActionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWorkflowRunActionListResult.nextLink = reader.getString();
                 } else {
-                    reader.skipElement();
+                    reader.skipChildren();
                 }
             }
 

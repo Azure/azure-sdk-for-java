@@ -6,21 +6,19 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.WorkflowVersionInner;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
 /**
  * The response of a WorkflowVersion list operation.
  */
 @Fluent
-public final class WorkflowVersionListResult implements XmlSerializable<WorkflowVersionListResult> {
+public final class WorkflowVersionListResult implements JsonSerializable<WorkflowVersionListResult> {
     /*
      * The WorkflowVersion items on this page
      */
@@ -43,9 +41,6 @@ public final class WorkflowVersionListResult implements XmlSerializable<Workflow
      * @return the value value.
      */
     public List<WorkflowVersionInner> value() {
-        if (this.value == null) {
-            this.value = new ArrayList<>();
-        }
         return this.value;
     }
 
@@ -97,74 +92,41 @@ public final class WorkflowVersionListResult implements XmlSerializable<Workflow
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkflowVersionListResult.class);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "ResourceListResult" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        if (this.value != null) {
-            xmlWriter.writeStartElement("value");
-            for (WorkflowVersionInner element : this.value) {
-                xmlWriter.writeXml(element, "WorkflowVersion");
-            }
-            xmlWriter.writeEndElement();
-        }
-        xmlWriter.writeStringElement("nextLink", this.nextLink);
-        return xmlWriter.writeEndElement();
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of WorkflowVersionListResult from the XmlReader.
+     * Reads an instance of WorkflowVersionListResult from the JsonReader.
      * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of WorkflowVersionListResult if the XmlReader was pointing to an instance of it, or null if
-     * it was pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the WorkflowVersionListResult.
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowVersionListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkflowVersionListResult.
      */
-    public static WorkflowVersionListResult fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of WorkflowVersionListResult from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of WorkflowVersionListResult if the XmlReader was pointing to an instance of it, or null if
-     * it was pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the WorkflowVersionListResult.
-     */
-    public static WorkflowVersionListResult fromXml(XmlReader xmlReader, String rootElementName)
-        throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "ResourceListResult" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
+    public static WorkflowVersionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
             WorkflowVersionListResult deserializedWorkflowVersionListResult = new WorkflowVersionListResult();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                if ("value".equals(elementName.getLocalPart())) {
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        elementName = reader.getElementName();
-                        if ("WorkflowVersion".equals(elementName.getLocalPart())) {
-                            if (deserializedWorkflowVersionListResult.value == null) {
-                                deserializedWorkflowVersionListResult.value = new ArrayList<>();
-                            }
-                            deserializedWorkflowVersionListResult.value
-                                .add(WorkflowVersionInner.fromXml(reader, "WorkflowVersion"));
-                        } else {
-                            reader.skipElement();
-                        }
-                    }
-                } else if ("nextLink".equals(elementName.getLocalPart())) {
-                    deserializedWorkflowVersionListResult.nextLink = reader.getStringElement();
+                if ("value".equals(fieldName)) {
+                    List<WorkflowVersionInner> value
+                        = reader.readArray(reader1 -> WorkflowVersionInner.fromJson(reader1));
+                    deserializedWorkflowVersionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWorkflowVersionListResult.nextLink = reader.getString();
                 } else {
-                    reader.skipElement();
+                    reader.skipChildren();
                 }
             }
 
