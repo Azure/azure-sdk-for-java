@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureS
 import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryCustomizer;
 import jakarta.jms.ConnectionFactory;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -33,7 +34,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jms.ServiceBus
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EnableJms.class)
-class ServiceBusJmsContainerConfiguration {
+class ServiceBusJmsContainerConfiguration implements DisposableBean {
 
     /**
      * <p>
@@ -68,6 +69,11 @@ class ServiceBusJmsContainerConfiguration {
     private final ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
     private final Environment environment;
     private final JmsProperties jmsProperties;
+    
+    // Memoized dedicated receiver ConnectionFactory instances to avoid duplicates and enable lifecycle management
+    private volatile CachingConnectionFactory dedicatedCachingConnectionFactory;
+    private volatile JmsPoolConnectionFactory dedicatedPoolConnectionFactory;
+    private volatile ServiceBusJmsConnectionFactory dedicatedServiceBusConnectionFactory;
 
     ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties,
                                         ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
@@ -121,23 +127,44 @@ class ServiceBusJmsContainerConfiguration {
                 if (connectionFactory instanceof JmsPoolConnectionFactory) {
                     return connectionFactory;
                 } else {
-                    return new JmsPoolConnectionFactoryFactory(azureServiceBusJMSProperties.getPool())
-                        .createPooledConnectionFactory(createServiceBusJmsConnectionFactory());
+                    return getOrCreateDedicatedPoolConnectionFactory();
                 }
             case CACHE:
                 if (connectionFactory instanceof CachingConnectionFactory) {
                     return connectionFactory;
                 } else {
-                    CachingConnectionFactory cacheFactory = new CachingConnectionFactory(createServiceBusJmsConnectionFactory());
-                    JmsProperties.Cache cacheProperties = jmsProperties.getCache();
-                    cacheFactory.setCacheConsumers(cacheProperties.isConsumers());
-                    cacheFactory.setCacheProducers(cacheProperties.isProducers());
-                    cacheFactory.setSessionCacheSize(cacheProperties.getSessionCacheSize());
-                    return cacheFactory;
+                    return getOrCreateDedicatedCachingConnectionFactory();
                 }
             default:
-                return createServiceBusJmsConnectionFactory();
+                return getOrCreateDedicatedServiceBusConnectionFactory();
         }
+    }
+
+    private synchronized JmsPoolConnectionFactory getOrCreateDedicatedPoolConnectionFactory() {
+        if (dedicatedPoolConnectionFactory == null) {
+            dedicatedPoolConnectionFactory = new JmsPoolConnectionFactoryFactory(azureServiceBusJMSProperties.getPool())
+                .createPooledConnectionFactory(createServiceBusJmsConnectionFactory());
+        }
+        return dedicatedPoolConnectionFactory;
+    }
+
+    private synchronized CachingConnectionFactory getOrCreateDedicatedCachingConnectionFactory() {
+        if (dedicatedCachingConnectionFactory == null) {
+            CachingConnectionFactory cacheFactory = new CachingConnectionFactory(createServiceBusJmsConnectionFactory());
+            JmsProperties.Cache cacheProperties = jmsProperties.getCache();
+            cacheFactory.setCacheConsumers(cacheProperties.isConsumers());
+            cacheFactory.setCacheProducers(cacheProperties.isProducers());
+            cacheFactory.setSessionCacheSize(cacheProperties.getSessionCacheSize());
+            dedicatedCachingConnectionFactory = cacheFactory;
+        }
+        return dedicatedCachingConnectionFactory;
+    }
+
+    private synchronized ServiceBusJmsConnectionFactory getOrCreateDedicatedServiceBusConnectionFactory() {
+        if (dedicatedServiceBusConnectionFactory == null) {
+            dedicatedServiceBusConnectionFactory = createServiceBusJmsConnectionFactory();
+        }
+        return dedicatedServiceBusConnectionFactory;
     }
 
     private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
@@ -167,5 +194,17 @@ class ServiceBusJmsContainerConfiguration {
         if (listener.isSubscriptionShared() != null) {
             jmsListenerContainerFactory.setSubscriptionShared(listener.isSubscriptionShared());
         }
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        // Close dedicated ConnectionFactory instances to prevent resource leaks
+        if (dedicatedPoolConnectionFactory != null) {
+            dedicatedPoolConnectionFactory.stop();
+        }
+        if (dedicatedCachingConnectionFactory != null) {
+            dedicatedCachingConnectionFactory.destroy();
+        }
+        // ServiceBusJmsConnectionFactory doesn't have a close method, so no cleanup needed
     }
 }

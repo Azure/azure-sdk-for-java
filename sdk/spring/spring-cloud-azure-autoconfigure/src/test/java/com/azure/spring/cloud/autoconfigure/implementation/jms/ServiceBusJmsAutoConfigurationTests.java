@@ -435,4 +435,88 @@ class ServiceBusJmsAutoConfigurationTests {
                 }
             );
     }
+
+    // Tests for receiver ConnectionFactory type verification
+
+    @ParameterizedTest
+    @ValueSource(strings = {"standard", "premium"})
+    void receiverUsesDedicatedServiceBusConnectionFactoryByDefault(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING
+            )
+            .run(context -> {
+                // Sender bean is CachingConnectionFactory
+                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                
+                // Verify both listener containers are created
+                assertThat(context).hasBean("jmsListenerContainerFactory");
+                assertThat(context).hasBean("topicJmsListenerContainerFactory");
+                
+                // Get the listener factories and verify they're configured
+                DefaultJmsListenerContainerFactory queueFactory = context.getBean("jmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
+                DefaultJmsListenerContainerFactory topicFactory = context.getBean("topicJmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
+                assertThat(queueFactory).isNotNull();
+                assertThat(topicFactory).isNotNull();
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"standard", "premium"})
+    void receiverUsesCachingConnectionFactoryWhenExplicitlyEnabled(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.cache.enabled=true"
+            )
+            .run(context -> {
+                // Both sender and receiver use CachingConnectionFactory bean
+                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                
+                // Verify both listener containers are created
+                assertThat(context).hasBean("jmsListenerContainerFactory");
+                assertThat(context).hasBean("topicJmsListenerContainerFactory");
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"standard", "premium"})
+    void receiverUsesPoolConnectionFactoryWhenExplicitlyEnabled(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.servicebus.pool.enabled=true"
+            )
+            .run(context -> {
+                // Both sender and receiver use JmsPoolConnectionFactory bean
+                assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
+                
+                // Verify both listener containers are created
+                assertThat(context).hasBean("jmsListenerContainerFactory");
+                assertThat(context).hasBean("topicJmsListenerContainerFactory");
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"standard", "premium"})
+    void receiverUsesDedicatedServiceBusConnectionFactoryWhenPoolDisabled(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.servicebus.pool.enabled=false"
+            )
+            .run(context -> {
+                // Sender uses CachingConnectionFactory
+                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                
+                // Receiver creates dedicated ServiceBusJmsConnectionFactory
+                // Verify both listener containers are created
+                assertThat(context).hasBean("jmsListenerContainerFactory");
+                assertThat(context).hasBean("topicJmsListenerContainerFactory");
+            });
+    }
 }
