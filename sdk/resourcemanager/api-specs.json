@@ -15,13 +15,13 @@
     "dir": "../appservice/azure-resourcemanager-appservice",
     "source": "specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--tag=package-2024-11 --title=CertificateRegistrationManagementClient --add-inner=AppServiceCertificate,NameIdentifier --enable-sync-stack=false"
+    "args": "--tag=package-2024-11 --title=CertificateRegistrationManagementClient --metadata-suffix=certificateregistration --add-inner=AppServiceCertificate,NameIdentifier --enable-sync-stack=false"
   },
   "domainregistration": {
     "dir": "../appservice/azure-resourcemanager-appservice",
     "source": "specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--tag=package-2024-11 --title=DomainRegistrationManagementClient --enable-sync-stack=false"
+    "args": "--tag=package-2024-11 --title=DomainRegistrationManagementClient --metadata-suffix=domainregistration --enable-sync-stack=false"
   },
   "authorization": {
     "dir": "../authorization/azure-resourcemanager-authorization",
