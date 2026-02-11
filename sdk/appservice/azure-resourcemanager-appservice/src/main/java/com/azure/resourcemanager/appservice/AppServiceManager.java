@@ -5,7 +5,11 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.appservice.fluent.CertificateRegistrationManagementClient;
+import com.azure.resourcemanager.appservice.fluent.DomainRegistrationManagementClient;
 import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClient;
+import com.azure.resourcemanager.appservice.implementation.CertificateRegistrationManagementClientBuilder;
+import com.azure.resourcemanager.appservice.implementation.DomainRegistrationManagementClientBuilder;
 import com.azure.resourcemanager.appservice.implementation.WebSiteManagementClientBuilder;
 import com.azure.resourcemanager.appservice.implementation.AppServiceCertificateOrdersImpl;
 import com.azure.resourcemanager.appservice.implementation.AppServiceCertificatesImpl;
@@ -45,6 +49,9 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
     private AppServiceCertificates appServiceCertificates;
     private AppServiceDomains appServiceDomains;
     private FunctionApps functionApps;
+
+    private CertificateRegistrationManagementClient certificateRegistrationClient;
+    private DomainRegistrationManagementClient domainRegistrationClient;
 
     /**
      * Get a Configurable instance that can be used to create StorageManager with optional configuration.
@@ -106,6 +113,14 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
+        certificateRegistrationClient = new CertificateRegistrationManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
+        domainRegistrationClient = new DomainRegistrationManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
         storageManager = StorageManager.authenticate(httpPipeline, profile);
         authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
@@ -218,5 +233,25 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
             functionApps = new FunctionAppsImpl(this);
         }
         return functionApps;
+    }
+
+    /**
+     * Gets wrapped inner task client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     *
+     * @return wrapped inner task client.
+     */
+    public CertificateRegistrationManagementClient certificateRegistrationClient() {
+        return certificateRegistrationClient;
+    }
+
+    /**
+     * Gets wrapped inner task client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     *
+     * @return wrapped inner task client.
+     */
+    public DomainRegistrationManagementClient domainRegistrationClient() {
+        return domainRegistrationClient;
     }
 }
