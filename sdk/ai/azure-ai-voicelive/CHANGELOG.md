@@ -4,7 +4,28 @@
 
 ### Features Added
 
+- Added `AgentSessionConfig` class for configuring Azure AI Foundry agent sessions:
+  - Constructor takes required `agentName` and `projectName` parameters
+  - Fluent setters for optional parameters: `setAgentVersion()`, `setConversationId()`, `setAuthenticationIdentityClientId()`, `setFoundryResourceOverride()`
+  - `toQueryParameters()` method for converting configuration to WebSocket query parameters
+- Added new `startSession(AgentSessionConfig)` overload to `VoiceLiveAsyncClient` for connecting directly to Azure AI Foundry agents
+- Added `startSession(AgentSessionConfig, VoiceLiveRequestOptions)` overload for agent sessions with custom request options
+- Added `Scene` class for configuring avatar's zoom level, position, rotation and movement amplitude in the video frame
+- Added `scene` property to `AvatarConfiguration` for avatar scene configuration
+- Added `outputAuditAudio` property to `AvatarConfiguration` to enable audit audio forwarding via WebSocket for review/debugging purposes
+- Added `ServerEventWarning` and `ServerEventWarningDetails` classes for non-interrupting warning events
+- Added `ServerEventType.WARNING` enum value
+
 ### Breaking Changes
+
+- Changed token authentication scope from `https://cognitiveservices.azure.com/.default` to `https://ai.azure.com/.default`
+- Removed `FoundryAgentTool` class - use `AgentSessionConfig` with `startSession(AgentSessionConfig)` for direct agent connections instead
+- Removed `FoundryAgentContextType` enum
+- Removed `ResponseFoundryAgentCallItem` class
+- Removed Foundry agent call lifecycle server events: `ServerEventResponseFoundryAgentCallArgumentsDelta`, `ServerEventResponseFoundryAgentCallArgumentsDone`, `ServerEventResponseFoundryAgentCallInProgress`, `ServerEventResponseFoundryAgentCallCompleted`, `ServerEventResponseFoundryAgentCallFailed`
+- Removed `ItemType.FOUNDRY_AGENT_CALL` enum value
+- Removed `ToolType.FOUNDRY_AGENT` enum value
+- Removed `ServerEventType.MCP_APPROVAL_REQUEST` and `ServerEventType.MCP_APPROVAL_RESPONSE` enum values
 
 ### Bugs Fixed
 
