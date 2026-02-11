@@ -32,8 +32,8 @@ class ServiceBusJmsContainerConfiguration {
     private final ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
     private final Environment environment;
     
-    // Memoized dedicated receiver ConnectionFactory to avoid creating multiple instances
-    private volatile ServiceBusJmsConnectionFactory dedicatedReceiverConnectionFactory;
+    // Cached dedicated receiver ConnectionFactory to avoid creating multiple instances
+    private ServiceBusJmsConnectionFactory dedicatedReceiverConnectionFactory;
 
     ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties,
                                        ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
@@ -126,16 +126,13 @@ class ServiceBusJmsContainerConfiguration {
         return createServiceBusJmsConnectionFactory();
     }
 
-    private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
-        // Use double-checked locking to ensure we only create one instance
+    private synchronized ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
+        // Create only one instance to be shared between both listener container factories
         if (dedicatedReceiverConnectionFactory == null) {
-            synchronized (this) {
-                if (dedicatedReceiverConnectionFactory == null) {
-                    dedicatedReceiverConnectionFactory = new ServiceBusJmsConnectionFactoryFactory(azureServiceBusJMSProperties,
-                        factoryCustomizers.orderedStream().collect(Collectors.toList()))
-                        .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
-                }
-            }
+            dedicatedReceiverConnectionFactory = new ServiceBusJmsConnectionFactoryFactory(
+                azureServiceBusJMSProperties,
+                factoryCustomizers.orderedStream().collect(Collectors.toList()))
+                .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
         }
         return dedicatedReceiverConnectionFactory;
     }
