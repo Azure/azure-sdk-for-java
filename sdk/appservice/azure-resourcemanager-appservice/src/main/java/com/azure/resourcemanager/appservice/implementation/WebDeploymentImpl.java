@@ -3,13 +3,11 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.models.MSDeploy;
-import com.azure.resourcemanager.appservice.models.MSDeployCore;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebDeployment;
 import com.azure.resourcemanager.appservice.fluent.models.MSDeployStatusInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import reactor.core.publisher.Mono;
 
@@ -57,8 +55,7 @@ public class WebDeploymentImpl<FluentT extends WebAppBase, FluentImplT extends W
 
     @Override
     public WebDeploymentImpl<FluentT, FluentImplT> withPackageUri(String packageUri) {
-        request.withAddOnPackages(new ArrayList<MSDeployCore>());
-        request.addOnPackages().add(new MSDeployCore().withPackageUri(packageUri));
+        request.withPackageUri(packageUri);
         return this;
     }
 
@@ -72,16 +69,11 @@ public class WebDeploymentImpl<FluentT extends WebAppBase, FluentImplT extends W
 
     @Override
     public WebDeploymentImpl<FluentT, FluentImplT> withExistingDeploymentsDeleted(boolean deleteExisting) {
-        if (deleteExisting) {
-            MSDeployCore first = request.addOnPackages().remove(0);
-            request.withPackageUri(first.packageUri());
-        }
         return this;
     }
 
     @Override
     public WebDeploymentImpl<FluentT, FluentImplT> withAddOnPackage(String packageUri) {
-        request.addOnPackages().add(new MSDeployCore().withPackageUri(packageUri));
         return this;
     }
 
