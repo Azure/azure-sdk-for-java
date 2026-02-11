@@ -119,7 +119,7 @@ class ServiceBusJmsContainerConfiguration {
                 if (connectionFactory instanceof JmsPoolConnectionFactory) {
                     return connectionFactory;
                 } else {
-                    new JmsPoolConnectionFactoryFactory(azureServiceBusJMSProperties.getPool())
+                    return new JmsPoolConnectionFactoryFactory(azureServiceBusJMSProperties.getPool())
                         .createPooledConnectionFactory(createServiceBusJmsConnectionFactory());
                 }
             case CACHE:
