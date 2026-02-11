@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 1.0.1 (2026-02-09)
+
+### Other Changes
+
+- Please note, this package has been deprecated and will no longer be maintained after 2025/10/01. There are no replacement packages, as all mixed reality services are deprecated. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 ## 1.0.0 (2024-12-23)
 
 - Azure Resource Manager MixedReality client library for Java. This package contains Microsoft Azure SDK for MixedReality Management SDK. Mixed Reality Client. Package tag package-2021-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
