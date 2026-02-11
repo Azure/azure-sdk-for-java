@@ -20,12 +20,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -36,6 +38,7 @@ import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Allocation;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
