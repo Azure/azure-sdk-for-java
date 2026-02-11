@@ -78,7 +78,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveSessionAsyncClient.class);
-    private static final String COGNITIVE_SERVICES_SCOPE = "https://cognitiveservices.azure.com/.default";
+    private static final String AZURE_AI_SCOPE = "https://ai.azure.com/.default";
     private static final HttpHeaderName API_KEY = HttpHeaderName.fromString("api-key");
 
     // WebSocket configuration constants
@@ -880,7 +880,7 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
             headers.set(API_KEY, keyCredential.getKey());
             return Mono.just(headers);
         } else if (tokenCredential != null) {
-            TokenRequestContext tokenRequest = new TokenRequestContext().addScopes(COGNITIVE_SERVICES_SCOPE);
+            TokenRequestContext tokenRequest = new TokenRequestContext().addScopes(AZURE_AI_SCOPE);
             return tokenCredential.getToken(tokenRequest).map(at -> {
                 headers.set(HttpHeaderName.AUTHORIZATION, "Bearer " + at.getToken());
                 return headers;
