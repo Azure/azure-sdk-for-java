@@ -1,10 +1,11 @@
 # eng/scripts/setup-dev.ps1
 # One-time setup script for Azure SDK for Java development
+
 $settingsSource = Join-Path $PSScriptRoot "..\settings.xml"
-$settingsTarget = Join-Path $env:USERPROFILE ".m2\settings.xml"
+$m2Dir = if ($env:USERPROFILE) { Join-Path $env:USERPROFILE ".m2" } else { Join-Path $HOME ".m2" }
+$settingsTarget = Join-Path $m2Dir "settings.xml"
 
 # Ensure .m2 directory exists
-$m2Dir = Join-Path $env:USERPROFILE ".m2"
 if (-not (Test-Path $m2Dir)) {
     New-Item -ItemType Directory -Path $m2Dir | Out-Null
 }

@@ -3,6 +3,6 @@
   <extension>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>artifacts-maven-credprovider</artifactId>
-    <version>3.0</version> <!-- Replace with the version installed on your machine -->
+    <version>3.0.0</version>
   </extension>
 </extensions>
