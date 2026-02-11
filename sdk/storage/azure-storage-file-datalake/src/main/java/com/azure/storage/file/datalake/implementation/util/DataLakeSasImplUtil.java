@@ -239,14 +239,14 @@ public class DataLakeSasImplUtil {
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
-            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID,
-                userDelegationKey.getSignedDelegatedUserTenantId());
 
             /* Only parameters relevant for user delegation SAS. */
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID,
                 this.authorizedAadObjectId);
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AGENT_OBJECT_ID, this.unauthorizedAadObjectId);
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID,
+                userDelegationKey.getSignedDelegatedUserTenantId());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DELEGATED_USER_OBJECT_ID,
                 this.delegatedUserObjectId);
         }
@@ -269,7 +269,6 @@ public class DataLakeSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_LANGUAGE, this.contentLanguage);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_TYPE, this.contentType);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
 
         return sb.toString();
 
@@ -452,7 +451,8 @@ public class DataLakeSasImplUtil {
                 key.getSignedVersion() == null ? "" : key.getSignedVersion(),
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
-                this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
+                this.correlationId == null ? "" : this.correlationId,
+                key.getSignedDelegatedUserTenantId() == null ? "" : key.getSignedDelegatedUserTenantId(),
                 this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource, "", /* Version segment. */
@@ -476,7 +476,8 @@ public class DataLakeSasImplUtil {
                 key.getSignedVersion() == null ? "" : key.getSignedVersion(),
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
-                this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
+                this.correlationId == null ? "" : this.correlationId,
+                key.getSignedDelegatedUserTenantId() == null ? "" : key.getSignedDelegatedUserTenantId(),
                 this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource, "", /* Version segment. */

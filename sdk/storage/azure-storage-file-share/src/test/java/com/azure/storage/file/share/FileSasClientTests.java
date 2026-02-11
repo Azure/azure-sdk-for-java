@@ -758,6 +758,30 @@ class FileSasClientTests extends FileShareTestBase {
         });
     }
 
+    public void shareUserDelegationSasDelegatedTenantId() {
+
+    }
+
+    public void shareUserDelegationSasDelegatedTenantIdFail() {
+
+    }
+
+    public void shareUserDelegationSasDelegatedTenantIdRoundTrip() {
+
+    }
+
+    public void shareUserDelegationSasDelegatedTenantIdAsync() {
+
+    }
+
+    public void shareUserDelegationSasDelegatedTenantIdFailAsync() {
+
+    }
+
+    public void shareUserDelegationSasDelegatedTenantIdRoundTripAsync() {
+
+    }
+
     private boolean validateSasProperties(ShareFileProperties properties) {
         boolean ret;
         ret = properties.getCacheControl().equals("cache");

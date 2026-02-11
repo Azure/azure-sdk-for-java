@@ -274,6 +274,18 @@ public class QueueSasAsyncClientTests extends QueueTestBase {
         });
     }
 
+    public void queueUserDelegationSasDelegatedTenantId() {
+
+    }
+
+    public void queueUserDelegationSasDelegatedTenantIdFail() {
+
+    }
+
+    public void queueUserDelegationSasDelegatedTenantIdRoundTrip() {
+
+    }
+
     private Mono<UserDelegationKey> getUserDelegationInfo() {
         return getOAuthQueueServiceAsyncClient()
             .getUserDelegationKey(testResourceNamer.now().minusDays(1), testResourceNamer.now().plusDays(1))

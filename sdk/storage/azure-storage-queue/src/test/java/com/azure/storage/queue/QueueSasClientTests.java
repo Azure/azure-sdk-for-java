@@ -267,6 +267,18 @@ public class QueueSasClientTests extends QueueTestBase {
         });
     }
 
+    public void queueUserDelegationSasDelegatedTenantId() {
+
+    }
+
+    public void queueUserDelegationSasDelegatedTenantIdFail() {
+
+    }
+
+    public void queueUserDelegationSasDelegatedTenantIdRoundTrip() {
+
+    }
+
     protected UserDelegationKey getUserDelegationInfo() {
         UserDelegationKey key = getOAuthQueueServiceClient().getUserDelegationKey(testResourceNamer.now().minusDays(1),
             testResourceNamer.now().plusDays(1));

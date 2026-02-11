@@ -212,6 +212,7 @@ public class UserDelegationSasTestData extends SasTestData {
             getStartTime(), keyOid, keyTid, keyStart, keyExpiry, keyService, keyVersion, keyValue,
             getIpRange(), getProtocol(), getCacheControl(), getDisposition(), getEncoding(),
             getLanguage(), getType(),  preauthorizedAgentObjectId, agentObjectId, correlationId,
+            delegatedUserObjectId, delegatedUserTenantId,
             requestHeaders, requestQueryParameters, getExpectedStringToSign()
         );
     }
@@ -627,6 +628,20 @@ public class UserDelegationSasTestData extends SasTestData {
                 .setExpectedStringToSign("r\n\n"
                     + expiryTimeStr
                     + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\ncid\n\n\n\n\n"
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
+                .toDatalakeArguments(),
+            new UserDelegationSasTestData().setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
+                .setDelegatedUserTenantId("delegatedTenantId")
+                .setExpectedStringToSign("r\n\n"
+                    + expiryTimeStr
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\ndelegatedTenantId\n\n\n\n"
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
+                .toDatalakeArguments(),
+            new UserDelegationSasTestData().setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
+                .setDelegatedUserObjectId("delegatedObjectId")
+                .setExpectedStringToSign("r\n\n"
+                    + expiryTimeStr
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\ndelegatedObjectId\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
                 .toDatalakeArguments(),
             new UserDelegationSasTestData().setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
