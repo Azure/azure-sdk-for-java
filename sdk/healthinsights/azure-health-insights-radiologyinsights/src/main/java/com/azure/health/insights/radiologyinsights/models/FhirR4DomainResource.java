@@ -211,11 +211,7 @@ public class FhirR4DomainResource extends FhirR4Resource {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("Condition".equals(discriminatorValue)) {
-                    return FhirR4Condition.fromJson(readerToUse.reset());
-                } else if ("ResearchStudy".equals(discriminatorValue)) {
-                    return FhirR4ResearchStudy.fromJson(readerToUse.reset());
-                } else if ("Observation".equals(discriminatorValue)) {
+                if ("Observation".equals(discriminatorValue)) {
                     return FhirR4Observation.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
