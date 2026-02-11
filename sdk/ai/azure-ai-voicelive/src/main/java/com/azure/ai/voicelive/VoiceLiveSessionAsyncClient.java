@@ -398,7 +398,7 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
             .flatMap(this::parseToSessionUpdate)
             .doOnError(error -> LOGGER.error("Failed to parse session update", error))
             .onErrorResume(error -> {
-                LOGGER.warning("Skipping unparseable event due to error: {}", error.getMessage());
+                LOGGER.warning("Skipping unrecognized server event: {}", error.getMessage());
                 return Flux.empty();
             });
     }
