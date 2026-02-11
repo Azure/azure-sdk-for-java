@@ -804,14 +804,14 @@ public class IdentityClientTests {
     }
 
     @Test
-    public void testReturnRawOutputForNoValidMessages() {
-        // Should return raw output when no valid messages found (JSON parsing fails or .data.message not set)
+    public void testReturnNullForNoValidMessages() {
+        // Should return null when no valid messages found
         String output = "{\"data\":{\"notamessage\":\"Not a message\"}}\n" + "{\"nomessage\":\"Also not a message\"}\n"
             + "This is not JSON";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals(output, result);
+        assertNull(result);
     }
 
     @Test
@@ -946,6 +946,33 @@ public class IdentityClientTests {
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
         assertEquals("Suggestion: Final message", result);
+    }
+
+    @Test
+    public void testGetAzdErrorMessageReturnsExtractedMessage() {
+        // Should return extracted user-friendly message when available
+        String output = "{\"data\":{\"message\":\"run azd auth login\"}}";
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.getAzdErrorMessage(output);
+        assertEquals("run azd auth login", result);
+    }
+
+    @Test
+    public void testGetAzdErrorMessageFallsBackForNoValidMessages() {
+        // Should return the raw input when extractUserFriendlyErrorFromAzdOutput returns null
+        String output = "{\"data\":{\"notamessage\":\"Not a message\"}}\n" + "This is not JSON";
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.getAzdErrorMessage(output);
+        assertEquals(output, result);
+    }
+
+    @Test
+    public void testGetAzdErrorMessageFallsBackForWhitespaceOnlyInput() {
+        // Should return the whitespace string when extraction returns null
+        String output = "   \n\n   \t  ";
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.getAzdErrorMessage(output);
+        assertEquals(output, result);
     }
 
     @Test

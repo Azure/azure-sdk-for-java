@@ -746,12 +746,14 @@ public abstract class IdentityClientBase {
 
                     if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
                         if (azdCommand.toString().contains("claims")) {
-                            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(extractUserFriendlyErrorFromAzdOutput(redactedOutput), null));
+                            throw LOGGER.logExceptionAsError(
+                                new ClientAuthenticationException(getAzdErrorMessage(redactedOutput), null));
                         }
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                            new CredentialUnavailableException(extractUserFriendlyErrorFromAzdOutput(redactedOutput)));
+                            new CredentialUnavailableException(getAzdErrorMessage(redactedOutput)));
                     }
-                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException(extractUserFriendlyErrorFromAzdOutput(redactedOutput), null));
+                    throw LOGGER.logExceptionAsError(
+                        new ClientAuthenticationException(getAzdErrorMessage(redactedOutput), null));
                 } else {
                     throw LOGGER.logExceptionAsError(
                         new ClientAuthenticationException("Failed to invoke Azure Developer CLI ", null));
@@ -797,7 +799,7 @@ public abstract class IdentityClientBase {
      * Returns null if no messages can be parsed.
      */
     String extractUserFriendlyErrorFromAzdOutput(String output) {
-        if (output == null || output.trim().isEmpty()) {
+        if (output == null || output.isEmpty()) {
             return null;
         }
 
@@ -848,7 +850,7 @@ public abstract class IdentityClientBase {
         }
 
         if (messages.isEmpty()) {
-            return output;
+            return null;
         }
 
         // Prefer the suggestion line if present
@@ -864,6 +866,12 @@ public abstract class IdentityClientBase {
         }
 
         return redactInfo(messages.get(0));
+    }
+
+    // Gets a user-friendly error message from azd output, with fallback to the raw output
+    String getAzdErrorMessage(String output) {
+        String extracted = extractUserFriendlyErrorFromAzdOutput(output);
+        return extracted != null ? extracted : output;
     }
 
     AccessToken authenticateWithExchangeTokenHelper(TokenRequestContext request, String assertionToken)
