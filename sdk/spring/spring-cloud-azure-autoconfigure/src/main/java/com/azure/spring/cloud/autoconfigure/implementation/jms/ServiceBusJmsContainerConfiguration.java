@@ -14,6 +14,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.jms.autoconfigure.DefaultJmsListenerContainerFactoryConfigurer;
+import org.springframework.boot.jms.autoconfigure.JmsPoolConnectionFactoryFactory;
+import org.springframework.boot.jms.autoconfigure.JmsProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -24,24 +26,55 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 
 import java.util.stream.Collectors;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.jms.ServiceBusJmsConnectionFactoryConfiguration.*;
+import static com.azure.spring.cloud.autoconfigure.implementation.jms.ServiceBusJmsConnectionFactoryConfiguration.Registrar.getFactoryType;
+
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EnableJms.class)
 class ServiceBusJmsContainerConfiguration {
 
+    /**
+     * <p>
+     * The ConnectionFactory type is determined by the following table:
+     * <table border="1">
+     *   <tr>
+     *     <th>spring.jms.servicebus.pool.enabled</th>
+     *     <th>spring.jms.cache.enabled</th>
+     *     <th>Receiver ConnectionFactory</th>
+     *   </tr>
+     *   <tr><td>not set</td><td>not set</td><td>ServiceBusJmsConnectionFactory</td></tr>
+     *   <tr><td>not set</td><td>true</td><td>CachingConnectionFactory</td></tr>
+     *   <tr><td>not set</td><td>false</td><td>ServiceBusJmsConnectionFactory</td></tr>
+     *   <tr><td>true</td><td>not set</td><td>JmsPoolConnectionFactory</td></tr>
+     *   <tr><td>true</td><td>true</td><td>CachingConnectionFactory</td></tr>
+     *   <tr><td>true</td><td>false</td><td>JmsPoolConnectionFactory</td></tr>
+     *   <tr><td>false</td><td>not set</td><td>ServiceBusJmsConnectionFactory</td></tr>
+     *   <tr><td>false</td><td>true</td><td>CachingConnectionFactory</td></tr>
+     *   <tr><td>false</td><td>false</td><td>ServiceBusJmsConnectionFactory</td></tr>
+     * </table>
+     */
+    private static final int[][] DECISION_TABLE = {
+        // pool: not set
+        {SERVICE_BUS, CACHE, SERVICE_BUS}, // cache: not set, true, false
+        // pool: true
+        {POOL, CACHE, POOL}, // cache: not set, true, false
+        // pool: false
+        {SERVICE_BUS, CACHE, SERVICE_BUS} // cache: not set, true, false
+    };
+
     private final AzureServiceBusJmsProperties azureServiceBusJMSProperties;
     private final ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
     private final Environment environment;
-    
-    // Cached dedicated receiver ConnectionFactory to avoid creating multiple instances
-    // Volatile ensures visibility across threads when initialized
-    private volatile ServiceBusJmsConnectionFactory dedicatedReceiverConnectionFactory;
+    private final JmsProperties jmsProperties;
 
     ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties,
-                                       ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
-                                       Environment environment) {
+                                        ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
+                                        Environment environment,
+                                        JmsProperties jmsProperties) {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
         this.factoryCustomizers = factoryCustomizers;
         this.environment = environment;
+        this.jmsProperties = jmsProperties;
     }
 
     @Bean
@@ -73,24 +106,6 @@ class ServiceBusJmsContainerConfiguration {
 
     /**
      * Determines the appropriate ConnectionFactory for JMS listener containers based on configuration properties.
-     * <p>
-     * The ConnectionFactory type is determined by the following table:
-     * <table border="1">
-     *   <tr>
-     *     <th>spring.jms.servicebus.pool.enabled</th>
-     *     <th>spring.jms.cache.enabled</th>
-     *     <th>Receiver ConnectionFactory</th>
-     *   </tr>
-     *   <tr><td>not set</td><td>not set</td><td>ServiceBusJmsConnectionFactory</td></tr>
-     *   <tr><td>not set</td><td>true</td><td>CachingConnectionFactory</td></tr>
-     *   <tr><td>not set</td><td>false</td><td>ServiceBusJmsConnectionFactory</td></tr>
-     *   <tr><td>true</td><td>not set</td><td>JmsPoolConnectionFactory</td></tr>
-     *   <tr><td>true</td><td>true</td><td>CachingConnectionFactory</td></tr>
-     *   <tr><td>true</td><td>false</td><td>JmsPoolConnectionFactory</td></tr>
-     *   <tr><td>false</td><td>not set</td><td>ServiceBusJmsConnectionFactory</td></tr>
-     *   <tr><td>false</td><td>true</td><td>CachingConnectionFactory</td></tr>
-     *   <tr><td>false</td><td>false</td><td>ServiceBusJmsConnectionFactory</td></tr>
-     * </table>
      *
      * @param connectionFactory the ConnectionFactory bean registered by {@link ServiceBusJmsConnectionFactoryConfiguration}
      * @return the ConnectionFactory to use for the receiver
@@ -98,44 +113,35 @@ class ServiceBusJmsContainerConfiguration {
     private ConnectionFactory getReceiverConnectionFactory(ConnectionFactory connectionFactory) {
         BindResult<Boolean> poolEnabledResult = Binder.get(environment).bind("spring.jms.servicebus.pool.enabled", Boolean.class);
         BindResult<Boolean> cacheEnabledResult = Binder.get(environment).bind("spring.jms.cache.enabled", Boolean.class);
-        
-        // Case 3: If cache.enabled is explicitly false
-        if (cacheEnabledResult.isBound() && !cacheEnabledResult.get()) {
-            // If pool.enabled is true, use JmsPoolConnectionFactory bean
-            if (poolEnabledResult.isBound() && poolEnabledResult.get()
-                && connectionFactory instanceof JmsPoolConnectionFactory) {
-                return connectionFactory;
-            }
-            // Otherwise create dedicated ServiceBusJmsConnectionFactory
-            return createServiceBusJmsConnectionFactory();
-        }
 
-        // Case 2 & 1: If cache.enabled is true (explicitly), use CachingConnectionFactory bean
-        if (cacheEnabledResult.isBound() && cacheEnabledResult.get()
-            && connectionFactory instanceof CachingConnectionFactory) {
-            return connectionFactory;
+        switch (getFactoryType(poolEnabledResult, cacheEnabledResult, DECISION_TABLE)) {
+            case POOL:
+                if (connectionFactory instanceof JmsPoolConnectionFactory) {
+                    return connectionFactory;
+                } else {
+                    new JmsPoolConnectionFactoryFactory(azureServiceBusJMSProperties.getPool())
+                        .createPooledConnectionFactory(createServiceBusJmsConnectionFactory());
+                }
+            case CACHE:
+                if (connectionFactory instanceof CachingConnectionFactory) {
+                    return connectionFactory;
+                } else {
+                    CachingConnectionFactory cacheFactory = new CachingConnectionFactory(createServiceBusJmsConnectionFactory());
+                    JmsProperties.Cache cacheProperties = jmsProperties.getCache();
+                    cacheFactory.setCacheConsumers(cacheProperties.isConsumers());
+                    cacheFactory.setCacheProducers(cacheProperties.isProducers());
+                    cacheFactory.setSessionCacheSize(cacheProperties.getSessionCacheSize());
+                    return cacheFactory;
+                }
+            default:
+                return createServiceBusJmsConnectionFactory();
         }
-
-        // Case 1: If pool.enabled is true and cache is not set, use JmsPoolConnectionFactory bean
-        if (poolEnabledResult.isBound() && poolEnabledResult.get()
-            && !cacheEnabledResult.isBound()
-            && connectionFactory instanceof JmsPoolConnectionFactory) {
-            return connectionFactory;
-        }
-
-        // Case 4: Default - create dedicated ServiceBusJmsConnectionFactory for receiver
-        return createServiceBusJmsConnectionFactory();
     }
 
-    private synchronized ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
-        // Create only one instance to be shared between both listener container factories
-        if (dedicatedReceiverConnectionFactory == null) {
-            dedicatedReceiverConnectionFactory = new ServiceBusJmsConnectionFactoryFactory(
-                azureServiceBusJMSProperties,
-                factoryCustomizers.orderedStream().collect(Collectors.toList()))
-                .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
-        }
-        return dedicatedReceiverConnectionFactory;
+    private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
+        return new ServiceBusJmsConnectionFactoryFactory(azureServiceBusJMSProperties,
+            factoryCustomizers.orderedStream().collect(Collectors.toList()))
+            .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
     }
 
     private void configureCommonListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {
