@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-contentunderstanding</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-contentunderstanding;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-ai-contentunderstanding;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Content Understanding client library for Java</name>
@@ -43,7 +43,6 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <!-- Disable code coverage checks for this beta release as tests are still being developed -->
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
     <!-- Exclude generated sample files from Checkstyle validation -->

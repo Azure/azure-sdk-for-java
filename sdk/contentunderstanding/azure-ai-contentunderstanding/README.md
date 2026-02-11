@@ -127,7 +127,7 @@ To run the configuration sample, you'll need to add the SDK to your project and 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-contentunderstanding</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
@@ -163,7 +163,7 @@ If you encounter errors:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-contentunderstanding</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

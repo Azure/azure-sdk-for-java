@@ -269,6 +269,12 @@
 # ServiceLabel: %Confidential Ledger
 # ServiceOwners:                                                   @amruthashree18 @musabbir
 
+# PRLabel: %Cognitive - Content Understanding
+/sdk/contentunderstanding/                                         @bojunehsu @changjian-wang @Azure/azure-java-sdk
+
+# ServiceLabel: %Cognitive - Content Understanding
+# ServiceOwners:                                                   @bojunehsu @changjian-wang
+
 # PRLabel: %Container Registry
 /sdk/containerregistry/                                            @alzimmermsft @Azure/azsdk-acr @Azure/azure-java-sdk
 

@@ -1,15 +1,12 @@
 # Release History
 
-## 1.0.0-beta.1 (Unreleased)
-
-- Azure Content Understanding client library for Java. This package contains Microsoft Azure Content Understanding client library.
+## 1.0.0 (2025-02-11)
 
 ### Features Added
 
-- Initial release for the azure-ai-contentunderstanding Java SDK.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Initial GA release of the Azure Content Understanding client library for Java.
+- Support for creating, getting, listing, and deleting analyzers.
+- Support for analyzing content with `beginAnalyze` long-running operations.
+- Support for getting and deleting analysis results.
+- Synchronous and asynchronous client support via `ContentUnderstandingClient` and `ContentUnderstandingAsyncClient`.
+- Builder pattern for client construction with `ContentUnderstandingClientBuilder`.
