@@ -35,7 +35,7 @@ public final class CustomCallingContext {
      * @param sipHeaders context SIP headers
      * @param voipHeaders custom context VOIP headers
      */
-    CustomCallingContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
+    public CustomCallingContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
         this(sipHeaders, voipHeaders, null);
     }
 

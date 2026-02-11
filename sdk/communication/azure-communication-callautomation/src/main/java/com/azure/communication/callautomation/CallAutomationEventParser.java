@@ -23,6 +23,7 @@ import com.azure.communication.callautomation.models.events.ContinuousDtmfRecogn
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
 import com.azure.communication.callautomation.models.events.CreateCallFailed;
+import com.azure.communication.callautomation.models.events.IncomingCall;
 import com.azure.communication.callautomation.models.events.HoldFailed;
 import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
 import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
@@ -184,6 +185,8 @@ public final class CallAutomationEventParser {
                 ret = MoveParticipantFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.MoveParticipantSucceeded")) {
                 ret = MoveParticipantSucceeded.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.IncomingCall")) {
+                ret = IncomingCall.fromJson(jsonReader);
             } else {
                 ret = null;
             }
