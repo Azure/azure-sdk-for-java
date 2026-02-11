@@ -270,10 +270,10 @@
 # ServiceOwners:                                                   @amruthashree18 @musabbir
 
 # PRLabel: %Cognitive - Content Understanding
-/sdk/contentunderstanding/                                         @bojunehsu @changjian-wang @Azure/azure-java-sdk
+/sdk/contentunderstanding/                                         @bojunehsu @changjian-wang @chienyuanchang @yungshinlintw
 
 # ServiceLabel: %Cognitive - Content Understanding
-# ServiceOwners:                                                   @bojunehsu @changjian-wang
+# ServiceOwners:                                                   @bojunehsu @changjian-wang @chienyuanchang @yungshinlintw
 
 # PRLabel: %Container Registry
 /sdk/containerregistry/                                            @alzimmermsft @Azure/azsdk-acr @Azure/azure-java-sdk
