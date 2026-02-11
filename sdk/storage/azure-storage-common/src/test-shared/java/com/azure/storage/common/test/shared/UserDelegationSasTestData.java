@@ -39,6 +39,7 @@ public class UserDelegationSasTestData extends SasTestData {
     private String agentObjectId;
     private String correlationId;
     private String delegatedUserObjectId;
+    private String delegatedUserTenantId;
 
     /**
      * Default constructor.
@@ -186,6 +187,11 @@ public class UserDelegationSasTestData extends SasTestData {
         return this;
     }
 
+    public UserDelegationSasTestData setDelegatedUserTenantId(String delegatedUserTenantId) {
+        this.delegatedUserTenantId = delegatedUserTenantId;
+        return this;
+    }
+
     /**
      * Converts to Arguments for user delegation SAS tests with request headers and query parameters.
      *
@@ -196,7 +202,8 @@ public class UserDelegationSasTestData extends SasTestData {
             getStartTime(), keyOid, keyTid, keyStart, keyExpiry, keyService, keyVersion, keyValue,
             getIpRange(), getProtocol(), getSnapshotId(), getCacheControl(), getDisposition(), getEncoding(),
             getLanguage(), getType(), getVersionId(), preauthorizedAgentObjectId, correlationId,
-            getEncryptionScope(), delegatedUserObjectId, requestHeaders, requestQueryParameters, getExpectedStringToSign()
+            getEncryptionScope(), delegatedUserObjectId, delegatedUserTenantId,
+            requestHeaders, requestQueryParameters, getExpectedStringToSign()
         );
     }
 
@@ -388,6 +395,14 @@ public class UserDelegationSasTestData extends SasTestData {
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\nencryptionScope\n\n\n\n\n\n\n")
                 .toArguments(),
+            // Delegated User Tenant ID
+            new UserDelegationSasTestData().setDelegatedUserTenantId("delegatedTenantId")
+                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
+                .setExpectedStringToSign("r\n\n"
+                    + expiryTimeStr
+                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\ndelegatedTenantId\n\n\n\n"
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
+                .toArguments(),
             // Delegated User Object ID
             new UserDelegationSasTestData().setDelegatedUserObjectId("delegatedOid")
                 .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
@@ -453,6 +468,7 @@ public class UserDelegationSasTestData extends SasTestData {
                 .setCorrelationId("cid")
                 .setEncryptionScope("encryptionScope")
                 .setDelegatedUserObjectId("delegatedOid")
+                .setDelegatedUserTenantId("delegatedTenantId")
                 .setRequestHeaders(multipleHeaders)
                 .setRequestQueryParameters(multipleQueryParams)
                 .setExpectedStringToSign("r\n" // permissions
@@ -469,7 +485,7 @@ public class UserDelegationSasTestData extends SasTestData {
                     + "preAuthAgentOid\n" // preauthorizedAgentObjectId
                     + "\n" // (always empty for blob, agentObjectId)
                     + "cid\n" // cid (correlationId)
-                    + "\n" // delegatedUserTenantId (removed - empty)
+                    + "delegatedTenantId\n" // delegatedUserTenantId
                     + "delegatedOid\n" // delegatedUserObjectId
                     + "ip\n" // sasIpRange
                     + SasProtocol.HTTPS_ONLY + "\n" // protocol

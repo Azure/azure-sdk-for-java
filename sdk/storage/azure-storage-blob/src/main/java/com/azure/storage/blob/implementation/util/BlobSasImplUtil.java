@@ -475,7 +475,8 @@ public class BlobSasImplUtil {
                 key.getSignedVersion() == null ? "" : key.getSignedVersion(),
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 "", /* suoid - empty since this applies to HNS only accounts. */
-                this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
+                this.correlationId == null ? "" : this.correlationId,
+                key.getSignedDelegatedUserTenantId() == null ? "" : key.getSignedDelegatedUserTenantId(),
                 this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource,

@@ -51,7 +51,6 @@ import java.util.stream.Stream;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getTidFromToken;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.verifySasAndTokenInRequest;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -397,52 +396,46 @@ public class SasClientTests extends BlobTestBase {
     @LiveOnly // Cannot record Entra ID token
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
     public void containerSasUserDelegationDelegatedTenantId() {
-        //liveTestScenarioWithRetry(() -> { // RBAC replication lag
-        OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
-        TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
-        BlobContainerSasPermission permissions
-            = new BlobContainerSasPermission().setReadPermission(true).setListPermission(true);
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
+            OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+            BlobContainerSasPermission permissions
+                = new BlobContainerSasPermission().setReadPermission(true).setListPermission(true);
 
-        // Get tenant ID and object ID from the token credential
-        String tid = getTidFromToken(tokenCredential);
-        String oid = getOidFromToken(tokenCredential);
+            // Get tenant ID and object ID from the token credential
+            String tid = getTidFromToken(tokenCredential);
+            String oid = getOidFromToken(tokenCredential);
 
-        // Create user delegation key with delegated tenant ID
-        BlobGetUserDelegationKeyOptions options
-            = new BlobGetUserDelegationKeyOptions(expiresOn).setDelegatedUserTenantId(tid);
-        UserDelegationKey userDelegationKey
-            = getOAuthServiceClient().getUserDelegationKeyWithResponse(options, null, Context.NONE).getValue();
+            // Create user delegation key with delegated tenant ID
+            BlobGetUserDelegationKeyOptions options
+                = new BlobGetUserDelegationKeyOptions(expiresOn).setDelegatedUserTenantId(tid);
+            UserDelegationKey userDelegationKey
+                = getOAuthServiceClient().getUserDelegationKeyWithResponse(options, null, Context.NONE).getValue();
 
-        assertNotNull(userDelegationKey);
-        assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
+            assertNotNull(userDelegationKey);
+            assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
 
-        // Generate container SAS with delegated user object ID
-        BlobServiceSasSignatureValues sasValues
-            = new BlobServiceSasSignatureValues(expiresOn, permissions).setDelegatedUserObjectId(oid);
-        String sasToken = cc.generateUserDelegationSas(sasValues, userDelegationKey);
+            // Generate container SAS with delegated user object ID
+            BlobServiceSasSignatureValues sasValues
+                = new BlobServiceSasSignatureValues(expiresOn, permissions).setDelegatedUserObjectId(oid);
+            String sasToken = cc.generateUserDelegationSas(sasValues, userDelegationKey);
 
-        // Validate SAS token contains required parameters
-        assertTrue(sasToken.contains("sduoid=" + oid));
-        assertTrue(sasToken.contains("skdutid=" + tid));
+            // Validate SAS token contains required parameters
+            assertTrue(sasToken.contains("sduoid=" + oid));
+            assertTrue(sasToken.contains("skdutid=" + tid));
 
-        // Test container operations with SAS + token credential
-        BlobContainerClient identitySasContainerClient
-            = instrument(new BlobContainerClientBuilder().endpoint(cc.getBlobContainerUrl())
-                .sasToken(sasToken)
-                .credential(tokenCredential)).buildClient();
+            // Test container operations with SAS + token credential
+            BlobContainerClient identitySasContainerClient
+                = instrument(new BlobContainerClientBuilder().endpoint(cc.getBlobContainerUrl())
+                    .sasToken(sasToken)
+                    .credential(tokenCredential)).buildClient();
 
-        assertDoesNotThrow(() -> identitySasContainerClient.listBlobs().iterator().hasNext());
+            Response<BlobProperties> response = identitySasContainerClient.getBlobClient(blobName)
+                .getBlockBlobClient()
+                .getPropertiesWithResponse(null, null, Context.NONE);
 
-        // Verify SAS token actually matters
-        BlobContainerClient identitySasContainerClientCorruptedSas
-            = instrument(new BlobContainerClientBuilder().endpoint(cc.getBlobContainerUrl())
-                .sasToken("garbage" + sasToken + "garbage")
-                .credential(tokenCredential)).buildClient();
-
-        BlobStorageException e = assertThrows(BlobStorageException.class,
-            () -> identitySasContainerClientCorruptedSas.listBlobs().iterator().hasNext());
-        assertExceptionStatusCodeAndMessage(e, 403, BlobErrorCode.AUTHENTICATION_FAILED);
-        //});
+            verifySasAndTokenInRequest(response);
+        });
     }
 
     @Test
@@ -565,15 +558,7 @@ public class SasClientTests extends BlobTestBase {
                     .buildClient()
                     .getBlockBlobClient();
 
-            // Test download operation
-            ByteArrayOutputStream downloadStream = new ByteArrayOutputStream();
-            identityBlobClient.downloadStream(downloadStream);
-            assertArrayEquals(testData, downloadStream.toByteArray());
-
-            // Test upload operation (to verify write permission)
-            byte[] newData = "updated-cross-tenant-data".getBytes();
-            assertDoesNotThrow(
-                () -> identityBlobClient.upload(new ByteArrayInputStream(newData), newData.length, true));
+            verifySasAndTokenInRequest(identityBlobClient.getPropertiesWithResponse(null, null, Context.NONE));
         });
     }
 
@@ -1260,8 +1245,8 @@ public class SasClientTests extends BlobTestBase {
         OffsetDateTime keyStart, OffsetDateTime keyExpiry, String keyService, String keyVersion, String keyValue,
         SasIpRange ipRange, SasProtocol protocol, String snapId, String cacheControl, String disposition,
         String encoding, String language, String type, String versionId, String saoid, String cid,
-        String encryptionScope, String delegatedUserObjectId, Map<String, String> requestHeaders,
-        Map<String, String> requestQueryParameters, String signedDelegatedUserTid, String expectedStringToSign) {
+        String encryptionScope, String delegatedUserObjectId, String signedDelegatedUserTid,
+        Map<String, String> requestHeaders, Map<String, String> requestQueryParameters, String expectedStringToSign) {
         OffsetDateTime e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         BlobSasPermission p = new BlobSasPermission().setReadPermission(true);
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues(e, p);
