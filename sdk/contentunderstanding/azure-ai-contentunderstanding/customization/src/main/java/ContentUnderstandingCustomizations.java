@@ -147,9 +147,6 @@ public class ContentUnderstandingCustomizations extends Customization {
         // Customize PollingStrategy to extract and set operationId
         customizePollingStrategy(customization, logger);
 
-        // Fix generated beginAnalyze/beginAnalyzeBinary bodies to call impl with utf16 (generator no longer emits stringEncoding overloads)
-        fixGeneratedAnalyzeBodiesToCallImplWithUtf16(customization, logger);
-
         // Add static accessor helper for operationId
         addStaticAccessorForOperationId(customization, logger);
 
@@ -306,80 +303,6 @@ public class ContentUnderstandingCustomizations extends Customization {
                 + "    }"
                 + "    return pollResponse;"
                 + "}); }"));
-    }
-
-    /**
-     * Fix generated 4-param beginAnalyze and 5-param beginAnalyzeBinary bodies to call the impl with utf16.
-     * After TypeSpec commit 31f87d83 the generator no longer emits 5-param beginAnalyze or 6-param beginAnalyzeBinary;
-     * the generated 4-param and 5-param methods call those non-existent overloads. This customization rewrites
-     * their bodies to call serviceClient (impl) directly with stringEncoding "utf16" in RequestOptions.
-     */
-    private void fixGeneratedAnalyzeBodiesToCallImplWithUtf16(LibraryCustomization customization, Logger logger) {
-        logger.info("Fixing generated beginAnalyze/beginAnalyzeBinary bodies to call impl with utf16");
-
-        // Sync client: fix 4-param beginAnalyze body
-        customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1");
-            ast.addImport("com.azure.core.util.BinaryData");
-            ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
-                for (MethodDeclaration method : clazz.getMethods()) {
-                    if ("beginAnalyze".equals(method.getNameAsString()) && method.getParameters().size() == 4) {
-                        method.setBody(StaticJavaParser.parseBlock("{"
-                            + "RequestOptions requestOptions = new RequestOptions();"
-                            + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
-                            + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                            + "AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1().setInputs(inputs).setModelDeployments(modelDeployments);"
-                            + "BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);"
-                            + "return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest1, requestOptions); }"));
-                        break;
-                    }
-                }
-                // Fix 5-param beginAnalyzeBinary body
-                for (MethodDeclaration method : clazz.getMethods()) {
-                    if ("beginAnalyzeBinary".equals(method.getNameAsString()) && method.getParameters().size() == 5) {
-                        method.setBody(StaticJavaParser.parseBlock("{"
-                            + "RequestOptions requestOptions = new RequestOptions();"
-                            + "if (inputRange != null) { requestOptions.addQueryParam(\"range\", inputRange, false); }"
-                            + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
-                            + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                            + "return serviceClient.beginAnalyzeBinaryWithModel(analyzerId, contentType, binaryInput, requestOptions); }"));
-                        break;
-                    }
-                }
-            });
-        });
-
-        // Async client: fix 4-param beginAnalyze body
-        customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1");
-            ast.addImport("com.azure.core.util.BinaryData");
-            ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
-                for (MethodDeclaration method : clazz.getMethods()) {
-                    if ("beginAnalyze".equals(method.getNameAsString()) && method.getParameters().size() == 4) {
-                        method.setBody(StaticJavaParser.parseBlock("{"
-                            + "RequestOptions requestOptions = new RequestOptions();"
-                            + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
-                            + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                            + "AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1().setInputs(inputs).setModelDeployments(modelDeployments);"
-                            + "BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);"
-                            + "return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions); }"));
-                        break;
-                    }
-                }
-                // Fix 5-param beginAnalyzeBinary body
-                for (MethodDeclaration method : clazz.getMethods()) {
-                    if ("beginAnalyzeBinary".equals(method.getNameAsString()) && method.getParameters().size() == 5) {
-                        method.setBody(StaticJavaParser.parseBlock("{"
-                            + "RequestOptions requestOptions = new RequestOptions();"
-                            + "if (inputRange != null) { requestOptions.addQueryParam(\"range\", inputRange, false); }"
-                            + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
-                            + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                            + "return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions); }"));
-                        break;
-                    }
-                }
-            });
-        });
     }
 
     /**
