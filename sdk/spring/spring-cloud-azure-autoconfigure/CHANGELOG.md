@@ -6,27 +6,6 @@
 
 ### Breaking Changes
 
-- The default JMS ConnectionFactory for Service Bus has been changed from `ServiceBusJmsConnectionFactory` to `CachingConnectionFactory` to improve efficiency for sender operations using `JmsTemplate`. The ConnectionFactory type is determined by the following configuration properties:
-
-  | `spring.jms.servicebus.pool.enabled` | `spring.jms.cache.enabled` | Sender ConnectionFactory | Receiver ConnectionFactory |
-  |--------------------------------------|----------------------------|--------------------------|----------------------------|
-  | not set                              | not set                    | CachingConnectionFactory | ServiceBusJmsConnectionFactory |
-  | not set                              | true                       | CachingConnectionFactory | CachingConnectionFactory |
-  | not set                              | false                      | ServiceBusJmsConnectionFactory | ServiceBusJmsConnectionFactory |
-  | true                                 | not set                    | JmsPoolConnectionFactory | JmsPoolConnectionFactory |
-  | true                                 | true                       | CachingConnectionFactory | CachingConnectionFactory |
-  | true                                 | false                      | JmsPoolConnectionFactory | JmsPoolConnectionFactory |
-  | false                                | not set                    | CachingConnectionFactory | ServiceBusJmsConnectionFactory |
-  | false                                | true                       | CachingConnectionFactory | CachingConnectionFactory |
-  | false                                | false                      | ServiceBusJmsConnectionFactory | ServiceBusJmsConnectionFactory |
-
-  **Rules:**
-  1. If only one property (`spring.jms.servicebus.pool.enabled` or `spring.jms.cache.enabled`) is set to true, both sender and receiver use that ConnectionFactory type.
-  2. If both properties are set to true, `CachingConnectionFactory` takes precedence for both sender and receiver.
-  3. If `spring.jms.cache.enabled` is set to false, `ServiceBusJmsConnectionFactory` or `JmsPoolConnectionFactory` is used based on `spring.jms.servicebus.pool.enabled`.
-  4. Default (no properties set or `pool.enabled=false`): sender uses `CachingConnectionFactory`, receiver uses `ServiceBusJmsConnectionFactory`.
-  5. When using `CachingConnectionFactory` or `JmsPoolConnectionFactory`, the related class must be in the classpath. If not present, it falls back to `ServiceBusJmsConnectionFactory`.
-
 ### Bugs Fixed
 
 ### Other Changes
