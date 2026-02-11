@@ -33,7 +33,8 @@ class ServiceBusJmsContainerConfiguration {
     private final Environment environment;
     
     // Cached dedicated receiver ConnectionFactory to avoid creating multiple instances
-    private ServiceBusJmsConnectionFactory dedicatedReceiverConnectionFactory;
+    // Volatile ensures visibility across threads when initialized
+    private volatile ServiceBusJmsConnectionFactory dedicatedReceiverConnectionFactory;
 
     ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties,
                                        ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
