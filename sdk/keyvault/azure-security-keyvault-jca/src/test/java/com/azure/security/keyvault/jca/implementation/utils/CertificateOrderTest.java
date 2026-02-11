@@ -18,6 +18,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CertificateOrderTest {
@@ -156,7 +157,7 @@ public class CertificateOrderTest {
     public void testOrderCertificateChainEdgeCases() {
         // Test null array
         Certificate[] result = CertificateUtil.orderCertificateChain(null);
-        assertEquals(null, result, "Should return null for null input");
+        assertNull(result, "Should return null for null input");
 
         // Test empty array
         result = CertificateUtil.orderCertificateChain(new Certificate[0]);
