@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * The KeyValuePairStringObject model.
@@ -24,7 +25,7 @@ public final class KeyValuePairStringObject implements JsonSerializable<KeyValue
     /*
      * Any object
      */
-    private Object value;
+    private Map<String, String> value;
 
     /**
      * Creates an instance of KeyValuePairStringObject class.
@@ -46,7 +47,7 @@ public final class KeyValuePairStringObject implements JsonSerializable<KeyValue
      * 
      * @return the value value.
      */
-    public Object value() {
+    public Map<String, String> value() {
         return this.value;
     }
 
@@ -85,7 +86,8 @@ public final class KeyValuePairStringObject implements JsonSerializable<KeyValue
                 if ("key".equals(fieldName)) {
                     deserializedKeyValuePairStringObject.key = reader.getString();
                 } else if ("value".equals(fieldName)) {
-                    deserializedKeyValuePairStringObject.value = reader.readUntyped();
+                    Map<String, String> value = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKeyValuePairStringObject.value = value;
                 } else {
                     reader.skipChildren();
                 }

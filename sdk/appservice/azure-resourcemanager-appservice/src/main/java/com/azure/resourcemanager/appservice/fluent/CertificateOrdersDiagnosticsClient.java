@@ -23,8 +23,8 @@ public interface CertificateOrdersDiagnosticsClient {
      * 
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName The certificate order name for which the response is needed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -40,8 +40,8 @@ public interface CertificateOrdersDiagnosticsClient {
      * 
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName The certificate order name for which the response is needed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -57,8 +57,8 @@ public interface CertificateOrdersDiagnosticsClient {
      * 
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName The certificate order name for which the response is needed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -75,8 +75,8 @@ public interface CertificateOrdersDiagnosticsClient {
      * 
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName The certificate order name for which the response is needed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.
      * @param startTime The start time for detector response.
      * @param endTime The end time for the detector response.
@@ -98,8 +98,8 @@ public interface CertificateOrdersDiagnosticsClient {
      * 
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName The certificate order name for which the response is needed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -116,8 +116,8 @@ public interface CertificateOrdersDiagnosticsClient {
      * 
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName The certificate order name for which the response is needed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.
      * @param startTime The start time for detector response.
      * @param endTime The end time for the detector response.
@@ -139,8 +139,8 @@ public interface CertificateOrdersDiagnosticsClient {
      * 
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName The certificate order name for which the response is needed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is

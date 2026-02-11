@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -15,31 +15,71 @@ import java.io.IOException;
  * Azure proxy only resource. This resource is not tracked by Azure Resource Manager.
  */
 @Fluent
-public class ProxyOnlyResource extends ProxyResource {
+public class ProxyOnlyResource implements JsonSerializable<ProxyOnlyResource> {
+    /*
+     * Resource Id.
+     */
+    private String id;
+
+    /*
+     * Resource Name.
+     */
+    private String name;
+
     /*
      * Kind of resource.
      */
     private String kind;
 
     /*
-     * The type of the resource.
+     * Resource type.
      */
     private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
-     * Fully qualified resource Id for the resource.
-     */
-    private String id;
 
     /**
      * Creates an instance of ProxyOnlyResource class.
      */
     public ProxyOnlyResource() {
+    }
+
+    /**
+     * Get the id property: Resource Id.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: Resource Id.
+     * 
+     * @param id the id value to set.
+     * @return the ProxyOnlyResource object itself.
+     */
+    ProxyOnlyResource withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the name property: Resource Name.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Resource Name.
+     * 
+     * @param name the name value to set.
+     * @return the ProxyOnlyResource object itself.
+     */
+    ProxyOnlyResource withName(String name) {
+        this.name = name;
+        return this;
     }
 
     /**
@@ -63,33 +103,23 @@ public class ProxyOnlyResource extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the type property: Resource type.
      * 
      * @return the type value.
      */
-    @Override
     public String type() {
         return this.type;
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Set the type property: Resource type.
      * 
-     * @return the name value.
+     * @param type the type value to set.
+     * @return the ProxyOnlyResource object itself.
      */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
+    ProxyOnlyResource withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /**
@@ -116,7 +146,6 @@ public class ProxyOnlyResource extends ProxyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ProxyOnlyResource if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProxyOnlyResource.
      */
     public static ProxyOnlyResource fromJson(JsonReader jsonReader) throws IOException {
@@ -130,10 +159,10 @@ public class ProxyOnlyResource extends ProxyResource {
                     deserializedProxyOnlyResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedProxyOnlyResource.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedProxyOnlyResource.type = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     deserializedProxyOnlyResource.kind = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProxyOnlyResource.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

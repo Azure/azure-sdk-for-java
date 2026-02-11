@@ -42,25 +42,26 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
     /**
      * The service client containing this operation class.
      */
-    private final WebSiteManagementClientImpl client;
+    private final CertificateRegistrationManagementClientImpl client;
 
     /**
      * Initializes an instance of CertificateRegistrationProvidersClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    CertificateRegistrationProvidersClientImpl(WebSiteManagementClientImpl client) {
+    CertificateRegistrationProvidersClientImpl(CertificateRegistrationManagementClientImpl client) {
         this.service = RestProxy.create(CertificateRegistrationProvidersService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for WebSiteManagementClientCertificateRegistrationProviders to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for
+     * CertificateRegistrationManagementClientCertificateRegistrationProviders to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementClientCertificateRegistrationProviders")
+    @ServiceInterface(name = "CertificateRegistrationManagementClientCertificateRegistrationProviders")
     public interface CertificateRegistrationProvidersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.CertificateRegistration/operations")
@@ -95,10 +96,9 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listOperations(this.client.getEndpoint(), apiVersion, accept, context))
+        return FluxUtil.withContext(
+            context -> service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
             .<PagedResponse<CsmOperationDescriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -123,10 +123,9 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listOperations(this.client.getEndpoint(), apiVersion, accept, context)
+        return service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

@@ -15,7 +15,7 @@
     "dir": "../appservice/azure-resourcemanager-appservice",
     "source": "specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--tag=package-2024-11 --title=CertificateRegistrationManagementClient --add-inner=AppServiceCertificate --enable-sync-stack=false"
+    "args": "--tag=package-2024-11 --title=CertificateRegistrationManagementClient --add-inner=AppServiceCertificate,NameIdentifier --enable-sync-stack=false"
   },
   "domainregistration": {
     "dir": "../appservice/azure-resourcemanager-appservice",

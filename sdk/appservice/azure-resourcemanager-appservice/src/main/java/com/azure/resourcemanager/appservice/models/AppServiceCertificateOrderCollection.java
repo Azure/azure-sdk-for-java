@@ -66,6 +66,17 @@ public final class AppServiceCertificateOrderCollection
     }
 
     /**
+     * Set the nextLink property: Link to next page of resources.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the AppServiceCertificateOrderCollection object itself.
+     */
+    public AppServiceCertificateOrderCollection withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -89,6 +100,7 @@ public final class AppServiceCertificateOrderCollection
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 

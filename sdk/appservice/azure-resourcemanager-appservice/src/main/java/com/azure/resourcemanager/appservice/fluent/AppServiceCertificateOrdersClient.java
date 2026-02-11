@@ -83,7 +83,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Validate information for a certificate order.
      * 
-     * @param appServiceCertificateOrder Information for a certificate order.
+     * @param appServiceCertificateOrder The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -99,7 +99,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Validate information for a certificate order.
      * 
-     * @param appServiceCertificateOrder Information for a certificate order.
+     * @param appServiceCertificateOrder The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -114,7 +114,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Validate information for a certificate order.
      * 
-     * @param appServiceCertificateOrder Information for a certificate order.
+     * @param appServiceCertificateOrder The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -131,7 +131,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Validate information for a certificate order.
      * 
-     * @param appServiceCertificateOrder Information for a certificate order.
+     * @param appServiceCertificateOrder The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -145,7 +145,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Get certificate orders in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -160,7 +160,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Get certificate orders in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -175,7 +175,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Get certificate orders in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -191,7 +191,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Get a certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -208,7 +208,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Get a certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -225,7 +225,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Get a certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -243,7 +243,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Get a certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -259,8 +259,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Create or update a certificate purchase order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -277,8 +277,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Create or update a certificate purchase order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -296,8 +296,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Create or update a certificate purchase order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -315,8 +315,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Create or update a certificate purchase order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -335,8 +335,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Create or update a certificate purchase order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -353,8 +353,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Create or update a certificate purchase order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -371,8 +371,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Create or update a certificate purchase order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -386,76 +386,12 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
         AppServiceCertificateOrderInner certificateDistinguishedName, Context context);
 
     /**
-     * Delete an existing certificate order.
-     * 
-     * Description for Delete an existing certificate order.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String certificateOrderName);
-
-    /**
-     * Delete an existing certificate order.
-     * 
-     * Description for Delete an existing certificate order.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String certificateOrderName);
-
-    /**
-     * Delete an existing certificate order.
-     * 
-     * Description for Delete an existing certificate order.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String certificateOrderName, Context context);
-
-    /**
-     * Delete an existing certificate order.
-     * 
-     * Description for Delete an existing certificate order.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String certificateOrderName);
-
-    /**
      * Create or update a certificate purchase order.
      * 
      * Description for Create or update a certificate purchase order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -472,8 +408,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Create or update a certificate purchase order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -490,8 +426,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Create or update a certificate purchase order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -509,8 +445,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Create or update a certificate purchase order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -523,12 +459,76 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
         AppServiceCertificateOrderPatchResource certificateDistinguishedName);
 
     /**
+     * Delete an existing certificate order.
+     * 
+     * Description for Delete an existing certificate order.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String certificateOrderName);
+
+    /**
+     * Delete an existing certificate order.
+     * 
+     * Description for Delete an existing certificate order.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String certificateOrderName);
+
+    /**
+     * Delete an existing certificate order.
+     * 
+     * Description for Delete an existing certificate order.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String certificateOrderName, Context context);
+
+    /**
+     * Delete an existing certificate order.
+     * 
+     * Description for Delete an existing certificate order.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String certificateOrderName);
+
+    /**
      * List all certificates associated with a certificate order.
      * 
      * Description for List all certificates associated with a certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -544,8 +544,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for List all certificates associated with a certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -561,8 +561,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for List all certificates associated with a certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -579,8 +579,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Get the certificate associated with a certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -598,8 +598,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Get the certificate associated with a certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -617,8 +617,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Get the certificate associated with a certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -637,8 +637,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Get the certificate associated with a certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -655,8 +655,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Creates or updates a certificate and associates with key vault secret.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -675,8 +675,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Creates or updates a certificate and associates with key vault secret.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -696,8 +696,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Creates or updates a certificate and associates with key vault secret.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -717,8 +717,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Creates or updates a certificate and associates with key vault secret.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @param context The context to associate with this operation.
@@ -739,8 +739,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Creates or updates a certificate and associates with key vault secret.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -759,8 +759,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Creates or updates a certificate and associates with key vault secret.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -778,8 +778,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Creates or updates a certificate and associates with key vault secret.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @param context The context to associate with this operation.
@@ -794,82 +794,12 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
         String name, AppServiceCertificateResourceInner keyVaultCertificate, Context context);
 
     /**
-     * Delete the certificate associated with a certificate order.
-     * 
-     * Description for Delete the certificate associated with a certificate order.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteCertificateWithResponseAsync(String resourceGroupName, String certificateOrderName,
-        String name);
-
-    /**
-     * Delete the certificate associated with a certificate order.
-     * 
-     * Description for Delete the certificate associated with a certificate order.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name);
-
-    /**
-     * Delete the certificate associated with a certificate order.
-     * 
-     * Description for Delete the certificate associated with a certificate order.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteCertificateWithResponse(String resourceGroupName, String certificateOrderName, String name,
-        Context context);
-
-    /**
-     * Delete the certificate associated with a certificate order.
-     * 
-     * Description for Delete the certificate associated with a certificate order.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteCertificate(String resourceGroupName, String certificateOrderName, String name);
-
-    /**
      * Creates or updates a certificate and associates with key vault secret.
      * 
      * Description for Creates or updates a certificate and associates with key vault secret.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -888,8 +818,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Creates or updates a certificate and associates with key vault secret.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -908,8 +838,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Creates or updates a certificate and associates with key vault secret.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @param context The context to associate with this operation.
@@ -930,8 +860,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Creates or updates a certificate and associates with key vault secret.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
      * @param keyVaultCertificate Key vault certificate resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -945,12 +875,82 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
         String name, AppServiceCertificatePatchResourceInner keyVaultCertificate);
 
     /**
+     * Delete the certificate associated with a certificate order.
+     * 
+     * Description for Delete the certificate associated with a certificate order.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
+     * @param name Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteCertificateWithResponseAsync(String resourceGroupName, String certificateOrderName,
+        String name);
+
+    /**
+     * Delete the certificate associated with a certificate order.
+     * 
+     * Description for Delete the certificate associated with a certificate order.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
+     * @param name Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name);
+
+    /**
+     * Delete the certificate associated with a certificate order.
+     * 
+     * Description for Delete the certificate associated with a certificate order.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
+     * @param name Name of the certificate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteCertificateWithResponse(String resourceGroupName, String certificateOrderName, String name,
+        Context context);
+
+    /**
+     * Delete the certificate associated with a certificate order.
+     * 
+     * Description for Delete the certificate associated with a certificate order.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
+     * @param name Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteCertificate(String resourceGroupName, String certificateOrderName, String name);
+
+    /**
      * Reissue an existing certificate order.
      * 
      * Description for Reissue an existing certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param reissueCertificateOrderRequest Parameters for the reissue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -967,8 +967,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Reissue an existing certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param reissueCertificateOrderRequest Parameters for the reissue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -985,8 +985,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Reissue an existing certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param reissueCertificateOrderRequest Parameters for the reissue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1004,8 +1004,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Reissue an existing certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param reissueCertificateOrderRequest Parameters for the reissue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1021,8 +1021,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Renew an existing certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param renewCertificateOrderRequest Renew parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1039,8 +1039,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Renew an existing certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param renewCertificateOrderRequest Renew parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1057,8 +1057,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Renew an existing certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param renewCertificateOrderRequest Renew parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1076,8 +1076,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Renew an existing certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param renewCertificateOrderRequest Renew parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1093,8 +1093,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Resend certificate email.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1109,8 +1109,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Resend certificate email.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1125,8 +1125,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Resend certificate email.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1142,8 +1142,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Resend certificate email.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1158,8 +1158,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param nameIdentifier Email address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1177,8 +1177,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param nameIdentifier Email address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1196,8 +1196,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param nameIdentifier Email address.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1216,8 +1216,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param nameIdentifier Email address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1226,6 +1226,140 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void resendRequestEmails(String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier);
+
+    /**
+     * Retrieve the list of certificate actions.
+     * 
+     * Description for Retrieve the list of certificate actions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the certificate order..
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of CertificateOrderAction along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<List<CertificateOrderActionInner>>>
+        retrieveCertificateActionsWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Retrieve the list of certificate actions.
+     * 
+     * Description for Retrieve the list of certificate actions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the certificate order..
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of CertificateOrderAction on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(String resourceGroupName, String name);
+
+    /**
+     * Retrieve the list of certificate actions.
+     * 
+     * Description for Retrieve the list of certificate actions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the certificate order..
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of CertificateOrderAction along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<CertificateOrderActionInner>> retrieveCertificateActionsWithResponse(String resourceGroupName,
+        String name, Context context);
+
+    /**
+     * Retrieve the list of certificate actions.
+     * 
+     * Description for Retrieve the list of certificate actions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the certificate order..
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of CertificateOrderAction.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<CertificateOrderActionInner> retrieveCertificateActions(String resourceGroupName, String name);
+
+    /**
+     * Retrieve email history.
+     * 
+     * Description for Retrieve email history.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the certificate order..
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of CertificateEmail along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<List<CertificateEmailInner>>>
+        retrieveCertificateEmailHistoryWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Retrieve email history.
+     * 
+     * Description for Retrieve email history.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the certificate order..
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of CertificateEmail on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(String resourceGroupName, String name);
+
+    /**
+     * Retrieve email history.
+     * 
+     * Description for Retrieve email history.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the certificate order..
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of CertificateEmail along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<CertificateEmailInner>> retrieveCertificateEmailHistoryWithResponse(String resourceGroupName,
+        String name, Context context);
+
+    /**
+     * Retrieve email history.
+     * 
+     * Description for Retrieve email history.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the certificate order..
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of CertificateEmail.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<CertificateEmailInner> retrieveCertificateEmailHistory(String resourceGroupName, String name);
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
@@ -1238,8 +1372,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param siteSealRequest Site seal request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1262,8 +1396,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param siteSealRequest Site seal request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1286,8 +1420,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param siteSealRequest Site seal request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1311,8 +1445,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param siteSealRequest Site seal request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1329,8 +1463,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Verify domain ownership for this certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1345,8 +1479,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Verify domain ownership for this certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1361,8 +1495,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Verify domain ownership for this certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1379,8 +1513,8 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * 
      * Description for Verify domain ownership for this certificate order.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1388,138 +1522,4 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void verifyDomainOwnership(String resourceGroupName, String certificateOrderName);
-
-    /**
-     * Retrieve the list of certificate actions.
-     * 
-     * Description for Retrieve the list of certificate actions.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateOrderAction along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<CertificateOrderActionInner>>>
-        retrieveCertificateActionsWithResponseAsync(String resourceGroupName, String name);
-
-    /**
-     * Retrieve the list of certificate actions.
-     * 
-     * Description for Retrieve the list of certificate actions.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateOrderAction on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(String resourceGroupName, String name);
-
-    /**
-     * Retrieve the list of certificate actions.
-     * 
-     * Description for Retrieve the list of certificate actions.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate order.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateOrderAction along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<CertificateOrderActionInner>> retrieveCertificateActionsWithResponse(String resourceGroupName,
-        String name, Context context);
-
-    /**
-     * Retrieve the list of certificate actions.
-     * 
-     * Description for Retrieve the list of certificate actions.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateOrderAction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<CertificateOrderActionInner> retrieveCertificateActions(String resourceGroupName, String name);
-
-    /**
-     * Retrieve email history.
-     * 
-     * Description for Retrieve email history.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateEmail along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<CertificateEmailInner>>>
-        retrieveCertificateEmailHistoryWithResponseAsync(String resourceGroupName, String name);
-
-    /**
-     * Retrieve email history.
-     * 
-     * Description for Retrieve email history.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateEmail on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(String resourceGroupName, String name);
-
-    /**
-     * Retrieve email history.
-     * 
-     * Description for Retrieve email history.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate order.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateEmail along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<CertificateEmailInner>> retrieveCertificateEmailHistoryWithResponse(String resourceGroupName,
-        String name, Context context);
-
-    /**
-     * Retrieve email history.
-     * 
-     * Description for Retrieve email history.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateEmail.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<CertificateEmailInner> retrieveCertificateEmailHistory(String resourceGroupName, String name);
 }
