@@ -28,10 +28,14 @@ pr:
       - sdk/appservice/azure-resourcemanager-appservice/pom.xml
 
 parameters:
-- name: release_azureresourcemanagerappservice
-  displayName: 'azure-resourcemanager-appservice'
-  type: boolean
-  default: false
+  - name: release_azureresourcemanagerappservice
+    displayName: azure-resourcemanager-appservice
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagerappservicegenerated
+    displayName: azure-resourcemanager-appservice-generated
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -42,4 +46,8 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerappservice
         releaseInBatch: ${{ parameters.release_azureresourcemanagerappservice }}
+      - name: azure-resourcemanager-appservice-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerappservicegenerated
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerappservicegenerated }}
     AdditionalModules: []
