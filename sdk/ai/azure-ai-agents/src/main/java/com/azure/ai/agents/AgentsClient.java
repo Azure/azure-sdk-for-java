@@ -11,11 +11,9 @@ import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest1;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest1;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest1;
 import com.azure.ai.agents.models.AgentDefinition;
-import com.azure.ai.agents.models.AgentDefinitionFeatureKeys;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.ContainerLogKind;
 import com.azure.ai.agents.models.DeleteAgentResponse;
 import com.azure.ai.agents.models.DeleteAgentVersionResponse;
 import com.azure.ai.agents.models.PageOrder;
@@ -50,7 +48,7 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     versions (Required): {
@@ -58,7 +56,7 @@ public final class AgentsClient {
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
-     *             object: String (Required)
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
@@ -97,7 +95,7 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     name: String (Required)
      *     deleted: boolean (Required)
      * }
@@ -124,9 +122,8 @@ public final class AgentsClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
-     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
+     * <tr><td>Foundry-Features</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -156,7 +153,7 @@ public final class AgentsClient {
      *     metadata (Required): {
      *         String: String (Required)
      *     }
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
@@ -198,7 +195,7 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     deleted: boolean (Required)
@@ -252,7 +249,7 @@ public final class AgentsClient {
      *     metadata (Required): {
      *         String: String (Required)
      *     }
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
@@ -417,9 +414,8 @@ public final class AgentsClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
-     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
+     * <tr><td>Foundry-Features</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -447,7 +443,7 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     versions (Required): {
@@ -455,7 +451,7 @@ public final class AgentsClient {
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
-     *             object: String (Required)
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
@@ -494,9 +490,8 @@ public final class AgentsClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
-     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
+     * <tr><td>Foundry-Features</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -523,7 +518,7 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     versions (Required): {
@@ -531,7 +526,7 @@ public final class AgentsClient {
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
-     *             object: String (Required)
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
@@ -651,7 +646,7 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     versions (Required): {
@@ -659,7 +654,7 @@ public final class AgentsClient {
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
-     *             object: String (Required)
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
@@ -717,7 +712,7 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     versions (Required): {
@@ -725,7 +720,7 @@ public final class AgentsClient {
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
-     *             object: String (Required)
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
@@ -787,7 +782,7 @@ public final class AgentsClient {
      *     metadata (Required): {
      *         String: String (Required)
      *     }
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
@@ -999,7 +994,7 @@ public final class AgentsClient {
      *     metadata (Required): {
      *         String: String (Required)
      *     }
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
@@ -1145,104 +1140,6 @@ public final class AgentsClient {
     }
 
     /**
-     * Container log entry streamed from the container as text chunks.
-     * Each chunk is a UTF-8 string that may be either a plain text log line
-     * or a JSON-formatted log entry, depending on the type of container log being streamed.
-     * Clients should treat each chunk as opaque text and, if needed, attempt
-     * to parse it as JSON based on their logging requirements.
-     *
-     * For system logs, the format is JSON with the following structure:
-     * {"TimeStamp":"2025-12-15T16:51:33Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Connecting
-     * to the events collector...","Reason":"StartingGettingEvents","EventSource":"ContainerAppController","Count":1}
-     * {"TimeStamp":"2025-12-15T16:51:34Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Successfully
-     * connected to events server","Reason":"ConnectedToEventsServer","EventSource":"ContainerAppController","Count":1}
-     *
-     * For console logs, the format is plain text as emitted by the container's stdout/stderr.
-     * 2025-12-15T08:43:48.72656 Connecting to the container 'agent-container'...
-     * 2025-12-15T08:43:48.75451 Successfully Connected to container: 'agent-container' [Revision:
-     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b', Replica:
-     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b-6898b9c89f-mpkjc']
-     * 2025-12-15T08:33:59.0671054Z stdout F INFO: 127.0.0.1:42588 - "GET /readiness HTTP/1.1" 200 OK
-     * 2025-12-15T08:34:29.0649033Z stdout F INFO: 127.0.0.1:60246 - "GET /readiness HTTP/1.1" 200 OK
-     * 2025-12-15T08:34:59.0644467Z stdout F INFO: 127.0.0.1:43994 - "GET /readiness HTTP/1.1" 200 OK.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>kind</td><td>String</td><td>No</td><td>console returns container stdout/stderr, system returns container
-     * app event stream. defaults to console. Allowed values: "console", "system".</td></tr>
-     * <tr><td>replica_name</td><td>String</td><td>No</td><td>When omitted, the server chooses the first replica for
-     * console logs. Required to target a specific replica.</td></tr>
-     * <tr><td>tail</td><td>Integer</td><td>No</td><td>Number of trailing lines returned. Enforced to 1-300. Defaults to
-     * 20</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
-     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> streamAgentContainerLogsWithResponse(String agentName, String agentVersion,
-        RequestOptions requestOptions) {
-        return this.serviceClient.streamAgentContainerLogsWithResponse(agentName, agentVersion, requestOptions);
-    }
-
-    /**
-     * Container log entry streamed from the container as text chunks.
-     * Each chunk is a UTF-8 string that may be either a plain text log line
-     * or a JSON-formatted log entry, depending on the type of container log being streamed.
-     * Clients should treat each chunk as opaque text and, if needed, attempt
-     * to parse it as JSON based on their logging requirements.
-     *
-     * For system logs, the format is JSON with the following structure:
-     * {"TimeStamp":"2025-12-15T16:51:33Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Connecting
-     * to the events collector...","Reason":"StartingGettingEvents","EventSource":"ContainerAppController","Count":1}
-     * {"TimeStamp":"2025-12-15T16:51:34Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Successfully
-     * connected to events server","Reason":"ConnectedToEventsServer","EventSource":"ContainerAppController","Count":1}
-     *
-     * For console logs, the format is plain text as emitted by the container's stdout/stderr.
-     * 2025-12-15T08:43:48.72656 Connecting to the container 'agent-container'...
-     * 2025-12-15T08:43:48.75451 Successfully Connected to container: 'agent-container' [Revision:
-     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b', Replica:
-     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b-6898b9c89f-mpkjc']
-     * 2025-12-15T08:33:59.0671054Z stdout F INFO: 127.0.0.1:42588 - "GET /readiness HTTP/1.1" 200 OK
-     * 2025-12-15T08:34:29.0649033Z stdout F INFO: 127.0.0.1:60246 - "GET /readiness HTTP/1.1" 200 OK
-     * 2025-12-15T08:34:59.0644467Z stdout F INFO: 127.0.0.1:43994 - "GET /readiness HTTP/1.1" 200 OK.
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void streamAgentContainerLogs(String agentName, String agentVersion) {
-        // Generated convenience method for streamAgentContainerLogsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        streamAgentContainerLogsWithResponse(agentName, agentVersion, requestOptions).getValue();
-    }
-
-    /**
      * Returns the list of all agents.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1271,7 +1168,7 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     versions (Required): {
@@ -1279,7 +1176,7 @@ public final class AgentsClient {
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
-     *             object: String (Required)
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
@@ -1375,7 +1272,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails createAgent(String name, AgentDefinition definition, AgentDefinitionFeatureKeys foundryFeatures,
+    public AgentDetails createAgent(String name, AgentDefinition definition, BinaryData foundryFeatures,
         Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1383,7 +1280,7 @@ public final class AgentsClient {
             = new CreateAgentRequest1(name, definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
         if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), String.valueOf(foundryFeatures));
         }
         return createAgentWithResponse(createAgentRequest1, requestOptions).getValue().toObject(AgentDetails.class);
     }
@@ -1413,15 +1310,15 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails updateAgent(String agentName, AgentDefinition definition,
-        AgentDefinitionFeatureKeys foundryFeatures, Map<String, String> metadata, String description) {
+    public AgentDetails updateAgent(String agentName, AgentDefinition definition, BinaryData foundryFeatures,
+        Map<String, String> metadata, String description) {
         // Generated convenience method for updateAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateAgentRequest1 updateAgentRequest1Obj
             = new UpdateAgentRequest1(definition).setMetadata(metadata).setDescription(description);
         BinaryData updateAgentRequest1 = BinaryData.fromObject(updateAgentRequest1Obj);
         if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), String.valueOf(foundryFeatures));
         }
         return updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions).getValue()
             .toObject(AgentDetails.class);
@@ -1455,75 +1352,16 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition,
-        AgentDefinitionFeatureKeys foundryFeatures, Map<String, String> metadata, String description) {
+        BinaryData foundryFeatures, Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest1 createAgentVersionRequest1Obj
             = new CreateAgentVersionRequest1(definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
         if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), String.valueOf(foundryFeatures));
         }
         return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions).getValue()
             .toObject(AgentVersionDetails.class);
-    }
-
-    /**
-     * Container log entry streamed from the container as text chunks.
-     * Each chunk is a UTF-8 string that may be either a plain text log line
-     * or a JSON-formatted log entry, depending on the type of container log being streamed.
-     * Clients should treat each chunk as opaque text and, if needed, attempt
-     * to parse it as JSON based on their logging requirements.
-     *
-     * For system logs, the format is JSON with the following structure:
-     * {"TimeStamp":"2025-12-15T16:51:33Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Connecting
-     * to the events collector...","Reason":"StartingGettingEvents","EventSource":"ContainerAppController","Count":1}
-     * {"TimeStamp":"2025-12-15T16:51:34Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Successfully
-     * connected to events server","Reason":"ConnectedToEventsServer","EventSource":"ContainerAppController","Count":1}
-     *
-     * For console logs, the format is plain text as emitted by the container's stdout/stderr.
-     * 2025-12-15T08:43:48.72656 Connecting to the container 'agent-container'...
-     * 2025-12-15T08:43:48.75451 Successfully Connected to container: 'agent-container' [Revision:
-     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b', Replica:
-     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b-6898b9c89f-mpkjc']
-     * 2025-12-15T08:33:59.0671054Z stdout F INFO: 127.0.0.1:42588 - "GET /readiness HTTP/1.1" 200 OK
-     * 2025-12-15T08:34:29.0649033Z stdout F INFO: 127.0.0.1:60246 - "GET /readiness HTTP/1.1" 200 OK
-     * 2025-12-15T08:34:59.0644467Z stdout F INFO: 127.0.0.1:43994 - "GET /readiness HTTP/1.1" 200 OK.
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param kind console returns container stdout/stderr, system returns container app event stream. defaults to
-     * console.
-     * @param replicaName When omitted, the server chooses the first replica for console logs. Required to target a
-     * specific replica.
-     * @param tail Number of trailing lines returned. Enforced to 1-300. Defaults to 20.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void streamAgentContainerLogs(String agentName, String agentVersion,
-        AgentDefinitionFeatureKeys foundryFeatures, ContainerLogKind kind, String replicaName, Integer tail) {
-        // Generated convenience method for streamAgentContainerLogsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (kind != null) {
-            requestOptions.addQueryParam("kind", kind.toString(), false);
-        }
-        if (replicaName != null) {
-            requestOptions.addQueryParam("replica_name", replicaName, false);
-        }
-        if (tail != null) {
-            requestOptions.addQueryParam("tail", String.valueOf(tail), false);
-        }
-        streamAgentContainerLogsWithResponse(agentName, agentVersion, requestOptions).getValue();
     }
 }

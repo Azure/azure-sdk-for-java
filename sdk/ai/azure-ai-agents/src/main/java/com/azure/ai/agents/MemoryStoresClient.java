@@ -80,7 +80,7 @@ public final class MemoryStoresClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -131,7 +131,7 @@ public final class MemoryStoresClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -170,7 +170,7 @@ public final class MemoryStoresClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -227,7 +227,7 @@ public final class MemoryStoresClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -263,7 +263,7 @@ public final class MemoryStoresClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
      *     name: String (Required)
      *     deleted: boolean (Required)
      * }
@@ -711,7 +711,7 @@ public final class MemoryStoresClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
      *     name: String (Required)
      *     scope: String (Required)
      *     deleted: boolean (Required)
