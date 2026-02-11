@@ -1,10 +1,9 @@
 ## Release History
 
-### 4.78.0-beta.1 (Unreleased)
+### 4.78.0 (2026-02-10)
 
 #### Features Added
-
-#### Breaking Changes
+* Added shardKey support in `DedicatedGatewayRequestOptions` to allow specifying a shard key for dedicated gateway sharding support. - See [PR 47796](https://github.com/Azure/azure-sdk-for-java/pull/47796)
 
 #### Bugs Fixed
 * Fixed an issue where `query plan` failed with `400` or query return empty result when `CosmosQueryRequestOptions` has partition key filter and  partition key value contains non-ascii character. See [PR 47881](https://github.com/Azure/azure-sdk-for-java/pull/47881)
