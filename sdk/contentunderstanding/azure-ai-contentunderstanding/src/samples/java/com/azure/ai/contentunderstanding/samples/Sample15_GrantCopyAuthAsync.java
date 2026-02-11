@@ -214,7 +214,6 @@ public class Sample15_GrantCopyAuthAsync {
                 error -> {
                     // Error already handled in doOnError
                     latch.countDown();
-                    System.exit(1);
                 }
             );
 

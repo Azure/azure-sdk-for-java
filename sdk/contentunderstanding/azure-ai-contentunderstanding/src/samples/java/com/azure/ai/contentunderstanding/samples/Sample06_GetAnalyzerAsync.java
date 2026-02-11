@@ -118,7 +118,6 @@ public class Sample06_GetAnalyzerAsync {
                 },
                 error -> {
                     // Error already handled in doOnError
-                    System.exit(1);
                 }
             );
         // END:ContentUnderstandingGetAnalyzerAsync
