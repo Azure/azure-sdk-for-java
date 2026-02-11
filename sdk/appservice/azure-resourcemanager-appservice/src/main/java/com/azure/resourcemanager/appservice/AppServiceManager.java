@@ -50,8 +50,8 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
     private AppServiceDomains appServiceDomains;
     private FunctionApps functionApps;
 
-    private CertificateRegistrationManagementClient certificateRegistrationClient;
-    private DomainRegistrationManagementClient domainRegistrationClient;
+    private final CertificateRegistrationManagementClient certificateRegistrationClient;
+    private final DomainRegistrationManagementClient domainRegistrationClient;
 
     /**
      * Get a Configurable instance that can be used to create StorageManager with optional configuration.
