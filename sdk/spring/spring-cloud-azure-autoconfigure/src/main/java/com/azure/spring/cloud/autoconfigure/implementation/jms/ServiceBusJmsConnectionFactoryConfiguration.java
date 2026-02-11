@@ -87,9 +87,14 @@ class ServiceBusJmsConnectionFactoryConfiguration {
 
             // Case 3: If cache.enabled is explicitly false, check pool.enabled
             if (cacheEnabledResult.isBound() && !cacheEnabledResult.get()) {
-                // If pool.enabled is true, use JmsPoolConnectionFactory
-                if (isPoolConnectionFactoryClassPresent() && poolEnabledResult.isBound() && poolEnabledResult.get()) {
-                    registerJmsPoolConnectionFactory(registry);
+                // If pool.enabled is true, use JmsPoolConnectionFactory (or fallback if not present)
+                if (poolEnabledResult.isBound() && poolEnabledResult.get()) {
+                    if (isPoolConnectionFactoryClassPresent()) {
+                        registerJmsPoolConnectionFactory(registry);
+                        return;
+                    }
+                    // Fallback: pool requested but classes not available
+                    registerServiceBusJmsConnectionFactory(registry);
                     return;
                 }
                 // Otherwise use ServiceBusJmsConnectionFactory
@@ -103,11 +108,19 @@ class ServiceBusJmsConnectionFactoryConfiguration {
                     registerJmsCachingConnectionFactory(registry);
                     return;
                 }
+                // Fallback: cache requested but class not available
+                registerServiceBusJmsConnectionFactory(registry);
+                return;
             }
 
             // Case 1: If pool.enabled is true and cache is not set
-            if (isPoolConnectionFactoryClassPresent() && poolEnabledResult.isBound() && poolEnabledResult.get()) {
-                registerJmsPoolConnectionFactory(registry);
+            if (poolEnabledResult.isBound() && poolEnabledResult.get()) {
+                if (isPoolConnectionFactoryClassPresent()) {
+                    registerJmsPoolConnectionFactory(registry);
+                    return;
+                }
+                // Fallback: pool requested but classes not available
+                registerServiceBusJmsConnectionFactory(registry);
                 return;
             }
 

@@ -31,6 +31,9 @@ class ServiceBusJmsContainerConfiguration {
     private final AzureServiceBusJmsProperties azureServiceBusJMSProperties;
     private final ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
     private final Environment environment;
+    
+    // Memoized dedicated receiver ConnectionFactory to avoid creating multiple instances
+    private volatile ServiceBusJmsConnectionFactory dedicatedReceiverConnectionFactory;
 
     ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties,
                                        ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
@@ -124,9 +127,17 @@ class ServiceBusJmsContainerConfiguration {
     }
 
     private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
-        return new ServiceBusJmsConnectionFactoryFactory(azureServiceBusJMSProperties,
-            factoryCustomizers.orderedStream().collect(Collectors.toList()))
-            .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
+        // Use double-checked locking to ensure we only create one instance
+        if (dedicatedReceiverConnectionFactory == null) {
+            synchronized (this) {
+                if (dedicatedReceiverConnectionFactory == null) {
+                    dedicatedReceiverConnectionFactory = new ServiceBusJmsConnectionFactoryFactory(azureServiceBusJMSProperties,
+                        factoryCustomizers.orderedStream().collect(Collectors.toList()))
+                        .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
+                }
+            }
+        }
+        return dedicatedReceiverConnectionFactory;
     }
 
     private void configureCommonListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {
