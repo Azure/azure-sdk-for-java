@@ -49,7 +49,7 @@
     <repository>
       <id>central</id>
       
-      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/test-maven-feed/maven/v1</url>
       
     </repository>
   </repositories>
@@ -58,7 +58,7 @@
     <pluginRepository>
       <id>central</id>
       
-      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/test-maven-feed/maven/v1</url>
       
     </pluginRepository>
   </pluginRepositories>
@@ -67,7 +67,7 @@
     <snapshotRepository>
       <id>central</id>
       
-      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/test-maven-feed/maven/v1</url>
       
       
     </snapshotRepository>

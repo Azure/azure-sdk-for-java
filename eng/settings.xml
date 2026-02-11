@@ -1,24 +1,12 @@
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                       https://maven.apache.org/xsd/settings-1.0.0.xsd">
-  <servers>
-    <server>
-      <id>central</id> <!-- Used by mirror for downloading dependencies -->
-      <username>AzureDevOps</username>
-      <password>${env.SYSTEM_ACCESSTOKEN}</password>
-    </server>
-    <server>
-      <id>azure-sdk-for-java</id> <!-- Used by distributionManagement for deploying snapshots -->
-      <username>AzureDevOps</username>
-      <password>${env.SYSTEM_ACCESSTOKEN}</password>
-    </server>
-  </servers>
   <mirrors>
     <!-- Mirror all requests to Azure Artifacts feed, except Confluent (not available as upstream) -->
     <mirror>
       <id>central</id>
       <name>Azure Artifacts Maven Mirror</name>
-      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/test-maven-feed/maven/v1</url>
       <mirrorOf>*,!confluent</mirrorOf>
     </mirror>
   </mirrors>

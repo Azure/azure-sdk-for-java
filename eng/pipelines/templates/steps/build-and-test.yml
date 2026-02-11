@@ -46,6 +46,9 @@ parameters:
     default: [ ]
 
 steps:
+  # Authenticate with Azure Artifacts
+  - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
   - task: Maven@4
     ${{ if eq(parameters.TestVersionSupport, 'true') }}:
       displayName: '${{ parameters.VersionOverride }} - Build for non-From Source run'
@@ -61,7 +64,6 @@ steps:
       publishJUnitResults: false
       goals: 'install'
     env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'))
 
@@ -84,7 +86,6 @@ steps:
       publishJUnitResults: false
       goals: 'clean install'
     env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
@@ -123,7 +124,6 @@ steps:
       env:
         JAVA_HOME: $(PowerShellJavaHome)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
-        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         ${{ insert }}: ${{ parameters.TestEnvVars }}
 
   - ${{ else }}:
@@ -143,7 +143,6 @@ steps:
         publishJUnitResults: false
         goals: ${{ parameters.TestGoals }}
       env:
-        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         ${{ insert }}: ${{ parameters.TestEnvVars }}
 
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
@@ -165,8 +164,6 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       goals: jacoco:report-aggregate
-    env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     condition: eq(variables['RunAggregateReports'], 'true')
 
   - task: Maven@4
@@ -185,8 +182,6 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-    env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - ${{ parameters.PreTestRunSteps }}
@@ -221,7 +216,6 @@ steps:
         # task above
         JAVA_HOME: $(PowerShellJavaHome)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
-        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         ${{ insert }}: ${{ parameters.TestEnvVars }}
 
   - ${{ else }}:
@@ -246,7 +240,6 @@ steps:
         # compiled and installed in the previous task, this tasks only runs tests.
         goals: ${{ parameters.TestGoals }}
       env:
-        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         ${{ insert }}: ${{ parameters.TestEnvVars }}
       condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 

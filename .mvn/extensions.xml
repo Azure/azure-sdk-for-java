@@ -1,0 +1,8 @@
+<extensions xmlns="http://maven.apache.org/EXTENSIONS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/EXTENSIONS/1.1.0 https://maven.apache.org/xsd/core-extensions-1.0.0.xsd">
+  <extension>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>artifacts-maven-credprovider</artifactId>
+    <version>3.0</version> <!-- Replace with the version installed on your machine -->
+  </extension>
+</extensions>

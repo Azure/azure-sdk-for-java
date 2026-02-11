@@ -100,6 +100,9 @@ extends:
                 python -m pip install markdown2 BeautifulSoup4
               displayName: 'pip install markdown2 and BeautifulSoup4'
 
+            # Authenticate with Azure Artifacts
+            - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
             # Save the Package Properties
             #
             # ServiceDirectories variable is a plain, comma separated list of ServiceDirectories that is output by the
@@ -135,8 +138,6 @@ extends:
                 jdkVersionOption: ${{ parameters.JavaBuildVersion }}
                 jdkArchitectureOption: 'x64'
                 publishJUnitResults: false
-              env:
-                SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
             - task: PowerShell@2
               displayName: 'Verify Required Maven Artifacts'

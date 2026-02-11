@@ -43,6 +43,9 @@ extends:
               parameters:
                 JobType: 'Reporting'
 
+            # Authenticate with Azure Artifacts
+            - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
             # TODO (vcolin7): Evaluate if we can avoid separating the Cosmos Spark connectors and Java 7 libraries from the rest for this. See: https://github.com/Azure/azure-sdk-for-java/issues/38283.
             - task: Maven@4
               displayName: 'Build all libraries that support Java $(JavaBuildVersion)'
@@ -55,8 +58,6 @@ extends:
                 jdkArchitectureOption: 'x64'
                 publishJUnitResults: false
                 goals: 'clean install'
-              env:
-                SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
             - task: Maven@4
               displayName: 'Build remaining libraries with Java $(FallbackJavaBuildVersion)'
@@ -69,8 +70,6 @@ extends:
                 jdkArchitectureOption: 'x64'
                 publishJUnitResults: false
                 goals: 'clean install'
-              env:
-                SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
             - pwsh: |
                 New-Item eng/bomgenerator/inputdir -ItemType directory
@@ -90,8 +89,6 @@ extends:
                 jdkArchitectureOption: 'x64'
                 publishJUnitResults: false
                 goals: 'clean package'
-              env:
-                SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
             # Generate the pom file with all the modules required for creating an aggregate code coverage report
             - task: PythonScript@0
@@ -112,8 +109,6 @@ extends:
                 jdkArchitectureOption: 'x64'
                 publishJUnitResults: false
                 goals: 'javadoc:aggregate'
-              env:
-                SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
             - pwsh: |
                 $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1

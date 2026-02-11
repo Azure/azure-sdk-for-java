@@ -19,6 +19,9 @@ parameters:
     default: client
 
 steps:
+  # Authenticate with Azure Artifacts
+  - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
   - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
       displayName: 'Build and Run SpotBugs and Checkstyle'
@@ -36,8 +39,6 @@ steps:
       jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-    env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
@@ -68,7 +69,5 @@ steps:
         goals: 'javadoc:jar'
       ${{ else }}:
         goals: 'javadoc:jar codesnippet:verify-codesnippet spotless:check'
-    env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))

@@ -63,6 +63,9 @@ extends:
                 parameters:
                   JobType: 'linting'
 
+              # Authenticate with Azure Artifacts
+              - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
               # The only time generate_from_source_pom.py should be used to set the SparseCheckoutDirectories
               # is for FromSource runs or, in the case of code quality reports, a run that needs to build
               # everything using the latest source. It'll greedily set any service directories as it figures
@@ -100,8 +103,6 @@ extends:
                   jdkVersionOption: $(JavaBuildVersion)
                   jdkArchitectureOption: 'x64'
                   publishJUnitResults: false
-                env:
-                  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
                 condition: and(succeeded(), eq(variables['RunLinting'], 'true'))
 
               - task: PowerShell@2
