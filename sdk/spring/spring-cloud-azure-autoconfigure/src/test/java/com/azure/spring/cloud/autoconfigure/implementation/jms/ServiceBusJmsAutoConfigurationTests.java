@@ -448,17 +448,27 @@ class ServiceBusJmsAutoConfigurationTests {
             )
             .run(context -> {
                 // Sender bean is CachingConnectionFactory
-                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                CachingConnectionFactory senderBean = context.getBean(CachingConnectionFactory.class);
+                assertThat(senderBean).isNotNull();
                 
-                // Verify both listener containers are created
-                assertThat(context).hasBean("jmsListenerContainerFactory");
-                assertThat(context).hasBean("topicJmsListenerContainerFactory");
-                
-                // Get the listener factories and verify they're configured
+                // Get the listener factories and create containers to verify ConnectionFactory
                 DefaultJmsListenerContainerFactory queueFactory = context.getBean("jmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
                 DefaultJmsListenerContainerFactory topicFactory = context.getBean("topicJmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
-                assertThat(queueFactory).isNotNull();
-                assertThat(topicFactory).isNotNull();
+                
+                // Create containers to access their ConnectionFactory
+                DefaultMessageListenerContainer queueContainer = queueFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+                DefaultMessageListenerContainer topicContainer = topicFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+                
+                // Verify receiver uses dedicated ServiceBusJmsConnectionFactory, NOT the sender's CachingConnectionFactory bean
+                assertThat(queueContainer.getConnectionFactory())
+                    .isInstanceOf(ServiceBusJmsConnectionFactory.class)
+                    .isNotSameAs(senderBean);
+                assertThat(topicContainer.getConnectionFactory())
+                    .isInstanceOf(ServiceBusJmsConnectionFactory.class)
+                    .isNotSameAs(senderBean);
+                
+                // Verify both containers share the same dedicated instance (memoized)
+                assertThat(queueContainer.getConnectionFactory()).isSameAs(topicContainer.getConnectionFactory());
             });
     }
 
@@ -473,11 +483,19 @@ class ServiceBusJmsAutoConfigurationTests {
             )
             .run(context -> {
                 // Both sender and receiver use CachingConnectionFactory bean
-                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                CachingConnectionFactory sharedBean = context.getBean(CachingConnectionFactory.class);
+                assertThat(sharedBean).isNotNull();
                 
-                // Verify both listener containers are created
-                assertThat(context).hasBean("jmsListenerContainerFactory");
-                assertThat(context).hasBean("topicJmsListenerContainerFactory");
+                // Get the listener factories and create containers
+                DefaultJmsListenerContainerFactory queueFactory = context.getBean("jmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
+                DefaultJmsListenerContainerFactory topicFactory = context.getBean("topicJmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
+                
+                DefaultMessageListenerContainer queueContainer = queueFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+                DefaultMessageListenerContainer topicContainer = topicFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+                
+                // Verify receiver uses the same CachingConnectionFactory bean as sender
+                assertThat(queueContainer.getConnectionFactory()).isSameAs(sharedBean);
+                assertThat(topicContainer.getConnectionFactory()).isSameAs(sharedBean);
             });
     }
 
@@ -492,11 +510,19 @@ class ServiceBusJmsAutoConfigurationTests {
             )
             .run(context -> {
                 // Both sender and receiver use JmsPoolConnectionFactory bean
-                assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
+                JmsPoolConnectionFactory sharedBean = context.getBean(JmsPoolConnectionFactory.class);
+                assertThat(sharedBean).isNotNull();
                 
-                // Verify both listener containers are created
-                assertThat(context).hasBean("jmsListenerContainerFactory");
-                assertThat(context).hasBean("topicJmsListenerContainerFactory");
+                // Get the listener factories and create containers
+                DefaultJmsListenerContainerFactory queueFactory = context.getBean("jmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
+                DefaultJmsListenerContainerFactory topicFactory = context.getBean("topicJmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
+                
+                DefaultMessageListenerContainer queueContainer = queueFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+                DefaultMessageListenerContainer topicContainer = topicFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+                
+                // Verify receiver uses the same JmsPoolConnectionFactory bean as sender
+                assertThat(queueContainer.getConnectionFactory()).isSameAs(sharedBean);
+                assertThat(topicContainer.getConnectionFactory()).isSameAs(sharedBean);
             });
     }
 
@@ -510,13 +536,27 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.pool.enabled=false"
             )
             .run(context -> {
-                // Sender uses CachingConnectionFactory
-                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                // Sender uses CachingConnectionFactory bean
+                CachingConnectionFactory senderBean = context.getBean(CachingConnectionFactory.class);
+                assertThat(senderBean).isNotNull();
                 
-                // Receiver creates dedicated ServiceBusJmsConnectionFactory
-                // Verify both listener containers are created
-                assertThat(context).hasBean("jmsListenerContainerFactory");
-                assertThat(context).hasBean("topicJmsListenerContainerFactory");
+                // Get the listener factories and create containers
+                DefaultJmsListenerContainerFactory queueFactory = context.getBean("jmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
+                DefaultJmsListenerContainerFactory topicFactory = context.getBean("topicJmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
+                
+                DefaultMessageListenerContainer queueContainer = queueFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+                DefaultMessageListenerContainer topicContainer = topicFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+                
+                // Receiver creates dedicated ServiceBusJmsConnectionFactory, NOT the sender's bean
+                assertThat(queueContainer.getConnectionFactory())
+                    .isInstanceOf(ServiceBusJmsConnectionFactory.class)
+                    .isNotSameAs(senderBean);
+                assertThat(topicContainer.getConnectionFactory())
+                    .isInstanceOf(ServiceBusJmsConnectionFactory.class)
+                    .isNotSameAs(senderBean);
+                
+                // Verify both containers share the same dedicated instance (memoized)
+                assertThat(queueContainer.getConnectionFactory()).isSameAs(topicContainer.getConnectionFactory());
             });
     }
 }
