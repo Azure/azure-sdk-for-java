@@ -57,6 +57,19 @@
       <groupId>com.openai</groupId>
       <artifactId>openai-java</artifactId>
       <version>4.14.0</version> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
+      <exclusions>
+        <!-- Prefer okio-jvm to avoid duplicate okio modules on the module path. -->
+        <exclusion>
+          <groupId>com.squareup.okio</groupId>
+          <artifactId>okio</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- Align Okio with azure-core-http-okhttp to prevent module-path conflicts in tests. -->
+    <dependency>
+      <groupId>com.squareup.okio</groupId>
+      <artifactId>okio-jvm</artifactId>
+      <version>3.16.0</version> <!-- {x-version-update;com.squareup.okio:okio-jvm;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -96,6 +109,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.openai:openai-java:[4.14.0]</include> <!-- {x-include-update;com.openai:openai-java;external_dependency} -->
+                <include>com.squareup.okio:okio-jvm:[3.16.0]</include> <!-- {x-include-update;com.squareup.okio:okio-jvm;external_dependency} -->
               </includes>
             </bannedDependencies>
             <requireReleaseDeps>
