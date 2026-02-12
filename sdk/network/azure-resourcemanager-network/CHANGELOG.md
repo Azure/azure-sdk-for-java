@@ -2,10 +2,6 @@
 
 ## 2.58.0 (2026-02-14)
 
-### Breaking Changes
-
-- Removed `ADVANCED`, `BASIC`, and `STANDARD` from `FirewallPolicyIntrusionDetectionProfileType` to align with the service/TypeSpec model.
-
 ### Other Changes
 
 #### Dependency Updates
