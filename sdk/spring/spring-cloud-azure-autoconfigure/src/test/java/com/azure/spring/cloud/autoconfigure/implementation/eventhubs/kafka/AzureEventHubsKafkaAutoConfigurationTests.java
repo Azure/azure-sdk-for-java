@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs.kafka;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.AzureEventHubsAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsConnectionDetails;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.ArmConnectionStringProvider;
@@ -26,12 +27,12 @@ import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
 import static org.apache.kafka.common.security.auth.SecurityProtocol.SASL_SSL;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @SuppressWarnings("deprecation")
 class AzureEventHubsKafkaAutoConfigurationTests {
 
     static final String CONNECTION_STRING_FORMAT =
         "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
+    private static final String CONNECTION_STRING = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaAutoConfiguration.class, KafkaAutoConfiguration.class));
@@ -223,5 +224,36 @@ class AzureEventHubsKafkaAutoConfigurationTests {
         }
     }
 
+    @Test
+    void connectionStringRegistersProvider() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
+                StaticConnectionStringProvider<?> provider = context.getBean(StaticConnectionStringProvider.class);
+                assertThat(provider.getServiceType()).isEqualTo(AzureServiceType.EVENT_HUBS);
+                assertThat(provider.getConnectionString()).isEqualTo(CONNECTION_STRING);
+            });
+    }
 
+    @Test
+    void connectionDetailsRegistersProvider() {
+        this.contextRunner
+            .withBean(AzureEventHubsConnectionDetails.class, () -> () -> CONNECTION_STRING)
+            .run(context -> {
+                assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
+                StaticConnectionStringProvider<?> provider = context.getBean(StaticConnectionStringProvider.class);
+                assertThat(provider.getServiceType()).isEqualTo(AzureServiceType.EVENT_HUBS);
+                assertThat(provider.getConnectionString()).isEqualTo(CONNECTION_STRING);
+            });
+    }
+
+    @Test
+    void namespaceOnlyDoesNotRegisterProvider() {
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-namespace")
+            .run(context -> assertThat(context).doesNotHaveBean(StaticConnectionStringProvider.class));
+    }
 }
