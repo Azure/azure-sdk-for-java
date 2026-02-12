@@ -597,7 +597,8 @@ public final class RntbdConstants {
         ChangeFeedWireFormatVersion((short) 0x00B2, RntbdTokenType.String, false),
         PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false),
         GlobalDatabaseAccountName((short) 0x00CE, RntbdTokenType.String, false),
-        ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false);
+        ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false),
+        HubRegionProcessingOnly((short)0x00EF, RntbdTokenType.Byte , false);
 
         public static final List<RntbdRequestHeader> thinClientHeadersInOrderList = Arrays.asList(
             EffectivePartitionKey,
@@ -906,7 +907,8 @@ public final class RntbdConstants {
         HasTentativeWrites((short) 0x003D, RntbdTokenType.Byte, false),
         SessionToken((short) 0x003E, RntbdTokenType.String, false),
         BackendRequestDurationMilliseconds((short) 0X0051, RntbdTokenType.Double, false),
-        CorrelatedActivityId((short) 0X0052, RntbdTokenType.Guid, false);
+        CorrelatedActivityId((short) 0X0052, RntbdTokenType.Guid, false),
+        GlobalNRegionCommittedGLSN((short) 0x0078, RntbdTokenType.LongLong, false);
 
         public static final Map<Short, RntbdResponseHeader> map;
         public static final EnumSet<RntbdResponseHeader> set = EnumSet.allOf(RntbdResponseHeader.class);
