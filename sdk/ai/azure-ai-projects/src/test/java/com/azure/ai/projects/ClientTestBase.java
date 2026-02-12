@@ -51,10 +51,10 @@ public class ClientTestBase extends TestProxyTestBase {
             builder.endpoint("https://localhost:8080").credential(new MockTokenCredential());
         } else if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
-                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .endpoint(Configuration.getGlobalConfiguration().get("AI_PROJECTS_ENDPOINT"))
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else {
-            builder.endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+            builder.endpoint(Configuration.getGlobalConfiguration().get("AI_PROJECTS_ENDPOINT"))
                 .credential(new DefaultAzureCredentialBuilder().build());
         }
 
