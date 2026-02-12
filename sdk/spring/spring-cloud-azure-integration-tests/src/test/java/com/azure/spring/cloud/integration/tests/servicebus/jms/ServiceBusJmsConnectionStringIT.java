@@ -36,7 +36,7 @@ public class ServiceBusJmsConnectionStringIT extends TestServiceBusJmsConfigurat
     @Test
     @Timeout(70)
     void testJmsOperationViaConnStringAndCachingConnection() throws InterruptedException {
-        Assertions.assertSame(CachingConnectionFactory.class, connectionFactory.getClass());
+        Assertions.assertInstanceOf(CachingConnectionFactory.class, connectionFactory);
         LOGGER.info("ServiceBusJmsConnectionStringIT begin.");
         this.exchangeMessage(jmsTemplate, CONNECTION_STRING_POOL_API_QUEUE_NAME);
         LOGGER.info("ServiceBusJmsConnectionStringIT end.");

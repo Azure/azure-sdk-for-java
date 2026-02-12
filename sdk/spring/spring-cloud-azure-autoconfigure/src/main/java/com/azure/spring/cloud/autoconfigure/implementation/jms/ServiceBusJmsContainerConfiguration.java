@@ -168,9 +168,9 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
     }
 
     private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
-        return new ServiceBusJmsConnectionFactoryFactory(azureServiceBusJMSProperties,
-            factoryCustomizers.orderedStream().collect(Collectors.toList()))
-            .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
+        return ServiceBusJmsConnectionFactoryConfiguration.createServiceBusJmsConnectionFactory(
+            azureServiceBusJMSProperties,
+            factoryCustomizers.orderedStream().collect(Collectors.toList()));
     }
 
     private void configureCommonListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {

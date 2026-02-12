@@ -45,6 +45,21 @@ class ServiceBusJmsConnectionFactoryConfiguration {
     static final int SERVICE_BUS = 2;
 
     /**
+     * Creates a ServiceBusJmsConnectionFactory using the provided properties and customizers.
+     * This is a shared helper method used by both sender and receiver configurations.
+     *
+     * @param properties the Azure Service Bus JMS properties
+     * @param customizers the list of customizers to apply
+     * @return a configured ServiceBusJmsConnectionFactory instance
+     */
+    static ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory(
+        AzureServiceBusJmsProperties properties,
+        java.util.List<AzureServiceBusJmsConnectionFactoryCustomizer> customizers) {
+        return new ServiceBusJmsConnectionFactoryFactory(properties, customizers)
+            .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
+    }
+
+    /**
      * Registers the appropriate ConnectionFactory bean based on configuration properties.
      * <p>
      * The ConnectionFactory type is determined by the following table:
@@ -181,9 +196,9 @@ class ServiceBusJmsConnectionFactoryConfiguration {
         private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
             AzureServiceBusJmsProperties serviceBusJmsProperties = beanFactory.getBean(AzureServiceBusJmsProperties.class);
             ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers = beanFactory.getBeanProvider(AzureServiceBusJmsConnectionFactoryCustomizer.class);
-            return new ServiceBusJmsConnectionFactoryFactory(serviceBusJmsProperties,
-                factoryCustomizers.orderedStream().collect(Collectors.toList()))
-                .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
+            return ServiceBusJmsConnectionFactoryConfiguration.createServiceBusJmsConnectionFactory(
+                serviceBusJmsProperties,
+                factoryCustomizers.orderedStream().collect(Collectors.toList()));
         }
     }
 }
