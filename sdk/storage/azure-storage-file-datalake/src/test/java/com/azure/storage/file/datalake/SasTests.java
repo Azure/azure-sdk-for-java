@@ -996,7 +996,7 @@ public class SasTests extends DataLakeTestBase {
                 = getOAuthServiceClient().getUserDelegationKeyWithResponse(options, null, Context.NONE).getValue();
 
             assertNotNull(userDelegationKey);
-            assertEquals(tid, userDelegationKey.getSignedTenantId());
+            assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
 
             DataLakeServiceSasSignatureValues sasValues
                 = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
@@ -1036,7 +1036,7 @@ public class SasTests extends DataLakeTestBase {
                 = getOAuthServiceClient().getUserDelegationKeyWithResponse(options, null, Context.NONE).getValue();
 
             assertNotNull(userDelegationKey);
-            assertEquals(tid, userDelegationKey.getSignedTenantId());
+            assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
 
             DataLakeServiceSasSignatureValues sasValues
                 = new DataLakeServiceSasSignatureValues(expiryTime, permissions);
@@ -1077,7 +1077,7 @@ public class SasTests extends DataLakeTestBase {
                 = getOAuthServiceClient().getUserDelegationKeyWithResponse(options, null, Context.NONE).getValue();
 
             assertNotNull(userDelegationKey);
-            assertEquals(tid, userDelegationKey.getSignedTenantId());
+            assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
 
             DataLakeServiceSasSignatureValues sasValues
                 = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);

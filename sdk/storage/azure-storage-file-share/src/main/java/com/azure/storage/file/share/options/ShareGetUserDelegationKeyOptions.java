@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.share.options;
 
+import com.azure.core.annotation.Fluent;
+
 import java.time.OffsetDateTime;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.assertNotNull;
@@ -10,6 +12,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.assertNot
 /**
  * Extended options that may be passed when getting a user delegation key for a storage account.
  */
+@Fluent
 public class ShareGetUserDelegationKeyOptions {
     private final OffsetDateTime expiresOn;
     private OffsetDateTime startsOn;
@@ -19,7 +22,7 @@ public class ShareGetUserDelegationKeyOptions {
      * Creates a new instance of {@link ShareGetUserDelegationKeyOptions}.
      *
      * @param expiresOn Expiration of the key's validity. The time should be specified in UTC.
-     * @throws NullPointerException If {@code tier} is null.
+     * @throws NullPointerException If {@code expiresOn} is null.
      */
     public ShareGetUserDelegationKeyOptions(OffsetDateTime expiresOn) {
         assertNotNull("expiresOn", expiresOn);

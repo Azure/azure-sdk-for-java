@@ -1297,7 +1297,9 @@ public class SasAsyncClientTests extends BlobTestBase {
                         .getPropertiesWithResponse(null);
                 });
 
-            StepVerifier.create(response).assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest).verifyComplete();
+            StepVerifier.create(response)
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 

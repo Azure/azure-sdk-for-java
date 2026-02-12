@@ -963,7 +963,7 @@ public class SasAsyncTests extends DataLakeTestBase {
             Mono<PathProperties> response = userDelegationKeyMono.flatMap(r -> {
                 UserDelegationKey userDelegationKey = r.getValue();
                 assertNotNull(userDelegationKey);
-                assertEquals(tid, userDelegationKey.getSignedTenantId());
+                assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
 
                 DataLakeServiceSasSignatureValues sasValues
                     = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
@@ -1009,7 +1009,7 @@ public class SasAsyncTests extends DataLakeTestBase {
             Mono<Void> response = userDelegationKeyMono.flatMap(r -> {
                 UserDelegationKey userDelegationKey = r.getValue();
                 assertNotNull(userDelegationKey);
-                assertEquals(tid, userDelegationKey.getSignedTenantId());
+                assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
 
                 DataLakeServiceSasSignatureValues sasValues
                     = new DataLakeServiceSasSignatureValues(expiryTime, permissions);
@@ -1056,7 +1056,7 @@ public class SasAsyncTests extends DataLakeTestBase {
             Mono<String> response = userDelegationKeyMono.flatMap(r -> {
                 UserDelegationKey userDelegationKey = r.getValue();
                 assertNotNull(userDelegationKey);
-                assertEquals(tid, userDelegationKey.getSignedTenantId());
+                assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
 
                 DataLakeServiceSasSignatureValues sasValues
                     = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
