@@ -49,14 +49,15 @@ public final class AppConfigurationKeyValueSelector {
     private String labelFilter;
 
     /**
-     * Filters configurations by tags. Each entry must follow the {@code tagName=tagValue}
-     * format. When multiple entries are provided, they are combined using AND logic.
+     * Filters configurations by tags. Each entry is interpreted as a tag-based filter,
+     * typically in the {@code tagName=tagValue} format. When multiple entries are
+     * provided, they are combined using AND logic.
      */
     private List<String> tagsFilter;
 
     /**
      * Loads configurations from a named snapshot. Cannot be used together with
-     * key, label, or tag filters. Must not contain asterisks ({@code *}).
+     * key, label, or tag filters.
      */
     private String snapshotName = "";
 
