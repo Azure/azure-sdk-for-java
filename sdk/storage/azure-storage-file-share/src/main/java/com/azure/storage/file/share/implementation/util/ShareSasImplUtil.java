@@ -28,7 +28,7 @@ import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQuer
 
 /**
  * This class provides helper methods for common file service sas patterns.
- *
+ * <p>
  * RESERVED FOR INTERNAL USE.
  */
 public class ShareSasImplUtil {
