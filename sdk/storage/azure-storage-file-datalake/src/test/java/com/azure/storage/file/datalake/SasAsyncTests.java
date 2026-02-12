@@ -943,7 +943,7 @@ public class SasAsyncTests extends DataLakeTestBase {
 
     @Test
     @LiveOnly
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
     public void dataLakeFileSystemSasUserDelegationDelegatedTenantId() {
         liveTestScenarioWithRetry(() -> {
             FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
@@ -991,7 +991,7 @@ public class SasAsyncTests extends DataLakeTestBase {
 
     @Test
     @LiveOnly
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
     public void dataLakeFileSystemSasUserDelegationDelegatedTenantIdFail() {
         liveTestScenarioWithRetry(() -> {
             FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
@@ -1037,7 +1037,7 @@ public class SasAsyncTests extends DataLakeTestBase {
 
     @Test
     @LiveOnly
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
     public void dataLakeFileSystemSasUserDelegationDelegatedTenantIdRoundTrip() {
         liveTestScenarioWithRetry(() -> {
             FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);

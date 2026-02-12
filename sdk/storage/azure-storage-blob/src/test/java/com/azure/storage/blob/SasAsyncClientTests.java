@@ -59,7 +59,6 @@ import java.util.stream.Stream;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getTidFromToken;
-import static com.azure.storage.common.test.shared.StorageCommonTestUtils.verifySasAndTokenInRequest;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1256,7 +1255,7 @@ public class SasAsyncClientTests extends BlobTestBase {
     // RBAC replication lag
     @Test
     @LiveOnly
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     public void containerSasUserDelegationDelegatedTenantId() {
         liveTestScenarioWithRetry(() -> {
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
@@ -1298,14 +1297,14 @@ public class SasAsyncClientTests extends BlobTestBase {
                         .getPropertiesWithResponse(null);
                 });
 
-            StepVerifier.create(response).assertNext(r -> verifySasAndTokenInRequest(response)).verifyComplete();
+            StepVerifier.create(response).assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest).verifyComplete();
         });
     }
 
     // RBAC replication lag
     @Test
     @LiveOnly
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     public void containerSasUserDelegationDelegatedTenantIdFail() {
         liveTestScenarioWithRetry(() -> {
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
@@ -1347,7 +1346,7 @@ public class SasAsyncClientTests extends BlobTestBase {
 
     @Test
     @LiveOnly
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     public void containerSasUserDelegationDelegatedTenantIdRoundTrip() {
         liveTestScenarioWithRetry(() -> {
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
@@ -1393,7 +1392,7 @@ public class SasAsyncClientTests extends BlobTestBase {
 
     @Test
     @LiveOnly
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     public void blobSasUserDelegationDelegatedTenantId() {
         liveTestScenarioWithRetry(() -> {
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
@@ -1440,7 +1439,7 @@ public class SasAsyncClientTests extends BlobTestBase {
 
     @Test
     @LiveOnly
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     public void blobSasUserDelegationDelegatedTenantIdFail() {
         liveTestScenarioWithRetry(() -> {
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);

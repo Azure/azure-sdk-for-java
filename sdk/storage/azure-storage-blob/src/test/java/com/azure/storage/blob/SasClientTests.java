@@ -393,7 +393,7 @@ public class SasClientTests extends BlobTestBase {
 
     @Test
     @LiveOnly // Cannot record Entra ID token
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     public void containerSasUserDelegationDelegatedTenantId() {
         liveTestScenarioWithRetry(() -> { // RBAC replication lag
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
@@ -439,7 +439,7 @@ public class SasClientTests extends BlobTestBase {
 
     @Test
     @LiveOnly // Cannot record Entra ID token
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     public void containerSasUserDelegationDelegatedTenantIdFail() {
         liveTestScenarioWithRetry(() -> { // RBAC replication lag
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
@@ -477,7 +477,7 @@ public class SasClientTests extends BlobTestBase {
 
     @Test
     @LiveOnly // Cannot record Entra ID token
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     public void containerSasUserDelegationDelegatedTenantIdRoundTrip() {
         liveTestScenarioWithRetry(() -> { // RBAC replication lag
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
@@ -517,7 +517,7 @@ public class SasClientTests extends BlobTestBase {
 
     @Test
     @LiveOnly // Cannot record Entra ID token
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     public void blobSasUserDelegationDelegatedTenantId() {
         liveTestScenarioWithRetry(() -> { // RBAC replication lag
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
@@ -558,7 +558,7 @@ public class SasClientTests extends BlobTestBase {
 
     @Test
     @LiveOnly // Cannot record Entra ID token
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     public void blobSasUserDelegationDelegatedTenantIdFail() {
         liveTestScenarioWithRetry(() -> { // RBAC replication lag
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);

@@ -764,7 +764,7 @@ class FileSasClientTests extends FileShareTestBase {
 
     @Test
     @LiveOnly // Cannot record Entra ID token
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-07-05")
     public void shareUserDelegationSasDelegatedTenantId() {
         liveTestScenarioWithRetry(() -> {
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
@@ -803,7 +803,7 @@ class FileSasClientTests extends FileShareTestBase {
 
     @Test
     @LiveOnly // Cannot record Entra ID token
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-07-05")
     public void shareUserDelegationSasDelegatedTenantIdFail() {
         liveTestScenarioWithRetry(() -> {
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
@@ -842,7 +842,7 @@ class FileSasClientTests extends FileShareTestBase {
 
     @Test
     @LiveOnly // Cannot record Entra ID token
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-07-05")
     public void shareUserDelegationSasDelegatedTenantIdAsync() {
         liveTestScenarioWithRetry(() -> {
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
@@ -889,7 +889,7 @@ class FileSasClientTests extends FileShareTestBase {
 
     @Test
     @LiveOnly // Cannot record Entra ID token
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-04-06")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-07-05")
     public void shareUserDelegationSasDelegatedTenantIdFailAsync() {
         liveTestScenarioWithRetry(() -> {
             OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);

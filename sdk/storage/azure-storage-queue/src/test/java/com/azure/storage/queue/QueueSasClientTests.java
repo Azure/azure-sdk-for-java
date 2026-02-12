@@ -272,7 +272,7 @@ public class QueueSasClientTests extends QueueTestBase {
 
     @Test
     @LiveOnly
-    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2026-02-06")
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-07-05")
     public void queueUserDelegationSasDelegatedTenantId() {
         liveTestScenarioWithRetry(() -> {
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
@@ -309,7 +309,7 @@ public class QueueSasClientTests extends QueueTestBase {
 
     @Test
     @LiveOnly
-    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2026-02-06")
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-07-05")
     public void queueUserDelegationSasDelegatedTenantIdFail() {
         liveTestScenarioWithRetry(() -> {
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);

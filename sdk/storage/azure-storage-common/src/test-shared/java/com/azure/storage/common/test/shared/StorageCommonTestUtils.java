@@ -462,15 +462,6 @@ public final class StorageCommonTestUtils {
         assertTrue(response.getRequest().getUrl().toString().contains("sv=" + Constants.SAS_SERVICE_VERSION));
     }
 
-    public static <T> void verifySasAndTokenInRequest(Mono<Response<T>> response) {
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertTrue(r.getRequest().getHeaders().stream().anyMatch(h -> h.getName().equals("Authorization")));
-                assertTrue(r.getRequest().getUrl().toString().contains("sv=" + Constants.SAS_SERVICE_VERSION));
-            })
-            .verifyComplete();
-    }
-
     public static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.getStatusCode());
         return response;
