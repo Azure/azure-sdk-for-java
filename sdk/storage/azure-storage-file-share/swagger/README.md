@@ -15,7 +15,7 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.2'
+use: '@autorest/java@4.1.62'
 input-file: https://raw.githubusercontent.com/nickliu-msft/azure-rest-api-specs/b065e5761916137a69bab14c0a83972d4bacc05e/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-04-06/file.json
 java: true
 output-folder: ../
