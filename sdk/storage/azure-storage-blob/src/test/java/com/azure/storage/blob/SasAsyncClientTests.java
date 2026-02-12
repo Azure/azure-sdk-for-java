@@ -1272,7 +1272,7 @@ public class SasAsyncClientTests extends BlobTestBase {
                 = new BlobGetUserDelegationKeyOptions(expiresOn).setDelegatedUserTenantId(tid);
 
             Mono<Response<BlobProperties>> response
-                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options, null).flatMap(keyResponse -> {
+                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options).flatMap(keyResponse -> {
                     UserDelegationKey userDelegationKey = keyResponse.getValue();
 
                     assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
@@ -1319,8 +1319,8 @@ public class SasAsyncClientTests extends BlobTestBase {
             BlobGetUserDelegationKeyOptions options
                 = new BlobGetUserDelegationKeyOptions(expiresOn).setDelegatedUserTenantId(tid);
 
-            Flux<BlobItem> response = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options, null)
-                .flatMapMany(keyResponse -> {
+            Flux<BlobItem> response
+                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options).flatMapMany(keyResponse -> {
                     UserDelegationKey userDelegationKey = keyResponse.getValue();
 
                     assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
@@ -1364,7 +1364,7 @@ public class SasAsyncClientTests extends BlobTestBase {
                 = new BlobGetUserDelegationKeyOptions(expiresOn).setDelegatedUserTenantId(tid);
 
             Mono<Void> response
-                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options, null).flatMap(keyResponse -> {
+                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options).flatMap(keyResponse -> {
                     UserDelegationKey userDelegationKey = keyResponse.getValue();
 
                     assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
@@ -1410,7 +1410,7 @@ public class SasAsyncClientTests extends BlobTestBase {
                 = new BlobGetUserDelegationKeyOptions(expiresOn).setDelegatedUserTenantId(tid);
 
             Mono<Response<BlobProperties>> response
-                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options, null).flatMap(keyResponse -> {
+                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options).flatMap(keyResponse -> {
                     UserDelegationKey userDelegationKey = keyResponse.getValue();
 
                     assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
@@ -1456,7 +1456,7 @@ public class SasAsyncClientTests extends BlobTestBase {
                 = new BlobGetUserDelegationKeyOptions(expiresOn).setDelegatedUserTenantId(tid);
 
             Mono<BlobProperties> response
-                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options, null).flatMap(keyResponse -> {
+                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options).flatMap(keyResponse -> {
                     UserDelegationKey userDelegationKey = keyResponse.getValue();
 
                     assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());

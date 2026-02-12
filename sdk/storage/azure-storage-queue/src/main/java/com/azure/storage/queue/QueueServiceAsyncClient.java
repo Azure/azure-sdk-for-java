@@ -728,8 +728,7 @@ public final class QueueServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return getUserDelegationKeyWithResponse(new QueueGetUserDelegationKeyOptions(expiry).setStartsOn(start))
-            .flatMap(FluxUtil::toMono);
+        return getUserDelegationKeyWithResponse(start, expiry).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -746,7 +745,11 @@ public final class QueueServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
-        return getUserDelegationKeyWithResponse(new QueueGetUserDelegationKeyOptions(expiry).setStartsOn(start));
+        try {
+            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -764,28 +767,32 @@ public final class QueueServiceAsyncClient {
     public Mono<Response<UserDelegationKey>>
         getUserDelegationKeyWithResponse(QueueGetUserDelegationKeyOptions options) {
         try {
-            return withContext(context -> getUserDelegationKeyWithResponse(options, context));
+            return withContext(context -> getUserDelegationKeyWithResponse(options.getStartsOn(),
+                options.getExpiresOn(), options.getDelegatedUserTenantId(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(QueueGetUserDelegationKeyOptions options,
+    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Context context) {
+        return getUserDelegationKeyWithResponse(start, expiry, null, context);
+    }
+
+    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
+        String delegatedUserTenantId, Context context) {
         context = context == null ? Context.NONE : context;
-        StorageImplUtils.assertNotNull("options", options);
-        if (options.getStartsOn() != null && !options.getStartsOn().isBefore(options.getExpiresOn())) {
+        if (start != null && !start.isBefore(expiry)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
         return client.getServices()
-            .getUserDelegationKeyWithResponseAsync(new KeyInfo()
-                .setStart(options.getStartsOn() == null
-                    ? ""
-                    : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
-                .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
-                .setDelegatedUserTenantId(options.getDelegatedUserTenantId()), null, null, context)
+            .getUserDelegationKeyWithResponseAsync(
+                new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
+                    .setDelegatedUserTenantId(delegatedUserTenantId),
+                null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 }
