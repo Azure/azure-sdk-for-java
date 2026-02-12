@@ -150,8 +150,13 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeMapField("spec", this.spec,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("spec", this.spec, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeJsonField("auth", this.auth);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("default_params", this.defaultParams,

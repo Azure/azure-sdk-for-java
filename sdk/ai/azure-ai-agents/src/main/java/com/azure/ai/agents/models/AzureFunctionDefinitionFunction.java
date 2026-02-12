@@ -89,8 +89,13 @@ public final class AzureFunctionDefinitionFunction implements JsonSerializable<A
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeMapField("parameters", this.parameters,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }

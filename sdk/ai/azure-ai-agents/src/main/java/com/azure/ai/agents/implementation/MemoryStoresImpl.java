@@ -1099,8 +1099,8 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         param: String (Required)
-     *         type: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -1192,8 +1192,8 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         param: String (Required)
-     *         type: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -1284,8 +1284,8 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         param: String (Required)
-     *         type: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -1382,8 +1382,8 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         param: String (Required)
-     *         type: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -1480,8 +1480,8 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         param: String (Required)
-     *         type: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -1577,8 +1577,8 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         param: String (Required)
-     *         type: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -1657,8 +1657,8 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         param: String (Required)
-     *         type: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -1730,8 +1730,8 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         param: String (Required)
-     *         type: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]

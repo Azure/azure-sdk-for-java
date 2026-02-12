@@ -369,11 +369,7 @@ public final class AgentsClientBuilder
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder()
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
-        builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"));
-        if (this.serviceVersion != null) {
-            builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
-            builder.azureUrlPathMode(AzureUrlPathMode.UNIFIED);
-        }
+        builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai/v1" : "/openai/v1"));
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;
@@ -383,11 +379,7 @@ public final class AgentsClientBuilder
         OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder()
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
-        builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"));
-        if (this.serviceVersion != null) {
-            builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
-            builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
-        }
+        builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "/openai/" : "/openai/v1"));
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;

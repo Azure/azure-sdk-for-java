@@ -138,8 +138,13 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
             jsonWriter.writeFieldName("default_value");
             this.defaultValue.writeTo(jsonWriter);
         }
-        jsonWriter.writeMapField("schema", this.schema,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("schema", this.schema, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeBooleanField("required", this.required);
         return jsonWriter.writeEndObject();
     }

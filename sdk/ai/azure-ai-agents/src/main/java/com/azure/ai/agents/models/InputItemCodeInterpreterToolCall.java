@@ -130,8 +130,13 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("container_id", this.containerId);
         jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeArrayField("outputs", this.outputs,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }

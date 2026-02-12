@@ -6,6 +6,7 @@ package com.azure.ai.agents.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -16,13 +17,13 @@ import java.io.IOException;
  * Reasoning text from the model.
  */
 @Immutable
-public final class ReasoningTextContent extends OutputContent {
+public final class ReasoningTextContent implements JsonSerializable<ReasoningTextContent> {
 
     /*
-     * The type property.
+     * The type of the reasoning text. Always `reasoning_text`.
      */
     @Generated
-    private OutputContentType type = OutputContentType.REASONING_TEXT;
+    private final String type = "reasoning_text";
 
     /*
      * The reasoning text from the model.
@@ -41,13 +42,12 @@ public final class ReasoningTextContent extends OutputContent {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The type of the reasoning text. Always `reasoning_text`.
      *
      * @return the type value.
      */
     @Generated
-    @Override
-    public OutputContentType getType() {
+    public String getType() {
         return this.type;
     }
 
@@ -68,8 +68,8 @@ public final class ReasoningTextContent extends OutputContent {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -86,21 +86,16 @@ public final class ReasoningTextContent extends OutputContent {
     public static ReasoningTextContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String text = null;
-            OutputContentType type = OutputContentType.REASONING_TEXT;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("text".equals(fieldName)) {
                     text = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = OutputContentType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ReasoningTextContent deserializedReasoningTextContent = new ReasoningTextContent(text);
-            deserializedReasoningTextContent.type = type;
-            return deserializedReasoningTextContent;
+            return new ReasoningTextContent(text);
         });
     }
 }

@@ -168,8 +168,13 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("manifest_id", this.manifestId);
-        jsonWriter.writeMapField("parameter_values", this.parameterValues,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("parameter_values", this.parameterValues, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();

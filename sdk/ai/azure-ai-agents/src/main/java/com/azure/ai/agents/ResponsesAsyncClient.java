@@ -74,8 +74,7 @@ public final class ResponsesAsyncClient {
      * @param params The parameters to create the response.
      * @return The created Response.
      */
-    public Mono<Response> createWithAgent(AgentReference agentReference,
-                                    ResponseCreateParams.Builder params) {
+    public Mono<Response> createWithAgent(AgentReference agentReference, ResponseCreateParams.Builder params) {
         Objects.requireNonNull(agentReference, "agentReference cannot be null");
         Objects.requireNonNull(params, "params cannot be null");
 

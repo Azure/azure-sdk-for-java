@@ -36,13 +36,13 @@ public final class Error implements JsonSerializable<Error> {
      * The param property.
      */
     @Generated
-    private final String param;
+    private String param;
 
     /*
      * The type property.
      */
     @Generated
-    private final String type;
+    private String type;
 
     /*
      * The details property.
@@ -61,22 +61,6 @@ public final class Error implements JsonSerializable<Error> {
      */
     @Generated
     private Map<String, BinaryData> debugInfo;
-
-    /**
-     * Creates an instance of Error class.
-     *
-     * @param code the code value to set.
-     * @param message the message value to set.
-     * @param param the param value to set.
-     * @param type the type value to set.
-     */
-    @Generated
-    private Error(String code, String message, String param, String type) {
-        this.code = code;
-        this.message = message;
-        this.param = param;
-        this.type = type;
-    }
 
     /**
      * Get the code property: The code property.
@@ -160,10 +144,20 @@ public final class Error implements JsonSerializable<Error> {
         jsonWriter.writeStringField("param", this.param);
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("additionalInfo", this.additionalInfo,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("debugInfo", this.debugInfo,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("additionalInfo", this.additionalInfo, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeMapField("debugInfo", this.debugInfo, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 
@@ -209,11 +203,25 @@ public final class Error implements JsonSerializable<Error> {
                     reader.skipChildren();
                 }
             }
-            Error deserializedError = new Error(code, message, param, type);
+            Error deserializedError = new Error(code, message);
+            deserializedError.param = param;
+            deserializedError.type = type;
             deserializedError.details = details;
             deserializedError.additionalInfo = additionalInfo;
             deserializedError.debugInfo = debugInfo;
             return deserializedError;
         });
+    }
+
+    /**
+     * Creates an instance of Error class.
+     *
+     * @param code the code value to set.
+     * @param message the message value to set.
+     */
+    @Generated
+    private Error(String code, String message) {
+        this.code = code;
+        this.message = message;
     }
 }

@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class AgentsAsyncTests extends ClientTestBase {
 
     private static final String AGENT_NAME = "test-agent-java";
@@ -100,6 +99,7 @@ public class AgentsAsyncTests extends ClientTestBase {
         }).verifyComplete();
     }
 
+    @Disabled("Disabled due to service errors (responses endpoint).")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void promptAgentTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
@@ -122,10 +122,12 @@ public class AgentsAsyncTests extends ClientTestBase {
                 .flatMap((Conversation conversation) -> {
                     List<ResponseInputItem> inputItems = new ArrayList<>();
                     inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+                        .type(EasyInputMessage.Type.MESSAGE)
                         .role(EasyInputMessage.Role.SYSTEM)
                         .content("You are a helpful assistant who speaks like a pirate. Today is a sunny and warm day.")
                         .build()));
                     inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+                        .type(EasyInputMessage.Type.MESSAGE)
                         .role(EasyInputMessage.Role.USER)
                         .content("Could you help me decide what clothes to wear today?")
                         .build()));
