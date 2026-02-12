@@ -61,27 +61,13 @@ public class AsyncCodeInterpreterAgent {
                 + "When asked to perform calculations or data analysis, use the code interpreter to run Python code.")
             .setTools(Collections.singletonList(tool));
 
-        // primitives can't be passed as generic parameter type. Mono<int> X -> Mono<Integer> :check_mark:
-
-        // Observable types: (cold observable opposed to hot observable)
-        // Flux<>       -> --O---O---O---O---O---O---O---O---O---O---O--->X
-        // Mono<>       -> --0-->X
-        // Completable  -> ----->X
-
-        // Observables are composable
-        // Mono.just("string").concat(Mono.just("strong")) // Flux<String>
-        // map -> Observable<T> -> Observable<R>
-        // flatMap -> Observable<T> -> Observable<Observable<R>> -> Observable<R>
-
         agentsAsyncClient.createAgentVersion("MyAgent", agentDefinition)
             .flatMap(agent ->
                 Mono.fromFuture(conversationsAsyncClient.getConversationServiceAsync().create())
                     .map(conversation -> new Pair<>(agent, conversation)))
             .flatMap(pair -> {
-
                 AgentVersionDetails agent = pair.getFirst();
                 Conversation conversation = pair.getSecond();
-
                 agentRef.set(agent);
                 conversationRef.set(conversation);
 
@@ -160,10 +146,6 @@ public class AsyncCodeInterpreterAgent {
 
         public R getSecond() {
             return second;
-        }
-
-        public static <T, R> Pair<T, R> of(T first, R second) {
-            return new Pair<>(first, second);
         }
     }
 }
