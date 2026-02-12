@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SvmPeerCommandResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SvmPeerCommandResponseInner model = BinaryData.fromString("{\"svmPeeringCommand\":\"lkzgxhuriplbp\"}")
-            .toObject(SvmPeerCommandResponseInner.class);
-        Assertions.assertEquals("lkzgxhuriplbp", model.svmPeeringCommand());
+        SvmPeerCommandResponseInner model
+            = BinaryData.fromString("{\"svmPeeringCommand\":\"ruvw\"}").toObject(SvmPeerCommandResponseInner.class);
+        Assertions.assertEquals("ruvw", model.svmPeeringCommand());
     }
 }

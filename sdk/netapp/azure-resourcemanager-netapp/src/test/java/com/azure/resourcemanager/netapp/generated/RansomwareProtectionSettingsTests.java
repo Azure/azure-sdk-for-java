@@ -14,16 +14,16 @@ public final class RansomwareProtectionSettingsTests {
     public void testDeserialize() throws Exception {
         RansomwareProtectionSettings model = BinaryData
             .fromString(
-                "{\"desiredRansomwareProtectionState\":\"Enabled\",\"actualRansomwareProtectionState\":\"Disabled\"}")
+                "{\"desiredRansomwareProtectionState\":\"Disabled\",\"actualRansomwareProtectionState\":\"Learning\"}")
             .toObject(RansomwareProtectionSettings.class);
-        Assertions.assertEquals(DesiredRansomwareProtectionState.ENABLED, model.desiredRansomwareProtectionState());
+        Assertions.assertEquals(DesiredRansomwareProtectionState.DISABLED, model.desiredRansomwareProtectionState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RansomwareProtectionSettings model = new RansomwareProtectionSettings()
-            .withDesiredRansomwareProtectionState(DesiredRansomwareProtectionState.ENABLED);
+            .withDesiredRansomwareProtectionState(DesiredRansomwareProtectionState.DISABLED);
         model = BinaryData.fromObject(model).toObject(RansomwareProtectionSettings.class);
-        Assertions.assertEquals(DesiredRansomwareProtectionState.ENABLED, model.desiredRansomwareProtectionState());
+        Assertions.assertEquals(DesiredRansomwareProtectionState.DISABLED, model.desiredRansomwareProtectionState());
     }
 }

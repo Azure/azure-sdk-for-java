@@ -12,21 +12,21 @@ public final class LdapSearchScopeOptTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LdapSearchScopeOpt model = BinaryData
-            .fromString("{\"userDN\":\"tmxxdtddmflhuy\",\"groupDN\":\"zv\",\"groupMembershipFilter\":\"napxbannovv\"}")
+            .fromString("{\"userDN\":\"uyqncygupkvipmd\",\"groupDN\":\"wx\",\"groupMembershipFilter\":\"pevzhfst\"}")
             .toObject(LdapSearchScopeOpt.class);
-        Assertions.assertEquals("tmxxdtddmflhuy", model.userDN());
-        Assertions.assertEquals("zv", model.groupDN());
-        Assertions.assertEquals("napxbannovv", model.groupMembershipFilter());
+        Assertions.assertEquals("uyqncygupkvipmd", model.userDN());
+        Assertions.assertEquals("wx", model.groupDN());
+        Assertions.assertEquals("pevzhfst", model.groupMembershipFilter());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LdapSearchScopeOpt model = new LdapSearchScopeOpt().withUserDN("tmxxdtddmflhuy")
-            .withGroupDN("zv")
-            .withGroupMembershipFilter("napxbannovv");
+        LdapSearchScopeOpt model = new LdapSearchScopeOpt().withUserDN("uyqncygupkvipmd")
+            .withGroupDN("wx")
+            .withGroupMembershipFilter("pevzhfst");
         model = BinaryData.fromObject(model).toObject(LdapSearchScopeOpt.class);
-        Assertions.assertEquals("tmxxdtddmflhuy", model.userDN());
-        Assertions.assertEquals("zv", model.groupDN());
-        Assertions.assertEquals("napxbannovv", model.groupMembershipFilter());
+        Assertions.assertEquals("uyqncygupkvipmd", model.userDN());
+        Assertions.assertEquals("wx", model.groupDN());
+        Assertions.assertEquals("pevzhfst", model.groupMembershipFilter());
     }
 }

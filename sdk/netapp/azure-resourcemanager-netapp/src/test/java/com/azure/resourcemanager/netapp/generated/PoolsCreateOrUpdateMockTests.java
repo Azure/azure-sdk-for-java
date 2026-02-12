@@ -26,7 +26,7 @@ public final class PoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"poolId\":\"o\",\"size\":6896727080859319312,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"Succeeded\",\"totalThroughputMibps\":37.849075,\"utilizedThroughputMibps\":11.784178,\"customThroughputMibps\":2071007426,\"qosType\":\"Manual\",\"coolAccess\":true,\"encryptionType\":\"Single\"},\"etag\":\"xqnwhscoz\",\"location\":\"mvgxsmpknpwir\",\"tags\":{\"dnmckap\":\"fewxqouox\",\"cdgmoqu\":\"hknqiijge\",\"kyow\":\"qih\"},\"id\":\"tjouwhldxwhi\",\"name\":\"proqk\",\"type\":\"mfxm\"}";
+            = "{\"properties\":{\"poolId\":\"koveof\",\"size\":9219250864027024422,\"serviceLevel\":\"Premium\",\"provisioningState\":\"Succeeded\",\"totalThroughputMibps\":20.424438,\"utilizedThroughputMibps\":35.504158,\"customThroughputMibps\":331454238,\"qosType\":\"Auto\",\"coolAccess\":false,\"encryptionType\":\"Double\"},\"etag\":\"ujr\",\"location\":\"fojuidjpuuyj\",\"tags\":{\"tjklntikyjuzk\":\"jikzoeovvtzej\",\"vhqjwtrhtgvg\":\"bqzolxr\",\"lawjmjsmwrok\":\"pcrrk\",\"tlhguynuchl\":\"dxfzzzwyjaf\"},\"id\":\"mltx\",\"name\":\"whmozusgzvlnsnnj\",\"type\":\"fpafolpymwamxq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,26 +36,27 @@ public final class PoolsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CapacityPool response = manager.pools()
-            .define("jawh")
-            .withRegion("gwi")
-            .withExistingNetAppAccount("sjmrkkhm", "dmdlgyqixokw")
-            .withSize(6816602850420484237L)
-            .withServiceLevel(ServiceLevel.FLEXIBLE)
-            .withTags(mapOf("mhobcyan", "neakh"))
-            .withCustomThroughputMibps(528226837)
+            .define("lrocuyzlwh")
+            .withRegion("ihotjewlpxuzzjg")
+            .withExistingNetAppAccount("hvtrrmhwrbfdpyf", "ubhvj")
+            .withSize(3028887990431623493L)
+            .withServiceLevel(ServiceLevel.ULTRA)
+            .withTags(mapOf("hiqakydiwfbrk", "fqyhqoto", "qaxsipietgbebjf", "pzdqtvhcspod", "pnfpubntnbat", "lbmoichd",
+                "uhplrvkmjcwmjv", "viqsowsaaelcattc"))
+            .withCustomThroughputMibps(1879965141)
             .withQosType(QosType.AUTO)
-            .withCoolAccess(true)
+            .withCoolAccess(false)
             .withEncryptionType(EncryptionType.DOUBLE)
             .create();
 
-        Assertions.assertEquals("mvgxsmpknpwir", response.location());
-        Assertions.assertEquals("fewxqouox", response.tags().get("dnmckap"));
-        Assertions.assertEquals(6896727080859319312L, response.size());
-        Assertions.assertEquals(ServiceLevel.ULTRA, response.serviceLevel());
-        Assertions.assertEquals(2071007426, response.customThroughputMibps());
-        Assertions.assertEquals(QosType.MANUAL, response.qosType());
-        Assertions.assertTrue(response.coolAccess());
-        Assertions.assertEquals(EncryptionType.SINGLE, response.encryptionType());
+        Assertions.assertEquals("fojuidjpuuyj", response.location());
+        Assertions.assertEquals("jikzoeovvtzej", response.tags().get("tjklntikyjuzk"));
+        Assertions.assertEquals(9219250864027024422L, response.size());
+        Assertions.assertEquals(ServiceLevel.PREMIUM, response.serviceLevel());
+        Assertions.assertEquals(331454238, response.customThroughputMibps());
+        Assertions.assertEquals(QosType.AUTO, response.qosType());
+        Assertions.assertFalse(response.coolAccess());
+        Assertions.assertEquals(EncryptionType.DOUBLE, response.encryptionType());
     }
 
     // Use "Map.of" if available

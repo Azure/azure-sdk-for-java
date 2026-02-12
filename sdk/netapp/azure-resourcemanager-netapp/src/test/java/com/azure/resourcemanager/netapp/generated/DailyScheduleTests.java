@@ -12,24 +12,24 @@ public final class DailyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DailySchedule model = BinaryData.fromString(
-            "{\"snapshotsToKeep\":1035814224,\"hour\":675446410,\"minute\":549865384,\"usedBytes\":5255537493272573987}")
+            "{\"snapshotsToKeep\":2137392775,\"hour\":1769895546,\"minute\":875285248,\"usedBytes\":5873925145379718708}")
             .toObject(DailySchedule.class);
-        Assertions.assertEquals(1035814224, model.snapshotsToKeep());
-        Assertions.assertEquals(675446410, model.hour());
-        Assertions.assertEquals(549865384, model.minute());
-        Assertions.assertEquals(5255537493272573987L, model.usedBytes());
+        Assertions.assertEquals(2137392775, model.snapshotsToKeep());
+        Assertions.assertEquals(1769895546, model.hour());
+        Assertions.assertEquals(875285248, model.minute());
+        Assertions.assertEquals(5873925145379718708L, model.usedBytes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DailySchedule model = new DailySchedule().withSnapshotsToKeep(1035814224)
-            .withHour(675446410)
-            .withMinute(549865384)
-            .withUsedBytes(5255537493272573987L);
+        DailySchedule model = new DailySchedule().withSnapshotsToKeep(2137392775)
+            .withHour(1769895546)
+            .withMinute(875285248)
+            .withUsedBytes(5873925145379718708L);
         model = BinaryData.fromObject(model).toObject(DailySchedule.class);
-        Assertions.assertEquals(1035814224, model.snapshotsToKeep());
-        Assertions.assertEquals(675446410, model.hour());
-        Assertions.assertEquals(549865384, model.minute());
-        Assertions.assertEquals(5255537493272573987L, model.usedBytes());
+        Assertions.assertEquals(2137392775, model.snapshotsToKeep());
+        Assertions.assertEquals(1769895546, model.hour());
+        Assertions.assertEquals(875285248, model.minute());
+        Assertions.assertEquals(5873925145379718708L, model.usedBytes());
     }
 }

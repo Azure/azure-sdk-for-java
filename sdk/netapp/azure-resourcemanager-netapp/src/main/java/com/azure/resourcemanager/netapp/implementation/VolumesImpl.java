@@ -27,6 +27,7 @@ import com.azure.resourcemanager.netapp.models.ListQuotaReportResponse;
 import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
 import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
+import com.azure.resourcemanager.netapp.models.QuotaReportFilterRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
 import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
 import com.azure.resourcemanager.netapp.models.Replication;
@@ -390,9 +391,9 @@ public final class VolumesImpl implements Volumes {
     }
 
     public ListQuotaReportResponse listQuotaReport(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
+        String volumeName, QuotaReportFilterRequest body, Context context) {
         ListQuotaReportResponseInner inner
-            = this.serviceClient().listQuotaReport(resourceGroupName, accountName, poolName, volumeName, context);
+            = this.serviceClient().listQuotaReport(resourceGroupName, accountName, poolName, volumeName, body, context);
         if (inner != null) {
             return new ListQuotaReportResponseImpl(inner, this.manager());
         } else {
