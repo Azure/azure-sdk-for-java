@@ -184,6 +184,8 @@ public class CommonSasQueryParameters {
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, this.signature);
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID,
+            this.keyDelegatedUserTenantId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DELEGATED_USER_OBJECT_ID,
             this.delegatedUserObjectId);
 
@@ -201,8 +203,6 @@ public class CommonSasQueryParameters {
             SasImplUtils.formatQueryParameterDate(this.keyExpiry));
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE, this.keyService);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION, this.keyVersion);
-        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID,
-            this.keyDelegatedUserTenantId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_HEADERS,
             formatKeyList(this.requestHeaders));
