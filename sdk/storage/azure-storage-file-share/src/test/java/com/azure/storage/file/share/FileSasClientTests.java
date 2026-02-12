@@ -927,7 +927,9 @@ class FileSasClientTests extends FileShareTestBase {
                     return identityShareClient.getPropertiesWithResponse();
 
                 });
-            StepVerifier.create(response).assertNext(r -> verifySasAndTokenInRequest(response)).verifyComplete();
+            StepVerifier.create(response)
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 
