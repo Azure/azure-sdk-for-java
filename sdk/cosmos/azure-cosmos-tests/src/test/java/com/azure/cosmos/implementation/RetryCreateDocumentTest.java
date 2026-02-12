@@ -31,7 +31,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     private Database database;
     private DocumentCollection collection;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public RetryCreateDocumentTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
     }

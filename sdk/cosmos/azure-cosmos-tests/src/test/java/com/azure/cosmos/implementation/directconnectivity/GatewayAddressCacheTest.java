@@ -76,7 +76,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public GatewayAddressCacheTest(Builder clientBuilder) {
         super(clientBuilder);
     }

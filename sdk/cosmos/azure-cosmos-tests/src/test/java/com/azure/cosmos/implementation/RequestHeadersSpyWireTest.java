@@ -44,7 +44,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         return TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollection.getId(), DOCUMENT_ID);
     }
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public RequestHeadersSpyWireTest(Builder clientBuilder) {
         super(clientBuilder);
     }

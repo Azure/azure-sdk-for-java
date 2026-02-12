@@ -43,7 +43,7 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
     private String databaseAccountJson;
     private DatabaseAccount expectedDatabaseAccount;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public GatewayServiceConfigurationReaderTest(Builder clientBuilder) {
         super(clientBuilder);
     }

@@ -43,7 +43,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdMultiPartitionCollection.getId());
     }
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public DocumentQuerySpyWireContentTest(Builder clientBuilder) {
         super(clientBuilder);
     }
