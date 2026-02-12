@@ -300,6 +300,10 @@
         <configuration>
           <systemPropertiesFile>src/test/resources/application.properties</systemPropertiesFile>
           <skipITs>${skip.integration.tests}</skipITs>
+          <!-- Enable parallel test execution -->
+          <parallel>classes</parallel>
+          <threadCount>3</threadCount>
+          <perCoreThreadCount>true</perCoreThreadCount>
         </configuration>
         <executions>
           <execution>
