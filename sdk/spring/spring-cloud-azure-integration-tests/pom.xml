@@ -38,26 +38,6 @@
     <spotless.skip>true</spotless.skip>
   </properties>
 
-  <!-- TODO: Delete this after this issue resolved: https://github.com/Azure/azure-sdk-for-java/issues/47812-->
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.projectreactor</groupId>
-        <artifactId>reactor-bom</artifactId>
-        <version>2024.0.9</version>  <!-- {x-version-update;io.projectreactor:reactor-bom;external_dependency} -->
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-bom</artifactId>
-        <version>4.1.130.Final</version>  <!-- {x-version-update;io.netty:netty-bom;external_dependency} -->
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
