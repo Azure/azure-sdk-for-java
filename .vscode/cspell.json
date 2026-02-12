@@ -460,6 +460,16 @@
       ]
     },
     {
+      "filename": "sdk/ai/**",
+      "words": [
+        "oneg",
+        "fourg",
+        "sixg",
+        "okio",
+        "xhigh"
+      ]
+    },
+    {
       "filename": "sdk/search/azure-search-documents/**",
       "words": [
         "ADLS",
