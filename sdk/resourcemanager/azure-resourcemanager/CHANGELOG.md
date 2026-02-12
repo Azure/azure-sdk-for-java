@@ -4,10 +4,6 @@
 
 ### azure-resourcemanager-network
 
-#### Breaking Changes
-
-- Removed `ADVANCED`, `BASIC`, and `STANDARD` from `FirewallPolicyIntrusionDetectionProfileType` to align with the service/TypeSpec model.
-
 #### Dependency Updates
 
 - Updated `api-version` to `2025-05-01`.
