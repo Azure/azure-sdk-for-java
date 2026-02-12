@@ -58,25 +58,6 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
     private final List<BinaryData> outputs;
 
     /**
-     * Creates an instance of InputItemCodeInterpreterToolCall class.
-     *
-     * @param id the id value to set.
-     * @param status the status value to set.
-     * @param containerId the containerId value to set.
-     * @param code the code value to set.
-     * @param outputs the outputs value to set.
-     */
-    @Generated
-    public InputItemCodeInterpreterToolCall(String id, OutputItemCodeInterpreterToolCallStatus status,
-        String containerId, String code, List<BinaryData> outputs) {
-        this.id = id;
-        this.status = status;
-        this.containerId = containerId;
-        this.code = code;
-        this.outputs = outputs;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -198,5 +179,24 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
             deserializedInputItemCodeInterpreterToolCall.type = type;
             return deserializedInputItemCodeInterpreterToolCall;
         });
+    }
+
+    /**
+     * Creates an instance of InputItemCodeInterpreterToolCall class.
+     *
+     * @param id the id value to set.
+     * @param status the status value to set.
+     * @param containerId the containerId value to set.
+     * @param code the code value to set.
+     * @param outputs the outputs value to set.
+     */
+    @Generated
+    public InputItemCodeInterpreterToolCall(String id, OutputItemCodeInterpreterToolCallStatus status,
+        String containerId, String code, List<BinaryData> outputs) {
+        this.id = id;
+        this.status = status;
+        this.containerId = containerId;
+        this.code = code;
+        this.outputs = outputs;
     }
 }

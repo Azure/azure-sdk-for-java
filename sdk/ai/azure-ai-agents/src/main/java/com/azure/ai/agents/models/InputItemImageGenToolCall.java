@@ -43,20 +43,6 @@ public final class InputItemImageGenToolCall extends InputItem {
     private final String result;
 
     /**
-     * Creates an instance of InputItemImageGenToolCall class.
-     *
-     * @param id the id value to set.
-     * @param status the status value to set.
-     * @param result the result value to set.
-     */
-    @Generated
-    public InputItemImageGenToolCall(String id, OutputItemImageGenToolCallStatus status, String result) {
-        this.id = id;
-        this.status = status;
-        this.result = result;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -147,5 +133,19 @@ public final class InputItemImageGenToolCall extends InputItem {
             deserializedInputItemImageGenToolCall.type = type;
             return deserializedInputItemImageGenToolCall;
         });
+    }
+
+    /**
+     * Creates an instance of InputItemImageGenToolCall class.
+     *
+     * @param id the id value to set.
+     * @param status the status value to set.
+     * @param result the result value to set.
+     */
+    @Generated
+    public InputItemImageGenToolCall(String id, OutputItemImageGenToolCallStatus status, String result) {
+        this.id = id;
+        this.status = status;
+        this.result = result;
     }
 }

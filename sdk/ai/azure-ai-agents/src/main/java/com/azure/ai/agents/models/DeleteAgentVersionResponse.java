@@ -18,10 +18,10 @@ import java.io.IOException;
 public final class DeleteAgentVersionResponse implements JsonSerializable<DeleteAgentVersionResponse> {
 
     /*
-     * The object type. Always 'agent.deleted'.
+     * The object type. Always 'agent.version.deleted'.
      */
     @Generated
-    private final String object = "agent.version.deleted";
+    private final AgentObjectType object = AgentObjectType.AGENT_VERSION_DELETED;
 
     /*
      * The name of the agent.
@@ -56,12 +56,12 @@ public final class DeleteAgentVersionResponse implements JsonSerializable<Delete
     }
 
     /**
-     * Get the object property: The object type. Always 'agent.deleted'.
+     * Get the object property: The object type. Always 'agent.version.deleted'.
      *
      * @return the object value.
      */
     @Generated
-    public String getObject() {
+    public AgentObjectType getObject() {
         return this.object;
     }
 
@@ -102,7 +102,7 @@ public final class DeleteAgentVersionResponse implements JsonSerializable<Delete
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeBooleanField("deleted", this.deleted);

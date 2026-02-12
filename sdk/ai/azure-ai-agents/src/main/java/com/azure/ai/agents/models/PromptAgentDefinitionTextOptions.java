@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The PromptAgentDefinitionText model.
+ * Configuration options for a text response from the model. Can be plain text or structured JSON data.
  */
 @Fluent
-public final class PromptAgentDefinitionText implements JsonSerializable<PromptAgentDefinitionText> {
+public final class PromptAgentDefinitionTextOptions implements JsonSerializable<PromptAgentDefinitionTextOptions> {
 
     /*
      * The format property.
@@ -24,10 +24,10 @@ public final class PromptAgentDefinitionText implements JsonSerializable<PromptA
     private TextResponseFormatConfiguration format;
 
     /**
-     * Creates an instance of PromptAgentDefinitionText class.
+     * Creates an instance of PromptAgentDefinitionTextOptions class.
      */
     @Generated
-    public PromptAgentDefinitionText() {
+    public PromptAgentDefinitionTextOptions() {
     }
 
     /**
@@ -38,6 +38,18 @@ public final class PromptAgentDefinitionText implements JsonSerializable<PromptA
     @Generated
     public TextResponseFormatConfiguration getFormat() {
         return this.format;
+    }
+
+    /**
+     * Set the format property: The format property.
+     *
+     * @param format the format value to set.
+     * @return the PromptAgentDefinitionTextOptions object itself.
+     */
+    @Generated
+    public PromptAgentDefinitionTextOptions setFormat(TextResponseFormatConfiguration format) {
+        this.format = format;
+        return this;
     }
 
     /**
@@ -52,39 +64,29 @@ public final class PromptAgentDefinitionText implements JsonSerializable<PromptA
     }
 
     /**
-     * Reads an instance of PromptAgentDefinitionText from the JsonReader.
+     * Reads an instance of PromptAgentDefinitionTextOptions from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PromptAgentDefinitionText if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PromptAgentDefinitionText.
+     * @return An instance of PromptAgentDefinitionTextOptions if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PromptAgentDefinitionTextOptions.
      */
     @Generated
-    public static PromptAgentDefinitionText fromJson(JsonReader jsonReader) throws IOException {
+    public static PromptAgentDefinitionTextOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PromptAgentDefinitionText deserializedPromptAgentDefinitionText = new PromptAgentDefinitionText();
+            PromptAgentDefinitionTextOptions deserializedPromptAgentDefinitionTextOptions
+                = new PromptAgentDefinitionTextOptions();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("format".equals(fieldName)) {
-                    deserializedPromptAgentDefinitionText.format = TextResponseFormatConfiguration.fromJson(reader);
+                    deserializedPromptAgentDefinitionTextOptions.format
+                        = TextResponseFormatConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedPromptAgentDefinitionText;
+            return deserializedPromptAgentDefinitionTextOptions;
         });
-    }
-
-    /**
-     * Set the format property: The format property.
-     *
-     * @param format the format value to set.
-     * @return the PromptAgentDefinitionText object itself.
-     */
-    @Generated
-    public PromptAgentDefinitionText setFormat(TextResponseFormatConfiguration format) {
-        this.format = format;
-        return this;
     }
 }

@@ -360,6 +360,7 @@
     "Mordor",
     "mosca",
     "mpga",
+    "mpkjc",
     "msal",
     "msix",
     "MSRC",
@@ -878,7 +879,8 @@
         "viseme",
         "VISEME",
         "webrtc",
-        "WEBRTC"
+        "WEBRTC",
+        "aiservices"
       ]
     },
     {

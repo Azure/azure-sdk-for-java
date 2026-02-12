@@ -80,7 +80,7 @@ public final class MemoryStoresClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -131,7 +131,7 @@ public final class MemoryStoresClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -170,7 +170,7 @@ public final class MemoryStoresClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -227,7 +227,7 @@ public final class MemoryStoresClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -263,7 +263,7 @@ public final class MemoryStoresClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
      *     name: String (Required)
      *     deleted: boolean (Required)
      * }
@@ -711,7 +711,7 @@ public final class MemoryStoresClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
      *     name: String (Required)
      *     scope: String (Required)
      *     deleted: boolean (Required)
@@ -826,8 +826,8 @@ public final class MemoryStoresClient {
      * @return memory search response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MemoryStoreSearchResponse _searchMemories(String name, String scope, List<InputItem> items, String previousSearchId,
-        MemorySearchOptions options) {
+    MemoryStoreSearchResponse internalSearchMemories(String name, String scope, List<InputItem> items,
+        String previousSearchId, MemorySearchOptions options) {
         // Generated convenience method for searchMemoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         SearchMemoriesRequest searchMemoriesRequestObj = new SearchMemoriesRequest(scope).setItems(items)
@@ -860,7 +860,7 @@ public final class MemoryStoresClient {
         String previousSearchId, MemorySearchOptions options) {
         // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
         List<InputItem> inputItems = OpenAIJsonHelper.toAzureTypeList(items, InputItem::fromJson);
-        return _searchMemories(name, scope, inputItems, previousSearchId, options);
+        return internalSearchMemories(name, scope, inputItems, previousSearchId, options);
     }
 
     /**
@@ -883,9 +883,8 @@ public final class MemoryStoresClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of provides the status of a memory store update operation.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
+    SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> internalBeginUpdateMemories(String name,
         String scope, List<InputItem> items, String previousUpdateId, Integer updateDelay) {
         // Generated convenience method for beginUpdateMemoriesWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -921,7 +920,7 @@ public final class MemoryStoresClient {
         String scope, List<ResponseInputItem> items, String previousUpdateId, int updateDelay) {
         // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
         List<InputItem> inputItems = OpenAIJsonHelper.toAzureTypeList(items, InputItem::fromJson);
-        return beginUpdateMemories(name, scope, inputItems, previousUpdateId, updateDelay);
+        return internalBeginUpdateMemories(name, scope, inputItems, previousUpdateId, updateDelay);
     }
 
     /**

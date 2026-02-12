@@ -1,10 +1,10 @@
 directory: specification/ai-foundry/data-plane/Foundry/src/sdk-agents
-commit: c7c5a29c027db07030c37fa0d092154c8fe4d3a7
+commit: 37e6aa7c5bc1115ccd74ca112d0820bf285f587c
 repo: Azure/azure-rest-api-specs
 additionalDirectories:
   - specification/ai-foundry/data-plane/Foundry/src/agents
   - specification/ai-foundry/data-plane/Foundry/src/common
   - specification/ai-foundry/data-plane/Foundry/src/memory_stores
-  - specification/ai-foundry/data-plane/Foundry/src/responses
+  - specification/ai-foundry/data-plane/Foundry/src/openai-conversations
+  - specification/ai-foundry/data-plane/Foundry/src/openai-responses
   - specification/ai-foundry/data-plane/Foundry/src/tools
-  - specification/ai-foundry/data-plane/Foundry/src/conversations

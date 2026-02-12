@@ -145,19 +145,6 @@ public final class InputItemFunctionToolCall extends InputItem {
     }
 
     /**
-     * Set the status property: The status of the item. One of `in_progress`, `completed`, or
-     * `incomplete`. Populated when items are returned via API.
-     *
-     * @param status the status value to set.
-     * @return the InputItemFunctionToolCall object itself.
-     */
-    @Generated
-    public InputItemFunctionToolCall setStatus(OutputItemFunctionToolCallStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -217,5 +204,18 @@ public final class InputItemFunctionToolCall extends InputItem {
             deserializedInputItemFunctionToolCall.status = status;
             return deserializedInputItemFunctionToolCall;
         });
+    }
+
+    /**
+     * Set the status property: The status of the item. One of `in_progress`, `completed`, or
+     * `incomplete`. Populated when items are returned via API.
+     *
+     * @param status the status value to set.
+     * @return the InputItemFunctionToolCall object itself.
+     */
+    @Generated
+    public InputItemFunctionToolCall setStatus(OutputItemFunctionToolCallStatus status) {
+        this.status = status;
+        return this;
     }
 }

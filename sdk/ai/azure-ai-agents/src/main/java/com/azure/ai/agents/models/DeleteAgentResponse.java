@@ -21,7 +21,7 @@ public final class DeleteAgentResponse implements JsonSerializable<DeleteAgentRe
      * The object type. Always 'agent.deleted'.
      */
     @Generated
-    private final String object = "agent.deleted";
+    private final AgentObjectType object = AgentObjectType.AGENT_DELETED;
 
     /*
      * The name of the agent.
@@ -53,7 +53,7 @@ public final class DeleteAgentResponse implements JsonSerializable<DeleteAgentRe
      * @return the object value.
      */
     @Generated
-    public String getObject() {
+    public AgentObjectType getObject() {
         return this.object;
     }
 
@@ -84,7 +84,7 @@ public final class DeleteAgentResponse implements JsonSerializable<DeleteAgentRe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeBooleanField("deleted", this.deleted);
         return jsonWriter.writeEndObject();

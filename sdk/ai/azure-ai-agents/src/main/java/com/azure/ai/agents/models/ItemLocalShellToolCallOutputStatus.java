@@ -5,9 +5,9 @@
 package com.azure.ai.agents.models;
 
 /**
- * Defines values for InputItemLocalShellToolCallOutputStatus.
+ * Defines values for ItemLocalShellToolCallOutputStatus.
  */
-public enum InputItemLocalShellToolCallOutputStatus {
+public enum ItemLocalShellToolCallOutputStatus {
     /**
      * Enum value in_progress.
      */
@@ -24,26 +24,26 @@ public enum InputItemLocalShellToolCallOutputStatus {
     INCOMPLETE("incomplete");
 
     /**
-     * The actual serialized value for a InputItemLocalShellToolCallOutputStatus instance.
+     * The actual serialized value for a ItemLocalShellToolCallOutputStatus instance.
      */
     private final String value;
 
-    InputItemLocalShellToolCallOutputStatus(String value) {
+    ItemLocalShellToolCallOutputStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a InputItemLocalShellToolCallOutputStatus instance.
+     * Parses a serialized value to a ItemLocalShellToolCallOutputStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed InputItemLocalShellToolCallOutputStatus object, or null if unable to parse.
+     * @return the parsed ItemLocalShellToolCallOutputStatus object, or null if unable to parse.
      */
-    public static InputItemLocalShellToolCallOutputStatus fromString(String value) {
+    public static ItemLocalShellToolCallOutputStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        InputItemLocalShellToolCallOutputStatus[] items = InputItemLocalShellToolCallOutputStatus.values();
-        for (InputItemLocalShellToolCallOutputStatus item : items) {
+        ItemLocalShellToolCallOutputStatus[] items = ItemLocalShellToolCallOutputStatus.values();
+        for (ItemLocalShellToolCallOutputStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

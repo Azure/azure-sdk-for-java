@@ -36,7 +36,7 @@ public class MemorySearchAgent {
         AgentsClientBuilder builder = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .serviceVersion(AgentsServiceVersion.V2025_11_15_PREVIEW);
+                .serviceVersion(AgentsServiceVersion.getLatest());
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();

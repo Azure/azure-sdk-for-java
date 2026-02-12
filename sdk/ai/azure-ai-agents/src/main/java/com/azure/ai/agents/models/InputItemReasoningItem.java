@@ -158,19 +158,6 @@ public final class InputItemReasoningItem extends InputItem {
     }
 
     /**
-     * Set the status property: The status of the item. One of `in_progress`, `completed`, or
-     * `incomplete`. Populated when items are returned via API.
-     *
-     * @param status the status value to set.
-     * @return the InputItemReasoningItem object itself.
-     */
-    @Generated
-    public InputItemReasoningItem setStatus(OutputItemReasoningItemStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -230,5 +217,18 @@ public final class InputItemReasoningItem extends InputItem {
             deserializedInputItemReasoningItem.status = status;
             return deserializedInputItemReasoningItem;
         });
+    }
+
+    /**
+     * Set the status property: The status of the item. One of `in_progress`, `completed`, or
+     * `incomplete`. Populated when items are returned via API.
+     *
+     * @param status the status value to set.
+     * @return the InputItemReasoningItem object itself.
+     */
+    @Generated
+    public InputItemReasoningItem setStatus(OutputItemReasoningItemStatus status) {
+        this.status = status;
+        return this;
     }
 }

@@ -52,20 +52,6 @@ public final class InputItemFileSearchToolCall extends InputItem {
     private List<FileSearchToolCallResults> results;
 
     /**
-     * Creates an instance of InputItemFileSearchToolCall class.
-     *
-     * @param id the id value to set.
-     * @param status the status value to set.
-     * @param queries the queries value to set.
-     */
-    @Generated
-    public InputItemFileSearchToolCall(String id, OutputItemFileSearchToolCallStatus status, List<String> queries) {
-        this.id = id;
-        this.status = status;
-        this.queries = queries;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -184,5 +170,19 @@ public final class InputItemFileSearchToolCall extends InputItem {
             deserializedInputItemFileSearchToolCall.results = results;
             return deserializedInputItemFileSearchToolCall;
         });
+    }
+
+    /**
+     * Creates an instance of InputItemFileSearchToolCall class.
+     *
+     * @param id the id value to set.
+     * @param status the status value to set.
+     * @param queries the queries value to set.
+     */
+    @Generated
+    public InputItemFileSearchToolCall(String id, OutputItemFileSearchToolCallStatus status, List<String> queries) {
+        this.id = id;
+        this.status = status;
+        this.queries = queries;
     }
 }

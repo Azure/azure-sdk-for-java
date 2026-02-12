@@ -51,20 +51,6 @@ public final class InputItemOutputMessage extends InputItem {
     private final OutputItemOutputMessageStatus status;
 
     /**
-     * Creates an instance of InputItemOutputMessage class.
-     *
-     * @param id the id value to set.
-     * @param content the content value to set.
-     * @param status the status value to set.
-     */
-    @Generated
-    public InputItemOutputMessage(String id, List<OutputMessageContent> content, OutputItemOutputMessageStatus status) {
-        this.id = id;
-        this.content = content;
-        this.status = status;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -166,5 +152,19 @@ public final class InputItemOutputMessage extends InputItem {
             deserializedInputItemOutputMessage.type = type;
             return deserializedInputItemOutputMessage;
         });
+    }
+
+    /**
+     * Creates an instance of InputItemOutputMessage class.
+     *
+     * @param id the id value to set.
+     * @param content the content value to set.
+     * @param status the status value to set.
+     */
+    @Generated
+    public InputItemOutputMessage(String id, List<OutputMessageContent> content, OutputItemOutputMessageStatus status) {
+        this.id = id;
+        this.content = content;
+        this.status = status;
     }
 }

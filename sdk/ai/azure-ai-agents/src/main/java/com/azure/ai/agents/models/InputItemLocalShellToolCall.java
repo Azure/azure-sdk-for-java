@@ -49,23 +49,6 @@ public final class InputItemLocalShellToolCall extends InputItem {
     private final OutputItemLocalShellToolCallStatus status;
 
     /**
-     * Creates an instance of InputItemLocalShellToolCall class.
-     *
-     * @param id the id value to set.
-     * @param callId the callId value to set.
-     * @param action the action value to set.
-     * @param status the status value to set.
-     */
-    @Generated
-    public InputItemLocalShellToolCall(String id, String callId, LocalShellExecAction action,
-        OutputItemLocalShellToolCallStatus status) {
-        this.id = id;
-        this.callId = callId;
-        this.action = action;
-        this.status = status;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -170,5 +153,22 @@ public final class InputItemLocalShellToolCall extends InputItem {
             deserializedInputItemLocalShellToolCall.type = type;
             return deserializedInputItemLocalShellToolCall;
         });
+    }
+
+    /**
+     * Creates an instance of InputItemLocalShellToolCall class.
+     *
+     * @param id the id value to set.
+     * @param callId the callId value to set.
+     * @param action the action value to set.
+     * @param status the status value to set.
+     */
+    @Generated
+    public InputItemLocalShellToolCall(String id, String callId, LocalShellExecAction action,
+        OutputItemLocalShellToolCallStatus status) {
+        this.id = id;
+        this.callId = callId;
+        this.action = action;
+        this.status = status;
     }
 }

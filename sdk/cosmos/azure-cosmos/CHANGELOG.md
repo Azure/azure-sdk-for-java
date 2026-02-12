@@ -1,6 +1,16 @@
 ## Release History
 
-### 4.77.0 (2026-01-23)
+### 4.78.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.77.0 (2026-01-26)
 
 #### Features Added
 * Added `ChangeFeedProcessorOptions#setMaxLeasesToAcquirePerCycle(int)` to allow faster acquisition of unused/expired leases during scale-out and rolling deployments (default `0` preserves legacy behavior). - [47606](https://github.com/Azure/azure-sdk-for-java/pull/47606)
