@@ -821,9 +821,6 @@
 # ServiceLabel: %Notification Hub
 # ServiceOwners:                                                   @tjsomasundaram
 
-# ServiceLabel: %Operational Insights
-# ServiceOwners:                                                   @AzmonLogA
-
 # ServiceLabel: %Policy
 # ServiceOwners:                                                   @aperezcloud @kenieva
 
