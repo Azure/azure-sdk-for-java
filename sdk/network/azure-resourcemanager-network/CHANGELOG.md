@@ -1,5 +1,9 @@
 # Release History
 
+### Breaking Changes
+
+- Removed `ADVANCED`, `BASIC`, and `STANDARD` from `FirewallPolicyIntrusionDetectionProfileType` to align with the service model.
+
 ## 2.58.0 (2026-02-14)
 
 ### Other Changes
