@@ -77,6 +77,11 @@ public final class PolicySettings implements JsonSerializable<PolicySettings> {
      */
     private Integer jsChallengeCookieExpirationInMins;
 
+    /*
+     * Web Application Firewall CAPTCHA Cookie Expiration time in minutes.
+     */
+    private Integer captchaCookieExpirationInMins;
+
     /**
      * Creates an instance of PolicySettings class.
      */
@@ -330,6 +335,28 @@ public final class PolicySettings implements JsonSerializable<PolicySettings> {
     }
 
     /**
+     * Get the captchaCookieExpirationInMins property: Web Application Firewall CAPTCHA Cookie Expiration time in
+     * minutes.
+     * 
+     * @return the captchaCookieExpirationInMins value.
+     */
+    public Integer captchaCookieExpirationInMins() {
+        return this.captchaCookieExpirationInMins;
+    }
+
+    /**
+     * Set the captchaCookieExpirationInMins property: Web Application Firewall CAPTCHA Cookie Expiration time in
+     * minutes.
+     * 
+     * @param captchaCookieExpirationInMins the captchaCookieExpirationInMins value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withCaptchaCookieExpirationInMins(Integer captchaCookieExpirationInMins) {
+        this.captchaCookieExpirationInMins = captchaCookieExpirationInMins;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -358,6 +385,7 @@ public final class PolicySettings implements JsonSerializable<PolicySettings> {
         jsonWriter.writeStringField("customBlockResponseBody", this.customBlockResponseBody);
         jsonWriter.writeJsonField("logScrubbing", this.logScrubbing);
         jsonWriter.writeNumberField("jsChallengeCookieExpirationInMins", this.jsChallengeCookieExpirationInMins);
+        jsonWriter.writeNumberField("captchaCookieExpirationInMins", this.captchaCookieExpirationInMins);
         return jsonWriter.writeEndObject();
     }
 
@@ -402,6 +430,8 @@ public final class PolicySettings implements JsonSerializable<PolicySettings> {
                 } else if ("jsChallengeCookieExpirationInMins".equals(fieldName)) {
                     deserializedPolicySettings.jsChallengeCookieExpirationInMins
                         = reader.getNullable(JsonReader::getInt);
+                } else if ("captchaCookieExpirationInMins".equals(fieldName)) {
+                    deserializedPolicySettings.captchaCookieExpirationInMins = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
