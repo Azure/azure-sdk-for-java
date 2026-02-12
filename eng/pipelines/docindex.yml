@@ -26,6 +26,7 @@ jobs:
   - template: /eng/common/pipelines/templates/jobs/docindex.yml
 
   - job: UpdateDocsMsBuildConfig
+    condition: ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr')
     pool:
       name: $(LINUXPOOL)
       demands: ImageOverride -equals $(LINUXVMIMAGE)
@@ -112,7 +113,7 @@ jobs:
 
         - task: AzureCLI@2
           displayName: Queue Docs CI build for main
-          condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(${{ parameters.StartMainSDKCIRun }}, true)))
+          condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(${{ parameters.StartMainSDKCIRun }}, true)), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
           inputs:
             azureSubscription: msdocs-apidrop-connection
             scriptType: pscore
@@ -197,6 +198,7 @@ jobs:
 
         - task: AzureCLI@2
           displayName: Queue Docs CI build for daily branch
+          condition: and(succeeded(), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
           inputs:
             azureSubscription: msdocs-apidrop-connection
             scriptType: pscore
