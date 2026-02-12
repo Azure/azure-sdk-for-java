@@ -547,6 +547,29 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
+     * Get the serviceGateway property: Reference to an existing service gateway.
+     * 
+     * @return the serviceGateway value.
+     */
+    public SubResource serviceGateway() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceGateway();
+    }
+
+    /**
+     * Set the serviceGateway property: Reference to an existing service gateway.
+     * 
+     * @param serviceGateway the serviceGateway value to set.
+     * @return the SubnetInner object itself.
+     */
+    public SubnetInner withServiceGateway(SubResource serviceGateway) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withServiceGateway(serviceGateway);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

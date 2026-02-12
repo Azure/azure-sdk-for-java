@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class NatGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NatGatewayCreateOrUpdate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/NatGatewayCreateOrUpdate.json
      */
     /**
      * Sample code: Create nat gateway.
@@ -38,7 +38,32 @@ public final class NatGatewaysCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/
+     * NatGatewayWithServiceGatewayCreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create nat gateway with service gateway.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createNatGatewayWithServiceGateway(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNatGateways()
+            .createOrUpdate("rg1", "test-natgateway", new NatGatewayInner().withLocation("westus")
+                .withSku(new NatGatewaySku().withName(NatGatewaySkuName.STANDARD))
+                .withPublicIpAddresses(Arrays.asList(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/PublicIpAddress1")))
+                .withPublicIpPrefixes(Arrays.asList(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/PublicIpPrefix1")))
+                .withServiceGateway(new SubResource()
+                    .withId("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/serviceGateways/SG1")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/
      * NatGatewayCreateOrUpdateStandardV2Sku.json
      */
     /**
