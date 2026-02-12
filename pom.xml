@@ -51,6 +51,7 @@
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
     <module>sdk/compute</module>
+    <module>sdk/computebulkactions</module>
     <module>sdk/computefleet</module>
     <module>sdk/computelimit</module>
     <module>sdk/computeschedule</module>
