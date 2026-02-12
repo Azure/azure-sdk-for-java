@@ -36,8 +36,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.openai.azure.AzureOpenAIServiceVersion;
-import com.openai.azure.AzureUrlPathMode;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;

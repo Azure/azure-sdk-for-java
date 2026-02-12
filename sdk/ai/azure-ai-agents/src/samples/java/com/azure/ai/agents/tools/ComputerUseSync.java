@@ -29,6 +29,7 @@ import com.openai.models.responses.ResponseInputText;
 import com.openai.models.responses.ResponseOutputItem;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -85,19 +86,15 @@ public class ComputerUseSync {
         AgentVersionDetails agent = null;
 
         try {
-            // BEGIN: tool_declaration
             ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
                 ComputerEnvironment.WINDOWS,
                 1026,
                 769
             );
-            // END: tool_declaration
 
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-                .setInstructions("""
-                    You are a computer automation assistant.
-                    Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.
-                    """)
+                .setInstructions("You are a computer automation assistant." +
+                    "Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.")
                 .setTools(Collections.singletonList(tool));
 
             agent = agentsClient.createAgentVersion("ComputerUseAgent", agentDefinition);
@@ -113,7 +110,7 @@ public class ComputerUseSync {
 
             // Build the initial input using proper OpenAI SDK types
             // Create multimodal content with both text and image parts
-            List<ResponseInputContent> contentParts = List.of(
+            List<ResponseInputContent> contentParts = Arrays.asList(
                 // Text part
                 ResponseInputContent.ofInputText(
                     ResponseInputText.builder()
@@ -128,7 +125,7 @@ public class ComputerUseSync {
             );
 
             // Create the user message with multimodal content
-            List<ResponseInputItem> initialInput = List.of(
+            List<ResponseInputItem> initialInput = Arrays.asList(
                 ResponseInputItem.ofEasyInputMessage(
                     EasyInputMessage.builder()
                         .role(EasyInputMessage.Role.USER)
@@ -181,7 +178,7 @@ public class ComputerUseSync {
                 System.out.printf("Sending action result back to agent (using %s)...%n", screenshotInfo.getFilename());
 
                 // Build the follow-up input with computer call output using proper OpenAI SDK types
-                List<ResponseInputItem> followUpInput = List.of(
+                List<ResponseInputItem> followUpInput = Arrays.asList(
                     ResponseInputItem.ofComputerCallOutput(
                         ResponseInputItem.ComputerCallOutput.builder()
                             .callId(callId)

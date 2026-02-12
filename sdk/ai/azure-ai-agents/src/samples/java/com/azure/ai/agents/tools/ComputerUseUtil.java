@@ -6,11 +6,13 @@ package com.azure.ai.agents.tools;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseComputerToolCall;
 import com.openai.models.responses.ResponseOutputItem;
+import com.openai.models.responses.ResponseOutputMessage;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -166,7 +168,7 @@ public final class ComputerUseUtil {
     /**
      * Find the assets directory relative to the sample.
      *
-     * @return Path to the assets directory.
+     * @return Path to the asset directory.
      * @throws IOException If assets directory cannot be found.
      */
     public static Path findAssetsDirectory() throws IOException {
@@ -314,7 +316,7 @@ public final class ComputerUseUtil {
         if (action.isKeypress()) {
             return action.asKeypress().keys();
         }
-        return List.of();
+        return Arrays.asList();
     }
 
     /**
@@ -369,7 +371,7 @@ public final class ComputerUseUtil {
         StringBuilder finalOutput = new StringBuilder();
         for (ResponseOutputItem item : response.output()) {
             if (item.isMessage()) {
-                for (var part : item.asMessage().content()) {
+                for (ResponseOutputMessage.Content part : item.asMessage().content()) {
                     if (part.isOutputText()) {
                         finalOutput.append(part.asOutputText().text()).append("\n");
                     } else if (part.isRefusal()) {

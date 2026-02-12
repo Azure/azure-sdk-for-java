@@ -30,6 +30,7 @@ import com.openai.models.responses.ResponseOutputItem;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -83,41 +84,37 @@ public class ComputerUseAsync {
             return;
         }
 
-        // BEGIN: tool_declaration
         ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
             ComputerEnvironment.WINDOWS,
             1026,
             769
         );
-        // END: tool_declaration
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-            .setInstructions("""
-                You are a computer automation assistant.
-                Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.
-                """)
+            .setInstructions(                "You are a computer automation assistant." +
+            "Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.")
             .setTools(Collections.singletonList(tool));
 
         // Use AtomicReference to track the agent for cleanup
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
         // Build the initial input using proper OpenAI SDK types
-        List<ResponseInputContent> contentParts = List.of(
-            // Text part
-            ResponseInputContent.ofInputText(
-                ResponseInputText.builder()
-                    .text("I need you to help me search for 'OpenAI news'. Please type 'OpenAI news' and submit the search. Once you see search results, the task is complete.")
-                    .build()),
-            // Image part (screenshot)
-            ResponseInputContent.ofInputImage(
-                ResponseInputImage.builder()
-                    .imageUrl(screenshots.get("browser_search").getUrl())
-                    .detail(ResponseInputImage.Detail.HIGH)
-                    .build())
+        List<ResponseInputContent> contentParts = Arrays.asList(
+                // Text part
+                ResponseInputContent.ofInputText(
+                        ResponseInputText.builder()
+                                .text("I need you to help me search for 'OpenAI news'. Please type 'OpenAI news' and submit the search. Once you see search results, the task is complete.")
+                                .build()),
+                // Image part (screenshot)
+                ResponseInputContent.ofInputImage(
+                        ResponseInputImage.builder()
+                                .imageUrl(screenshots.get("browser_search").getUrl())
+                                .detail(ResponseInputImage.Detail.HIGH)
+                                .build())
         );
 
         // Create the user message with multimodal content
-        List<ResponseInputItem> initialInput = List.of(
+        List<ResponseInputItem> initialInput = Arrays.asList(
             ResponseInputItem.ofEasyInputMessage(
                 EasyInputMessage.builder()
                     .role(EasyInputMessage.Role.USER)
@@ -212,7 +209,7 @@ public class ComputerUseAsync {
         System.out.printf("Sending action result back to agent (using %s)...%n", screenshotInfo.getFilename());
 
         // Build the follow-up input with computer call output using proper OpenAI SDK types
-        List<ResponseInputItem> followUpInput = List.of(
+        List<ResponseInputItem> followUpInput = Arrays.asList(
             ResponseInputItem.ofComputerCallOutput(
                 ResponseInputItem.ComputerCallOutput.builder()
                     .callId(callId)
