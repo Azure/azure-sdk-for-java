@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/computebulkactions/ci.yml
+      - sdk/computebulkactions/azure-resourcemanager-computebulkactions/
+    exclude:
+      - sdk/computebulkactions/pom.xml
+      - sdk/computebulkactions/azure-resourcemanager-computebulkactions/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/computebulkactions/ci.yml
+      - sdk/computebulkactions/azure-resourcemanager-computebulkactions/
+    exclude:
+      - sdk/computebulkactions/pom.xml
+      - sdk/computebulkactions/azure-resourcemanager-computebulkactions/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercomputebulkactions
+    displayName: azure-resourcemanager-computebulkactions
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: computebulkactions
+    Artifacts:
+      - name: azure-resourcemanager-computebulkactions
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercomputebulkactions
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercomputebulkactions }}
