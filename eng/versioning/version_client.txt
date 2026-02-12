@@ -287,7 +287,7 @@ com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.53.6;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.54.2;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-monitor;2.53.6;2.54.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-msi;2.53.6;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-network;2.57.1;2.58.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-network;2.57.1;2.58.0
 com.azure.resourcemanager:azure-resourcemanager-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-privatedns;2.53.6;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-resources;2.53.6;2.54.0-beta.1
@@ -512,12 +512,13 @@ com.azure.resourcemanager:azure-resourcemanager-storagediscovery;1.0.0;1.1.0-bet
 com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-workloadorchestration;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-compute-recommender;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-computelimit;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-containerregistry-tasks;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-virtualenclaves;1.0.0-beta.1;1.0.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-edgeactions;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-edgeactions;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-computebulkactions;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.2;2.0.0-beta.2
@@ -551,6 +552,7 @@ io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
 unreleased_com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.55.0
+unreleased_com.azure.resourcemanager:azure-resourcemanager-network;2.58.0
 unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 unreleased_com.azure.v2:azure-data-appconfiguration;2.0.0-beta.1
