@@ -454,8 +454,6 @@ public class BlobSasImplUtil {
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource,
                 versionSegment == null ? "" : versionSegment, this.encryptionScope == null ? "" : this.encryptionScope,
-                "", /* request header */
-                "", /* request query parameter */
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,
