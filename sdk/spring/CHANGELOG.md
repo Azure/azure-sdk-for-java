@@ -28,7 +28,7 @@ The ConnectionFactory type is determined by the following configuration properti
   | false                                | true                       | CachingConnectionFactory       | CachingConnectionFactory       |
   | false                                | false                      | ServiceBusJmsConnectionFactory | ServiceBusJmsConnectionFactory |
 
-  **Note:**, `CachingConnectionFactory` and `JmsPoolConnectionFactory` will be used only when they exist in classpath.
+  **Note:** `CachingConnectionFactory` and `JmsPoolConnectionFactory` will be used only when they exist in classpath.
 
 
 ### Spring Cloud Azure Docker Compose
