@@ -683,9 +683,6 @@
 # ServiceLabel: %Dev Spaces
 # ServiceOwners:                                                   @greenie-msft @johnsta @yuzorMa
 
-# ServiceLabel: %Device Provisioning Service
-# ServiceOwners:                                                   @nberdy
-
 # ServiceLabel: %DevOps
 # ServiceOwners:                                                   @ashishonce @narula0781 @romil07
 
