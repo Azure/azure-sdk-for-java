@@ -641,12 +641,22 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("attributes", this.attributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("typeName", this.typeName);
         jsonWriter.writeStringField("lastModifiedTS", this.lastModifiedTS);
-        jsonWriter.writeMapField("businessAttributes", this.businessAttributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("businessAttributes", this.businessAttributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeArrayField("classifications", this.classifications,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("createTime", this.createTime);
@@ -660,8 +670,13 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
         jsonWriter.writeArrayField("meanings", this.meanings, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("provenanceType", this.provenanceType);
         jsonWriter.writeBooleanField("proxy", this.proxy);
-        jsonWriter.writeMapField("relationshipAttributes", this.relationshipAttributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("relationshipAttributes", this.relationshipAttributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeNumberField("updateTime", this.updateTime);
         jsonWriter.writeStringField("updatedBy", this.updatedBy);

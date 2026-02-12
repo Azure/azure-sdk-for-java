@@ -206,9 +206,10 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition(i));
         }
 
-        createdDocuments = bulkInsertBlocking(
+        createdDocuments = insertAllItemsBlocking(
                 createdCollection,
-                docDefList);
+                docDefList,
+                true);
 
         numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client).readPartitionKeyRanges(getCollectionLink(), (CosmosQueryRequestOptions) null)
                 .flatMap(p -> Flux.fromIterable(p.getResults())).collectList().single().block().size();

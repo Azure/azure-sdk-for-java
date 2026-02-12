@@ -19,7 +19,7 @@ import java.util.Map;
 public final class FlowLogsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkWatcherFlowLogCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/NetworkWatcherFlowLogCreate.
      * json
      */
     /**
