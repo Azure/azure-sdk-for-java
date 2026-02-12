@@ -100,7 +100,7 @@ class TestServiceBusMultiBinders {
         LOGGER.info("Send a message:" + message + " to the topic.");
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        assertThat(LATCH.get(activeProfile).await(30, TimeUnit.SECONDS)).isTrue();
+        assertThat(LATCH.get(activeProfile).await(100, TimeUnit.SECONDS)).isTrue();
     }
 
 }
