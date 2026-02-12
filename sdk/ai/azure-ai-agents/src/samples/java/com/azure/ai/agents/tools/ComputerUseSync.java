@@ -93,8 +93,8 @@ public class ComputerUseSync {
             );
 
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-                .setInstructions("You are a computer automation assistant." +
-                    "Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.")
+                .setInstructions("You are a computer automation assistant."
+                    + "Be direct and efficient. When you reach the search results page, read and describe the actual search result titles and descriptions you can see.")
                 .setTools(Collections.singletonList(tool));
 
             agent = agentsClient.createAgentVersion("ComputerUseAgent", agentDefinition);

@@ -231,17 +231,15 @@ public final class ComputerUseUtil {
                 currentState = SearchState.TYPED;
                 System.out.printf("  Typing text: '%s' - Simulating keyboard input%n", text);
             }
-        }
-        // Check for ENTER key press
-        else if ("keypress".equals(actionType)) {
+        } else if ("keypress".equals(actionType)) {
+            // Check for ENTER key press
             List<String> keys = getKeyPressKeys(action);
             if (keys.stream().anyMatch(k -> k.contains("Return") || k.contains("ENTER") || k.contains("Enter"))) {
                 currentState = SearchState.PRESSED_ENTER;
                 System.out.println("  -> Detected ENTER key press");
             }
-        }
-        // Check for click after typing (alternative submit method)
-        else if ("click".equals(actionType) && currentState == SearchState.TYPED) {
+        } else if ("click".equals(actionType) && currentState == SearchState.TYPED) {
+            // Check for click after typing (alternative submit method)
             currentState = SearchState.PRESSED_ENTER;
             System.out.println("  -> Detected click after typing");
         }
