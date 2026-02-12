@@ -232,7 +232,7 @@ stages:
 
         - job: PublishDocsMs
           displayName: Docs.MS Release
-          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
           timeoutInMinutes: 180
           dependsOn: PublishDevFeedPackage
 
@@ -274,7 +274,7 @@ stages:
 
         - job: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
-          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
           timeoutInMinutes: 120
           dependsOn: PublishESRPPackage
           variables:
