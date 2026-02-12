@@ -510,7 +510,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (value == null) {
                 return 1;
             }
-            
+
             return value + 1;
         });
 
@@ -2275,6 +2275,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     shouldAddHubRegionProcessingOnlyHeader,
                     perPartitionCircuitBreakerInfoHolder,
                     perPartitionAutomaticFailoverInfoHolder));
+
+            request.requestContext.setNRegionSynchronousCommitEnabled(this.globalEndpointManager.getNRegionSynchronousCommitEnabled());
         }
 
         // note: calling onBeforeSendRequest is a cheap operation which injects a CosmosDiagnostics
@@ -2713,6 +2715,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
+                            request.requestContext.setNRegionSynchronousCommitEnabled(this.globalEndpointManager.getNRegionSynchronousCommitEnabled());
                             PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                 request,
                                 options,
@@ -3095,6 +3098,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             }
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                            request.requestContext.setNRegionSynchronousCommitEnabled(this.globalEndpointManager.getNRegionSynchronousCommitEnabled());
 
                             PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                 request,
@@ -3368,7 +3372,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (request.requestContext != null) {
-            request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+           request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+            request.requestContext.setNRegionSynchronousCommitEnabled(this.globalEndpointManager.getNRegionSynchronousCommitEnabled());
         }
 
         if (retryPolicyInstance != null) {
@@ -3591,6 +3596,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (request.requestContext != null) {
             request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+            request.requestContext.setNRegionSynchronousCommitEnabled(this.globalEndpointManager.getNRegionSynchronousCommitEnabled());
         }
 
         if (retryPolicyInstance != null) {
@@ -3791,6 +3797,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             if (request.requestContext != null) {
                 request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+                request.requestContext.setNRegionSynchronousCommitEnabled(this.globalEndpointManager.getNRegionSynchronousCommitEnabled());
             }
 
             if (retryPolicyInstance != null) {
