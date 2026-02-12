@@ -95,6 +95,8 @@ class TestServiceBusMultiBinders {
                                             Sinks.Many<Message<String>> manyTopic) throws InterruptedException {
         GenericMessage<String> genericMessage = new GenericMessage<>(message);
 
+        Thread.sleep(2000);
+
         LOGGER.info("Send a message:" + message + " to the queue.");
         manyQueue.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
         LOGGER.info("Send a message:" + message + " to the topic.");
