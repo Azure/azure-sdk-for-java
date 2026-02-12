@@ -36,7 +36,7 @@ import java.util.Map;
 public final class FirewallPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/FirewallPolicyPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/FirewallPolicyPut.json
      */
     /**
      * Sample code: Create FirewallPolicy.
@@ -79,7 +79,7 @@ public final class FirewallPoliciesCreateOrUpdateSamples {
                         "https://tinawstorage.file.core.windows.net/?sv=2020-02-10&ss=bfqt&srt=sco&sp=rwdlacuptfx&se=2021-06-04T07:01:12Z&st=2021-06-03T23:01:12Z&sip=68.65.171.11&spr=https&sig=Plsa0RRVpGbY0IETZZOT6znOHcSro71LLTTbzquYPgs%3D"))
                 .withIntrusionDetection(new FirewallPolicyIntrusionDetection()
                     .withMode(FirewallPolicyIntrusionDetectionStateType.ALERT)
-                    .withProfile(FirewallPolicyIntrusionDetectionProfileType.fromString("Balanced"))
+                    .withProfile(FirewallPolicyIntrusionDetectionProfileType.CORE)
                     .withConfiguration(new FirewallPolicyIntrusionDetectionConfiguration()
                         .withSignatureOverrides(
                             Arrays.asList(new FirewallPolicyIntrusionDetectionSignatureSpecification().withId("2525004")

@@ -1,14 +1,16 @@
 # Release History
 
-## 2.58.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.58.0 (2026-02-14)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed `ADVANCED`, `BASIC`, and `STANDARD` from `FirewallPolicyIntrusionDetectionProfileType` to align with the service model.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
 
 ## 2.57.1 (2026-01-29)
 
