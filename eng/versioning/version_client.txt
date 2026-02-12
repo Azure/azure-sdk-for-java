@@ -501,7 +501,6 @@ com.azure.resourcemanager:azure-resourcemanager-mongodbatlas;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-purestorageblock;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-planetarycomputer;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-fluxconfigurations;1.0.0-beta.1;1.0.0-beta.2
-
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensions;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensiontypes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cloudhealth;1.0.0-beta.1;1.0.0-beta.2
