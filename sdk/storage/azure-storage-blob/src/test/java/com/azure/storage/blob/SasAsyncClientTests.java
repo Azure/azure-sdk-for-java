@@ -1460,12 +1460,9 @@ public class SasAsyncClientTests extends BlobTestBase {
 
                     assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
 
-                    BlockBlobAsyncClient testBlob
-                        = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
                     // Generate blob SAS with delegated user object ID
                     BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiresOn, permissions);
-                    String sasToken = testBlob.generateUserDelegationSas(sasValues, userDelegationKey);
+                    String sasToken = sasClient.generateUserDelegationSas(sasValues, userDelegationKey);
 
                     // Validate SAS token contains required parameters
                     assertTrue(sasToken.contains("skdutid=" + tid));
@@ -1473,7 +1470,7 @@ public class SasAsyncClientTests extends BlobTestBase {
 
                     // Test blob operations with SAS + token credential
                     BlockBlobAsyncClient identityBlobClient
-                        = instrument(new BlobClientBuilder().endpoint(testBlob.getBlobUrl()).sasToken(sasToken))
+                        = instrument(new BlobClientBuilder().endpoint(sasClient.getBlobUrl()).sasToken(sasToken))
                             .buildAsyncClient()
                             .getBlockBlobAsyncClient();
 

@@ -537,12 +537,10 @@ public class SasClientTests extends BlobTestBase {
             assertNotNull(userDelegationKey);
             assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
 
-            BlockBlobClient testBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-
             // Generate blob SAS with delegated user object ID
             BlobServiceSasSignatureValues sasValues
                 = new BlobServiceSasSignatureValues(expiresOn, permissions).setDelegatedUserObjectId(oid);
-            String sasToken = testBlob.generateUserDelegationSas(sasValues, userDelegationKey);
+            String sasToken = sasClient.generateUserDelegationSas(sasValues, userDelegationKey);
 
             // Validate SAS token contains required parameters
             assertTrue(sasToken.contains("sduoid=" + oid));
@@ -550,7 +548,7 @@ public class SasClientTests extends BlobTestBase {
 
             // Test blob operations with SAS + token credential
             BlockBlobClient identityBlobClient = instrument(
-                new BlobClientBuilder().endpoint(testBlob.getBlobUrl()).sasToken(sasToken).credential(tokenCredential))
+                new BlobClientBuilder().endpoint(sasClient.getBlobUrl()).sasToken(sasToken).credential(tokenCredential))
                     .buildClient()
                     .getBlockBlobClient();
 
@@ -579,11 +577,9 @@ public class SasClientTests extends BlobTestBase {
             assertNotNull(userDelegationKey);
             assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
 
-            BlockBlobClient testBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-
             // Generate blob SAS with delegated user object ID
             BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiresOn, permissions);
-            String sasToken = testBlob.generateUserDelegationSas(sasValues, userDelegationKey);
+            String sasToken = sasClient.generateUserDelegationSas(sasValues, userDelegationKey);
 
             // Validate SAS token contains required parameters
             assertTrue(sasToken.contains("skdutid=" + tid));
@@ -591,7 +587,7 @@ public class SasClientTests extends BlobTestBase {
 
             // Test blob operations with SAS + token credential
             BlockBlobClient identityBlobClient
-                = instrument(new BlobClientBuilder().endpoint(testBlob.getBlobUrl()).sasToken(sasToken)).buildClient()
+                = instrument(new BlobClientBuilder().endpoint(sasClient.getBlobUrl()).sasToken(sasToken)).buildClient()
                     .getBlockBlobClient();
 
             BlobStorageException e = assertThrows(BlobStorageException.class, identityBlobClient::getProperties);
