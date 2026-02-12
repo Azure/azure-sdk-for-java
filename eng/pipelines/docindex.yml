@@ -198,7 +198,7 @@ jobs:
 
         - task: AzureCLI@2
           displayName: Queue Docs CI build for daily branch
-          condition: ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr')
+          condition: and(succeeded(), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
           inputs:
             azureSubscription: msdocs-apidrop-connection
             scriptType: pscore
