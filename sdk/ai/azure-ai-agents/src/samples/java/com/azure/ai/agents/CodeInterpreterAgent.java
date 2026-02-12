@@ -5,13 +5,10 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.CodeInterpreterContainerAuto;
 import com.azure.ai.agents.models.CodeInterpreterTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCodeInterpreterToolCall;
 import com.openai.models.responses.ResponseCreateParams;
@@ -36,15 +33,12 @@ public class CodeInterpreterAgent {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationsClient conversationsClient = builder.buildConversationsClient();
 
         AgentVersionDetails agent = null;
-        Conversation conversation = null;
 
         try {
-            // Create a CodeInterpreterTool with auto container configuration
-            CodeInterpreterContainerAuto containerConfig = new CodeInterpreterContainerAuto();
-            CodeInterpreterTool tool = new CodeInterpreterTool(BinaryData.fromObject(containerConfig));
+            // Create a CodeInterpreterTool with default auto container configuration
+            CodeInterpreterTool tool = new CodeInterpreterTool();
 
             // Create the agent definition with Code Interpreter tool enabled
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
@@ -57,10 +51,7 @@ public class CodeInterpreterAgent {
 
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            conversation = conversationsClient.getConversationService().create();
-            System.out.println("Created Conversation: " + conversation.id());
-
-            Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id(), 
+            Response response = responsesClient.createWithAgent(agentReference, 
                     ResponseCreateParams.builder().input("Calculate the first 10 prime numbers and show me the Python code you used."));
 
             // Process and display the response
@@ -91,11 +82,7 @@ public class CodeInterpreterAgent {
             System.out.println("\nResponse ID: " + response.id());
             System.out.println("Model Used: " + response.model());
         } finally {
-            // Cleanup conversation and agent
-            if (conversation != null) {
-                conversationsClient.getConversationService().delete(conversation.id());
-                System.out.println("Conversation deleted successfully.");
-            }
+            // Cleanup agent
             if (agent != null) {
                 agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
                 System.out.println("Agent deleted successfully.");
