@@ -297,11 +297,6 @@
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
-        <artifactId>azure-mixedreality-authentication</artifactId>
-        <version>1.2.38</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure</groupId>
         <artifactId>azure-monitor-ingestion</artifactId>
         <version>1.2.15</version>
       </dependency>
