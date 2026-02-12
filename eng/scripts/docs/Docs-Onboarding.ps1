@@ -1,10 +1,10 @@
 #$SetDocsPackageOnboarding = "Set-${Language}-DocsPackageOnboarding"
-function Set-java-DocsPackageOnboarding($moniker, $metadata, $docRepoLocation, $packageSourceOverride) { 
+function Set-java-DocsPackageOnboarding($moniker, $metadata, $docRepoLocation, $packageSourceOverride) {
     $packageJsonPath = Join-Path $docRepoLocation "package.json"
     $onboardingInfo = Get-Content $packageJsonPath | ConvertFrom-Json
 
     $monikerOutputPath = "docs-ref-autogen"
-    if ($moniker -ne 'latest') { 
+    if ($moniker -ne 'latest') {
         $monikerOutputPath = "$moniker/docs-ref-autogen"
     }
     $monikerIndex = -1
@@ -51,18 +51,18 @@ function Set-java-DocsPackageOnboarding($moniker, $metadata, $docRepoLocation, $
 }
 
 #$GetDocsPackagesAlreadyOnboarded = "Get-${Language}-DocsPackagesAlreadyOnboarded"
-function Get-java-DocsPackagesAlreadyOnboarded($docRepoLocation, $moniker) { 
+function Get-java-DocsPackagesAlreadyOnboarded($docRepoLocation, $moniker) {
     return Get-java-OnboardedDocsMsPackagesForMoniker $docRepoLocation $moniker
 }
 
 # $GetPackageIdentity = "Get-${Language}-PackageIdentity"
-function Get-java-PackageIdentity($package) { 
+function Get-java-PackageIdentity($package) {
     return "$($package['Group']):$($package['Name'])"
 }
 
-# Declared in common.ps1 as 
+# Declared in common.ps1 as
 # $GetPackageIdentityFromCsvMetadata = "Get-${Language}-PackageIdentityFromCsvMetadata"
-function Get-java-PackageIdentityFromCsvMetadata($package) { 
+function Get-java-PackageIdentityFromCsvMetadata($package) {
     return "$($package.GroupId):$($Package.Package)"
 }
 
@@ -118,10 +118,11 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
       Set-Location $tempDirectory
       try {
         Write-Host "Calling java2docfx for $artifact"
-        Write-Host "java -jar ""$java2docfxJar"" -p ""$artifact"""
+        Write-Host "java -jar ""$java2docfxJar"" -p ""$artifact"" -i"
         $java2docfxResults = java `
         -jar "$java2docfxJar"`
         -p "$artifact"
+        -i # ignore *.implementation* packages
         # JRS-TODO: The -o option is something I'm currently questioning the behavior of but
         # I can do some initial testing without that option being set
         # -p "$artifact" `
