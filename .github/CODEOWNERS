@@ -116,7 +116,7 @@
 # ServiceLabel: %Attestation
 # ServiceOwners:                                                   @anilba06 @gkostal
 
-# PRLabel: %Azure Quantum
+# PRLabel: %Quantum
 /sdk/quantum/                                                      @Azure/azure-java-sdk @vxfield
 
 # PRLabel: %Azure SDK Tools
