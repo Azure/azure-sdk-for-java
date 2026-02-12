@@ -85,7 +85,8 @@ public final class RedTeamsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/redTeams/runs/{name}")
         @ExpectedResponses({ 200 })
@@ -95,7 +96,8 @@ public final class RedTeamsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/redTeams/runs")
         @ExpectedResponses({ 200 })
@@ -104,8 +106,8 @@ public final class RedTeamsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/redTeams/runs")
         @ExpectedResponses({ 200 })
@@ -114,8 +116,8 @@ public final class RedTeamsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/redTeams/runs:run")
         @ExpectedResponses({ 201 })
@@ -124,9 +126,9 @@ public final class RedTeamsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData redTeam,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData redTeam, RequestOptions requestOptions, Context context);
 
         @Post("/redTeams/runs:run")
         @ExpectedResponses({ 201 })
@@ -135,9 +137,9 @@ public final class RedTeamsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData redTeam,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData redTeam, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -146,8 +148,8 @@ public final class RedTeamsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -156,8 +158,8 @@ public final class RedTeamsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -202,9 +204,10 @@ public final class RedTeamsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String name, RequestOptions requestOptions) {
+        final String foundryFeatures = "RedTeams=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, context));
     }
 
     /**
@@ -249,9 +252,10 @@ public final class RedTeamsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String name, RequestOptions requestOptions) {
+        final String foundryFeatures = "RedTeams=V1Preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name, accept,
-            requestOptions, Context.NONE);
+        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
+            foundryFeatures, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -296,10 +300,11 @@ public final class RedTeamsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+        final String foundryFeatures = "RedTeams=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -393,9 +398,10 @@ public final class RedTeamsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
+        final String foundryFeatures = "RedTeams=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -450,16 +456,6 @@ public final class RedTeamsImpl {
 
     /**
      * Creates a redteam run.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
-     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview", "Evaluations=V1Preview", "RedTeams=V1Preview",
-     * "Insights=V1Preview", "MemoryStores=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -530,24 +526,15 @@ public final class RedTeamsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData redTeam, RequestOptions requestOptions) {
+        final String foundryFeatures = "RedTeams=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), foundryFeatures,
             this.client.getServiceVersion().getVersion(), contentType, accept, redTeam, requestOptions, context));
     }
 
     /**
      * Creates a redteam run.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
-     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview", "Evaluations=V1Preview", "RedTeams=V1Preview",
-     * "Insights=V1Preview", "MemoryStores=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -618,10 +605,11 @@ public final class RedTeamsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createWithResponse(BinaryData redTeam, RequestOptions requestOptions) {
+        final String foundryFeatures = "RedTeams=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), contentType,
-            accept, redTeam, requestOptions, Context.NONE);
+        return service.createSync(this.client.getEndpoint(), foundryFeatures,
+            this.client.getServiceVersion().getVersion(), contentType, accept, redTeam, requestOptions, Context.NONE);
     }
 
     /**
@@ -667,10 +655,11 @@ public final class RedTeamsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+        final String foundryFeatures = "RedTeams=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), foundryFeatures, accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -717,9 +706,10 @@ public final class RedTeamsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String foundryFeatures = "RedTeams=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listNextSync(nextLink, this.client.getEndpoint(), foundryFeatures, accept,
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

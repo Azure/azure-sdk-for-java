@@ -80,10 +80,8 @@ ResponsesClient responsesClient = agentsClientBuilder.buildResponsesClient();
 If you need a full OpenAI client as well, you can use the `AIProjectClientBuilder` to obtain one:
 
 ```java com.azure.ai.projects.openAIClient
-AIProjectClientBuilder projectsBuilder = new AIProjectClientBuilder();
-
-OpenAIClient openAIClient = projectsBuilder.buildOpenAIClient();
-OpenAIClientAsync openAIClientAsync = projectsBuilder.buildOpenAIAsyncClient();
+OpenAIClient openAIClient = builder.buildOpenAIClient();
+OpenAIClientAsync openAIClientAsync = builder.buildOpenAIAsyncClient();
 ```
 
 ## Examples

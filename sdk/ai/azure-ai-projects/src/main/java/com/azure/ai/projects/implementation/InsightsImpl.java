@@ -111,7 +111,8 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/insights/{id}")
         @ExpectedResponses({ 200 })
@@ -121,7 +122,8 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/insights")
         @ExpectedResponses({ 200 })
@@ -130,8 +132,8 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/insights")
         @ExpectedResponses({ 200 })
@@ -140,8 +142,8 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -150,8 +152,8 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -160,8 +162,8 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -186,8 +188,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
+     *     displayName: String (Required)
+     *     request (Required): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -208,8 +210,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
+     *     displayName: String (Required)
+     *     request (Required): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -274,8 +276,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
+     *     displayName: String (Required)
+     *     request (Required): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -296,8 +298,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
+     *     displayName: String (Required)
+     *     request (Required): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -359,8 +361,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
+     *     displayName: String (Required)
+     *     request (Required): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -380,9 +382,10 @@ public final class InsightsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String id, RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), id, foundryFeatures, accept, requestOptions, context));
     }
 
     /**
@@ -406,8 +409,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
+     *     displayName: String (Required)
+     *     request (Required): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -427,9 +430,10 @@ public final class InsightsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String id, RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id, accept,
-            requestOptions, Context.NONE);
+        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
+            foundryFeatures, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -458,8 +462,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
+     *     displayName: String (Required)
+     *     request (Required): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -479,10 +483,11 @@ public final class InsightsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -513,8 +518,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
+     *     displayName: String (Required)
+     *     request (Required): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -566,8 +571,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
+     *     displayName: String (Required)
+     *     request (Required): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -586,9 +591,10 @@ public final class InsightsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -619,8 +625,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
+     *     displayName: String (Required)
+     *     request (Required): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -659,8 +665,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
+     *     displayName: String (Required)
+     *     request (Required): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -681,10 +687,11 @@ public final class InsightsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), foundryFeatures, accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -702,8 +709,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
+     *     displayName: String (Required)
+     *     request (Required): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -723,9 +730,10 @@ public final class InsightsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listNextSync(nextLink, this.client.getEndpoint(), foundryFeatures, accept,
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

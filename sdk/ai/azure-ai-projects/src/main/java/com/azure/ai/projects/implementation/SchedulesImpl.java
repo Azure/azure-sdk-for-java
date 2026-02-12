@@ -86,8 +86,8 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @HeaderParam("Foundry-Features") String foundryFeatures, RequestOptions requestOptions, Context context);
 
         @Delete("/schedules/{id}")
         @ExpectedResponses({ 204 })
@@ -96,7 +96,8 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("id") String id, RequestOptions requestOptions, Context context);
+            @PathParam("id") String id, @HeaderParam("Foundry-Features") String foundryFeatures,
+            RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{id}")
         @ExpectedResponses({ 200 })
@@ -106,7 +107,8 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{id}")
         @ExpectedResponses({ 200 })
@@ -116,7 +118,8 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/schedules")
         @ExpectedResponses({ 200 })
@@ -125,8 +128,8 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/schedules")
         @ExpectedResponses({ 200 })
@@ -135,8 +138,8 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/schedules/{id}")
         @ExpectedResponses({ 200, 201 })
@@ -146,9 +149,9 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData schedule, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData resource,
+            RequestOptions requestOptions, Context context);
 
         @Put("/schedules/{id}")
         @ExpectedResponses({ 200, 201 })
@@ -158,9 +161,9 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData schedule, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData resource,
+            RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{schedule_id}/runs/{run_id}")
         @ExpectedResponses({ 200 })
@@ -192,7 +195,8 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listRuns(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{id}/runs")
         @ExpectedResponses({ 200 })
@@ -202,7 +206,8 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listRunsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -211,8 +216,8 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -221,8 +226,8 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -231,8 +236,8 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listRunsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -241,8 +246,8 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listRunsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -258,8 +263,9 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id, RequestOptions requestOptions) {
+        final String foundryFeatures = "Schedules=V1Preview";
         return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), id, foundryFeatures, requestOptions, context));
     }
 
     /**
@@ -275,8 +281,9 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String id, RequestOptions requestOptions) {
+        final String foundryFeatures = "Schedules=V1Preview";
         return service.deleteSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
-            requestOptions, Context.NONE);
+            foundryFeatures, requestOptions, Context.NONE);
     }
 
     /**
@@ -289,12 +296,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Optional, Required on create)
+     *     enabled: boolean (Required)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Optional, Required on create): {
+     *     trigger (Required): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Optional, Required on create): {
+     *     task (Required): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -323,9 +330,10 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String id, RequestOptions requestOptions) {
+        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), id, foundryFeatures, accept, requestOptions, context));
     }
 
     /**
@@ -338,12 +346,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Optional, Required on create)
+     *     enabled: boolean (Required)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Optional, Required on create): {
+     *     trigger (Required): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Optional, Required on create): {
+     *     task (Required): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -372,13 +380,23 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String id, RequestOptions requestOptions) {
+        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id, accept,
-            requestOptions, Context.NONE);
+        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
+            foundryFeatures, accept, requestOptions, Context.NONE);
     }
 
     /**
      * List all schedules.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Filter by the type of schedule. Allowed values: "Evaluation",
+     * "Insight".</td></tr>
+     * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -387,12 +405,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Optional, Required on create)
+     *     enabled: boolean (Required)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Optional, Required on create): {
+     *     trigger (Required): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Optional, Required on create): {
+     *     task (Required): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -421,16 +439,26 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
      * List all schedules.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Filter by the type of schedule. Allowed values: "Evaluation",
+     * "Insight".</td></tr>
+     * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -439,12 +467,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Optional, Required on create)
+     *     enabled: boolean (Required)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Optional, Required on create): {
+     *     trigger (Required): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Optional, Required on create): {
+     *     task (Required): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -481,6 +509,15 @@ public final class SchedulesImpl {
 
     /**
      * List all schedules.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Filter by the type of schedule. Allowed values: "Evaluation",
+     * "Insight".</td></tr>
+     * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -489,12 +526,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Optional, Required on create)
+     *     enabled: boolean (Required)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Optional, Required on create): {
+     *     trigger (Required): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Optional, Required on create): {
+     *     task (Required): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -522,15 +559,25 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
+        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
      * List all schedules.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Filter by the type of schedule. Allowed values: "Evaluation",
+     * "Insight".</td></tr>
+     * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -539,12 +586,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Optional, Required on create)
+     *     enabled: boolean (Required)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Optional, Required on create): {
+     *     trigger (Required): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Optional, Required on create): {
+     *     task (Required): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -589,12 +636,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Optional, Required on create)
+     *     enabled: boolean (Required)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Optional, Required on create): {
+     *     trigger (Required): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Optional, Required on create): {
+     *     task (Required): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -621,12 +668,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Optional, Required on create)
+     *     enabled: boolean (Required)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Optional, Required on create): {
+     *     trigger (Required): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Optional, Required on create): {
+     *     task (Required): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -646,7 +693,7 @@ public final class SchedulesImpl {
      * </pre>
      * 
      * @param id Identifier of the schedule.
-     * @param schedule The resource instance.
+     * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -655,12 +702,14 @@ public final class SchedulesImpl {
      * @return schedule model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String id, BinaryData schedule,
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String id, BinaryData resource,
         RequestOptions requestOptions) {
-        final String contentType = "application/merge-patch+json";
+        final String foundryFeatures = "Schedules=V1Preview";
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, contentType, accept, schedule, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+                id, foundryFeatures, contentType, accept, resource, requestOptions, context));
     }
 
     /**
@@ -673,12 +722,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Optional, Required on create)
+     *     enabled: boolean (Required)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Optional, Required on create): {
+     *     trigger (Required): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Optional, Required on create): {
+     *     task (Required): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -705,12 +754,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Optional, Required on create)
+     *     enabled: boolean (Required)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Optional, Required on create): {
+     *     trigger (Required): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Optional, Required on create): {
+     *     task (Required): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -730,7 +779,7 @@ public final class SchedulesImpl {
      * </pre>
      * 
      * @param id Identifier of the schedule.
-     * @param schedule The resource instance.
+     * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -739,12 +788,13 @@ public final class SchedulesImpl {
      * @return schedule model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String id, BinaryData schedule,
+    public Response<BinaryData> createOrUpdateWithResponse(String id, BinaryData resource,
         RequestOptions requestOptions) {
-        final String contentType = "application/merge-patch+json";
+        final String foundryFeatures = "Schedules=V1Preview";
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
-            contentType, accept, schedule, requestOptions, Context.NONE);
+            foundryFeatures, contentType, accept, resource, requestOptions, Context.NONE);
     }
 
     /**
@@ -778,7 +828,7 @@ public final class SchedulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRunWithResponseAsync(String scheduleId, String runId,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Insights=V1Preview";
+        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getRun(this.client.getEndpoint(), scheduleId, runId,
             foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
@@ -814,7 +864,7 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRunWithResponse(String scheduleId, String runId, RequestOptions requestOptions) {
-        final String foundryFeatures = "Insights=V1Preview";
+        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return service.getRunSync(this.client.getEndpoint(), scheduleId, runId, foundryFeatures,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
@@ -822,6 +872,15 @@ public final class SchedulesImpl {
 
     /**
      * List all schedule runs.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Filter by the type of schedule. Allowed values: "Evaluation",
+     * "Insight".</td></tr>
+     * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -850,16 +909,26 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listRunsSinglePageAsync(String id, RequestOptions requestOptions) {
+        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listRuns(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), id, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), id, foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
      * List all schedule runs.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Filter by the type of schedule. Allowed values: "Evaluation",
+     * "Insight".</td></tr>
+     * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -896,6 +965,15 @@ public final class SchedulesImpl {
 
     /**
      * List all schedule runs.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Filter by the type of schedule. Allowed values: "Evaluation",
+     * "Insight".</td></tr>
+     * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -923,15 +1001,25 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listRunsSinglePage(String id, RequestOptions requestOptions) {
+        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listRunsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), id, foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
      * List all schedule runs.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Filter by the type of schedule. Allowed values: "Evaluation",
+     * "Insight".</td></tr>
+     * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -976,12 +1064,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Optional, Required on create)
+     *     enabled: boolean (Required)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Optional, Required on create): {
+     *     trigger (Required): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Optional, Required on create): {
+     *     task (Required): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -1011,10 +1099,11 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), foundryFeatures, accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1029,12 +1118,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Optional, Required on create)
+     *     enabled: boolean (Required)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Optional, Required on create): {
+     *     trigger (Required): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Optional, Required on create): {
+     *     task (Required): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -1063,9 +1152,10 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listNextSync(nextLink, this.client.getEndpoint(), foundryFeatures, accept,
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -1101,10 +1191,11 @@ public final class SchedulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listRunsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
+        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listRunsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .withContext(context -> service.listRunsNext(nextLink, this.client.getEndpoint(), foundryFeatures, accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1138,9 +1229,10 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listRunsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listRunsNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listRunsNextSync(nextLink, this.client.getEndpoint(), foundryFeatures,
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

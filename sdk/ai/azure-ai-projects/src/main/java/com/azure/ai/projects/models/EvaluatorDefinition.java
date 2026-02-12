@@ -114,10 +114,20 @@ public class EvaluatorDefinition implements JsonSerializable<EvaluatorDefinition
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeMapField("init_parameters", this.initParameters,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("data_schema", this.dataSchema,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("init_parameters", this.initParameters, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeMapField("data_schema", this.dataSchema, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeMapField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }

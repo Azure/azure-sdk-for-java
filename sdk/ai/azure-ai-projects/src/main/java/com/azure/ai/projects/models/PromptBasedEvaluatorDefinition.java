@@ -78,10 +78,20 @@ public final class PromptBasedEvaluatorDefinition extends EvaluatorDefinition {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("init_parameters", getInitParameters(),
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("data_schema", getDataSchema(),
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("init_parameters", getInitParameters(), (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeMapField("data_schema", getDataSchema(), (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeMapField("metrics", getMetrics(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("prompt_text", this.promptText);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
