@@ -490,8 +490,7 @@ public class DataLakeServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return this.getUserDelegationKeyWithResponse(new DataLakeGetUserDelegationKeyOptions(expiry).setStartsOn(start))
-            .flatMap(FluxUtil::toMono);
+        return this.getUserDelegationKeyWithResponse(start, expiry).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -517,7 +516,10 @@ public class DataLakeServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
-        return getUserDelegationKeyWithResponse(new DataLakeGetUserDelegationKeyOptions(expiry).setStartsOn(start));
+        return blobServiceAsyncClient.getUserDelegationKeyWithResponse(start, expiry)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+            .map(response -> new SimpleResponse<>(response,
+                Transforms.toDataLakeUserDelegationKey(response.getValue())));
     }
 
     /**
