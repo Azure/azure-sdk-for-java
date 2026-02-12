@@ -16,8 +16,8 @@ public class StacCollectionsGetAll {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-list-collections.stac-collections-get-all
-        StacCatalogCollections response = stacClient.listCollections(null, null);
-        // END:com.azure.analytics.planetarycomputer.generated.stac-list-collections.stac-collections-get-all
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-collections.stac-collections-get-all
+        StacCatalogCollections response = stacClient.getCollections(null, null);
+        // END:com.azure.analytics.planetarycomputer.generated.stac-get-collections.stac-collections-get-all
     }
 }

@@ -30,7 +30,7 @@ public final class Point extends Geometry {
      * The coordinates of the point as [longitude, latitude].
      */
     @Generated
-    private String coordinates;
+    private List<Double> coordinates;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -62,7 +62,7 @@ public final class Point extends Geometry {
      * @return the coordinates value.
      */
     @Generated
-    public String getCoordinates() {
+    public List<Double> getCoordinates() {
         return this.coordinates;
     }
 
@@ -74,7 +74,7 @@ public final class Point extends Geometry {
      * @return the Point object itself.
      */
     @Generated
-    public Point setCoordinates(String coordinates) {
+    public Point setCoordinates(List<Double> coordinates) {
         this.coordinates = coordinates;
         this.updatedProperties.add("coordinates");
         return this;
@@ -103,7 +103,8 @@ public final class Point extends Geometry {
             jsonWriter.writeStartObject();
             jsonWriter.writeArrayField("bbox", getBoundingBox(), (writer, element) -> writer.writeDouble(element));
             jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-            jsonWriter.writeStringField("coordinates", this.coordinates);
+            jsonWriter.writeArrayField("coordinates", this.coordinates,
+                (writer, element) -> writer.writeDouble(element));
             return jsonWriter.writeEndObject();
         }
     }
@@ -123,7 +124,8 @@ public final class Point extends Geometry {
             if (this.coordinates == null) {
                 jsonWriter.writeNullField("coordinates");
             } else {
-                jsonWriter.writeStringField("coordinates", this.coordinates);
+                jsonWriter.writeArrayField("coordinates", this.coordinates,
+                    (writer, element) -> writer.writeDouble(element));
             }
         }
         return jsonWriter.writeEndObject();
@@ -151,7 +153,8 @@ public final class Point extends Geometry {
                 } else if ("type".equals(fieldName)) {
                     deserializedPoint.type = GeometryType.fromString(reader.getString());
                 } else if ("coordinates".equals(fieldName)) {
-                    deserializedPoint.coordinates = reader.getString();
+                    List<Double> coordinates = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedPoint.coordinates = coordinates;
                 } else {
                     reader.skipChildren();
                 }

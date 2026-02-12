@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -31,7 +30,7 @@ public final class StacItemStatisticsGeoJsonProperties
      * Properties for STAC Item statistics GeoJSON Feature
      */
     @Generated
-    private Map<String, BinaryData> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of StacItemStatisticsGeoJsonProperties class.
@@ -59,7 +58,7 @@ public final class StacItemStatisticsGeoJsonProperties
      * @return the additionalProperties value.
      */
     @Generated
-    public Map<String, BinaryData> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -72,13 +71,8 @@ public final class StacItemStatisticsGeoJsonProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("statistics", this.statistics, (writer, element) -> writer.writeJson(element));
         if (additionalProperties != null) {
-            for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeFieldName(additionalProperty.getKey());
-                if (additionalProperty.getValue() == null) {
-                    jsonWriter.writeNull();
-                } else {
-                    additionalProperty.getValue().writeTo(jsonWriter);
-                }
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
             }
         }
         return jsonWriter.writeEndObject();
@@ -97,7 +91,7 @@ public final class StacItemStatisticsGeoJsonProperties
     public static StacItemStatisticsGeoJsonProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Map<String, BandStatistics> statistics = null;
-            Map<String, BinaryData> additionalProperties = null;
+            Map<String, Object> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -109,8 +103,7 @@ public final class StacItemStatisticsGeoJsonProperties
                         additionalProperties = new LinkedHashMap<>();
                     }
 
-                    additionalProperties.put(fieldName,
-                        reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    additionalProperties.put(fieldName, reader.readUntyped());
                 }
             }
             StacItemStatisticsGeoJsonProperties deserializedStacItemStatisticsGeoJsonProperties

@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -64,19 +63,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * Overrides datetime validation from the base request model.
      */
     @Generated
-    private Map<String, BinaryData> conformanceClass;
-
-    /*
-     * Whether to sign asset URLs in the response.
-     */
-    @Generated
-    private StacAssetUrlSigningMode sign;
-
-    /*
-     * URL signature duration in minutes.
-     */
-    @Generated
-    private Integer durationInMinutes;
+    private Map<String, Object> conformanceClass;
 
     /*
      * STAC Query
@@ -84,7 +71,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * See the [STAC Query Extension](https://github.com/stac-api-extensions/query).
      */
     @Generated
-    private Map<String, BinaryData> query;
+    private Map<String, Object> query;
 
     /*
      * Sort criteria for the search results.
@@ -108,7 +95,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * See the [STAC Filter Extension](https://github.com/stac-api-extensions/filter).
      */
     @Generated
-    private String filter;
+    private Map<String, Object> filter;
 
     /*
      * Coordinate reference system for the filter.
@@ -275,7 +262,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the conformanceClass value.
      */
     @Generated
-    public Map<String, BinaryData> getConformanceClass() {
+    public Map<String, Object> getConformanceClass() {
         return this.conformanceClass;
     }
 
@@ -288,52 +275,8 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the StacSearchParameters object itself.
      */
     @Generated
-    public StacSearchParameters setConformanceClass(Map<String, BinaryData> conformanceClass) {
+    public StacSearchParameters setConformanceClass(Map<String, Object> conformanceClass) {
         this.conformanceClass = conformanceClass;
-        return this;
-    }
-
-    /**
-     * Get the sign property: Whether to sign asset URLs in the response.
-     * 
-     * @return the sign value.
-     */
-    @Generated
-    public StacAssetUrlSigningMode getSign() {
-        return this.sign;
-    }
-
-    /**
-     * Set the sign property: Whether to sign asset URLs in the response.
-     * 
-     * @param sign the sign value to set.
-     * @return the StacSearchParameters object itself.
-     */
-    @Generated
-    public StacSearchParameters setSign(StacAssetUrlSigningMode sign) {
-        this.sign = sign;
-        return this;
-    }
-
-    /**
-     * Get the durationInMinutes property: URL signature duration in minutes.
-     * 
-     * @return the durationInMinutes value.
-     */
-    @Generated
-    public Integer getDurationInMinutes() {
-        return this.durationInMinutes;
-    }
-
-    /**
-     * Set the durationInMinutes property: URL signature duration in minutes.
-     * 
-     * @param durationInMinutes the durationInMinutes value to set.
-     * @return the StacSearchParameters object itself.
-     */
-    @Generated
-    public StacSearchParameters setDurationInMinutes(Integer durationInMinutes) {
-        this.durationInMinutes = durationInMinutes;
         return this;
     }
 
@@ -345,7 +288,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the query value.
      */
     @Generated
-    public Map<String, BinaryData> getQuery() {
+    public Map<String, Object> getQuery() {
         return this.query;
     }
 
@@ -358,7 +301,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the StacSearchParameters object itself.
      */
     @Generated
-    public StacSearchParameters setQuery(Map<String, BinaryData> query) {
+    public StacSearchParameters setQuery(Map<String, Object> query) {
         this.query = query;
         return this;
     }
@@ -423,7 +366,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the filter value.
      */
     @Generated
-    public String getFilter() {
+    public Map<String, Object> getFilter() {
         return this.filter;
     }
 
@@ -436,7 +379,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the StacSearchParameters object itself.
      */
     @Generated
-    public StacSearchParameters setFilter(String filter) {
+    public StacSearchParameters setFilter(Map<String, Object> filter) {
         this.filter = filter;
         return this;
     }
@@ -520,15 +463,11 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
         jsonWriter.writeJsonField("intersects", this.intersects);
         jsonWriter.writeStringField("datetime", this.datetime);
         jsonWriter.writeNumberField("limit", this.limit);
-        jsonWriter.writeMapField("conf", this.conformanceClass,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeStringField("sign", this.sign == null ? null : this.sign.toString());
-        jsonWriter.writeNumberField("duration", this.durationInMinutes);
-        jsonWriter.writeMapField("query", this.query,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("conf", this.conformanceClass, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("query", this.query, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeArrayField("sortby", this.sortBy, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("filter", this.filter);
+        jsonWriter.writeMapField("filter", this.filter, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("filter-crs", this.filterCoordinateReferenceSystem);
         jsonWriter.writeStringField("filter-lang", this.filterLang == null ? null : this.filterLang.toString());
         jsonWriter.writeStringField("token", this.token);
@@ -567,16 +506,10 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
                 } else if ("limit".equals(fieldName)) {
                     deserializedStacSearchParameters.limit = reader.getNullable(JsonReader::getInt);
                 } else if ("conf".equals(fieldName)) {
-                    Map<String, BinaryData> conformanceClass = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    Map<String, Object> conformanceClass = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedStacSearchParameters.conformanceClass = conformanceClass;
-                } else if ("sign".equals(fieldName)) {
-                    deserializedStacSearchParameters.sign = StacAssetUrlSigningMode.fromString(reader.getString());
-                } else if ("duration".equals(fieldName)) {
-                    deserializedStacSearchParameters.durationInMinutes = reader.getNullable(JsonReader::getInt);
                 } else if ("query".equals(fieldName)) {
-                    Map<String, BinaryData> query = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    Map<String, Object> query = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedStacSearchParameters.query = query;
                 } else if ("sortby".equals(fieldName)) {
                     List<StacSortExtension> sortBy = reader.readArray(reader1 -> StacSortExtension.fromJson(reader1));
@@ -586,7 +519,8 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
                         = reader.readArray(reader1 -> SearchOptionsFields.fromJson(reader1));
                     deserializedStacSearchParameters.fields = fields;
                 } else if ("filter".equals(fieldName)) {
-                    deserializedStacSearchParameters.filter = reader.getString();
+                    Map<String, Object> filter = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedStacSearchParameters.filter = filter;
                 } else if ("filter-crs".equals(fieldName)) {
                     deserializedStacSearchParameters.filterCoordinateReferenceSystem = reader.getString();
                 } else if ("filter-lang".equals(fieldName)) {

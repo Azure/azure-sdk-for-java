@@ -12,10 +12,8 @@ import com.azure.analytics.planetarycomputer.models.StacExtensionExtent;
 import com.azure.analytics.planetarycomputer.models.StacExtensionSpatialExtent;
 import com.azure.analytics.planetarycomputer.models.StacLink;
 import com.azure.analytics.planetarycomputer.models.StacLinkType;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,13 +48,12 @@ public class StacCollectionsCreateOrReplace {
                     .setBoundingBox(Arrays.asList(Arrays.asList(-180.0, -90.0, 180.0, 90.0))),
                 new StacCollectionTemporalExtent(Arrays.asList(Arrays.asList(
                     OffsetDateTime.parse("2020-01-01T00:00:00Z"), OffsetDateTime.parse("2024-12-31T23:59:59Z"))))))
-                        .setCreatedOn("2025-10-28T18:47:27.7827791Z")
-                        .setUpdatedOn("2025-10-28T18:47:27.7827791Z")
+                        .setCreatedOn(OffsetDateTime.parse("2025-10-28T18:47:27.7827791Z"))
+                        .setUpdatedOn(OffsetDateTime.parse("2025-10-28T18:47:27.7827791Z"))
                         .setStacVersion("1.0.0")
                         .setTitle("Test Collection Lifecycle")
                         .setType("Collection")
-                        .setAdditionalProperties(mapOf("id",
-                            BinaryData.fromBytes("test-collection-lifecycle".getBytes(StandardCharsets.UTF_8)))));
+                        .setAdditionalProperties(mapOf("id", "test-collection-lifecycle")));
         // END:com.azure.analytics.planetarycomputer.generated.stac-create-or-replace-collection.stac-collections-create-or-replace
     }
 

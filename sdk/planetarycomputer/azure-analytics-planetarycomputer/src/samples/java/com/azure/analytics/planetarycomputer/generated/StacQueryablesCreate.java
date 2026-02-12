@@ -8,10 +8,8 @@ import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.StacQueryable;
 import com.azure.analytics.planetarycomputer.models.StacQueryableDefinitionDataType;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,10 +23,8 @@ public class StacQueryablesCreate {
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-create-queryables.stac-queryables-create
         List<StacQueryable> response = stacClient.createQueryables("naip-atl",
-            Arrays.asList(new StacQueryable("test:property",
-                mapOf("data_type", BinaryData.fromBytes("number".getBytes(StandardCharsets.UTF_8))))
-                    .setCreateIndex(false)
-                    .setDataType(StacQueryableDefinitionDataType.NUMBER)));
+            Arrays.asList(new StacQueryable("test:property", mapOf("data_type", "number")).setCreateIndex(false)
+                .setDataType(StacQueryableDefinitionDataType.NUMBER)));
         // END:com.azure.analytics.planetarycomputer.generated.stac-create-queryables.stac-queryables-create
     }
 

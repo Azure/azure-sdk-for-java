@@ -371,7 +371,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listCollections(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getCollections(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -381,7 +381,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listCollectionsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getCollectionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -910,8 +910,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -932,7 +932,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -968,7 +968,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -994,7 +994,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1022,10 +1022,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1062,8 +1062,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -1084,7 +1084,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1120,7 +1120,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1146,7 +1146,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1174,10 +1174,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1213,8 +1213,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -1235,7 +1235,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1271,7 +1271,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1297,7 +1297,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1325,10 +1325,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1365,8 +1365,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -1387,7 +1387,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1423,7 +1423,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1449,7 +1449,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1477,10 +1477,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1517,8 +1517,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -1539,7 +1539,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1575,7 +1575,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1601,7 +1601,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1629,10 +1629,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1666,8 +1666,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -1688,7 +1688,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1724,7 +1724,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1750,7 +1750,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1778,10 +1778,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1833,7 +1833,7 @@ public final class StacsImpl {
      *                 description: String (Optional)
      *                 cql (Required): [
      *                      (Required){
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 ]
      *             }
@@ -1875,7 +1875,7 @@ public final class StacsImpl {
      *         ]
      *         defaultLocation (Optional): (recursive schema, see defaultLocation above)
      *         defaultCustomQuery (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      * }
@@ -1928,7 +1928,7 @@ public final class StacsImpl {
      *                 description: String (Optional)
      *                 cql (Required): [
      *                      (Required){
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 ]
      *             }
@@ -1970,7 +1970,7 @@ public final class StacsImpl {
      *         ]
      *         defaultLocation (Optional): (recursive schema, see defaultLocation above)
      *         defaultCustomQuery (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      * }
@@ -2009,7 +2009,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -2026,7 +2026,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -2067,7 +2067,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -2084,7 +2084,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -2123,7 +2123,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -2140,7 +2140,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -2182,7 +2182,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -2199,7 +2199,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -2281,7 +2281,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -2322,7 +2322,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -2363,7 +2363,7 @@ public final class StacsImpl {
      *         description: String (Optional)
      *         cql (Required): [
      *              (Required){
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         ]
      *     }
@@ -2404,7 +2404,7 @@ public final class StacsImpl {
      *         description: String (Optional)
      *         cql (Required): [
      *              (Required){
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         ]
      *     }
@@ -2438,8 +2438,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -2460,7 +2460,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2496,7 +2496,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -2522,7 +2522,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -2550,10 +2550,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -2618,8 +2618,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -2640,7 +2640,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2676,7 +2676,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -2702,7 +2702,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -2730,10 +2730,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -2796,8 +2796,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -2818,7 +2818,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2854,7 +2854,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -2880,7 +2880,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -2908,10 +2908,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -2980,8 +2980,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -3002,7 +3002,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3038,7 +3038,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3064,7 +3064,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3092,10 +3092,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -3163,8 +3163,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -3185,7 +3185,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3221,7 +3221,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3247,7 +3247,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3275,10 +3275,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -3347,8 +3347,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -3369,7 +3369,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3405,7 +3405,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3431,7 +3431,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3459,10 +3459,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -3530,8 +3530,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -3552,7 +3552,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3588,7 +3588,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3614,7 +3614,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3642,10 +3642,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -3656,8 +3656,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -3678,7 +3678,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3714,7 +3714,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3740,7 +3740,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3768,10 +3768,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -3807,8 +3807,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -3829,7 +3829,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3865,7 +3865,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3891,7 +3891,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3919,10 +3919,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -3933,8 +3933,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -3955,7 +3955,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3991,7 +3991,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4017,7 +4017,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4045,10 +4045,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -4427,8 +4427,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -4449,7 +4449,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -4485,7 +4485,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4511,7 +4511,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4539,10 +4539,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -4584,8 +4584,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -4606,7 +4606,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -4642,7 +4642,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4668,7 +4668,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4696,10 +4696,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -4753,15 +4753,15 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
      *     collections (Required): [
      *          (Required){
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
+     *             msft:_created: OffsetDateTime (Optional)
+     *             msft:_updated: OffsetDateTime (Optional)
      *             msft:short_description: String (Optional)
      *             stac_extensions (Optional): [
      *                 String (Optional)
@@ -4803,7 +4803,7 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
@@ -4829,7 +4829,7 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
@@ -4857,10 +4857,10 @@ public final class StacsImpl {
      *                 (recursive schema, see above)
      *             ]
      *             summaries (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -4879,9 +4879,9 @@ public final class StacsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listCollectionsWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCollectionsWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listCollections(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getCollections(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -4916,15 +4916,15 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
      *     collections (Required): [
      *          (Required){
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
+     *             msft:_created: OffsetDateTime (Optional)
+     *             msft:_updated: OffsetDateTime (Optional)
      *             msft:short_description: String (Optional)
      *             stac_extensions (Optional): [
      *                 String (Optional)
@@ -4966,7 +4966,7 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
@@ -4992,7 +4992,7 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
@@ -5020,10 +5020,10 @@ public final class StacsImpl {
      *                 (recursive schema, see above)
      *             ]
      *             summaries (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -5041,9 +5041,9 @@ public final class StacsImpl {
      * List all collections in the GeoCatalog instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listCollectionsWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getCollectionsWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listCollectionsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.getCollectionsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             accept, requestOptions, Context.NONE);
     }
 
@@ -6222,8 +6222,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -6248,7 +6248,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -6284,8 +6284,8 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -6310,7 +6310,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -6358,13 +6358,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -6458,13 +6458,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -6556,13 +6556,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -6659,13 +6659,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -6762,13 +6762,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -6865,13 +6865,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -6968,13 +6968,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -7016,7 +7016,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -7041,11 +7041,11 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -7126,13 +7126,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -7174,7 +7174,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -7199,11 +7199,11 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -7282,13 +7282,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -7330,7 +7330,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -7355,11 +7355,11 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -7443,13 +7443,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -7491,7 +7491,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -7516,11 +7516,11 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -7604,13 +7604,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -7652,7 +7652,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -7677,11 +7677,11 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -7765,13 +7765,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -7813,7 +7813,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -7838,11 +7838,11 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -8257,13 +8257,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -8305,7 +8305,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -8330,11 +8330,11 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -8380,13 +8380,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -8428,7 +8428,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -8453,11 +8453,11 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -8563,13 +8563,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -8581,8 +8581,8 @@ public final class StacsImpl {
      *             links (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
+     *             msft:_created: OffsetDateTime (Optional)
+     *             msft:_updated: OffsetDateTime (Optional)
      *             msft:short_description: String (Optional)
      *             stac_extensions (Optional): [
      *                 String (Optional)
@@ -8624,7 +8624,7 @@ public final class StacsImpl {
      *                 start_datetime: OffsetDateTime (Optional)
      *                 end_datetime: OffsetDateTime (Optional)
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *             assets (Optional, Required on create): {
@@ -8649,11 +8649,11 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
-     *             _msft:ts: String (Optional)
+     *             _msft:ts: OffsetDateTime (Optional)
      *             _msft:etag: String (Optional)
      *         }
      *     ]
@@ -8772,13 +8772,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -8790,8 +8790,8 @@ public final class StacsImpl {
      *             links (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
+     *             msft:_created: OffsetDateTime (Optional)
+     *             msft:_updated: OffsetDateTime (Optional)
      *             msft:short_description: String (Optional)
      *             stac_extensions (Optional): [
      *                 String (Optional)
@@ -8833,7 +8833,7 @@ public final class StacsImpl {
      *                 start_datetime: OffsetDateTime (Optional)
      *                 end_datetime: OffsetDateTime (Optional)
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *             assets (Optional, Required on create): {
@@ -8858,11 +8858,11 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
-     *             _msft:ts: String (Optional)
+     *             _msft:ts: OffsetDateTime (Optional)
      *             _msft:etag: String (Optional)
      *         }
      *     ]
@@ -8917,13 +8917,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -8965,7 +8965,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -8990,11 +8990,11 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -9074,13 +9074,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -9122,7 +9122,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -9147,11 +9147,11 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -9231,13 +9231,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -9279,7 +9279,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -9304,11 +9304,11 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -9392,13 +9392,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -9440,7 +9440,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -9465,11 +9465,11 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -9543,7 +9543,7 @@ public final class StacsImpl {
      *      (Required){
      *         name: String (Required)
      *         definition (Required): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *         create_index: Boolean (Optional)
      *         data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9560,7 +9560,7 @@ public final class StacsImpl {
      *      (Required){
      *         name: String (Required)
      *         definition (Required): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *         create_index: Boolean (Optional)
      *         data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9600,7 +9600,7 @@ public final class StacsImpl {
      *      (Required){
      *         name: String (Required)
      *         definition (Required): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *         create_index: Boolean (Optional)
      *         data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9617,7 +9617,7 @@ public final class StacsImpl {
      *      (Required){
      *         name: String (Required)
      *         definition (Required): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *         create_index: Boolean (Optional)
      *         data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9656,7 +9656,7 @@ public final class StacsImpl {
      * {
      *     name: String (Required)
      *     definition (Required): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     create_index: Boolean (Optional)
      *     data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9671,7 +9671,7 @@ public final class StacsImpl {
      * {
      *     name: String (Required)
      *     definition (Required): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     create_index: Boolean (Optional)
      *     data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9712,7 +9712,7 @@ public final class StacsImpl {
      * {
      *     name: String (Required)
      *     definition (Required): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     create_index: Boolean (Optional)
      *     data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9727,7 +9727,7 @@ public final class StacsImpl {
      * {
      *     name: String (Required)
      *     definition (Required): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     create_index: Boolean (Optional)
      *     data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9805,7 +9805,7 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     String: BinaryData (Required)
+     *     String: Object (Required)
      * }
      * }
      * </pre>
@@ -9833,7 +9833,7 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     String: BinaryData (Required)
+     *     String: Object (Required)
      * }
      * }
      * </pre>
@@ -9861,7 +9861,7 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     String: BinaryData (Required)
+     *     String: Object (Required)
      * }
      * }
      * </pre>
@@ -9891,7 +9891,7 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
-     *     String: BinaryData (Required)
+     *     String: Object (Required)
      * }
      * }
      * </pre>
@@ -9916,6 +9916,15 @@ public final class StacsImpl {
      * Search
      * 
      * STAC search operation.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sign</td><td>String</td><td>No</td><td>Whether to sign asset URLs in the response. Allowed values:
+     * "true", "false".</td></tr>
+     * <tr><td>duration</td><td>Integer</td><td>No</td><td>URL signature duration in minutes.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -9939,12 +9948,10 @@ public final class StacsImpl {
      *     datetime: String (Optional)
      *     limit: Integer (Optional)
      *     conf (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
-     *     sign: String(true/false) (Optional)
-     *     duration: Integer (Optional)
      *     query (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     sortby (Optional): [
      *          (Optional){
@@ -9962,7 +9969,9 @@ public final class StacsImpl {
      *             ]
      *         }
      *     ]
-     *     filter: String (Optional)
+     *     filter (Optional): {
+     *         String: Object (Required)
+     *     }
      *     filter-crs: String (Optional)
      *     filter-lang: String(cql-json/cql2-json/cql2-text) (Optional)
      *     token: String (Optional)
@@ -9990,13 +9999,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -10008,8 +10017,8 @@ public final class StacsImpl {
      *             links (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
+     *             msft:_created: OffsetDateTime (Optional)
+     *             msft:_updated: OffsetDateTime (Optional)
      *             msft:short_description: String (Optional)
      *             stac_extensions (Optional): [
      *                 String (Optional)
@@ -10051,7 +10060,7 @@ public final class StacsImpl {
      *                 start_datetime: OffsetDateTime (Optional)
      *                 end_datetime: OffsetDateTime (Optional)
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *             assets (Optional, Required on create): {
@@ -10076,11 +10085,11 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
-     *             _msft:ts: String (Optional)
+     *             _msft:ts: OffsetDateTime (Optional)
      *             _msft:etag: String (Optional)
      *         }
      *     ]
@@ -10119,6 +10128,15 @@ public final class StacsImpl {
      * Search
      * 
      * STAC search operation.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sign</td><td>String</td><td>No</td><td>Whether to sign asset URLs in the response. Allowed values:
+     * "true", "false".</td></tr>
+     * <tr><td>duration</td><td>Integer</td><td>No</td><td>URL signature duration in minutes.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -10142,12 +10160,10 @@ public final class StacsImpl {
      *     datetime: String (Optional)
      *     limit: Integer (Optional)
      *     conf (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
-     *     sign: String(true/false) (Optional)
-     *     duration: Integer (Optional)
      *     query (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     sortby (Optional): [
      *          (Optional){
@@ -10165,7 +10181,9 @@ public final class StacsImpl {
      *             ]
      *         }
      *     ]
-     *     filter: String (Optional)
+     *     filter (Optional): {
+     *         String: Object (Required)
+     *     }
      *     filter-crs: String (Optional)
      *     filter-lang: String(cql-json/cql2-json/cql2-text) (Optional)
      *     token: String (Optional)
@@ -10193,13 +10211,13 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -10211,8 +10229,8 @@ public final class StacsImpl {
      *             links (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
+     *             msft:_created: OffsetDateTime (Optional)
+     *             msft:_updated: OffsetDateTime (Optional)
      *             msft:short_description: String (Optional)
      *             stac_extensions (Optional): [
      *                 String (Optional)
@@ -10254,7 +10272,7 @@ public final class StacsImpl {
      *                 start_datetime: OffsetDateTime (Optional)
      *                 end_datetime: OffsetDateTime (Optional)
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *             assets (Optional, Required on create): {
@@ -10279,11 +10297,11 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
-     *             _msft:ts: String (Optional)
+     *             _msft:ts: OffsetDateTime (Optional)
      *             _msft:etag: String (Optional)
      *         }
      *     ]

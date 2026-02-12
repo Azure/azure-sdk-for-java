@@ -7,7 +7,6 @@ package com.azure.analytics.planetarycomputer.models;
 import com.azure.analytics.planetarycomputer.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -81,7 +80,7 @@ public final class StacLink implements JsonSerializable<StacLink> {
      * For POST requests, the resource can specify the HTTP body as a JSON object.
      */
     @Generated
-    private Map<String, BinaryData> body;
+    private Map<String, Object> body;
 
     /*
      * Indicates whether the client is expected to merge the body value into the current request body before following
@@ -323,7 +322,7 @@ public final class StacLink implements JsonSerializable<StacLink> {
      * @return the body value.
      */
     @Generated
-    public Map<String, BinaryData> getBody() {
+    public Map<String, Object> getBody() {
         return this.body;
     }
 
@@ -334,7 +333,7 @@ public final class StacLink implements JsonSerializable<StacLink> {
      * @return the StacLink object itself.
      */
     @Generated
-    public StacLink setBody(Map<String, BinaryData> body) {
+    public StacLink setBody(Map<String, Object> body) {
         this.body = body;
         this.updatedProperties.add("body");
         return this;
@@ -387,8 +386,7 @@ public final class StacLink implements JsonSerializable<StacLink> {
             jsonWriter.writeNumberField("length", this.length);
             jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
             jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeString(element));
-            jsonWriter.writeMapField("body", this.body,
-                (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+            jsonWriter.writeMapField("body", this.body, (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeBooleanField("merge", this.merge);
             return jsonWriter.writeEndObject();
         }
@@ -463,13 +461,7 @@ public final class StacLink implements JsonSerializable<StacLink> {
             if (this.body == null) {
                 jsonWriter.writeNullField("body");
             } else {
-                jsonWriter.writeMapField("body", this.body, (writer, element) -> {
-                    if (element != null) {
-                        writer.writeUntyped(element == null ? null : element.toObject(Object.class));
-                    } else {
-                        writer.writeNull();
-                    }
-                });
+                jsonWriter.writeMapField("body", this.body, (writer, element) -> writer.writeUntyped(element));
             }
         }
         if (updatedProperties.contains("merge")) {
@@ -516,8 +508,7 @@ public final class StacLink implements JsonSerializable<StacLink> {
                     Map<String, String> headers = reader.readMap(reader1 -> reader1.getString());
                     deserializedStacLink.headers = headers;
                 } else if ("body".equals(fieldName)) {
-                    Map<String, BinaryData> body = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    Map<String, Object> body = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedStacLink.body = body;
                 } else if ("merge".equals(fieldName)) {
                     deserializedStacLink.merge = reader.getNullable(JsonReader::getBoolean);

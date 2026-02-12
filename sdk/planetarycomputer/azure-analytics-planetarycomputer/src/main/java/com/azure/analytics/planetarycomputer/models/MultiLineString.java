@@ -30,7 +30,7 @@ public final class MultiLineString extends Geometry {
      * The coordinates of the multilinestring.
      */
     @Generated
-    private List<List<Double>> coordinates;
+    private List<List<List<Double>>> coordinates;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -62,7 +62,7 @@ public final class MultiLineString extends Geometry {
      * @return the coordinates value.
      */
     @Generated
-    public List<List<Double>> getCoordinates() {
+    public List<List<List<Double>>> getCoordinates() {
         return this.coordinates;
     }
 
@@ -74,7 +74,7 @@ public final class MultiLineString extends Geometry {
      * @return the MultiLineString object itself.
      */
     @Generated
-    public MultiLineString setCoordinates(List<List<Double>> coordinates) {
+    public MultiLineString setCoordinates(List<List<List<Double>>> coordinates) {
         this.coordinates = coordinates;
         this.updatedProperties.add("coordinates");
         return this;
@@ -104,7 +104,8 @@ public final class MultiLineString extends Geometry {
             jsonWriter.writeArrayField("bbox", getBoundingBox(), (writer, element) -> writer.writeDouble(element));
             jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
             jsonWriter.writeArrayField("coordinates", this.coordinates,
-                (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeDouble(element1)));
+                (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeArray(element1,
+                    (writer2, element2) -> writer2.writeDouble(element2))));
             return jsonWriter.writeEndObject();
         }
     }
@@ -124,8 +125,9 @@ public final class MultiLineString extends Geometry {
             if (this.coordinates == null) {
                 jsonWriter.writeNullField("coordinates");
             } else {
-                jsonWriter.writeArrayField("coordinates", this.coordinates, (writer, element) -> writer
-                    .writeArray(element, (writer1, element1) -> writer1.writeDouble(element1)));
+                jsonWriter.writeArrayField("coordinates", this.coordinates,
+                    (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeArray(element1,
+                        (writer2, element2) -> writer2.writeDouble(element2))));
             }
         }
         return jsonWriter.writeEndObject();
@@ -153,8 +155,8 @@ public final class MultiLineString extends Geometry {
                 } else if ("type".equals(fieldName)) {
                     deserializedMultiLineString.type = GeometryType.fromString(reader.getString());
                 } else if ("coordinates".equals(fieldName)) {
-                    List<List<Double>> coordinates
-                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getDouble()));
+                    List<List<List<Double>>> coordinates = reader.readArray(
+                        reader1 -> reader1.readArray(reader2 -> reader2.readArray(reader3 -> reader3.getDouble())));
                     deserializedMultiLineString.coordinates = coordinates;
                 } else {
                     reader.skipChildren();

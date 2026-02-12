@@ -7,10 +7,13 @@ package com.azure.analytics.planetarycomputer.models;
 import com.azure.analytics.planetarycomputer.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +70,7 @@ public final class StacItem extends StacItemOrStacItemCollection {
      * MSFT Timestamp
      */
     @Generated
-    private String timestamp;
+    private OffsetDateTime timestamp;
 
     /*
      * MSFT ETag
@@ -234,7 +237,7 @@ public final class StacItem extends StacItemOrStacItemCollection {
      * @return the timestamp value.
      */
     @Generated
-    public String getTimestamp() {
+    public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
 
@@ -245,7 +248,7 @@ public final class StacItem extends StacItemOrStacItemCollection {
      * @return the StacItem object itself.
      */
     @Generated
-    public StacItem setTimestamp(String timestamp) {
+    public StacItem setTimestamp(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
         this.updatedProperties.add("timestamp");
         return this;
@@ -301,7 +304,7 @@ public final class StacItem extends StacItemOrStacItemCollection {
      */
     @Generated
     @Override
-    public StacItem setCreatedOn(String createdOn) {
+    public StacItem setCreatedOn(OffsetDateTime createdOn) {
         super.setCreatedOn(createdOn);
         this.updatedProperties.add("createdOn");
         return this;
@@ -312,7 +315,7 @@ public final class StacItem extends StacItemOrStacItemCollection {
      */
     @Generated
     @Override
-    public StacItem setUpdatedOn(String updatedOn) {
+    public StacItem setUpdatedOn(OffsetDateTime updatedOn) {
         super.setUpdatedOn(updatedOn);
         this.updatedProperties.add("updatedOn");
         return this;
@@ -352,8 +355,10 @@ public final class StacItem extends StacItemOrStacItemCollection {
             jsonWriter.writeStartObject();
             jsonWriter.writeStringField("stac_version", getStacVersion());
             jsonWriter.writeArrayField("links", getLinks(), (writer, element) -> writer.writeJson(element));
-            jsonWriter.writeStringField("msft:_created", getCreatedOn());
-            jsonWriter.writeStringField("msft:_updated", getUpdatedOn());
+            jsonWriter.writeStringField("msft:_created",
+                getCreatedOn() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedOn()));
+            jsonWriter.writeStringField("msft:_updated",
+                getUpdatedOn() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getUpdatedOn()));
             jsonWriter.writeStringField("msft:short_description", getShortDescription());
             jsonWriter.writeArrayField("stac_extensions", getStacExtensions(),
                 (writer, element) -> writer.writeString(element));
@@ -363,7 +368,8 @@ public final class StacItem extends StacItemOrStacItemCollection {
             jsonWriter.writeArrayField("bbox", this.boundingBox, (writer, element) -> writer.writeDouble(element));
             jsonWriter.writeJsonField("properties", this.properties);
             jsonWriter.writeMapField("assets", this.assets, (writer, element) -> writer.writeJson(element));
-            jsonWriter.writeStringField("_msft:ts", this.timestamp);
+            jsonWriter.writeStringField("_msft:ts",
+                this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
             jsonWriter.writeStringField("_msft:etag", this.eTag);
             return jsonWriter.writeEndObject();
         }
@@ -390,14 +396,16 @@ public final class StacItem extends StacItemOrStacItemCollection {
             if (getCreatedOn() == null) {
                 jsonWriter.writeNullField("msft:_created");
             } else {
-                jsonWriter.writeStringField("msft:_created", getCreatedOn());
+                jsonWriter.writeStringField("msft:_created",
+                    getCreatedOn() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedOn()));
             }
         }
         if (updatedProperties.contains("updatedOn")) {
             if (getUpdatedOn() == null) {
                 jsonWriter.writeNullField("msft:_updated");
             } else {
-                jsonWriter.writeStringField("msft:_updated", getUpdatedOn());
+                jsonWriter.writeStringField("msft:_updated",
+                    getUpdatedOn() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getUpdatedOn()));
             }
         }
         if (updatedProperties.contains("shortDescription")) {
@@ -469,7 +477,8 @@ public final class StacItem extends StacItemOrStacItemCollection {
             if (this.timestamp == null) {
                 jsonWriter.writeNullField("_msft:ts");
             } else {
-                jsonWriter.writeStringField("_msft:ts", this.timestamp);
+                jsonWriter.writeStringField("_msft:ts",
+                    this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
             }
         }
         if (updatedProperties.contains("eTag")) {
@@ -508,10 +517,12 @@ public final class StacItem extends StacItemOrStacItemCollection {
                         .setLinks(deserializedStacItem, links);
                 } else if ("msft:_created".equals(fieldName)) {
                     JsonMergePatchHelper.getStacItemOrStacItemCollectionAccessor()
-                        .setCreatedOn(deserializedStacItem, reader.getString());
+                        .setCreatedOn(deserializedStacItem, reader.getNullable(
+                            nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("msft:_updated".equals(fieldName)) {
                     JsonMergePatchHelper.getStacItemOrStacItemCollectionAccessor()
-                        .setUpdatedOn(deserializedStacItem, reader.getString());
+                        .setUpdatedOn(deserializedStacItem, reader.getNullable(
+                            nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("msft:short_description".equals(fieldName)) {
                     JsonMergePatchHelper.getStacItemOrStacItemCollectionAccessor()
                         .setShortDescription(deserializedStacItem, reader.getString());
@@ -536,7 +547,8 @@ public final class StacItem extends StacItemOrStacItemCollection {
                     Map<String, StacAsset> assets = reader.readMap(reader1 -> StacAsset.fromJson(reader1));
                     deserializedStacItem.assets = assets;
                 } else if ("_msft:ts".equals(fieldName)) {
-                    deserializedStacItem.timestamp = reader.getString();
+                    deserializedStacItem.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("_msft:etag".equals(fieldName)) {
                     deserializedStacItem.eTag = reader.getString();
                 } else {

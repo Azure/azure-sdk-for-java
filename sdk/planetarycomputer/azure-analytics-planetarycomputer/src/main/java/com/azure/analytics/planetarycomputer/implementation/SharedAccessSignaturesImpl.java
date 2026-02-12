@@ -45,7 +45,7 @@ public final class SharedAccessSignaturesImpl {
 
     /**
      * Initializes an instance of SharedAccessSignaturesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SharedAccessSignaturesImpl(PlanetaryComputerProClientImpl client) {
@@ -56,7 +56,7 @@ public final class SharedAccessSignaturesImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public PlanetaryComputerServiceVersion getServiceVersion() {
@@ -131,7 +131,7 @@ public final class SharedAccessSignaturesImpl {
 
     /**
      * sign an HREF in the format of a URL and returns a SharedAccessSignatureSignedHrefResponse
-     *
+     * 
      * Signs a HREF (a link URL) by appending a [SAS
      * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
      * If the HREF is not a Azure Blob Storage HREF, then pass back the HREF unsigned.
@@ -140,12 +140,12 @@ public final class SharedAccessSignaturesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>duration</td><td>Integer</td><td>No</td><td>Duration
-     *
+     * 
      * The duration, in minutes, that the SAS token will be valid. Only valid for approved users.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -154,9 +154,9 @@ public final class SharedAccessSignaturesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param href Href
-     *
+     * 
      * HREF (URL) to sign.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -174,7 +174,7 @@ public final class SharedAccessSignaturesImpl {
 
     /**
      * sign an HREF in the format of a URL and returns a SharedAccessSignatureSignedHrefResponse
-     *
+     * 
      * Signs a HREF (a link URL) by appending a [SAS
      * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
      * If the HREF is not a Azure Blob Storage HREF, then pass back the HREF unsigned.
@@ -183,12 +183,12 @@ public final class SharedAccessSignaturesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>duration</td><td>Integer</td><td>No</td><td>Duration
-     *
+     * 
      * The duration, in minutes, that the SAS token will be valid. Only valid for approved users.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -197,9 +197,9 @@ public final class SharedAccessSignaturesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param href Href
-     *
+     * 
      * HREF (URL) to sign.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -217,7 +217,7 @@ public final class SharedAccessSignaturesImpl {
 
     /**
      * generate a SAS Token for the given Azure Blob storage account and container.
-     *
+     * 
      * Generate a [SAS
      * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
      * for the given storage account and container. The storage account and container
@@ -227,12 +227,12 @@ public final class SharedAccessSignaturesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>duration</td><td>Integer</td><td>No</td><td>Duration
-     *
+     * 
      * The duration, in minutes, that the SAS token will be valid. Only valid for approved users.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -241,9 +241,9 @@ public final class SharedAccessSignaturesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param collectionId Collection Id
-     *
+     * 
      * The name of the Collection that the SAS token will be issued for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -262,7 +262,7 @@ public final class SharedAccessSignaturesImpl {
 
     /**
      * generate a SAS Token for the given Azure Blob storage account and container.
-     *
+     * 
      * Generate a [SAS
      * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
      * for the given storage account and container. The storage account and container
@@ -272,12 +272,12 @@ public final class SharedAccessSignaturesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>duration</td><td>Integer</td><td>No</td><td>Duration
-     *
+     * 
      * The duration, in minutes, that the SAS token will be valid. Only valid for approved users.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -286,9 +286,9 @@ public final class SharedAccessSignaturesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param collectionId Collection Id
-     *
+     * 
      * The name of the Collection that the SAS token will be issued for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -306,7 +306,7 @@ public final class SharedAccessSignaturesImpl {
 
     /**
      * Revoke SAS token for the managed storage account of this GeoCatalog.
-     *
+     * 
      * Revoke a [SAS
      * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
      * for managed storage account of this GeoCatalog.
@@ -315,11 +315,11 @@ public final class SharedAccessSignaturesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>duration</td><td>Integer</td><td>No</td><td>Duration
-     *
+     * 
      * The duration, in minutes, that the SAS token will be valid. Only valid for approved users.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -335,7 +335,7 @@ public final class SharedAccessSignaturesImpl {
 
     /**
      * Revoke SAS token for the managed storage account of this GeoCatalog.
-     *
+     * 
      * Revoke a [SAS
      * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
      * for managed storage account of this GeoCatalog.
@@ -344,11 +344,11 @@ public final class SharedAccessSignaturesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>duration</td><td>Integer</td><td>No</td><td>Duration
-     *
+     * 
      * The duration, in minutes, that the SAS token will be valid. Only valid for approved users.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

@@ -9,35 +9,37 @@ import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.ImageParameters;
 import com.azure.analytics.planetarycomputer.models.ImageResponse;
 import com.azure.analytics.planetarycomputer.models.Polygon;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TilerStaticImagesCreate {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         DataClient dataClient
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-create-static-image.tiler-static-images-create
-        ImageResponse response = dataClient.createStaticImage("naip-atl", new ImageParameters(
-            mapOf("op", BinaryData.fromBytes("and".getBytes(StandardCharsets.UTF_8)), "args", BinaryData.fromBytes(
-                "[{op==, args=[{property=collection}, naip-atl]}, {op=anyinteracts, args=[{property=datetime}, {interval=[2023-01-01T00:00:00Z, 2023-12-31T00:00:00Z]}]}]"
-                    .getBytes(StandardCharsets.UTF_8))),
-            "assets=image&asset_bidx=image|1,2,3&collection=naip-atl", 1080, 1080)
-                .setZoom(13.0D)
-                .setGeometry(new Polygon()
-                    .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.45378097481053, 33.6567321707079),
-                        Arrays.asList(-84.39805886744838, 33.6567321707079),
-                        Arrays.asList(-84.39805886744838, 33.61945681366625),
-                        Arrays.asList(-84.45378097481053, 33.61945681366625),
-                        Arrays.asList(-84.45378097481053, 33.6567321707079)))))
-                .setShowBranding(false)
-                .setImageSize("1080x1080"));
+        ImageResponse response = dataClient.createStaticImage("naip-atl",
+            new ImageParameters(mapOf("op", "and", "args", JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(
+                    "[{\"op\":\"=\",\"args\":[{\"property\":\"collection\"},\"naip-atl\"]},{\"op\":\"anyinteracts\",\"args\":[{\"property\":\"datetime\"},{\"interval\":[\"2023-01-01T00:00:00Z\",\"2023-12-31T00:00:00Z\"]}]}]",
+                    Object.class, SerializerEncoding.JSON)),
+                "assets=image&asset_bidx=image|1,2,3&collection=naip-atl", 1080, 1080)
+                    .setZoom(13.0D)
+                    .setGeometry(new Polygon()
+                        .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.45378097481053, 33.6567321707079),
+                            Arrays.asList(-84.39805886744838, 33.6567321707079),
+                            Arrays.asList(-84.39805886744838, 33.61945681366625),
+                            Arrays.asList(-84.45378097481053, 33.61945681366625),
+                            Arrays.asList(-84.45378097481053, 33.6567321707079)))))
+                    .setShowBranding(false)
+                    .setImageSize("1080x1080"));
         // END:com.azure.analytics.planetarycomputer.generated.data-create-static-image.tiler-static-images-create
     }
 

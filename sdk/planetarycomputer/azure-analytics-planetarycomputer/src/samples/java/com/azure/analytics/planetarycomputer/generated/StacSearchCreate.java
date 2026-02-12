@@ -12,11 +12,16 @@ import com.azure.analytics.planetarycomputer.models.StacSearchParameters;
 import com.azure.analytics.planetarycomputer.models.StacSearchSortingDirection;
 import com.azure.analytics.planetarycomputer.models.StacSortExtension;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StacSearchCreate {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         StacClient stacClient
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
@@ -27,9 +32,23 @@ public class StacSearchCreate {
             .setDatetime("2021-01-01T00:00:00Z/2022-12-31T00:00:00Z")
             .setLimit(50)
             .setSortBy(Arrays.asList(new StacSortExtension("datetime", StacSearchSortingDirection.DESC)))
-            .setFilter(
-                "{op=s_intersects, args=[{property=geometry}, {type=Polygon, coordinates=[[[-84.46416308610219, 33.6033686729869], [-84.38815071170247, 33.6033686729869], [-84.38815071170247, 33.6713179813099], [-84.46416308610219, 33.6713179813099], [-84.46416308610219, 33.6033686729869]]]}]}")
-            .setFilterLang(FilterLanguage.CQL2_JSON));
+            .setFilter(mapOf("op", "s_intersects", "args", JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(
+                    "[{\"property\":\"geometry\"},{\"type\":\"Polygon\",\"coordinates\":[[[-84.46416308610219,33.6033686729869],[-84.38815071170247,33.6033686729869],[-84.38815071170247,33.6713179813099],[-84.46416308610219,33.6713179813099],[-84.46416308610219,33.6033686729869]]]}]",
+                    Object.class, SerializerEncoding.JSON)))
+            .setFilterLang(FilterLanguage.CQL2_JSON), null, null);
         // END:com.azure.analytics.planetarycomputer.generated.stac-search.stac-search-create
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

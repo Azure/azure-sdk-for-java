@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Map;
@@ -18,7 +17,7 @@ public class MapsClassMapLegendsGet {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-class-map-legend.maps-class-map-legends-get
-        Map<String, BinaryData> response = dataClient.getClassMapLegend("mtbs-severity", null, null);
+        Map<String, Object> response = dataClient.getClassMapLegend("mtbs-severity", null, null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-class-map-legend.maps-class-map-legends-get
     }
 }

@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -35,7 +34,7 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
      * Search
      */
     @Generated
-    private final Map<String, BinaryData> search;
+    private final Map<String, Object> search;
 
     /*
      * SQL WHERE clause representing the search filters
@@ -79,7 +78,7 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
      * @param metadata the metadata value to set.
      */
     @Generated
-    private TilerStacSearchDefinition(String hash, Map<String, BinaryData> search, String where, String orderBy,
+    private TilerStacSearchDefinition(String hash, Map<String, Object> search, String where, String orderBy,
         OffsetDateTime lastUsed, int useCount, MosaicMetadata metadata) {
         this.hash = hash;
         this.search = search;
@@ -106,7 +105,7 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
      * @return the search value.
      */
     @Generated
-    public Map<String, BinaryData> getSearch() {
+    public Map<String, Object> getSearch() {
         return this.search;
     }
 
@@ -168,8 +167,7 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("hash", this.hash);
-        jsonWriter.writeMapField("search", this.search,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("search", this.search, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("_where", this.where);
         jsonWriter.writeStringField("orderby", this.orderBy);
         jsonWriter.writeStringField("lastused",
@@ -192,7 +190,7 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
     public static TilerStacSearchDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String hash = null;
-            Map<String, BinaryData> search = null;
+            Map<String, Object> search = null;
             String where = null;
             String orderBy = null;
             OffsetDateTime lastUsed = null;
@@ -205,8 +203,7 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
                 if ("hash".equals(fieldName)) {
                     hash = reader.getString();
                 } else if ("search".equals(fieldName)) {
-                    search = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    search = reader.readMap(reader1 -> reader1.readUntyped());
                 } else if ("_where".equals(fieldName)) {
                     where = reader.getString();
                 } else if ("orderby".equals(fieldName)) {

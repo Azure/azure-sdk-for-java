@@ -8,10 +8,8 @@ import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.StacQueryable;
 import com.azure.analytics.planetarycomputer.models.StacQueryableDefinitionDataType;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,11 +21,9 @@ public class StacQueryablesReplace {
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-replace-queryable.stac-queryables-replace
         StacQueryable response = stacClient.replaceQueryable("naip-atl", "test%3Aproperty",
-            new StacQueryable("test:property",
-                mapOf("data_type", BinaryData.fromBytes("number".getBytes(StandardCharsets.UTF_8)), "description",
-                    BinaryData.fromBytes("Test property - updated".getBytes(StandardCharsets.UTF_8))))
-                        .setCreateIndex(false)
-                        .setDataType(StacQueryableDefinitionDataType.NUMBER));
+            new StacQueryable("test:property", mapOf("data_type", "number", "description", "Test property - updated"))
+                .setCreateIndex(false)
+                .setDataType(StacQueryableDefinitionDataType.NUMBER));
         // END:com.azure.analytics.planetarycomputer.generated.stac-replace-queryable.stac-queryables-replace
     }
 

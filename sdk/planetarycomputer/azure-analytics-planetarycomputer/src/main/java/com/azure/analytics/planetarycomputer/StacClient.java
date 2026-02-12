@@ -69,8 +69,8 @@ public final class StacClient {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -91,7 +91,7 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -127,7 +127,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -153,7 +153,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -181,10 +181,10 @@ public final class StacClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -219,8 +219,8 @@ public final class StacClient {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -241,7 +241,7 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -277,7 +277,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -303,7 +303,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -331,10 +331,10 @@ public final class StacClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -370,8 +370,8 @@ public final class StacClient {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -392,7 +392,7 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -428,7 +428,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -454,7 +454,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -482,10 +482,10 @@ public final class StacClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -536,7 +536,7 @@ public final class StacClient {
      *                 description: String (Optional)
      *                 cql (Required): [
      *                      (Required){
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 ]
      *             }
@@ -578,7 +578,7 @@ public final class StacClient {
      *         ]
      *         defaultLocation (Optional): (recursive schema, see defaultLocation above)
      *         defaultCustomQuery (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      * }
@@ -616,7 +616,7 @@ public final class StacClient {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -633,7 +633,7 @@ public final class StacClient {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -670,7 +670,7 @@ public final class StacClient {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -687,7 +687,7 @@ public final class StacClient {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -746,7 +746,7 @@ public final class StacClient {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     ]
      * }
@@ -786,7 +786,7 @@ public final class StacClient {
      *         description: String (Optional)
      *         cql (Required): [
      *              (Required){
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         ]
      *     }
@@ -819,8 +819,8 @@ public final class StacClient {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -841,7 +841,7 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -877,7 +877,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -903,7 +903,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -931,10 +931,10 @@ public final class StacClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -995,8 +995,8 @@ public final class StacClient {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -1017,7 +1017,7 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1053,7 +1053,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1079,7 +1079,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1107,10 +1107,10 @@ public final class StacClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1121,8 +1121,8 @@ public final class StacClient {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -1143,7 +1143,7 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1179,7 +1179,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1205,7 +1205,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1233,10 +1233,10 @@ public final class StacClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1328,8 +1328,8 @@ public final class StacClient {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -1350,7 +1350,7 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1386,7 +1386,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1412,7 +1412,7 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1440,10 +1440,10 @@ public final class StacClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1496,15 +1496,15 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
      *     collections (Required): [
      *          (Required){
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
+     *             msft:_created: OffsetDateTime (Optional)
+     *             msft:_updated: OffsetDateTime (Optional)
      *             msft:short_description: String (Optional)
      *             stac_extensions (Optional): [
      *                 String (Optional)
@@ -1546,7 +1546,7 @@ public final class StacClient {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
@@ -1572,7 +1572,7 @@ public final class StacClient {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
@@ -1600,10 +1600,10 @@ public final class StacClient {
      *                 (recursive schema, see above)
      *             ]
      *             summaries (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1622,8 +1622,8 @@ public final class StacClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listCollectionsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listCollectionsWithResponse(requestOptions);
+    public Response<BinaryData> getCollectionsWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getCollectionsWithResponse(requestOptions);
     }
 
     /**
@@ -2199,8 +2199,8 @@ public final class StacClient {
      * <pre>
      * {@code
      * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -2225,7 +2225,7 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2272,13 +2272,13 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -2368,13 +2368,13 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -2416,7 +2416,7 @@ public final class StacClient {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -2441,11 +2441,11 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -2572,13 +2572,13 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -2620,7 +2620,7 @@ public final class StacClient {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -2645,11 +2645,11 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -2754,13 +2754,13 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -2772,8 +2772,8 @@ public final class StacClient {
      *             links (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
+     *             msft:_created: OffsetDateTime (Optional)
+     *             msft:_updated: OffsetDateTime (Optional)
      *             msft:short_description: String (Optional)
      *             stac_extensions (Optional): [
      *                 String (Optional)
@@ -2815,7 +2815,7 @@ public final class StacClient {
      *                 start_datetime: OffsetDateTime (Optional)
      *                 end_datetime: OffsetDateTime (Optional)
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *             assets (Optional, Required on create): {
@@ -2840,11 +2840,11 @@ public final class StacClient {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
-     *             _msft:ts: String (Optional)
+     *             _msft:ts: OffsetDateTime (Optional)
      *             _msft:etag: String (Optional)
      *         }
      *     ]
@@ -2898,13 +2898,13 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -2946,7 +2946,7 @@ public final class StacClient {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -2971,11 +2971,11 @@ public final class StacClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
-     *     _msft:ts: String (Optional)
+     *     _msft:ts: OffsetDateTime (Optional)
      *     _msft:etag: String (Optional)
      * }
      * }
@@ -3042,7 +3042,7 @@ public final class StacClient {
      *      (Required){
      *         name: String (Required)
      *         definition (Required): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *         create_index: Boolean (Optional)
      *         data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -3059,7 +3059,7 @@ public final class StacClient {
      *      (Required){
      *         name: String (Required)
      *         definition (Required): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *         create_index: Boolean (Optional)
      *         data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -3096,7 +3096,7 @@ public final class StacClient {
      * {
      *     name: String (Required)
      *     definition (Required): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     create_index: Boolean (Optional)
      *     data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -3111,7 +3111,7 @@ public final class StacClient {
      * {
      *     name: String (Required)
      *     definition (Required): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     create_index: Boolean (Optional)
      *     data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -3166,7 +3166,7 @@ public final class StacClient {
      * <pre>
      * {@code
      * {
-     *     String: BinaryData (Required)
+     *     String: Object (Required)
      * }
      * }
      * </pre>
@@ -3193,7 +3193,7 @@ public final class StacClient {
      * <pre>
      * {@code
      * {
-     *     String: BinaryData (Required)
+     *     String: Object (Required)
      * }
      * }
      * </pre>
@@ -3217,6 +3217,15 @@ public final class StacClient {
      * Search
      * 
      * STAC search operation.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sign</td><td>String</td><td>No</td><td>Whether to sign asset URLs in the response. Allowed values:
+     * "true", "false".</td></tr>
+     * <tr><td>duration</td><td>Integer</td><td>No</td><td>URL signature duration in minutes.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3240,12 +3249,10 @@ public final class StacClient {
      *     datetime: String (Optional)
      *     limit: Integer (Optional)
      *     conf (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
-     *     sign: String(true/false) (Optional)
-     *     duration: Integer (Optional)
      *     query (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     sortby (Optional): [
      *          (Optional){
@@ -3263,7 +3270,9 @@ public final class StacClient {
      *             ]
      *         }
      *     ]
-     *     filter: String (Optional)
+     *     filter (Optional): {
+     *         String: Object (Required)
+     *     }
      *     filter-crs: String (Optional)
      *     filter-lang: String(cql-json/cql2-json/cql2-text) (Optional)
      *     token: String (Optional)
@@ -3291,13 +3300,13 @@ public final class StacClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
+     *     msft:_created: OffsetDateTime (Optional)
+     *     msft:_updated: OffsetDateTime (Optional)
      *     msft:short_description: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
@@ -3309,8 +3318,8 @@ public final class StacClient {
      *             links (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
+     *             msft:_created: OffsetDateTime (Optional)
+     *             msft:_updated: OffsetDateTime (Optional)
      *             msft:short_description: String (Optional)
      *             stac_extensions (Optional): [
      *                 String (Optional)
@@ -3352,7 +3361,7 @@ public final class StacClient {
      *                 start_datetime: OffsetDateTime (Optional)
      *                 end_datetime: OffsetDateTime (Optional)
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *             assets (Optional, Required on create): {
@@ -3377,11 +3386,11 @@ public final class StacClient {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
-     *             _msft:ts: String (Optional)
+     *             _msft:ts: OffsetDateTime (Optional)
      *             _msft:etag: String (Optional)
      *         }
      *     ]
@@ -3795,8 +3804,8 @@ public final class StacClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StacCatalogCollections listCollections(StacAssetUrlSigningMode sign, Integer durationInMinutes) {
-        // Generated convenience method for listCollectionsWithResponse
+    public StacCatalogCollections getCollections(StacAssetUrlSigningMode sign, Integer durationInMinutes) {
+        // Generated convenience method for getCollectionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (sign != null) {
             requestOptions.addQueryParam("sign", sign.toString(), false);
@@ -3804,7 +3813,7 @@ public final class StacClient {
         if (durationInMinutes != null) {
             requestOptions.addQueryParam("duration", String.valueOf(durationInMinutes), false);
         }
-        return listCollectionsWithResponse(requestOptions).getValue().toObject(StacCatalogCollections.class);
+        return getCollectionsWithResponse(requestOptions).getValue().toObject(StacCatalogCollections.class);
     }
 
     /**
@@ -3823,10 +3832,10 @@ public final class StacClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StacCatalogCollections listCollections() {
-        // Generated convenience method for listCollectionsWithResponse
+    public StacCatalogCollections getCollections() {
+        // Generated convenience method for getCollectionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listCollectionsWithResponse(requestOptions).getValue().toObject(StacCatalogCollections.class);
+        return getCollectionsWithResponse(requestOptions).getValue().toObject(StacCatalogCollections.class);
     }
 
     /**
@@ -4422,10 +4431,10 @@ public final class StacClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, BinaryData> listQueryables() {
+    public Map<String, Object> listQueryables() {
         // Generated convenience method for listQueryablesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listQueryablesWithResponse(requestOptions).getValue().toObject(TYPE_REFERENCE_MAP_STRING_BINARY_DATA);
+        return listQueryablesWithResponse(requestOptions).getValue().toObject(TYPE_REFERENCE_MAP_STRING_OBJECT);
     }
 
     /**
@@ -4444,11 +4453,45 @@ public final class StacClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, BinaryData> getCollectionQueryables(String collectionId) {
+    public Map<String, Object> getCollectionQueryables(String collectionId) {
         // Generated convenience method for getCollectionQueryablesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getCollectionQueryablesWithResponse(collectionId, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_MAP_STRING_BINARY_DATA);
+            .toObject(TYPE_REFERENCE_MAP_STRING_OBJECT);
+    }
+
+    /**
+     * Search
+     * 
+     * STAC search operation.
+     * 
+     * @param body Request body.
+     * @param sign Whether to sign asset URLs in the response.
+     * @param durationInMinutes URL signature duration in minutes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return https://github.com/radiantearth/stac-spec/blob/v1.0.0/item-spec/itemcollection-spec.md
+     * 
+     * Represents a collection of STAC Items as a GeoJSON FeatureCollection.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StacItemCollection search(StacSearchParameters body, StacAssetUrlSigningMode sign,
+        Integer durationInMinutes) {
+        // Generated convenience method for searchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (sign != null) {
+            requestOptions.addQueryParam("sign", sign.toString(), false);
+        }
+        if (durationInMinutes != null) {
+            requestOptions.addQueryParam("duration", String.valueOf(durationInMinutes), false);
+        }
+        return searchWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+            .toObject(StacItemCollection.class);
     }
 
     /**
@@ -4482,11 +4525,6 @@ public final class StacClient {
         };
 
     @Generated
-    private static final TypeReference<Map<String, BinaryData>> TYPE_REFERENCE_MAP_STRING_BINARY_DATA
-        = new TypeReference<Map<String, BinaryData>>() {
-        };
-
-    @Generated
     private static final TypeReference<List<StacQueryable>> TYPE_REFERENCE_LIST_STAC_QUERYABLE
         = new TypeReference<List<StacQueryable>>() {
         };
@@ -4494,5 +4532,10 @@ public final class StacClient {
     @Generated
     private static final TypeReference<List<RenderOption>> TYPE_REFERENCE_LIST_RENDER_OPTION
         = new TypeReference<List<RenderOption>>() {
+        };
+
+    @Generated
+    private static final TypeReference<Map<String, Object>> TYPE_REFERENCE_MAP_STRING_OBJECT
+        = new TypeReference<Map<String, Object>>() {
         };
 }

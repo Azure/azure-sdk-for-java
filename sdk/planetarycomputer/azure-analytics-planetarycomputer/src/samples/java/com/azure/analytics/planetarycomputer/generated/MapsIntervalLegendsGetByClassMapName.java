@@ -6,10 +6,9 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.util.List;
+import java.util.Map;
 
 public class MapsIntervalLegendsGetByClassMapName {
     public static void main(String[] args) {
@@ -18,7 +17,7 @@ public class MapsIntervalLegendsGetByClassMapName {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-interval-legend.maps-interval-legends-get-by-class-map-name
-        List<List<BinaryData>> response = dataClient.getIntervalLegend("modis-64A1", null, null);
+        Map<String, Object> response = dataClient.getIntervalLegend("modis-64A1", null, null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-interval-legend.maps-interval-legends-get-by-class-map-name
     }
 }

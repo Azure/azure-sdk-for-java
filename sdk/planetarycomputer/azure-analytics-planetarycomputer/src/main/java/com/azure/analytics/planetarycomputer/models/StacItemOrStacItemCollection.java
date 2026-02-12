@@ -7,11 +7,14 @@ package com.azure.analytics.planetarycomputer.models;
 import com.azure.analytics.planetarycomputer.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,13 +46,13 @@ public class StacItemOrStacItemCollection implements JsonSerializable<StacItemOr
      * MSFT Created
      */
     @Generated
-    private String createdOn;
+    private OffsetDateTime createdOn;
 
     /*
      * MSFT Updated
      */
     @Generated
-    private String updatedOn;
+    private OffsetDateTime updatedOn;
 
     /*
      * MSFT Short Description
@@ -103,12 +106,12 @@ public class StacItemOrStacItemCollection implements JsonSerializable<StacItemOr
                 }
 
                 @Override
-                public void setCreatedOn(StacItemOrStacItemCollection model, String createdOn) {
+                public void setCreatedOn(StacItemOrStacItemCollection model, OffsetDateTime createdOn) {
                     model.createdOn = createdOn;
                 }
 
                 @Override
-                public void setUpdatedOn(StacItemOrStacItemCollection model, String updatedOn) {
+                public void setUpdatedOn(StacItemOrStacItemCollection model, OffsetDateTime updatedOn) {
                     model.updatedOn = updatedOn;
                 }
 
@@ -193,7 +196,7 @@ public class StacItemOrStacItemCollection implements JsonSerializable<StacItemOr
      * @return the createdOn value.
      */
     @Generated
-    public String getCreatedOn() {
+    public OffsetDateTime getCreatedOn() {
         return this.createdOn;
     }
 
@@ -204,7 +207,7 @@ public class StacItemOrStacItemCollection implements JsonSerializable<StacItemOr
      * @return the StacItemOrStacItemCollection object itself.
      */
     @Generated
-    public StacItemOrStacItemCollection setCreatedOn(String createdOn) {
+    public StacItemOrStacItemCollection setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
         this.updatedProperties.add("createdOn");
         return this;
@@ -216,7 +219,7 @@ public class StacItemOrStacItemCollection implements JsonSerializable<StacItemOr
      * @return the updatedOn value.
      */
     @Generated
-    public String getUpdatedOn() {
+    public OffsetDateTime getUpdatedOn() {
         return this.updatedOn;
     }
 
@@ -227,7 +230,7 @@ public class StacItemOrStacItemCollection implements JsonSerializable<StacItemOr
      * @return the StacItemOrStacItemCollection object itself.
      */
     @Generated
-    public StacItemOrStacItemCollection setUpdatedOn(String updatedOn) {
+    public StacItemOrStacItemCollection setUpdatedOn(OffsetDateTime updatedOn) {
         this.updatedOn = updatedOn;
         this.updatedProperties.add("updatedOn");
         return this;
@@ -292,8 +295,10 @@ public class StacItemOrStacItemCollection implements JsonSerializable<StacItemOr
             jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
             jsonWriter.writeStringField("stac_version", this.stacVersion);
             jsonWriter.writeArrayField("links", this.links, (writer, element) -> writer.writeJson(element));
-            jsonWriter.writeStringField("msft:_created", this.createdOn);
-            jsonWriter.writeStringField("msft:_updated", this.updatedOn);
+            jsonWriter.writeStringField("msft:_created",
+                this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
+            jsonWriter.writeStringField("msft:_updated",
+                this.updatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedOn));
             jsonWriter.writeStringField("msft:short_description", this.shortDescription);
             jsonWriter.writeArrayField("stac_extensions", this.stacExtensions,
                 (writer, element) -> writer.writeString(element));
@@ -323,14 +328,16 @@ public class StacItemOrStacItemCollection implements JsonSerializable<StacItemOr
             if (this.createdOn == null) {
                 jsonWriter.writeNullField("msft:_created");
             } else {
-                jsonWriter.writeStringField("msft:_created", this.createdOn);
+                jsonWriter.writeStringField("msft:_created",
+                    this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
             }
         }
         if (updatedProperties.contains("updatedOn")) {
             if (this.updatedOn == null) {
                 jsonWriter.writeNullField("msft:_updated");
             } else {
-                jsonWriter.writeStringField("msft:_updated", this.updatedOn);
+                jsonWriter.writeStringField("msft:_updated",
+                    this.updatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedOn));
             }
         }
         if (updatedProperties.contains("shortDescription")) {
@@ -403,9 +410,11 @@ public class StacItemOrStacItemCollection implements JsonSerializable<StacItemOr
                     List<StacLink> links = reader.readArray(reader1 -> StacLink.fromJson(reader1));
                     deserializedStacItemOrStacItemCollection.links = links;
                 } else if ("msft:_created".equals(fieldName)) {
-                    deserializedStacItemOrStacItemCollection.createdOn = reader.getString();
+                    deserializedStacItemOrStacItemCollection.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("msft:_updated".equals(fieldName)) {
-                    deserializedStacItemOrStacItemCollection.updatedOn = reader.getString();
+                    deserializedStacItemOrStacItemCollection.updatedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("msft:short_description".equals(fieldName)) {
                     deserializedStacItemOrStacItemCollection.shortDescription = reader.getString();
                 } else if ("stac_extensions".equals(fieldName)) {

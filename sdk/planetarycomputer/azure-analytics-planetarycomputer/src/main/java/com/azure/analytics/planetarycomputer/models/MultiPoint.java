@@ -30,7 +30,7 @@ public final class MultiPoint extends Geometry {
      * The coordinates of the multipoint.
      */
     @Generated
-    private List<Double> coordinates;
+    private List<List<Double>> coordinates;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -62,7 +62,7 @@ public final class MultiPoint extends Geometry {
      * @return the coordinates value.
      */
     @Generated
-    public List<Double> getCoordinates() {
+    public List<List<Double>> getCoordinates() {
         return this.coordinates;
     }
 
@@ -74,7 +74,7 @@ public final class MultiPoint extends Geometry {
      * @return the MultiPoint object itself.
      */
     @Generated
-    public MultiPoint setCoordinates(List<Double> coordinates) {
+    public MultiPoint setCoordinates(List<List<Double>> coordinates) {
         this.coordinates = coordinates;
         this.updatedProperties.add("coordinates");
         return this;
@@ -104,7 +104,7 @@ public final class MultiPoint extends Geometry {
             jsonWriter.writeArrayField("bbox", getBoundingBox(), (writer, element) -> writer.writeDouble(element));
             jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
             jsonWriter.writeArrayField("coordinates", this.coordinates,
-                (writer, element) -> writer.writeDouble(element));
+                (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeDouble(element1)));
             return jsonWriter.writeEndObject();
         }
     }
@@ -124,8 +124,8 @@ public final class MultiPoint extends Geometry {
             if (this.coordinates == null) {
                 jsonWriter.writeNullField("coordinates");
             } else {
-                jsonWriter.writeArrayField("coordinates", this.coordinates,
-                    (writer, element) -> writer.writeDouble(element));
+                jsonWriter.writeArrayField("coordinates", this.coordinates, (writer, element) -> writer
+                    .writeArray(element, (writer1, element1) -> writer1.writeDouble(element1)));
             }
         }
         return jsonWriter.writeEndObject();
@@ -153,7 +153,8 @@ public final class MultiPoint extends Geometry {
                 } else if ("type".equals(fieldName)) {
                     deserializedMultiPoint.type = GeometryType.fromString(reader.getString());
                 } else if ("coordinates".equals(fieldName)) {
-                    List<Double> coordinates = reader.readArray(reader1 -> reader1.getDouble());
+                    List<List<Double>> coordinates
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getDouble()));
                     deserializedMultiPoint.coordinates = coordinates;
                 } else {
                     reader.skipChildren();

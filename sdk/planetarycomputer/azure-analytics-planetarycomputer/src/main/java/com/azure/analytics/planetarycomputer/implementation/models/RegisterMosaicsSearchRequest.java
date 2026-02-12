@@ -10,7 +10,6 @@ import com.azure.analytics.planetarycomputer.models.MosaicMetadata;
 import com.azure.analytics.planetarycomputer.models.StacSortExtension;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -52,13 +51,13 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * Query
      */
     @Generated
-    private Map<String, BinaryData> query;
+    private Map<String, Object> query;
 
     /*
      * Filter
      */
     @Generated
-    private String filter;
+    private Map<String, Object> filter;
 
     /*
      * Temporal filter in RFC 3339 format or interval
@@ -185,7 +184,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the query value.
      */
     @Generated
-    public Map<String, BinaryData> getQuery() {
+    public Map<String, Object> getQuery() {
         return this.query;
     }
 
@@ -196,7 +195,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the RegisterMosaicsSearchRequest object itself.
      */
     @Generated
-    public RegisterMosaicsSearchRequest setQuery(Map<String, BinaryData> query) {
+    public RegisterMosaicsSearchRequest setQuery(Map<String, Object> query) {
         this.query = query;
         return this;
     }
@@ -207,7 +206,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the filter value.
      */
     @Generated
-    public String getFilter() {
+    public Map<String, Object> getFilter() {
         return this.filter;
     }
 
@@ -218,7 +217,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the RegisterMosaicsSearchRequest object itself.
      */
     @Generated
-    public RegisterMosaicsSearchRequest setFilter(String filter) {
+    public RegisterMosaicsSearchRequest setFilter(Map<String, Object> filter) {
         this.filter = filter;
         return this;
     }
@@ -322,9 +321,8 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
         jsonWriter.writeArrayField("ids", this.ids, (writer, element) -> writer.writeString(element));
         jsonWriter.writeNumberField("bbox", this.boundingBox);
         jsonWriter.writeJsonField("intersects", this.intersects);
-        jsonWriter.writeMapField("query", this.query,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeStringField("filter", this.filter);
+        jsonWriter.writeMapField("query", this.query, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("filter", this.filter, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("datetime", this.datetime);
         jsonWriter.writeArrayField("sortby", this.sortBy, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("filter-lang", this.filterLanguage == null ? null : this.filterLanguage.toString());
@@ -359,11 +357,11 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
                 } else if ("intersects".equals(fieldName)) {
                     deserializedRegisterMosaicsSearchRequest.intersects = Geometry.fromJson(reader);
                 } else if ("query".equals(fieldName)) {
-                    Map<String, BinaryData> query = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    Map<String, Object> query = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedRegisterMosaicsSearchRequest.query = query;
                 } else if ("filter".equals(fieldName)) {
-                    deserializedRegisterMosaicsSearchRequest.filter = reader.getString();
+                    Map<String, Object> filter = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedRegisterMosaicsSearchRequest.filter = filter;
                 } else if ("datetime".equals(fieldName)) {
                     deserializedRegisterMosaicsSearchRequest.datetime = reader.getString();
                 } else if ("sortby".equals(fieldName)) {

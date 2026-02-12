@@ -32,6 +32,7 @@ import com.azure.analytics.planetarycomputer.models.StacItemStatisticsGeoJson;
 import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
 import com.azure.analytics.planetarycomputer.models.TileJsonMetadata;
 import com.azure.analytics.planetarycomputer.models.TileMatrixSet;
+import com.azure.analytics.planetarycomputer.models.TilerAssetGeoJson;
 import com.azure.analytics.planetarycomputer.models.TilerCoreModelsResponsesPoint;
 import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
 import com.azure.analytics.planetarycomputer.models.TilerInfo;
@@ -418,7 +419,7 @@ public final class DataClient {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -523,7 +524,7 @@ public final class DataClient {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -619,7 +620,7 @@ public final class DataClient {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -663,7 +664,7 @@ public final class DataClient {
      *             }
      *         }
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      * }
@@ -1284,7 +1285,7 @@ public final class DataClient {
      * {@code
      * {
      *     cql (Required): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     zoom: Double (Optional)
      *     geometry (Optional): {
@@ -1777,7 +1778,7 @@ public final class DataClient {
      * <pre>
      * {@code
      * {
-     *     String: BinaryData (Required)
+     *     String: Object (Required)
      * }
      * }
      * </pre>
@@ -1802,6 +1803,29 @@ public final class DataClient {
      * Get Interval Legend
      * 
      * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow).
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1815,11 +1839,9 @@ public final class DataClient {
      * 
      * <pre>
      * {@code
-     * [
-     *      (Required)[
-     *         BinaryData (Required)
-     *     ]
-     * ]
+     * {
+     *     String: Object (Required)
+     * }
      * }
      * </pre>
      * 
@@ -1831,7 +1853,31 @@ public final class DataClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return interval Legend
      * 
-     * Generate values and color swatches mapping for a given interval classmap along with {@link Response}.
+     * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow) along with
+     * {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1948,7 +1994,7 @@ public final class DataClient {
      *                     String (Optional)
      *                 ]
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -2001,7 +2047,46 @@ public final class DataClient {
      * <pre>
      * {@code
      * [
-     *     BinaryData (Required)
+     *      (Required){
+     *         id: String (Required)
+     *         collection: String (Optional)
+     *         bbox (Required): [
+     *             double (Required)
+     *         ]
+     *         assets (Required): {
+     *             String (Required): {
+     *                 platform: String (Optional)
+     *                 instruments (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 constellation: String (Optional)
+     *                 mission: String (Optional)
+     *                 providers (Optional): [
+     *                      (Optional){
+     *                         name: String (Optional, Required on create)
+     *                         description: String (Optional)
+     *                         roles (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         url: String (Optional)
+     *                     }
+     *                 ]
+     *                 gsd: Double (Optional)
+     *                 created: OffsetDateTime (Optional)
+     *                 updated: OffsetDateTime (Optional)
+     *                 title: String (Optional)
+     *                 description: String (Optional)
+     *                 href: String (Optional, Required on create)
+     *                 type: String (Optional)
+     *                 roles (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                  (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
      * ]
      * }
      * </pre>
@@ -2042,7 +2127,7 @@ public final class DataClient {
      *     search (Required): {
      *         hash: String (Required)
      *         search (Required): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *         _where: String (Required)
      *         orderby: String (Required)
@@ -2075,7 +2160,7 @@ public final class DataClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2121,9 +2206,11 @@ public final class DataClient {
      *         ]
      *     }
      *     query (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
-     *     filter: String (Optional)
+     *     filter (Optional): {
+     *         String: Object (Required)
+     *     }
      *     datetime: String (Optional)
      *     sortby (Optional): [
      *          (Optional){
@@ -2168,7 +2255,7 @@ public final class DataClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -4132,7 +4219,7 @@ public final class DataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, BinaryData> getClassMapLegend(String classmapName, Integer trimStart, Integer trimEnd) {
+    public Map<String, Object> getClassMapLegend(String classmapName, Integer trimStart, Integer trimEnd) {
         // Generated convenience method for getClassMapLegendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (trimStart != null) {
@@ -4142,7 +4229,7 @@ public final class DataClient {
             requestOptions.addQueryParam("trim_end", String.valueOf(trimEnd), false);
         }
         return getClassMapLegendWithResponse(classmapName, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_MAP_STRING_BINARY_DATA);
+            .toObject(TYPE_REFERENCE_MAP_STRING_OBJECT);
     }
 
     /**
@@ -4163,17 +4250,40 @@ public final class DataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, BinaryData> getClassMapLegend(String classmapName) {
+    public Map<String, Object> getClassMapLegend(String classmapName) {
         // Generated convenience method for getClassMapLegendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getClassMapLegendWithResponse(classmapName, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_MAP_STRING_BINARY_DATA);
+            .toObject(TYPE_REFERENCE_MAP_STRING_OBJECT);
     }
 
     /**
      * Get Interval Legend
      * 
      * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow).
      * 
      * @param classmapName classmap name.
      * @param trimStart Number of items to trim from the start of the cmap.
@@ -4187,10 +4297,33 @@ public final class DataClient {
      * @return interval Legend
      * 
      * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow).
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<List<BinaryData>> getIntervalLegend(String classmapName, Integer trimStart, Integer trimEnd) {
+    public Map<String, Object> getIntervalLegend(String classmapName, Integer trimStart, Integer trimEnd) {
         // Generated convenience method for getIntervalLegendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (trimStart != null) {
@@ -4200,13 +4333,36 @@ public final class DataClient {
             requestOptions.addQueryParam("trim_end", String.valueOf(trimEnd), false);
         }
         return getIntervalLegendWithResponse(classmapName, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_LIST_LIST_BINARY_DATA);
+            .toObject(TYPE_REFERENCE_MAP_STRING_OBJECT);
     }
 
     /**
      * Get Interval Legend
      * 
      * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow).
      * 
      * @param classmapName classmap name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4218,14 +4374,37 @@ public final class DataClient {
      * @return interval Legend
      * 
      * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow).
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<List<BinaryData>> getIntervalLegend(String classmapName) {
+    public Map<String, Object> getIntervalLegend(String classmapName) {
         // Generated convenience method for getIntervalLegendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getIntervalLegendWithResponse(classmapName, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_LIST_LIST_BINARY_DATA);
+            .toObject(TYPE_REFERENCE_MAP_STRING_OBJECT);
     }
 
     /**
@@ -4415,7 +4594,7 @@ public final class DataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<BinaryData> getMosaicsAssetsForTile(String searchId, String tileMatrixSetId, String collectionId,
+    public List<TilerAssetGeoJson> getMosaicsAssetsForTile(String searchId, String tileMatrixSetId, String collectionId,
         double z, double x, double y, Integer scanLimit, Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull,
         Boolean skipCovered) {
         // Generated convenience method for getMosaicsAssetsForTileWithResponse
@@ -4437,7 +4616,7 @@ public final class DataClient {
         }
         return getMosaicsAssetsForTileWithResponse(searchId, tileMatrixSetId, collectionId, z, x, y, requestOptions)
             .getValue()
-            .toObject(TYPE_REFERENCE_LIST_BINARY_DATA);
+            .toObject(TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON);
     }
 
     /**
@@ -4464,13 +4643,13 @@ public final class DataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<BinaryData> getMosaicsAssetsForTile(String searchId, String tileMatrixSetId, String collectionId,
+    public List<TilerAssetGeoJson> getMosaicsAssetsForTile(String searchId, String tileMatrixSetId, String collectionId,
         double z, double x, double y) {
         // Generated convenience method for getMosaicsAssetsForTileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getMosaicsAssetsForTileWithResponse(searchId, tileMatrixSetId, collectionId, z, x, y, requestOptions)
             .getValue()
-            .toObject(TYPE_REFERENCE_LIST_BINARY_DATA);
+            .toObject(TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON);
     }
 
     /**
@@ -4925,18 +5104,8 @@ public final class DataClient {
         };
 
     @Generated
-    private static final TypeReference<Map<String, BinaryData>> TYPE_REFERENCE_MAP_STRING_BINARY_DATA
-        = new TypeReference<Map<String, BinaryData>>() {
-        };
-
-    @Generated
     private static final TypeReference<Map<String, Map<String, BandStatistics>>> TYPE_REFERENCE_MAP_STRING_MAP_STRING_BAND_STATISTICS
         = new TypeReference<Map<String, Map<String, BandStatistics>>>() {
-        };
-
-    @Generated
-    private static final TypeReference<List<List<BinaryData>>> TYPE_REFERENCE_LIST_LIST_BINARY_DATA
-        = new TypeReference<List<List<BinaryData>>>() {
         };
 
     @Generated
@@ -4945,7 +5114,12 @@ public final class DataClient {
         };
 
     @Generated
-    private static final TypeReference<List<BinaryData>> TYPE_REFERENCE_LIST_BINARY_DATA
-        = new TypeReference<List<BinaryData>>() {
+    private static final TypeReference<List<TilerAssetGeoJson>> TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON
+        = new TypeReference<List<TilerAssetGeoJson>>() {
+        };
+
+    @Generated
+    private static final TypeReference<Map<String, Object>> TYPE_REFERENCE_MAP_STRING_OBJECT
+        = new TypeReference<Map<String, Object>>() {
         };
 }

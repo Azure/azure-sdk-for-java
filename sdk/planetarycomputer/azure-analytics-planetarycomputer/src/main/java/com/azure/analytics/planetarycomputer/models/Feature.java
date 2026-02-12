@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -35,7 +34,7 @@ public final class Feature implements JsonSerializable<Feature> {
      * Feature properties
      */
     @Generated
-    private Map<String, BinaryData> properties;
+    private Map<String, Object> properties;
 
     /**
      * Creates an instance of Feature class.
@@ -75,7 +74,7 @@ public final class Feature implements JsonSerializable<Feature> {
      * @return the properties value.
      */
     @Generated
-    public Map<String, BinaryData> getProperties() {
+    public Map<String, Object> getProperties() {
         return this.properties;
     }
 
@@ -86,7 +85,7 @@ public final class Feature implements JsonSerializable<Feature> {
      * @return the Feature object itself.
      */
     @Generated
-    public Feature setProperties(Map<String, BinaryData> properties) {
+    public Feature setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
     }
@@ -100,8 +99,7 @@ public final class Feature implements JsonSerializable<Feature> {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("geometry", this.geometry);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeMapField("properties", this.properties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -119,7 +117,7 @@ public final class Feature implements JsonSerializable<Feature> {
         return jsonReader.readObject(reader -> {
             Geometry geometry = null;
             FeatureType type = null;
-            Map<String, BinaryData> properties = null;
+            Map<String, Object> properties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -129,8 +127,7 @@ public final class Feature implements JsonSerializable<Feature> {
                 } else if ("type".equals(fieldName)) {
                     type = FeatureType.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
-                    properties = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    properties = reader.readMap(reader1 -> reader1.readUntyped());
                 } else {
                     reader.skipChildren();
                 }

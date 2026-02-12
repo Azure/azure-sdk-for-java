@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,7 +22,7 @@ public final class ImageParameters implements JsonSerializable<ImageParameters> 
      * Cql
      */
     @Generated
-    private final Map<String, BinaryData> cql;
+    private final Map<String, Object> cql;
 
     /*
      * Zoom
@@ -76,7 +75,7 @@ public final class ImageParameters implements JsonSerializable<ImageParameters> 
      * @param rows the rows value to set.
      */
     @Generated
-    public ImageParameters(Map<String, BinaryData> cql, String renderParameters, int columns, int rows) {
+    public ImageParameters(Map<String, Object> cql, String renderParameters, int columns, int rows) {
         this.cql = cql;
         this.renderParameters = renderParameters;
         this.columns = columns;
@@ -89,7 +88,7 @@ public final class ImageParameters implements JsonSerializable<ImageParameters> 
      * @return the cql value.
      */
     @Generated
-    public Map<String, BinaryData> getCql() {
+    public Map<String, Object> getCql() {
         return this.cql;
     }
 
@@ -218,8 +217,7 @@ public final class ImageParameters implements JsonSerializable<ImageParameters> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("cql", this.cql,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("cql", this.cql, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("render_params", this.renderParameters);
         jsonWriter.writeIntField("cols", this.columns);
         jsonWriter.writeIntField("rows", this.rows);
@@ -242,7 +240,7 @@ public final class ImageParameters implements JsonSerializable<ImageParameters> 
     @Generated
     public static ImageParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, BinaryData> cql = null;
+            Map<String, Object> cql = null;
             String renderParameters = null;
             int columns = 0;
             int rows = 0;
@@ -255,8 +253,7 @@ public final class ImageParameters implements JsonSerializable<ImageParameters> 
                 reader.nextToken();
 
                 if ("cql".equals(fieldName)) {
-                    cql = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    cql = reader.readMap(reader1 -> reader1.readUntyped());
                 } else if ("render_params".equals(fieldName)) {
                     renderParameters = reader.getString();
                 } else if ("cols".equals(fieldName)) {

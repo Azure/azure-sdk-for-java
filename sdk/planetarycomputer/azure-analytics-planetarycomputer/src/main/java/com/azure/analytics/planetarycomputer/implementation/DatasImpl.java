@@ -1389,7 +1389,7 @@ public final class DatasImpl {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1498,7 +1498,7 @@ public final class DatasImpl {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1604,7 +1604,7 @@ public final class DatasImpl {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1713,7 +1713,7 @@ public final class DatasImpl {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1810,7 +1810,7 @@ public final class DatasImpl {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1854,7 +1854,7 @@ public final class DatasImpl {
      *             }
      *         }
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      * }
@@ -1942,7 +1942,7 @@ public final class DatasImpl {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1986,7 +1986,7 @@ public final class DatasImpl {
      *             }
      *         }
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      * }
@@ -3202,7 +3202,7 @@ public final class DatasImpl {
      * {@code
      * {
      *     cql (Required): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     zoom: Double (Optional)
      *     geometry (Optional): {
@@ -3259,7 +3259,7 @@ public final class DatasImpl {
      * {@code
      * {
      *     cql (Required): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     zoom: Double (Optional)
      *     geometry (Optional): {
@@ -4194,7 +4194,7 @@ public final class DatasImpl {
      * <pre>
      * {@code
      * {
-     *     String: BinaryData (Required)
+     *     String: Object (Required)
      * }
      * }
      * </pre>
@@ -4236,7 +4236,7 @@ public final class DatasImpl {
      * <pre>
      * {@code
      * {
-     *     String: BinaryData (Required)
+     *     String: Object (Required)
      * }
      * }
      * </pre>
@@ -4262,6 +4262,29 @@ public final class DatasImpl {
      * Get Interval Legend
      * 
      * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow).
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4275,11 +4298,9 @@ public final class DatasImpl {
      * 
      * <pre>
      * {@code
-     * [
-     *      (Required)[
-     *         BinaryData (Required)
-     *     ]
-     * ]
+     * {
+     *     String: Object (Required)
+     * }
      * }
      * </pre>
      * 
@@ -4291,8 +4312,31 @@ public final class DatasImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return interval Legend
      * 
-     * Generate values and color swatches mapping for a given interval classmap along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow) along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getIntervalLegendWithResponseAsync(String classmapName,
@@ -4306,6 +4350,29 @@ public final class DatasImpl {
      * Get Interval Legend
      * 
      * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow).
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4319,11 +4386,9 @@ public final class DatasImpl {
      * 
      * <pre>
      * {@code
-     * [
-     *      (Required)[
-     *         BinaryData (Required)
-     *     ]
-     * ]
+     * {
+     *     String: Object (Required)
+     * }
      * }
      * </pre>
      * 
@@ -4335,7 +4400,31 @@ public final class DatasImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return interval Legend
      * 
-     * Generate values and color swatches mapping for a given interval classmap along with {@link Response}.
+     * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow) along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIntervalLegendWithResponse(String classmapName, RequestOptions requestOptions) {
@@ -4502,7 +4591,7 @@ public final class DatasImpl {
      *                     String (Optional)
      *                 ]
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -4593,7 +4682,7 @@ public final class DatasImpl {
      *                     String (Optional)
      *                 ]
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -4648,7 +4737,46 @@ public final class DatasImpl {
      * <pre>
      * {@code
      * [
-     *     BinaryData (Required)
+     *      (Required){
+     *         id: String (Required)
+     *         collection: String (Optional)
+     *         bbox (Required): [
+     *             double (Required)
+     *         ]
+     *         assets (Required): {
+     *             String (Required): {
+     *                 platform: String (Optional)
+     *                 instruments (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 constellation: String (Optional)
+     *                 mission: String (Optional)
+     *                 providers (Optional): [
+     *                      (Optional){
+     *                         name: String (Optional, Required on create)
+     *                         description: String (Optional)
+     *                         roles (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         url: String (Optional)
+     *                     }
+     *                 ]
+     *                 gsd: Double (Optional)
+     *                 created: OffsetDateTime (Optional)
+     *                 updated: OffsetDateTime (Optional)
+     *                 title: String (Optional)
+     *                 description: String (Optional)
+     *                 href: String (Optional, Required on create)
+     *                 type: String (Optional)
+     *                 roles (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                  (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
      * ]
      * }
      * </pre>
@@ -4704,7 +4832,46 @@ public final class DatasImpl {
      * <pre>
      * {@code
      * [
-     *     BinaryData (Required)
+     *      (Required){
+     *         id: String (Required)
+     *         collection: String (Optional)
+     *         bbox (Required): [
+     *             double (Required)
+     *         ]
+     *         assets (Required): {
+     *             String (Required): {
+     *                 platform: String (Optional)
+     *                 instruments (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 constellation: String (Optional)
+     *                 mission: String (Optional)
+     *                 providers (Optional): [
+     *                      (Optional){
+     *                         name: String (Optional, Required on create)
+     *                         description: String (Optional)
+     *                         roles (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         url: String (Optional)
+     *                     }
+     *                 ]
+     *                 gsd: Double (Optional)
+     *                 created: OffsetDateTime (Optional)
+     *                 updated: OffsetDateTime (Optional)
+     *                 title: String (Optional)
+     *                 description: String (Optional)
+     *                 href: String (Optional, Required on create)
+     *                 type: String (Optional)
+     *                 roles (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                  (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
      * ]
      * }
      * </pre>
@@ -4746,7 +4913,7 @@ public final class DatasImpl {
      *     search (Required): {
      *         hash: String (Required)
      *         search (Required): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *         _where: String (Required)
      *         orderby: String (Required)
@@ -4779,7 +4946,7 @@ public final class DatasImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -4817,7 +4984,7 @@ public final class DatasImpl {
      *     search (Required): {
      *         hash: String (Required)
      *         search (Required): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *         _where: String (Required)
      *         orderby: String (Required)
@@ -4850,7 +5017,7 @@ public final class DatasImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -4897,9 +5064,11 @@ public final class DatasImpl {
      *         ]
      *     }
      *     query (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
-     *     filter: String (Optional)
+     *     filter (Optional): {
+     *         String: Object (Required)
+     *     }
      *     datetime: String (Optional)
      *     sortby (Optional): [
      *          (Optional){
@@ -4944,7 +5113,7 @@ public final class DatasImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -4995,9 +5164,11 @@ public final class DatasImpl {
      *         ]
      *     }
      *     query (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
-     *     filter: String (Optional)
+     *     filter (Optional): {
+     *         String: Object (Required)
+     *     }
      *     datetime: String (Optional)
      *     sortby (Optional): [
      *          (Optional){
@@ -5042,7 +5213,7 @@ public final class DatasImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }

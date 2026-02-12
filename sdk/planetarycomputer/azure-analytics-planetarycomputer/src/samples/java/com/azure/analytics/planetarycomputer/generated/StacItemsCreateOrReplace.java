@@ -13,17 +13,18 @@ import com.azure.analytics.planetarycomputer.models.StacItem;
 import com.azure.analytics.planetarycomputer.models.StacItemProperties;
 import com.azure.analytics.planetarycomputer.models.StacLink;
 import com.azure.analytics.planetarycomputer.models.StacLinkType;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class StacItemsCreateOrReplace {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         StacClient stacClient
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
@@ -42,19 +43,21 @@ public class StacItemsCreateOrReplace {
                             Arrays.asList(-84.44157, 33.623293), Arrays.asList(-84.372943, 33.621853)))))
                     .setCollection("naip-atl")
                     .setBoundingBox(Arrays.asList(-84.44157, 33.621853, -84.370894, 33.690654))
-                    .setProperties(new StacItemProperties().setPlatform("Imagery Updated")
-                        .setGsd(0.6D)
-                        .setDatetime("2021-11-14T16:00:00Z")
-                        .setAdditionalProperties(mapOf("proj:epsg",
-                            BinaryData.fromBytes("26916".getBytes(StandardCharsets.UTF_8)), "naip:state",
-                            BinaryData.fromBytes("ga".getBytes(StandardCharsets.UTF_8)), "proj:shape",
-                            BinaryData.fromBytes("[12460, 10620]".getBytes(StandardCharsets.UTF_8)), "proj:transform",
-                            BinaryData.fromBytes(
-                                "[0.6, 0, 737334, 0, -0.6, 3730800, 0, 0, 1]".getBytes(StandardCharsets.UTF_8)),
-                            "processing_level", BinaryData.fromBytes("L2".getBytes(StandardCharsets.UTF_8)),
-                            "naip:year", BinaryData.fromBytes("2021".getBytes(StandardCharsets.UTF_8)), "proj:bbox",
-                            BinaryData
-                                .fromBytes("[737334, 3723324, 743706, 3730800]".getBytes(StandardCharsets.UTF_8)))))
+                    .setProperties(
+                        new StacItemProperties().setPlatform("Imagery Updated")
+                            .setGsd(0.6D)
+                            .setDatetime("2021-11-14T16:00:00Z")
+                            .setAdditionalProperties(mapOf("proj:epsg", 26916, "naip:state", "ga", "proj:shape",
+                                JacksonAdapter.createDefaultSerializerAdapter()
+                                    .deserialize("[12460,10620]", Object.class, SerializerEncoding.JSON),
+                                "proj:transform",
+                                JacksonAdapter.createDefaultSerializerAdapter()
+                                    .deserialize("[0.6,0,737334,0,-0.6,3730800,0,0,1]", Object.class,
+                                        SerializerEncoding.JSON),
+                                "processing_level", "L2", "naip:year", "2021", "proj:bbox",
+                                JacksonAdapter.createDefaultSerializerAdapter()
+                                    .deserialize("[737334,3723324,743706,3730800]", Object.class,
+                                        SerializerEncoding.JSON))))
                     .setAssets(mapOf("image", new StacAsset().setTitle("RGBIR COG tile")
                         .setHref(
                             "https://SANITIZED.blob.core.windows.net/naip/v002/ga/2021/ga_060cm_2021/33084/m_3308421_se_16_060_20211114.tif")

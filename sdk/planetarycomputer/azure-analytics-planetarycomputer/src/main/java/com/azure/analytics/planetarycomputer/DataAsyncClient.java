@@ -32,6 +32,7 @@ import com.azure.analytics.planetarycomputer.models.StacItemStatisticsGeoJson;
 import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
 import com.azure.analytics.planetarycomputer.models.TileJsonMetadata;
 import com.azure.analytics.planetarycomputer.models.TileMatrixSet;
+import com.azure.analytics.planetarycomputer.models.TilerAssetGeoJson;
 import com.azure.analytics.planetarycomputer.models.TilerCoreModelsResponsesPoint;
 import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
 import com.azure.analytics.planetarycomputer.models.TilerInfo;
@@ -422,7 +423,7 @@ public final class DataAsyncClient {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -528,7 +529,7 @@ public final class DataAsyncClient {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -624,7 +625,7 @@ public final class DataAsyncClient {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -668,7 +669,7 @@ public final class DataAsyncClient {
      *             }
      *         }
      *          (Optional): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *     }
      * }
@@ -1291,7 +1292,7 @@ public final class DataAsyncClient {
      * {@code
      * {
      *     cql (Required): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      *     zoom: Double (Optional)
      *     geometry (Optional): {
@@ -1785,7 +1786,7 @@ public final class DataAsyncClient {
      * <pre>
      * {@code
      * {
-     *     String: BinaryData (Required)
+     *     String: Object (Required)
      * }
      * }
      * </pre>
@@ -1812,6 +1813,29 @@ public final class DataAsyncClient {
      * Get Interval Legend
      * 
      * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow).
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1825,11 +1849,9 @@ public final class DataAsyncClient {
      * 
      * <pre>
      * {@code
-     * [
-     *      (Required)[
-     *         BinaryData (Required)
-     *     ]
-     * ]
+     * {
+     *     String: Object (Required)
+     * }
      * }
      * </pre>
      * 
@@ -1841,8 +1863,31 @@ public final class DataAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return interval Legend
      * 
-     * Generate values and color swatches mapping for a given interval classmap along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow) along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1960,7 +2005,7 @@ public final class DataAsyncClient {
      *                     String (Optional)
      *                 ]
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -2014,7 +2059,46 @@ public final class DataAsyncClient {
      * <pre>
      * {@code
      * [
-     *     BinaryData (Required)
+     *      (Required){
+     *         id: String (Required)
+     *         collection: String (Optional)
+     *         bbox (Required): [
+     *             double (Required)
+     *         ]
+     *         assets (Required): {
+     *             String (Required): {
+     *                 platform: String (Optional)
+     *                 instruments (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 constellation: String (Optional)
+     *                 mission: String (Optional)
+     *                 providers (Optional): [
+     *                      (Optional){
+     *                         name: String (Optional, Required on create)
+     *                         description: String (Optional)
+     *                         roles (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         url: String (Optional)
+     *                     }
+     *                 ]
+     *                 gsd: Double (Optional)
+     *                 created: OffsetDateTime (Optional)
+     *                 updated: OffsetDateTime (Optional)
+     *                 title: String (Optional)
+     *                 description: String (Optional)
+     *                 href: String (Optional, Required on create)
+     *                 type: String (Optional)
+     *                 roles (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                  (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
      * ]
      * }
      * </pre>
@@ -2055,7 +2139,7 @@ public final class DataAsyncClient {
      *     search (Required): {
      *         hash: String (Required)
      *         search (Required): {
-     *             String: BinaryData (Required)
+     *             String: Object (Required)
      *         }
      *         _where: String (Required)
      *         orderby: String (Required)
@@ -2088,7 +2172,7 @@ public final class DataAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2135,9 +2219,11 @@ public final class DataAsyncClient {
      *         ]
      *     }
      *     query (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
-     *     filter: String (Optional)
+     *     filter (Optional): {
+     *         String: Object (Required)
+     *     }
      *     datetime: String (Optional)
      *     sortby (Optional): [
      *          (Optional){
@@ -2182,7 +2268,7 @@ public final class DataAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -4158,7 +4244,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, BinaryData>> getClassMapLegend(String classmapName, Integer trimStart, Integer trimEnd) {
+    public Mono<Map<String, Object>> getClassMapLegend(String classmapName, Integer trimStart, Integer trimEnd) {
         // Generated convenience method for getClassMapLegendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (trimStart != null) {
@@ -4168,7 +4254,7 @@ public final class DataAsyncClient {
             requestOptions.addQueryParam("trim_end", String.valueOf(trimEnd), false);
         }
         return getClassMapLegendWithResponse(classmapName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_MAP_STRING_BINARY_DATA));
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_MAP_STRING_OBJECT));
     }
 
     /**
@@ -4189,17 +4275,40 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, BinaryData>> getClassMapLegend(String classmapName) {
+    public Mono<Map<String, Object>> getClassMapLegend(String classmapName) {
         // Generated convenience method for getClassMapLegendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getClassMapLegendWithResponse(classmapName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_MAP_STRING_BINARY_DATA));
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_MAP_STRING_OBJECT));
     }
 
     /**
      * Get Interval Legend
      * 
      * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow).
      * 
      * @param classmapName classmap name.
      * @param trimStart Number of items to trim from the start of the cmap.
@@ -4212,12 +4321,35 @@ public final class DataAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return interval Legend
      * 
-     * Generate values and color swatches mapping for a given interval classmap on successful completion of
-     * {@link Mono}.
+     * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow) on successful completion
+     * of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<List<BinaryData>>> getIntervalLegend(String classmapName, Integer trimStart, Integer trimEnd) {
+    public Mono<Map<String, Object>> getIntervalLegend(String classmapName, Integer trimStart, Integer trimEnd) {
         // Generated convenience method for getIntervalLegendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (trimStart != null) {
@@ -4227,13 +4359,36 @@ public final class DataAsyncClient {
             requestOptions.addQueryParam("trim_end", String.valueOf(trimEnd), false);
         }
         return getIntervalLegendWithResponse(classmapName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_LIST_BINARY_DATA));
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_MAP_STRING_OBJECT));
     }
 
     /**
      * Get Interval Legend
      * 
      * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow).
      * 
      * @param classmapName classmap name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4244,16 +4399,39 @@ public final class DataAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return interval Legend
      * 
-     * Generate values and color swatches mapping for a given interval classmap on successful completion of
-     * {@link Mono}.
+     * Generate values and color swatches mapping for a given interval classmap.
+     * 
+     * Returns a color map for intervals, where each interval is defined by:
+     * - A numeric range `[min, max]` representing the interval boundaries.
+     * - An RGBA color `[red, green, blue, alpha]` associated with the interval.
+     * 
+     * The response is a 2D array of interval definitions, where each element is a pair:
+     * - The first element is an array of two numbers `[min, max]` defining the interval.
+     * - The second element is an array of four numbers `[red, green, blue, alpha]` defining the RGBA color.
+     * 
+     * Example:
+     * ```json
+     * [
+     * [
+     * [-2, 0], [0, 0, 0, 0]
+     * ],
+     * [
+     * [1, 32], [255, 255, 178, 255]
+     * ]
+     * ]
+     * ```
+     * This example defines two intervals:
+     * - The interval `[-2, 0]` is mapped to the color `[0, 0, 0, 0]` (transparent black).
+     * - The interval `[1, 32]` is mapped to the color `[255, 255, 178, 255]` (opaque yellow) on successful completion
+     * of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<List<BinaryData>>> getIntervalLegend(String classmapName) {
+    public Mono<Map<String, Object>> getIntervalLegend(String classmapName) {
         // Generated convenience method for getIntervalLegendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getIntervalLegendWithResponse(classmapName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_LIST_BINARY_DATA));
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_MAP_STRING_OBJECT));
     }
 
     /**
@@ -4446,9 +4624,9 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<BinaryData>> getMosaicsAssetsForTile(String searchId, String tileMatrixSetId, String collectionId,
-        double z, double x, double y, Integer scanLimit, Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull,
-        Boolean skipCovered) {
+    public Mono<List<TilerAssetGeoJson>> getMosaicsAssetsForTile(String searchId, String tileMatrixSetId,
+        String collectionId, double z, double x, double y, Integer scanLimit, Integer itemsLimit, Integer timeLimit,
+        Boolean exitWhenFull, Boolean skipCovered) {
         // Generated convenience method for getMosaicsAssetsForTileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (scanLimit != null) {
@@ -4468,7 +4646,7 @@ public final class DataAsyncClient {
         }
         return getMosaicsAssetsForTileWithResponse(searchId, tileMatrixSetId, collectionId, z, x, y, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_BINARY_DATA));
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON));
     }
 
     /**
@@ -4495,13 +4673,13 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<BinaryData>> getMosaicsAssetsForTile(String searchId, String tileMatrixSetId, String collectionId,
-        double z, double x, double y) {
+    public Mono<List<TilerAssetGeoJson>> getMosaicsAssetsForTile(String searchId, String tileMatrixSetId,
+        String collectionId, double z, double x, double y) {
         // Generated convenience method for getMosaicsAssetsForTileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getMosaicsAssetsForTileWithResponse(searchId, tileMatrixSetId, collectionId, z, x, y, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_BINARY_DATA));
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON));
     }
 
     /**
@@ -4958,18 +5136,8 @@ public final class DataAsyncClient {
         };
 
     @Generated
-    private static final TypeReference<Map<String, BinaryData>> TYPE_REFERENCE_MAP_STRING_BINARY_DATA
-        = new TypeReference<Map<String, BinaryData>>() {
-        };
-
-    @Generated
     private static final TypeReference<Map<String, Map<String, BandStatistics>>> TYPE_REFERENCE_MAP_STRING_MAP_STRING_BAND_STATISTICS
         = new TypeReference<Map<String, Map<String, BandStatistics>>>() {
-        };
-
-    @Generated
-    private static final TypeReference<List<List<BinaryData>>> TYPE_REFERENCE_LIST_LIST_BINARY_DATA
-        = new TypeReference<List<List<BinaryData>>>() {
         };
 
     @Generated
@@ -4978,7 +5146,12 @@ public final class DataAsyncClient {
         };
 
     @Generated
-    private static final TypeReference<List<BinaryData>> TYPE_REFERENCE_LIST_BINARY_DATA
-        = new TypeReference<List<BinaryData>>() {
+    private static final TypeReference<List<TilerAssetGeoJson>> TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON
+        = new TypeReference<List<TilerAssetGeoJson>>() {
+        };
+
+    @Generated
+    private static final TypeReference<Map<String, Object>> TYPE_REFERENCE_MAP_STRING_OBJECT
+        = new TypeReference<Map<String, Object>>() {
         };
 }

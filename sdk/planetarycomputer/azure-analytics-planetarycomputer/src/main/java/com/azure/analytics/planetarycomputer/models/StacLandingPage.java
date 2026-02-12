@@ -6,11 +6,14 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -24,13 +27,13 @@ public final class StacLandingPage implements JsonSerializable<StacLandingPage> 
      * MSFT Created
      */
     @Generated
-    private String createdOn;
+    private OffsetDateTime createdOn;
 
     /*
      * MSFT Updated
      */
     @Generated
-    private String updatedOn;
+    private OffsetDateTime updatedOn;
 
     /*
      * MSFT Short Description
@@ -108,7 +111,7 @@ public final class StacLandingPage implements JsonSerializable<StacLandingPage> 
      * @return the createdOn value.
      */
     @Generated
-    public String getCreatedOn() {
+    public OffsetDateTime getCreatedOn() {
         return this.createdOn;
     }
 
@@ -118,7 +121,7 @@ public final class StacLandingPage implements JsonSerializable<StacLandingPage> 
      * @return the updatedOn value.
      */
     @Generated
-    public String getUpdatedOn() {
+    public OffsetDateTime getUpdatedOn() {
         return this.updatedOn;
     }
 
@@ -223,8 +226,10 @@ public final class StacLandingPage implements JsonSerializable<StacLandingPage> 
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("conformsTo", this.conformsTo, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("links", this.links, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("msft:_created", this.createdOn);
-        jsonWriter.writeStringField("msft:_updated", this.updatedOn);
+        jsonWriter.writeStringField("msft:_created",
+            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
+        jsonWriter.writeStringField("msft:_updated",
+            this.updatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedOn));
         jsonWriter.writeStringField("msft:short_description", this.shortDescription);
         jsonWriter.writeArrayField("stac_extensions", this.stacExtensions,
             (writer, element) -> writer.writeString(element));
@@ -250,8 +255,8 @@ public final class StacLandingPage implements JsonSerializable<StacLandingPage> 
             String description = null;
             List<String> conformsTo = null;
             List<StacLink> links = null;
-            String createdOn = null;
-            String updatedOn = null;
+            OffsetDateTime createdOn = null;
+            OffsetDateTime updatedOn = null;
             String shortDescription = null;
             List<String> stacExtensions = null;
             String title = null;
@@ -270,9 +275,11 @@ public final class StacLandingPage implements JsonSerializable<StacLandingPage> 
                 } else if ("links".equals(fieldName)) {
                     links = reader.readArray(reader1 -> StacLink.fromJson(reader1));
                 } else if ("msft:_created".equals(fieldName)) {
-                    createdOn = reader.getString();
+                    createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("msft:_updated".equals(fieldName)) {
-                    updatedOn = reader.getString();
+                    updatedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("msft:short_description".equals(fieldName)) {
                     shortDescription = reader.getString();
                 } else if ("stac_extensions".equals(fieldName)) {

@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import java.util.List;
 import java.util.Map;
 
@@ -43,13 +42,13 @@ public final class RegisterMosaicsSearchOptions {
      * Query
      */
     @Generated
-    private Map<String, BinaryData> query;
+    private Map<String, Object> query;
 
     /*
      * Filter
      */
     @Generated
-    private String filter;
+    private Map<String, Object> filter;
 
     /*
      * Temporal filter in RFC 3339 format or interval
@@ -176,7 +175,7 @@ public final class RegisterMosaicsSearchOptions {
      * @return the query value.
      */
     @Generated
-    public Map<String, BinaryData> getQuery() {
+    public Map<String, Object> getQuery() {
         return this.query;
     }
 
@@ -187,7 +186,7 @@ public final class RegisterMosaicsSearchOptions {
      * @return the RegisterMosaicsSearchOptions object itself.
      */
     @Generated
-    public RegisterMosaicsSearchOptions setQuery(Map<String, BinaryData> query) {
+    public RegisterMosaicsSearchOptions setQuery(Map<String, Object> query) {
         this.query = query;
         return this;
     }
@@ -198,7 +197,7 @@ public final class RegisterMosaicsSearchOptions {
      * @return the filter value.
      */
     @Generated
-    public String getFilter() {
+    public Map<String, Object> getFilter() {
         return this.filter;
     }
 
@@ -209,7 +208,7 @@ public final class RegisterMosaicsSearchOptions {
      * @return the RegisterMosaicsSearchOptions object itself.
      */
     @Generated
-    public RegisterMosaicsSearchOptions setFilter(String filter) {
+    public RegisterMosaicsSearchOptions setFilter(Map<String, Object> filter) {
         this.filter = filter;
         return this;
     }

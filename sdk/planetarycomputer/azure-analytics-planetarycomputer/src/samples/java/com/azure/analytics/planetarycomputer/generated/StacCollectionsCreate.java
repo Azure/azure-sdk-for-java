@@ -11,11 +11,9 @@ import com.azure.analytics.planetarycomputer.models.StacCollection;
 import com.azure.analytics.planetarycomputer.models.StacCollectionTemporalExtent;
 import com.azure.analytics.planetarycomputer.models.StacExtensionExtent;
 import com.azure.analytics.planetarycomputer.models.StacExtensionSpatialExtent;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,8 +36,7 @@ public class StacCollectionsCreate {
                             .setStacVersion("1.0.0")
                             .setTitle("Test Partition Type Collection")
                             .setType("Collection")
-                            .setAdditionalProperties(mapOf("id", BinaryData
-                                .fromBytes("test-partition-type-collection".getBytes(StandardCharsets.UTF_8)))));
+                            .setAdditionalProperties(mapOf("id", "test-partition-type-collection")));
         // END:com.azure.analytics.planetarycomputer.generated.stac-create-collection.stac-collections-create
     }
 

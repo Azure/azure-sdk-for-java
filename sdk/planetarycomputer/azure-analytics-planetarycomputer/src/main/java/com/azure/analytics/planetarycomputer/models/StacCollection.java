@@ -6,12 +6,14 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +29,13 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
      * MSFT Created
      */
     @Generated
-    private String createdOn;
+    private OffsetDateTime createdOn;
 
     /*
      * MSFT Updated
      */
     @Generated
-    private String updatedOn;
+    private OffsetDateTime updatedOn;
 
     /*
      * MSFT Short Description
@@ -129,7 +131,7 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
      * object).
      */
     @Generated
-    private Map<String, BinaryData> summaries;
+    private Map<String, Object> summaries;
 
     /*
      * https://github.com/radiantearth/stac-spec/blob/v1.0.0/collection-spec/collection-spec.md
@@ -137,7 +139,7 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
      * Represents a STAC collection.
      */
     @Generated
-    private Map<String, BinaryData> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of StacCollection class.
@@ -161,7 +163,7 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
      * @return the createdOn value.
      */
     @Generated
-    public String getCreatedOn() {
+    public OffsetDateTime getCreatedOn() {
         return this.createdOn;
     }
 
@@ -172,7 +174,7 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
      * @return the StacCollection object itself.
      */
     @Generated
-    public StacCollection setCreatedOn(String createdOn) {
+    public StacCollection setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
         return this;
     }
@@ -183,7 +185,7 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
      * @return the updatedOn value.
      */
     @Generated
-    public String getUpdatedOn() {
+    public OffsetDateTime getUpdatedOn() {
         return this.updatedOn;
     }
 
@@ -194,7 +196,7 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
      * @return the StacCollection object itself.
      */
     @Generated
-    public StacCollection setUpdatedOn(String updatedOn) {
+    public StacCollection setUpdatedOn(OffsetDateTime updatedOn) {
         this.updatedOn = updatedOn;
         return this;
     }
@@ -460,7 +462,7 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
      * @return the summaries value.
      */
     @Generated
-    public Map<String, BinaryData> getSummaries() {
+    public Map<String, Object> getSummaries() {
         return this.summaries;
     }
 
@@ -474,7 +476,7 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
      * @return the StacCollection object itself.
      */
     @Generated
-    public StacCollection setSummaries(Map<String, BinaryData> summaries) {
+    public StacCollection setSummaries(Map<String, Object> summaries) {
         this.summaries = summaries;
         return this;
     }
@@ -488,7 +490,7 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
      * @return the additionalProperties value.
      */
     @Generated
-    public Map<String, BinaryData> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -502,7 +504,7 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
      * @return the StacCollection object itself.
      */
     @Generated
-    public StacCollection setAdditionalProperties(Map<String, BinaryData> additionalProperties) {
+    public StacCollection setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -518,8 +520,10 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
         jsonWriter.writeArrayField("links", this.links, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("license", this.license);
         jsonWriter.writeJsonField("extent", this.extent);
-        jsonWriter.writeStringField("msft:_created", this.createdOn);
-        jsonWriter.writeStringField("msft:_updated", this.updatedOn);
+        jsonWriter.writeStringField("msft:_created",
+            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
+        jsonWriter.writeStringField("msft:_updated",
+            this.updatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedOn));
         jsonWriter.writeStringField("msft:short_description", this.shortDescription);
         jsonWriter.writeArrayField("stac_extensions", this.stacExtensions,
             (writer, element) -> writer.writeString(element));
@@ -530,16 +534,10 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
         jsonWriter.writeMapField("item_assets", this.itemAssets, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("keywords", this.keywords, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("providers", this.providers, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("summaries", this.summaries,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("summaries", this.summaries, (writer, element) -> writer.writeUntyped(element));
         if (additionalProperties != null) {
-            for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeFieldName(additionalProperty.getKey());
-                if (additionalProperty.getValue() == null) {
-                    jsonWriter.writeNull();
-                } else {
-                    additionalProperty.getValue().writeTo(jsonWriter);
-                }
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
             }
         }
         return jsonWriter.writeEndObject();
@@ -562,8 +560,8 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
             List<StacLink> links = null;
             String license = null;
             StacExtensionExtent extent = null;
-            String createdOn = null;
-            String updatedOn = null;
+            OffsetDateTime createdOn = null;
+            OffsetDateTime updatedOn = null;
             String shortDescription = null;
             List<String> stacExtensions = null;
             String stacVersion = null;
@@ -573,8 +571,8 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
             Map<String, StacItemAsset> itemAssets = null;
             List<String> keywords = null;
             List<StacProvider> providers = null;
-            Map<String, BinaryData> summaries = null;
-            Map<String, BinaryData> additionalProperties = null;
+            Map<String, Object> summaries = null;
+            Map<String, Object> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -590,9 +588,11 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
                 } else if ("extent".equals(fieldName)) {
                     extent = StacExtensionExtent.fromJson(reader);
                 } else if ("msft:_created".equals(fieldName)) {
-                    createdOn = reader.getString();
+                    createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("msft:_updated".equals(fieldName)) {
-                    updatedOn = reader.getString();
+                    updatedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("msft:short_description".equals(fieldName)) {
                     shortDescription = reader.getString();
                 } else if ("stac_extensions".equals(fieldName)) {
@@ -612,15 +612,13 @@ public final class StacCollection implements JsonSerializable<StacCollection> {
                 } else if ("providers".equals(fieldName)) {
                     providers = reader.readArray(reader1 -> StacProvider.fromJson(reader1));
                 } else if ("summaries".equals(fieldName)) {
-                    summaries = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    summaries = reader.readMap(reader1 -> reader1.readUntyped());
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
                     }
 
-                    additionalProperties.put(fieldName,
-                        reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    additionalProperties.put(fieldName, reader.readUntyped());
                 }
             }
             StacCollection deserializedStacCollection = new StacCollection(description, links, license, extent);

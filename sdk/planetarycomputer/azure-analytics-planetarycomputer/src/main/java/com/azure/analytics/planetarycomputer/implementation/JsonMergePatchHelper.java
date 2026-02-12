@@ -12,6 +12,7 @@ import com.azure.analytics.planetarycomputer.models.StacItemOrStacItemCollection
 import com.azure.analytics.planetarycomputer.models.StacItemProperties;
 import com.azure.analytics.planetarycomputer.models.StacLink;
 import com.azure.analytics.planetarycomputer.models.StacProvider;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -95,9 +96,9 @@ public class JsonMergePatchHelper {
 
         void setLinks(StacItemOrStacItemCollection stacItemOrStacItemCollection, List<StacLink> links);
 
-        void setCreatedOn(StacItemOrStacItemCollection stacItemOrStacItemCollection, String createdOn);
+        void setCreatedOn(StacItemOrStacItemCollection stacItemOrStacItemCollection, OffsetDateTime createdOn);
 
-        void setUpdatedOn(StacItemOrStacItemCollection stacItemOrStacItemCollection, String updatedOn);
+        void setUpdatedOn(StacItemOrStacItemCollection stacItemOrStacItemCollection, OffsetDateTime updatedOn);
 
         void setShortDescription(StacItemOrStacItemCollection stacItemOrStacItemCollection, String shortDescription);
 

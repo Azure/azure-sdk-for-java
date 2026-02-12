@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -29,7 +28,7 @@ public final class StacQueryable implements JsonSerializable<StacQueryable> {
      * Metadata for the queryable field.
      */
     @Generated
-    private final Map<String, BinaryData> definition;
+    private final Map<String, Object> definition;
 
     /*
      * Whether to create a database index for this field.
@@ -50,7 +49,7 @@ public final class StacQueryable implements JsonSerializable<StacQueryable> {
      * @param definition the definition value to set.
      */
     @Generated
-    public StacQueryable(String name, Map<String, BinaryData> definition) {
+    public StacQueryable(String name, Map<String, Object> definition) {
         this.name = name;
         this.definition = definition;
     }
@@ -71,7 +70,7 @@ public final class StacQueryable implements JsonSerializable<StacQueryable> {
      * @return the definition value.
      */
     @Generated
-    public Map<String, BinaryData> getDefinition() {
+    public Map<String, Object> getDefinition() {
         return this.definition;
     }
 
@@ -127,8 +126,7 @@ public final class StacQueryable implements JsonSerializable<StacQueryable> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeMapField("definition", this.definition,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("definition", this.definition, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeBooleanField("create_index", this.createIndex);
         jsonWriter.writeStringField("data_type", this.dataType == null ? null : this.dataType.toString());
         return jsonWriter.writeEndObject();
@@ -147,7 +145,7 @@ public final class StacQueryable implements JsonSerializable<StacQueryable> {
     public static StacQueryable fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            Map<String, BinaryData> definition = null;
+            Map<String, Object> definition = null;
             Boolean createIndex = null;
             StacQueryableDefinitionDataType dataType = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -157,8 +155,7 @@ public final class StacQueryable implements JsonSerializable<StacQueryable> {
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("definition".equals(fieldName)) {
-                    definition = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    definition = reader.readMap(reader1 -> reader1.readUntyped());
                 } else if ("create_index".equals(fieldName)) {
                     createIndex = reader.getNullable(JsonReader::getBoolean);
                 } else if ("data_type".equals(fieldName)) {
