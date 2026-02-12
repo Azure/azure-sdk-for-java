@@ -358,7 +358,7 @@
 /sdk/loadtesting/                                                  @Azure/azure-java-sdk @Harshan01 @mitsha-microsoft @ninallam @prativen
 
 # ServiceLabel: %Load Testing
-# ServiceOwners:                                                   @Harshan01 @mitsha-microsoft @ninallam @prativen
+# AzureSdkOwners:                                                   @Harshan01 @mitsha-microsoft @ninallam @prativen
 
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication/               @Azure/azure-java-sdk @RamonArguelles
