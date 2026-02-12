@@ -13,12 +13,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashSet;
 
 public class CosmosClientMetadataCachesSnapshot implements Serializable {
     private static final long serialVersionUID = 1l;
     private static final int ERROR_CODE = 0;
+
+    // All classes that ObjectInputStream.resolveClass() will encounter during deserialization
+    // of the cache. This includes the top-level class, its serializable parent, and all
+    // transitively serialized classes in the deserialization chain.
+    private static final String[] ALLOWED_DESERIALIZATION_CLASSES = new String[] {
+        // Top-level serialized cache class and its serializable parent
+        AsyncCache.SerializableAsyncCache.SerializableAsyncCollectionCache.class.getName(),
+        AsyncCache.SerializableAsyncCache.class.getName(),
+        // Nested class deserialized by SerializableAsyncCollectionCache
+        DocumentCollection.SerializableDocumentCollection.class.getName(),
+        // Jackson uses NodeSerialization (via writeReplace) to serialize ObjectNode/TextNode as bytes
+        "com.fasterxml.jackson.databind.node.NodeSerialization",
+        // Equality comparer - read from the stream (then discarded) for format compatibility
+        "com.azure.cosmos.implementation.caches.RxCollectionCache$CollectionRidComparer"
+    };
+
     public byte[] collectionInfoByNameCache;
     public byte[] collectionInfoByIdCache;
 
@@ -54,31 +68,9 @@ public class CosmosClientMetadataCachesSnapshot implements Serializable {
     }
 
     public AsyncCache<String, DocumentCollection> getCollectionInfoByNameCache() {
-        try {
-            // Create allowlist for all classes that may be deserialized
-            SafeObjectInputStream ois = new SafeObjectInputStream(
+        try (SafeObjectInputStream ois = new SafeObjectInputStream(
                 new ByteArrayInputStream(collectionInfoByNameCache),
-                new HashSet<>(Arrays.asList(
-                    // Top-level serialized cache class
-                    AsyncCache.SerializableAsyncCache.SerializableAsyncCollectionCache.class.getName(),
-                    // Nested classes deserialized by SerializableAsyncCollectionCache
-                    DocumentCollection.SerializableDocumentCollection.class.getName(),
-                    // Jackson classes used by SerializableDocumentCollection
-                    "com.fasterxml.jackson.databind.node.ObjectNode",
-                    "com.fasterxml.jackson.databind.node.TextNode",
-                    // Internal Jackson classes that may be involved
-                    "com.fasterxml.jackson.databind.node.BaseJsonNode",
-                    "com.fasterxml.jackson.databind.node.ContainerNode",
-                    "com.fasterxml.jackson.databind.node.ValueNode",
-                    "com.fasterxml.jackson.databind.JsonNode",
-                    // Equality comparer - we skip deserialization but still need to allow reading it
-                    "com.azure.cosmos.implementation.caches.RxCollectionCache$CollectionRidComparer",
-                    // Java collections and concurrent classes used internally
-                    "java.util.concurrent.ConcurrentHashMap",
-                    "java.util.HashMap",
-                    "java.util.LinkedHashMap"
-                ))
-            );
+                ALLOWED_DESERIALIZATION_CLASSES)) {
             return ((AsyncCache.SerializableAsyncCache.SerializableAsyncCollectionCache)
                 ois.readObject())
                 .toAsyncCache();
@@ -88,31 +80,9 @@ public class CosmosClientMetadataCachesSnapshot implements Serializable {
     }
 
     public AsyncCache<String, DocumentCollection> getCollectionInfoByIdCache() {
-        try {
-            // Create allowlist for all classes that may be deserialized
-            SafeObjectInputStream ois = new SafeObjectInputStream(
+        try (SafeObjectInputStream ois = new SafeObjectInputStream(
                 new ByteArrayInputStream(collectionInfoByIdCache),
-                new HashSet<>(Arrays.asList(
-                    // Top-level serialized cache class
-                    AsyncCache.SerializableAsyncCache.SerializableAsyncCollectionCache.class.getName(),
-                    // Nested classes deserialized by SerializableAsyncCollectionCache
-                    DocumentCollection.SerializableDocumentCollection.class.getName(),
-                    // Jackson classes used by SerializableDocumentCollection
-                    "com.fasterxml.jackson.databind.node.ObjectNode",
-                    "com.fasterxml.jackson.databind.node.TextNode",
-                    // Internal Jackson classes that may be involved
-                    "com.fasterxml.jackson.databind.node.BaseJsonNode",
-                    "com.fasterxml.jackson.databind.node.ContainerNode",
-                    "com.fasterxml.jackson.databind.node.ValueNode",
-                    "com.fasterxml.jackson.databind.JsonNode",
-                    // Equality comparer - we skip deserialization but still need to allow reading it
-                    "com.azure.cosmos.implementation.caches.RxCollectionCache$CollectionRidComparer",
-                    // Java collections and concurrent classes used internally
-                    "java.util.concurrent.ConcurrentHashMap",
-                    "java.util.HashMap",
-                    "java.util.LinkedHashMap"
-                ))
-            );
+                ALLOWED_DESERIALIZATION_CLASSES)) {
             return ((AsyncCache.SerializableAsyncCache.SerializableAsyncCollectionCache)
                 ois.readObject())
                 .toAsyncCache();

@@ -118,47 +118,78 @@ public class SerializableAsyncCacheTest {
         return collection;
     }
 
+    @Test(groups = { "unit" }, dataProvider = "numberOfCollections")
+    public void serialize_Deserialize_AsyncCache_WithSafeObjectInputStream(int cnt) throws Exception {
+        // This test exercises the full production deserialization path through
+        // CosmosClientMetadataCachesSnapshot, which uses SafeObjectInputStream with
+        // the production allowlist. This validates the allowlist covers all classes
+        // that resolveClass() encounters during deserialization.
+        AsyncCache<String, DocumentCollection> collectionInfoByNameCache = new AsyncCache<>();
+
+        for (int i = 0; i < cnt; i++) {
+            DocumentCollection collectionDef = generateDocumentCollectionDefinition();
+            String collectionLink = "db/mydb/colls/" + collectionDef.getId();
+            collectionInfoByNameCache.getAsync(collectionLink, null,
+                () -> Mono.just(collectionDef)).block();
+        }
+
+        ConcurrentHashMap<String, AsyncLazy<DocumentCollection>> originalInternalCache =
+            getInternalCache(collectionInfoByNameCache);
+
+        // Serialize through CosmosClientMetadataCachesSnapshot (uses ObjectOutputStream)
+        CosmosClientMetadataCachesSnapshot snapshot = new CosmosClientMetadataCachesSnapshot();
+        snapshot.serializeCollectionInfoByNameCache(collectionInfoByNameCache);
+
+        // Deserialize through CosmosClientMetadataCachesSnapshot (uses SafeObjectInputStream
+        // with the production ALLOWED_DESERIALIZATION_CLASSES allowlist)
+        AsyncCache<String, DocumentCollection> newAsyncCache = snapshot.getCollectionInfoByNameCache();
+        ConcurrentHashMap<String, AsyncLazy<DocumentCollection>> newInternalCache =
+            getInternalCache(newAsyncCache);
+
+        assertThat(newInternalCache).hasSize(cnt);
+
+        for (String collectionLink : originalInternalCache.keySet()) {
+            DocumentCollection resultFromNewCache = newAsyncCache.getAsync(collectionLink, null,
+                () -> Mono.error(new RuntimeException("not expected"))).block();
+
+            DocumentCollection resultFromOldCache = collectionInfoByNameCache.getAsync(collectionLink, null,
+                () -> Mono.error(new RuntimeException("not expected"))).block();
+
+            assertThat(resultFromNewCache.toJson()).isEqualTo(resultFromOldCache.toJson());
+        }
+    }
+
     @Test(groups = { "unit" })
     public void deserializeWithInvalidClassType_shouldFail() throws Exception {
-        // Create a malicious payload with a different class type
+        // Serialize an unauthorized class (ArrayList) - this will trigger resolveClass()
+        // unlike String which uses a special TC_STRING type code and bypasses resolveClass()
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
-        
-        // Write a valid SerializableAsyncCollectionCache structure but with a malicious value
-        oos.writeInt(1); // size = 1
-        oos.writeUTF("testKey"); // key
-        
-        // Write a malicious object instead of SerializableDocumentCollection
-        oos.writeObject("MaliciousString");
-        
-        // Write the equality comparer
-        oos.writeObject((IEqualityComparer<DocumentCollection>) (v1, v2) -> v1 == v2);
+        oos.writeObject(new ArrayList<>());
         oos.flush();
-        
         byte[] maliciousBytes = baos.toByteArray();
-        
-        // Attempt to deserialize - should fail with InvalidClassException
-        try {
-            ByteArrayInputStream bais = new ByteArrayInputStream(maliciousBytes);
-            ObjectInputStream ois = new ObjectInputStream(bais);
-            SerializableAsyncCollectionCache cache = (SerializableAsyncCollectionCache) ois.readObject();
-            
-            // Should not reach here
+
+        // Try to deserialize with SafeObjectInputStream that only allows cache classes
+        ByteArrayInputStream bais = new ByteArrayInputStream(maliciousBytes);
+        try (SafeObjectInputStream sois = new SafeObjectInputStream(bais,
+                SerializableAsyncCollectionCache.class.getName(),
+                SerializableAsyncCache.class.getName())) {
+            sois.readObject();
             org.testng.Assert.fail("Expected InvalidClassException to be thrown");
         } catch (java.io.InvalidClassException e) {
-            // Expected - the malicious class type was rejected
-            assertThat(e.getMessage()).contains("Expected SerializableDocumentCollection");
+            // Expected - the unauthorized class type was rejected by SafeObjectInputStream
+            assertThat(e.getMessage()).contains("Unauthorized deserialization attempt");
         }
     }
 
     @Test(groups = { "unit" })
     public void safeObjectInputStream_rejectsUnauthorizedClasses() throws Exception {
-        // Create a malicious payload with an unauthorized class
+        // Create a malicious payload with an unauthorized class (ArrayList instead of String,
+        // since String uses a special TC_STRING type code in Java serialization and bypasses
+        // ObjectInputStream.resolveClass() entirely)
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
-        
-        // Write a malicious object (String instead of SerializableAsyncCollectionCache)
-        oos.writeObject("MaliciousPayload");
+        oos.writeObject(new ArrayList<>());
         oos.flush();
         
         byte[] maliciousBytes = baos.toByteArray();

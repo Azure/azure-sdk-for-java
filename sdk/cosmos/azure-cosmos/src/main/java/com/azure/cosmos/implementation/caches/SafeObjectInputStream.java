@@ -16,14 +16,11 @@ import java.util.Set;
 
 /**
  * A secure ObjectInputStream that restricts deserialization to a whitelist of allowed classes.
- * This prevents Remote Code Execution (RCE) attacks via unsafe deserialization.
- * 
- * <p>Note: This class only validates the top-level class being deserialized from the stream.
- * Nested objects deserialized within a class's {@code readObject()} method are not checked
- * by this class - they must be validated by the class's own deserialization logic.
- * For example, when deserializing a {@code SerializableAsyncCollectionCache}, this class
- * validates the outer cache object, while the cache's {@code readObject()} method is
- * responsible for validating the individual collection objects it deserializes.</p>
+ * This prevents Remote Code Execution (RCE) attacks via unsafe deserialization (CWE-502).
+ *
+ * <p>{@code resolveClass()} is called for every class in the deserialization chain, including
+ * the top-level class, its serializable parent classes, and all transitively serialized objects.
+ * The allowlist must therefore include all classes that will be encountered during deserialization.</p>
  */
 public class SafeObjectInputStream extends ObjectInputStream {
     private static final Logger LOGGER = LoggerFactory.getLogger(SafeObjectInputStream.class);
@@ -82,12 +79,17 @@ public class SafeObjectInputStream extends ObjectInputStream {
             return true;
         }
         
-        // Primitive arrays start with [ and use specific type codes
-        // [B = byte[], [S = short[], [I = int[], [J = long[], [F = float[], [D = double[], [Z = boolean[], [C = char[]
-        if (className.startsWith("[") && className.length() == 2) {
-            char typeCode = className.charAt(1);
-            return typeCode == 'B' || typeCode == 'S' || typeCode == 'I' || typeCode == 'J' ||
-                   typeCode == 'F' || typeCode == 'D' || typeCode == 'Z' || typeCode == 'C';
+        // Primitive arrays: [B = byte[], [[B = byte[][], [I = int[], [[I = int[][], etc.
+        if (className.startsWith("[")) {
+            int idx = 0;
+            while (idx < className.length() && className.charAt(idx) == '[') {
+                idx++;
+            }
+            if (idx == className.length() - 1) {
+                char typeCode = className.charAt(idx);
+                return typeCode == 'B' || typeCode == 'S' || typeCode == 'I' || typeCode == 'J' ||
+                       typeCode == 'F' || typeCode == 'D' || typeCode == 'Z' || typeCode == 'C';
+            }
         }
         
         return false;
