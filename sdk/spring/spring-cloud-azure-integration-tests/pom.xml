@@ -38,6 +38,7 @@
     <spotless.skip>true</spotless.skip>
   </properties>
 
+  <!-- TODO: Delete this after this issue resolved: https://github.com/Azure/azure-sdk-for-java/issues/47812-->
   <dependencyManagement>
     <dependencies>
       <dependency>
