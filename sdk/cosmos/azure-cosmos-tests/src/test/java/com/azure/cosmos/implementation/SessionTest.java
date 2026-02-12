@@ -49,7 +49,7 @@ public class SessionTest extends TestSuiteBase {
     private ConnectionMode connectionMode;
     private RequestOptions options;
 
-    @Factory(dataProvider = "clientBuildersWithDirectSession")
+    @Factory(dataProvider = "internalClientBuildersWithSessionConsistency")
     public SessionTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
