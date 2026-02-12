@@ -28,8 +28,8 @@ public interface DiagnosticsClient {
      * 
      * Description for List Hosting Environment Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site Name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service Environment Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -45,8 +45,8 @@ public interface DiagnosticsClient {
      * 
      * Description for List Hosting Environment Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site Name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service Environment Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -61,8 +61,8 @@ public interface DiagnosticsClient {
      * 
      * Description for List Hosting Environment Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site Name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service Environment Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -79,7 +79,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Hosting Environment Detector Response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
@@ -102,7 +102,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Hosting Environment Detector Response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,7 +120,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Hosting Environment Detector Response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
@@ -143,7 +143,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Hosting Environment Detector Response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,7 +161,7 @@ public interface DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -177,7 +177,7 @@ public interface DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -193,7 +193,7 @@ public interface DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,7 +211,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
@@ -233,7 +233,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -251,7 +251,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
@@ -273,7 +273,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,7 +290,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -306,7 +306,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -322,7 +322,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -340,7 +340,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -359,7 +359,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -377,7 +377,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
@@ -396,7 +396,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -414,7 +414,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -432,7 +432,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -450,7 +450,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
@@ -469,7 +469,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
@@ -488,7 +488,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
@@ -507,7 +507,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
@@ -527,7 +527,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
@@ -546,10 +546,10 @@ public interface DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -570,10 +570,10 @@ public interface DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -589,10 +589,10 @@ public interface DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -613,10 +613,10 @@ public interface DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -632,7 +632,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -650,7 +650,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -668,7 +668,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
@@ -687,7 +687,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
@@ -707,7 +707,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
@@ -726,7 +726,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
@@ -746,7 +746,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
@@ -765,10 +765,10 @@ public interface DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -781,7 +781,7 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetectorWithResponseAsync(String resourceGroupName,
-        String siteName, String detectorName, String diagnosticCategory, OffsetDateTime startTime,
+        String siteName, String diagnosticCategory, String detectorName, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain);
 
     /**
@@ -789,10 +789,10 @@ public interface DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -801,17 +801,17 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticDetectorResponseInner> executeSiteDetectorAsync(String resourceGroupName, String siteName,
-        String detectorName, String diagnosticCategory);
+        String diagnosticCategory, String detectorName);
 
     /**
      * Execute Detector
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -824,7 +824,7 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DiagnosticDetectorResponseInner> executeSiteDetectorWithResponse(String resourceGroupName, String siteName,
-        String detectorName, String diagnosticCategory, OffsetDateTime startTime, OffsetDateTime endTime,
+        String diagnosticCategory, String detectorName, OffsetDateTime startTime, OffsetDateTime endTime,
         String timeGrain, Context context);
 
     /**
@@ -832,10 +832,10 @@ public interface DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -843,15 +843,15 @@ public interface DiagnosticsClient {
      * @return class representing Response from Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticDetectorResponseInner executeSiteDetector(String resourceGroupName, String siteName, String detectorName,
-        String diagnosticCategory);
+    DiagnosticDetectorResponseInner executeSiteDetector(String resourceGroupName, String siteName,
+        String diagnosticCategory, String detectorName);
 
     /**
      * List Site Detector Responses
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -869,7 +869,7 @@ public interface DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -887,7 +887,7 @@ public interface DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @param context The context to associate with this operation.
@@ -906,10 +906,10 @@ public interface DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
      * @param slot Slot Name.
+     * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -922,7 +922,7 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DetectorResponseInner>> getSiteDetectorResponseSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String detectorName, String slot, OffsetDateTime startTime, OffsetDateTime endTime,
+        String siteName, String slot, String detectorName, OffsetDateTime startTime, OffsetDateTime endTime,
         String timeGrain);
 
     /**
@@ -930,10 +930,10 @@ public interface DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
      * @param slot Slot Name.
+     * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -941,18 +941,18 @@ public interface DiagnosticsClient {
      * @return class representing Response from Detector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DetectorResponseInner> getSiteDetectorResponseSlotAsync(String resourceGroupName, String siteName,
-        String detectorName, String slot);
+    Mono<DetectorResponseInner> getSiteDetectorResponseSlotAsync(String resourceGroupName, String siteName, String slot,
+        String detectorName);
 
     /**
      * Get site detector response
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
      * @param slot Slot Name.
+     * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -965,7 +965,7 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DetectorResponseInner> getSiteDetectorResponseSlotWithResponse(String resourceGroupName, String siteName,
-        String detectorName, String slot, OffsetDateTime startTime, OffsetDateTime endTime, String timeGrain,
+        String slot, String detectorName, OffsetDateTime startTime, OffsetDateTime endTime, String timeGrain,
         Context context);
 
     /**
@@ -973,10 +973,10 @@ public interface DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
      * @param slot Slot Name.
+     * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -984,15 +984,15 @@ public interface DiagnosticsClient {
      * @return class representing Response from Detector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DetectorResponseInner getSiteDetectorResponseSlot(String resourceGroupName, String siteName, String detectorName,
-        String slot);
+    DetectorResponseInner getSiteDetectorResponseSlot(String resourceGroupName, String siteName, String slot,
+        String detectorName);
 
     /**
      * Get Diagnostics Categories
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1010,7 +1010,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1028,7 +1028,7 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @param context The context to associate with this operation.
@@ -1047,10 +1047,10 @@ public interface DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1060,17 +1060,17 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DiagnosticCategoryInner>> getSiteDiagnosticCategorySlotWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String slot);
+        String siteName, String slot, String diagnosticCategory);
 
     /**
      * Get Diagnostics Category
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1079,17 +1079,17 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticCategoryInner> getSiteDiagnosticCategorySlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot);
+        String slot, String diagnosticCategory);
 
     /**
      * Get Diagnostics Category
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1099,17 +1099,17 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DiagnosticCategoryInner> getSiteDiagnosticCategorySlotWithResponse(String resourceGroupName,
-        String siteName, String diagnosticCategory, String slot, Context context);
+        String siteName, String slot, String diagnosticCategory, Context context);
 
     /**
      * Get Diagnostics Category
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1117,18 +1117,18 @@ public interface DiagnosticsClient {
      * @return class representing detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticCategoryInner getSiteDiagnosticCategorySlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot);
+    DiagnosticCategoryInner getSiteDiagnosticCategorySlot(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory);
 
     /**
      * Get Site Analyses
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1136,18 +1136,18 @@ public interface DiagnosticsClient {
      * @return collection of Diagnostic Analyses as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<AnalysisDefinitionInner> listSiteAnalysesSlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot);
+    PagedFlux<AnalysisDefinitionInner> listSiteAnalysesSlotAsync(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory);
 
     /**
      * Get Site Analyses
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1155,18 +1155,18 @@ public interface DiagnosticsClient {
      * @return collection of Diagnostic Analyses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AnalysisDefinitionInner> listSiteAnalysesSlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot);
+    PagedIterable<AnalysisDefinitionInner> listSiteAnalysesSlot(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory);
 
     /**
      * Get Site Analyses
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
-     * @param slot Slot Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1175,19 +1175,19 @@ public interface DiagnosticsClient {
      * @return collection of Diagnostic Analyses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AnalysisDefinitionInner> listSiteAnalysesSlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot, Context context);
+    PagedIterable<AnalysisDefinitionInner> listSiteAnalysesSlot(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory, Context context);
 
     /**
      * Get Site Analysis
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
-     * @param slot Slot - optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1196,18 +1196,18 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<AnalysisDefinitionInner>> getSiteAnalysisSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String analysisName, String slot);
+        String siteName, String slot, String diagnosticCategory, String analysisName);
 
     /**
      * Get Site Analysis
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
-     * @param slot Slot - optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1215,19 +1215,19 @@ public interface DiagnosticsClient {
      * @return definition of Analysis on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AnalysisDefinitionInner> getSiteAnalysisSlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String analysisName, String slot);
+    Mono<AnalysisDefinitionInner> getSiteAnalysisSlotAsync(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory, String analysisName);
 
     /**
      * Get Site Analysis
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
-     * @param slot Slot - optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1237,18 +1237,18 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AnalysisDefinitionInner> getSiteAnalysisSlotWithResponse(String resourceGroupName, String siteName,
-        String diagnosticCategory, String analysisName, String slot, Context context);
+        String slot, String diagnosticCategory, String analysisName, Context context);
 
     /**
      * Get Site Analysis
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
-     * @param slot Slot - optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1256,19 +1256,19 @@ public interface DiagnosticsClient {
      * @return definition of Analysis.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AnalysisDefinitionInner getSiteAnalysisSlot(String resourceGroupName, String siteName, String diagnosticCategory,
-        String analysisName, String slot);
+    AnalysisDefinitionInner getSiteAnalysisSlot(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory, String analysisName);
 
     /**
      * Execute Analysis
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
-     * @param slot Slot Name.
+     * @param slot Slot - optional.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -1281,7 +1281,7 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DiagnosticAnalysisInner>> executeSiteAnalysisSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String analysisName, String slot, OffsetDateTime startTime,
+        String siteName, String slot, String diagnosticCategory, String analysisName, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain);
 
     /**
@@ -1289,11 +1289,11 @@ public interface DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
-     * @param slot Slot Name.
+     * @param slot Slot - optional.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1301,19 +1301,19 @@ public interface DiagnosticsClient {
      * @return class representing a diagnostic analysis done on an application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DiagnosticAnalysisInner> executeSiteAnalysisSlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String analysisName, String slot);
+    Mono<DiagnosticAnalysisInner> executeSiteAnalysisSlotAsync(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory, String analysisName);
 
     /**
      * Execute Analysis
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
-     * @param slot Slot Name.
+     * @param slot Slot - optional.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -1326,7 +1326,7 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DiagnosticAnalysisInner> executeSiteAnalysisSlotWithResponse(String resourceGroupName, String siteName,
-        String diagnosticCategory, String analysisName, String slot, OffsetDateTime startTime, OffsetDateTime endTime,
+        String slot, String diagnosticCategory, String analysisName, OffsetDateTime startTime, OffsetDateTime endTime,
         String timeGrain, Context context);
 
     /**
@@ -1334,11 +1334,11 @@ public interface DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
-     * @param slot Slot Name.
+     * @param slot Slot - optional.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1346,18 +1346,18 @@ public interface DiagnosticsClient {
      * @return class representing a diagnostic analysis done on an application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticAnalysisInner executeSiteAnalysisSlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String analysisName, String slot);
+    DiagnosticAnalysisInner executeSiteAnalysisSlot(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory, String analysisName);
 
     /**
      * Get Detectors
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1366,17 +1366,17 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DetectorDefinitionResourceInner> listSiteDetectorsSlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot);
+        String slot, String diagnosticCategory);
 
     /**
      * Get Detectors
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1385,17 +1385,17 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DetectorDefinitionResourceInner> listSiteDetectorsSlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot);
+        String slot, String diagnosticCategory);
 
     /**
      * Get Detectors
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1405,18 +1405,18 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DetectorDefinitionResourceInner> listSiteDetectorsSlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot, Context context);
+        String slot, String diagnosticCategory, Context context);
 
     /**
      * Get Detector
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1426,18 +1426,18 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String detectorName, String slot);
+        String siteName, String slot, String diagnosticCategory, String detectorName);
 
     /**
      * Get Detector
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1446,18 +1446,18 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DetectorDefinitionResourceInner> getSiteDetectorSlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String detectorName, String slot);
+        String slot, String diagnosticCategory, String detectorName);
 
     /**
      * Get Detector
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
-     * @param slot Slot Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1467,18 +1467,18 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DetectorDefinitionResourceInner> getSiteDetectorSlotWithResponse(String resourceGroupName, String siteName,
-        String diagnosticCategory, String detectorName, String slot, Context context);
+        String slot, String diagnosticCategory, String detectorName, Context context);
 
     /**
      * Get Detector
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1486,19 +1486,19 @@ public interface DiagnosticsClient {
      * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DetectorDefinitionResourceInner getSiteDetectorSlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String detectorName, String slot);
+    DetectorDefinitionResourceInner getSiteDetectorSlot(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory, String detectorName);
 
     /**
      * Execute Detector
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -1511,7 +1511,7 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetectorSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String detectorName, String diagnosticCategory, String slot, OffsetDateTime startTime,
+        String siteName, String slot, String diagnosticCategory, String detectorName, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain);
 
     /**
@@ -1519,11 +1519,11 @@ public interface DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1532,18 +1532,18 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticDetectorResponseInner> executeSiteDetectorSlotAsync(String resourceGroupName, String siteName,
-        String detectorName, String diagnosticCategory, String slot);
+        String slot, String diagnosticCategory, String detectorName);
 
     /**
      * Execute Detector
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -1556,7 +1556,7 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DiagnosticDetectorResponseInner> executeSiteDetectorSlotWithResponse(String resourceGroupName,
-        String siteName, String detectorName, String diagnosticCategory, String slot, OffsetDateTime startTime,
+        String siteName, String slot, String diagnosticCategory, String detectorName, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain, Context context);
 
     /**
@@ -1564,11 +1564,11 @@ public interface DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1576,6 +1576,6 @@ public interface DiagnosticsClient {
      * @return class representing Response from Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticDetectorResponseInner executeSiteDetectorSlot(String resourceGroupName, String siteName,
-        String detectorName, String diagnosticCategory, String slot);
+    DiagnosticDetectorResponseInner executeSiteDetectorSlot(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory, String detectorName);
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -42,11 +43,6 @@ public final class AppServicePlanInner extends Resource {
     private SkuDescription sku;
 
     /*
-     * Managed service identity.
-     */
-    private ManagedServiceIdentity identity;
-
-    /*
      * Extended Location.
      */
     private ExtendedLocation extendedLocation;
@@ -57,6 +53,16 @@ public final class AppServicePlanInner extends Resource {
      * resource-kind-reference for details supported values for kind.
      */
     private String kind;
+
+    /*
+     * Managed service identity.
+     */
+    private ManagedServiceIdentity identity;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -109,26 +115,6 @@ public final class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get the identity property: Managed service identity.
-     * 
-     * @return the identity value.
-     */
-    public ManagedServiceIdentity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: Managed service identity.
-     * 
-     * @param identity the identity value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withIdentity(ManagedServiceIdentity identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
      * Get the extendedLocation property: Extended Location.
      * 
      * @return the extendedLocation value.
@@ -170,6 +156,35 @@ public final class AppServicePlanInner extends Resource {
     public AppServicePlanInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Get the identity property: Managed service identity.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity.
+     * 
+     * @param identity the identity value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -870,11 +885,11 @@ public final class AppServicePlanInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
-        if (identity() != null) {
-            identity().validate();
-        }
         if (extendedLocation() != null) {
             extendedLocation().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -888,9 +903,9 @@ public final class AppServicePlanInner extends Resource {
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("sku", this.sku);
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -925,12 +940,14 @@ public final class AppServicePlanInner extends Resource {
                     deserializedAppServicePlanInner.innerProperties = AppServicePlanProperties.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {
                     deserializedAppServicePlanInner.sku = SkuDescription.fromJson(reader);
-                } else if ("identity".equals(fieldName)) {
-                    deserializedAppServicePlanInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedAppServicePlanInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedAppServicePlanInner.kind = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAppServicePlanInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAppServicePlanInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

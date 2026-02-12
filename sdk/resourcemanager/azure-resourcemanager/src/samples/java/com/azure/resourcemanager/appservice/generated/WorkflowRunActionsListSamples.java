@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WorkflowRunActionsListSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/WorkflowRunActions_List.
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/WorkflowRunActions_List.
      * json
      */
     /**

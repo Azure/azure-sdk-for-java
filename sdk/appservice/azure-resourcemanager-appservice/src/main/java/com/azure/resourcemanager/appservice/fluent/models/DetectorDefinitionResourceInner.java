@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import java.io.IOException;
 
 /**
  * ARM resource for a detector definition.
  */
 @Fluent
-public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
+public final class DetectorDefinitionResourceInner extends ProxyResource {
     /*
      * Core resource properties
      */
     private DetectorDefinition innerProperties;
+
+    /*
+     * Kind of resource.
+     */
+    private String kind;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -52,6 +63,35 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the kind property: Kind of resource.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of resource.
+     * 
+     * @param kind the kind value to set.
+     * @return the DetectorDefinitionResourceInner object itself.
+     */
+    public DetectorDefinitionResourceInner withKind(String kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -79,15 +119,6 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
     @Override
     public String id() {
         return this.id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public DetectorDefinitionResourceInner withKind(String kind) {
-        super.withKind(kind);
-        return this;
     }
 
     /**
@@ -131,7 +162,6 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -144,8 +174,8 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", kind());
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 
@@ -172,10 +202,12 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
                     deserializedDetectorDefinitionResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedDetectorDefinitionResourceInner.type = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedDetectorDefinitionResourceInner.withKind(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedDetectorDefinitionResourceInner.innerProperties = DetectorDefinition.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDetectorDefinitionResourceInner.kind = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDetectorDefinitionResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

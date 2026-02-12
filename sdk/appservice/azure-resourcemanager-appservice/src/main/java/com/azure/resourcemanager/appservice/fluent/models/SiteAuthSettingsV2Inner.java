@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -13,18 +15,29 @@ import com.azure.resourcemanager.appservice.models.GlobalValidation;
 import com.azure.resourcemanager.appservice.models.HttpSettings;
 import com.azure.resourcemanager.appservice.models.IdentityProviders;
 import com.azure.resourcemanager.appservice.models.Login;
-import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import java.io.IOException;
 
 /**
  * Configuration settings for the Azure App Service Authentication / Authorization V2 feature.
  */
 @Fluent
-public final class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
+public final class SiteAuthSettingsV2Inner extends ProxyResource {
     /*
      * SiteAuthSettingsV2 resource specific properties
      */
     private SiteAuthSettingsV2Properties innerProperties;
+
+    /*
+     * Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-
+     * resource-kind-reference for details supported values for kind.
+     */
+    private String kind;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -57,6 +70,39 @@ public final class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
+     * 
+     * @param kind the kind value to set.
+     * @return the SiteAuthSettingsV2Inner object itself.
+     */
+    public SiteAuthSettingsV2Inner withKind(String kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -84,15 +130,6 @@ public final class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     @Override
     public String id() {
         return this.id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SiteAuthSettingsV2Inner withKind(String kind) {
-        super.withKind(kind);
-        return this;
     }
 
     /**
@@ -225,7 +262,6 @@ public final class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -238,8 +274,8 @@ public final class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", kind());
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 
@@ -265,10 +301,12 @@ public final class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
                     deserializedSiteAuthSettingsV2Inner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedSiteAuthSettingsV2Inner.type = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedSiteAuthSettingsV2Inner.withKind(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedSiteAuthSettingsV2Inner.innerProperties = SiteAuthSettingsV2Properties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSiteAuthSettingsV2Inner.kind = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSiteAuthSettingsV2Inner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

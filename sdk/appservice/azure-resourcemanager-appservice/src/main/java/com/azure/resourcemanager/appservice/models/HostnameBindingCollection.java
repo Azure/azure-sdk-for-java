@@ -20,12 +20,12 @@ import java.util.List;
 @Fluent
 public final class HostnameBindingCollection implements JsonSerializable<HostnameBindingCollection> {
     /*
-     * Collection of resources.
+     * The HostNameBinding items on this page
      */
     private List<HostnameBindingInner> value;
 
     /*
-     * Link to next page of resources.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -36,7 +36,7 @@ public final class HostnameBindingCollection implements JsonSerializable<Hostnam
     }
 
     /**
-     * Get the value property: Collection of resources.
+     * Get the value property: The HostNameBinding items on this page.
      * 
      * @return the value value.
      */
@@ -45,7 +45,7 @@ public final class HostnameBindingCollection implements JsonSerializable<Hostnam
     }
 
     /**
-     * Set the value property: Collection of resources.
+     * Set the value property: The HostNameBinding items on this page.
      * 
      * @param value the value value to set.
      * @return the HostnameBindingCollection object itself.
@@ -56,12 +56,23 @@ public final class HostnameBindingCollection implements JsonSerializable<Hostnam
     }
 
     /**
-     * Get the nextLink property: Link to next page of resources.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the HostnameBindingCollection object itself.
+     */
+    public HostnameBindingCollection withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
     }
 
     /**
@@ -88,6 +99,7 @@ public final class HostnameBindingCollection implements JsonSerializable<Hostnam
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 

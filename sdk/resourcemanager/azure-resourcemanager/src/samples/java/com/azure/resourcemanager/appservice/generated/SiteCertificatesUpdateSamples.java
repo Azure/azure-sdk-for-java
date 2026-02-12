@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.CertificatePatchResource;
 public final class SiteCertificatesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/PatchSiteCertificate.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/PatchSiteCertificate.json
      */
     /**
      * Sample code: Patch Certificate.

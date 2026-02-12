@@ -160,8 +160,8 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
     private String clientCertExclusionPaths;
 
     /*
-     * <code>true</code> to disable the public hostnames of the app; otherwise, <code>false</code>.
-     * If <code>true</code>, the app is only accessible via API management process.
+     * <code>true</code> to disable the public hostnames of the app; otherwise, <code>false</code>.\n If
+     * <code>true</code>, the app is only accessible via API management process.
      */
     private Boolean hostNamesDisabled;
 
@@ -684,8 +684,8 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
 
     /**
      * Get the hostNamesDisabled property: &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process.
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.\n If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API
+     * management process.
      * 
      * @return the hostNamesDisabled value.
      */
@@ -695,8 +695,8 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
 
     /**
      * Set the hostNamesDisabled property: &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process.
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.\n If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API
+     * management process.
      * 
      * @param hostNamesDisabled the hostNamesDisabled value to set.
      * @return the SitePatchResourcePropertiesInner object itself.

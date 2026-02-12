@@ -77,19 +77,20 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseCollection>> listHostingEnvironmentDetectorResponses(
-            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/detectors/{detectorName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseInner>> getHostingEnvironmentDetectorResponse(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("detectorName") String detectorName, @QueryParam("startTime") OffsetDateTime startTime,
             @QueryParam("endTime") OffsetDateTime endTime, @QueryParam("timeGrain") String timeGrain,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -97,8 +98,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseCollection>> listSiteDetectorResponses(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -106,10 +107,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseInner>> getSiteDetectorResponse(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("detectorName") String detectorName, @QueryParam("startTime") OffsetDateTime startTime,
             @QueryParam("endTime") OffsetDateTime endTime, @QueryParam("timeGrain") String timeGrain,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -117,8 +118,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticCategoryCollection>> listSiteDiagnosticCategories(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -126,29 +127,29 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticCategoryInner>> getSiteDiagnosticCategory(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("diagnosticCategory") String diagnosticCategory,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("diagnosticCategory") String diagnosticCategory, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/analyses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticAnalysisCollection>> listSiteAnalyses(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("diagnosticCategory") String diagnosticCategory,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("diagnosticCategory") String diagnosticCategory, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/analyses/{analysisName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AnalysisDefinitionInner>> getSiteAnalysis(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("analysisName") String analysisName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -156,30 +157,30 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticAnalysisInner>> executeSiteAnalysis(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("analysisName") String analysisName,
             @QueryParam("startTime") OffsetDateTime startTime, @QueryParam("endTime") OffsetDateTime endTime,
-            @QueryParam("timeGrain") String timeGrain, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("timeGrain") String timeGrain, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/detectors")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticDetectorCollection>> listSiteDetectors(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("diagnosticCategory") String diagnosticCategory,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("diagnosticCategory") String diagnosticCategory, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/detectors/{detectorName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorDefinitionResourceInner>> getSiteDetector(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("detectorName") String detectorName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -187,50 +188,50 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetector(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("detectorName") String detectorName, @PathParam("diagnosticCategory") String diagnosticCategory,
+            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("detectorName") String detectorName,
             @QueryParam("startTime") OffsetDateTime startTime, @QueryParam("endTime") OffsetDateTime endTime,
-            @QueryParam("timeGrain") String timeGrain, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("timeGrain") String timeGrain, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/detectors")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseCollection>> listSiteDetectorResponsesSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("slot") String slot, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("slot") String slot, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/detectors/{detectorName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseInner>> getSiteDetectorResponseSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("detectorName") String detectorName, @PathParam("slot") String slot,
+            @PathParam("slot") String slot, @PathParam("detectorName") String detectorName,
             @QueryParam("startTime") OffsetDateTime startTime, @QueryParam("endTime") OffsetDateTime endTime,
-            @QueryParam("timeGrain") String timeGrain, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("timeGrain") String timeGrain, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticCategoryCollection>> listSiteDiagnosticCategoriesSlot(
-            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("siteName") String siteName, @PathParam("slot") String slot,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("slot") String slot, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticCategoryInner>> getSiteDiagnosticCategorySlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("slot") String slot,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("slot") String slot, @PathParam("diagnosticCategory") String diagnosticCategory,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -238,9 +239,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticAnalysisCollection>> listSiteAnalysesSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("slot") String slot,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("slot") String slot, @PathParam("diagnosticCategory") String diagnosticCategory,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -248,21 +249,21 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AnalysisDefinitionInner>> getSiteAnalysisSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("analysisName") String analysisName,
-            @PathParam("slot") String slot, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("slot") String slot, @PathParam("diagnosticCategory") String diagnosticCategory,
+            @PathParam("analysisName") String analysisName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/analyses/{analysisName}/execute")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticAnalysisInner>> executeSiteAnalysisSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("analysisName") String analysisName,
-            @PathParam("slot") String slot, @QueryParam("startTime") OffsetDateTime startTime,
+            @PathParam("slot") String slot, @PathParam("diagnosticCategory") String diagnosticCategory,
+            @PathParam("analysisName") String analysisName, @QueryParam("startTime") OffsetDateTime startTime,
             @QueryParam("endTime") OffsetDateTime endTime, @QueryParam("timeGrain") String timeGrain,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -270,9 +271,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticDetectorCollection>> listSiteDetectorsSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("slot") String slot,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("slot") String slot, @PathParam("diagnosticCategory") String diagnosticCategory,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -280,21 +281,21 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("detectorName") String detectorName,
-            @PathParam("slot") String slot, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("slot") String slot, @PathParam("diagnosticCategory") String diagnosticCategory,
+            @PathParam("detectorName") String detectorName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/detectors/{detectorName}/execute")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetectorSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
-            @PathParam("detectorName") String detectorName, @PathParam("diagnosticCategory") String diagnosticCategory,
-            @PathParam("slot") String slot, @QueryParam("startTime") OffsetDateTime startTime,
+            @PathParam("slot") String slot, @PathParam("diagnosticCategory") String diagnosticCategory,
+            @PathParam("detectorName") String detectorName, @QueryParam("startTime") OffsetDateTime startTime,
             @QueryParam("endTime") OffsetDateTime endTime, @QueryParam("timeGrain") String timeGrain,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -375,8 +376,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Hosting Environment Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site Name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service Environment Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -390,6 +391,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -397,15 +402,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listHostingEnvironmentDetectorResponses(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
             .<PagedResponse<DetectorResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -416,8 +416,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Hosting Environment Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site Name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service Environment Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -432,6 +432,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -439,16 +443,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listHostingEnvironmentDetectorResponses(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .listHostingEnvironmentDetectorResponses(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -458,8 +457,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Hosting Environment Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site Name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service Environment Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -477,8 +476,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Hosting Environment Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site Name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service Environment Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -498,8 +497,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Hosting Environment Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site Name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service Environment Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -516,8 +515,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Hosting Environment Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site Name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service Environment Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -535,7 +534,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Hosting Environment Detector Response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
@@ -555,6 +554,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -565,16 +568,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (detectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getHostingEnvironmentDetectorResponse(this.client.getEndpoint(),
-                resourceGroupName, name, detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-                apiVersion, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, detectorName,
+                startTime, endTime, timeGrain, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -583,7 +581,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Hosting Environment Detector Response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
@@ -604,6 +602,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -614,15 +616,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (detectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getHostingEnvironmentDetectorResponse(this.client.getEndpoint(), resourceGroupName, name,
-            detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getHostingEnvironmentDetectorResponse(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, detectorName, startTime, endTime, timeGrain,
+            accept, context);
     }
 
     /**
@@ -630,7 +628,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Hosting Environment Detector Response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -653,7 +651,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Hosting Environment Detector Response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
@@ -678,7 +676,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Hosting Environment Detector Response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -701,7 +699,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -716,6 +714,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -723,15 +725,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSiteDetectorResponses(this.client.getEndpoint(), resourceGroupName,
-                siteName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(
+                context -> service.listSiteDetectorResponses(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, siteName, accept, context))
             .<PagedResponse<DetectorResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -742,7 +740,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -758,6 +756,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -765,16 +767,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSiteDetectorResponses(this.client.getEndpoint(), resourceGroupName, siteName,
-                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .listSiteDetectorResponses(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -784,7 +781,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -802,7 +799,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -822,7 +819,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -839,7 +836,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -858,7 +855,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
@@ -877,6 +874,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -887,16 +888,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (detectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getSiteDetectorResponse(this.client.getEndpoint(), resourceGroupName,
-                siteName, detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion,
-                accept, context))
+            .withContext(context -> service.getSiteDetectorResponse(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, siteName, detectorName,
+                startTime, endTime, timeGrain, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -905,7 +901,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
@@ -926,6 +922,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -936,15 +936,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (detectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSiteDetectorResponse(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
-            startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getSiteDetectorResponse(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, siteName, detectorName, startTime, endTime, timeGrain,
+            accept, context);
     }
 
     /**
@@ -952,7 +948,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -975,7 +971,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
@@ -1000,7 +996,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1023,7 +1019,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1038,6 +1034,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1045,15 +1045,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSiteDiagnosticCategories(this.client.getEndpoint(), resourceGroupName,
-                siteName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(
+                context -> service.listSiteDiagnosticCategories(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, siteName, accept, context))
             .<PagedResponse<DiagnosticCategoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1064,7 +1060,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1080,6 +1076,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1087,16 +1087,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSiteDiagnosticCategories(this.client.getEndpoint(), resourceGroupName, siteName,
-                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .listSiteDiagnosticCategories(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1106,7 +1101,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1125,7 +1120,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1145,7 +1140,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1163,7 +1158,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1182,7 +1177,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1198,6 +1193,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1209,15 +1208,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getSiteDiagnosticCategory(this.client.getEndpoint(), resourceGroupName,
-                siteName, diagnosticCategory, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(
+                context -> service.getSiteDiagnosticCategory(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, siteName, diagnosticCategory, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1226,7 +1221,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
@@ -1243,6 +1238,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1254,15 +1253,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSiteDiagnosticCategory(this.client.getEndpoint(), resourceGroupName, siteName,
-            diagnosticCategory, this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getSiteDiagnosticCategory(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, siteName, diagnosticCategory, accept, context);
     }
 
     /**
@@ -1270,7 +1264,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1290,7 +1284,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
@@ -1311,7 +1305,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1331,7 +1325,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1347,6 +1341,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1358,15 +1356,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSiteAnalyses(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listSiteAnalyses(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, diagnosticCategory, accept, context))
             .<PagedResponse<AnalysisDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1377,7 +1370,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
@@ -1394,6 +1387,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1405,16 +1402,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSiteAnalyses(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .listSiteAnalyses(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, siteName, diagnosticCategory, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1424,7 +1416,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1444,7 +1436,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
@@ -1466,7 +1458,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1485,7 +1477,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
@@ -1505,7 +1497,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
@@ -1521,6 +1513,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1535,15 +1531,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (analysisName == null) {
             return Mono.error(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getSiteAnalysis(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, analysisName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getSiteAnalysis(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, diagnosticCategory, analysisName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1552,7 +1544,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
@@ -1569,6 +1561,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1583,15 +1579,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (analysisName == null) {
             return Mono.error(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSiteAnalysis(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            analysisName, this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getSiteAnalysis(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, siteName, diagnosticCategory, analysisName, accept,
+            context);
     }
 
     /**
@@ -1599,7 +1591,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
@@ -1620,7 +1612,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
@@ -1642,7 +1634,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
@@ -1663,10 +1655,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -1684,6 +1676,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1698,16 +1694,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (analysisName == null) {
             return Mono.error(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.executeSiteAnalysis(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, analysisName, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-                apiVersion, accept, context))
+            .withContext(context -> service.executeSiteAnalysis(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, diagnosticCategory, analysisName,
+                startTime, endTime, timeGrain, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1716,10 +1707,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -1738,6 +1729,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1752,15 +1747,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (analysisName == null) {
             return Mono.error(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.executeSiteAnalysis(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            analysisName, startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.executeSiteAnalysis(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, siteName, diagnosticCategory, analysisName, startTime,
+            endTime, timeGrain, accept, context);
     }
 
     /**
@@ -1768,10 +1759,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1792,10 +1783,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -1818,10 +1809,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1842,7 +1833,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1858,6 +1849,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1869,15 +1864,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSiteDetectors(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listSiteDetectors(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, diagnosticCategory, accept, context))
             .<PagedResponse<DetectorDefinitionResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1888,7 +1878,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
@@ -1905,6 +1895,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1916,16 +1910,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSiteDetectors(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .listSiteDetectors(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, siteName, diagnosticCategory, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1935,7 +1924,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1955,7 +1944,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
@@ -1977,7 +1966,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1996,7 +1985,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
@@ -2016,7 +2005,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
@@ -2033,6 +2022,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2047,15 +2040,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (detectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getSiteDetector(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, detectorName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getSiteDetector(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, diagnosticCategory, detectorName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2064,7 +2053,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
@@ -2082,6 +2071,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2096,15 +2089,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (detectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSiteDetector(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            detectorName, this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getSiteDetector(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, siteName, diagnosticCategory, detectorName, accept,
+            context);
     }
 
     /**
@@ -2112,7 +2101,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
@@ -2133,7 +2122,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
@@ -2155,7 +2144,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
@@ -2176,10 +2165,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -2191,11 +2180,15 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetectorWithResponseAsync(
-        String resourceGroupName, String siteName, String detectorName, String diagnosticCategory,
+        String resourceGroupName, String siteName, String diagnosticCategory, String detectorName,
         OffsetDateTime startTime, OffsetDateTime endTime, String timeGrain) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2204,23 +2197,18 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
-        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (detectorName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.executeSiteDetector(this.client.getEndpoint(), resourceGroupName, siteName,
-                detectorName, diagnosticCategory, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-                apiVersion, accept, context))
+            .withContext(context -> service.executeSiteDetector(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, diagnosticCategory, detectorName,
+                startTime, endTime, timeGrain, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2229,10 +2217,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -2245,11 +2233,15 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetectorWithResponseAsync(
-        String resourceGroupName, String siteName, String detectorName, String diagnosticCategory,
+        String resourceGroupName, String siteName, String diagnosticCategory, String detectorName,
         OffsetDateTime startTime, OffsetDateTime endTime, String timeGrain, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2258,23 +2250,18 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
-        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (detectorName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.executeSiteDetector(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
-            diagnosticCategory, startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion, accept,
-            context);
+        return service.executeSiteDetector(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, siteName, diagnosticCategory, detectorName, startTime,
+            endTime, timeGrain, accept, context);
     }
 
     /**
@@ -2282,10 +2269,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2293,11 +2280,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiagnosticDetectorResponseInner> executeSiteDetectorAsync(String resourceGroupName, String siteName,
-        String detectorName, String diagnosticCategory) {
+        String diagnosticCategory, String detectorName) {
         final OffsetDateTime startTime = null;
         final OffsetDateTime endTime = null;
         final String timeGrain = null;
-        return executeSiteDetectorWithResponseAsync(resourceGroupName, siteName, detectorName, diagnosticCategory,
+        return executeSiteDetectorWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, detectorName,
             startTime, endTime, timeGrain).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2306,10 +2293,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -2321,9 +2308,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticDetectorResponseInner> executeSiteDetectorWithResponse(String resourceGroupName,
-        String siteName, String detectorName, String diagnosticCategory, OffsetDateTime startTime,
+        String siteName, String diagnosticCategory, String detectorName, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain, Context context) {
-        return executeSiteDetectorWithResponseAsync(resourceGroupName, siteName, detectorName, diagnosticCategory,
+        return executeSiteDetectorWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, detectorName,
             startTime, endTime, timeGrain, context).block();
     }
 
@@ -2332,10 +2319,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2343,11 +2330,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticDetectorResponseInner executeSiteDetector(String resourceGroupName, String siteName,
-        String detectorName, String diagnosticCategory) {
+        String diagnosticCategory, String detectorName) {
         final OffsetDateTime startTime = null;
         final OffsetDateTime endTime = null;
         final String timeGrain = null;
-        return executeSiteDetectorWithResponse(resourceGroupName, siteName, detectorName, diagnosticCategory, startTime,
+        return executeSiteDetectorWithResponse(resourceGroupName, siteName, diagnosticCategory, detectorName, startTime,
             endTime, timeGrain, Context.NONE).getValue();
     }
 
@@ -2356,7 +2343,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2372,6 +2359,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2382,15 +2373,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (slot == null) {
             return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSiteDetectorResponsesSlot(this.client.getEndpoint(), resourceGroupName,
-                siteName, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(
+                context -> service.listSiteDetectorResponsesSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, siteName, slot, accept, context))
             .<PagedResponse<DetectorResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2401,7 +2388,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @param context The context to associate with this operation.
@@ -2418,6 +2405,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2428,16 +2419,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (slot == null) {
             return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSiteDetectorResponsesSlot(this.client.getEndpoint(), resourceGroupName, siteName, slot,
-                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .listSiteDetectorResponsesSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, slot, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2447,7 +2433,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2467,7 +2453,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @param context The context to associate with this operation.
@@ -2489,7 +2475,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2508,7 +2494,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for List Site Detector Responses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @param context The context to associate with this operation.
@@ -2528,10 +2514,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
      * @param slot Slot Name.
+     * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -2543,11 +2529,15 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DetectorResponseInner>> getSiteDetectorResponseSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String detectorName, String slot, OffsetDateTime startTime, OffsetDateTime endTime,
+        String siteName, String slot, String detectorName, OffsetDateTime startTime, OffsetDateTime endTime,
         String timeGrain) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2556,22 +2546,17 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
-        }
         if (slot == null) {
             return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (detectorName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getSiteDetectorResponseSlot(this.client.getEndpoint(), resourceGroupName,
-                siteName, detectorName, slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-                apiVersion, accept, context))
+            .withContext(context -> service.getSiteDetectorResponseSlot(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, siteName, slot,
+                detectorName, startTime, endTime, timeGrain, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2580,10 +2565,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
      * @param slot Slot Name.
+     * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -2596,11 +2581,15 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DetectorResponseInner>> getSiteDetectorResponseSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String detectorName, String slot, OffsetDateTime startTime, OffsetDateTime endTime,
+        String siteName, String slot, String detectorName, OffsetDateTime startTime, OffsetDateTime endTime,
         String timeGrain, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2609,21 +2598,17 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
-        }
         if (slot == null) {
             return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (detectorName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSiteDetectorResponseSlot(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
-            slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getSiteDetectorResponseSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, siteName, slot, detectorName, startTime, endTime,
+            timeGrain, accept, context);
     }
 
     /**
@@ -2631,10 +2616,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
      * @param slot Slot Name.
+     * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2642,11 +2627,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectorResponseInner> getSiteDetectorResponseSlotAsync(String resourceGroupName, String siteName,
-        String detectorName, String slot) {
+        String slot, String detectorName) {
         final OffsetDateTime startTime = null;
         final OffsetDateTime endTime = null;
         final String timeGrain = null;
-        return getSiteDetectorResponseSlotWithResponseAsync(resourceGroupName, siteName, detectorName, slot, startTime,
+        return getSiteDetectorResponseSlotWithResponseAsync(resourceGroupName, siteName, slot, detectorName, startTime,
             endTime, timeGrain).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2655,10 +2640,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
      * @param slot Slot Name.
+     * @param detectorName Detector Resource Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -2670,9 +2655,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DetectorResponseInner> getSiteDetectorResponseSlotWithResponse(String resourceGroupName,
-        String siteName, String detectorName, String slot, OffsetDateTime startTime, OffsetDateTime endTime,
+        String siteName, String slot, String detectorName, OffsetDateTime startTime, OffsetDateTime endTime,
         String timeGrain, Context context) {
-        return getSiteDetectorResponseSlotWithResponseAsync(resourceGroupName, siteName, detectorName, slot, startTime,
+        return getSiteDetectorResponseSlotWithResponseAsync(resourceGroupName, siteName, slot, detectorName, startTime,
             endTime, timeGrain, context).block();
     }
 
@@ -2681,22 +2666,22 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get site detector response.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
      * @param slot Slot Name.
+     * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing Response from Detector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectorResponseInner getSiteDetectorResponseSlot(String resourceGroupName, String siteName,
-        String detectorName, String slot) {
+    public DetectorResponseInner getSiteDetectorResponseSlot(String resourceGroupName, String siteName, String slot,
+        String detectorName) {
         final OffsetDateTime startTime = null;
         final OffsetDateTime endTime = null;
         final String timeGrain = null;
-        return getSiteDetectorResponseSlotWithResponse(resourceGroupName, siteName, detectorName, slot, startTime,
+        return getSiteDetectorResponseSlotWithResponse(resourceGroupName, siteName, slot, detectorName, startTime,
             endTime, timeGrain, Context.NONE).getValue();
     }
 
@@ -2705,7 +2690,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2721,6 +2706,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2731,15 +2720,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (slot == null) {
             return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSiteDiagnosticCategoriesSlot(this.client.getEndpoint(),
-                resourceGroupName, siteName, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, siteName, slot, accept,
+                context))
             .<PagedResponse<DiagnosticCategoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2750,7 +2735,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @param context The context to associate with this operation.
@@ -2767,6 +2752,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2777,16 +2766,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (slot == null) {
             return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSiteDiagnosticCategoriesSlot(this.client.getEndpoint(), resourceGroupName, siteName, slot,
-                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .listSiteDiagnosticCategoriesSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, slot, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2796,7 +2780,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2816,7 +2800,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @param context The context to associate with this operation.
@@ -2838,7 +2822,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2857,7 +2841,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Categories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
      * @param slot Slot Name.
      * @param context The context to associate with this operation.
@@ -2877,10 +2861,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2889,10 +2873,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DiagnosticCategoryInner>> getSiteDiagnosticCategorySlotWithResponseAsync(
-        String resourceGroupName, String siteName, String diagnosticCategory, String slot) {
+        String resourceGroupName, String siteName, String slot, String diagnosticCategory) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2901,22 +2889,18 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getSiteDiagnosticCategorySlot(this.client.getEndpoint(), resourceGroupName,
-                siteName, diagnosticCategory, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getSiteDiagnosticCategorySlot(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, siteName, slot,
+                diagnosticCategory, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2925,10 +2909,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2938,10 +2922,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiagnosticCategoryInner>> getSiteDiagnosticCategorySlotWithResponseAsync(
-        String resourceGroupName, String siteName, String diagnosticCategory, String slot, Context context) {
+        String resourceGroupName, String siteName, String slot, String diagnosticCategory, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2950,22 +2938,17 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSiteDiagnosticCategorySlot(this.client.getEndpoint(), resourceGroupName, siteName,
-            diagnosticCategory, slot, this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getSiteDiagnosticCategorySlot(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, siteName, slot, diagnosticCategory, accept, context);
     }
 
     /**
@@ -2973,10 +2956,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2984,8 +2967,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiagnosticCategoryInner> getSiteDiagnosticCategorySlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot) {
-        return getSiteDiagnosticCategorySlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, slot)
+        String slot, String diagnosticCategory) {
+        return getSiteDiagnosticCategorySlotWithResponseAsync(resourceGroupName, siteName, slot, diagnosticCategory)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2994,10 +2977,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3006,8 +2989,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticCategoryInner> getSiteDiagnosticCategorySlotWithResponse(String resourceGroupName,
-        String siteName, String diagnosticCategory, String slot, Context context) {
-        return getSiteDiagnosticCategorySlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, slot,
+        String siteName, String slot, String diagnosticCategory, Context context) {
+        return getSiteDiagnosticCategorySlotWithResponseAsync(resourceGroupName, siteName, slot, diagnosticCategory,
             context).block();
     }
 
@@ -3016,19 +2999,19 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Diagnostics Category.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiagnosticCategoryInner getSiteDiagnosticCategorySlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot) {
-        return getSiteDiagnosticCategorySlotWithResponse(resourceGroupName, siteName, diagnosticCategory, slot,
+    public DiagnosticCategoryInner getSiteDiagnosticCategorySlot(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory) {
+        return getSiteDiagnosticCategorySlotWithResponse(resourceGroupName, siteName, slot, diagnosticCategory,
             Context.NONE).getValue();
     }
 
@@ -3037,10 +3020,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3049,10 +3032,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AnalysisDefinitionInner>> listSiteAnalysesSlotSinglePageAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String slot) {
+        String siteName, String slot, String diagnosticCategory) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3061,22 +3048,18 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSiteAnalysesSlot(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listSiteAnalysesSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, slot, diagnosticCategory, accept,
+                context))
             .<PagedResponse<AnalysisDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3087,10 +3070,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
-     * @param slot Slot Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3100,10 +3083,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AnalysisDefinitionInner>> listSiteAnalysesSlotSinglePageAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String slot, Context context) {
+        String siteName, String slot, String diagnosticCategory, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3112,23 +3099,18 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSiteAnalysesSlot(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory, slot,
-                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .listSiteAnalysesSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, slot, diagnosticCategory, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3138,10 +3120,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3149,9 +3131,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnalysisDefinitionInner> listSiteAnalysesSlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot) {
+        String slot, String diagnosticCategory) {
         return new PagedFlux<>(
-            () -> listSiteAnalysesSlotSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, slot),
+            () -> listSiteAnalysesSlotSinglePageAsync(resourceGroupName, siteName, slot, diagnosticCategory),
             nextLink -> listSiteAnalysesSlotNextSinglePageAsync(nextLink));
     }
 
@@ -3160,10 +3142,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
-     * @param slot Slot Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3172,9 +3154,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AnalysisDefinitionInner> listSiteAnalysesSlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot, Context context) {
+        String slot, String diagnosticCategory, Context context) {
         return new PagedFlux<>(
-            () -> listSiteAnalysesSlotSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, slot, context),
+            () -> listSiteAnalysesSlotSinglePageAsync(resourceGroupName, siteName, slot, diagnosticCategory, context),
             nextLink -> listSiteAnalysesSlotNextSinglePageAsync(nextLink, context));
     }
 
@@ -3183,10 +3165,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3194,8 +3176,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnalysisDefinitionInner> listSiteAnalysesSlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot) {
-        return new PagedIterable<>(listSiteAnalysesSlotAsync(resourceGroupName, siteName, diagnosticCategory, slot));
+        String slot, String diagnosticCategory) {
+        return new PagedIterable<>(listSiteAnalysesSlotAsync(resourceGroupName, siteName, slot, diagnosticCategory));
     }
 
     /**
@@ -3203,10 +3185,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analyses.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
-     * @param slot Slot Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3215,9 +3197,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnalysisDefinitionInner> listSiteAnalysesSlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot, Context context) {
+        String slot, String diagnosticCategory, Context context) {
         return new PagedIterable<>(
-            listSiteAnalysesSlotAsync(resourceGroupName, siteName, diagnosticCategory, slot, context));
+            listSiteAnalysesSlotAsync(resourceGroupName, siteName, slot, diagnosticCategory, context));
     }
 
     /**
@@ -3225,11 +3207,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
-     * @param slot Slot - optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3237,10 +3219,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalysisDefinitionInner>> getSiteAnalysisSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String analysisName, String slot) {
+        String siteName, String slot, String diagnosticCategory, String analysisName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3249,6 +3235,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
@@ -3256,18 +3245,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (analysisName == null) {
             return Mono.error(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getSiteAnalysisSlot(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, analysisName, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getSiteAnalysisSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, slot, diagnosticCategory, analysisName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3276,11 +3258,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
-     * @param slot Slot - optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3289,10 +3271,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AnalysisDefinitionInner>> getSiteAnalysisSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String analysisName, String slot, Context context) {
+        String siteName, String slot, String diagnosticCategory, String analysisName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3301,6 +3287,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
@@ -3308,18 +3297,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (analysisName == null) {
             return Mono.error(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSiteAnalysisSlot(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            analysisName, slot, this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getSiteAnalysisSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, siteName, slot, diagnosticCategory, analysisName,
+            accept, context);
     }
 
     /**
@@ -3327,11 +3309,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
-     * @param slot Slot - optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3339,8 +3321,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalysisDefinitionInner> getSiteAnalysisSlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String analysisName, String slot) {
-        return getSiteAnalysisSlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, analysisName, slot)
+        String slot, String diagnosticCategory, String analysisName) {
+        return getSiteAnalysisSlotWithResponseAsync(resourceGroupName, siteName, slot, diagnosticCategory, analysisName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3349,11 +3331,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
-     * @param slot Slot - optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3362,8 +3344,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalysisDefinitionInner> getSiteAnalysisSlotWithResponse(String resourceGroupName, String siteName,
-        String diagnosticCategory, String analysisName, String slot, Context context) {
-        return getSiteAnalysisSlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, analysisName, slot,
+        String slot, String diagnosticCategory, String analysisName, Context context) {
+        return getSiteAnalysisSlotWithResponseAsync(resourceGroupName, siteName, slot, diagnosticCategory, analysisName,
             context).block();
     }
 
@@ -3372,20 +3354,20 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Site Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot - optional.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
-     * @param slot Slot - optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of Analysis.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalysisDefinitionInner getSiteAnalysisSlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String analysisName, String slot) {
-        return getSiteAnalysisSlotWithResponse(resourceGroupName, siteName, diagnosticCategory, analysisName, slot,
+    public AnalysisDefinitionInner getSiteAnalysisSlot(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory, String analysisName) {
+        return getSiteAnalysisSlotWithResponse(resourceGroupName, siteName, slot, diagnosticCategory, analysisName,
             Context.NONE).getValue();
     }
 
@@ -3394,11 +3376,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
-     * @param slot Slot Name.
+     * @param slot Slot - optional.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -3410,11 +3392,15 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DiagnosticAnalysisInner>> executeSiteAnalysisSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String analysisName, String slot, OffsetDateTime startTime,
+        String siteName, String slot, String diagnosticCategory, String analysisName, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3423,6 +3409,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
@@ -3430,19 +3419,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (analysisName == null) {
             return Mono.error(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.executeSiteAnalysisSlot(this.client.getEndpoint(), resourceGroupName,
-                siteName, diagnosticCategory, analysisName, slot, startTime, endTime, timeGrain,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.executeSiteAnalysisSlot(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, siteName, slot,
+                diagnosticCategory, analysisName, startTime, endTime, timeGrain, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3451,11 +3432,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
-     * @param slot Slot Name.
+     * @param slot Slot - optional.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -3468,11 +3449,15 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiagnosticAnalysisInner>> executeSiteAnalysisSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String analysisName, String slot, OffsetDateTime startTime,
+        String siteName, String slot, String diagnosticCategory, String analysisName, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3481,6 +3466,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
@@ -3488,19 +3476,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (analysisName == null) {
             return Mono.error(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.executeSiteAnalysisSlot(this.client.getEndpoint(), resourceGroupName, siteName,
-            diagnosticCategory, analysisName, slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-            apiVersion, accept, context);
+        return service.executeSiteAnalysisSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, siteName, slot, diagnosticCategory, analysisName,
+            startTime, endTime, timeGrain, accept, context);
     }
 
     /**
@@ -3508,11 +3488,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
-     * @param slot Slot Name.
+     * @param slot Slot - optional.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3520,12 +3500,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiagnosticAnalysisInner> executeSiteAnalysisSlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String analysisName, String slot) {
+        String slot, String diagnosticCategory, String analysisName) {
         final OffsetDateTime startTime = null;
         final OffsetDateTime endTime = null;
         final String timeGrain = null;
-        return executeSiteAnalysisSlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, analysisName,
-            slot, startTime, endTime, timeGrain).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return executeSiteAnalysisSlotWithResponseAsync(resourceGroupName, siteName, slot, diagnosticCategory,
+            analysisName, startTime, endTime, timeGrain).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3533,11 +3513,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
-     * @param slot Slot Name.
+     * @param slot Slot - optional.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -3549,10 +3529,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticAnalysisInner> executeSiteAnalysisSlotWithResponse(String resourceGroupName,
-        String siteName, String diagnosticCategory, String analysisName, String slot, OffsetDateTime startTime,
+        String siteName, String slot, String diagnosticCategory, String analysisName, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain, Context context) {
-        return executeSiteAnalysisSlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, analysisName,
-            slot, startTime, endTime, timeGrain, context).block();
+        return executeSiteAnalysisSlotWithResponseAsync(resourceGroupName, siteName, slot, diagnosticCategory,
+            analysisName, startTime, endTime, timeGrain, context).block();
     }
 
     /**
@@ -3560,23 +3540,23 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Analysis.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
-     * @param slot Slot Name.
+     * @param slot Slot - optional.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param analysisName Analysis Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a diagnostic analysis done on an application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiagnosticAnalysisInner executeSiteAnalysisSlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String analysisName, String slot) {
+    public DiagnosticAnalysisInner executeSiteAnalysisSlot(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory, String analysisName) {
         final OffsetDateTime startTime = null;
         final OffsetDateTime endTime = null;
         final String timeGrain = null;
-        return executeSiteAnalysisSlotWithResponse(resourceGroupName, siteName, diagnosticCategory, analysisName, slot,
+        return executeSiteAnalysisSlotWithResponse(resourceGroupName, siteName, slot, diagnosticCategory, analysisName,
             startTime, endTime, timeGrain, Context.NONE).getValue();
     }
 
@@ -3585,10 +3565,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3597,10 +3577,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsSlotSinglePageAsync(
-        String resourceGroupName, String siteName, String diagnosticCategory, String slot) {
+        String resourceGroupName, String siteName, String slot, String diagnosticCategory) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3609,22 +3593,18 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSiteDetectorsSlot(this.client.getEndpoint(), resourceGroupName,
-                siteName, diagnosticCategory, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listSiteDetectorsSlot(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, siteName, slot,
+                diagnosticCategory, accept, context))
             .<PagedResponse<DetectorDefinitionResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3635,10 +3615,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3648,10 +3628,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsSlotSinglePageAsync(
-        String resourceGroupName, String siteName, String diagnosticCategory, String slot, Context context) {
+        String resourceGroupName, String siteName, String slot, String diagnosticCategory, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3660,23 +3644,18 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSiteDetectorsSlot(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory, slot,
-                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .listSiteDetectorsSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, slot, diagnosticCategory, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3686,10 +3665,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3697,9 +3676,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DetectorDefinitionResourceInner> listSiteDetectorsSlotAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String slot) {
+        String siteName, String slot, String diagnosticCategory) {
         return new PagedFlux<>(
-            () -> listSiteDetectorsSlotSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, slot),
+            () -> listSiteDetectorsSlotSinglePageAsync(resourceGroupName, siteName, slot, diagnosticCategory),
             nextLink -> listSiteDetectorsSlotNextSinglePageAsync(nextLink));
     }
 
@@ -3708,10 +3687,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3720,9 +3699,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DetectorDefinitionResourceInner> listSiteDetectorsSlotAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String slot, Context context) {
+        String siteName, String slot, String diagnosticCategory, Context context) {
         return new PagedFlux<>(
-            () -> listSiteDetectorsSlotSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, slot, context),
+            () -> listSiteDetectorsSlotSinglePageAsync(resourceGroupName, siteName, slot, diagnosticCategory, context),
             nextLink -> listSiteDetectorsSlotNextSinglePageAsync(nextLink, context));
     }
 
@@ -3731,10 +3710,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3742,8 +3721,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorDefinitionResourceInner> listSiteDetectorsSlot(String resourceGroupName,
-        String siteName, String diagnosticCategory, String slot) {
-        return new PagedIterable<>(listSiteDetectorsSlotAsync(resourceGroupName, siteName, diagnosticCategory, slot));
+        String siteName, String slot, String diagnosticCategory) {
+        return new PagedIterable<>(listSiteDetectorsSlotAsync(resourceGroupName, siteName, slot, diagnosticCategory));
     }
 
     /**
@@ -3751,10 +3730,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detectors.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3763,9 +3742,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorDefinitionResourceInner> listSiteDetectorsSlot(String resourceGroupName,
-        String siteName, String diagnosticCategory, String slot, Context context) {
+        String siteName, String slot, String diagnosticCategory, Context context) {
         return new PagedIterable<>(
-            listSiteDetectorsSlotAsync(resourceGroupName, siteName, diagnosticCategory, slot, context));
+            listSiteDetectorsSlotAsync(resourceGroupName, siteName, slot, diagnosticCategory, context));
     }
 
     /**
@@ -3773,11 +3752,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3786,10 +3765,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorSlotWithResponseAsync(
-        String resourceGroupName, String siteName, String diagnosticCategory, String detectorName, String slot) {
+        String resourceGroupName, String siteName, String slot, String diagnosticCategory, String detectorName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3798,6 +3781,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
@@ -3805,18 +3791,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (detectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getSiteDetectorSlot(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, detectorName, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getSiteDetectorSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, siteName, slot, diagnosticCategory, detectorName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3825,11 +3804,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
-     * @param slot Slot Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3839,11 +3818,15 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorSlotWithResponseAsync(
-        String resourceGroupName, String siteName, String diagnosticCategory, String detectorName, String slot,
+        String resourceGroupName, String siteName, String slot, String diagnosticCategory, String detectorName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3852,6 +3835,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
@@ -3859,18 +3845,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (detectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSiteDetectorSlot(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            detectorName, slot, this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getSiteDetectorSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, siteName, slot, diagnosticCategory, detectorName,
+            accept, context);
     }
 
     /**
@@ -3878,11 +3857,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3890,8 +3869,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectorDefinitionResourceInner> getSiteDetectorSlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String detectorName, String slot) {
-        return getSiteDetectorSlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, detectorName, slot)
+        String slot, String diagnosticCategory, String detectorName) {
+        return getSiteDetectorSlotWithResponseAsync(resourceGroupName, siteName, slot, diagnosticCategory, detectorName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3900,11 +3879,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
-     * @param slot Slot Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3913,8 +3892,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DetectorDefinitionResourceInner> getSiteDetectorSlotWithResponse(String resourceGroupName,
-        String siteName, String diagnosticCategory, String detectorName, String slot, Context context) {
-        return getSiteDetectorSlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, detectorName, slot,
+        String siteName, String slot, String diagnosticCategory, String detectorName, Context context) {
+        return getSiteDetectorSlotWithResponseAsync(resourceGroupName, siteName, slot, diagnosticCategory, detectorName,
             context).block();
     }
 
@@ -3923,20 +3902,20 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Get Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
+     * @param slot Slot Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectorDefinitionResourceInner getSiteDetectorSlot(String resourceGroupName, String siteName,
-        String diagnosticCategory, String detectorName, String slot) {
-        return getSiteDetectorSlotWithResponse(resourceGroupName, siteName, diagnosticCategory, detectorName, slot,
+    public DetectorDefinitionResourceInner getSiteDetectorSlot(String resourceGroupName, String siteName, String slot,
+        String diagnosticCategory, String detectorName) {
+        return getSiteDetectorSlotWithResponse(resourceGroupName, siteName, slot, diagnosticCategory, detectorName,
             Context.NONE).getValue();
     }
 
@@ -3945,11 +3924,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -3961,11 +3940,15 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetectorSlotWithResponseAsync(
-        String resourceGroupName, String siteName, String detectorName, String diagnosticCategory, String slot,
+        String resourceGroupName, String siteName, String slot, String diagnosticCategory, String detectorName,
         OffsetDateTime startTime, OffsetDateTime endTime, String timeGrain) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3974,26 +3957,21 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        if (detectorName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.executeSiteDetectorSlot(this.client.getEndpoint(), resourceGroupName,
-                siteName, detectorName, diagnosticCategory, slot, startTime, endTime, timeGrain,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.executeSiteDetectorSlot(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, siteName, slot,
+                diagnosticCategory, detectorName, startTime, endTime, timeGrain, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4002,11 +3980,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -4019,11 +3997,15 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetectorSlotWithResponseAsync(
-        String resourceGroupName, String siteName, String detectorName, String diagnosticCategory, String slot,
+        String resourceGroupName, String siteName, String slot, String diagnosticCategory, String detectorName,
         OffsetDateTime startTime, OffsetDateTime endTime, String timeGrain, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4032,26 +4014,21 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
         if (diagnosticCategory == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
         }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        if (detectorName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.executeSiteDetectorSlot(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
-            diagnosticCategory, slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion,
-            accept, context);
+        return service.executeSiteDetectorSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, siteName, slot, diagnosticCategory, detectorName,
+            startTime, endTime, timeGrain, accept, context);
     }
 
     /**
@@ -4059,11 +4036,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4071,12 +4048,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiagnosticDetectorResponseInner> executeSiteDetectorSlotAsync(String resourceGroupName, String siteName,
-        String detectorName, String diagnosticCategory, String slot) {
+        String slot, String diagnosticCategory, String detectorName) {
         final OffsetDateTime startTime = null;
         final OffsetDateTime endTime = null;
         final String timeGrain = null;
-        return executeSiteDetectorSlotWithResponseAsync(resourceGroupName, siteName, detectorName, diagnosticCategory,
-            slot, startTime, endTime, timeGrain).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return executeSiteDetectorSlotWithResponseAsync(resourceGroupName, siteName, slot, diagnosticCategory,
+            detectorName, startTime, endTime, timeGrain).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4084,11 +4061,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @param startTime Start Time.
      * @param endTime End Time.
      * @param timeGrain Time Grain.
@@ -4100,10 +4077,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticDetectorResponseInner> executeSiteDetectorSlotWithResponse(String resourceGroupName,
-        String siteName, String detectorName, String diagnosticCategory, String slot, OffsetDateTime startTime,
+        String siteName, String slot, String diagnosticCategory, String detectorName, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain, Context context) {
-        return executeSiteDetectorSlotWithResponseAsync(resourceGroupName, siteName, detectorName, diagnosticCategory,
-            slot, startTime, endTime, timeGrain, context).block();
+        return executeSiteDetectorSlotWithResponseAsync(resourceGroupName, siteName, slot, diagnosticCategory,
+            detectorName, startTime, endTime, timeGrain, context).block();
     }
 
     /**
@@ -4111,11 +4088,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * Description for Execute Detector.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
      * @param slot Slot Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param detectorName Detector Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4123,11 +4100,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticDetectorResponseInner executeSiteDetectorSlot(String resourceGroupName, String siteName,
-        String detectorName, String diagnosticCategory, String slot) {
+        String slot, String diagnosticCategory, String detectorName) {
         final OffsetDateTime startTime = null;
         final OffsetDateTime endTime = null;
         final String timeGrain = null;
-        return executeSiteDetectorSlotWithResponse(resourceGroupName, siteName, detectorName, diagnosticCategory, slot,
+        return executeSiteDetectorSlotWithResponse(resourceGroupName, siteName, slot, diagnosticCategory, detectorName,
             startTime, endTime, timeGrain, Context.NONE).getValue();
     }
 

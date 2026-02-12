@@ -69,7 +69,7 @@ public final class ResourceHealthMetadatasClientImpl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceHealthMetadataCollection>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -77,17 +77,16 @@ public final class ResourceHealthMetadatasClientImpl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceHealthMetadataCollection>> listByResourceGroup(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resourceHealthMetadata")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceHealthMetadataCollection>> listBySite(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -95,8 +94,8 @@ public final class ResourceHealthMetadatasClientImpl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceHealthMetadataInner>> getBySite(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -104,18 +103,18 @@ public final class ResourceHealthMetadatasClientImpl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceHealthMetadataCollection>> listBySiteSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("slot") String slot, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("slot") String slot, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/resourceHealthMetadata/default")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceHealthMetadataInner>> getBySiteSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("slot") String slot, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("slot") String slot, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -170,11 +169,10 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
-                accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<ResourceHealthMetadataInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -202,10 +200,11 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
+        return service
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
+                context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -276,7 +275,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -298,11 +297,10 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<ResourceHealthMetadataInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -313,7 +311,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -336,12 +334,11 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-                apiVersion, accept, context)
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                this.client.getSubscriptionId(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -351,7 +348,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -368,7 +365,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -386,7 +383,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -402,7 +399,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -419,7 +416,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -434,6 +431,10 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -441,15 +442,10 @@ public final class ResourceHealthMetadatasClientImpl
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBySite(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listBySite(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
             .<PagedResponse<ResourceHealthMetadataInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -460,7 +456,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -476,6 +472,10 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -483,16 +483,11 @@ public final class ResourceHealthMetadatasClientImpl
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySite(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(), apiVersion,
-                accept, context)
+            .listBySite(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, name, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -502,7 +497,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -520,7 +515,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -540,7 +535,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -557,7 +552,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -576,7 +571,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -591,6 +586,10 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -598,15 +597,10 @@ public final class ResourceHealthMetadatasClientImpl
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getBySite(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getBySite(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -615,7 +609,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -631,6 +625,10 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -638,15 +636,10 @@ public final class ResourceHealthMetadatasClientImpl
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getBySite(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-            apiVersion, accept, context);
+        return service.getBySite(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
     /**
@@ -654,7 +647,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -671,7 +664,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -690,7 +683,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -707,7 +700,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -723,6 +716,10 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -733,15 +730,10 @@ public final class ResourceHealthMetadatasClientImpl
         if (slot == null) {
             return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBySiteSlot(this.client.getEndpoint(), resourceGroupName, name, slot,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listBySiteSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, slot, accept, context))
             .<PagedResponse<ResourceHealthMetadataInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -752,7 +744,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param context The context to associate with this operation.
@@ -769,6 +761,10 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -779,16 +775,11 @@ public final class ResourceHealthMetadatasClientImpl
         if (slot == null) {
             return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySiteSlot(this.client.getEndpoint(), resourceGroupName, name, slot, this.client.getSubscriptionId(),
-                apiVersion, accept, context)
+            .listBySiteSlot(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, name, slot, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -798,7 +789,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -818,7 +809,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param context The context to associate with this operation.
@@ -839,7 +830,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -858,7 +849,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param context The context to associate with this operation.
@@ -878,7 +869,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -894,6 +885,10 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -904,15 +899,10 @@ public final class ResourceHealthMetadatasClientImpl
         if (slot == null) {
             return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getBySiteSlot(this.client.getEndpoint(), resourceGroupName, name, slot,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getBySiteSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, slot, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -921,7 +911,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param context The context to associate with this operation.
@@ -938,6 +928,10 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -948,15 +942,10 @@ public final class ResourceHealthMetadatasClientImpl
         if (slot == null) {
             return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getBySiteSlot(this.client.getEndpoint(), resourceGroupName, name, slot,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getBySiteSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, slot, accept, context);
     }
 
     /**
@@ -964,7 +953,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -983,7 +972,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param context The context to associate with this operation.
@@ -1003,7 +992,7 @@ public final class ResourceHealthMetadatasClientImpl
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

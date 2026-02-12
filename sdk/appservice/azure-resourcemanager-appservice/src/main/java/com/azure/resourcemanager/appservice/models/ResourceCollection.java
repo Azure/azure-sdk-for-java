@@ -64,6 +64,17 @@ public final class ResourceCollection implements JsonSerializable<ResourceCollec
     }
 
     /**
+     * Set the nextLink property: Link to next page of resources.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the ResourceCollection object itself.
+     */
+    public ResourceCollection withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -84,6 +95,7 @@ public final class ResourceCollection implements JsonSerializable<ResourceCollec
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 

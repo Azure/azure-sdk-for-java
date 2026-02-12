@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
  */
 public final class WebAppsApproveOrRejectPrivateEndpointConnectionSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
      * ApproveRejectSitePrivateEndpointConnectionSlot.json
      */
     /**
@@ -26,7 +26,7 @@ public final class WebAppsApproveOrRejectPrivateEndpointConnectionSlotSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .approveOrRejectPrivateEndpointConnectionSlot("rg", "testSite", "connection", "stage",
+            .approveOrRejectPrivateEndpointConnectionSlot("rg", "testSite", "stage", "connection",
                 new RemotePrivateEndpointConnectionArmResourceInner()
                     .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("Approved")
                         .withDescription("Approved by admin.")

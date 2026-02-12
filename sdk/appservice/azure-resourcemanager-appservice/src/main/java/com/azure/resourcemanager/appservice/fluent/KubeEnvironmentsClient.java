@@ -73,7 +73,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Get all the Kubernetes Environments in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -88,7 +88,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Get all the Kubernetes Environments in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -103,7 +103,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Get all the Kubernetes Environments in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -119,7 +119,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Get the properties of a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -136,7 +136,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Get the properties of a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -153,7 +153,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Get the properties of a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,7 +171,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Get the properties of a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -187,7 +187,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Creates or updates a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +206,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Creates or updates a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -225,7 +225,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Creates or updates a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,7 +244,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Creates or updates a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
      * @param context The context to associate with this operation.
@@ -264,7 +264,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Creates or updates a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,7 +283,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Creates or updates a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,7 +301,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Creates or updates a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
      * @param context The context to associate with this operation.
@@ -316,123 +316,11 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
         KubeEnvironmentInner kubeEnvironmentEnvelope, Context context);
 
     /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name);
-
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name);
-
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name);
-
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the Kubernetes Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context);
-
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String name);
-
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String name);
-
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the Kubernetes Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String name, Context context);
-
-    /**
      * Creates or updates a Kubernetes Environment.
      * 
      * Description for Creates or updates a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -451,7 +339,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Creates or updates a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -470,7 +358,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Creates or updates a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
      * @param context The context to associate with this operation.
@@ -489,7 +377,7 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
      * 
      * Description for Creates or updates a Kubernetes Environment.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -501,4 +389,116 @@ public interface KubeEnvironmentsClient extends InnerSupportsGet<KubeEnvironment
     @ServiceMethod(returns = ReturnType.SINGLE)
     KubeEnvironmentInner update(String resourceGroupName, String name,
         KubeEnvironmentPatchResource kubeEnvironmentEnvelope);
+
+    /**
+     * Delete a Kubernetes Environment.
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Kubernetes Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Delete a Kubernetes Environment.
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Kubernetes Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name);
+
+    /**
+     * Delete a Kubernetes Environment.
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Kubernetes Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name);
+
+    /**
+     * Delete a Kubernetes Environment.
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Kubernetes Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context);
+
+    /**
+     * Delete a Kubernetes Environment.
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Kubernetes Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String name);
+
+    /**
+     * Delete a Kubernetes Environment.
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Kubernetes Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String name);
+
+    /**
+     * Delete a Kubernetes Environment.
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Kubernetes Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String name, Context context);
 }

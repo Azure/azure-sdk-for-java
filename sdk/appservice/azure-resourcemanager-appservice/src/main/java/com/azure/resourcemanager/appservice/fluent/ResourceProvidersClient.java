@@ -17,7 +17,6 @@ import com.azure.resourcemanager.appservice.fluent.models.DeploymentLocationsInn
 import com.azure.resourcemanager.appservice.fluent.models.DnlResourceNameAvailabilityInner;
 import com.azure.resourcemanager.appservice.fluent.models.GeoRegionInner;
 import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
-import com.azure.resourcemanager.appservice.fluent.models.NameIdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.models.PremierAddOnOfferInner;
 import com.azure.resourcemanager.appservice.fluent.models.ResourceNameAvailabilityInner;
 import com.azure.resourcemanager.appservice.fluent.models.SkuInfosInner;
@@ -28,6 +27,7 @@ import com.azure.resourcemanager.appservice.fluent.models.ValidateResponseInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetValidationFailureDetailsInner;
 import com.azure.resourcemanager.appservice.models.CsmMoveResourceEnvelope;
 import com.azure.resourcemanager.appservice.models.DnlResourceNameAvailabilityRequest;
+import com.azure.resourcemanager.appservice.models.NameIdentifier;
 import com.azure.resourcemanager.appservice.models.ResourceNameAvailabilityRequest;
 import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.appservice.models.VnetParameters;
@@ -324,6 +324,47 @@ public interface ResourceProvidersClient {
     SourceControlInner updateSourceControl(String sourceControlType, SourceControlInner requestMessage);
 
     /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
+     * Description for get a list of available ASE regions and its supported Skus.
+     * 
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of ASE regions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<AseRegionInner> listAsync();
+
+    /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
+     * Description for get a list of available ASE regions and its supported Skus.
+     * 
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of ASE regions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AseRegionInner> list();
+
+    /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
+     * Description for get a list of available ASE regions and its supported Skus.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of ASE regions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AseRegionInner> list(Context context);
+
+    /**
      * Gets a list of meters for a given location.
      * 
      * Description for Gets a list of meters for a given location.
@@ -337,7 +378,7 @@ public interface ResourceProvidersClient {
      * @return collection of Billing Meters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BillingMeterInner> listAsync(String billingLocation, String osType);
+    PagedFlux<BillingMeterInner> listBillingMetersAsync(String billingLocation, String osType);
 
     /**
      * Gets a list of meters for a given location.
@@ -350,7 +391,7 @@ public interface ResourceProvidersClient {
      * @return collection of Billing Meters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BillingMeterInner> listAsync();
+    PagedFlux<BillingMeterInner> listBillingMetersAsync();
 
     /**
      * Gets a list of meters for a given location.
@@ -363,7 +404,7 @@ public interface ResourceProvidersClient {
      * @return collection of Billing Meters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BillingMeterInner> list();
+    PagedIterable<BillingMeterInner> listBillingMeters();
 
     /**
      * Gets a list of meters for a given location.
@@ -380,14 +421,14 @@ public interface ResourceProvidersClient {
      * @return collection of Billing Meters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BillingMeterInner> list(String billingLocation, String osType, Context context);
+    PagedIterable<BillingMeterInner> listBillingMeters(String billingLocation, String osType, Context context);
 
     /**
      * Check if a resource name is available.
      * 
      * Description for Check if a resource name is available.
      * 
-     * @param request Name availability request.
+     * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -404,7 +445,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Check if a resource name is available.
      * 
-     * @param request Name availability request.
+     * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -419,7 +460,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Check if a resource name is available.
      * 
-     * @param request Name availability request.
+     * @param request The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -436,7 +477,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Check if a resource name is available.
      * 
-     * @param request Name availability request.
+     * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -554,47 +595,6 @@ public interface ResourceProvidersClient {
     DeploymentLocationsInner getSubscriptionDeploymentLocations();
 
     /**
-     * Get a list of available ASE regions and its supported Skus.
-     * 
-     * Description for get a list of available ASE regions and its supported Skus.
-     * 
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ASE regions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<AseRegionInner> listAseRegionsAsync();
-
-    /**
-     * Get a list of available ASE regions and its supported Skus.
-     * 
-     * Description for get a list of available ASE regions and its supported Skus.
-     * 
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ASE regions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AseRegionInner> listAseRegions();
-
-    /**
-     * Get a list of available ASE regions and its supported Skus.
-     * 
-     * Description for get a list of available ASE regions and its supported Skus.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ASE regions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AseRegionInner> listAseRegions(Context context);
-
-    /**
      * Get a list of available geographical regions.
      * 
      * Description for Get a list of available geographical regions.
@@ -674,7 +674,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for List all apps that are assigned to a hostname.
      * 
-     * @param nameIdentifier Hostname information.
+     * @param nameIdentifier The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -682,14 +682,14 @@ public interface ResourceProvidersClient {
      * @return collection of identifiers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(NameIdentifierInner nameIdentifier);
+    PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(NameIdentifier nameIdentifier);
 
     /**
      * List all apps that are assigned to a hostname.
      * 
      * Description for List all apps that are assigned to a hostname.
      * 
-     * @param nameIdentifier Hostname information.
+     * @param nameIdentifier The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -697,14 +697,14 @@ public interface ResourceProvidersClient {
      * @return collection of identifiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifierInner nameIdentifier);
+    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifier nameIdentifier);
 
     /**
      * List all apps that are assigned to a hostname.
      * 
      * Description for List all apps that are assigned to a hostname.
      * 
-     * @param nameIdentifier Hostname information.
+     * @param nameIdentifier The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -713,14 +713,14 @@ public interface ResourceProvidersClient {
      * @return collection of identifiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifierInner nameIdentifier,
+    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifier nameIdentifier,
         Context context);
 
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location parameter.
-     * @param request Name availability request.
+     * @param location The name of the Azure region.
+     * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -735,8 +735,8 @@ public interface ResourceProvidersClient {
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location parameter.
-     * @param request Name availability request.
+     * @param location The name of the Azure region.
+     * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -751,8 +751,8 @@ public interface ResourceProvidersClient {
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location parameter.
-     * @param request Name availability request.
+     * @param location The name of the Azure region.
+     * @param request The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -768,8 +768,8 @@ public interface ResourceProvidersClient {
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location parameter.
-     * @param request Name availability request.
+     * @param location The name of the Azure region.
+     * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -882,7 +882,7 @@ public interface ResourceProvidersClient {
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      * 
-     * @param parameters VNET information.
+     * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -901,7 +901,7 @@ public interface ResourceProvidersClient {
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      * 
-     * @param parameters VNET information.
+     * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -918,7 +918,7 @@ public interface ResourceProvidersClient {
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      * 
-     * @param parameters VNET information.
+     * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -937,7 +937,7 @@ public interface ResourceProvidersClient {
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      * 
-     * @param parameters VNET information.
+     * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -952,7 +952,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Move resources between resource groups.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -968,7 +968,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Move resources between resource groups.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -984,7 +984,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Move resources between resource groups.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1002,7 +1002,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Move resources between resource groups.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1017,7 +1017,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Validate if a resource can be created.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param validateRequest Request with the resources to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1035,7 +1035,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Validate if a resource can be created.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param validateRequest Request with the resources to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1051,7 +1051,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Validate if a resource can be created.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param validateRequest Request with the resources to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1069,7 +1069,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Validate if a resource can be created.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param validateRequest Request with the resources to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1085,7 +1085,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Validate whether a resource can be moved.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1102,7 +1102,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Validate whether a resource can be moved.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1118,7 +1118,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Validate whether a resource can be moved.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1136,7 +1136,7 @@ public interface ResourceProvidersClient {
      * 
      * Description for Validate whether a resource can be moved.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is

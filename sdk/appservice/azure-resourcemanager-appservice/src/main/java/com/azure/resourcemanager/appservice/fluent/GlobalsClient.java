@@ -144,7 +144,7 @@ public interface GlobalsClient {
      * 
      * Description for Gets an operation in a subscription and given region.
      * 
-     * @param location Location name.
+     * @param location The name of the Azure region.
      * @param operationId Operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -161,7 +161,7 @@ public interface GlobalsClient {
      * 
      * Description for Gets an operation in a subscription and given region.
      * 
-     * @param location Location name.
+     * @param location The name of the Azure region.
      * @param operationId Operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -177,7 +177,7 @@ public interface GlobalsClient {
      * 
      * Description for Gets an operation in a subscription and given region.
      * 
-     * @param location Location name.
+     * @param location The name of the Azure region.
      * @param operationId Operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,7 +195,7 @@ public interface GlobalsClient {
      * 
      * Description for Gets an operation in a subscription and given region.
      * 
-     * @param location Location name.
+     * @param location The name of the Azure region.
      * @param operationId Operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is

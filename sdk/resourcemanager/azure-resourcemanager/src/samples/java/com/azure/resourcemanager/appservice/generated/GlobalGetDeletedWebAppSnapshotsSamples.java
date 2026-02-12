@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class GlobalGetDeletedWebAppSnapshotsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/GetDeletedWebAppSnapshots.
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/GetDeletedWebAppSnapshots.
      * json
      */
     /**

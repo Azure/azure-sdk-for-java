@@ -143,17 +143,6 @@ public final class CertificatePatchResourceProperties implements JsonSerializabl
     }
 
     /**
-     * Set the password property: Certificate password.
-     * 
-     * @param password the password value to set.
-     * @return the CertificatePatchResourceProperties object itself.
-     */
-    public CertificatePatchResourceProperties withPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
      * Get the friendlyName property: Friendly name of the certificate.
      * 
      * @return the friendlyName value.
@@ -430,7 +419,6 @@ public final class CertificatePatchResourceProperties implements JsonSerializabl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("password", this.password);
         jsonWriter.writeArrayField("hostNames", this.hostNames, (writer, element) -> writer.writeString(element));
         jsonWriter.writeBinaryField("pfxBlob", this.pfxBlob);
         jsonWriter.writeStringField("keyVaultId", this.keyVaultId);

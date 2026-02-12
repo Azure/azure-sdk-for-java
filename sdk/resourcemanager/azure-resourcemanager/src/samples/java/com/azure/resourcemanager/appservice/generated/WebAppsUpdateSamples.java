@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner
 public final class WebAppsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/UpdateWebApp.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/UpdateWebApp.json
      */
     /**
      * Sample code: Update web app.
@@ -24,7 +24,7 @@ public final class WebAppsUpdateSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .update("testrg123", "sitef6141", new SitePatchResourceInner().withServerFarmId(
+            .updateWithResponse("testrg123", "sitef6141", new SitePatchResourceInner().withServerFarmId(
                 "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
                 com.azure.core.util.Context.NONE);
     }

@@ -20,7 +20,7 @@ public interface WorkflowRunsClient {
     /**
      * Gets a list of workflow runs.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param top The number of items to be included in the result.
@@ -38,7 +38,7 @@ public interface WorkflowRunsClient {
     /**
      * Gets a list of workflow runs.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,7 +52,7 @@ public interface WorkflowRunsClient {
     /**
      * Gets a list of workflow runs.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,7 +66,7 @@ public interface WorkflowRunsClient {
     /**
      * Gets a list of workflow runs.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param top The number of items to be included in the result.
@@ -85,7 +85,7 @@ public interface WorkflowRunsClient {
     /**
      * Gets a workflow run.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -101,7 +101,7 @@ public interface WorkflowRunsClient {
     /**
      * Gets a workflow run.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -116,7 +116,7 @@ public interface WorkflowRunsClient {
     /**
      * Gets a workflow run.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -133,7 +133,7 @@ public interface WorkflowRunsClient {
     /**
      * Gets a workflow run.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -148,7 +148,7 @@ public interface WorkflowRunsClient {
     /**
      * Cancels a workflow run.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -164,7 +164,7 @@ public interface WorkflowRunsClient {
     /**
      * Cancels a workflow run.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -179,7 +179,7 @@ public interface WorkflowRunsClient {
     /**
      * Cancels a workflow run.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -196,7 +196,7 @@ public interface WorkflowRunsClient {
     /**
      * Cancels a workflow run.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.

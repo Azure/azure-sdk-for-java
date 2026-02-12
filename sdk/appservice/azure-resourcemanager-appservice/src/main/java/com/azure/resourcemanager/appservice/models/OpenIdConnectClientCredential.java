@@ -19,7 +19,7 @@ public final class OpenIdConnectClientCredential implements JsonSerializable<Ope
     /*
      * The method that should be used to authenticate the user.
      */
-    private ClientCredentialMethod method;
+    private OpenIdConnectClientCredentialMethod method;
 
     /*
      * The app setting that contains the client secret for the custom Open ID Connect provider.
@@ -37,7 +37,7 @@ public final class OpenIdConnectClientCredential implements JsonSerializable<Ope
      * 
      * @return the method value.
      */
-    public ClientCredentialMethod method() {
+    public OpenIdConnectClientCredentialMethod method() {
         return this.method;
     }
 
@@ -47,7 +47,7 @@ public final class OpenIdConnectClientCredential implements JsonSerializable<Ope
      * @param method the method value to set.
      * @return the OpenIdConnectClientCredential object itself.
      */
-    public OpenIdConnectClientCredential withMethod(ClientCredentialMethod method) {
+    public OpenIdConnectClientCredential withMethod(OpenIdConnectClientCredentialMethod method) {
         this.method = method;
         return this;
     }
@@ -111,7 +111,7 @@ public final class OpenIdConnectClientCredential implements JsonSerializable<Ope
 
                 if ("method".equals(fieldName)) {
                     deserializedOpenIdConnectClientCredential.method
-                        = ClientCredentialMethod.fromString(reader.getString());
+                        = OpenIdConnectClientCredentialMethod.fromString(reader.getString());
                 } else if ("clientSecretSettingName".equals(fieldName)) {
                     deserializedOpenIdConnectClientCredential.clientSecretSettingName = reader.getString();
                 } else {

@@ -64,7 +64,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -79,7 +79,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -94,7 +94,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -110,7 +110,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -126,7 +126,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -142,7 +142,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -159,7 +159,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -176,7 +176,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -192,7 +192,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,7 +209,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -225,7 +225,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,7 +242,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,7 +259,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param context The context to associate with this operation.
@@ -278,7 +278,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,7 +297,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -314,7 +314,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param context The context to associate with this operation.
@@ -333,7 +333,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * 
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

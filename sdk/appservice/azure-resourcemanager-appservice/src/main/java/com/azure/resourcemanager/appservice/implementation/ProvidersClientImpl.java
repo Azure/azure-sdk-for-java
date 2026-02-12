@@ -75,15 +75,16 @@ public final class ProvidersClientImpl implements ProvidersClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ApplicationStackCollection>> getAvailableStacks(@HostParam("$host") String endpoint,
-            @QueryParam("osTypeSelected") ProviderOsTypeSelected osTypeSelected,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("osTypeSelected") ProviderOsTypeSelected osTypeSelected, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Web/functionAppStacks")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<FunctionAppStackCollection>> getFunctionAppStacks(@HostParam("$host") String endpoint,
-            @QueryParam("stackOsType") ProviderStackOsType stackOsType, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @QueryParam("stackOsType") ProviderStackOsType stackOsType,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -91,16 +92,18 @@ public final class ProvidersClientImpl implements ProvidersClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<FunctionAppStackCollection>> getFunctionAppStacksForLocation(@HostParam("$host") String endpoint,
-            @PathParam("location") String location, @QueryParam("stackOsType") ProviderStackOsType stackOsType,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("location") String location,
+            @QueryParam("stackOsType") ProviderStackOsType stackOsType, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Web/locations/{location}/webAppStacks")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WebAppStackCollection>> getWebAppStacksForLocation(@HostParam("$host") String endpoint,
-            @PathParam("location") String location, @QueryParam("stackOsType") ProviderStackOsType stackOsType,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("location") String location,
+            @QueryParam("stackOsType") ProviderStackOsType stackOsType, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Web/operations")
@@ -114,7 +117,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WebAppStackCollection>> getWebAppStacks(@HostParam("$host") String endpoint,
-            @QueryParam("stackOsType") ProviderStackOsType stackOsType, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @QueryParam("stackOsType") ProviderStackOsType stackOsType,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -122,9 +125,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ApplicationStackCollection>> list(@HostParam("$host") String endpoint,
-            @QueryParam("osTypeSelected") ProviderOsTypeSelected osTypeSelected,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("osTypeSelected") ProviderOsTypeSelected osTypeSelected, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -202,11 +205,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getAvailableStacks(this.client.getEndpoint(), osTypeSelected, apiVersion,
-                accept, context))
+            .withContext(context -> service.getAvailableStacks(this.client.getEndpoint(), this.client.getApiVersion(),
+                osTypeSelected, accept, context))
             .<PagedResponse<ApplicationStackResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -232,10 +234,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getAvailableStacks(this.client.getEndpoint(), osTypeSelected, apiVersion, accept, context)
+        return service
+            .getAvailableStacks(this.client.getEndpoint(), this.client.getApiVersion(), osTypeSelected, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -344,11 +346,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getFunctionAppStacks(this.client.getEndpoint(), stackOsType, apiVersion,
-                accept, context))
+            .withContext(context -> service.getFunctionAppStacks(this.client.getEndpoint(), this.client.getApiVersion(),
+                stackOsType, accept, context))
             .<PagedResponse<FunctionAppStackInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -374,10 +375,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getFunctionAppStacks(this.client.getEndpoint(), stackOsType, apiVersion, accept, context)
+        return service
+            .getFunctionAppStacks(this.client.getEndpoint(), this.client.getApiVersion(), stackOsType, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -471,7 +472,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location Function App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -489,11 +490,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getFunctionAppStacksForLocation(this.client.getEndpoint(), location,
-                stackOsType, apiVersion, accept, context))
+            .withContext(context -> service.getFunctionAppStacksForLocation(this.client.getEndpoint(),
+                this.client.getApiVersion(), location, stackOsType, accept, context))
             .<PagedResponse<FunctionAppStackInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -504,7 +504,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location Function App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -523,12 +523,11 @@ public final class ProvidersClientImpl implements ProvidersClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .getFunctionAppStacksForLocation(this.client.getEndpoint(), location, stackOsType, apiVersion, accept,
-                context)
+            .getFunctionAppStacksForLocation(this.client.getEndpoint(), this.client.getApiVersion(), location,
+                stackOsType, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -538,7 +537,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location Function App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -557,7 +556,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location Function App stack location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -575,7 +574,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location Function App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -595,7 +594,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location Function App stack location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -612,7 +611,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location Function App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -631,7 +630,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location Web App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -648,11 +647,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getWebAppStacksForLocation(this.client.getEndpoint(), location, stackOsType,
-                apiVersion, accept, context))
+            .withContext(context -> service.getWebAppStacksForLocation(this.client.getEndpoint(),
+                this.client.getApiVersion(), location, stackOsType, accept, context))
             .<PagedResponse<WebAppStackInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -663,7 +661,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location Web App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -681,11 +679,11 @@ public final class ProvidersClientImpl implements ProvidersClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .getWebAppStacksForLocation(this.client.getEndpoint(), location, stackOsType, apiVersion, accept, context)
+            .getWebAppStacksForLocation(this.client.getEndpoint(), this.client.getApiVersion(), location, stackOsType,
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -695,7 +693,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location Web App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -714,7 +712,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location Web App stack location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -732,7 +730,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location Web App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -752,7 +750,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location Web App stack location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -769,7 +767,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location Web App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -800,10 +798,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listOperations(this.client.getEndpoint(), apiVersion, accept, context))
+        return FluxUtil.withContext(
+            context -> service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
             .<PagedResponse<CsmOperationDescriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -828,10 +825,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listOperations(this.client.getEndpoint(), apiVersion, accept, context)
+        return service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -919,11 +915,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.getWebAppStacks(this.client.getEndpoint(), stackOsType, apiVersion, accept, context))
+            .withContext(context -> service.getWebAppStacks(this.client.getEndpoint(), this.client.getApiVersion(),
+                stackOsType, accept, context))
             .<PagedResponse<WebAppStackInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -948,10 +943,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getWebAppStacks(this.client.getEndpoint(), stackOsType, apiVersion, accept, context)
+        return service
+            .getWebAppStacks(this.client.getEndpoint(), this.client.getApiVersion(), stackOsType, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1062,11 +1057,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), osTypeSelected,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), osTypeSelected, accept, context))
             .<PagedResponse<ApplicationStackResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1096,12 +1090,11 @@ public final class ProvidersClientImpl implements ProvidersClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), osTypeSelected, this.client.getSubscriptionId(), apiVersion, accept,
-                context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                osTypeSelected, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

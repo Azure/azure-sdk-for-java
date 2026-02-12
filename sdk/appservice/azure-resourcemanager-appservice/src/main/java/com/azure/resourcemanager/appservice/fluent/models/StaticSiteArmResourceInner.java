@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Static Site ARM resource.
+ * Concrete tracked resource types can be created by aliasing this type using a specific property type.
  */
 @Fluent
 public final class StaticSiteArmResourceInner extends Resource {
@@ -32,6 +33,11 @@ public final class StaticSiteArmResourceInner extends Resource {
      * Core resource properties
      */
     private StaticSite innerProperties;
+
+    /*
+     * Kind of resource.
+     */
+    private String kind;
 
     /*
      * Description of a SKU for a scalable resource.
@@ -44,11 +50,9 @@ public final class StaticSiteArmResourceInner extends Resource {
     private ManagedServiceIdentity identity;
 
     /*
-     * Kind of resource. If the resource is an app, you can refer to
-     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-
-     * resource-kind-reference for details supported values for kind.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private String kind;
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -78,6 +82,26 @@ public final class StaticSiteArmResourceInner extends Resource {
      */
     private StaticSite innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the kind property: Kind of resource.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of resource.
+     * 
+     * @param kind the kind value to set.
+     * @return the StaticSiteArmResourceInner object itself.
+     */
+    public StaticSiteArmResourceInner withKind(String kind) {
+        this.kind = kind;
+        return this;
     }
 
     /**
@@ -121,27 +145,12 @@ public final class StaticSiteArmResourceInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of resource. If the resource is an app, you can refer to
-     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
-     * for details supported values for kind.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
-     * @return the kind value.
+     * @return the systemData value.
      */
-    public String kind() {
-        return this.kind;
-    }
-
-    /**
-     * Set the kind property: Kind of resource. If the resource is an app, you can refer to
-     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
-     * for details supported values for kind.
-     * 
-     * @param kind the kind value to set.
-     * @return the StaticSiteArmResourceInner object itself.
-     */
-    public StaticSiteArmResourceInner withKind(String kind) {
-        this.kind = kind;
-        return this;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -532,9 +541,9 @@ public final class StaticSiteArmResourceInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeJsonField("identity", this.identity);
-        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 
@@ -567,12 +576,14 @@ public final class StaticSiteArmResourceInner extends Resource {
                     deserializedStaticSiteArmResourceInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedStaticSiteArmResourceInner.innerProperties = StaticSite.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStaticSiteArmResourceInner.kind = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedStaticSiteArmResourceInner.sku = SkuDescription.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedStaticSiteArmResourceInner.identity = ManagedServiceIdentity.fromJson(reader);
-                } else if ("kind".equals(fieldName)) {
-                    deserializedStaticSiteArmResourceInner.kind = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedStaticSiteArmResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

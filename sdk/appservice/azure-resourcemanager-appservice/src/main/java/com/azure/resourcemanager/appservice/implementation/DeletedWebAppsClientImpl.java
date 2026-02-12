@@ -67,7 +67,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DeletedWebAppCollection>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -75,16 +75,16 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DeletedWebAppCollection>> listByLocation(@HostParam("$host") String endpoint,
-            @PathParam("location") String location, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/deletedSites/{deletedSiteId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DeletedSiteInner>> getDeletedWebAppByLocation(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("deletedSiteId") String deletedSiteId,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -122,11 +122,10 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
-                accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<DeletedSiteInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -153,10 +152,11 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
+        return service
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
+                context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -227,7 +227,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * 
      * Description for Get all deleted apps for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -239,18 +239,17 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByLocation(this.client.getEndpoint(), location,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listByLocation(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, accept, context))
             .<PagedResponse<DeletedSiteInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -261,7 +260,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * 
      * Description for Get all deleted apps for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -274,19 +273,18 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByLocation(this.client.getEndpoint(), location, this.client.getSubscriptionId(), apiVersion, accept,
-                context)
+            .listByLocation(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                location, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -296,7 +294,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * 
      * Description for Get all deleted apps for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -313,7 +311,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * 
      * Description for Get all deleted apps for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -331,7 +329,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * 
      * Description for Get all deleted apps for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -347,7 +345,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * 
      * Description for Get all deleted apps for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -364,7 +362,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * 
      * Description for Get deleted app for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -378,21 +376,20 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (deletedSiteId == null) {
             return Mono.error(new IllegalArgumentException("Parameter deletedSiteId is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getDeletedWebAppByLocation(this.client.getEndpoint(), location,
-                deletedSiteId, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getDeletedWebAppByLocation(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), location, deletedSiteId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -401,7 +398,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * 
      * Description for Get deleted app for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -416,21 +413,20 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (deletedSiteId == null) {
             return Mono.error(new IllegalArgumentException("Parameter deletedSiteId is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getDeletedWebAppByLocation(this.client.getEndpoint(), location, deletedSiteId,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getDeletedWebAppByLocation(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, deletedSiteId, accept, context);
     }
 
     /**
@@ -438,7 +434,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * 
      * Description for Get deleted app for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -456,7 +452,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * 
      * Description for Get deleted app for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -475,7 +471,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * 
      * Description for Get deleted app for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

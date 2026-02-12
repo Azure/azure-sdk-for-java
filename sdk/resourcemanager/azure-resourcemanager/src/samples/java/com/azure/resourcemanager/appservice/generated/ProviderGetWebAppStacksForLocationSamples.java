@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class ProviderGetWebAppStacksForLocationSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/GetWebAppStacksForLocation
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/GetWebAppStacksForLocation
      * .json
      */
     /**

@@ -73,33 +73,31 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowTriggerHistoryListResult>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("workflowName") String workflowName, @PathParam("triggerName") String triggerName,
-            @QueryParam("api-version") String apiVersion, @QueryParam("$top") Integer top,
-            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$top") Integer top, @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/histories/{historyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowTriggerHistoryInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("workflowName") String workflowName, @PathParam("triggerName") String triggerName,
-            @PathParam("historyName") String historyName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("historyName") String historyName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/histories/{historyName}/resubmit")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> resubmit(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("workflowName") String workflowName, @PathParam("triggerName") String triggerName,
-            @PathParam("historyName") String historyName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("historyName") String historyName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -113,7 +111,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Gets a list of workflow trigger histories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -150,11 +148,11 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, triggerName, apiVersion, top, filter, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, triggerName, top, filter,
+                accept, context))
             .<PagedResponse<WorkflowTriggerHistoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -163,7 +161,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Gets a list of workflow trigger histories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -201,12 +199,11 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                triggerName, apiVersion, top, filter, accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, triggerName, top, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -214,7 +211,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Gets a list of workflow trigger histories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -237,7 +234,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Gets a list of workflow trigger histories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -259,7 +256,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Gets a list of workflow trigger histories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -283,7 +280,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Gets a list of workflow trigger histories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -303,7 +300,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Gets a list of workflow trigger histories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -325,7 +322,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Gets a workflow trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -363,18 +360,18 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         if (historyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter historyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, triggerName, historyName, apiVersion, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, triggerName, historyName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a workflow trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -413,17 +410,16 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         if (historyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter historyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, triggerName, historyName, apiVersion, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, name, workflowName, triggerName, historyName, accept, context);
     }
 
     /**
      * Gets a workflow trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -444,7 +440,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Gets a workflow trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -465,7 +461,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Gets a workflow trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -486,7 +482,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -524,18 +520,18 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         if (historyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter historyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.resubmit(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, triggerName, historyName, apiVersion, accept, context))
+            .withContext(context -> service.resubmit(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, triggerName, historyName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -574,17 +570,16 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         if (historyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter historyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.resubmit(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, triggerName, historyName, apiVersion, accept, context);
+        return service.resubmit(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, name, workflowName, triggerName, historyName, accept, context);
     }
 
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -607,7 +602,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -632,7 +627,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -652,7 +647,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -674,7 +669,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -695,7 +690,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -717,7 +712,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -736,7 +731,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.

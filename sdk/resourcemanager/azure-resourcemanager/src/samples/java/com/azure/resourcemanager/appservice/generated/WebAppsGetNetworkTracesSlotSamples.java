@@ -9,9 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetNetworkTracesSlotSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/GetWebSiteNetworkTraces.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * GetWebSiteNetworkTraces_Slot.json
      */
     /**
      * Sample code: Get NetworkTraces for a site.
@@ -23,7 +22,7 @@ public final class WebAppsGetNetworkTracesSlotSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .getNetworkTracesSlotWithResponse("testrg123", "SampleApp", "c291433b-53ad-4c49-8cae-0a293eae1c6d",
-                "Production", com.azure.core.util.Context.NONE);
+            .getNetworkTracesSlotWithResponse("testrg123", "SampleApp", "Production",
+                "c291433b-53ad-4c49-8cae-0a293eae1c6d", com.azure.core.util.Context.NONE);
     }
 }

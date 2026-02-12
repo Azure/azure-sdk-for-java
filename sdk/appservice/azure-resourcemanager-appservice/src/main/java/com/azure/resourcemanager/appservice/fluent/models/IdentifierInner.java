@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import java.io.IOException;
 
 /**
  * A domain specific resource identifier.
  */
 @Fluent
-public final class IdentifierInner extends ProxyOnlyResource {
+public final class IdentifierInner extends ProxyResource {
     /*
      * Identifier resource specific properties
      */
     private IdentifierProperties innerProperties;
+
+    /*
+     * Kind of resource.
+     */
+    private String kind;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -49,6 +60,35 @@ public final class IdentifierInner extends ProxyOnlyResource {
      */
     private IdentifierProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the kind property: Kind of resource.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of resource.
+     * 
+     * @param kind the kind value to set.
+     * @return the IdentifierInner object itself.
+     */
+    public IdentifierInner withKind(String kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -82,15 +122,6 @@ public final class IdentifierInner extends ProxyOnlyResource {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public IdentifierInner withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
-    /**
      * Get the value property: String representation of the identity.
      * 
      * @return the value value.
@@ -118,7 +149,6 @@ public final class IdentifierInner extends ProxyOnlyResource {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -131,8 +161,8 @@ public final class IdentifierInner extends ProxyOnlyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", kind());
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 
@@ -158,10 +188,12 @@ public final class IdentifierInner extends ProxyOnlyResource {
                     deserializedIdentifierInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedIdentifierInner.type = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedIdentifierInner.withKind(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedIdentifierInner.innerProperties = IdentifierProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedIdentifierInner.kind = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedIdentifierInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

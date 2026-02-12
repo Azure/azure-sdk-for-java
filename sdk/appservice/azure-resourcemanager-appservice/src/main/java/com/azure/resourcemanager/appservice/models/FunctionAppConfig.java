@@ -31,6 +31,11 @@ public final class FunctionAppConfig implements JsonSerializable<FunctionAppConf
      */
     private FunctionsScaleAndConcurrency scaleAndConcurrency;
 
+    /*
+     * Function app site update strategy configuration.
+     */
+    private FunctionsSiteUpdateStrategy siteUpdateStrategy;
+
     /**
      * Creates an instance of FunctionAppConfig class.
      */
@@ -98,6 +103,26 @@ public final class FunctionAppConfig implements JsonSerializable<FunctionAppConf
     }
 
     /**
+     * Get the siteUpdateStrategy property: Function app site update strategy configuration.
+     * 
+     * @return the siteUpdateStrategy value.
+     */
+    public FunctionsSiteUpdateStrategy siteUpdateStrategy() {
+        return this.siteUpdateStrategy;
+    }
+
+    /**
+     * Set the siteUpdateStrategy property: Function app site update strategy configuration.
+     * 
+     * @param siteUpdateStrategy the siteUpdateStrategy value to set.
+     * @return the FunctionAppConfig object itself.
+     */
+    public FunctionAppConfig withSiteUpdateStrategy(FunctionsSiteUpdateStrategy siteUpdateStrategy) {
+        this.siteUpdateStrategy = siteUpdateStrategy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -112,6 +137,9 @@ public final class FunctionAppConfig implements JsonSerializable<FunctionAppConf
         if (scaleAndConcurrency() != null) {
             scaleAndConcurrency().validate();
         }
+        if (siteUpdateStrategy() != null) {
+            siteUpdateStrategy().validate();
+        }
     }
 
     /**
@@ -123,6 +151,7 @@ public final class FunctionAppConfig implements JsonSerializable<FunctionAppConf
         jsonWriter.writeJsonField("deployment", this.deployment);
         jsonWriter.writeJsonField("runtime", this.runtime);
         jsonWriter.writeJsonField("scaleAndConcurrency", this.scaleAndConcurrency);
+        jsonWriter.writeJsonField("siteUpdateStrategy", this.siteUpdateStrategy);
         return jsonWriter.writeEndObject();
     }
 
@@ -147,6 +176,8 @@ public final class FunctionAppConfig implements JsonSerializable<FunctionAppConf
                     deserializedFunctionAppConfig.runtime = FunctionsRuntime.fromJson(reader);
                 } else if ("scaleAndConcurrency".equals(fieldName)) {
                     deserializedFunctionAppConfig.scaleAndConcurrency = FunctionsScaleAndConcurrency.fromJson(reader);
+                } else if ("siteUpdateStrategy".equals(fieldName)) {
+                    deserializedFunctionAppConfig.siteUpdateStrategy = FunctionsSiteUpdateStrategy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

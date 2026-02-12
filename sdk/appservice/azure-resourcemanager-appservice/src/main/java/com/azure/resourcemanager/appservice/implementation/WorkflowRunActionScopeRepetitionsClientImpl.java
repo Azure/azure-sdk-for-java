@@ -67,22 +67,21 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowRunActionRepetitionDefinitionCollection>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("workflowName") String workflowName, @PathParam("runName") String runName,
-            @PathParam("actionName") String actionName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("actionName") String actionName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/scopeRepetitions/{repetitionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowRunActionRepetitionDefinitionInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("workflowName") String workflowName, @PathParam("runName") String runName,
             @PathParam("actionName") String actionName, @PathParam("repetitionName") String repetitionName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -96,7 +95,7 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
     /**
      * List the workflow run action scoped repetitions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -134,11 +133,11 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, runName, actionName, apiVersion, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, runName, actionName, accept,
+                context))
             .<PagedResponse<WorkflowRunActionRepetitionDefinitionInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -148,7 +147,7 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
     /**
      * List the workflow run action scoped repetitions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -188,12 +187,11 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                runName, actionName, apiVersion, accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, runName, actionName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -201,7 +199,7 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
     /**
      * List the workflow run action scoped repetitions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -221,7 +219,7 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
     /**
      * List the workflow run action scoped repetitions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -243,7 +241,7 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
     /**
      * List the workflow run action scoped repetitions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -262,7 +260,7 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
     /**
      * List the workflow run action scoped repetitions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -282,7 +280,7 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
     /**
      * Get a workflow run action scoped repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -324,19 +322,18 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
         if (repetitionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    name, workflowName, runName, actionName, repetitionName, apiVersion, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, runName, actionName,
+                repetitionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a workflow run action scoped repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -379,17 +376,16 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
         if (repetitionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, runName, actionName, repetitionName, apiVersion, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, name, workflowName, runName, actionName, repetitionName, accept, context);
     }
 
     /**
      * Get a workflow run action scoped repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -410,7 +406,7 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
     /**
      * Get a workflow run action scoped repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -432,7 +428,7 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
     /**
      * Get a workflow run action scoped repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.

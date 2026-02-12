@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DiagnosticsExecuteSiteDetectorSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
      * Diagnostics_ExecuteSiteDetector.json
      */
     /**
@@ -22,12 +22,12 @@ public final class DiagnosticsExecuteSiteDetectorSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .executeSiteDetectorWithResponse("Sample-WestUSResourceGroup", "SampleApp", "sitecrashes", "availability",
+            .executeSiteDetectorWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability", "sitecrashes",
                 null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
      * Diagnostics_ExecuteSiteDetectorSlot.json
      */
     /**
@@ -40,7 +40,7 @@ public final class DiagnosticsExecuteSiteDetectorSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .executeSiteDetectorWithResponse("Sample-WestUSResourceGroup", "SampleApp", "sitecrashes", "availability",
+            .executeSiteDetectorWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability", "sitecrashes",
                 null, null, null, com.azure.core.util.Context.NONE);
     }
 }

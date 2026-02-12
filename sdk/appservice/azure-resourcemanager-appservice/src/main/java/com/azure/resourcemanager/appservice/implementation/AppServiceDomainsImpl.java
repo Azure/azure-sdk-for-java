@@ -20,7 +20,7 @@ public class AppServiceDomainsImpl extends
     implements AppServiceDomains {
 
     public AppServiceDomainsImpl(AppServiceManager manager) {
-        super(manager.serviceClient().getDomains(), manager);
+        super(manager.domainRegistrationClient().getDomains(), manager);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class AppServiceDomainsImpl extends
     @Override
     public PagedIterable<DomainLegalAgreement> listAgreements(String topLevelExtension) {
         return PagedConverter.mapPage(this.manager()
-            .serviceClient()
+            .domainRegistrationClient()
             .getTopLevelDomains()
             .listAgreements(topLevelExtension, new TopLevelDomainAgreementOption()), DomainLegalAgreementImpl::new);
     }

@@ -21,12 +21,12 @@ import java.util.List;
 public final class StaticSiteFunctionOverviewCollection
     implements JsonSerializable<StaticSiteFunctionOverviewCollection> {
     /*
-     * Collection of resources.
+     * The StaticSiteFunctionOverviewARMResource items on this page
      */
     private List<StaticSiteFunctionOverviewArmResourceInner> value;
 
     /*
-     * Link to next page of resources.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -37,7 +37,7 @@ public final class StaticSiteFunctionOverviewCollection
     }
 
     /**
-     * Get the value property: Collection of resources.
+     * Get the value property: The StaticSiteFunctionOverviewARMResource items on this page.
      * 
      * @return the value value.
      */
@@ -46,7 +46,7 @@ public final class StaticSiteFunctionOverviewCollection
     }
 
     /**
-     * Set the value property: Collection of resources.
+     * Set the value property: The StaticSiteFunctionOverviewARMResource items on this page.
      * 
      * @param value the value value to set.
      * @return the StaticSiteFunctionOverviewCollection object itself.
@@ -57,12 +57,23 @@ public final class StaticSiteFunctionOverviewCollection
     }
 
     /**
-     * Get the nextLink property: Link to next page of resources.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the StaticSiteFunctionOverviewCollection object itself.
+     */
+    public StaticSiteFunctionOverviewCollection withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
     }
 
     /**
@@ -89,6 +100,7 @@ public final class StaticSiteFunctionOverviewCollection
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 

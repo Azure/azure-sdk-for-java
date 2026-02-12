@@ -25,7 +25,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Gets a list of workflow trigger histories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -44,7 +44,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Gets a list of workflow trigger histories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -60,7 +60,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Gets a list of workflow trigger histories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -76,7 +76,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Gets a list of workflow trigger histories.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -96,7 +96,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Gets a workflow trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -114,7 +114,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Gets a workflow trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -132,7 +132,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Gets a workflow trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -151,7 +151,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Gets a workflow trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -169,7 +169,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -187,7 +187,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -205,7 +205,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -223,7 +223,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -242,7 +242,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -260,7 +260,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -276,7 +276,7 @@ public interface WorkflowTriggerHistoriesClient {
     /**
      * Resubmits a workflow run based on the trigger history.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.

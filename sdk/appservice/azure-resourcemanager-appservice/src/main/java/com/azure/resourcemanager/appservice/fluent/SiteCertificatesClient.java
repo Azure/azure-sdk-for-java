@@ -195,66 +195,6 @@ public interface SiteCertificatesClient {
         CertificateInner certificateEnvelope);
 
     /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, String certificateName);
-
-    /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String name, String certificateName);
-
-    /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String name, String certificateName, Context context);
-
-    /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String name, String certificateName);
-
-    /**
      * Create or update a certificate under a given site.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -322,6 +262,66 @@ public interface SiteCertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     CertificateInner update(String resourceGroupName, String name, String certificateName,
         CertificatePatchResource certificateEnvelope);
+
+    /**
+     * Delete a certificate from the site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param certificateName Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, String certificateName);
+
+    /**
+     * Delete a certificate from the site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param certificateName Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String name, String certificateName);
+
+    /**
+     * Delete a certificate from the site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param certificateName Name of the certificate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String name, String certificateName, Context context);
+
+    /**
+     * Delete a certificate from the site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param certificateName Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String name, String certificateName);
 
     /**
      * Get all certificates in a resource group for a given site and a deployment slot.
@@ -525,76 +525,6 @@ public interface SiteCertificatesClient {
         CertificateInner certificateEnvelope);
 
     /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteSlotWithResponseAsync(String resourceGroupName, String name, String slot,
-        String certificateName);
-
-    /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, String certificateName);
-
-    /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteSlotWithResponse(String resourceGroupName, String name, String slot, String certificateName,
-        Context context);
-
-    /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteSlot(String resourceGroupName, String name, String slot, String certificateName);
-
-    /**
      * Create or update a certificate for a site and deployment slot.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -670,4 +600,74 @@ public interface SiteCertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     CertificateInner updateSlot(String resourceGroupName, String name, String slot, String certificateName,
         CertificatePatchResource certificateEnvelope);
+
+    /**
+     * Delete a certificate for a given site and deployment slot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
+     * production slot.
+     * @param certificateName Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteSlotWithResponseAsync(String resourceGroupName, String name, String slot,
+        String certificateName);
+
+    /**
+     * Delete a certificate for a given site and deployment slot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
+     * production slot.
+     * @param certificateName Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, String certificateName);
+
+    /**
+     * Delete a certificate for a given site and deployment slot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
+     * production slot.
+     * @param certificateName Name of the certificate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteSlotWithResponse(String resourceGroupName, String name, String slot, String certificateName,
+        Context context);
+
+    /**
+     * Delete a certificate for a given site and deployment slot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
+     * production slot.
+     * @param certificateName Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteSlot(String resourceGroupName, String name, String slot, String certificateName);
 }

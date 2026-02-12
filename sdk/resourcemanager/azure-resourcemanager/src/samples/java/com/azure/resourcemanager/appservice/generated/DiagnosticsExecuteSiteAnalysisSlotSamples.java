@@ -9,8 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DiagnosticsExecuteSiteAnalysisSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
-     * Diagnostics_ExecuteSiteAnalysis.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * Diagnostics_ExecuteSiteAnalysis_Slot.json
      */
     /**
      * Sample code: Execute site analysis.
@@ -22,13 +22,13 @@ public final class DiagnosticsExecuteSiteAnalysisSlotSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .executeSiteAnalysisSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability",
-                "apprestartanalyses", "Production", null, null, null, com.azure.core.util.Context.NONE);
+            .executeSiteAnalysisSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "Production",
+                "availability", "apprestartanalyses", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
-     * Diagnostics_ExecuteSiteAnalysisSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * Diagnostics_ExecuteSiteAnalysisSlot_Slot.json
      */
     /**
      * Sample code: Execute site slot analysis.
@@ -40,7 +40,7 @@ public final class DiagnosticsExecuteSiteAnalysisSlotSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .executeSiteAnalysisSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability",
-                "apprestartanalyses", "staging", null, null, null, com.azure.core.util.Context.NONE);
+            .executeSiteAnalysisSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "staging", "availability",
+                "apprestartanalyses", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

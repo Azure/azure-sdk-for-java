@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.appservice.models;
 
 /**
- * Type of the Azure resource the hostname is assigned to.
+ * Azure resource type.
  */
 public enum AzureResourceType {
     /**

@@ -22,17 +22,17 @@ public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
     private StaticSitesWorkflowPreviewProperties innerProperties;
 
     /*
-     * The type of the resource.
+     * Resource type.
      */
     private String type;
 
     /*
-     * The name of the resource.
+     * Resource Name.
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Resource Id.
      */
     private String id;
 
@@ -52,7 +52,7 @@ public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the type property: Resource type.
      * 
      * @return the type value.
      */
@@ -62,7 +62,7 @@ public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Resource Name.
      * 
      * @return the name value.
      */
@@ -72,7 +72,7 @@ public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the id property: Resource Id.
      * 
      * @return the id value.
      */
@@ -137,7 +137,6 @@ public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of StaticSitesWorkflowPreviewInner if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StaticSitesWorkflowPreviewInner.
      */
     public static StaticSitesWorkflowPreviewInner fromJson(JsonReader jsonReader) throws IOException {
@@ -152,10 +151,10 @@ public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
                     deserializedStaticSitesWorkflowPreviewInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedStaticSitesWorkflowPreviewInner.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedStaticSitesWorkflowPreviewInner.type = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     deserializedStaticSitesWorkflowPreviewInner.withKind(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedStaticSitesWorkflowPreviewInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedStaticSitesWorkflowPreviewInner.innerProperties
                         = StaticSitesWorkflowPreviewProperties.fromJson(reader);

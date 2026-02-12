@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import java.io.IOException;
 
 /**
  * Publishing Credentials Policies parameters.
  */
 @Fluent
-public final class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnlyResource {
+public final class CsmPublishingCredentialsPoliciesEntityInner extends ProxyResource {
     /*
      * CsmPublishingCredentialsPoliciesEntity resource specific properties
      */
     private CsmPublishingCredentialsPoliciesEntityProperties innerProperties;
+
+    /*
+     * Kind of resource.
+     */
+    private String kind;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -49,6 +60,35 @@ public final class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnly
      */
     private CsmPublishingCredentialsPoliciesEntityProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the kind property: Kind of resource.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of resource.
+     * 
+     * @param kind the kind value to set.
+     * @return the CsmPublishingCredentialsPoliciesEntityInner object itself.
+     */
+    public CsmPublishingCredentialsPoliciesEntityInner withKind(String kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -82,15 +122,6 @@ public final class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnly
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CsmPublishingCredentialsPoliciesEntityInner withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
-    /**
      * Get the allow property: &lt;code&gt;true&lt;/code&gt; to allow access to a publishing method; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
      * 
@@ -120,7 +151,6 @@ public final class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnly
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -133,8 +163,8 @@ public final class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnly
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", kind());
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 
@@ -161,11 +191,13 @@ public final class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnly
                     deserializedCsmPublishingCredentialsPoliciesEntityInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedCsmPublishingCredentialsPoliciesEntityInner.type = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedCsmPublishingCredentialsPoliciesEntityInner.withKind(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedCsmPublishingCredentialsPoliciesEntityInner.innerProperties
                         = CsmPublishingCredentialsPoliciesEntityProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedCsmPublishingCredentialsPoliciesEntityInner.kind = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCsmPublishingCredentialsPoliciesEntityInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

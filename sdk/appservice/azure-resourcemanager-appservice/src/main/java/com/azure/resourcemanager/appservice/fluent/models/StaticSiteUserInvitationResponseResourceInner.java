@@ -23,17 +23,17 @@ public final class StaticSiteUserInvitationResponseResourceInner extends ProxyOn
     private StaticSiteUserInvitationResponseResourceProperties innerProperties;
 
     /*
-     * The type of the resource.
+     * Resource type.
      */
     private String type;
 
     /*
-     * The name of the resource.
+     * Resource Name.
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Resource Id.
      */
     private String id;
 
@@ -53,7 +53,7 @@ public final class StaticSiteUserInvitationResponseResourceInner extends ProxyOn
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the type property: Resource type.
      * 
      * @return the type value.
      */
@@ -63,7 +63,7 @@ public final class StaticSiteUserInvitationResponseResourceInner extends ProxyOn
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Resource Name.
      * 
      * @return the name value.
      */
@@ -73,7 +73,7 @@ public final class StaticSiteUserInvitationResponseResourceInner extends ProxyOn
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the id property: Resource Id.
      * 
      * @return the id value.
      */
@@ -138,7 +138,6 @@ public final class StaticSiteUserInvitationResponseResourceInner extends ProxyOn
      * @param jsonReader The JsonReader being read.
      * @return An instance of StaticSiteUserInvitationResponseResourceInner if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StaticSiteUserInvitationResponseResourceInner.
      */
     public static StaticSiteUserInvitationResponseResourceInner fromJson(JsonReader jsonReader) throws IOException {
@@ -153,10 +152,10 @@ public final class StaticSiteUserInvitationResponseResourceInner extends ProxyOn
                     deserializedStaticSiteUserInvitationResponseResourceInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedStaticSiteUserInvitationResponseResourceInner.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedStaticSiteUserInvitationResponseResourceInner.type = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     deserializedStaticSiteUserInvitationResponseResourceInner.withKind(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedStaticSiteUserInvitationResponseResourceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedStaticSiteUserInvitationResponseResourceInner.innerProperties
                         = StaticSiteUserInvitationResponseResourceProperties.fromJson(reader);

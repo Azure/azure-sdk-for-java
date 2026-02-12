@@ -9,9 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsStopNetworkTraceSlotSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/StopWebSiteNetworkTrace.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * StopWebSiteNetworkTrace_StopNetworkTraceSlot.json
      */
     /**
      * Sample code: Stop a currently running network trace operation for a site.

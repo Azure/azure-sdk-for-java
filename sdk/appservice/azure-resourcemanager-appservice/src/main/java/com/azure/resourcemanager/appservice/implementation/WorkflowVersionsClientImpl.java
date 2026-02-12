@@ -67,20 +67,20 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowVersionListResult>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName, @QueryParam("api-version") String apiVersion,
-            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("workflowName") String workflowName, @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/versions/{versionId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowVersionInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("workflowName") String workflowName, @PathParam("versionId") String versionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -94,7 +94,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     /**
      * Gets a list of workflow versions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param top The number of items to be included in the result.
@@ -124,11 +124,10 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
         if (workflowName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, apiVersion, top, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, top, accept, context))
             .<PagedResponse<WorkflowVersionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -137,7 +136,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     /**
      * Gets a list of workflow versions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param top The number of items to be included in the result.
@@ -168,12 +167,11 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
         if (workflowName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                apiVersion, top, accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, top, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -181,7 +179,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     /**
      * Gets a list of workflow versions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param top The number of items to be included in the result.
@@ -200,7 +198,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     /**
      * Gets a list of workflow versions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,7 +216,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     /**
      * Gets a list of workflow versions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param top The number of items to be included in the result.
@@ -238,7 +236,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     /**
      * Gets a list of workflow versions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,7 +253,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     /**
      * Gets a list of workflow versions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param top The number of items to be included in the result.
@@ -274,7 +272,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     /**
      * Gets a workflow version.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -307,18 +305,17 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
         if (versionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter versionId is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, versionId, apiVersion, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, versionId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a workflow version.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -352,17 +349,16 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
         if (versionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter versionId is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, versionId, apiVersion, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, name, workflowName, versionId, accept, context);
     }
 
     /**
      * Gets a workflow version.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -381,7 +377,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     /**
      * Gets a workflow version.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -400,7 +396,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     /**
      * Gets a workflow version.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.

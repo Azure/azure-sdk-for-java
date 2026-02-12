@@ -20,12 +20,12 @@ import java.util.List;
 @Fluent
 public final class SourceControlCollection implements JsonSerializable<SourceControlCollection> {
     /*
-     * Collection of resources.
+     * The SourceControl items on this page
      */
     private List<SourceControlInner> value;
 
     /*
-     * Link to next page of resources.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -36,7 +36,7 @@ public final class SourceControlCollection implements JsonSerializable<SourceCon
     }
 
     /**
-     * Get the value property: Collection of resources.
+     * Get the value property: The SourceControl items on this page.
      * 
      * @return the value value.
      */
@@ -45,7 +45,7 @@ public final class SourceControlCollection implements JsonSerializable<SourceCon
     }
 
     /**
-     * Set the value property: Collection of resources.
+     * Set the value property: The SourceControl items on this page.
      * 
      * @param value the value value to set.
      * @return the SourceControlCollection object itself.
@@ -56,12 +56,23 @@ public final class SourceControlCollection implements JsonSerializable<SourceCon
     }
 
     /**
-     * Get the nextLink property: Link to next page of resources.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the SourceControlCollection object itself.
+     */
+    public SourceControlCollection withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
     }
 
     /**
@@ -87,6 +98,7 @@ public final class SourceControlCollection implements JsonSerializable<SourceCon
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 

@@ -5,7 +5,8 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.SubResource;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,31 @@ import java.util.List;
  * The workflow run action.
  */
 @Fluent
-public final class WorkflowRunActionInner extends SubResource {
+public final class WorkflowRunActionInner extends ProxyResource {
     /*
      * The workflow run action properties.
      */
     private WorkflowRunActionProperties innerProperties;
 
     /*
-     * Gets the workflow run action name.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * Gets the workflow run action type.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of WorkflowRunActionInner class.
@@ -53,30 +64,42 @@ public final class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the name property: Gets the workflow run action name.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
-     * @return the name value.
+     * @return the systemData value.
      */
-    public String name() {
-        return this.name;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Get the type property: Gets the workflow run action type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
+    @Override
     public String type() {
         return this.type;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
     @Override
-    public WorkflowRunActionInner withId(String id) {
-        super.withId(id);
-        return this;
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -223,7 +246,6 @@ public final class WorkflowRunActionInner extends SubResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", id());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -234,6 +256,7 @@ public final class WorkflowRunActionInner extends SubResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of WorkflowRunActionInner if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WorkflowRunActionInner.
      */
     public static WorkflowRunActionInner fromJson(JsonReader jsonReader) throws IOException {
@@ -244,13 +267,15 @@ public final class WorkflowRunActionInner extends SubResource {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedWorkflowRunActionInner.withId(reader.getString());
-                } else if ("properties".equals(fieldName)) {
-                    deserializedWorkflowRunActionInner.innerProperties = WorkflowRunActionProperties.fromJson(reader);
+                    deserializedWorkflowRunActionInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedWorkflowRunActionInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedWorkflowRunActionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkflowRunActionInner.innerProperties = WorkflowRunActionProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWorkflowRunActionInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

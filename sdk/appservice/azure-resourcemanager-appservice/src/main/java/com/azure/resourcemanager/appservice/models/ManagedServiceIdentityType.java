@@ -5,14 +5,9 @@
 package com.azure.resourcemanager.appservice.models;
 
 /**
- * Defines values for ManagedServiceIdentityType.
+ * Type of managed service identity.
  */
 public enum ManagedServiceIdentityType {
-    /**
-     * Enum value None.
-     */
-    NONE("None"),
-
     /**
      * Enum value SystemAssigned.
      */
@@ -26,7 +21,12 @@ public enum ManagedServiceIdentityType {
     /**
      * Enum value SystemAssigned, UserAssigned.
      */
-    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned");
+    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned"),
+
+    /**
+     * Enum value None.
+     */
+    NONE("None");
 
     /**
      * The actual serialized value for a ManagedServiceIdentityType instance.

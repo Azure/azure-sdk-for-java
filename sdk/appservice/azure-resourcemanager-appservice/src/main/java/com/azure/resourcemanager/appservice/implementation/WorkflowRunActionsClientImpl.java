@@ -70,33 +70,31 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowRunActionListResult>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("workflowName") String workflowName, @PathParam("runName") String runName,
-            @QueryParam("api-version") String apiVersion, @QueryParam("$top") Integer top,
-            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$top") Integer top, @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowRunActionInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("workflowName") String workflowName, @PathParam("runName") String runName,
-            @PathParam("actionName") String actionName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("actionName") String actionName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/listExpressionTraces")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExpressionTraces>> listExpressionTraces(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("workflowName") String workflowName, @PathParam("runName") String runName,
-            @PathParam("actionName") String actionName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("actionName") String actionName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -118,7 +116,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Gets a list of workflow run actions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -153,11 +151,11 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         if (runName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, runName, apiVersion, top, filter, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, runName, top, filter, accept,
+                context))
             .<PagedResponse<WorkflowRunActionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -166,7 +164,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Gets a list of workflow run actions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -202,12 +200,11 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         if (runName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                runName, apiVersion, top, filter, accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, runName, top, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -215,7 +212,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Gets a list of workflow run actions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -236,7 +233,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Gets a list of workflow run actions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -257,7 +254,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Gets a list of workflow run actions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -280,7 +277,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Gets a list of workflow run actions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -300,7 +297,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Gets a list of workflow run actions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -321,7 +318,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Gets a workflow run action.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -358,18 +355,18 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, runName, actionName, apiVersion, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, runName, actionName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a workflow run action.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -407,17 +404,16 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, runName, actionName, apiVersion, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, name, workflowName, runName, actionName, accept, context);
     }
 
     /**
      * Gets a workflow run action.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -437,7 +433,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Gets a workflow run action.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -457,7 +453,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Gets a workflow run action.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -476,7 +472,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Lists a workflow run expression trace.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -513,12 +509,11 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listExpressionTraces(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, name, workflowName, runName, actionName, apiVersion, accept, context))
+            .withContext(context -> service.listExpressionTraces(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, runName, actionName, accept,
+                context))
             .<PagedResponse<ExpressionRoot>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().inputs(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -527,7 +522,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Lists a workflow run expression trace.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -565,12 +560,12 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listExpressionTraces(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-                workflowName, runName, actionName, apiVersion, accept, context)
+            .listExpressionTraces(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, runName, actionName, accept,
+                context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().inputs(), res.getValue().nextLink(), null));
     }
@@ -578,7 +573,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Lists a workflow run expression trace.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -599,7 +594,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Lists a workflow run expression trace.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -620,7 +615,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Lists a workflow run expression trace.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -640,7 +635,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Lists a workflow run expression trace.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.

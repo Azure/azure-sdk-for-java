@@ -9,8 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DiagnosticsExecuteSiteDetectorSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
-     * Diagnostics_ExecuteSiteDetector.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * Diagnostics_ExecuteSiteDetector_Slot.json
      */
     /**
      * Sample code: Execute site detector.
@@ -22,13 +22,13 @@ public final class DiagnosticsExecuteSiteDetectorSlotSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .executeSiteDetectorSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "sitecrashes",
-                "availability", "Production", null, null, null, com.azure.core.util.Context.NONE);
+            .executeSiteDetectorSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "Production",
+                "availability", "sitecrashes", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
-     * Diagnostics_ExecuteSiteDetectorSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * Diagnostics_ExecuteSiteDetectorSlot_Slot.json
      */
     /**
      * Sample code: Execute site slot detector.
@@ -40,7 +40,7 @@ public final class DiagnosticsExecuteSiteDetectorSlotSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .executeSiteDetectorSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "sitecrashes",
-                "availability", "staging", null, null, null, com.azure.core.util.Context.NONE);
+            .executeSiteDetectorSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "staging", "availability",
+                "sitecrashes", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -35,7 +35,6 @@ import com.azure.resourcemanager.appservice.fluent.models.DeploymentLocationsInn
 import com.azure.resourcemanager.appservice.fluent.models.DnlResourceNameAvailabilityInner;
 import com.azure.resourcemanager.appservice.fluent.models.GeoRegionInner;
 import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
-import com.azure.resourcemanager.appservice.fluent.models.NameIdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.models.PremierAddOnOfferInner;
 import com.azure.resourcemanager.appservice.fluent.models.ResourceNameAvailabilityInner;
 import com.azure.resourcemanager.appservice.fluent.models.SkuInfosInner;
@@ -52,6 +51,7 @@ import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorExce
 import com.azure.resourcemanager.appservice.models.DnlResourceNameAvailabilityRequest;
 import com.azure.resourcemanager.appservice.models.GeoRegionCollection;
 import com.azure.resourcemanager.appservice.models.IdentifierCollection;
+import com.azure.resourcemanager.appservice.models.NameIdentifier;
 import com.azure.resourcemanager.appservice.models.PremierAddOnOfferCollection;
 import com.azure.resourcemanager.appservice.models.ResourceNameAvailabilityRequest;
 import com.azure.resourcemanager.appservice.models.SkuName;
@@ -118,7 +118,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<SourceControlInner>> getSourceControl(@HostParam("$host") String endpoint,
-            @PathParam("sourceControlType") String sourceControlType, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceControlType") String sourceControlType,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -126,17 +126,25 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<SourceControlInner>> updateSourceControl(@HostParam("$host") String endpoint,
-            @PathParam("sourceControlType") String sourceControlType, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceControlType") String sourceControlType,
             @BodyParam("application/json") SourceControlInner requestMessage, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/aseRegions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<AseRegionCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/billingMeters")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<BillingMeterCollection>> list(@HostParam("$host") String endpoint,
+        Mono<Response<BillingMeterCollection>> listBillingMeters(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("billingLocation") String billingLocation, @QueryParam("osType") String osType,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -144,7 +152,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceNameAvailabilityInner>> checkNameAvailability(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ResourceNameAvailabilityRequest request,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -153,23 +161,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CustomHostnameSitesCollection>> listCustomHostnameSites(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("hostname") String hostname,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("hostname") String hostname, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/deploymentLocations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DeploymentLocationsInner>> getSubscriptionDeploymentLocations(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/aseRegions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AseRegionCollection>> listAseRegions(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -177,11 +177,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<GeoRegionCollection>> listGeoRegions(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("sku") SkuName sku, @QueryParam("linuxWorkersEnabled") Boolean linuxWorkersEnabled,
             @QueryParam("xenonWorkersEnabled") Boolean xenonWorkersEnabled,
             @QueryParam("linuxDynamicWorkersEnabled") Boolean linuxDynamicWorkersEnabled,
-            @QueryParam("customModeWorkersEnabled ") Boolean customModeWorkersEnabled,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("customModeWorkersEnabled") Boolean customModeWorkersEnabled,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -189,8 +189,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<IdentifierCollection>> listSiteIdentifiersAssignedToHostname(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") NameIdentifierInner nameIdentifier, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") NameIdentifier nameIdentifier, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -198,8 +198,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DnlResourceNameAvailabilityInner>> regionalCheckNameAvailability(
-            @HostParam("$host") String endpoint, @PathParam("location") String location,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @BodyParam("application/json") DnlResourceNameAvailabilityRequest request,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -208,7 +208,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<PremierAddOnOfferCollection>> listPremierAddOnOffers(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -216,7 +216,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<SkuInfosInner>> listSkus(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -224,17 +224,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<VnetValidationFailureDetailsInner>> verifyHostingEnvironmentVnet(
-            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VnetParameters parameters,
-            @HeaderParam("Accept") String accept, Context context);
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") VnetParameters parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/moveResources")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> move(@HostParam("$host") String endpoint,
+        Mono<Response<Void>> move(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") CsmMoveResourceEnvelope moveResourceEnvelope,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -243,8 +244,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ValidateResponseInner>> validate(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ValidateRequestInner validateRequest, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -253,8 +254,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> validateMove(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") CsmMoveResourceEnvelope moveResourceEnvelope,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -263,6 +264,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<SourceControlCollection>> listSourceControlsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<AseRegionCollection>> listAseRegionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -279,14 +288,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CustomHostnameSitesCollection>> listCustomHostnameSitesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AseRegionCollection>> listAseRegionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -331,10 +332,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getPublishingUser(this.client.getEndpoint(), apiVersion, accept, context))
+            .withContext(context -> service.getPublishingUser(this.client.getEndpoint(), this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -356,10 +357,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getPublishingUser(this.client.getEndpoint(), apiVersion, accept, context);
+        return service.getPublishingUser(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -429,11 +429,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             userDetails.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.updatePublishingUser(this.client.getEndpoint(), apiVersion, userDetails,
-                accept, context))
+            .withContext(context -> service.updatePublishingUser(this.client.getEndpoint(), this.client.getApiVersion(),
+                userDetails, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -461,10 +460,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             userDetails.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updatePublishingUser(this.client.getEndpoint(), apiVersion, userDetails, accept, context);
+        return service.updatePublishingUser(this.client.getEndpoint(), this.client.getApiVersion(), userDetails, accept,
+            context);
     }
 
     /**
@@ -531,10 +530,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSourceControls(this.client.getEndpoint(), apiVersion, accept, context))
+            .withContext(context -> service.listSourceControls(this.client.getEndpoint(), this.client.getApiVersion(),
+                accept, context))
             .<PagedResponse<SourceControlInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -557,10 +556,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listSourceControls(this.client.getEndpoint(), apiVersion, accept, context)
+        return service.listSourceControls(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -648,11 +646,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono
                 .error(new IllegalArgumentException("Parameter sourceControlType is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getSourceControl(this.client.getEndpoint(), sourceControlType, apiVersion,
-                accept, context))
+            .withContext(context -> service.getSourceControl(this.client.getEndpoint(), this.client.getApiVersion(),
+                sourceControlType, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -679,10 +676,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono
                 .error(new IllegalArgumentException("Parameter sourceControlType is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSourceControl(this.client.getEndpoint(), sourceControlType, apiVersion, accept, context);
+        return service.getSourceControl(this.client.getEndpoint(), this.client.getApiVersion(), sourceControlType,
+            accept, context);
     }
 
     /**
@@ -762,11 +759,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             requestMessage.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.updateSourceControl(this.client.getEndpoint(), sourceControlType,
-                apiVersion, requestMessage, accept, context))
+            .withContext(context -> service.updateSourceControl(this.client.getEndpoint(), this.client.getApiVersion(),
+                sourceControlType, requestMessage, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -799,11 +795,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             requestMessage.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updateSourceControl(this.client.getEndpoint(), sourceControlType, apiVersion, requestMessage,
-            accept, context);
+        return service.updateSourceControl(this.client.getEndpoint(), this.client.getApiVersion(), sourceControlType,
+            requestMessage, accept, context);
     }
 
     /**
@@ -862,6 +857,125 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
+     * Description for get a list of available ASE regions and its supported Skus.
+     * 
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of ASE regions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AseRegionInner>> listSinglePageAsync() {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<AseRegionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
+     * Description for get a list of available ASE regions and its supported Skus.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of ASE regions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AseRegionInner>> listSinglePageAsync(Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
+     * Description for get a list of available ASE regions and its supported Skus.
+     * 
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of ASE regions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AseRegionInner> listAsync() {
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAseRegionsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
+     * Description for get a list of available ASE regions and its supported Skus.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of ASE regions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<AseRegionInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listAseRegionsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
+     * Description for get a list of available ASE regions and its supported Skus.
+     * 
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of ASE regions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AseRegionInner> list() {
+        return new PagedIterable<>(listAsync());
+    }
+
+    /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
+     * Description for get a list of available ASE regions and its supported Skus.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of ASE regions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AseRegionInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
      * Gets a list of meters for a given location.
      * 
      * Description for Gets a list of meters for a given location.
@@ -874,7 +988,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of Billing Meters along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BillingMeterInner>> listSinglePageAsync(String billingLocation, String osType) {
+    private Mono<PagedResponse<BillingMeterInner>> listBillingMetersSinglePageAsync(String billingLocation,
+        String osType) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -883,11 +998,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), billingLocation, osType,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listBillingMeters(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), billingLocation, osType, accept, context))
             .<PagedResponse<BillingMeterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -907,8 +1021,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of Billing Meters along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BillingMeterInner>> listSinglePageAsync(String billingLocation, String osType,
-        Context context) {
+    private Mono<PagedResponse<BillingMeterInner>> listBillingMetersSinglePageAsync(String billingLocation,
+        String osType, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -917,12 +1031,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), billingLocation, osType, this.client.getSubscriptionId(), apiVersion,
-                accept, context)
+            .listBillingMeters(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                billingLocation, osType, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -940,8 +1053,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of Billing Meters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BillingMeterInner> listAsync(String billingLocation, String osType) {
-        return new PagedFlux<>(() -> listSinglePageAsync(billingLocation, osType),
+    public PagedFlux<BillingMeterInner> listBillingMetersAsync(String billingLocation, String osType) {
+        return new PagedFlux<>(() -> listBillingMetersSinglePageAsync(billingLocation, osType),
             nextLink -> listBillingMetersNextSinglePageAsync(nextLink));
     }
 
@@ -955,10 +1068,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of Billing Meters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BillingMeterInner> listAsync() {
+    public PagedFlux<BillingMeterInner> listBillingMetersAsync() {
         final String billingLocation = null;
         final String osType = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(billingLocation, osType),
+        return new PagedFlux<>(() -> listBillingMetersSinglePageAsync(billingLocation, osType),
             nextLink -> listBillingMetersNextSinglePageAsync(nextLink));
     }
 
@@ -976,8 +1089,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of Billing Meters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BillingMeterInner> listAsync(String billingLocation, String osType, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(billingLocation, osType, context),
+    private PagedFlux<BillingMeterInner> listBillingMetersAsync(String billingLocation, String osType,
+        Context context) {
+        return new PagedFlux<>(() -> listBillingMetersSinglePageAsync(billingLocation, osType, context),
             nextLink -> listBillingMetersNextSinglePageAsync(nextLink, context));
     }
 
@@ -991,10 +1105,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of Billing Meters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BillingMeterInner> list() {
+    public PagedIterable<BillingMeterInner> listBillingMeters() {
         final String billingLocation = null;
         final String osType = null;
-        return new PagedIterable<>(listAsync(billingLocation, osType));
+        return new PagedIterable<>(listBillingMetersAsync(billingLocation, osType));
     }
 
     /**
@@ -1011,8 +1125,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of Billing Meters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BillingMeterInner> list(String billingLocation, String osType, Context context) {
-        return new PagedIterable<>(listAsync(billingLocation, osType, context));
+    public PagedIterable<BillingMeterInner> listBillingMeters(String billingLocation, String osType, Context context) {
+        return new PagedIterable<>(listBillingMetersAsync(billingLocation, osType, context));
     }
 
     /**
@@ -1020,7 +1134,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Check if a resource name is available.
      * 
-     * @param request Name availability request.
+     * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1043,11 +1157,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             request.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), apiVersion, request, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), request, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1056,7 +1169,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Check if a resource name is available.
      * 
-     * @param request Name availability request.
+     * @param request The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1080,11 +1193,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             request.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
-            request, accept, context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), request, accept, context);
     }
 
     /**
@@ -1092,7 +1204,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Check if a resource name is available.
      * 
-     * @param request Name availability request.
+     * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1108,7 +1220,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Check if a resource name is available.
      * 
-     * @param request Name availability request.
+     * @param request The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1126,7 +1238,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Check if a resource name is available.
      * 
-     * @param request Name availability request.
+     * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1157,11 +1269,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCustomHostnameSites(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), hostname, apiVersion, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), hostname, accept, context))
             .<PagedResponse<CustomHostnameSitesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1189,12 +1300,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCustomHostnameSites(this.client.getEndpoint(), this.client.getSubscriptionId(), hostname, apiVersion,
-                accept, context)
+            .listCustomHostnameSites(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), hostname, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1292,11 +1402,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSubscriptionDeploymentLocations(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1323,11 +1432,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSubscriptionDeploymentLocations(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            apiVersion, accept, context);
+        return service.getSubscriptionDeploymentLocations(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1378,127 +1486,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Get a list of available ASE regions and its supported Skus.
-     * 
-     * Description for get a list of available ASE regions and its supported Skus.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ASE regions along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AseRegionInner>> listAseRegionsSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listAseRegions(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                apiVersion, accept, context))
-            .<PagedResponse<AseRegionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get a list of available ASE regions and its supported Skus.
-     * 
-     * Description for get a list of available ASE regions and its supported Skus.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ASE regions along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AseRegionInner>> listAseRegionsSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listAseRegions(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get a list of available ASE regions and its supported Skus.
-     * 
-     * Description for get a list of available ASE regions and its supported Skus.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ASE regions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AseRegionInner> listAseRegionsAsync() {
-        return new PagedFlux<>(() -> listAseRegionsSinglePageAsync(),
-            nextLink -> listAseRegionsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get a list of available ASE regions and its supported Skus.
-     * 
-     * Description for get a list of available ASE regions and its supported Skus.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ASE regions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AseRegionInner> listAseRegionsAsync(Context context) {
-        return new PagedFlux<>(() -> listAseRegionsSinglePageAsync(context),
-            nextLink -> listAseRegionsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get a list of available ASE regions and its supported Skus.
-     * 
-     * Description for get a list of available ASE regions and its supported Skus.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ASE regions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AseRegionInner> listAseRegions() {
-        return new PagedIterable<>(listAseRegionsAsync());
-    }
-
-    /**
-     * Get a list of available ASE regions and its supported Skus.
-     * 
-     * Description for get a list of available ASE regions and its supported Skus.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ASE regions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AseRegionInner> listAseRegions(Context context) {
-        return new PagedIterable<>(listAseRegionsAsync(context));
-    }
-
-    /**
      * Get a list of available geographical regions.
      * 
      * Description for Get a list of available geographical regions.
@@ -1529,12 +1516,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listGeoRegions(this.client.getEndpoint(), sku, linuxWorkersEnabled,
-                xenonWorkersEnabled, linuxDynamicWorkersEnabled, customModeWorkersEnabled,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listGeoRegions(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), sku, linuxWorkersEnabled, xenonWorkersEnabled,
+                linuxDynamicWorkersEnabled, customModeWorkersEnabled, accept, context))
             .<PagedResponse<GeoRegionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1573,12 +1559,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listGeoRegions(this.client.getEndpoint(), sku, linuxWorkersEnabled, xenonWorkersEnabled,
-                linuxDynamicWorkersEnabled, customModeWorkersEnabled, this.client.getSubscriptionId(), apiVersion,
+            .listGeoRegions(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled, customModeWorkersEnabled,
                 accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -1717,7 +1702,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for List all apps that are assigned to a hostname.
      * 
-     * @param nameIdentifier Hostname information.
+     * @param nameIdentifier The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1725,7 +1710,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentifierInner>>
-        listSiteIdentifiersAssignedToHostnameSinglePageAsync(NameIdentifierInner nameIdentifier) {
+        listSiteIdentifiersAssignedToHostnameSinglePageAsync(NameIdentifier nameIdentifier) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1739,11 +1724,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             nameIdentifier.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSiteIdentifiersAssignedToHostname(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), apiVersion, nameIdentifier, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), nameIdentifier, accept, context))
             .<PagedResponse<IdentifierInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1754,7 +1738,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for List all apps that are assigned to a hostname.
      * 
-     * @param nameIdentifier Hostname information.
+     * @param nameIdentifier The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1763,7 +1747,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentifierInner>>
-        listSiteIdentifiersAssignedToHostnameSinglePageAsync(NameIdentifierInner nameIdentifier, Context context) {
+        listSiteIdentifiersAssignedToHostnameSinglePageAsync(NameIdentifier nameIdentifier, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1777,12 +1761,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             nameIdentifier.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSiteIdentifiersAssignedToHostname(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                apiVersion, nameIdentifier, accept, context)
+            .listSiteIdentifiersAssignedToHostname(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), nameIdentifier, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1792,14 +1775,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for List all apps that are assigned to a hostname.
      * 
-     * @param nameIdentifier Hostname information.
+     * @param nameIdentifier The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of identifiers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(NameIdentifierInner nameIdentifier) {
+    public PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(NameIdentifier nameIdentifier) {
         return new PagedFlux<>(() -> listSiteIdentifiersAssignedToHostnameSinglePageAsync(nameIdentifier),
             nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink));
     }
@@ -1809,7 +1792,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for List all apps that are assigned to a hostname.
      * 
-     * @param nameIdentifier Hostname information.
+     * @param nameIdentifier The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1817,7 +1800,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of identifiers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(NameIdentifierInner nameIdentifier,
+    private PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(NameIdentifier nameIdentifier,
         Context context) {
         return new PagedFlux<>(() -> listSiteIdentifiersAssignedToHostnameSinglePageAsync(nameIdentifier, context),
             nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink, context));
@@ -1828,14 +1811,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for List all apps that are assigned to a hostname.
      * 
-     * @param nameIdentifier Hostname information.
+     * @param nameIdentifier The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of identifiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifierInner nameIdentifier) {
+    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifier nameIdentifier) {
         return new PagedIterable<>(listSiteIdentifiersAssignedToHostnameAsync(nameIdentifier));
     }
 
@@ -1844,7 +1827,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for List all apps that are assigned to a hostname.
      * 
-     * @param nameIdentifier Hostname information.
+     * @param nameIdentifier The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1852,7 +1835,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of identifiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifierInner nameIdentifier,
+    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifier nameIdentifier,
         Context context) {
         return new PagedIterable<>(listSiteIdentifiersAssignedToHostnameAsync(nameIdentifier, context));
     }
@@ -1860,8 +1843,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location parameter.
-     * @param request Name availability request.
+     * @param location The name of the Azure region.
+     * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1875,31 +1858,30 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (request == null) {
             return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
         } else {
             request.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.regionalCheckNameAvailability(this.client.getEndpoint(), location,
-                this.client.getSubscriptionId(), apiVersion, request, accept, context))
+            .withContext(context -> service.regionalCheckNameAvailability(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), location, request, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location parameter.
-     * @param request Name availability request.
+     * @param location The name of the Azure region.
+     * @param request The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1914,30 +1896,29 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (request == null) {
             return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
         } else {
             request.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.regionalCheckNameAvailability(this.client.getEndpoint(), location,
-            this.client.getSubscriptionId(), apiVersion, request, accept, context);
+        return service.regionalCheckNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, request, accept, context);
     }
 
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location parameter.
-     * @param request Name availability request.
+     * @param location The name of the Azure region.
+     * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1954,8 +1935,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location parameter.
-     * @param request Name availability request.
+     * @param location The name of the Azure region.
+     * @param request The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1972,8 +1953,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Check if a resource name is available for DNL sites.
      * 
-     * @param location The location parameter.
-     * @param request Name availability request.
+     * @param location The name of the Azure region.
+     * @param request The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2005,11 +1986,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listPremierAddOnOffers(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<PremierAddOnOfferInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2037,12 +2017,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listPremierAddOnOffers(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept,
-                context)
+            .listPremierAddOnOffers(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2128,11 +2107,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSkus(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                apiVersion, accept, context))
+            .withContext(context -> service.listSkus(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2157,11 +2135,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listSkus(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept,
-            context);
+        return service.listSkus(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            accept, context);
     }
 
     /**
@@ -2215,7 +2192,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      * 
-     * @param parameters VNET information.
+     * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2238,11 +2215,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.verifyHostingEnvironmentVnet(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2253,7 +2229,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      * 
-     * @param parameters VNET information.
+     * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2277,11 +2253,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.verifyHostingEnvironmentVnet(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            apiVersion, parameters, accept, context);
+        return service.verifyHostingEnvironmentVnet(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -2291,7 +2266,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      * 
-     * @param parameters VNET information.
+     * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2310,7 +2285,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      * 
-     * @param parameters VNET information.
+     * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2330,7 +2305,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      * 
-     * @param parameters VNET information.
+     * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2346,7 +2321,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Move resources between resource groups.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2374,11 +2349,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             moveResourceEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.move(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), apiVersion, moveResourceEnvelope, accept, context))
+            .withContext(context -> service.move(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), moveResourceEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2387,7 +2361,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Move resources between resource groups.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2416,11 +2390,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             moveResourceEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.move(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(), apiVersion,
-            moveResourceEnvelope, accept, context);
+        return service.move(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            this.client.getSubscriptionId(), moveResourceEnvelope, accept, context);
     }
 
     /**
@@ -2428,7 +2401,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Move resources between resource groups.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2445,7 +2418,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Move resources between resource groups.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2464,7 +2437,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Move resources between resource groups.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2480,7 +2453,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Validate if a resource can be created.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param validateRequest Request with the resources to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2509,11 +2482,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             validateRequest.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.validate(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), apiVersion, validateRequest, accept, context))
+            .withContext(context -> service.validate(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), validateRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2522,7 +2494,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Validate if a resource can be created.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param validateRequest Request with the resources to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2552,11 +2524,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             validateRequest.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.validate(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-            apiVersion, validateRequest, accept, context);
+        return service.validate(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            this.client.getSubscriptionId(), validateRequest, accept, context);
     }
 
     /**
@@ -2564,7 +2535,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Validate if a resource can be created.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param validateRequest Request with the resources to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2582,7 +2553,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Validate if a resource can be created.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param validateRequest Request with the resources to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2601,7 +2572,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Validate if a resource can be created.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param validateRequest Request with the resources to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2618,7 +2589,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Validate whether a resource can be moved.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2646,11 +2617,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             moveResourceEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.validateMove(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), apiVersion, moveResourceEnvelope, accept, context))
+            .withContext(context -> service.validateMove(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), moveResourceEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2659,7 +2629,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Validate whether a resource can be moved.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2688,11 +2658,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             moveResourceEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.validateMove(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-            apiVersion, moveResourceEnvelope, accept, context);
+        return service.validateMove(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            this.client.getSubscriptionId(), moveResourceEnvelope, accept, context);
     }
 
     /**
@@ -2700,7 +2669,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Validate whether a resource can be moved.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2717,7 +2686,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Validate whether a resource can be moved.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2736,7 +2705,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * 
      * Description for Validate whether a resource can be moved.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param moveResourceEnvelope Object that represents the resource to move.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2801,6 +2770,62 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listSourceControlsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of ASE regions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AseRegionInner>> listAseRegionsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listAseRegionsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AseRegionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of ASE regions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AseRegionInner>> listAseRegionsNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listAseRegionsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2918,62 +2943,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listCustomHostnameSitesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get a list of available ASE regions and its supported Skus.
-     * 
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ASE regions along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AseRegionInner>> listAseRegionsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listAseRegionsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AseRegionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get a list of available ASE regions and its supported Skus.
-     * 
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ASE regions along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AseRegionInner>> listAseRegionsNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listAseRegionsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

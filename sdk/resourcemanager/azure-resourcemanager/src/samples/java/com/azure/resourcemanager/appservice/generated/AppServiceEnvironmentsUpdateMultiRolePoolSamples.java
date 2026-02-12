@@ -11,8 +11,8 @@ import com.azure.resourcemanager.appservice.fluent.models.WorkerPoolResourceInne
  */
 public final class AppServiceEnvironmentsUpdateMultiRolePoolSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
-     * AppServiceEnvironments_CreateOrUpdateMultiRolePool.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * AppServiceEnvironments_CreateOrUpdateMultiRolePool_UpdateMultiRolePool.json
      */
     /**
      * Sample code: Create or update a multi-role pool.

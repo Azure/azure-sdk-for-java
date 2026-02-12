@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class DefaultIdentity implements JsonSerializable<DefaultIdentity> {
     /*
-     * The identityType property.
+     * Type of managed service identity.
      */
     private ManagedServiceIdentityType identityType;
 
@@ -33,7 +33,7 @@ public final class DefaultIdentity implements JsonSerializable<DefaultIdentity> 
     }
 
     /**
-     * Get the identityType property: The identityType property.
+     * Get the identityType property: Type of managed service identity.
      * 
      * @return the identityType value.
      */
@@ -42,7 +42,7 @@ public final class DefaultIdentity implements JsonSerializable<DefaultIdentity> 
     }
 
     /**
-     * Set the identityType property: The identityType property.
+     * Set the identityType property: Type of managed service identity.
      * 
      * @param identityType the identityType value to set.
      * @return the DefaultIdentity object itself.

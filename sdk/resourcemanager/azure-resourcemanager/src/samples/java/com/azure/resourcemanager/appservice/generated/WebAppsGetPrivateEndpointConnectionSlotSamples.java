@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetPrivateEndpointConnectionSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
      * GetSitePrivateEndpointConnectionSlot.json
      */
     /**
@@ -22,7 +22,7 @@ public final class WebAppsGetPrivateEndpointConnectionSlotSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .getPrivateEndpointConnectionSlotWithResponse("rg", "testSite", "connection", "stage",
+            .getPrivateEndpointConnectionSlotWithResponse("rg", "testSite", "stage", "connection",
                 com.azure.core.util.Context.NONE);
     }
 }

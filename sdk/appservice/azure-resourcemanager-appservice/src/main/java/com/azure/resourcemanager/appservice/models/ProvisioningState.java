@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.appservice.models;
 
 /**
- * Status of certificate order.
+ * Provisioning state of the App Service Plan.
  */
 public enum ProvisioningState {
     /**

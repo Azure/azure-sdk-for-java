@@ -20,7 +20,7 @@ public interface WorkflowVersionsClient {
     /**
      * Gets a list of workflow versions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param top The number of items to be included in the result.
@@ -35,7 +35,7 @@ public interface WorkflowVersionsClient {
     /**
      * Gets a list of workflow versions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +49,7 @@ public interface WorkflowVersionsClient {
     /**
      * Gets a list of workflow versions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,7 +63,7 @@ public interface WorkflowVersionsClient {
     /**
      * Gets a list of workflow versions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param top The number of items to be included in the result.
@@ -80,7 +80,7 @@ public interface WorkflowVersionsClient {
     /**
      * Gets a workflow version.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -96,7 +96,7 @@ public interface WorkflowVersionsClient {
     /**
      * Gets a workflow version.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -111,7 +111,7 @@ public interface WorkflowVersionsClient {
     /**
      * Gets a workflow version.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -128,7 +128,7 @@ public interface WorkflowVersionsClient {
     /**
      * Gets a workflow version.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.

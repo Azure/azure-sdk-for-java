@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.appservice.generated;
 
 /**
- * Samples for ResourceProvider ListAseRegions.
+ * Samples for ResourceProvider List.
  */
-public final class ResourceProviderListAseRegionsSamples {
+public final class ResourceProviderListSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/ListAseRegions.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/ListAseRegions.json
      */
     /**
      * Sample code: List aseregions.
@@ -18,10 +18,6 @@ public final class ResourceProviderListAseRegionsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAseregions(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps()
-            .manager()
-            .serviceClient()
-            .getResourceProviders()
-            .listAseRegions(com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getResourceProviders().list(com.azure.core.util.Context.NONE);
     }
 }

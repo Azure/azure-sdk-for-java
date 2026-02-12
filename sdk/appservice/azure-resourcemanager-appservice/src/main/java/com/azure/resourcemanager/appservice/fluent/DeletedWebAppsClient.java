@@ -63,7 +63,7 @@ public interface DeletedWebAppsClient {
      * 
      * Description for Get all deleted apps for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -78,7 +78,7 @@ public interface DeletedWebAppsClient {
      * 
      * Description for Get all deleted apps for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -93,7 +93,7 @@ public interface DeletedWebAppsClient {
      * 
      * Description for Get all deleted apps for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -109,7 +109,7 @@ public interface DeletedWebAppsClient {
      * 
      * Description for Get deleted app for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -125,7 +125,7 @@ public interface DeletedWebAppsClient {
      * 
      * Description for Get deleted app for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -141,7 +141,7 @@ public interface DeletedWebAppsClient {
      * 
      * Description for Get deleted app for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -159,7 +159,7 @@ public interface DeletedWebAppsClient {
      * 
      * Description for Get deleted app for a subscription at location.
      * 
-     * @param location The location parameter.
+     * @param location The name of the Azure region.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is

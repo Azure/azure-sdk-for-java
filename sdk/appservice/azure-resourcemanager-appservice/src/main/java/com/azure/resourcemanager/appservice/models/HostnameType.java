@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.appservice.models;
 
 /**
- * Type of the hostname.
+ * Hostname type.
  */
 public enum HostnameType {
     /**

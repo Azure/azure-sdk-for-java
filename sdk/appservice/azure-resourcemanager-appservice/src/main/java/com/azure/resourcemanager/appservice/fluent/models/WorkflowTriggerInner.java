@@ -4,8 +4,9 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.management.SubResource;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,22 +21,32 @@ import java.time.OffsetDateTime;
 /**
  * The workflow trigger.
  */
-@Fluent
-public final class WorkflowTriggerInner extends SubResource {
+@Immutable
+public final class WorkflowTriggerInner extends ProxyResource {
     /*
      * The workflow trigger properties.
      */
     private WorkflowTriggerProperties innerProperties;
 
     /*
-     * Gets the workflow trigger name.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * Gets the workflow trigger type.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of WorkflowTriggerInner class.
@@ -53,30 +64,42 @@ public final class WorkflowTriggerInner extends SubResource {
     }
 
     /**
-     * Get the name property: Gets the workflow trigger name.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
-     * @return the name value.
+     * @return the systemData value.
      */
-    public String name() {
-        return this.name;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Get the type property: Gets the workflow trigger type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
+    @Override
     public String type() {
         return this.type;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
     @Override
-    public WorkflowTriggerInner withId(String id) {
-        super.withId(id);
-        return this;
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -177,7 +200,6 @@ public final class WorkflowTriggerInner extends SubResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", id());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -188,6 +210,7 @@ public final class WorkflowTriggerInner extends SubResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of WorkflowTriggerInner if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WorkflowTriggerInner.
      */
     public static WorkflowTriggerInner fromJson(JsonReader jsonReader) throws IOException {
@@ -198,13 +221,15 @@ public final class WorkflowTriggerInner extends SubResource {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedWorkflowTriggerInner.withId(reader.getString());
-                } else if ("properties".equals(fieldName)) {
-                    deserializedWorkflowTriggerInner.innerProperties = WorkflowTriggerProperties.fromJson(reader);
+                    deserializedWorkflowTriggerInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedWorkflowTriggerInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedWorkflowTriggerInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkflowTriggerInner.innerProperties = WorkflowTriggerProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWorkflowTriggerInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

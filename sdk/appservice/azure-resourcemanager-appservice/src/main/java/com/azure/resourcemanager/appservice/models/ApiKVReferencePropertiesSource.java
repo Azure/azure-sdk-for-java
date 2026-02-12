@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appservice.models;
 
 /**
- * Defines values for ConfigReferenceSource.
+ * Defines values for ApiKVReferencePropertiesSource.
  */
-public enum ConfigReferenceSource {
+public enum ApiKVReferencePropertiesSource {
     /**
      * Enum value KeyVault.
      */
     KEY_VAULT("KeyVault");
 
     /**
-     * The actual serialized value for a ConfigReferenceSource instance.
+     * The actual serialized value for a ApiKVReferencePropertiesSource instance.
      */
     private final String value;
 
-    ConfigReferenceSource(String value) {
+    ApiKVReferencePropertiesSource(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ConfigReferenceSource instance.
+     * Parses a serialized value to a ApiKVReferencePropertiesSource instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed ConfigReferenceSource object, or null if unable to parse.
+     * @return the parsed ApiKVReferencePropertiesSource object, or null if unable to parse.
      */
-    public static ConfigReferenceSource fromString(String value) {
+    public static ApiKVReferencePropertiesSource fromString(String value) {
         if (value == null) {
             return null;
         }
-        ConfigReferenceSource[] items = ConfigReferenceSource.values();
-        for (ConfigReferenceSource item : items) {
+        ApiKVReferencePropertiesSource[] items = ApiKVReferencePropertiesSource.values();
+        for (ApiKVReferencePropertiesSource item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

@@ -21,7 +21,7 @@ public interface WorkflowRunActionRepetitionsClient {
     /**
      * Get all of a workflow run action repetitions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -38,7 +38,7 @@ public interface WorkflowRunActionRepetitionsClient {
     /**
      * Get all of a workflow run action repetitions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -55,7 +55,7 @@ public interface WorkflowRunActionRepetitionsClient {
     /**
      * Get all of a workflow run action repetitions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -73,7 +73,7 @@ public interface WorkflowRunActionRepetitionsClient {
     /**
      * Get a workflow run action repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -91,7 +91,7 @@ public interface WorkflowRunActionRepetitionsClient {
     /**
      * Get a workflow run action repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -109,7 +109,7 @@ public interface WorkflowRunActionRepetitionsClient {
     /**
      * Get a workflow run action repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -128,7 +128,7 @@ public interface WorkflowRunActionRepetitionsClient {
     /**
      * Get a workflow run action repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -146,7 +146,7 @@ public interface WorkflowRunActionRepetitionsClient {
     /**
      * Lists a workflow run expression trace.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -164,7 +164,7 @@ public interface WorkflowRunActionRepetitionsClient {
     /**
      * Lists a workflow run expression trace.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -182,7 +182,7 @@ public interface WorkflowRunActionRepetitionsClient {
     /**
      * Lists a workflow run expression trace.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.

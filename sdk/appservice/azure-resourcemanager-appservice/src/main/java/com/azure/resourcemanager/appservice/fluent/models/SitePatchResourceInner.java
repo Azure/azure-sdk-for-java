@@ -40,17 +40,17 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     private ManagedServiceIdentity identity;
 
     /*
-     * The type of the resource.
+     * Resource type.
      */
     private String type;
 
     /*
-     * The name of the resource.
+     * Resource Name.
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Resource Id.
      */
     private String id;
 
@@ -90,7 +90,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the type property: Resource type.
      * 
      * @return the type value.
      */
@@ -100,7 +100,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Resource Name.
      * 
      * @return the name value.
      */
@@ -110,7 +110,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the id property: Resource Id.
      * 
      * @return the id value.
      */
@@ -582,8 +582,8 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the hostNamesDisabled property: &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process.
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.\n If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API
+     * management process.
      * 
      * @return the hostNamesDisabled value.
      */
@@ -593,8 +593,8 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the hostNamesDisabled property: &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process.
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.\n If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API
+     * management process.
      * 
      * @param hostNamesDisabled the hostNamesDisabled value to set.
      * @return the SitePatchResourceInner object itself.
@@ -967,7 +967,6 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of SitePatchResourceInner if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SitePatchResourceInner.
      */
     public static SitePatchResourceInner fromJson(JsonReader jsonReader) throws IOException {
@@ -981,10 +980,10 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
                     deserializedSitePatchResourceInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedSitePatchResourceInner.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedSitePatchResourceInner.type = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     deserializedSitePatchResourceInner.withKind(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSitePatchResourceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedSitePatchResourceInner.innerProperties
                         = SitePatchResourcePropertiesInner.fromJson(reader);

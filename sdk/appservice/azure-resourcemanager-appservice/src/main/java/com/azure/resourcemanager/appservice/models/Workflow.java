@@ -29,17 +29,17 @@ public final class Workflow extends WorkflowResource {
     private ManagedServiceIdentity identity;
 
     /*
-     * The type of the resource.
+     * Gets the resource type.
      */
     private String type;
 
     /*
-     * The name of the resource.
+     * Gets the resource name.
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The resource id.
      */
     private String id;
 
@@ -79,7 +79,7 @@ public final class Workflow extends WorkflowResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the type property: Gets the resource type.
      * 
      * @return the type value.
      */
@@ -89,7 +89,7 @@ public final class Workflow extends WorkflowResource {
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Gets the resource name.
      * 
      * @return the name value.
      */
@@ -99,7 +99,7 @@ public final class Workflow extends WorkflowResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the id property: The resource id.
      * 
      * @return the id value.
      */
@@ -398,7 +398,6 @@ public final class Workflow extends WorkflowResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of Workflow if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Workflow.
      */
     public static Workflow fromJson(JsonReader jsonReader) throws IOException {

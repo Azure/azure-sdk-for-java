@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class WebAppsBackupSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/BackupWebApp.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/BackupWebApp.json
      */
     /**
      * Sample code: Backup web app.

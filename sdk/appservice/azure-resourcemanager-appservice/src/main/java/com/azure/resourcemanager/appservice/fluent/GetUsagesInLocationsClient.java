@@ -25,7 +25,7 @@ public interface GetUsagesInLocationsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas as paginated response with {@link PagedFlux}.
+     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CsmUsageQuotaInner> listAsync(String location);
@@ -40,7 +40,7 @@ public interface GetUsagesInLocationsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas as paginated response with {@link PagedIterable}.
+     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CsmUsageQuotaInner> list(String location);
@@ -56,7 +56,7 @@ public interface GetUsagesInLocationsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas as paginated response with {@link PagedIterable}.
+     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CsmUsageQuotaInner> list(String location, Context context);

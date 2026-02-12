@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.appservice.models;
 
 /**
- * Type of the DNS record.
+ * Custom DNS record type.
  */
 public enum CustomHostnameDnsRecordType {
     /**

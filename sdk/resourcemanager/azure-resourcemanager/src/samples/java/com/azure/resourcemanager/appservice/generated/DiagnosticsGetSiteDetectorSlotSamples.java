@@ -9,8 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DiagnosticsGetSiteDetectorSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
-     * Diagnostics_GetSiteDetector.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * Diagnostics_GetSiteDetector_Slot.json
      */
     /**
      * Sample code: Get App Detector.
@@ -22,13 +22,13 @@ public final class DiagnosticsGetSiteDetectorSlotSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .getSiteDetectorSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability", "sitecrashes",
-                "Production", com.azure.core.util.Context.NONE);
+            .getSiteDetectorSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "Production", "availability",
+                "sitecrashes", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
-     * Diagnostics_GetSiteDetectorSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * Diagnostics_GetSiteDetectorSlot_Slot.json
      */
     /**
      * Sample code: Get App Slot Detector.
@@ -40,7 +40,7 @@ public final class DiagnosticsGetSiteDetectorSlotSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .getSiteDetectorSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability", "sitecrashes",
-                "staging", com.azure.core.util.Context.NONE);
+            .getSiteDetectorSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "staging", "availability",
+                "sitecrashes", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -13,7 +15,6 @@ import com.azure.resourcemanager.appservice.models.ContentLink;
 import com.azure.resourcemanager.appservice.models.RepetitionIndex;
 import com.azure.resourcemanager.appservice.models.RetryHistory;
 import com.azure.resourcemanager.appservice.models.RunActionCorrelation;
-import com.azure.resourcemanager.appservice.models.WorkflowResource;
 import com.azure.resourcemanager.appservice.models.WorkflowStatus;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -24,11 +25,16 @@ import java.util.Map;
  * The workflow run action repetition definition.
  */
 @Fluent
-public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowResource {
+public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     /*
      * The workflow run action repetition properties definition.
      */
     private WorkflowRunActionRepetitionProperties innerProperties = new WorkflowRunActionRepetitionProperties();
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -58,6 +64,15 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
      */
     private WorkflowRunActionRepetitionProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -374,7 +389,6 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() == null) {
             throw LOGGER.atError()
@@ -430,6 +444,8 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
                 } else if ("properties".equals(fieldName)) {
                     deserializedWorkflowRunActionRepetitionDefinitionInner.innerProperties
                         = WorkflowRunActionRepetitionProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionDefinitionInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

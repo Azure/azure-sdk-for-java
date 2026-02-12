@@ -64,9 +64,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> regenerateAccessKey(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName, @QueryParam("api-version") String apiVersion,
+            @PathParam("workflowName") String workflowName,
             @BodyParam("application/json") RegenerateActionParameter keyType, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -74,17 +74,17 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/validate")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> validate(@HostParam("$host") String endpoint,
+        Mono<Response<Void>> validate(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("workflowName") String workflowName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") Workflow validate, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("workflowName") String workflowName, @BodyParam("application/json") Workflow validate,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Regenerates the callback URL access key for request triggers.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param keyType The access key type.
@@ -119,19 +119,17 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         } else {
             keyType.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.regenerateAccessKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, name, workflowName, apiVersion, keyType, accept, context))
+            .withContext(context -> service.regenerateAccessKey(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, keyType, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerates the callback URL access key for request triggers.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param keyType The access key type.
@@ -167,17 +165,16 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         } else {
             keyType.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.regenerateAccessKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, name, workflowName, apiVersion, keyType, accept, context);
+        return service.regenerateAccessKey(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, workflowName, keyType, accept, context);
     }
 
     /**
      * Regenerates the callback URL access key for request triggers.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param keyType The access key type.
@@ -196,7 +193,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     /**
      * Regenerates the callback URL access key for request triggers.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param keyType The access key type.
@@ -215,7 +212,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     /**
      * Regenerates the callback URL access key for request triggers.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param keyType The access key type.
@@ -232,7 +229,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     /**
      * Validates the workflow definition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param validate The workflow.
@@ -267,18 +264,17 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         } else {
             validate.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.validate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, apiVersion, validate, accept, context))
+            .withContext(context -> service.validate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, validate, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validates the workflow definition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param validate The workflow.
@@ -314,17 +310,16 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         } else {
             validate.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.validate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, apiVersion, validate, accept, context);
+        return service.validate(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, name, workflowName, validate, accept, context);
     }
 
     /**
      * Validates the workflow definition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param validate The workflow.
@@ -342,7 +337,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     /**
      * Validates the workflow definition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param validate The workflow.
@@ -361,7 +356,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     /**
      * Validates the workflow definition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param validate The workflow.

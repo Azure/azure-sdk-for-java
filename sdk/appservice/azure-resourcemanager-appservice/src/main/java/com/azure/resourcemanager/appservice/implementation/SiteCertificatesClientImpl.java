@@ -72,8 +72,8 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -81,58 +81,60 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("certificateName") String certificateName, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("certificateName") String certificateName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/certificates/{certificateName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("certificateName") String certificateName, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("certificateName") String certificateName,
             @BodyParam("application/json") CertificateInner certificateEnvelope, @HeaderParam("Accept") String accept,
             Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/certificates/{certificateName}")
-        @ExpectedResponses({ 200, 204 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("certificateName") String certificateName, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/certificates/{certificateName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("certificateName") String certificateName, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("certificateName") String certificateName,
             @BodyParam("application/json") CertificatePatchResource certificateEnvelope,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/certificates/{certificateName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("certificateName") String certificateName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/certificates")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateCollection>> listSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("slot") String slot, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("slot") String slot, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/certificates/{certificateName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateInner>> getSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("slot") String slot, @PathParam("certificateName") String certificateName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -140,33 +142,31 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateInner>> createOrUpdateSlot(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("name") String name,
-            @PathParam("slot") String slot, @PathParam("certificateName") String certificateName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CertificateInner certificateEnvelope, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/certificates/{certificateName}")
-        @ExpectedResponses({ 200, 204 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> deleteSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("slot") String slot, @PathParam("certificateName") String certificateName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @BodyParam("application/json") CertificateInner certificateEnvelope, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/certificates/{certificateName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateInner>> updateSlot(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("slot") String slot, @PathParam("certificateName") String certificateName,
-            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CertificatePatchResource certificateEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/certificates/{certificateName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<Void>> deleteSlot(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("slot") String slot, @PathParam("certificateName") String certificateName,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -202,6 +202,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -209,15 +213,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
             .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -242,6 +241,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -249,16 +252,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(), apiVersion,
-                accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, name, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -346,6 +344,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -357,15 +359,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, certificateName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -389,6 +386,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -400,15 +401,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, name, certificateName, accept, context);
     }
 
     /**
@@ -481,6 +477,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -492,21 +492,17 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (certificateEnvelope == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateEnvelope is required and cannot be null."));
         } else {
             certificateEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
-                certificateName, this.client.getSubscriptionId(), apiVersion, certificateEnvelope, accept, context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, certificateName, certificateEnvelope, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -530,6 +526,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -541,21 +541,17 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (certificateEnvelope == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateEnvelope is required and cannot be null."));
         } else {
             certificateEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-            this.client.getSubscriptionId(), apiVersion, certificateEnvelope, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, certificateName, certificateEnvelope, accept,
+            context);
     }
 
     /**
@@ -617,136 +613,6 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
     }
 
     /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, String certificateName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (certificateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, String certificateName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (certificateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
-    }
-
-    /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String name, String certificateName) {
-        return deleteWithResponseAsync(resourceGroupName, name, certificateName).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String name, String certificateName,
-        Context context) {
-        return deleteWithResponseAsync(resourceGroupName, name, certificateName, context).block();
-    }
-
-    /**
-     * Delete a certificate from the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String name, String certificateName) {
-        deleteWithResponse(resourceGroupName, name, certificateName, Context.NONE);
-    }
-
-    /**
      * Create or update a certificate under a given site.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -765,6 +631,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -776,21 +646,17 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (certificateEnvelope == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateEnvelope is required and cannot be null."));
         } else {
             certificateEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-                this.client.getSubscriptionId(), apiVersion, certificateEnvelope, accept, context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, certificateName, certificateEnvelope, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -814,6 +680,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -825,21 +695,16 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (certificateEnvelope == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateEnvelope is required and cannot be null."));
         } else {
             certificateEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-            this.client.getSubscriptionId(), apiVersion, certificateEnvelope, accept, context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, name, certificateName, certificateEnvelope, accept, context);
     }
 
     /**
@@ -900,6 +765,134 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
     }
 
     /**
+     * Delete a certificate from the site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param certificateName Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, String certificateName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (certificateName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, certificateName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Delete a certificate from the site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param certificateName Name of the certificate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, String certificateName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (certificateName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, name, certificateName, accept, context);
+    }
+
+    /**
+     * Delete a certificate from the site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param certificateName Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String name, String certificateName) {
+        return deleteWithResponseAsync(resourceGroupName, name, certificateName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a certificate from the site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param certificateName Name of the certificate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String name, String certificateName,
+        Context context) {
+        return deleteWithResponseAsync(resourceGroupName, name, certificateName, context).block();
+    }
+
+    /**
+     * Delete a certificate from the site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param certificateName Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String name, String certificateName) {
+        deleteWithResponse(resourceGroupName, name, certificateName, Context.NONE);
+    }
+
+    /**
      * Get all certificates in a resource group for a given site and a deployment slot.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -919,6 +912,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -929,15 +926,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         if (slot == null) {
             return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSlot(this.client.getEndpoint(), resourceGroupName, name, slot,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, slot, accept, context))
             .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -964,6 +956,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -974,16 +970,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         if (slot == null) {
             return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSlot(this.client.getEndpoint(), resourceGroupName, name, slot, this.client.getSubscriptionId(),
-                apiVersion, accept, context)
+            .listSlot(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, name, slot, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1087,6 +1078,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1101,15 +1096,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getSlot(this.client.getEndpoint(), resourceGroupName, name, slot,
-                certificateName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, slot, certificateName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1135,6 +1125,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1149,15 +1143,10 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSlot(this.client.getEndpoint(), resourceGroupName, name, slot, certificateName,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getSlot(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, name, slot, certificateName, accept, context);
     }
 
     /**
@@ -1239,13 +1228,13 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
@@ -1263,12 +1252,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         } else {
             certificateEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdateSlot(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), name, slot, certificateName, apiVersion, certificateEnvelope, accept,
-                context))
+            .withContext(context -> service.createOrUpdateSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, slot, certificateName, certificateEnvelope,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1294,13 +1282,13 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
@@ -1318,11 +1306,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         } else {
             certificateEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdateSlot(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-            name, slot, certificateName, apiVersion, certificateEnvelope, accept, context);
+        return service.createOrUpdateSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, slot, certificateName, certificateEnvelope,
+            accept, context);
     }
 
     /**
@@ -1390,154 +1378,6 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
     }
 
     /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSlotWithResponseAsync(String resourceGroupName, String name, String slot,
-        String certificateName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (certificateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.deleteSlot(this.client.getEndpoint(), resourceGroupName, name, slot,
-                certificateName, this.client.getSubscriptionId(), apiVersion, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteSlotWithResponseAsync(String resourceGroupName, String name, String slot,
-        String certificateName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (certificateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.deleteSlot(this.client.getEndpoint(), resourceGroupName, name, slot, certificateName,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
-    }
-
-    /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, String certificateName) {
-        return deleteSlotWithResponseAsync(resourceGroupName, name, slot, certificateName)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteSlotWithResponse(String resourceGroupName, String name, String slot,
-        String certificateName, Context context) {
-        return deleteSlotWithResponseAsync(resourceGroupName, name, slot, certificateName, context).block();
-    }
-
-    /**
-     * Delete a certificate for a given site and deployment slot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the site.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
-     * production slot.
-     * @param certificateName Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSlot(String resourceGroupName, String name, String slot, String certificateName) {
-        deleteSlotWithResponse(resourceGroupName, name, slot, certificateName, Context.NONE);
-    }
-
-    /**
      * Create or update a certificate for a site and deployment slot.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1582,11 +1422,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         } else {
             certificateEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.updateSlot(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, slot, certificateName, apiVersion, certificateEnvelope, accept, context))
+            .withContext(context -> service.updateSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, slot, certificateName, certificateEnvelope,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1636,11 +1476,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         } else {
             certificateEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updateSlot(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            slot, certificateName, apiVersion, certificateEnvelope, accept, context);
+        return service.updateSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, slot, certificateName, certificateEnvelope,
+            accept, context);
     }
 
     /**
@@ -1705,6 +1545,152 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         CertificatePatchResource certificateEnvelope) {
         return updateSlotWithResponse(resourceGroupName, name, slot, certificateName, certificateEnvelope, Context.NONE)
             .getValue();
+    }
+
+    /**
+     * Delete a certificate for a given site and deployment slot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
+     * production slot.
+     * @param certificateName Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSlotWithResponseAsync(String resourceGroupName, String name, String slot,
+        String certificateName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (certificateName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.deleteSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, slot, certificateName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Delete a certificate for a given site and deployment slot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
+     * production slot.
+     * @param certificateName Name of the certificate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteSlotWithResponseAsync(String resourceGroupName, String name, String slot,
+        String certificateName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (slot == null) {
+            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (certificateName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.deleteSlot(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, slot, certificateName, accept, context);
+    }
+
+    /**
+     * Delete a certificate for a given site and deployment slot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
+     * production slot.
+     * @param certificateName Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, String certificateName) {
+        return deleteSlotWithResponseAsync(resourceGroupName, name, slot, certificateName)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a certificate for a given site and deployment slot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
+     * production slot.
+     * @param certificateName Name of the certificate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSlotWithResponse(String resourceGroupName, String name, String slot,
+        String certificateName, Context context) {
+        return deleteSlotWithResponseAsync(resourceGroupName, name, slot, certificateName, context).block();
+    }
+
+    /**
+     * Delete a certificate for a given site and deployment slot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the site.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the
+     * production slot.
+     * @param certificateName Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSlot(String resourceGroupName, String name, String slot, String certificateName) {
+        deleteSlotWithResponse(resourceGroupName, name, slot, certificateName, Context.NONE);
     }
 
     /**

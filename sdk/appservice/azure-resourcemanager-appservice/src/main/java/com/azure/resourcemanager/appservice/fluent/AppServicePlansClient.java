@@ -106,7 +106,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all App Service plans in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -121,7 +121,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all App Service plans in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -136,7 +136,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all App Service plans in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -152,7 +152,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -170,7 +170,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -188,7 +188,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,7 +208,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -226,7 +226,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,7 +244,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,7 +262,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,7 +280,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
@@ -299,7 +299,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,7 +317,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -334,7 +334,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
@@ -349,75 +349,11 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
         Context context);
 
     /**
-     * Delete an App Service plan.
-     * 
-     * Description for Delete an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name);
-
-    /**
-     * Delete an App Service plan.
-     * 
-     * Description for Delete an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String name);
-
-    /**
-     * Delete an App Service plan.
-     * 
-     * Description for Delete an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String name, Context context);
-
-    /**
-     * Delete an App Service plan.
-     * 
-     * Description for Delete an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String name);
-
-    /**
      * Creates or updates an App Service Plan.
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,7 +371,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,7 +389,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
@@ -472,7 +408,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -485,11 +421,75 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
     AppServicePlanInner update(String resourceGroupName, String name, AppServicePlanPatchResource appServicePlan);
 
     /**
+     * Delete an App Service plan.
+     * 
+     * Description for Delete an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Delete an App Service plan.
+     * 
+     * Description for Delete an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String name);
+
+    /**
+     * Delete an App Service plan.
+     * 
+     * Description for Delete an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String name, Context context);
+
+    /**
+     * Delete an App Service plan.
+     * 
+     * Description for Delete an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String name);
+
+    /**
      * List all capabilities of an App Service plan.
      * 
      * Description for List all capabilities of an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -505,7 +505,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for List all capabilities of an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -521,7 +521,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for List all capabilities of an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -539,7 +539,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for List all capabilities of an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -555,7 +555,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the RDP password for an IsCustomMode ServerFarm.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -572,7 +572,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the RDP password for an IsCustomMode ServerFarm.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -588,7 +588,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the RDP password for an IsCustomMode ServerFarm.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -606,7 +606,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the RDP password for an IsCustomMode ServerFarm.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -622,7 +622,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Retrieve a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -641,7 +641,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Retrieve a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -660,7 +660,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Retrieve a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -680,7 +680,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Retrieve a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -699,7 +699,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Delete a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -718,7 +718,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Delete a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -737,7 +737,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Delete a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -757,7 +757,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Delete a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -774,10 +774,10 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the send key name and value of a Hybrid Connection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName The name of the Service Bus namespace.
-     * @param relayName The name of the Service Bus relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -793,10 +793,10 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the send key name and value of a Hybrid Connection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName The name of the Service Bus namespace.
-     * @param relayName The name of the Service Bus relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -812,10 +812,10 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the send key name and value of a Hybrid Connection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName The name of the Service Bus namespace.
-     * @param relayName The name of the Service Bus relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -832,10 +832,10 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the send key name and value of a Hybrid Connection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName The name of the Service Bus namespace.
-     * @param relayName The name of the Service Bus relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -851,10 +851,10 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Hybrid Connection namespace.
-     * @param relayName Name of the Hybrid Connection relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -870,10 +870,10 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Hybrid Connection namespace.
-     * @param relayName Name of the Hybrid Connection relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -889,10 +889,10 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Hybrid Connection namespace.
-     * @param relayName Name of the Hybrid Connection relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -909,7 +909,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -926,7 +926,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -942,7 +942,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -960,7 +960,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -976,7 +976,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Retrieve all Hybrid Connections in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -992,7 +992,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Retrieve all Hybrid Connections in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1008,7 +1008,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Retrieve all Hybrid Connections in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1025,7 +1025,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the instance details for an app service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1043,7 +1043,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the instance details for an app service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1059,7 +1059,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the instance details for an app service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1077,7 +1077,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get the instance details for an app service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1093,7 +1093,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Restart all apps in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to perform a soft restart, applies the configuration
      * settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts
@@ -1112,7 +1112,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Restart all apps in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1128,7 +1128,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Restart all apps in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to perform a soft restart, applies the configuration
      * settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts
@@ -1149,7 +1149,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Restart all apps in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1164,7 +1164,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all apps associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the
      * resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list
@@ -1186,7 +1186,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all apps associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1202,7 +1202,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all apps associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1218,7 +1218,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all apps associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the
      * resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list
@@ -1241,13 +1241,13 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Gets all selectable SKUs for a given App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return anything along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Object>> getServerFarmSkusWithResponseAsync(String resourceGroupName, String name);
@@ -1257,13 +1257,13 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Gets all selectable SKUs for a given App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return anything on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Object> getServerFarmSkusAsync(String resourceGroupName, String name);
@@ -1273,14 +1273,14 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Gets all selectable SKUs for a given App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response}.
+     * @return anything along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Object> getServerFarmSkusWithResponse(String resourceGroupName, String name, Context context);
@@ -1290,13 +1290,13 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Gets all selectable SKUs for a given App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return anything.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Object getServerFarmSkus(String resourceGroupName, String name);
@@ -1306,15 +1306,15 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Gets server farm usage information.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
      * $filter=(name.value eq 'Metric1' or name.value eq 'Metric2').
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas as paginated response with {@link PagedFlux}.
+     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name, String filter);
@@ -1324,13 +1324,13 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Gets server farm usage information.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas as paginated response with {@link PagedFlux}.
+     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name);
@@ -1340,13 +1340,13 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Gets server farm usage information.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas as paginated response with {@link PagedIterable}.
+     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name);
@@ -1356,8 +1356,8 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Gets server farm usage information.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
      * $filter=(name.value eq 'Metric1' or name.value eq 'Metric2').
      * @param context The context to associate with this operation.
@@ -1365,7 +1365,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas as paginated response with {@link PagedIterable}.
+     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name, String filter, Context context);
@@ -1375,7 +1375,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all Virtual Networks associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1391,7 +1391,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all Virtual Networks associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1407,7 +1407,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all Virtual Networks associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1424,7 +1424,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all Virtual Networks associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1440,7 +1440,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get a Virtual Network associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1461,7 +1461,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get a Virtual Network associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1480,7 +1480,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get a Virtual Network associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param context The context to associate with this operation.
@@ -1501,7 +1501,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get a Virtual Network associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1520,7 +1520,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -1540,7 +1540,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -1559,7 +1559,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -1579,7 +1579,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -1597,7 +1597,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Update a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -1618,7 +1618,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Update a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -1638,7 +1638,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Update a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -1659,7 +1659,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Update a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -1679,7 +1679,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1697,7 +1697,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1714,7 +1714,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param context The context to associate with this operation.
@@ -1733,7 +1733,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1750,7 +1750,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -1771,7 +1771,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -1792,7 +1792,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -1814,7 +1814,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Get a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -1834,7 +1834,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -1857,7 +1857,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -1880,7 +1880,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -1904,7 +1904,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -1922,93 +1922,11 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
         VnetRouteInner route);
 
     /**
-     * Delete a Virtual Network route in an App Service plan.
-     * 
-     * Description for Delete a Virtual Network route in an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param vnetName Name of the Virtual Network.
-     * @param routeName Name of the Virtual Network route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     * status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteVnetRouteWithResponseAsync(String resourceGroupName, String name, String vnetName,
-        String routeName);
-
-    /**
-     * Delete a Virtual Network route in an App Service plan.
-     * 
-     * Description for Delete a Virtual Network route in an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param vnetName Name of the Virtual Network.
-     * @param routeName Name of the Virtual Network route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     * status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName);
-
-    /**
-     * Delete a Virtual Network route in an App Service plan.
-     * 
-     * Description for Delete a Virtual Network route in an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param vnetName Name of the Virtual Network.
-     * @param routeName Name of the Virtual Network route.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     * status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteVnetRouteWithResponse(String resourceGroupName, String name, String vnetName, String routeName,
-        Context context);
-
-    /**
-     * Delete a Virtual Network route in an App Service plan.
-     * 
-     * Description for Delete a Virtual Network route in an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param vnetName Name of the Virtual Network.
-     * @param routeName Name of the Virtual Network route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     * status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName);
-
-    /**
      * Create or update a Virtual Network route in an App Service plan.
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -2031,7 +1949,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -2054,7 +1972,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -2078,7 +1996,7 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -2096,12 +2014,94 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
         VnetRouteInner route);
 
     /**
+     * Delete a Virtual Network route in an App Service plan.
+     * 
+     * Description for Delete a Virtual Network route in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     * status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteVnetRouteWithResponseAsync(String resourceGroupName, String name, String vnetName,
+        String routeName);
+
+    /**
+     * Delete a Virtual Network route in an App Service plan.
+     * 
+     * Description for Delete a Virtual Network route in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     * status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName);
+
+    /**
+     * Delete a Virtual Network route in an App Service plan.
+     * 
+     * Description for Delete a Virtual Network route in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     * status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteVnetRouteWithResponse(String resourceGroupName, String name, String vnetName, String routeName,
+        Context context);
+
+    /**
+     * Delete a Virtual Network route in an App Service plan.
+     * 
+     * Description for Delete a Virtual Network route in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     * status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName);
+
+    /**
      * Reboot a worker machine in an App Service plan.
      * 
      * Description for Reboot a worker machine in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -2117,8 +2117,8 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Reboot a worker machine in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -2134,8 +2134,8 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Reboot a worker machine in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2152,8 +2152,8 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Reboot a worker machine in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -2168,9 +2168,9 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Recycles a managed instance worker machine.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param workerName Name of worker machine.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -2186,9 +2186,9 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Recycles a managed instance worker machine.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param workerName Name of worker machine.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -2203,9 +2203,9 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Recycles a managed instance worker machine.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param workerName Name of worker machine.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -2222,9 +2222,9 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      * 
      * Description for Recycles a managed instance worker machine.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param workerName Name of worker machine.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.

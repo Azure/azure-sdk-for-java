@@ -63,7 +63,9 @@ public interface WebDeployment extends Executable<WebDeployment>, HasParent<WebA
              *
              * @param deleteExisting if set to true, all files on the web app will be deleted. Default is false.
              * @return the next definition stage
+             * @deprecated This method have no effect.
              */
+            @Deprecated
             WithExecute withExistingDeploymentsDeleted(boolean deleteExisting);
         }
 
@@ -75,7 +77,9 @@ public interface WebDeployment extends Executable<WebDeployment>, HasParent<WebA
              * @param packageUri the URL to the package. It can be a publicly available link to the package zip, or an
              *     Azure Storage object with a SAS token
              * @return the next definition stage
+             * @deprecated This method have no effect.
              */
+            @Deprecated
             WithExecute withAddOnPackage(String packageUri);
         }
 

@@ -14,7 +14,7 @@ import java.util.Map;
 public final class WebAppsUpdateApplicationSettingsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/UpdateAppSettings.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/UpdateAppSettings.json
      */
     /**
      * Sample code: Update App Settings.
@@ -26,7 +26,7 @@ public final class WebAppsUpdateApplicationSettingsSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .updateApplicationSettings("testrg123", "sitef6141",
+            .updateApplicationSettingsWithResponse("testrg123", "sitef6141",
                 new StringDictionaryInner().withProperties(mapOf("Setting1", "Value1", "Setting2", "Value2")),
                 com.azure.core.util.Context.NONE);
     }

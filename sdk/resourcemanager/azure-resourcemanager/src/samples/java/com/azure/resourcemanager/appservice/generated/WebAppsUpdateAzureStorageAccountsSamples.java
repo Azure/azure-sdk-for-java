@@ -16,7 +16,7 @@ import java.util.Map;
 public final class WebAppsUpdateAzureStorageAccountsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/UpdateAzureStorageAccounts
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/UpdateAzureStorageAccounts
      * .json
      */
     /**

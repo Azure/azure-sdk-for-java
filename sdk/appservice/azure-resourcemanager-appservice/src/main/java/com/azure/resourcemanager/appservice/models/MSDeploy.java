@@ -8,9 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.fluent.models.MSDeployProperties;
+import com.azure.resourcemanager.appservice.fluent.models.MSDeployCore;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,20 +20,20 @@ public final class MSDeploy extends ProxyOnlyResource {
     /*
      * Core resource properties
      */
-    private MSDeployProperties innerProperties;
+    private MSDeployCore innerProperties;
 
     /*
-     * The type of the resource.
+     * Resource type.
      */
     private String type;
 
     /*
-     * The name of the resource.
+     * Resource Name.
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Resource Id.
      */
     private String id;
 
@@ -49,12 +48,12 @@ public final class MSDeploy extends ProxyOnlyResource {
      * 
      * @return the innerProperties value.
      */
-    private MSDeployProperties innerProperties() {
+    private MSDeployCore innerProperties() {
         return this.innerProperties;
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the type property: Resource type.
      * 
      * @return the type value.
      */
@@ -64,7 +63,7 @@ public final class MSDeploy extends ProxyOnlyResource {
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Resource Name.
      * 
      * @return the name value.
      */
@@ -74,7 +73,7 @@ public final class MSDeploy extends ProxyOnlyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the id property: Resource Id.
      * 
      * @return the id value.
      */
@@ -89,31 +88,6 @@ public final class MSDeploy extends ProxyOnlyResource {
     @Override
     public MSDeploy withKind(String kind) {
         super.withKind(kind);
-        return this;
-    }
-
-    /**
-     * Get the addOnPackages property: List of Add-On packages. Add-On packages implicitly enable the Do Not Delete
-     * MSDeploy rule.
-     * 
-     * @return the addOnPackages value.
-     */
-    public List<MSDeployCore> addOnPackages() {
-        return this.innerProperties() == null ? null : this.innerProperties().addOnPackages();
-    }
-
-    /**
-     * Set the addOnPackages property: List of Add-On packages. Add-On packages implicitly enable the Do Not Delete
-     * MSDeploy rule.
-     * 
-     * @param addOnPackages the addOnPackages value to set.
-     * @return the MSDeploy object itself.
-     */
-    public MSDeploy withAddOnPackages(List<MSDeployCore> addOnPackages) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployProperties();
-        }
-        this.innerProperties().withAddOnPackages(addOnPackages);
         return this;
     }
 
@@ -134,7 +108,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withPackageUri(String packageUri) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployProperties();
+            this.innerProperties = new MSDeployCore();
         }
         this.innerProperties().withPackageUri(packageUri);
         return this;
@@ -157,7 +131,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withConnectionString(String connectionString) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployProperties();
+            this.innerProperties = new MSDeployCore();
         }
         this.innerProperties().withConnectionString(connectionString);
         return this;
@@ -180,7 +154,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withDbType(String dbType) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployProperties();
+            this.innerProperties = new MSDeployCore();
         }
         this.innerProperties().withDbType(dbType);
         return this;
@@ -205,7 +179,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withSetParametersXmlFileUri(String setParametersXmlFileUri) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployProperties();
+            this.innerProperties = new MSDeployCore();
         }
         this.innerProperties().withSetParametersXmlFileUri(setParametersXmlFileUri);
         return this;
@@ -228,7 +202,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withSetParameters(Map<String, String> setParameters) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployProperties();
+            this.innerProperties = new MSDeployCore();
         }
         this.innerProperties().withSetParameters(setParameters);
         return this;
@@ -257,7 +231,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withSkipAppData(Boolean skipAppData) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployProperties();
+            this.innerProperties = new MSDeployCore();
         }
         this.innerProperties().withSkipAppData(skipAppData);
         return this;
@@ -282,7 +256,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withAppOffline(Boolean appOffline) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployProperties();
+            this.innerProperties = new MSDeployCore();
         }
         this.innerProperties().withAppOffline(appOffline);
         return this;
@@ -317,7 +291,6 @@ public final class MSDeploy extends ProxyOnlyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of MSDeploy if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MSDeploy.
      */
     public static MSDeploy fromJson(JsonReader jsonReader) throws IOException {
@@ -331,12 +304,12 @@ public final class MSDeploy extends ProxyOnlyResource {
                     deserializedMSDeploy.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedMSDeploy.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedMSDeploy.type = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     deserializedMSDeploy.withKind(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedMSDeploy.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedMSDeploy.innerProperties = MSDeployProperties.fromJson(reader);
+                    deserializedMSDeploy.innerProperties = MSDeployCore.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

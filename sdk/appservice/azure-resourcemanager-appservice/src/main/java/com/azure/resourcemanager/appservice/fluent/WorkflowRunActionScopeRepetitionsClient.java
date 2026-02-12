@@ -20,7 +20,7 @@ public interface WorkflowRunActionScopeRepetitionsClient {
     /**
      * List the workflow run action scoped repetitions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -37,7 +37,7 @@ public interface WorkflowRunActionScopeRepetitionsClient {
     /**
      * List the workflow run action scoped repetitions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -54,7 +54,7 @@ public interface WorkflowRunActionScopeRepetitionsClient {
     /**
      * List the workflow run action scoped repetitions.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -72,7 +72,7 @@ public interface WorkflowRunActionScopeRepetitionsClient {
     /**
      * Get a workflow run action scoped repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -91,7 +91,7 @@ public interface WorkflowRunActionScopeRepetitionsClient {
     /**
      * Get a workflow run action scoped repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -109,7 +109,7 @@ public interface WorkflowRunActionScopeRepetitionsClient {
     /**
      * Get a workflow run action scoped repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -128,7 +128,7 @@ public interface WorkflowRunActionScopeRepetitionsClient {
     /**
      * Get a workflow run action scoped repetition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.

@@ -100,17 +100,17 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServicePlanCollection>> list(@HostParam("$host") String endpoint,
-            @QueryParam("detailed") Boolean detailed, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("detailed") Boolean detailed, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServicePlanCollection>> listByResourceGroup(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
@@ -118,8 +118,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 404 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServicePlanInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -127,28 +127,28 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServicePlanInner appServicePlan, @HeaderParam("Accept") String accept,
             Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
-        @ExpectedResponses({ 200, 204 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServicePlanInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AppServicePlanPatchResource appServicePlan,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -156,8 +156,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<CapabilityInner>>> listCapabilities(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -165,8 +165,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ServerFarmRdpDetailsInner>> getServerFarmRdpPassword(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -174,9 +174,9 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<HybridConnectionInner>> getHybridConnection(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("namespaceName") String namespaceName, @PathParam("relayName") String relayName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -184,9 +184,9 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteHybridConnection(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("namespaceName") String namespaceName, @PathParam("relayName") String relayName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -194,9 +194,9 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<HybridConnectionKeyInner>> listHybridConnectionKeys(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("namespaceName") String namespaceName, @PathParam("relayName") String relayName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -204,9 +204,9 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceCollection>> listWebAppsByHybridConnection(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("namespaceName") String namespaceName, @PathParam("relayName") String relayName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -214,8 +214,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<HybridConnectionLimitsInner>> getHybridConnectionPlanLimit(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -223,8 +223,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<HybridConnectionCollection>> listHybridConnections(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -232,8 +232,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ServerFarmInstanceDetailsInner>> getServerFarmInstanceDetails(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -241,18 +241,18 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> restartWebApps(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @QueryParam("softRestart") Boolean softRestart, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("softRestart") Boolean softRestart, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/sites")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WebAppCollection>> listWebApps(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skipToken") String skipToken, @QueryParam(value = "$filter", encoded = true) String filter,
+            @QueryParam("$skipToken") String skipToken, @QueryParam("$filter") String filter,
             @QueryParam("$top") String top, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -260,8 +260,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Object>> getServerFarmSkus(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -269,18 +269,17 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CsmUsageQuotaCollection>> listUsages(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @QueryParam(value = "$filter", encoded = true) String filter, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<VnetInfoResourceInner>>> listVnets(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -289,18 +288,18 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 404 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<VnetInfoResourceInner>> getVnetFromServerFarm(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("vnetName") String vnetName, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("vnetName") String vnetName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<VnetGatewayInner>> getVnetGateway(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("vnetName") String vnetName, @PathParam("gatewayName") String gatewayName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -308,9 +307,9 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<VnetGatewayInner>> updateVnetGateway(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("vnetName") String vnetName, @PathParam("gatewayName") String gatewayName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") VnetGatewayInner connectionEnvelope, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -319,9 +318,9 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<VnetRouteInner>>> listRoutesForVnet(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("vnetName") String vnetName, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("vnetName") String vnetName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
@@ -329,9 +328,9 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 404 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<VnetRouteInner>>> getRouteForVnet(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("vnetName") String vnetName, @PathParam("routeName") String routeName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -340,9 +339,20 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 400, 404 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<VnetRouteInner>> createOrUpdateVnetRoute(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("vnetName") String vnetName, @PathParam("routeName") String routeName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VnetRouteInner route, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 400, 404 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<VnetRouteInner>> updateVnetRoute(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("vnetName") String vnetName, @PathParam("routeName") String routeName,
             @BodyParam("application/json") VnetRouteInner route, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -351,39 +361,28 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 404 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteVnetRoute(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("vnetName") String vnetName, @PathParam("routeName") String routeName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 400, 404 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<VnetRouteInner>> updateVnetRoute(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("vnetName") String vnetName, @PathParam("routeName") String routeName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VnetRouteInner route, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/workers/{workerName}/reboot")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/serverfarms/{name}/workers/{workerName}/reboot")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> rebootWorker(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("workerName") String workerName, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("workerName") String workerName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/workers/{workerName}/recycleinstance")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/serverfarms/{name}/workers/{workerName}/recycleinstance")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<OperationInner>> recycleManagedInstanceWorker(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
-            @PathParam("workerName") String workerName, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("workerName") String workerName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -457,11 +456,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), detailed, this.client.getSubscriptionId(),
-                apiVersion, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), detailed, accept, context))
             .<PagedResponse<AppServicePlanInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -492,11 +490,11 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), detailed, this.client.getSubscriptionId(), apiVersion, accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), detailed,
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -593,7 +591,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all App Service plans in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -606,19 +604,18 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
             .<PagedResponse<AppServicePlanInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -629,7 +626,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all App Service plans in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -644,20 +641,19 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-01";
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-                apiVersion, accept, context)
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -667,7 +663,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all App Service plans in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -684,7 +680,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all App Service plans in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -702,7 +698,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all App Service plans in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -718,7 +714,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all App Service plans in a resource group.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -735,7 +731,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -750,6 +746,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -757,15 +757,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -774,7 +769,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -790,6 +785,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -797,15 +796,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
     /**
@@ -813,7 +807,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -832,7 +826,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -852,7 +846,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -870,7 +864,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -885,6 +879,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -892,20 +890,15 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (appServicePlan == null) {
             return Mono.error(new IllegalArgumentException("Parameter appServicePlan is required and cannot be null."));
         } else {
             appServicePlan.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, appServicePlan, accept, context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, appServicePlan, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -914,7 +907,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
@@ -930,6 +923,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -937,20 +934,15 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (appServicePlan == null) {
             return Mono.error(new IllegalArgumentException("Parameter appServicePlan is required and cannot be null."));
         } else {
             appServicePlan.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), apiVersion, appServicePlan, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, appServicePlan, accept, context);
     }
 
     /**
@@ -958,7 +950,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -980,7 +972,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
@@ -1004,7 +996,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1023,7 +1015,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
@@ -1043,7 +1035,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1063,7 +1055,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
@@ -1084,7 +1076,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1103,7 +1095,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
@@ -1119,136 +1111,11 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
     }
 
     /**
-     * Delete an App Service plan.
-     * 
-     * Description for Delete an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Delete an App Service plan.
-     * 
-     * Description for Delete an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-            apiVersion, accept, context);
-    }
-
-    /**
-     * Delete an App Service plan.
-     * 
-     * Description for Delete an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String name) {
-        return deleteWithResponseAsync(resourceGroupName, name).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete an App Service plan.
-     * 
-     * Description for Delete an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String name, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, name, context).block();
-    }
-
-    /**
-     * Delete an App Service plan.
-     * 
-     * Description for Delete an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String name) {
-        deleteWithResponse(resourceGroupName, name, Context.NONE);
-    }
-
-    /**
      * Creates or updates an App Service Plan.
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1263,6 +1130,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1270,20 +1141,15 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (appServicePlan == null) {
             return Mono.error(new IllegalArgumentException("Parameter appServicePlan is required and cannot be null."));
         } else {
             appServicePlan.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, appServicePlan, accept, context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, appServicePlan, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1292,7 +1158,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
@@ -1308,6 +1174,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1315,20 +1185,15 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (appServicePlan == null) {
             return Mono.error(new IllegalArgumentException("Parameter appServicePlan is required and cannot be null."));
         } else {
             appServicePlan.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-            apiVersion, appServicePlan, accept, context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, name, appServicePlan, accept, context);
     }
 
     /**
@@ -1336,7 +1201,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1356,7 +1221,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
@@ -1376,7 +1241,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Creates or updates an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1391,11 +1256,134 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
     }
 
     /**
+     * Delete an App Service plan.
+     * 
+     * Description for Delete an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Delete an App Service plan.
+     * 
+     * Description for Delete an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, name, accept, context);
+    }
+
+    /**
+     * Delete an App Service plan.
+     * 
+     * Description for Delete an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String name) {
+        return deleteWithResponseAsync(resourceGroupName, name).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete an App Service plan.
+     * 
+     * Description for Delete an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String name, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
+     * Delete an App Service plan.
+     * 
+     * Description for Delete an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String name) {
+        deleteWithResponse(resourceGroupName, name, Context.NONE);
+    }
+
+    /**
      * List all capabilities of an App Service plan.
      * 
      * Description for List all capabilities of an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1409,6 +1397,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1416,15 +1408,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCapabilities(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listCapabilities(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1433,7 +1420,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for List all capabilities of an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1448,6 +1435,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1455,15 +1446,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listCapabilities(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.listCapabilities(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
     /**
@@ -1471,7 +1457,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for List all capabilities of an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1489,7 +1475,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for List all capabilities of an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1508,7 +1494,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for List all capabilities of an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1525,7 +1511,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the RDP password for an IsCustomMode ServerFarm.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1539,6 +1525,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1546,15 +1536,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getServerFarmRdpPassword(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getServerFarmRdpPassword(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1563,7 +1548,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the RDP password for an IsCustomMode ServerFarm.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1578,6 +1563,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1585,15 +1574,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getServerFarmRdpPassword(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getServerFarmRdpPassword(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
     /**
@@ -1601,7 +1585,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the RDP password for an IsCustomMode ServerFarm.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1619,7 +1603,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the RDP password for an IsCustomMode ServerFarm.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1638,7 +1622,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the RDP password for an IsCustomMode ServerFarm.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1655,7 +1639,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Retrieve a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -1671,6 +1655,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1684,15 +1672,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (relayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter relayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getHybridConnection(this.client.getEndpoint(), resourceGroupName, name,
-                namespaceName, relayName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getHybridConnection(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, namespaceName, relayName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1701,7 +1684,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Retrieve a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -1718,6 +1701,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1731,15 +1718,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (relayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter relayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getHybridConnection(this.client.getEndpoint(), resourceGroupName, name, namespaceName, relayName,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getHybridConnection(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, namespaceName, relayName, accept, context);
     }
 
     /**
@@ -1747,7 +1729,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Retrieve a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -1768,7 +1750,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Retrieve a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -1789,7 +1771,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Retrieve a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -1810,7 +1792,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Delete a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -1826,6 +1808,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1839,15 +1825,11 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (relayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter relayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.deleteHybridConnection(this.client.getEndpoint(), resourceGroupName, name,
-                namespaceName, relayName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.deleteHybridConnection(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, namespaceName,
+                relayName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1856,7 +1838,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Delete a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -1873,6 +1855,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1886,15 +1872,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (relayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter relayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deleteHybridConnection(this.client.getEndpoint(), resourceGroupName, name, namespaceName,
-            relayName, this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.deleteHybridConnection(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, namespaceName, relayName, accept, context);
     }
 
     /**
@@ -1902,7 +1883,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Delete a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -1923,7 +1904,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Delete a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -1945,7 +1926,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Delete a Hybrid Connection in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
@@ -1963,10 +1944,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the send key name and value of a Hybrid Connection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName The name of the Service Bus namespace.
-     * @param relayName The name of the Service Bus relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1978,6 +1959,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1992,15 +1977,11 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (relayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter relayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listHybridConnectionKeys(this.client.getEndpoint(), resourceGroupName, name,
-                namespaceName, relayName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listHybridConnectionKeys(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, namespaceName,
+                relayName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2009,10 +1990,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the send key name and value of a Hybrid Connection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName The name of the Service Bus namespace.
-     * @param relayName The name of the Service Bus relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2026,6 +2007,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2039,15 +2024,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (relayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter relayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listHybridConnectionKeys(this.client.getEndpoint(), resourceGroupName, name, namespaceName,
-            relayName, this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.listHybridConnectionKeys(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, namespaceName, relayName, accept, context);
     }
 
     /**
@@ -2055,10 +2035,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the send key name and value of a Hybrid Connection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName The name of the Service Bus namespace.
-     * @param relayName The name of the Service Bus relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2076,10 +2056,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the send key name and value of a Hybrid Connection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName The name of the Service Bus namespace.
-     * @param relayName The name of the Service Bus relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2098,10 +2078,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the send key name and value of a Hybrid Connection.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName The name of the Service Bus namespace.
-     * @param relayName The name of the Service Bus relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2119,10 +2099,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Hybrid Connection namespace.
-     * @param relayName Name of the Hybrid Connection relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2134,6 +2114,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2148,15 +2132,11 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (relayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter relayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listWebAppsByHybridConnection(this.client.getEndpoint(), resourceGroupName,
-                name, namespaceName, relayName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listWebAppsByHybridConnection(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, namespaceName,
+                relayName, accept, context))
             .<PagedResponse<String>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2167,10 +2147,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Hybrid Connection namespace.
-     * @param relayName Name of the Hybrid Connection relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2184,6 +2164,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2197,16 +2181,11 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (relayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter relayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listWebAppsByHybridConnection(this.client.getEndpoint(), resourceGroupName, name, namespaceName, relayName,
-                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .listWebAppsByHybridConnection(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, namespaceName, relayName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2216,10 +2195,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Hybrid Connection namespace.
-     * @param relayName Name of the Hybrid Connection relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2238,10 +2217,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Hybrid Connection namespace.
-     * @param relayName Name of the Hybrid Connection relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2261,10 +2240,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Hybrid Connection namespace.
-     * @param relayName Name of the Hybrid Connection relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2282,10 +2261,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
-     * @param namespaceName Name of the Hybrid Connection namespace.
-     * @param relayName Name of the Hybrid Connection relay.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2304,7 +2283,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2318,6 +2297,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2325,15 +2308,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getHybridConnectionPlanLimit(this.client.getEndpoint(), resourceGroupName,
-                name, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getHybridConnectionPlanLimit(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2342,7 +2320,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2357,6 +2335,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2364,15 +2346,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getHybridConnectionPlanLimit(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getHybridConnectionPlanLimit(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
     /**
@@ -2380,7 +2357,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2398,7 +2375,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2417,7 +2394,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2434,7 +2411,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Retrieve all Hybrid Connections in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2449,6 +2426,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2456,15 +2437,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listHybridConnections(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listHybridConnections(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
             .<PagedResponse<HybridConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2475,7 +2451,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Retrieve all Hybrid Connections in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2491,6 +2467,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2498,16 +2478,11 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listHybridConnections(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                apiVersion, accept, context)
+            .listHybridConnections(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2517,7 +2492,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Retrieve all Hybrid Connections in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2535,7 +2510,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Retrieve all Hybrid Connections in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2555,7 +2530,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Retrieve all Hybrid Connections in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2572,7 +2547,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Retrieve all Hybrid Connections in use in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2591,7 +2566,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the instance details for an app service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2606,6 +2581,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2613,15 +2592,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getServerFarmInstanceDetails(this.client.getEndpoint(), resourceGroupName,
-                name, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getServerFarmInstanceDetails(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2630,7 +2604,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the instance details for an app service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2646,6 +2620,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2653,15 +2631,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getServerFarmInstanceDetails(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getServerFarmInstanceDetails(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
     /**
@@ -2669,7 +2642,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the instance details for an app service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2688,7 +2661,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the instance details for an app service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2707,7 +2680,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get the instance details for an app service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2724,7 +2697,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Restart all apps in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to perform a soft restart, applies the configuration
      * settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts
@@ -2741,6 +2714,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2748,15 +2725,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.restartWebApps(this.client.getEndpoint(), resourceGroupName, name,
-                softRestart, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.restartWebApps(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, softRestart, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2765,7 +2737,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Restart all apps in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to perform a soft restart, applies the configuration
      * settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts
@@ -2783,6 +2755,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2790,15 +2766,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.restartWebApps(this.client.getEndpoint(), resourceGroupName, name, softRestart,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.restartWebApps(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, softRestart, accept, context);
     }
 
     /**
@@ -2806,7 +2777,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Restart all apps in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2824,7 +2795,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Restart all apps in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to perform a soft restart, applies the configuration
      * settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts
@@ -2846,7 +2817,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Restart all apps in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2863,7 +2834,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the
      * resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list
@@ -2882,6 +2853,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2889,15 +2864,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listWebApps(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, skipToken, filter, top, accept, context))
+            .withContext(context -> service.listWebApps(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, skipToken, filter, top, accept, context))
             .<PagedResponse<SiteInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2908,7 +2878,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the
      * resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list
@@ -2928,6 +2898,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2935,16 +2909,11 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listWebApps(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                apiVersion, skipToken, filter, top, accept, context)
+            .listWebApps(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, name, skipToken, filter, top, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2954,7 +2923,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the
      * resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list
@@ -2978,7 +2947,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2999,7 +2968,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the
      * resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list
@@ -3025,7 +2994,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3045,7 +3014,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all apps associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the
      * resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list
@@ -3069,18 +3038,22 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Gets all selectable SKUs for a given App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return anything along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> getServerFarmSkusWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3089,15 +3062,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getServerFarmSkus(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getServerFarmSkus(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3106,13 +3074,13 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Gets all selectable SKUs for a given App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return anything along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Object>> getServerFarmSkusWithResponseAsync(String resourceGroupName, String name,
@@ -3121,6 +3089,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -3128,15 +3100,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getServerFarmSkus(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getServerFarmSkus(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
     /**
@@ -3144,12 +3111,12 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Gets all selectable SKUs for a given App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return anything on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> getServerFarmSkusAsync(String resourceGroupName, String name) {
@@ -3162,13 +3129,13 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Gets all selectable SKUs for a given App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response}.
+     * @return anything along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> getServerFarmSkusWithResponse(String resourceGroupName, String name, Context context) {
@@ -3180,12 +3147,12 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Gets all selectable SKUs for a given App Service Plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return anything.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Object getServerFarmSkus(String resourceGroupName, String name) {
@@ -3197,14 +3164,15 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Gets server farm usage information.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
      * $filter=(name.value eq 'Metric1' or name.value eq 'Metric2').
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of CsmUsageQuota items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CsmUsageQuotaInner>> listUsagesSinglePageAsync(String resourceGroupName, String name,
@@ -3213,6 +3181,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -3220,15 +3192,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listUsages(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, filter, accept, context))
+            .withContext(context -> service.listUsages(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, filter, accept, context))
             .<PagedResponse<CsmUsageQuotaInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3239,15 +3206,16 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Gets server farm usage information.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
      * $filter=(name.value eq 'Metric1' or name.value eq 'Metric2').
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of CsmUsageQuota items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CsmUsageQuotaInner>> listUsagesSinglePageAsync(String resourceGroupName, String name,
@@ -3256,6 +3224,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -3263,16 +3235,11 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listUsages(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(), apiVersion,
-                filter, accept, context)
+            .listUsages(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, name, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3282,14 +3249,14 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Gets server farm usage information.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
      * $filter=(name.value eq 'Metric1' or name.value eq 'Metric2').
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas as paginated response with {@link PagedFlux}.
+     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name, String filter) {
@@ -3302,12 +3269,12 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Gets server farm usage information.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas as paginated response with {@link PagedFlux}.
+     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name) {
@@ -3321,15 +3288,15 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Gets server farm usage information.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
      * $filter=(name.value eq 'Metric1' or name.value eq 'Metric2').
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas as paginated response with {@link PagedFlux}.
+     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name, String filter,
@@ -3343,12 +3310,12 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Gets server farm usage information.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas as paginated response with {@link PagedIterable}.
+     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name) {
@@ -3361,15 +3328,15 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Gets server farm usage information.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
      * $filter=(name.value eq 'Metric1' or name.value eq 'Metric2').
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas as paginated response with {@link PagedIterable}.
+     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name, String filter,
@@ -3382,7 +3349,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all Virtual Networks associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3396,6 +3363,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -3403,15 +3374,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listVnets(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listVnets(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3420,7 +3386,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all Virtual Networks associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3435,6 +3401,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -3442,15 +3412,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listVnets(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-            apiVersion, accept, context);
+        return service.listVnets(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
     /**
@@ -3458,7 +3423,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all Virtual Networks associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3475,7 +3440,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all Virtual Networks associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3494,7 +3459,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all Virtual Networks associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3511,7 +3476,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3528,6 +3493,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -3538,15 +3507,11 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (vnetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getVnetFromServerFarm(this.client.getEndpoint(), resourceGroupName, name,
-                vnetName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(
+                context -> service.getVnetFromServerFarm(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, name, vnetName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3555,7 +3520,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param context The context to associate with this operation.
@@ -3573,6 +3538,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -3583,15 +3552,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (vnetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getVnetFromServerFarm(this.client.getEndpoint(), resourceGroupName, name, vnetName,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getVnetFromServerFarm(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, vnetName, accept, context);
     }
 
     /**
@@ -3599,7 +3563,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3620,7 +3584,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param context The context to associate with this operation.
@@ -3641,7 +3605,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network associated with an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3660,7 +3624,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -3677,6 +3641,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -3690,15 +3658,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getVnetGateway(this.client.getEndpoint(), resourceGroupName, name, vnetName,
-                gatewayName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getVnetGateway(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, vnetName, gatewayName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3707,7 +3670,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -3725,6 +3688,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -3738,15 +3705,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getVnetGateway(this.client.getEndpoint(), resourceGroupName, name, vnetName, gatewayName,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getVnetGateway(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, vnetName, gatewayName, accept, context);
     }
 
     /**
@@ -3754,7 +3716,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -3775,7 +3737,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -3796,7 +3758,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -3815,7 +3777,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Update a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -3833,6 +3795,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -3846,22 +3812,17 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (connectionEnvelope == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
         } else {
             connectionEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.updateVnetGateway(this.client.getEndpoint(), resourceGroupName, name, vnetName,
-                    gatewayName, this.client.getSubscriptionId(), apiVersion, connectionEnvelope, accept, context))
+            .withContext(context -> service.updateVnetGateway(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, vnetName, gatewayName, connectionEnvelope,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3870,7 +3831,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Update a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -3889,6 +3850,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -3902,21 +3867,17 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (connectionEnvelope == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
         } else {
             connectionEnvelope.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updateVnetGateway(this.client.getEndpoint(), resourceGroupName, name, vnetName, gatewayName,
-            this.client.getSubscriptionId(), apiVersion, connectionEnvelope, accept, context);
+        return service.updateVnetGateway(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, accept,
+            context);
     }
 
     /**
@@ -3924,7 +3885,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Update a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -3946,7 +3907,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Update a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -3969,7 +3930,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Update a Virtual Network gateway.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
@@ -3991,7 +3952,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4006,6 +3967,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -4016,15 +3981,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (vnetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listRoutesForVnet(this.client.getEndpoint(), resourceGroupName, name,
-                vnetName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listRoutesForVnet(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, vnetName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4033,7 +3993,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param context The context to associate with this operation.
@@ -4049,6 +4009,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -4059,15 +4023,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (vnetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listRoutesForVnet(this.client.getEndpoint(), resourceGroupName, name, vnetName,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.listRoutesForVnet(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, vnetName, accept, context);
     }
 
     /**
@@ -4075,7 +4034,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4094,7 +4053,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param context The context to associate with this operation.
@@ -4114,7 +4073,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4132,7 +4091,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4149,6 +4108,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -4162,15 +4125,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (routeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getRouteForVnet(this.client.getEndpoint(), resourceGroupName, name,
-                vnetName, routeName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.getRouteForVnet(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, vnetName, routeName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4179,7 +4137,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4197,6 +4155,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -4210,15 +4172,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (routeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getRouteForVnet(this.client.getEndpoint(), resourceGroupName, name, vnetName, routeName,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.getRouteForVnet(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, vnetName, routeName, accept, context);
     }
 
     /**
@@ -4226,7 +4183,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4248,7 +4205,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4270,7 +4227,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Get a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4291,7 +4248,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4310,6 +4267,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -4323,20 +4284,16 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (routeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (route == null) {
             return Mono.error(new IllegalArgumentException("Parameter route is required and cannot be null."));
         } else {
             route.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdateVnetRoute(this.client.getEndpoint(), resourceGroupName, name,
-                vnetName, routeName, this.client.getSubscriptionId(), apiVersion, route, accept, context))
+            .withContext(context -> service.createOrUpdateVnetRoute(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, name, vnetName,
+                routeName, route, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4345,7 +4302,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4365,6 +4322,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -4378,20 +4339,15 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (routeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (route == null) {
             return Mono.error(new IllegalArgumentException("Parameter route is required and cannot be null."));
         } else {
             route.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdateVnetRoute(this.client.getEndpoint(), resourceGroupName, name, vnetName, routeName,
-            this.client.getSubscriptionId(), apiVersion, route, accept, context);
+        return service.createOrUpdateVnetRoute(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, vnetName, routeName, route, accept, context);
     }
 
     /**
@@ -4399,7 +4355,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4423,7 +4379,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4448,7 +4404,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4467,167 +4423,11 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
     }
 
     /**
-     * Delete a Virtual Network route in an App Service plan.
-     * 
-     * Description for Delete a Virtual Network route in an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param vnetName Name of the Virtual Network.
-     * @param routeName Name of the Virtual Network route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteVnetRouteWithResponseAsync(String resourceGroupName, String name, String vnetName,
-        String routeName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (vnetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-        }
-        if (routeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.deleteVnetRoute(this.client.getEndpoint(), resourceGroupName, name,
-                vnetName, routeName, this.client.getSubscriptionId(), apiVersion, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Delete a Virtual Network route in an App Service plan.
-     * 
-     * Description for Delete a Virtual Network route in an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param vnetName Name of the Virtual Network.
-     * @param routeName Name of the Virtual Network route.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteVnetRouteWithResponseAsync(String resourceGroupName, String name,
-        String vnetName, String routeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (vnetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-        }
-        if (routeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.deleteVnetRoute(this.client.getEndpoint(), resourceGroupName, name, vnetName, routeName,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
-    }
-
-    /**
-     * Delete a Virtual Network route in an App Service plan.
-     * 
-     * Description for Delete a Virtual Network route in an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param vnetName Name of the Virtual Network.
-     * @param routeName Name of the Virtual Network route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName) {
-        return deleteVnetRouteWithResponseAsync(resourceGroupName, name, vnetName, routeName)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete a Virtual Network route in an App Service plan.
-     * 
-     * Description for Delete a Virtual Network route in an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param vnetName Name of the Virtual Network.
-     * @param routeName Name of the Virtual Network route.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteVnetRouteWithResponse(String resourceGroupName, String name, String vnetName,
-        String routeName, Context context) {
-        return deleteVnetRouteWithResponseAsync(resourceGroupName, name, vnetName, routeName, context).block();
-    }
-
-    /**
-     * Delete a Virtual Network route in an App Service plan.
-     * 
-     * Description for Delete a Virtual Network route in an App Service plan.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param vnetName Name of the Virtual Network.
-     * @param routeName Name of the Virtual Network route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName) {
-        deleteVnetRouteWithResponse(resourceGroupName, name, vnetName, routeName, Context.NONE);
-    }
-
-    /**
      * Create or update a Virtual Network route in an App Service plan.
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4646,6 +4446,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -4659,20 +4463,15 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (routeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (route == null) {
             return Mono.error(new IllegalArgumentException("Parameter route is required and cannot be null."));
         } else {
             route.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.updateVnetRoute(this.client.getEndpoint(), resourceGroupName, name,
-                vnetName, routeName, this.client.getSubscriptionId(), apiVersion, route, accept, context))
+            .withContext(context -> service.updateVnetRoute(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, vnetName, routeName, route, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4681,7 +4480,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4701,6 +4500,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -4714,20 +4517,15 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (routeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (route == null) {
             return Mono.error(new IllegalArgumentException("Parameter route is required and cannot be null."));
         } else {
             route.validate();
         }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updateVnetRoute(this.client.getEndpoint(), resourceGroupName, name, vnetName, routeName,
-            this.client.getSubscriptionId(), apiVersion, route, accept, context);
+        return service.updateVnetRoute(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, vnetName, routeName, route, accept, context);
     }
 
     /**
@@ -4735,7 +4533,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4759,7 +4557,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4783,7 +4581,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Create or update a Virtual Network route in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
@@ -4802,12 +4600,166 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
     }
 
     /**
+     * Delete a Virtual Network route in an App Service plan.
+     * 
+     * Description for Delete a Virtual Network route in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteVnetRouteWithResponseAsync(String resourceGroupName, String name, String vnetName,
+        String routeName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (vnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
+        }
+        if (routeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.deleteVnetRoute(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, vnetName, routeName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Delete a Virtual Network route in an App Service plan.
+     * 
+     * Description for Delete a Virtual Network route in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteVnetRouteWithResponseAsync(String resourceGroupName, String name,
+        String vnetName, String routeName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (vnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
+        }
+        if (routeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.deleteVnetRoute(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, vnetName, routeName, accept, context);
+    }
+
+    /**
+     * Delete a Virtual Network route in an App Service plan.
+     * 
+     * Description for Delete a Virtual Network route in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName) {
+        return deleteVnetRouteWithResponseAsync(resourceGroupName, name, vnetName, routeName)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a Virtual Network route in an App Service plan.
+     * 
+     * Description for Delete a Virtual Network route in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteVnetRouteWithResponse(String resourceGroupName, String name, String vnetName,
+        String routeName, Context context) {
+        return deleteVnetRouteWithResponseAsync(resourceGroupName, name, vnetName, routeName, context).block();
+    }
+
+    /**
+     * Delete a Virtual Network route in an App Service plan.
+     * 
+     * Description for Delete a Virtual Network route in an App Service plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName) {
+        deleteVnetRouteWithResponse(resourceGroupName, name, vnetName, routeName, Context.NONE);
+    }
+
+    /**
      * Reboot a worker machine in an App Service plan.
      * 
      * Description for Reboot a worker machine in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4821,6 +4773,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -4831,15 +4787,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (workerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workerName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.rebootWorker(this.client.getEndpoint(), resourceGroupName, name, workerName,
-                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.rebootWorker(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, name, workerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4848,8 +4799,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Reboot a worker machine in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4864,6 +4815,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -4874,15 +4829,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (workerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workerName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.rebootWorker(this.client.getEndpoint(), resourceGroupName, name, workerName,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.rebootWorker(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, workerName, accept, context);
     }
 
     /**
@@ -4890,8 +4840,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Reboot a worker machine in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4908,8 +4858,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Reboot a worker machine in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4928,8 +4878,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Reboot a worker machine in an App Service plan.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4945,9 +4895,9 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Recycles a managed instance worker machine.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param workerName Name of worker machine.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4960,6 +4910,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -4970,15 +4924,11 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (workerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workerName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.recycleManagedInstanceWorker(this.client.getEndpoint(), resourceGroupName,
-                name, workerName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(
+                context -> service.recycleManagedInstanceWorker(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, name, workerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4987,9 +4937,9 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Recycles a managed instance worker machine.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param workerName Name of worker machine.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5003,6 +4953,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -5013,15 +4967,10 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         if (workerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workerName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.recycleManagedInstanceWorker(this.client.getEndpoint(), resourceGroupName, name, workerName,
-            this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.recycleManagedInstanceWorker(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, name, workerName, accept, context);
     }
 
     /**
@@ -5029,9 +4978,9 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Recycles a managed instance worker machine.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param workerName Name of worker machine.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5049,9 +4998,9 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Recycles a managed instance worker machine.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param workerName Name of worker machine.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5069,9 +5018,9 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * 
      * Description for Recycles a managed instance worker machine.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @param workerName Name of worker machine.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5381,7 +5330,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of CsmUsageQuota items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CsmUsageQuotaInner>> listUsagesNextSinglePageAsync(String nextLink) {
@@ -5410,7 +5360,8 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of CsmUsageQuota items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CsmUsageQuotaInner>> listUsagesNextSinglePageAsync(String nextLink, Context context) {

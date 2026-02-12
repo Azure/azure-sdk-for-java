@@ -5,12 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.AuthType;
 import com.azure.resourcemanager.appservice.models.EnvironmentVariable;
-import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.VolumeMount;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -20,11 +21,21 @@ import java.util.List;
  * Container of a site.
  */
 @Fluent
-public final class SiteContainerInner extends ProxyOnlyResource {
+public final class SiteContainerInner extends ProxyResource {
     /*
      * SiteContainer resource specific properties
      */
     private SiteContainerProperties innerProperties;
+
+    /*
+     * Kind of resource.
+     */
+    private String kind;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -57,6 +68,35 @@ public final class SiteContainerInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the kind property: Kind of resource.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of resource.
+     * 
+     * @param kind the kind value to set.
+     * @return the SiteContainerInner object itself.
+     */
+    public SiteContainerInner withKind(String kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -84,15 +124,6 @@ public final class SiteContainerInner extends ProxyOnlyResource {
     @Override
     public String id() {
         return this.id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SiteContainerInner withKind(String kind) {
-        super.withKind(kind);
-        return this;
     }
 
     /**
@@ -378,7 +409,6 @@ public final class SiteContainerInner extends ProxyOnlyResource {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -391,8 +421,8 @@ public final class SiteContainerInner extends ProxyOnlyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", kind());
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 
@@ -418,10 +448,12 @@ public final class SiteContainerInner extends ProxyOnlyResource {
                     deserializedSiteContainerInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedSiteContainerInner.type = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedSiteContainerInner.withKind(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedSiteContainerInner.innerProperties = SiteContainerProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSiteContainerInner.kind = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSiteContainerInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

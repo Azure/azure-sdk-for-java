@@ -9,8 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetFtpAllowedSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
-     * GetPublishingCredentialsPolicy.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * GetPublishingCredentialsPolicy_GetFtpAllowed.json
      */
     /**
      * Sample code: Get FTP Allowed.

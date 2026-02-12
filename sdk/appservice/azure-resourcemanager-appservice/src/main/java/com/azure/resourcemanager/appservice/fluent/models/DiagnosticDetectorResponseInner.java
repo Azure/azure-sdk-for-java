@@ -28,17 +28,17 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     private DiagnosticDetectorResponseProperties innerProperties;
 
     /*
-     * The type of the resource.
+     * Resource type.
      */
     private String type;
 
     /*
-     * The name of the resource.
+     * Resource Name.
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Resource Id.
      */
     private String id;
 
@@ -58,7 +58,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the type property: Resource type.
      * 
      * @return the type value.
      */
@@ -68,7 +68,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Resource Name.
      * 
      * @return the name value.
      */
@@ -78,7 +78,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the id property: Resource Id.
      * 
      * @return the id value.
      */
@@ -310,7 +310,6 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of DiagnosticDetectorResponseInner if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DiagnosticDetectorResponseInner.
      */
     public static DiagnosticDetectorResponseInner fromJson(JsonReader jsonReader) throws IOException {
@@ -325,10 +324,10 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
                     deserializedDiagnosticDetectorResponseInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedDiagnosticDetectorResponseInner.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedDiagnosticDetectorResponseInner.type = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     deserializedDiagnosticDetectorResponseInner.withKind(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedDiagnosticDetectorResponseInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedDiagnosticDetectorResponseInner.innerProperties
                         = DiagnosticDetectorResponseProperties.fromJson(reader);

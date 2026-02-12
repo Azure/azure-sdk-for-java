@@ -29,7 +29,7 @@ public final class VnetInfo implements JsonSerializable<VnetInfo> {
 
     /*
      * A certificate file (.cer) blob containing the public key of the private key used to authenticate a
-     * Point-To-Site VPN connection.
+     * \nPoint-To-Site VPN connection.
      */
     private String certBlob;
 
@@ -90,8 +90,7 @@ public final class VnetInfo implements JsonSerializable<VnetInfo> {
 
     /**
      * Get the certBlob property: A certificate file (.cer) blob containing the public key of the private key used to
-     * authenticate a
-     * Point-To-Site VPN connection.
+     * authenticate a \nPoint-To-Site VPN connection.
      * 
      * @return the certBlob value.
      */
@@ -101,8 +100,7 @@ public final class VnetInfo implements JsonSerializable<VnetInfo> {
 
     /**
      * Set the certBlob property: A certificate file (.cer) blob containing the public key of the private key used to
-     * authenticate a
-     * Point-To-Site VPN connection.
+     * authenticate a \nPoint-To-Site VPN connection.
      * 
      * @param certBlob the certBlob value to set.
      * @return the VnetInfo object itself.

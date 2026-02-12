@@ -14,7 +14,7 @@ import com.azure.resourcemanager.appservice.models.StaticSiteBuildProperties;
 public final class StaticSitesCreateOrUpdateStaticSiteSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/CreateOrUpdateStaticSite.
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/CreateOrUpdateStaticSite.
      * json
      */
     /**

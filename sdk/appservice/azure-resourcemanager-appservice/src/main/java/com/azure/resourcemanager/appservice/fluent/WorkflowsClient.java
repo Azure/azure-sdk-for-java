@@ -19,7 +19,7 @@ public interface WorkflowsClient {
     /**
      * Regenerates the callback URL access key for request triggers.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param keyType The access key type.
@@ -35,7 +35,7 @@ public interface WorkflowsClient {
     /**
      * Regenerates the callback URL access key for request triggers.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param keyType The access key type.
@@ -51,7 +51,7 @@ public interface WorkflowsClient {
     /**
      * Regenerates the callback URL access key for request triggers.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param keyType The access key type.
@@ -68,7 +68,7 @@ public interface WorkflowsClient {
     /**
      * Regenerates the callback URL access key for request triggers.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param keyType The access key type.
@@ -83,7 +83,7 @@ public interface WorkflowsClient {
     /**
      * Validates the workflow definition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param validate The workflow.
@@ -99,7 +99,7 @@ public interface WorkflowsClient {
     /**
      * Validates the workflow definition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param validate The workflow.
@@ -114,7 +114,7 @@ public interface WorkflowsClient {
     /**
      * Validates the workflow definition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param validate The workflow.
@@ -131,7 +131,7 @@ public interface WorkflowsClient {
     /**
      * Validates the workflow definition.
      * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param validate The workflow.

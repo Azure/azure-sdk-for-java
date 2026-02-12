@@ -9,8 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DiagnosticsGetSiteDiagnosticCategorySlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
-     * Diagnostics_GetSiteDiagnosticCategory.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * Diagnostics_GetSiteDiagnosticCategory_Slot.json
      */
     /**
      * Sample code: Get App Diagnostic Category.
@@ -22,13 +22,13 @@ public final class DiagnosticsGetSiteDiagnosticCategorySlotSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .getSiteDiagnosticCategorySlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability",
-                "Production", com.azure.core.util.Context.NONE);
+            .getSiteDiagnosticCategorySlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "Production",
+                "availability", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
-     * Diagnostics_GetSiteDiagnosticCategorySlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * Diagnostics_GetSiteDiagnosticCategorySlot_Slot.json
      */
     /**
      * Sample code: Get App Slot Diagnostic Category.
@@ -40,7 +40,7 @@ public final class DiagnosticsGetSiteDiagnosticCategorySlotSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .getSiteDiagnosticCategorySlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability",
-                "staging", com.azure.core.util.Context.NONE);
+            .getSiteDiagnosticCategorySlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "staging",
+                "availability", com.azure.core.util.Context.NONE);
     }
 }

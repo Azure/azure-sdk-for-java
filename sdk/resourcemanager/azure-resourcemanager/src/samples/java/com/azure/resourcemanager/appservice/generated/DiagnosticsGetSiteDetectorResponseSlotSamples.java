@@ -9,8 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DiagnosticsGetSiteDetectorResponseSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
-     * Diagnostics_GetSiteDetectorResponseSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * Diagnostics_GetSiteDetectorResponseSlot_Slot.json
      */
     /**
      * Sample code: Get App Slot Detector Response.
@@ -22,13 +22,13 @@ public final class DiagnosticsGetSiteDetectorResponseSlotSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .getSiteDetectorResponseSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "runtimeavailability",
-                "staging", null, null, null, com.azure.core.util.Context.NONE);
+            .getSiteDetectorResponseSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "staging",
+                "runtimeavailability", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
-     * Diagnostics_GetSiteDetectorResponse.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * Diagnostics_GetSiteDetectorResponse_Slot.json
      */
     /**
      * Sample code: Get App Detector Response.
@@ -40,7 +40,7 @@ public final class DiagnosticsGetSiteDetectorResponseSlotSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .getSiteDetectorResponseSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "runtimeavailability",
-                "staging", null, null, null, com.azure.core.util.Context.NONE);
+            .getSiteDetectorResponseSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "staging",
+                "runtimeavailability", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

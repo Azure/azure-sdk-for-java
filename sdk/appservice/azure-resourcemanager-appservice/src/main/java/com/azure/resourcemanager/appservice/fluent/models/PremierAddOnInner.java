@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,11 +24,14 @@ public final class PremierAddOnInner extends Resource {
     private PremierAddOnProperties innerProperties;
 
     /*
-     * Kind of resource. If the resource is an app, you can refer to
-     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-
-     * resource-kind-reference for details supported values for kind.
+     * Kind of resource.
      */
     private String kind;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -60,9 +64,7 @@ public final class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of resource. If the resource is an app, you can refer to
-     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
-     * for details supported values for kind.
+     * Get the kind property: Kind of resource.
      * 
      * @return the kind value.
      */
@@ -71,9 +73,7 @@ public final class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Set the kind property: Kind of resource. If the resource is an app, you can refer to
-     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
-     * for details supported values for kind.
+     * Set the kind property: Kind of resource.
      * 
      * @param kind the kind value to set.
      * @return the PremierAddOnInner object itself.
@@ -81,6 +81,15 @@ public final class PremierAddOnInner extends Resource {
     public PremierAddOnInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -301,6 +310,8 @@ public final class PremierAddOnInner extends Resource {
                     deserializedPremierAddOnInner.innerProperties = PremierAddOnProperties.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedPremierAddOnInner.kind = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedPremierAddOnInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

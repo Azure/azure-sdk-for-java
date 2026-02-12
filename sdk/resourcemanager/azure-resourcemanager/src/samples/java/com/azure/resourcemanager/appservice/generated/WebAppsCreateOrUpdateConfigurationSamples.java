@@ -20,7 +20,7 @@ import java.util.Map;
 public final class WebAppsCreateOrUpdateConfigurationSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/UpdateSiteConfig.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/UpdateSiteConfig.json
      */
     /**
      * Sample code: Update Site Config.
@@ -32,7 +32,7 @@ public final class WebAppsCreateOrUpdateConfigurationSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .createOrUpdateConfiguration("testrg123", "sitef6141",
+            .createOrUpdateConfigurationWithResponse("testrg123", "sitef6141",
                 new SiteConfigResourceInner().withNumberOfWorkers(1)
                     .withDefaultDocuments(Arrays.asList("Default.htm", "Default.html", "Default.asp", "index.htm",
                         "index.html", "iisstart.htm", "default.aspx", "index.php", "hostingstart.html"))

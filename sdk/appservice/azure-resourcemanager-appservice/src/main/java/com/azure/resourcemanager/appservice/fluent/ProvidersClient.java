@@ -140,7 +140,7 @@ public interface ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location Function App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -157,7 +157,7 @@ public interface ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location Function App stack location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -172,7 +172,7 @@ public interface ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location Function App stack location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -187,7 +187,7 @@ public interface ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location Function App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,7 +205,7 @@ public interface ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location Web App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -221,7 +221,7 @@ public interface ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location Web App stack location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -236,7 +236,7 @@ public interface ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location Web App stack location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -251,7 +251,7 @@ public interface ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location Web App stack location.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

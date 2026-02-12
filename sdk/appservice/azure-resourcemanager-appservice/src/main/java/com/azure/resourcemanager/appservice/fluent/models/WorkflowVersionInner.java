@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -13,7 +15,6 @@ import com.azure.resourcemanager.appservice.models.FlowEndpointsConfiguration;
 import com.azure.resourcemanager.appservice.models.ResourceReference;
 import com.azure.resourcemanager.appservice.models.WorkflowParameter;
 import com.azure.resourcemanager.appservice.models.WorkflowProvisioningState;
-import com.azure.resourcemanager.appservice.models.WorkflowResource;
 import com.azure.resourcemanager.appservice.models.WorkflowSku;
 import com.azure.resourcemanager.appservice.models.WorkflowState;
 import java.io.IOException;
@@ -24,11 +25,16 @@ import java.util.Map;
  * The workflow version.
  */
 @Fluent
-public final class WorkflowVersionInner extends WorkflowResource {
+public final class WorkflowVersionInner extends Resource {
     /*
      * The workflow version properties.
      */
     private WorkflowVersionProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -58,6 +64,15 @@ public final class WorkflowVersionInner extends WorkflowResource {
      */
     private WorkflowVersionProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -305,7 +320,6 @@ public final class WorkflowVersionInner extends WorkflowResource {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -353,6 +367,8 @@ public final class WorkflowVersionInner extends WorkflowResource {
                     deserializedWorkflowVersionInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedWorkflowVersionInner.innerProperties = WorkflowVersionProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWorkflowVersionInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

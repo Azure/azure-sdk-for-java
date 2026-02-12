@@ -5,12 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.BackupItemStatus;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
-import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,11 +20,21 @@ import java.util.List;
  * Backup description.
  */
 @Fluent
-public final class BackupItemInner extends ProxyOnlyResource {
+public final class BackupItemInner extends ProxyResource {
     /*
      * BackupItem resource specific properties
      */
     private BackupItemProperties innerProperties;
+
+    /*
+     * Kind of resource.
+     */
+    private String kind;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -56,6 +67,35 @@ public final class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the kind property: Kind of resource.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of resource.
+     * 
+     * @param kind the kind value to set.
+     * @return the BackupItemInner object itself.
+     */
+    public BackupItemInner withKind(String kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -83,15 +123,6 @@ public final class BackupItemInner extends ProxyOnlyResource {
     @Override
     public String id() {
         return this.id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BackupItemInner withKind(String kind) {
-        super.withKind(kind);
-        return this;
     }
 
     /**
@@ -226,7 +257,6 @@ public final class BackupItemInner extends ProxyOnlyResource {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -239,8 +269,8 @@ public final class BackupItemInner extends ProxyOnlyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", kind());
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 
@@ -266,10 +296,12 @@ public final class BackupItemInner extends ProxyOnlyResource {
                     deserializedBackupItemInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedBackupItemInner.type = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedBackupItemInner.withKind(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedBackupItemInner.innerProperties = BackupItemProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedBackupItemInner.kind = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBackupItemInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

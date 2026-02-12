@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -36,6 +37,11 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      * resource-kind-reference for details supported values for kind.
      */
     private String kind;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -89,6 +95,15 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
     public AppServiceEnvironmentResourceInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -566,6 +581,8 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
                         = AppServiceEnvironmentInner.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedAppServiceEnvironmentResourceInner.kind = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

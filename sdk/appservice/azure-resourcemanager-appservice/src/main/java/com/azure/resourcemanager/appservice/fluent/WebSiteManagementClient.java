@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface WebSiteManagementClient {
     /**
-     * Gets Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -24,6 +24,13 @@ public interface WebSiteManagementClient {
      * @return the endpoint value.
      */
     String getEndpoint();
+
+    /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -40,60 +47,18 @@ public interface WebSiteManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the AppServiceCertificateOrdersClient object to access its operations.
+     * Gets the ProvidersClient object to access its operations.
      * 
-     * @return the AppServiceCertificateOrdersClient object.
+     * @return the ProvidersClient object.
      */
-    AppServiceCertificateOrdersClient getAppServiceCertificateOrders();
+    ProvidersClient getProviders();
 
     /**
-     * Gets the CertificateOrdersDiagnosticsClient object to access its operations.
+     * Gets the ResourceProvidersClient object to access its operations.
      * 
-     * @return the CertificateOrdersDiagnosticsClient object.
+     * @return the ResourceProvidersClient object.
      */
-    CertificateOrdersDiagnosticsClient getCertificateOrdersDiagnostics();
-
-    /**
-     * Gets the CertificateRegistrationProvidersClient object to access its operations.
-     * 
-     * @return the CertificateRegistrationProvidersClient object.
-     */
-    CertificateRegistrationProvidersClient getCertificateRegistrationProviders();
-
-    /**
-     * Gets the DomainRegistrationProvidersClient object to access its operations.
-     * 
-     * @return the DomainRegistrationProvidersClient object.
-     */
-    DomainRegistrationProvidersClient getDomainRegistrationProviders();
-
-    /**
-     * Gets the DomainsClient object to access its operations.
-     * 
-     * @return the DomainsClient object.
-     */
-    DomainsClient getDomains();
-
-    /**
-     * Gets the TopLevelDomainsClient object to access its operations.
-     * 
-     * @return the TopLevelDomainsClient object.
-     */
-    TopLevelDomainsClient getTopLevelDomains();
-
-    /**
-     * Gets the AppServiceEnvironmentsClient object to access its operations.
-     * 
-     * @return the AppServiceEnvironmentsClient object.
-     */
-    AppServiceEnvironmentsClient getAppServiceEnvironments();
-
-    /**
-     * Gets the AppServicePlansClient object to access its operations.
-     * 
-     * @return the AppServicePlansClient object.
-     */
-    AppServicePlansClient getAppServicePlans();
+    ResourceProvidersClient getResourceProviders();
 
     /**
      * Gets the CertificatesClient object to access its operations.
@@ -110,18 +75,18 @@ public interface WebSiteManagementClient {
     DeletedWebAppsClient getDeletedWebApps();
 
     /**
-     * Gets the DiagnosticsClient object to access its operations.
-     * 
-     * @return the DiagnosticsClient object.
-     */
-    DiagnosticsClient getDiagnostics();
-
-    /**
      * Gets the GlobalsClient object to access its operations.
      * 
      * @return the GlobalsClient object.
      */
     GlobalsClient getGlobals();
+
+    /**
+     * Gets the AppServiceEnvironmentsClient object to access its operations.
+     * 
+     * @return the AppServiceEnvironmentsClient object.
+     */
+    AppServiceEnvironmentsClient getAppServiceEnvironments();
 
     /**
      * Gets the KubeEnvironmentsClient object to access its operations.
@@ -131,11 +96,18 @@ public interface WebSiteManagementClient {
     KubeEnvironmentsClient getKubeEnvironments();
 
     /**
-     * Gets the ProvidersClient object to access its operations.
+     * Gets the StaticSitesClient object to access its operations.
      * 
-     * @return the ProvidersClient object.
+     * @return the StaticSitesClient object.
      */
-    ProvidersClient getProviders();
+    StaticSitesClient getStaticSites();
+
+    /**
+     * Gets the GetUsagesInLocationsClient object to access its operations.
+     * 
+     * @return the GetUsagesInLocationsClient object.
+     */
+    GetUsagesInLocationsClient getGetUsagesInLocations();
 
     /**
      * Gets the RecommendationsClient object to access its operations.
@@ -152,32 +124,11 @@ public interface WebSiteManagementClient {
     ResourceHealthMetadatasClient getResourceHealthMetadatas();
 
     /**
-     * Gets the ResourceProvidersClient object to access its operations.
+     * Gets the AppServicePlansClient object to access its operations.
      * 
-     * @return the ResourceProvidersClient object.
+     * @return the AppServicePlansClient object.
      */
-    ResourceProvidersClient getResourceProviders();
-
-    /**
-     * Gets the GetUsagesInLocationsClient object to access its operations.
-     * 
-     * @return the GetUsagesInLocationsClient object.
-     */
-    GetUsagesInLocationsClient getGetUsagesInLocations();
-
-    /**
-     * Gets the SiteCertificatesClient object to access its operations.
-     * 
-     * @return the SiteCertificatesClient object.
-     */
-    SiteCertificatesClient getSiteCertificates();
-
-    /**
-     * Gets the StaticSitesClient object to access its operations.
-     * 
-     * @return the StaticSitesClient object.
-     */
-    StaticSitesClient getStaticSites();
+    AppServicePlansClient getAppServicePlans();
 
     /**
      * Gets the WebAppsClient object to access its operations.
@@ -185,6 +136,20 @@ public interface WebSiteManagementClient {
      * @return the WebAppsClient object.
      */
     WebAppsClient getWebApps();
+
+    /**
+     * Gets the DiagnosticsClient object to access its operations.
+     * 
+     * @return the DiagnosticsClient object.
+     */
+    DiagnosticsClient getDiagnostics();
+
+    /**
+     * Gets the SiteCertificatesClient object to access its operations.
+     * 
+     * @return the SiteCertificatesClient object.
+     */
+    SiteCertificatesClient getSiteCertificates();
 
     /**
      * Gets the WorkflowsClient object to access its operations.

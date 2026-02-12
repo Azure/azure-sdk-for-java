@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.models.ConfigReferenceSource;
+import com.azure.resourcemanager.appservice.models.ApiKVReferencePropertiesSource;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ResolveStatus;
 import java.io.IOException;
@@ -57,7 +57,7 @@ public final class ApiKVReferenceProperties implements JsonSerializable<ApiKVRef
     /*
      * The source property.
      */
-    private ConfigReferenceSource source;
+    private ApiKVReferencePropertiesSource source;
 
     /*
      * The activeVersion property.
@@ -215,7 +215,7 @@ public final class ApiKVReferenceProperties implements JsonSerializable<ApiKVRef
      * 
      * @return the source value.
      */
-    public ConfigReferenceSource source() {
+    public ApiKVReferencePropertiesSource source() {
         return this.source;
     }
 
@@ -225,7 +225,7 @@ public final class ApiKVReferenceProperties implements JsonSerializable<ApiKVRef
      * @param source the source value to set.
      * @return the ApiKVReferenceProperties object itself.
      */
-    public ApiKVReferenceProperties withSource(ConfigReferenceSource source) {
+    public ApiKVReferenceProperties withSource(ApiKVReferencePropertiesSource source) {
         this.source = source;
         return this;
     }
@@ -309,7 +309,8 @@ public final class ApiKVReferenceProperties implements JsonSerializable<ApiKVRef
                 } else if ("details".equals(fieldName)) {
                     deserializedApiKVReferenceProperties.details = reader.getString();
                 } else if ("source".equals(fieldName)) {
-                    deserializedApiKVReferenceProperties.source = ConfigReferenceSource.fromString(reader.getString());
+                    deserializedApiKVReferenceProperties.source
+                        = ApiKVReferencePropertiesSource.fromString(reader.getString());
                 } else if ("activeVersion".equals(fieldName)) {
                     deserializedApiKVReferenceProperties.activeVersion = reader.getString();
                 } else {

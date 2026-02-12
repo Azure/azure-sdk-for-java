@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class SiteCertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
      * CreateOrUpdateSiteCertificate.json
      */
     /**

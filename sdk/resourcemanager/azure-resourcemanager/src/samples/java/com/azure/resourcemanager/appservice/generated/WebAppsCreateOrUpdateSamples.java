@@ -18,8 +18,10 @@ import com.azure.resourcemanager.appservice.models.FunctionsRuntime;
 import com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency;
 import com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggers;
 import com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp;
+import com.azure.resourcemanager.appservice.models.FunctionsSiteUpdateStrategy;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.RuntimeName;
+import com.azure.resourcemanager.appservice.models.SiteUpdateStrategyType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +31,7 @@ import java.util.Map;
  */
 public final class WebAppsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
      * CreateOrUpdateFunctionAppFlexConsumptionWithDetails.json
      */
     /**
@@ -65,12 +67,14 @@ public final class WebAppsCreateOrUpdateSamples {
                         .withMaximumInstanceCount(100)
                         .withInstanceMemoryMB(2048)
                         .withTriggers(new FunctionsScaleAndConcurrencyTriggers()
-                            .withHttp(new FunctionsScaleAndConcurrencyTriggersHttp().withPerInstanceConcurrency(16))))),
+                            .withHttp(new FunctionsScaleAndConcurrencyTriggersHttp().withPerInstanceConcurrency(16))))
+                    .withSiteUpdateStrategy(
+                        new FunctionsSiteUpdateStrategy().withType(SiteUpdateStrategyType.ROLLING_UPDATE))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
      * CreateOrUpdateFunctionAppFlexConsumption.json
      */
     /**
@@ -100,13 +104,15 @@ public final class WebAppsCreateOrUpdateSamples {
                                 .withStorageAccountConnectionStringName("TheAppSettingName"))))
                     .withRuntime(new FunctionsRuntime().withName(RuntimeName.PYTHON).withVersion("3.11"))
                     .withScaleAndConcurrency(
-                        new FunctionsScaleAndConcurrency().withMaximumInstanceCount(100).withInstanceMemoryMB(2048))),
+                        new FunctionsScaleAndConcurrency().withMaximumInstanceCount(100).withInstanceMemoryMB(2048))
+                    .withSiteUpdateStrategy(
+                        new FunctionsSiteUpdateStrategy().withType(SiteUpdateStrategyType.ROLLING_UPDATE))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/CreateOrUpdateWebApp.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/CreateOrUpdateWebApp.json
      */
     /**
      * Sample code: Create or Update web app.
@@ -127,7 +133,7 @@ public final class WebAppsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/CloneWebApp.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/CloneWebApp.json
      */
     /**
      * Sample code: Clone web app.

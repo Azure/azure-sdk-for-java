@@ -9,9 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetNetworkTracesV2Samples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/GetWebSiteNetworkTraces.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/
+     * GetWebSiteNetworkTraces_SlotV2.json
      */
     /**
      * Sample code: Get NetworkTraces for a site.

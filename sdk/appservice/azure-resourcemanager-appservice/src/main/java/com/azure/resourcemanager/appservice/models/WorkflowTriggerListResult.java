@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,17 +15,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The list of workflow triggers.
+ * The response of a WorkflowTrigger list operation.
  */
 @Fluent
 public final class WorkflowTriggerListResult implements JsonSerializable<WorkflowTriggerListResult> {
     /*
-     * A list of workflow triggers.
+     * The WorkflowTrigger items on this page
      */
     private List<WorkflowTriggerInner> value;
 
     /*
-     * The URL to get the next set of results.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -35,7 +36,7 @@ public final class WorkflowTriggerListResult implements JsonSerializable<Workflo
     }
 
     /**
-     * Get the value property: A list of workflow triggers.
+     * Get the value property: The WorkflowTrigger items on this page.
      * 
      * @return the value value.
      */
@@ -44,7 +45,7 @@ public final class WorkflowTriggerListResult implements JsonSerializable<Workflo
     }
 
     /**
-     * Set the value property: A list of workflow triggers.
+     * Set the value property: The WorkflowTrigger items on this page.
      * 
      * @param value the value value to set.
      * @return the WorkflowTriggerListResult object itself.
@@ -55,7 +56,7 @@ public final class WorkflowTriggerListResult implements JsonSerializable<Workflo
     }
 
     /**
-     * Get the nextLink property: The URL to get the next set of results.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -64,7 +65,7 @@ public final class WorkflowTriggerListResult implements JsonSerializable<Workflo
     }
 
     /**
-     * Set the nextLink property: The URL to get the next set of results.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the WorkflowTriggerListResult object itself.
@@ -80,10 +81,16 @@ public final class WorkflowTriggerListResult implements JsonSerializable<Workflo
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property value in model WorkflowTriggerListResult"));
+        } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowTriggerListResult.class);
 
     /**
      * {@inheritDoc}
@@ -102,6 +109,7 @@ public final class WorkflowTriggerListResult implements JsonSerializable<Workflo
      * @param jsonReader The JsonReader being read.
      * @return An instance of WorkflowTriggerListResult if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WorkflowTriggerListResult.
      */
     public static WorkflowTriggerListResult fromJson(JsonReader jsonReader) throws IOException {

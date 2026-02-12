@@ -15,17 +15,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ApiKVReferenceCollection model.
+ * Paged collection of ApiKVReference items.
  */
 @Fluent
 public final class ApiKVReferenceCollection implements JsonSerializable<ApiKVReferenceCollection> {
     /*
-     * Collection of resources.
+     * The ApiKVReference items on this page
      */
     private List<ApiKVReferenceInner> value;
 
     /*
-     * Link to next page of resources.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -36,7 +36,7 @@ public final class ApiKVReferenceCollection implements JsonSerializable<ApiKVRef
     }
 
     /**
-     * Get the value property: Collection of resources.
+     * Get the value property: The ApiKVReference items on this page.
      * 
      * @return the value value.
      */
@@ -45,7 +45,7 @@ public final class ApiKVReferenceCollection implements JsonSerializable<ApiKVRef
     }
 
     /**
-     * Set the value property: Collection of resources.
+     * Set the value property: The ApiKVReference items on this page.
      * 
      * @param value the value value to set.
      * @return the ApiKVReferenceCollection object itself.
@@ -56,12 +56,23 @@ public final class ApiKVReferenceCollection implements JsonSerializable<ApiKVRef
     }
 
     /**
-     * Get the nextLink property: Link to next page of resources.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the ApiKVReferenceCollection object itself.
+     */
+    public ApiKVReferenceCollection withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
     }
 
     /**
@@ -87,6 +98,7 @@ public final class ApiKVReferenceCollection implements JsonSerializable<ApiKVRef
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 

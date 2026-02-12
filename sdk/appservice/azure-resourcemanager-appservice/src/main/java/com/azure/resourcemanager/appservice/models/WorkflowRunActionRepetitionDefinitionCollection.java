@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,14 +21,14 @@ import java.util.List;
 public final class WorkflowRunActionRepetitionDefinitionCollection
     implements JsonSerializable<WorkflowRunActionRepetitionDefinitionCollection> {
     /*
-     * The link used to get the next page of recommendations.
-     */
-    private String nextLink;
-
-    /*
-     * The value property.
+     * The WorkflowRunActionRepetitionDefinition items on this page
      */
     private List<WorkflowRunActionRepetitionDefinitionInner> value;
+
+    /*
+     * The link to the next page of items
+     */
+    private String nextLink;
 
     /**
      * Creates an instance of WorkflowRunActionRepetitionDefinitionCollection class.
@@ -36,27 +37,7 @@ public final class WorkflowRunActionRepetitionDefinitionCollection
     }
 
     /**
-     * Get the nextLink property: The link used to get the next page of recommendations.
-     * 
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The link used to get the next page of recommendations.
-     * 
-     * @param nextLink the nextLink value to set.
-     * @return the WorkflowRunActionRepetitionDefinitionCollection object itself.
-     */
-    public WorkflowRunActionRepetitionDefinitionCollection withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
-     * Get the value property: The value property.
+     * Get the value property: The WorkflowRunActionRepetitionDefinition items on this page.
      * 
      * @return the value value.
      */
@@ -65,7 +46,7 @@ public final class WorkflowRunActionRepetitionDefinitionCollection
     }
 
     /**
-     * Set the value property: The value property.
+     * Set the value property: The WorkflowRunActionRepetitionDefinition items on this page.
      * 
      * @param value the value value to set.
      * @return the WorkflowRunActionRepetitionDefinitionCollection object itself.
@@ -77,15 +58,41 @@ public final class WorkflowRunActionRepetitionDefinitionCollection
     }
 
     /**
+     * Get the nextLink property: The link to the next page of items.
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the WorkflowRunActionRepetitionDefinitionCollection object itself.
+     */
+    public WorkflowRunActionRepetitionDefinitionCollection withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model WorkflowRunActionRepetitionDefinitionCollection"));
+        } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowRunActionRepetitionDefinitionCollection.class);
 
     /**
      * {@inheritDoc}
@@ -93,8 +100,8 @@ public final class WorkflowRunActionRepetitionDefinitionCollection
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("nextLink", this.nextLink);
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,6 +111,7 @@ public final class WorkflowRunActionRepetitionDefinitionCollection
      * @param jsonReader The JsonReader being read.
      * @return An instance of WorkflowRunActionRepetitionDefinitionCollection if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WorkflowRunActionRepetitionDefinitionCollection.
      */
     public static WorkflowRunActionRepetitionDefinitionCollection fromJson(JsonReader jsonReader) throws IOException {
@@ -114,12 +122,12 @@ public final class WorkflowRunActionRepetitionDefinitionCollection
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("nextLink".equals(fieldName)) {
-                    deserializedWorkflowRunActionRepetitionDefinitionCollection.nextLink = reader.getString();
-                } else if ("value".equals(fieldName)) {
+                if ("value".equals(fieldName)) {
                     List<WorkflowRunActionRepetitionDefinitionInner> value
                         = reader.readArray(reader1 -> WorkflowRunActionRepetitionDefinitionInner.fromJson(reader1));
                     deserializedWorkflowRunActionRepetitionDefinitionCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionDefinitionCollection.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

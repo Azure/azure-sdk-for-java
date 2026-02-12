@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class WebAppsListBackupStatusSecretsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/GetWebAppBackupWithSecrets
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-05-01/examples/GetWebAppBackupWithSecrets
      * .json
      */
     /**

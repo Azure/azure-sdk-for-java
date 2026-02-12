@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -16,21 +16,31 @@ import java.util.Map;
  * The base resource type.
  */
 @Fluent
-public class WorkflowResource extends Resource {
+public class WorkflowResource implements JsonSerializable<WorkflowResource> {
     /*
-     * The type of the resource.
+     * The resource id.
      */
-    private String type;
+    private String id;
 
     /*
-     * The name of the resource.
+     * Gets the resource name.
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Gets the resource type.
      */
-    private String id;
+    private String type;
+
+    /*
+     * The resource location.
+     */
+    private String location;
+
+    /*
+     * The resource tags.
+     */
+    private Map<String, String> tags;
 
     /**
      * Creates an instance of WorkflowResource class.
@@ -39,50 +49,102 @@ public class WorkflowResource extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the id property: The resource id.
      * 
      * @return the id value.
      */
-    @Override
     public String id() {
         return this.id;
     }
 
     /**
-     * {@inheritDoc}
+     * Set the id property: The resource id.
+     * 
+     * @param id the id value to set.
+     * @return the WorkflowResource object itself.
      */
-    @Override
-    public WorkflowResource withLocation(String location) {
-        super.withLocation(location);
+    WorkflowResource withId(String id) {
+        this.id = id;
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the name property: Gets the resource name.
+     * 
+     * @return the name value.
      */
-    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Gets the resource name.
+     * 
+     * @param name the name value to set.
+     * @return the WorkflowResource object itself.
+     */
+    WorkflowResource withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the type property: Gets the resource type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Gets the resource type.
+     * 
+     * @param type the type value to set.
+     * @return the WorkflowResource object itself.
+     */
+    WorkflowResource withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * Get the location property: The resource location.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The resource location.
+     * 
+     * @param location the location value to set.
+     * @return the WorkflowResource object itself.
+     */
+    public WorkflowResource withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: The resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: The resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the WorkflowResource object itself.
+     */
     public WorkflowResource withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        this.tags = tags;
         return this;
     }
 
@@ -100,8 +162,8 @@ public class WorkflowResource extends Resource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("location", location());
-        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -111,7 +173,6 @@ public class WorkflowResource extends Resource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of WorkflowResource if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WorkflowResource.
      */
     public static WorkflowResource fromJson(JsonReader jsonReader) throws IOException {
@@ -128,10 +189,10 @@ public class WorkflowResource extends Resource {
                 } else if ("type".equals(fieldName)) {
                     deserializedWorkflowResource.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
-                    deserializedWorkflowResource.withLocation(reader.getString());
+                    deserializedWorkflowResource.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedWorkflowResource.withTags(tags);
+                    deserializedWorkflowResource.tags = tags;
                 } else {
                     reader.skipChildren();
                 }
