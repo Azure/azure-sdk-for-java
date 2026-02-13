@@ -7,7 +7,6 @@ import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryCustomizer;
 import jakarta.jms.ConnectionFactory;
-import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -15,7 +14,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.jms.autoconfigure.DefaultJmsListenerContainerFactoryConfigurer;
-import org.springframework.boot.jms.autoconfigure.JmsPoolConnectionFactoryFactory;
 import org.springframework.boot.jms.autoconfigure.JmsProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +21,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
-import org.springframework.jms.connection.CachingConnectionFactory;
 
 import java.util.stream.Collectors;
 
@@ -71,8 +68,9 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
     private final JmsProperties jmsProperties;
     
     // Memoized dedicated receiver ConnectionFactory instances to avoid duplicates and enable lifecycle management
-    private volatile CachingConnectionFactory dedicatedCachingConnectionFactory;
-    private volatile JmsPoolConnectionFactory dedicatedPoolConnectionFactory;
+    // Use ConnectionFactory type instead of concrete types to avoid NoClassDefFoundError when optional dependencies are missing
+    private volatile ConnectionFactory dedicatedCachingConnectionFactory;
+    private volatile ConnectionFactory dedicatedPoolConnectionFactory;
     private volatile ServiceBusJmsConnectionFactory dedicatedServiceBusConnectionFactory;
 
     ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties,
@@ -124,13 +122,13 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
 
         switch (getFactoryType(poolEnabledResult, cacheEnabledResult, DECISION_TABLE)) {
             case POOL:
-                if (connectionFactory instanceof JmsPoolConnectionFactory) {
+                if (isJmsPoolConnectionFactory(connectionFactory)) {
                     return connectionFactory;
                 } else {
                     return getOrCreateDedicatedPoolConnectionFactory();
                 }
             case CACHE:
-                if (connectionFactory instanceof CachingConnectionFactory) {
+                if (isCachingConnectionFactory(connectionFactory)) {
                     return connectionFactory;
                 } else {
                     return getOrCreateDedicatedCachingConnectionFactory();
@@ -140,22 +138,48 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
         }
     }
 
-    private synchronized JmsPoolConnectionFactory getOrCreateDedicatedPoolConnectionFactory() {
+    private boolean isJmsPoolConnectionFactory(ConnectionFactory connectionFactory) {
+        return "org.messaginghub.pooled.jms.JmsPoolConnectionFactory".equals(connectionFactory.getClass().getName());
+    }
+
+    private boolean isCachingConnectionFactory(ConnectionFactory connectionFactory) {
+        return "org.springframework.jms.connection.CachingConnectionFactory".equals(connectionFactory.getClass().getName());
+    }
+
+    private synchronized ConnectionFactory getOrCreateDedicatedPoolConnectionFactory() {
         if (dedicatedPoolConnectionFactory == null) {
-            dedicatedPoolConnectionFactory = new JmsPoolConnectionFactoryFactory(azureServiceBusJMSProperties.getPool())
-                .createPooledConnectionFactory(createServiceBusJmsConnectionFactory());
+            try {
+                // Use reflection to create JmsPoolConnectionFactory to avoid hard dependency
+                Class<?> factoryClass = Class.forName("org.springframework.boot.jms.autoconfigure.JmsPoolConnectionFactoryFactory");
+                Object factoryInstance = factoryClass.getConstructor(JmsProperties.Pool.class)
+                    .newInstance(azureServiceBusJMSProperties.getPool());
+                dedicatedPoolConnectionFactory = (ConnectionFactory) factoryClass
+                    .getMethod("createPooledConnectionFactory", ConnectionFactory.class)
+                    .invoke(factoryInstance, createServiceBusJmsConnectionFactory());
+            } catch (Exception e) {
+                throw new IllegalStateException("Failed to create JmsPoolConnectionFactory", e);
+            }
         }
         return dedicatedPoolConnectionFactory;
     }
 
-    private synchronized CachingConnectionFactory getOrCreateDedicatedCachingConnectionFactory() {
+    private synchronized ConnectionFactory getOrCreateDedicatedCachingConnectionFactory() {
         if (dedicatedCachingConnectionFactory == null) {
-            CachingConnectionFactory cacheFactory = new CachingConnectionFactory(createServiceBusJmsConnectionFactory());
-            JmsProperties.Cache cacheProperties = jmsProperties.getCache();
-            cacheFactory.setCacheConsumers(cacheProperties.isConsumers());
-            cacheFactory.setCacheProducers(cacheProperties.isProducers());
-            cacheFactory.setSessionCacheSize(cacheProperties.getSessionCacheSize());
-            dedicatedCachingConnectionFactory = cacheFactory;
+            try {
+                // Use reflection to create CachingConnectionFactory to avoid hard dependency
+                Class<?> cachingClass = Class.forName("org.springframework.jms.connection.CachingConnectionFactory");
+                Object cacheFactory = cachingClass.getConstructor(ConnectionFactory.class)
+                    .newInstance(createServiceBusJmsConnectionFactory());
+                
+                JmsProperties.Cache cacheProperties = jmsProperties.getCache();
+                cachingClass.getMethod("setCacheConsumers", boolean.class).invoke(cacheFactory, cacheProperties.isConsumers());
+                cachingClass.getMethod("setCacheProducers", boolean.class).invoke(cacheFactory, cacheProperties.isProducers());
+                cachingClass.getMethod("setSessionCacheSize", int.class).invoke(cacheFactory, cacheProperties.getSessionCacheSize());
+                
+                dedicatedCachingConnectionFactory = (ConnectionFactory) cacheFactory;
+            } catch (Exception e) {
+                throw new IllegalStateException("Failed to create CachingConnectionFactory", e);
+            }
         }
         return dedicatedCachingConnectionFactory;
     }
@@ -199,11 +223,24 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
     @Override
     public void destroy() throws Exception {
         // Close dedicated ConnectionFactory instances to prevent resource leaks
-        if (dedicatedPoolConnectionFactory != null) {
-            dedicatedPoolConnectionFactory.stop();
+        // Use class name checks to avoid NoClassDefFoundError when optional dependencies are missing
+        if (dedicatedPoolConnectionFactory != null 
+            && "org.messaginghub.pooled.jms.JmsPoolConnectionFactory".equals(dedicatedPoolConnectionFactory.getClass().getName())) {
+            try {
+                // Use reflection to call stop() to avoid hard dependency
+                dedicatedPoolConnectionFactory.getClass().getMethod("stop").invoke(dedicatedPoolConnectionFactory);
+            } catch (Exception e) {
+                // Log but don't fail if cleanup fails
+            }
         }
-        if (dedicatedCachingConnectionFactory != null) {
-            dedicatedCachingConnectionFactory.destroy();
+        if (dedicatedCachingConnectionFactory != null 
+            && "org.springframework.jms.connection.CachingConnectionFactory".equals(dedicatedCachingConnectionFactory.getClass().getName())) {
+            try {
+                // Use reflection to call destroy() to avoid hard dependency
+                dedicatedCachingConnectionFactory.getClass().getMethod("destroy").invoke(dedicatedCachingConnectionFactory);
+            } catch (Exception e) {
+                // Log but don't fail if cleanup fails
+            }
         }
         // ServiceBusJmsConnectionFactory doesn't have a close method, so no cleanup needed
     }
