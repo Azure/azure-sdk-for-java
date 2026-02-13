@@ -161,9 +161,9 @@ public final class SearchAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Long> getDocumentCount() {
-        // Generated convenience method for hiddenGeneratedgetDocumentCountWithResponse
+        // Generated convenience method for hiddenGeneratedGetDocumentCountWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetDocumentCountWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetDocumentCountWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Long.class));
     }
 
@@ -259,7 +259,7 @@ public final class SearchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LookupDocument> getDocument(String key, String querySourceAuthorization, Boolean enableElevatedRead,
         List<String> selectedFields) {
-        // Generated convenience method for hiddenGeneratedgetDocumentWithResponse
+        // Generated convenience method for hiddenGeneratedGetDocumentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (querySourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
@@ -276,7 +276,7 @@ public final class SearchAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return hiddenGeneratedgetDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(LookupDocument.class));
     }
 
@@ -295,9 +295,9 @@ public final class SearchAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LookupDocument> getDocument(String key) {
-        // Generated convenience method for hiddenGeneratedgetDocumentWithResponse
+        // Generated convenience method for hiddenGeneratedGetDocumentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(LookupDocument.class));
     }
 
@@ -985,7 +985,7 @@ public final class SearchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetDocumentCountWithResponse(RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedGetDocumentCountWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getDocumentCountWithResponseAsync(requestOptions);
     }
 
@@ -1033,7 +1033,7 @@ public final class SearchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetDocumentWithResponse(String key, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedGetDocumentWithResponse(String key, RequestOptions requestOptions) {
         return this.serviceClient.getDocumentWithResponseAsync(key, requestOptions);
     }
 }
