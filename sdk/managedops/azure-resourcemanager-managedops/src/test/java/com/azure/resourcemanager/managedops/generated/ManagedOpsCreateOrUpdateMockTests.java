@@ -26,7 +26,7 @@ public final class ManagedOpsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sku\":{\"name\":\"shurzafbljjgpbto\",\"tier\":\"c\"},\"provisioningState\":\"Succeeded\",\"desiredConfiguration\":{\"changeTrackingAndInventory\":{\"logAnalyticsWorkspaceId\":\"ljavbqid\"},\"azureMonitorInsights\":{\"azureMonitorWorkspaceId\":\"qajzyulpkudjkr\"},\"userAssignedManagedIdentityId\":\"khbzhfepgzg\",\"defenderForServers\":\"Disable\",\"defenderCspm\":\"Enable\"},\"services\":{\"changeTrackingAndInventory\":{\"dcrId\":\"xscpaierhhbc\",\"enablementStatus\":\"Enabled\"},\"azureMonitorInsights\":{\"dcrId\":\"ummajtjaod\",\"enablementStatus\":\"Disabled\"},\"azureUpdateManager\":{\"enablementStatus\":\"InProgress\"},\"azurePolicyAndMachineConfiguration\":{\"enablementStatus\":\"InProgress\"},\"defenderForServers\":{\"enablementStatus\":\"Enabled\"},\"defenderCspm\":{\"enablementStatus\":\"Failed\"}},\"policyAssignmentProperties\":{\"policyInitiativeAssignmentId\":\"okaj\"}},\"id\":\"npime\",\"name\":\"gstxgcp\",\"type\":\"dg\"}";
+            = "{\"properties\":{\"sku\":{\"name\":\"mkljavb\",\"tier\":\"idtqajzyu\"},\"provisioningState\":\"Succeeded\",\"desiredConfiguration\":{\"changeTrackingAndInventory\":{\"logAnalyticsWorkspaceId\":\"u\"},\"azureMonitorInsights\":{\"azureMonitorWorkspaceId\":\"jkrlkhbzhfepg\"},\"userAssignedManagedIdentityId\":\"gqexzlocxs\",\"defenderForServers\":\"Enable\",\"defenderCspm\":\"Disable\"},\"services\":{\"changeTrackingAndInventory\":{\"dcrId\":\"hbcsgl\",\"enablementStatus\":\"Failed\"},\"azureMonitorInsights\":{\"dcrId\":\"a\",\"enablementStatus\":\"Failed\"},\"azureUpdateManager\":{\"enablementStatus\":\"InProgress\"},\"azurePolicyAndMachineConfiguration\":{\"enablementStatus\":\"Enabled\"},\"defenderForServers\":{\"enablementStatus\":\"Disabled\"},\"defenderCspm\":{\"enablementStatus\":\"InProgress\"}},\"policyAssignmentProperties\":{\"policyInitiativeAssignmentId\":\"dxkqpx\"}},\"id\":\"ajionpimexgstxg\",\"name\":\"po\",\"type\":\"gmaajrm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,25 +36,25 @@ public final class ManagedOpsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedOp response = manager.managedOps()
-            .define("ymwisdkft")
+            .define("yc")
             .withProperties(new ManagedOpsProperties().withDesiredConfiguration(new DesiredConfiguration()
                 .withChangeTrackingAndInventory(
-                    new ChangeTrackingConfiguration().withLogAnalyticsWorkspaceId("rpymzidnsez"))
-                .withAzureMonitorInsights(new AzureMonitorConfiguration().withAzureMonitorWorkspaceId("xtbzsgfyccsne"))
-                .withUserAssignedManagedIdentityId("mdwzjeiachboo")
-                .withDefenderForServers(DesiredConfigurationDefenderForServers.ENABLE)
+                    new ChangeTrackingConfiguration().withLogAnalyticsWorkspaceId("sfqpteehz"))
+                .withAzureMonitorInsights(new AzureMonitorConfiguration().withAzureMonitorWorkspaceId("vypyqrimzinpv"))
+                .withUserAssignedManagedIdentityId("wjdk")
+                .withDefenderForServers(DesiredConfigurationDefenderForServers.DISABLE)
                 .withDefenderCspm(DesiredConfigurationDefenderForServers.ENABLE)))
             .create();
 
-        Assertions.assertEquals("ljavbqid",
+        Assertions.assertEquals("u",
             response.properties().desiredConfiguration().changeTrackingAndInventory().logAnalyticsWorkspaceId());
-        Assertions.assertEquals("qajzyulpkudjkr",
+        Assertions.assertEquals("jkrlkhbzhfepg",
             response.properties().desiredConfiguration().azureMonitorInsights().azureMonitorWorkspaceId());
-        Assertions.assertEquals("khbzhfepgzg",
+        Assertions.assertEquals("gqexzlocxs",
             response.properties().desiredConfiguration().userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
-            response.properties().desiredConfiguration().defenderForServers());
         Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
+            response.properties().desiredConfiguration().defenderForServers());
+        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
             response.properties().desiredConfiguration().defenderCspm());
     }
 }

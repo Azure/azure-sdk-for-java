@@ -13,19 +13,19 @@ public final class DesiredConfigurationUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DesiredConfigurationUpdate model
-            = BinaryData.fromString("{\"defenderForServers\":\"Enable\",\"defenderCspm\":\"Disable\"}")
+            = BinaryData.fromString("{\"defenderForServers\":\"Disable\",\"defenderCspm\":\"Enable\"}")
                 .toObject(DesiredConfigurationUpdate.class);
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE, model.defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE, model.defenderCspm());
+        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE, model.defenderForServers());
+        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE, model.defenderCspm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DesiredConfigurationUpdate model
-            = new DesiredConfigurationUpdate().withDefenderForServers(DesiredConfigurationDefenderForServers.ENABLE)
-                .withDefenderCspm(DesiredConfigurationDefenderForServers.DISABLE);
+            = new DesiredConfigurationUpdate().withDefenderForServers(DesiredConfigurationDefenderForServers.DISABLE)
+                .withDefenderCspm(DesiredConfigurationDefenderForServers.ENABLE);
         model = BinaryData.fromObject(model).toObject(DesiredConfigurationUpdate.class);
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE, model.defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE, model.defenderCspm());
+        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE, model.defenderForServers());
+        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE, model.defenderCspm());
     }
 }
