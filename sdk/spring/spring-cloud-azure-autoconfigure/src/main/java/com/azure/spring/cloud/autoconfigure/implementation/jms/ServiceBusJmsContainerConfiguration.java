@@ -231,7 +231,7 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
                 // Use reflection to call stop() to avoid hard dependency
                 dedicatedPoolConnectionFactory.getClass().getMethod("stop").invoke(dedicatedPoolConnectionFactory);
             } catch (Exception e) {
-                // Log but don't fail if cleanup fails
+                LOGGER.warn("Failed to stop JmsPoolConnectionFactory during shutdown", e);
             }
         }
         if (dedicatedCachingConnectionFactory != null 
@@ -240,7 +240,7 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
                 // Use reflection to call destroy() to avoid hard dependency
                 dedicatedCachingConnectionFactory.getClass().getMethod("destroy").invoke(dedicatedCachingConnectionFactory);
             } catch (Exception e) {
-                // Log but don't fail if cleanup fails
+                LOGGER.warn("Failed to destroy CachingConnectionFactory during shutdown", e);
             }
         }
         // ServiceBusJmsConnectionFactory doesn't have a close method, so no cleanup needed
