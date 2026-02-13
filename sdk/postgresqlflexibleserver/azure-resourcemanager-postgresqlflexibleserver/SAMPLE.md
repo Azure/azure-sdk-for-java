@@ -1553,11 +1553,11 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryptionType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.GeographicallyRedundantBackup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailabilityMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.IdentityType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MicrosoftEntraAuth;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PasswordBasedAuth;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgreSqlFlexibleServerHighAvailabilityMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerPublicNetworkAccessState;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
@@ -1621,8 +1621,7 @@ public final class ServersCreateOrUpdateSamples {
             .withBackup(
                 new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(GeographicallyRedundantBackup.ENABLED))
             .withNetwork(new Network().withPublicNetworkAccess(ServerPublicNetworkAccessState.ENABLED))
-            .withHighAvailability(
-                new HighAvailability().withMode(PostgreSqlFlexibleServerHighAvailabilityMode.ZONE_REDUNDANT))
+            .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.ZONE_REDUNDANT))
             .withAvailabilityZone("1")
             .withCreateMode(CreateMode.CREATE)
             .create();
@@ -1699,8 +1698,7 @@ public final class ServersCreateOrUpdateSamples {
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/virtualNetworks/examplevirtualnetwork/subnets/examplesubnet")
                 .withPrivateDnsZoneArmResourceId(
                     "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourcegroups/exampleresourcegroup/providers/Microsoft.Network/privateDnsZones/exampleprivatednszone.postgres.database.azure.com"))
-            .withHighAvailability(
-                new HighAvailability().withMode(PostgreSqlFlexibleServerHighAvailabilityMode.ZONE_REDUNDANT))
+            .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.ZONE_REDUNDANT))
             .withAvailabilityZone("1")
             .withCreateMode(CreateMode.CREATE)
             .create();
@@ -1799,8 +1797,7 @@ public final class ServersCreateOrUpdateSamples {
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/virtualNetworks/examplevirtualnetwork/subnets/examplesubnet")
                 .withPrivateDnsZoneArmResourceId(
                     "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/privateDnsZones/exampleprivatednszone.private.postgres.database"))
-            .withHighAvailability(
-                new HighAvailability().withMode(PostgreSqlFlexibleServerHighAvailabilityMode.SAME_ZONE))
+            .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.SAME_ZONE))
             .withAvailabilityZone("1")
             .withCreateMode(CreateMode.CREATE)
             .create();
@@ -1830,8 +1827,7 @@ public final class ServersCreateOrUpdateSamples {
             .withBackup(
                 new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED))
             .withNetwork(new Network().withPublicNetworkAccess(ServerPublicNetworkAccessState.DISABLED))
-            .withHighAvailability(
-                new HighAvailability().withMode(PostgreSqlFlexibleServerHighAvailabilityMode.DISABLED))
+            .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.DISABLED))
             .withCreateMode(CreateMode.CREATE)
             .withCluster(new Cluster().withClusterSize(2).withDefaultDatabaseName("clusterdb"))
             .create();
@@ -1892,8 +1888,7 @@ public final class ServersCreateOrUpdateSamples {
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/virtualNetworks/examplevirtualnetwork/subnets/examplesubnet")
                 .withPrivateDnsZoneArmResourceId(
                     "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourcegroups/exampleresourcegroup/providers/Microsoft.Network/privateDnsZones/exampleprivatednszone.postgres.database.azure.com"))
-            .withHighAvailability(
-                new HighAvailability().withMode(PostgreSqlFlexibleServerHighAvailabilityMode.DISABLED))
+            .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.DISABLED))
             .withAvailabilityZone("1")
             .withCreateMode(CreateMode.CREATE)
             .create();
@@ -1936,8 +1931,7 @@ public final class ServersCreateOrUpdateSamples {
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/virtualNetworks/examplevirtualnetwork/subnets/examplesubnet")
                 .withPrivateDnsZoneArmResourceId(
                     "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourcegroups/exampleresourcegroup/providers/Microsoft.Network/privateDnsZones/exampleprivatednszone.postgres.database.azure.com"))
-            .withHighAvailability(
-                new HighAvailability().withMode(PostgreSqlFlexibleServerHighAvailabilityMode.ZONE_REDUNDANT))
+            .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.ZONE_REDUNDANT))
             .withAvailabilityZone("1")
             .withCreateMode(CreateMode.CREATE)
             .create();

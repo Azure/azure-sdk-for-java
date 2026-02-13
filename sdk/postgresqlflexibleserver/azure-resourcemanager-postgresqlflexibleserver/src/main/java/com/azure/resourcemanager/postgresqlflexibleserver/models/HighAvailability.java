@@ -19,7 +19,7 @@ public final class HighAvailability implements JsonSerializable<HighAvailability
     /*
      * High availability mode for a server.
      */
-    private PostgreSqlFlexibleServerHighAvailabilityMode mode;
+    private HighAvailabilityMode mode;
 
     /*
      * Possible states of the standby server created when high availability is set to SameZone or ZoneRedundant.
@@ -43,7 +43,7 @@ public final class HighAvailability implements JsonSerializable<HighAvailability
      * 
      * @return the mode value.
      */
-    public PostgreSqlFlexibleServerHighAvailabilityMode mode() {
+    public HighAvailabilityMode mode() {
         return this.mode;
     }
 
@@ -53,7 +53,7 @@ public final class HighAvailability implements JsonSerializable<HighAvailability
      * @param mode the mode value to set.
      * @return the HighAvailability object itself.
      */
-    public HighAvailability withMode(PostgreSqlFlexibleServerHighAvailabilityMode mode) {
+    public HighAvailability withMode(HighAvailabilityMode mode) {
         this.mode = mode;
         return this;
     }
@@ -117,8 +117,7 @@ public final class HighAvailability implements JsonSerializable<HighAvailability
                 reader.nextToken();
 
                 if ("mode".equals(fieldName)) {
-                    deserializedHighAvailability.mode
-                        = PostgreSqlFlexibleServerHighAvailabilityMode.fromString(reader.getString());
+                    deserializedHighAvailability.mode = HighAvailabilityMode.fromString(reader.getString());
                 } else if ("state".equals(fieldName)) {
                     deserializedHighAvailability.state = HighAvailabilityState.fromString(reader.getString());
                 } else if ("standbyAvailabilityZone".equals(fieldName)) {

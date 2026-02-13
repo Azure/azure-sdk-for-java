@@ -6,7 +6,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailabilityForPatch;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgreSqlFlexibleServerHighAvailabilityMode;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailabilityMode;
 import org.junit.jupiter.api.Assertions;
 
 public final class HighAvailabilityForPatchTests {
@@ -16,17 +16,16 @@ public final class HighAvailabilityForPatchTests {
             .fromString(
                 "{\"mode\":\"ZoneRedundant\",\"state\":\"FailingOver\",\"standbyAvailabilityZone\":\"ertgccymva\"}")
             .toObject(HighAvailabilityForPatch.class);
-        Assertions.assertEquals(PostgreSqlFlexibleServerHighAvailabilityMode.ZONE_REDUNDANT, model.mode());
+        Assertions.assertEquals(HighAvailabilityMode.ZONE_REDUNDANT, model.mode());
         Assertions.assertEquals("ertgccymva", model.standbyAvailabilityZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HighAvailabilityForPatch model
-            = new HighAvailabilityForPatch().withMode(PostgreSqlFlexibleServerHighAvailabilityMode.ZONE_REDUNDANT)
-                .withStandbyAvailabilityZone("ertgccymva");
+        HighAvailabilityForPatch model = new HighAvailabilityForPatch().withMode(HighAvailabilityMode.ZONE_REDUNDANT)
+            .withStandbyAvailabilityZone("ertgccymva");
         model = BinaryData.fromObject(model).toObject(HighAvailabilityForPatch.class);
-        Assertions.assertEquals(PostgreSqlFlexibleServerHighAvailabilityMode.ZONE_REDUNDANT, model.mode());
+        Assertions.assertEquals(HighAvailabilityMode.ZONE_REDUNDANT, model.mode());
         Assertions.assertEquals("ertgccymva", model.standbyAvailabilityZone());
     }
 }

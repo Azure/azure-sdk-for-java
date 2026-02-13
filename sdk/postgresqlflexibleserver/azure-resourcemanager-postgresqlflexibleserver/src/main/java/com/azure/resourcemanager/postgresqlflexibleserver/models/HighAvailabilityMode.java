@@ -12,6 +12,11 @@ import java.util.Collection;
  */
 public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailabilityMode> {
     /**
+     * Static value Disabled for HighAvailabilityMode.
+     */
+    public static final HighAvailabilityMode DISABLED = fromString("Disabled");
+
+    /**
      * Static value ZoneRedundant for HighAvailabilityMode.
      */
     public static final HighAvailabilityMode ZONE_REDUNDANT = fromString("ZoneRedundant");

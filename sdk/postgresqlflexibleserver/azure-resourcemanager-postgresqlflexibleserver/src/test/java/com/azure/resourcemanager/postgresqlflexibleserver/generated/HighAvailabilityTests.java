@@ -6,7 +6,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgreSqlFlexibleServerHighAvailabilityMode;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailabilityMode;
 import org.junit.jupiter.api.Assertions;
 
 public final class HighAvailabilityTests {
@@ -15,17 +15,16 @@ public final class HighAvailabilityTests {
         HighAvailability model = BinaryData
             .fromString("{\"mode\":\"ZoneRedundant\",\"state\":\"NotEnabled\",\"standbyAvailabilityZone\":\"ah\"}")
             .toObject(HighAvailability.class);
-        Assertions.assertEquals(PostgreSqlFlexibleServerHighAvailabilityMode.ZONE_REDUNDANT, model.mode());
+        Assertions.assertEquals(HighAvailabilityMode.ZONE_REDUNDANT, model.mode());
         Assertions.assertEquals("ah", model.standbyAvailabilityZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HighAvailability model
-            = new HighAvailability().withMode(PostgreSqlFlexibleServerHighAvailabilityMode.ZONE_REDUNDANT)
-                .withStandbyAvailabilityZone("ah");
+            = new HighAvailability().withMode(HighAvailabilityMode.ZONE_REDUNDANT).withStandbyAvailabilityZone("ah");
         model = BinaryData.fromObject(model).toObject(HighAvailability.class);
-        Assertions.assertEquals(PostgreSqlFlexibleServerHighAvailabilityMode.ZONE_REDUNDANT, model.mode());
+        Assertions.assertEquals(HighAvailabilityMode.ZONE_REDUNDANT, model.mode());
         Assertions.assertEquals("ah", model.standbyAvailabilityZone());
     }
 }

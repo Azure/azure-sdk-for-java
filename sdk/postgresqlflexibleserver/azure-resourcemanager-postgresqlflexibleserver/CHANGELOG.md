@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (2026-02-12)
+## 2.1.0-beta.1 (2026-02-13)
 
 - Azure Resource Manager PostgreSql client library for Java. This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Azure Database for PostgreSQL management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, network configuration, security alert policies, log files and configurations with new business model. Package api-version 2026-01-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -53,9 +53,7 @@
 
 #### `models.HighAvailability` was modified
 
-* `models.HighAvailabilityMode mode()` -> `models.PostgreSqlFlexibleServerHighAvailabilityMode mode()`
 * `validate()` was removed
-* `withMode(models.HighAvailabilityMode)` was removed
 
 #### `models.VirtualNetworkSubnetUsageParameter` was modified
 
@@ -65,10 +63,10 @@
 
 * `ImpactRecord()` was changed to private access
 * `withAbsoluteValue(java.lang.Double)` was removed
-* `withUnit(java.lang.String)` was removed
 * `withDimensionName(java.lang.String)` was removed
-* `validate()` was removed
+* `withUnit(java.lang.String)` was removed
 * `withQueryId(java.lang.Long)` was removed
+* `validate()` was removed
 
 #### `models.Replica` was modified
 
@@ -77,27 +75,25 @@
 #### `models.ObjectRecommendationDetails` was modified
 
 * `ObjectRecommendationDetails()` was changed to private access
-* `withSchema(java.lang.String)` was removed
 * `withIndexName(java.lang.String)` was removed
-* `withIndexColumns(java.util.List)` was removed
-* `withIndexType(java.lang.String)` was removed
-* `withIncludedColumns(java.util.List)` was removed
 * `withTable(java.lang.String)` was removed
+* `withIndexColumns(java.util.List)` was removed
+* `withIncludedColumns(java.util.List)` was removed
+* `withSchema(java.lang.String)` was removed
+* `withIndexType(java.lang.String)` was removed
 * `withDatabaseName(java.lang.String)` was removed
 * `validate()` was removed
 
 #### `models.CheckNameAvailabilityResponse` was modified
 
-* `models.CheckNameAvailabilityResponse withNameAvailable(java.lang.Boolean)` -> `models.CheckNameAvailabilityResponse withNameAvailable(java.lang.Boolean)`
-* `validate()` was removed
 * `models.CheckNameAvailabilityResponse withReason(models.CheckNameAvailabilityReason)` -> `models.CheckNameAvailabilityResponse withReason(models.CheckNameAvailabilityReason)`
+* `validate()` was removed
 * `models.CheckNameAvailabilityResponse withMessage(java.lang.String)` -> `models.CheckNameAvailabilityResponse withMessage(java.lang.String)`
+* `models.CheckNameAvailabilityResponse withNameAvailable(java.lang.Boolean)` -> `models.CheckNameAvailabilityResponse withNameAvailable(java.lang.Boolean)`
 
 #### `models.HighAvailabilityForPatch` was modified
 
 * `validate()` was removed
-* `withMode(models.HighAvailabilityMode)` was removed
-* `models.HighAvailabilityMode mode()` -> `models.PostgreSqlFlexibleServerHighAvailabilityMode mode()`
 
 #### `models.NameProperty` was modified
 
@@ -151,8 +147,8 @@
 #### `models.ObjectRecommendationPropertiesImplementationDetails` was modified
 
 * `ObjectRecommendationPropertiesImplementationDetails()` was changed to private access
-* `validate()` was removed
 * `withMethod(java.lang.String)` was removed
+* `validate()` was removed
 * `withScript(java.lang.String)` was removed
 
 #### `models.DelegatedSubnetUsage` was modified
@@ -179,8 +175,8 @@
 
 * `ServerSku()` was changed to private access
 * `validate()` was removed
-* `withTier(models.SkuTier)` was removed
 * `withName(java.lang.String)` was removed
+* `withTier(models.SkuTier)` was removed
 
 #### `models.PrivateEndpoint` was modified
 
@@ -197,23 +193,23 @@
 #### `models.DatabaseMigrationState` was modified
 
 * `DatabaseMigrationState()` was changed to private access
-* `withIncomingChanges(java.lang.Integer)` was removed
-* `withMigrationOperation(java.lang.String)` was removed
-* `withMigrationState(models.MigrationDatabaseState)` was removed
-* `withMessage(java.lang.String)` was removed
-* `withCdcUpdateCounter(java.lang.Integer)` was removed
-* `withCdcInsertCounter(java.lang.Integer)` was removed
-* `withLatency(java.lang.Integer)` was removed
-* `withFullLoadQueuedTables(java.lang.Integer)` was removed
 * `withStartedOn(java.time.OffsetDateTime)` was removed
-* `validate()` was removed
-* `withFullLoadCompletedTables(java.lang.Integer)` was removed
-* `withCdcDeleteCounter(java.lang.Integer)` was removed
 * `withEndedOn(java.time.OffsetDateTime)` was removed
 * `withFullLoadErroredTables(java.lang.Integer)` was removed
-* `withFullLoadLoadingTables(java.lang.Integer)` was removed
+* `withMigrationState(models.MigrationDatabaseState)` was removed
 * `withDatabaseName(java.lang.String)` was removed
+* `withFullLoadQueuedTables(java.lang.Integer)` was removed
+* `withCdcInsertCounter(java.lang.Integer)` was removed
+* `withCdcDeleteCounter(java.lang.Integer)` was removed
+* `withMigrationOperation(java.lang.String)` was removed
+* `withFullLoadLoadingTables(java.lang.Integer)` was removed
+* `withCdcUpdateCounter(java.lang.Integer)` was removed
+* `validate()` was removed
 * `withAppliedChanges(java.lang.Integer)` was removed
+* `withFullLoadCompletedTables(java.lang.Integer)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withLatency(java.lang.Integer)` was removed
+* `withIncomingChanges(java.lang.Integer)` was removed
 
 #### `models.CapabilityBase` was modified
 
@@ -221,8 +217,8 @@
 
 #### `models.DataEncryption` was modified
 
-* `withPrimaryEncryptionKeyStatus(models.EncryptionKeyStatus)` was removed
 * `withGeoBackupEncryptionKeyStatus(models.EncryptionKeyStatus)` was removed
+* `withPrimaryEncryptionKeyStatus(models.EncryptionKeyStatus)` was removed
 * `validate()` was removed
 
 #### `models.RestartParameter` was modified
@@ -236,23 +232,23 @@
 
 #### `models.BackupForPatch` was modified
 
-* `withGeoRedundantBackup(models.GeographicallyRedundantBackup)` was removed
 * `validate()` was removed
+* `withGeoRedundantBackup(models.GeographicallyRedundantBackup)` was removed
 
 #### `models.ValidationDetails` was modified
 
 * `ValidationDetails()` was changed to private access
-* `withValidationEndTimeInUtc(java.time.OffsetDateTime)` was removed
-* `withValidationStartTimeInUtc(java.time.OffsetDateTime)` was removed
 * `validate()` was removed
 * `withStatus(models.ValidationState)` was removed
+* `withValidationStartTimeInUtc(java.time.OffsetDateTime)` was removed
 * `withServerLevelValidationDetails(java.util.List)` was removed
+* `withValidationEndTimeInUtc(java.time.OffsetDateTime)` was removed
 * `withDbLevelValidationDetails(java.util.List)` was removed
 
 #### `models.ServerForPatch` was modified
 
-* `validate()` was removed
 * `withAdministratorLogin(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.BackupsLongTermRetentionRequest` was modified
 
@@ -278,8 +274,8 @@
 #### `models.ValidationMessage` was modified
 
 * `ValidationMessage()` was changed to private access
-* `validate()` was removed
 * `withState(models.ValidationState)` was removed
+* `validate()` was removed
 * `withMessage(java.lang.String)` was removed
 
 #### `models.BackupsLongTermRetentionsCheckPrerequisitesHeaders` was modified
@@ -322,10 +318,10 @@
 #### `models.ValidationSummaryItem` was modified
 
 * `ValidationSummaryItem()` was changed to private access
-* `validate()` was removed
-* `withMessages(java.util.List)` was removed
-* `withState(models.ValidationState)` was removed
 * `withType(java.lang.String)` was removed
+* `withState(models.ValidationState)` was removed
+* `withMessages(java.util.List)` was removed
+* `validate()` was removed
 
 #### `models.LtrPreBackupRequest` was modified
 
@@ -342,11 +338,11 @@
 #### `models.DbLevelValidationStatus` was modified
 
 * `DbLevelValidationStatus()` was changed to private access
+* `withStartedOn(java.time.OffsetDateTime)` was removed
+* `withSummary(java.util.List)` was removed
 * `validate()` was removed
 * `withDatabaseName(java.lang.String)` was removed
-* `withStartedOn(java.time.OffsetDateTime)` was removed
 * `withEndedOn(java.time.OffsetDateTime)` was removed
-* `withSummary(java.util.List)` was removed
 
 #### `models.StorageEditionCapability` was modified
 
@@ -356,8 +352,8 @@
 #### `models.DbServerMetadata` was modified
 
 * `DbServerMetadata()` was changed to private access
-* `withSku(models.ServerSku)` was removed
 * `withStorageMb(java.lang.Integer)` was removed
+* `withSku(models.ServerSku)` was removed
 * `validate()` was removed
 * `withVersion(java.lang.String)` was removed
 
@@ -368,10 +364,10 @@
 #### `models.ObjectRecommendationPropertiesAnalyzedWorkload` was modified
 
 * `ObjectRecommendationPropertiesAnalyzedWorkload()` was changed to private access
-* `withQueryCount(java.lang.Integer)` was removed
 * `withStartTime(java.time.OffsetDateTime)` was removed
 * `withEndTime(java.time.OffsetDateTime)` was removed
 * `validate()` was removed
+* `withQueryCount(java.lang.Integer)` was removed
 
 #### `models.AuthConfig` was modified
 
@@ -380,9 +376,9 @@
 #### `models.MigrationSubstateDetails` was modified
 
 * `MigrationSubstateDetails()` was changed to private access
-* `withDbDetails(java.util.Map)` was removed
-* `withValidationDetails(models.ValidationDetails)` was removed
 * `validate()` was removed
+* `withValidationDetails(models.ValidationDetails)` was removed
+* `withDbDetails(java.util.Map)` was removed
 
 #### `models.ServerEditionCapability` was modified
 
@@ -405,20 +401,10 @@
 
 * `models.TuningOptionsProperties` was added
 
-* `models.PostgreSqlFlexibleServerHighAvailabilityMode` was added
-
-#### `models.HighAvailability` was modified
-
-* `withMode(models.PostgreSqlFlexibleServerHighAvailabilityMode)` was added
-
 #### `models.Servers` was modified
 
 * `migrateNetworkMode(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `migrateNetworkMode(java.lang.String,java.lang.String)` was added
-
-#### `models.HighAvailabilityForPatch` was modified
-
-* `withMode(models.PostgreSqlFlexibleServerHighAvailabilityMode)` was added
 
 #### `models.TuningOptions` was modified
 
