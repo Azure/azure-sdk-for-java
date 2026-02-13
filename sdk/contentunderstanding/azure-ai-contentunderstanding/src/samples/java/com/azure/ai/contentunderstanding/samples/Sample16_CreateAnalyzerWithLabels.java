@@ -15,9 +15,19 @@ import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.ai.contentunderstanding.models.KnowledgeSource;
 import com.azure.ai.contentunderstanding.models.LabeledDataKnowledgeSource;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.blob.models.UserDelegationKey;
 
+import java.io.File;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +81,10 @@ import java.util.UUID;
  *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} – Path prefix within the container
  *       (e.g., "receipt_labels/" or "CreateAnalyzerWithLabels/"). Omit or leave unset if files
  *       are at the container root.</li>
+ *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT} – Storage account name for
+ *       auto-upload (Option B). Used when SAS URL is not set.</li>
+ *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER} – Container name for auto-upload
+ *       (Option B). Used when SAS URL is not set.</li>
  * </ul>
  */
 public class Sample16_CreateAnalyzerWithLabels {
@@ -81,6 +95,8 @@ public class Sample16_CreateAnalyzerWithLabels {
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
         String sasUrl = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL");
         String sasUrlPrefix = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX");
+        String storageAccount = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT");
+        String containerName = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER");
 
         // Build the client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
@@ -96,6 +112,17 @@ public class Sample16_CreateAnalyzerWithLabels {
         // END: com.azure.ai.contentunderstanding.sample16.buildClient
 
         System.out.println("Client initialized successfully");
+
+        // Option B fallback: upload local label files and generate SAS URL
+        if (sasUrl == null || sasUrl.trim().isEmpty()) {
+            if (storageAccount != null && !storageAccount.trim().isEmpty()
+                && containerName != null && !containerName.trim().isEmpty()) {
+                TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+                String localDir = new File("src/samples/resources/receipt_labels").getAbsolutePath();
+                uploadTrainingData(storageAccount, containerName, credential, localDir, sasUrlPrefix);
+                sasUrl = generateUserDelegationSasUrl(storageAccount, containerName, credential);
+            }
+        }
 
         String analyzerId = "test_receipt_analyzer_" + UUID.randomUUID().toString().replace("-", "");
 
@@ -148,11 +175,11 @@ public class Sample16_CreateAnalyzerWithLabels {
             fields.put("Items", itemsField);
 
             // Total field
-            ContentFieldDefinition totalField = new ContentFieldDefinition();
-            totalField.setType(ContentFieldType.STRING);
-            totalField.setMethod(GenerationMethod.EXTRACT);
-            totalField.setDescription("Total amount");
-            fields.put("TotalPrice", totalField);
+            ContentFieldDefinition totalPriceField = new ContentFieldDefinition();
+            totalPriceField.setType(ContentFieldType.STRING);
+            totalPriceField.setMethod(GenerationMethod.EXTRACT);
+            totalPriceField.setDescription("Total amount");
+            fields.put("TotalPrice", totalPriceField);
 
             ContentFieldSchema fieldSchema = new ContentFieldSchema();
             fieldSchema.setName("receipt_schema");
@@ -198,6 +225,7 @@ public class Sample16_CreateAnalyzerWithLabels {
             System.out.println("  Description: " + result.getDescription());
             System.out.println("  Base analyzer: " + result.getBaseAnalyzerId());
             System.out.println("  Fields: " + result.getFieldSchema().getFields().size());
+            System.out.println("  Knowledge srcs: " + (result.getKnowledgeSources() != null ? result.getKnowledgeSources().size() : 0));
             // END: com.azure.ai.contentunderstanding.createAnalyzerWithLabels
 
             // Verify analyzer creation
@@ -210,7 +238,7 @@ public class Sample16_CreateAnalyzerWithLabels {
             System.out.println("  MerchantName: String (Extract)");
             System.out.println("  Items: Array of Objects (Generate)");
             System.out.println("    - Quantity, Name, Price");
-            System.out.println("  Total: String (Extract)");
+            System.out.println("  TotalPrice: String (Extract)");
 
             ContentFieldDefinition itemsFieldResult = resultFields.get("Items");
             System.out.println("Items field verified:");
@@ -221,9 +249,9 @@ public class Sample16_CreateAnalyzerWithLabels {
             System.out.println("\nCreateAnalyzerWithLabels API Pattern:");
             System.out.println("   1. Define field schema with nested structures (arrays, objects)");
             System.out.println("   2. Upload training data to Azure Blob Storage:");
-            System.out.println("      - Documents: receipt1.pdf, receipt2.pdf, ...");
-            System.out.println("      - Labels: receipt1.pdf.labels.json, receipt2.pdf.labels.json, ...");
-            System.out.println("      - OCR: receipt1.pdf.result.json, receipt2.pdf.result.json, ...");
+            System.out.println("      - Documents: receipt1.jpg, receipt2.jpg, ...");
+            System.out.println("      - Labels: receipt1.jpg.labels.json, receipt2.jpg.labels.json, ...");
+            System.out.println("      - OCR: receipt1.jpg.result.json, receipt2.jpg.result.json, ...");
             System.out.println("   3. Create LabeledDataKnowledgeSource with storage SAS URL");
             System.out.println("   4. Create analyzer with field schema and knowledge sources");
             System.out.println("   5. Use analyzer for document analysis");
@@ -244,5 +272,64 @@ public class Sample16_CreateAnalyzerWithLabels {
                 System.out.println("Note: Failed to delete analyzer: " + e.getMessage());
             }
         }
+    }
+
+    /**
+     * Uploads local training data files (images, .labels.json, .result.json) to an
+     * Azure Blob container. Existing blobs with the same name are overwritten.
+     */
+    private static void uploadTrainingData(String storageAccountName, String containerName,
+        TokenCredential credential, String localDirectory, String prefix) {
+        BlobContainerClient containerClient = new BlobServiceClientBuilder()
+            .endpoint("https://" + storageAccountName + ".blob.core.windows.net")
+            .credential(credential)
+            .buildClient()
+            .getBlobContainerClient(containerName);
+
+        containerClient.createIfNotExists();
+
+        File dir = new File(localDirectory);
+        File[] files = dir.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File file : files) {
+            if (!file.isFile()) {
+                continue;
+            }
+            String blobName = (prefix == null || prefix.trim().isEmpty())
+                ? file.getName()
+                : prefix.replaceAll("/+$", "") + "/" + file.getName();
+
+            System.out.println("Uploading " + file.getName() + " -> " + blobName);
+            BlobClient blobClient = containerClient.getBlobClient(blobName);
+            blobClient.uploadFromFile(file.getAbsolutePath(), true);
+        }
+    }
+
+    /**
+     * Generates a User Delegation SAS URL (Read + List) for an Azure Blob container.
+     */
+    private static String generateUserDelegationSasUrl(String storageAccountName, String containerName,
+        TokenCredential credential) {
+        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+            .endpoint("https://" + storageAccountName + ".blob.core.windows.net")
+            .credential(credential)
+            .buildClient();
+
+        UserDelegationKey userDelegationKey = blobServiceClient.getUserDelegationKey(
+            OffsetDateTime.now(), OffsetDateTime.now().plusHours(1));
+
+        BlobContainerSasPermission permissions = new BlobContainerSasPermission()
+            .setReadPermission(true)
+            .setListPermission(true);
+
+        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(
+            OffsetDateTime.now().plusHours(1), permissions);
+
+        String sasToken = blobServiceClient.getBlobContainerClient(containerName)
+            .generateUserDelegationSas(sasValues, userDelegationKey);
+
+        return "https://" + storageAccountName + ".blob.core.windows.net/" + containerName + "?" + sasToken;
     }
 }
