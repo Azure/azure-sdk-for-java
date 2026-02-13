@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.AzureServiceBusMessagingAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusConnectionDetails;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
@@ -62,10 +63,21 @@ class ServiceBusContainerConnectionDetailsFactoryTests {
         .withMsSqlServerContainer(SQLSERVER);
 
     @Autowired
+    private AzureServiceBusConnectionDetails connectionDetails;
+
+    @Autowired
     private ServiceBusSenderClient senderClient;
 
     @Autowired
     private ServiceBusTemplate serviceBusTemplate;
+
+    @Test
+    void connectionDetailsShouldBeProvidedByFactory() {
+        assertThat(connectionDetails).isNotNull();
+        assertThat(connectionDetails.getConnectionString())
+            .isNotBlank()
+            .startsWith("Endpoint=sb://");
+    }
 
     @Test
     void senderClientCanSendMessage() {
