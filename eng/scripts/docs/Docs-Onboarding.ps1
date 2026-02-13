@@ -122,7 +122,7 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
         # -i ignores *.implementation* packages
         $java2docfxResults = java `
           -jar "$java2docfxJar"`
-          -p "$artifact"
+          -p "$artifact" `
           -i
         # JRS-TODO: The -o option is something I'm currently questioning the behavior of but
         # I can do some initial testing without that option being set
