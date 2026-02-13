@@ -36,7 +36,7 @@ public class TestPlanetaryComputer01aStacCollectionTests extends PlanetaryComput
         System.out.println("Testing listCollections (list all STAC collections)");
 
         // Act
-        StacCatalogCollections collections = stacClient.listCollections(null, null);
+        StacCatalogCollections collections = stacClient.getCollections(null, null);
 
         // Assert
         assertNotNull(collections, "Collections should not be null");

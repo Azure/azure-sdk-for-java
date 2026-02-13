@@ -24,8 +24,8 @@ public class TilerGeoJsonsCropWidthByHeightFormat {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-crop-geo-json-with-dimensions.tiler-geo-jsons-crop-width-by-height-format
-        BinaryData response = dataClient.cropGeoJsonWithDimensions("naip-atl", "ga_m_3308421_se_16_060_20211114", 256.0,
-            256.0, "png", new CropGeoJsonOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"),
+        BinaryData response = dataClient.cropGeoJsonWithDimensions("naip-atl", "ga_m_3308421_se_16_060_20211114", 256,
+            256, "png", new CropGeoJsonOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"),
             new Feature(new Polygon().setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714),
                 Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806),
                 Arrays.asList(-84.3906, 33.6714)))), FeatureType.FEATURE).setProperties(mapOf()),

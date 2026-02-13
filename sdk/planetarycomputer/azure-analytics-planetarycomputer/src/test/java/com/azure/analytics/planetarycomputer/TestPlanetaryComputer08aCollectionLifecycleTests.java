@@ -4,7 +4,6 @@
 package com.azure.analytics.planetarycomputer;
 
 import com.azure.analytics.planetarycomputer.models.*;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -57,8 +56,8 @@ public class TestPlanetaryComputer08aCollectionLifecycleTests extends PlanetaryC
 
         StacExtensionExtent extent = new StacExtensionExtent(spatialExtent, temporalExtent);
 
-        Map<String, BinaryData> additionalProperties = new HashMap<>();
-        additionalProperties.put("id", BinaryData.fromBytes(TEST_COLLECTION_ID.getBytes(StandardCharsets.UTF_8)));
+        Map<String, Object> additionalProperties = new HashMap<>();
+        additionalProperties.put("id", TEST_COLLECTION_ID);
 
         StacCollection collection = new StacCollection("An example collection", Arrays.asList(), "CC-BY-4.0", extent);
         collection.setStacVersion("1.0.0");

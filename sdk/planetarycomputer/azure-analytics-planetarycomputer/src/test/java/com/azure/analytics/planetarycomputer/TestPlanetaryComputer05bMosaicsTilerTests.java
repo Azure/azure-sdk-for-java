@@ -10,6 +10,7 @@ import com.azure.analytics.planetarycomputer.models.Geometry;
 import com.azure.analytics.planetarycomputer.models.Polygon;
 import com.azure.analytics.planetarycomputer.models.RegisterMosaicsSearchOptions;
 import com.azure.analytics.planetarycomputer.models.StacItemPointAsset;
+import com.azure.analytics.planetarycomputer.models.TilerAssetGeoJson;
 import com.azure.analytics.planetarycomputer.models.TilerMosaicSearchRegistrationResponse;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Disabled;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Tag;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,12 +52,10 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
         System.out.println(String.format("Input - point: longitude=%f, latitude=%f", longitude, latitude));
 
         // Register search first
-        String filter = String.format(
-            "collection = '%s' AND datetime >= TIMESTAMP('2021-01-01T00:00:00Z') AND datetime <= TIMESTAMP('2022-12-31T23:59:59Z')",
-            collectionId);
+        Map<String, Object> filter = createCqlFilter(collectionId);
 
         RegisterMosaicsSearchOptions registerOptions
-            = new RegisterMosaicsSearchOptions().setFilter(filter).setFilterLanguage(FilterLanguage.CQL2_TEXT);
+            = new RegisterMosaicsSearchOptions().setFilter(filter).setFilterLanguage(FilterLanguage.CQL2_JSON);
         TilerMosaicSearchRegistrationResponse registerResult = dataClient.registerMosaicsSearch(registerOptions);
 
         String searchId = registerResult.getSearchId();
@@ -99,19 +99,17 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
         System.out.println("Input - tile coordinates: z=13, x=2174, y=3282");
 
         // Register search first
-        String filter = String.format(
-            "collection = '%s' AND datetime >= TIMESTAMP('2021-01-01T00:00:00Z') AND datetime <= TIMESTAMP('2022-12-31T23:59:59Z')",
-            collectionId);
+        Map<String, Object> filter = createCqlFilter(collectionId);
 
         RegisterMosaicsSearchOptions registerOptions
-            = new RegisterMosaicsSearchOptions().setFilter(filter).setFilterLanguage(FilterLanguage.CQL2_TEXT);
+            = new RegisterMosaicsSearchOptions().setFilter(filter).setFilterLanguage(FilterLanguage.CQL2_JSON);
         TilerMosaicSearchRegistrationResponse registerResult = dataClient.registerMosaicsSearch(registerOptions);
 
         String searchId = registerResult.getSearchId();
         System.out.println("Using search ID: " + searchId);
 
         // Act - Get assets for tile
-        List<BinaryData> assets = dataClient.getMosaicsAssetsForTile(searchId, "WebMercatorQuad", collectionId, 13.0,
+        List<TilerAssetGeoJson> assets = dataClient.getMosaicsAssetsForTile(searchId, "WebMercatorQuad", collectionId, 13.0,
             2174.0, 3282.0, null, null, null, null, null);
 
         // Assert
@@ -142,12 +140,21 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
         System.out.println("Geometry defined with coordinates");
 
         // Create CQL2-JSON filter (as map)
-        Map<String, BinaryData> cqlFilter = new HashMap<>();
-        cqlFilter.put("op", BinaryData.fromString("\"and\""));
+        Map<String, Object> cqlFilter = new HashMap<>();
+        cqlFilter.put("op", "and");
         cqlFilter.put("args",
-            BinaryData.fromString(String.format("[{\"op\": \"=\", \"args\": [{\"property\": \"collection\"}, \"%s\"]},"
-                + "{\"op\": \"anyinteracts\", \"args\": [{\"property\": \"datetime\"},"
-                + "{\"interval\": [\"2023-01-01T00:00:00Z\", \"2023-12-31T00:00:00Z\"]}]}]", collectionId)));
+            Arrays.asList(
+                new HashMap<String, Object>() {{
+                    put("op", "=");
+                    put("args", Arrays.asList(Collections.singletonMap("property", "collection"), collectionId));
+                }},
+                new HashMap<String, Object>() {{
+                    put("op", "anyinteracts");
+                    put("args", Arrays.asList(Collections.singletonMap("property", "datetime"),
+                        Collections.singletonMap("interval",
+                            Arrays.asList("2023-01-01T00:00:00Z", "2023-12-31T00:00:00Z"))));
+                }}
+            ));
 
         // Create image request
         ImageParameters imageRequest = new ImageParameters(cqlFilter,
@@ -191,12 +198,21 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
             Arrays.asList(-84.4537811, 33.6194572), Arrays.asList(-84.4537811, 33.6567307)));
         Polygon geometry = new Polygon().setCoordinates(coordinates);
 
-        Map<String, BinaryData> cqlFilter = new HashMap<>();
-        cqlFilter.put("op", BinaryData.fromString("\"and\""));
+        Map<String, Object> cqlFilter = new HashMap<>();
+        cqlFilter.put("op", "and");
         cqlFilter.put("args",
-            BinaryData.fromString(String.format("[{\"op\": \"=\", \"args\": [{\"property\": \"collection\"}, \"%s\"]},"
-                + "{\"op\": \"anyinteracts\", \"args\": [{\"property\": \"datetime\"},"
-                + "{\"interval\": [\"2023-01-01T00:00:00Z\", \"2023-12-31T00:00:00Z\"]}]}]", collectionId)));
+            Arrays.asList(
+                new HashMap<String, Object>() {{
+                    put("op", "=");
+                    put("args", Arrays.asList(Collections.singletonMap("property", "collection"), collectionId));
+                }},
+                new HashMap<String, Object>() {{
+                    put("op", "anyinteracts");
+                    put("args", Arrays.asList(Collections.singletonMap("property", "datetime"),
+                        Collections.singletonMap("interval",
+                            Arrays.asList("2023-01-01T00:00:00Z", "2023-12-31T00:00:00Z"))));
+                }}
+            ));
 
         ImageParameters imageRequest = new ImageParameters(cqlFilter,
             String.format("assets=image&asset_bidx=image|1,2,3&collection=%s", collectionId), 1080, 1080);
@@ -238,6 +254,28 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
         }
 
         System.out.println("PNG magic bytes verified successfully");
+    }
+
+    /**
+     * Creates a CQL2-JSON filter for collection and datetime range.
+     */
+    private Map<String, Object> createCqlFilter(String collectionId) {
+        Map<String, Object> filter = new HashMap<>();
+        filter.put("op", "and");
+
+        Map<String, Object> collectionEq = new HashMap<>();
+        collectionEq.put("op", "=");
+        collectionEq.put("args",
+            Arrays.asList(Collections.singletonMap("property", "collection"), collectionId));
+
+        Map<String, Object> dtRange = new HashMap<>();
+        dtRange.put("op", "anyinteracts");
+        dtRange.put("args", Arrays.asList(Collections.singletonMap("property", "datetime"),
+            Collections.singletonMap("interval",
+                Arrays.asList("2021-01-01T00:00:00Z", "2022-12-31T23:59:59Z"))));
+
+        filter.put("args", Arrays.asList(collectionEq, dtRange));
+        return filter;
     }
 
     /**

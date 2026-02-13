@@ -21,6 +21,9 @@ import org.junit.jupiter.api.Tag;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,20 +49,18 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
 
         System.out.println("Input - collection_id: " + collectionId);
 
-        // Create search parameters - filter to 2021-2022 date range with CQL2-Text
-        String filter = String.format(
-            "collection = '%s' AND datetime >= TIMESTAMP('2021-01-01T00:00:00Z') AND datetime <= TIMESTAMP('2022-12-31T23:59:59Z')",
-            collectionId);
+        // Create search parameters - filter to 2021-2022 date range with CQL2-JSON
+        Map<String, Object> filter = createCqlFilter(collectionId);
 
         StacSortExtension[] sortBy
             = new StacSortExtension[] { new StacSortExtension("datetime", StacSearchSortingDirection.DESC) };
 
         System.out.println("Filter: " + filter);
-        System.out.println("Filter Language: cql2-text");
+        System.out.println("Filter Language: cql2-json");
 
         // Act
         RegisterMosaicsSearchOptions options = new RegisterMosaicsSearchOptions().setFilter(filter)
-            .setFilterLanguage(FilterLanguage.CQL2_TEXT)
+            .setFilterLanguage(FilterLanguage.CQL2_JSON)
             .setSortBy(Arrays.asList(sortBy));
         TilerMosaicSearchRegistrationResponse result = dataClient.registerMosaicsSearch(options);
 
@@ -92,13 +93,11 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
 
-        // First, register a search to get a search ID with CQL2-Text
-        String filter = String.format(
-            "collection = '%s' AND datetime >= TIMESTAMP('2021-01-01T00:00:00Z') AND datetime <= TIMESTAMP('2022-12-31T23:59:59Z')",
-            collectionId);
+        // First, register a search to get a search ID with CQL2-JSON
+        Map<String, Object> filter = createCqlFilter(collectionId);
 
         RegisterMosaicsSearchOptions options
-            = new RegisterMosaicsSearchOptions().setFilter(filter).setFilterLanguage(FilterLanguage.CQL2_TEXT);
+            = new RegisterMosaicsSearchOptions().setFilter(filter).setFilterLanguage(FilterLanguage.CQL2_JSON);
         TilerMosaicSearchRegistrationResponse registerResult = dataClient.registerMosaicsSearch(options);
 
         String searchId = registerResult.getSearchId();
@@ -128,12 +127,10 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
         String collectionId = testEnvironment.getCollectionId();
 
         // Register search first
-        String filter = String.format(
-            "collection = '%s' AND datetime >= TIMESTAMP('2021-01-01T00:00:00Z') AND datetime <= TIMESTAMP('2022-12-31T23:59:59Z')",
-            collectionId);
+        Map<String, Object> filter = createCqlFilter(collectionId);
 
         RegisterMosaicsSearchOptions registerOptions
-            = new RegisterMosaicsSearchOptions().setFilter(filter).setFilterLanguage(FilterLanguage.CQL2_TEXT);
+            = new RegisterMosaicsSearchOptions().setFilter(filter).setFilterLanguage(FilterLanguage.CQL2_JSON);
         TilerMosaicSearchRegistrationResponse registerResult = dataClient.registerMosaicsSearch(registerOptions);
 
         String searchId = registerResult.getSearchId();
@@ -177,12 +174,10 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
         System.out.println("Input - tile coordinates: z=13, x=2174, y=3282");
 
         // Register search first
-        String filter = String.format(
-            "collection = '%s' AND datetime >= TIMESTAMP('2021-01-01T00:00:00Z') AND datetime <= TIMESTAMP('2022-12-31T23:59:59Z')",
-            collectionId);
+        Map<String, Object> filter = createCqlFilter(collectionId);
 
         RegisterMosaicsSearchOptions registerOptions
-            = new RegisterMosaicsSearchOptions().setFilter(filter).setFilterLanguage(FilterLanguage.CQL2_TEXT);
+            = new RegisterMosaicsSearchOptions().setFilter(filter).setFilterLanguage(FilterLanguage.CQL2_JSON);
         TilerMosaicSearchRegistrationResponse registerResult = dataClient.registerMosaicsSearch(registerOptions);
 
         String searchId = registerResult.getSearchId();
@@ -229,12 +224,10 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
         String collectionId = testEnvironment.getCollectionId();
 
         // Register search first
-        String filter = String.format(
-            "collection = '%s' AND datetime >= TIMESTAMP('2021-01-01T00:00:00Z') AND datetime <= TIMESTAMP('2022-12-31T23:59:59Z')",
-            collectionId);
+        Map<String, Object> filter = createCqlFilter(collectionId);
 
         RegisterMosaicsSearchOptions registerOptions
-            = new RegisterMosaicsSearchOptions().setFilter(filter).setFilterLanguage(FilterLanguage.CQL2_TEXT);
+            = new RegisterMosaicsSearchOptions().setFilter(filter).setFilterLanguage(FilterLanguage.CQL2_JSON);
         TilerMosaicSearchRegistrationResponse registerResult = dataClient.registerMosaicsSearch(registerOptions);
 
         String searchId = registerResult.getSearchId();
@@ -263,6 +256,28 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
         assertTrue(xmlString.contains("TileMatrix"), "Response should contain TileMatrix information");
 
         System.out.println("WMTS capabilities XML validated successfully");
+    }
+
+    /**
+     * Creates a CQL2-JSON filter for collection and datetime range.
+     */
+    private Map<String, Object> createCqlFilter(String collectionId) {
+        Map<String, Object> filter = new HashMap<>();
+        filter.put("op", "and");
+
+        Map<String, Object> collectionEq = new HashMap<>();
+        collectionEq.put("op", "=");
+        collectionEq.put("args",
+            Arrays.asList(Collections.singletonMap("property", "collection"), collectionId));
+
+        Map<String, Object> dtRange = new HashMap<>();
+        dtRange.put("op", "anyinteracts");
+        dtRange.put("args", Arrays.asList(Collections.singletonMap("property", "datetime"),
+            Collections.singletonMap("interval",
+                Arrays.asList("2021-01-01T00:00:00Z", "2022-12-31T23:59:59Z"))));
+
+        filter.put("args", Arrays.asList(collectionEq, dtRange));
+        return filter;
     }
 
     /**
