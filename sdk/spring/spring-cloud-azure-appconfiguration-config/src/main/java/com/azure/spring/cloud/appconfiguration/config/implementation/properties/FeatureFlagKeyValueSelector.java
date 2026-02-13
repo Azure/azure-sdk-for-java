@@ -41,9 +41,9 @@ public final class FeatureFlagKeyValueSelector {
     private String labelFilter;
 
     /**
-     * Filters feature flags by tags. Each entry must follow the
-     * {@code tagName=tagValue} format. When multiple entries are provided,
-     * they are combined using AND logic.
+     * Filters feature flags by tags. Each entry is interpreted as a tag-based filter,
+     * typically in the {@code tagName=tagValue} format. When multiple entries are
+     * provided, they are combined using AND logic.
      */
     private List<String> tagsFilter;
 
@@ -138,9 +138,11 @@ public final class FeatureFlagKeyValueSelector {
     }
 
     /**
-     * Sets the tag filters for feature flags.
+     * Sets the tag filters used to select feature flags by tags. Each entry is
+     * interpreted as a tag-based filter, typically in the {@code tagName=tagValue}
+     * format. When multiple entries are provided, they are combined using AND logic.
      *
-     * @param tagsFilter list of tag expressions in {@code tagName=tagValue} format
+     * @param tagsFilter list of tag expressions, typically in {@code tagName=tagValue} format
      * @return this {@link FeatureFlagKeyValueSelector} for chaining
      */
     public FeatureFlagKeyValueSelector setTagsFilter(List<String> tagsFilter) {
@@ -149,12 +151,26 @@ public final class FeatureFlagKeyValueSelector {
     }
 
     /**
-     * Validates that the label filter does not contain asterisks.
+     * Validates that the label filter does not contain asterisks and that tag filters
+     * follow the expected {@code tagName=tagValue} format.
      */
     @PostConstruct
     void validateAndInit() {
         if (labelFilter != null) {
             Assert.isTrue(!labelFilter.contains("*"), "LabelFilter must not contain asterisk(*)");
+        }
+        if (tagsFilter != null) {
+            for (String tagFilter : tagsFilter) {
+                Assert.isTrue(StringUtils.hasText(tagFilter), 
+                    "Tag filter entries must not be null or empty");
+                Assert.isTrue(tagFilter.contains("="), 
+                    "Tag filter entries must be in tagName=tagValue format");
+                String[] parts = tagFilter.split("=", 2);
+                Assert.isTrue(StringUtils.hasText(parts[0]), 
+                    "Tag name must not be empty in tag filter: " + tagFilter);
+                Assert.isTrue(parts.length == 2 && StringUtils.hasText(parts[1]), 
+                    "Tag value must not be empty in tag filter: " + tagFilter);
+            }
         }
     }
 

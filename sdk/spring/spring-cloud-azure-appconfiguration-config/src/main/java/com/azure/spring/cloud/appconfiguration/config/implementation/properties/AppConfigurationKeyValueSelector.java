@@ -149,9 +149,11 @@ public final class AppConfigurationKeyValueSelector {
     }
 
     /**
-     * Sets the tag filters used to select configurations by tags.
+     * Sets the tag filters used to select configurations by tags. Each entry is
+     * interpreted as a tag-based filter, typically in the {@code tagName=tagValue}
+     * format. When multiple entries are provided, they are combined using AND logic.
      *
-     * @param tagsFilter list of tag expressions in {@code tagName=tagValue} format
+     * @param tagsFilter list of tag expressions, typically in {@code tagName=tagValue} format
      * @return this {@link AppConfigurationKeyValueSelector} for chaining
      */
     public AppConfigurationKeyValueSelector setTagsFilter(List<String> tagsFilter) {
@@ -194,6 +196,19 @@ public final class AppConfigurationKeyValueSelector {
             "Snapshots can't use label filters");
         Assert.isTrue(!(tagsFilter != null && !tagsFilter.isEmpty() && StringUtils.hasText(snapshotName)),
             "Snapshots can't use tag filters");
+        if (tagsFilter != null) {
+            for (String tagFilter : tagsFilter) {
+                Assert.isTrue(StringUtils.hasText(tagFilter), 
+                    "Tag filter entries must not be null or empty");
+                Assert.isTrue(tagFilter.contains("="), 
+                    "Tag filter entries must be in tagName=tagValue format");
+                String[] parts = tagFilter.split("=", 2);
+                Assert.isTrue(StringUtils.hasText(parts[0]), 
+                    "Tag name must not be empty in tag filter: " + tagFilter);
+                Assert.isTrue(parts.length == 2 && StringUtils.hasText(parts[1]), 
+                    "Tag value must not be empty in tag filter: " + tagFilter);
+            }
+        }
     }
 
     private String mapLabel(String label) {
