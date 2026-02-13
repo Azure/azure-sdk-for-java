@@ -2,11 +2,15 @@
 
 ## 2.60.0-beta.1 (Unreleased)
 
-### Features Added
+### azure-resourcemanager-network
 
-### Breaking Changes
+#### Breaking Changes
 
-### Bugs Fixed
+- Removed `ADVANCED`, `BASIC`, and `STANDARD` from `FirewallPolicyIntrusionDetectionProfileType` to align with the service model.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
 
 ### Other Changes
 
