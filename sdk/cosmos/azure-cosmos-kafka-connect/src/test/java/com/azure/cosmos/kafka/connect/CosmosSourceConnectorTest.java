@@ -25,6 +25,7 @@ import com.azure.cosmos.kafka.connect.implementation.CosmosAadAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
+import com.azure.cosmos.kafka.connect.implementation.CosmosSDKThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedMode;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedStartFromMode;
@@ -668,14 +669,16 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
         assertThat(sourceConfig.getThroughputControlConfig()).isNotNull();
         assertThat(sourceConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
-        assertThat(sourceConfig.getThroughputControlConfig().getThroughputControlAccountConfig()).isNull();
+        assertThat(sourceConfig.getThroughputControlConfig()).isInstanceOf(CosmosSDKThroughputControlConfig.class);
+        CosmosSDKThroughputControlConfig sdkConfig = (CosmosSDKThroughputControlConfig) sourceConfig.getThroughputControlConfig();
+        assertThat(sdkConfig.getThroughputControlAccountConfig()).isNull();
         assertThat(sourceConfig.getThroughputControlConfig().getThroughputControlGroupName()).isEqualTo(throughputControlGroupName);
-        assertThat(sourceConfig.getThroughputControlConfig().getTargetThroughput()).isEqualTo(targetThroughput);
-        assertThat(sourceConfig.getThroughputControlConfig().getTargetThroughputThreshold()).isEqualTo(targetThroughputThreshold);
-        assertThat(sourceConfig.getThroughputControlConfig().getGlobalThroughputControlDatabaseName()).isEqualTo(throughputControlDatabaseName);
-        assertThat(sourceConfig.getThroughputControlConfig().getGlobalThroughputControlContainerName()).isEqualTo(throughputControlContainerName);
-        assertThat(sourceConfig.getThroughputControlConfig().getGlobalThroughputControlRenewInterval()).isNull();
-        assertThat(sourceConfig.getThroughputControlConfig().getGlobalThroughputControlExpireInterval()).isNull();
+        assertThat(sdkConfig.getTargetThroughput()).isEqualTo(targetThroughput);
+        assertThat(sdkConfig.getTargetThroughputThreshold()).isEqualTo(targetThroughputThreshold);
+        assertThat(sdkConfig.getGlobalThroughputControlDatabaseName()).isEqualTo(throughputControlDatabaseName);
+        assertThat(sdkConfig.getGlobalThroughputControlContainerName()).isEqualTo(throughputControlContainerName);
+        assertThat(sdkConfig.getGlobalThroughputControlRenewInterval()).isNull();
+        assertThat(sdkConfig.getGlobalThroughputControlExpireInterval()).isNull();
     }
 
     @Test(groups = { "unit" })

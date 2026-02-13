@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
+import com.azure.cosmos.kafka.connect.implementation.CosmosSDKThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import org.apache.kafka.connect.sink.SinkRecord;
@@ -74,16 +75,18 @@ public class CosmosSinkTask extends SinkTask {
 
     private CosmosClientCacheItem getThroughputControlCosmosClient() {
         if (this.sinkTaskConfig.getThroughputControlConfig().isThroughputControlEnabled()
-            && !this.sinkTaskConfig.getThroughputControlConfig().isThroughputBucketEnabled()
-            && this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
-            // throughput control is using a different database account config
-            return CosmosClientCache.getCosmosClient(
-                this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
-                this.sinkTaskConfig.getTaskId(),
-                this.sinkTaskConfig.getThroughputControlClientMetadataCachesSnapshot());
-        } else {
-            return this.cosmosClientItem;
+            && this.sinkTaskConfig.getThroughputControlConfig() instanceof CosmosSDKThroughputControlConfig) {
+            CosmosSDKThroughputControlConfig sdkConfig =
+                (CosmosSDKThroughputControlConfig) this.sinkTaskConfig.getThroughputControlConfig();
+            if (sdkConfig.getThroughputControlAccountConfig() != null) {
+                // throughput control is using a different database account config
+                return CosmosClientCache.getCosmosClient(
+                    sdkConfig.getThroughputControlAccountConfig(),
+                    this.sinkTaskConfig.getTaskId(),
+                    this.sinkTaskConfig.getThroughputControlClientMetadataCachesSnapshot());
+            }
         }
+        return this.cosmosClientItem;
     }
 
     @Override

@@ -13,6 +13,8 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAadAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
+import com.azure.cosmos.kafka.connect.implementation.CosmosSDKThroughputControlConfig;
+import com.azure.cosmos.kafka.connect.implementation.CosmosServerThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
@@ -313,14 +315,16 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConfigMap);
         assertThat(sinkConfig.getThroughputControlConfig()).isNotNull();
         assertThat(sinkConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
-        assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlAccountConfig()).isNull();
+        assertThat(sinkConfig.getThroughputControlConfig()).isInstanceOf(CosmosSDKThroughputControlConfig.class);
+        CosmosSDKThroughputControlConfig sdkConfig = (CosmosSDKThroughputControlConfig) sinkConfig.getThroughputControlConfig();
+        assertThat(sdkConfig.getThroughputControlAccountConfig()).isNull();
         assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlGroupName()).isEqualTo(throughputControlGroupName);
-        assertThat(sinkConfig.getThroughputControlConfig().getTargetThroughput()).isEqualTo(targetThroughput);
-        assertThat(sinkConfig.getThroughputControlConfig().getTargetThroughputThreshold()).isEqualTo(targetThroughputThreshold);
-        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlDatabaseName()).isEqualTo(throughputControlDatabaseName);
-        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlContainerName()).isEqualTo(throughputControlContainerName);
-        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlRenewInterval()).isNull();
-        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlExpireInterval()).isNull();
+        assertThat(sdkConfig.getTargetThroughput()).isEqualTo(targetThroughput);
+        assertThat(sdkConfig.getTargetThroughputThreshold()).isEqualTo(targetThroughputThreshold);
+        assertThat(sdkConfig.getGlobalThroughputControlDatabaseName()).isEqualTo(throughputControlDatabaseName);
+        assertThat(sdkConfig.getGlobalThroughputControlContainerName()).isEqualTo(throughputControlContainerName);
+        assertThat(sdkConfig.getGlobalThroughputControlRenewInterval()).isNull();
+        assertThat(sdkConfig.getGlobalThroughputControlExpireInterval()).isNull();
     }
 
     @Test(groups = { "unit" })
@@ -336,10 +340,11 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConfigMap);
         assertThat(sinkConfig.getThroughputControlConfig()).isNotNull();
         assertThat(sinkConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
-        assertThat(sinkConfig.getThroughputControlConfig().isThroughputBucketEnabled()).isTrue();
-        assertThat(sinkConfig.getThroughputControlConfig().getThroughputBucket()).isEqualTo(throughputBucket);
+        assertThat(sinkConfig.getThroughputControlConfig()).isInstanceOf(CosmosServerThroughputControlConfig.class);
+        CosmosServerThroughputControlConfig serverConfig = (CosmosServerThroughputControlConfig) sinkConfig.getThroughputControlConfig();
+        assertThat(serverConfig.isThroughputBucketEnabled()).isTrue();
+        assertThat(serverConfig.getThroughputBucket()).isEqualTo(throughputBucket);
         assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlGroupName()).isEqualTo(throughputControlGroupName);
-        assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlAccountConfig()).isNull();
     }
 
     @Test(groups = { "unit" })
