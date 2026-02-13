@@ -70,14 +70,15 @@
         <module>spring-cloud-azure-feature-management-web</module>
         <module>spring-cloud-azure-starter-appconfiguration-config</module>
         <module>azure-spring-data-cosmos</module>
-<!--        <module>spring-cloud-azure-starter-monitor</module>-->
-<!--        <module>spring-cloud-azure-starter-monitor-test</module>-->
+        <module>spring-cloud-azure-starter-monitor</module>
+        <module>spring-cloud-azure-starter-monitor-test</module>
       </modules>
     </profile>
 
     <profile>
       <id>dev</id>
       <modules>
+        <module>../tools/linting-extensions</module>
         <module>../boms/spring-cloud-azure-dependencies</module>
         <module>spring-messaging-azure</module>
         <module>spring-messaging-azure-eventhubs</module>
