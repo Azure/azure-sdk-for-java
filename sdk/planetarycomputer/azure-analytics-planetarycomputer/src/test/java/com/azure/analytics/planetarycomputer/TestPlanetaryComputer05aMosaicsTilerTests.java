@@ -267,14 +267,12 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
 
         Map<String, Object> collectionEq = new HashMap<>();
         collectionEq.put("op", "=");
-        collectionEq.put("args",
-            Arrays.asList(Collections.singletonMap("property", "collection"), collectionId));
+        collectionEq.put("args", Arrays.asList(Collections.singletonMap("property", "collection"), collectionId));
 
         Map<String, Object> dtRange = new HashMap<>();
         dtRange.put("op", "anyinteracts");
         dtRange.put("args", Arrays.asList(Collections.singletonMap("property", "datetime"),
-            Collections.singletonMap("interval",
-                Arrays.asList("2021-01-01T00:00:00Z", "2022-12-31T23:59:59Z"))));
+            Collections.singletonMap("interval", Arrays.asList("2021-01-01T00:00:00Z", "2022-12-31T23:59:59Z"))));
 
         filter.put("args", Arrays.asList(collectionEq, dtRange));
         return filter;

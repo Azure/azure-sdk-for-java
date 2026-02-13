@@ -142,8 +142,8 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
         System.out.println("Testing deleteMosaic for collection: " + collectionId);
 
         // Create a mosaic to be deleted
-        StacMosaic mosaic = new StacMosaic("test-mosaic-delete", "Test Mosaic To Be Deleted",
-            new ArrayList<Map<String, Object>>());
+        StacMosaic mosaic
+            = new StacMosaic("test-mosaic-delete", "Test Mosaic To Be Deleted", new ArrayList<Map<String, Object>>());
 
         System.out.println("Creating mosaic for deletion");
         stacClient.addMosaic(collectionId, mosaic);

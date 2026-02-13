@@ -109,8 +109,8 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
         System.out.println("Using search ID: " + searchId);
 
         // Act - Get assets for tile
-        List<TilerAssetGeoJson> assets = dataClient.getMosaicsAssetsForTile(searchId, "WebMercatorQuad", collectionId, 13.0,
-            2174.0, 3282.0, null, null, null, null, null);
+        List<TilerAssetGeoJson> assets = dataClient.getMosaicsAssetsForTile(searchId, "WebMercatorQuad", collectionId,
+            13.0, 2174.0, 3282.0, null, null, null, null, null);
 
         // Assert
         assertNotNull(assets, "Assets list should not be null");
@@ -142,19 +142,18 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
         // Create CQL2-JSON filter (as map)
         Map<String, Object> cqlFilter = new HashMap<>();
         cqlFilter.put("op", "and");
-        cqlFilter.put("args",
-            Arrays.asList(
-                new HashMap<String, Object>() {{
-                    put("op", "=");
-                    put("args", Arrays.asList(Collections.singletonMap("property", "collection"), collectionId));
-                }},
-                new HashMap<String, Object>() {{
-                    put("op", "anyinteracts");
-                    put("args", Arrays.asList(Collections.singletonMap("property", "datetime"),
-                        Collections.singletonMap("interval",
-                            Arrays.asList("2023-01-01T00:00:00Z", "2023-12-31T00:00:00Z"))));
-                }}
-            ));
+        cqlFilter.put("args", Arrays.asList(new HashMap<String, Object>() {
+            {
+                put("op", "=");
+                put("args", Arrays.asList(Collections.singletonMap("property", "collection"), collectionId));
+            }
+        }, new HashMap<String, Object>() {
+            {
+                put("op", "anyinteracts");
+                put("args", Arrays.asList(Collections.singletonMap("property", "datetime"), Collections
+                    .singletonMap("interval", Arrays.asList("2023-01-01T00:00:00Z", "2023-12-31T00:00:00Z"))));
+            }
+        }));
 
         // Create image request
         ImageParameters imageRequest = new ImageParameters(cqlFilter,
@@ -200,19 +199,18 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
 
         Map<String, Object> cqlFilter = new HashMap<>();
         cqlFilter.put("op", "and");
-        cqlFilter.put("args",
-            Arrays.asList(
-                new HashMap<String, Object>() {{
-                    put("op", "=");
-                    put("args", Arrays.asList(Collections.singletonMap("property", "collection"), collectionId));
-                }},
-                new HashMap<String, Object>() {{
-                    put("op", "anyinteracts");
-                    put("args", Arrays.asList(Collections.singletonMap("property", "datetime"),
-                        Collections.singletonMap("interval",
-                            Arrays.asList("2023-01-01T00:00:00Z", "2023-12-31T00:00:00Z"))));
-                }}
-            ));
+        cqlFilter.put("args", Arrays.asList(new HashMap<String, Object>() {
+            {
+                put("op", "=");
+                put("args", Arrays.asList(Collections.singletonMap("property", "collection"), collectionId));
+            }
+        }, new HashMap<String, Object>() {
+            {
+                put("op", "anyinteracts");
+                put("args", Arrays.asList(Collections.singletonMap("property", "datetime"), Collections
+                    .singletonMap("interval", Arrays.asList("2023-01-01T00:00:00Z", "2023-12-31T00:00:00Z"))));
+            }
+        }));
 
         ImageParameters imageRequest = new ImageParameters(cqlFilter,
             String.format("assets=image&asset_bidx=image|1,2,3&collection=%s", collectionId), 1080, 1080);
@@ -265,14 +263,12 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
 
         Map<String, Object> collectionEq = new HashMap<>();
         collectionEq.put("op", "=");
-        collectionEq.put("args",
-            Arrays.asList(Collections.singletonMap("property", "collection"), collectionId));
+        collectionEq.put("args", Arrays.asList(Collections.singletonMap("property", "collection"), collectionId));
 
         Map<String, Object> dtRange = new HashMap<>();
         dtRange.put("op", "anyinteracts");
         dtRange.put("args", Arrays.asList(Collections.singletonMap("property", "datetime"),
-            Collections.singletonMap("interval",
-                Arrays.asList("2021-01-01T00:00:00Z", "2022-12-31T23:59:59Z"))));
+            Collections.singletonMap("interval", Arrays.asList("2021-01-01T00:00:00Z", "2022-12-31T23:59:59Z"))));
 
         filter.put("args", Arrays.asList(collectionEq, dtRange));
         return filter;
