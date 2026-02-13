@@ -3,7 +3,7 @@
 ### 2.9.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added support for throughput bucket. - See [PR](https://github.com/Azure/azure-sdk-for-java/pull/47856)
+* Added support for throughput bucket. - See [PR 48009](https://github.com/Azure/azure-sdk-for-java/pull/48009)
 
 #### Breaking Changes
 

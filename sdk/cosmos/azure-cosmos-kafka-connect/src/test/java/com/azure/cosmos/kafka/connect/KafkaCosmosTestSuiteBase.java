@@ -263,9 +263,9 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         indexingPolicy.setIncludedPaths(includedPaths);
 
         CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-        if (enableAllVersionsAndDeletesPolicy) {
-            cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)));
-        }
+//        if (enableAllVersionsAndDeletesPolicy) {
+//            cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)));
+//        }
         cosmosContainerProperties.setIndexingPolicy(indexingPolicy);
 
         return cosmosContainerProperties;
