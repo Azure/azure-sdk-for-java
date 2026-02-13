@@ -12,6 +12,7 @@ public class CosmosThroughputControlConfig {
     private final int targetThroughput;
     private final double targetThroughputThreshold;
     private final CosmosPriorityLevel priorityLevel;
+    private final int throughputBucket;
     private final String globalThroughputControlDatabaseName;
     private final String globalThroughputControlContainerName;
     private final Duration globalThroughputControlRenewInterval;
@@ -24,6 +25,7 @@ public class CosmosThroughputControlConfig {
         int targetThroughput,
         double targetThroughputThreshold,
         CosmosPriorityLevel priorityLevel,
+        int throughputBucket,
         String globalThroughputControlDatabaseName,
         String globalThroughputControlContainer,
         int globalThroughputControlRenewIntervalInMs,
@@ -35,6 +37,7 @@ public class CosmosThroughputControlConfig {
         this.targetThroughput = targetThroughput;
         this.targetThroughputThreshold = targetThroughputThreshold;
         this.priorityLevel = priorityLevel;
+        this.throughputBucket = throughputBucket;
         this.globalThroughputControlDatabaseName = globalThroughputControlDatabaseName;
         this.globalThroughputControlContainerName = globalThroughputControlContainer;
         this.globalThroughputControlRenewInterval =
@@ -65,6 +68,14 @@ public class CosmosThroughputControlConfig {
 
     public CosmosPriorityLevel getPriorityLevel() {
         return priorityLevel;
+    }
+
+    public int getThroughputBucket() {
+        return throughputBucket;
+    }
+
+    public boolean isThroughputBucketEnabled() {
+        return throughputBucket > 0;
     }
 
     public String getGlobalThroughputControlDatabaseName() {

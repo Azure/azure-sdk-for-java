@@ -9,6 +9,7 @@ module com.azure.cosmos.kafka.connect {
     requires connect.api;
     requires json.path;
     requires com.azure.identity;
+    requires org.slf4j;
 
     // public API surface area
     exports com.azure.cosmos.kafka.connect;

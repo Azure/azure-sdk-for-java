@@ -150,6 +150,7 @@ public class CosmosSourceTask extends SourceTask {
 
     private CosmosClientCacheItem getThroughputControlCosmosClientItem() {
         if (this.taskConfig.getThroughputControlConfig().isThroughputControlEnabled()
+            && !this.taskConfig.getThroughputControlConfig().isThroughputBucketEnabled()
             && this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
             // throughput control is using a different database account config
             return CosmosClientCache.getCosmosClient(

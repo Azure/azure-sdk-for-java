@@ -25,8 +25,37 @@ public class CosmosThroughputControlHelper {
             return container;
         }
 
-        enableGlobalThroughputControl(container, throughputControlCosmosClient, cosmosThroughputControlConfig);
+        if (cosmosThroughputControlConfig.isThroughputBucketEnabled()) {
+            enableServerThroughputControl(container, cosmosThroughputControlConfig);
+        } else {
+            enableGlobalThroughputControl(container, throughputControlCosmosClient, cosmosThroughputControlConfig);
+        }
         return container;
+    }
+
+    private static void enableServerThroughputControl(
+        CosmosAsyncContainer container,
+        CosmosThroughputControlConfig throughputControlConfig) {
+
+        ThroughputControlGroupConfigBuilder groupConfigBuilder =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName(throughputControlConfig.getThroughputControlGroupName())
+                .throughputBucket(throughputControlConfig.getThroughputBucket());
+
+        switch (throughputControlConfig.getPriorityLevel()) {
+            case NONE:
+                break;
+            case LOW:
+                groupConfigBuilder.priorityLevel(PriorityLevel.LOW);
+                break;
+            case HIGH:
+                groupConfigBuilder.priorityLevel(PriorityLevel.HIGH);
+                break;
+            default:
+                throw new IllegalArgumentException("Priority level " + throughputControlConfig.getPriorityLevel() + " is not supported");
+        }
+
+        container.enableServerThroughputControlGroup(groupConfigBuilder.build());
     }
 
     private static void enableGlobalThroughputControl(

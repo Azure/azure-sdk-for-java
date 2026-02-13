@@ -74,6 +74,7 @@ public class CosmosSinkTask extends SinkTask {
 
     private CosmosClientCacheItem getThroughputControlCosmosClient() {
         if (this.sinkTaskConfig.getThroughputControlConfig().isThroughputControlEnabled()
+            && !this.sinkTaskConfig.getThroughputControlConfig().isThroughputBucketEnabled()
             && this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
             // throughput control is using a different database account config
             return CosmosClientCache.getCosmosClient(
