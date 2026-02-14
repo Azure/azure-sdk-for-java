@@ -19,8 +19,4 @@ public class CosmosServerThroughputControlConfig extends CosmosThroughputControl
     public int getThroughputBucket() {
         return throughputBucket;
     }
-
-    public boolean isThroughputBucketEnabled() {
-        return throughputBucket > 0;
-    }
 }

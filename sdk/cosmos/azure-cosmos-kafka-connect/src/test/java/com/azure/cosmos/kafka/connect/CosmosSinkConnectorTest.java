@@ -342,7 +342,6 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         assertThat(sinkConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
         assertThat(sinkConfig.getThroughputControlConfig()).isInstanceOf(CosmosServerThroughputControlConfig.class);
         CosmosServerThroughputControlConfig serverConfig = (CosmosServerThroughputControlConfig) sinkConfig.getThroughputControlConfig();
-        assertThat(serverConfig.isThroughputBucketEnabled()).isTrue();
         assertThat(serverConfig.getThroughputBucket()).isEqualTo(throughputBucket);
         assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlGroupName()).isEqualTo(throughputControlGroupName);
     }
