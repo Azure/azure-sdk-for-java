@@ -22,9 +22,9 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.blob.models.UserDelegationKey;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -56,7 +56,7 @@ import java.util.concurrent.TimeUnit;
  *       permissions. In Azure Portal: Storage account → Containers → your container → Shared access
  *       token; set expiry and permissions, then generate the SAS URL.</li>
  *   <li>Set {@code CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL} to the full SAS URL
- *       (e.g., https://&lt;account&gt;.blob.core.windows.net/&lt;container&gt;?sv=...&amp;se=...).</li>
+ *       (e.g., {@code https://<account>.blob.core.windows.net/<container>?sv=...&se=...}).</li>
  *   <li>If you uploaded into a subfolder, set {@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} to
  *       that path (e.g., "receipt_labels/"). If files are at the container root, omit the prefix
  *       or leave it unset.</li>

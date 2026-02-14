@@ -11,6 +11,7 @@ package com.azure.ai.contentunderstanding.tests.samples;
 import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -18,6 +19,16 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+
+import java.io.File;
+import java.time.OffsetDateTime;
 
 class ContentUnderstandingClientTestBase extends TestProxyTestBase {
     protected ContentUnderstandingClient contentUnderstandingClient;
@@ -69,5 +80,75 @@ class ContentUnderstandingClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
         }
+    }
+
+    /**
+     * Uploads local training data files (images, .labels.json, .result.json) to an
+     * Azure Blob container. Existing blobs with the same name are overwritten.
+     *
+     * @param storageAccountName Storage account name.
+     * @param containerName      Container name (created if it does not exist).
+     * @param credential         Credential with write access to the container.
+     * @param localDirectory     Local folder containing the label files.
+     * @param prefix             Optional blob prefix (virtual folder) to prepend, e.g. "receipt_labels/".
+     */
+    protected static void uploadTrainingData(String storageAccountName, String containerName,
+        TokenCredential credential, String localDirectory, String prefix) {
+        BlobContainerClient containerClient
+            = new BlobServiceClientBuilder().endpoint("https://" + storageAccountName + ".blob.core.windows.net")
+                .credential(credential)
+                .buildClient()
+                .getBlobContainerClient(containerName);
+
+        containerClient.createIfNotExists();
+
+        File dir = new File(localDirectory);
+        File[] files = dir.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File file : files) {
+            if (!file.isFile()) {
+                continue;
+            }
+            String blobName = (prefix == null || prefix.trim().isEmpty())
+                ? file.getName()
+                : prefix.replaceAll("/+$", "") + "/" + file.getName();
+
+            System.out.println("Uploading " + file.getName() + " -> " + blobName);
+            BlobClient blobClient = containerClient.getBlobClient(blobName);
+            blobClient.uploadFromFile(file.getAbsolutePath(), true);
+        }
+    }
+
+    /**
+     * Generates a User Delegation SAS URL (Read + List) for an Azure Blob container.
+     * Uses {@link TokenCredential} so no storage account key is needed.
+     *
+     * @param storageAccountName Storage account name.
+     * @param containerName      Container name.
+     * @param credential         Credential with permissions to generate user delegation key.
+     * @return SAS URL for the container.
+     */
+    protected static String generateUserDelegationSasUrl(String storageAccountName, String containerName,
+        TokenCredential credential) {
+        BlobServiceClient blobServiceClient
+            = new BlobServiceClientBuilder().endpoint("https://" + storageAccountName + ".blob.core.windows.net")
+                .credential(credential)
+                .buildClient();
+
+        UserDelegationKey userDelegationKey
+            = blobServiceClient.getUserDelegationKey(OffsetDateTime.now(), OffsetDateTime.now().plusHours(1));
+
+        BlobContainerSasPermission permissions
+            = new BlobContainerSasPermission().setReadPermission(true).setListPermission(true);
+
+        BlobServiceSasSignatureValues sasValues
+            = new BlobServiceSasSignatureValues(OffsetDateTime.now().plusHours(1), permissions);
+
+        String sasToken = blobServiceClient.getBlobContainerClient(containerName)
+            .generateUserDelegationSas(sasValues, userDelegationKey);
+
+        return "https://" + storageAccountName + ".blob.core.windows.net/" + containerName + "?" + sasToken;
     }
 }

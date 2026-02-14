@@ -19,20 +19,12 @@ import com.azure.ai.contentunderstanding.models.LabeledDataKnowledgeSource;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.sas.BlobContainerSasPermission;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.blob.models.UserDelegationKey;
 import reactor.core.publisher.Mono;
 import org.junit.jupiter.api.Test;
 
 import com.azure.core.test.TestMode;
 
 import java.io.File;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,23 +40,44 @@ import static org.junit.jupiter.api.Assertions.*;
  * For an easier labeling workflow, use Azure AI Content Understanding Studio at
  * https://contentunderstanding.ai.azure.com/
  *
- * Labeled receipt data is available in this repo at {@code src/samples/resources/receipt_labels}.
- * For LIVE mode with real training data: upload that folder to Azure Blob Storage, generate a
- * container SAS URL with List/Read permissions, then set the environment variables below. Use
- * {@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} if you uploaded into a subfolder
- * (e.g., "receipt_labels/"); omit or leave unset if files are at the container root.
+ * Labeled receipt data is available in this repo at {@code src/samples/resources/receipt_labels}
+ * (images and corresponding .labels.json files). To use it for training:
+ *
+ * <p><b>Manual instructions to upload labels into Azure Blob Storage:</b></p>
+ * <ol>
+ *   <li>Create an Azure Blob Storage container (or use an existing one).</li>
+ *   <li>Upload the contents of {@code src/samples/resources/receipt_labels} into the container.
+ *       You may upload into the container root or into a subfolder (e.g., "receipt_labels/").</li>
+ *   <li>Generate a SAS (Shared Access Signature) URL for the container with at least List and Read
+ *       permissions. In Azure Portal: Storage account → Containers → your container → Shared access
+ *       token; set expiry and permissions, then generate the SAS URL.</li>
+ *   <li>Set {@code CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL} to the full SAS URL
+ *       (e.g., {@code https://<account>.blob.core.windows.net/<container>?sv=...&se=...}).</li>
+ *   <li>If you uploaded into a subfolder, set {@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} to
+ *       that path (e.g., "receipt_labels/"). If files are at the container root, omit the prefix
+ *       or leave it unset.</li>
+ * </ol>
+ *
+ * <p>Each labeled document in the training folder includes:</p>
+ * <ul>
+ *   <li>The original file (e.g., PDF or image).</li>
+ *   <li>A corresponding .labels.json file with labeled fields.</li>
+ *   <li>A corresponding .result.json file with OCR results (optional).</li>
+ * </ul>
  *
  * <p><b>Required environment variables:</b></p>
  * <ul>
  *   <li>{@code CONTENTUNDERSTANDING_ENDPOINT} – Azure Content Understanding endpoint URL</li>
  * </ul>
  *
- * <p><b>Optional environment variables (for labeled training data; used in LIVE mode):</b></p>
+ * <p><b>Optional environment variables (for labeled training data):</b></p>
  * <ul>
  *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL} – SAS URL for the Azure Blob container
- *       with labeled training data.</li>
+ *       with labeled training data. If set, the analyzer is created with a labeled-data knowledge
+ *       source; otherwise, created without training data.</li>
  *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} – Path prefix within the container
- *       (e.g., "receipt_labels/"). Omit or leave unset if files are at the container root.</li>
+ *       (e.g., "receipt_labels/" or "CreateAnalyzerWithLabels/"). Omit or leave unset if files
+ *       are at the container root.</li>
  *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT} – Storage account name for
  *       auto-upload (Option B). Used when SAS URL is not set.</li>
  *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER} – Container name for auto-upload
@@ -101,12 +114,13 @@ public class Sample16_CreateAnalyzerWithLabelsAsync extends ContentUnderstanding
         }
 
         // Option B fallback: upload local label files and generate SAS URL
-        if ((trainingDataSasUrl == null || trainingDataSasUrl.trim().isEmpty())
-            && getTestMode() != TestMode.PLAYBACK) {
+        if ((trainingDataSasUrl == null || trainingDataSasUrl.trim().isEmpty()) && getTestMode() != TestMode.PLAYBACK) {
             String storageAccount = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT");
             String container = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER");
-            if (storageAccount != null && !storageAccount.trim().isEmpty()
-                && container != null && !container.trim().isEmpty()) {
+            if (storageAccount != null
+                && !storageAccount.trim().isEmpty()
+                && container != null
+                && !container.trim().isEmpty()) {
                 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
                 String localDir = new File("src/samples/resources/receipt_labels").getAbsolutePath();
                 uploadTrainingData(storageAccount, container, credential, localDir, trainingDataPrefix);
@@ -222,7 +236,8 @@ public class Sample16_CreateAnalyzerWithLabelsAsync extends ContentUnderstanding
             System.out.println("  Description: " + result.getDescription());
             System.out.println("  Base analyzer: " + result.getBaseAnalyzerId());
             System.out.println("  Fields: " + result.getFieldSchema().getFields().size());
-            System.out.println("  Knowledge srcs: " + (result.getKnowledgeSources() != null ? result.getKnowledgeSources().size() : 0));
+            System.out.println("  Knowledge srcs: "
+                + (result.getKnowledgeSources() != null ? result.getKnowledgeSources().size() : 0));
             // END: com.azure.ai.contentunderstanding.createAnalyzerWithLabelsAsync
 
             // BEGIN: Assertion_ContentUnderstandingCreateAnalyzerWithLabelsAsync
@@ -332,74 +347,4 @@ public class Sample16_CreateAnalyzerWithLabelsAsync extends ContentUnderstanding
         }
     }
 
-    /**
-     * Uploads local training data files (images, .labels.json, .result.json) to an
-     * Azure Blob container. Existing blobs with the same name are overwritten.
-     *
-     * @param storageAccountName Storage account name.
-     * @param containerName      Container name (created if it does not exist).
-     * @param credential         Credential with write access to the container.
-     * @param localDirectory     Local folder containing the label files.
-     * @param prefix             Optional blob prefix (virtual folder) to prepend, e.g. "receipt_labels/".
-     */
-    private static void uploadTrainingData(String storageAccountName, String containerName,
-        TokenCredential credential, String localDirectory, String prefix) {
-        BlobContainerClient containerClient = new BlobServiceClientBuilder()
-            .endpoint("https://" + storageAccountName + ".blob.core.windows.net")
-            .credential(credential)
-            .buildClient()
-            .getBlobContainerClient(containerName);
-
-        containerClient.createIfNotExists();
-
-        File dir = new File(localDirectory);
-        File[] files = dir.listFiles();
-        if (files == null) {
-            return;
-        }
-        for (File file : files) {
-            if (!file.isFile()) {
-                continue;
-            }
-            String blobName = (prefix == null || prefix.trim().isEmpty())
-                ? file.getName()
-                : prefix.replaceAll("/+$", "") + "/" + file.getName();
-
-            System.out.println("Uploading " + file.getName() + " -> " + blobName);
-            BlobClient blobClient = containerClient.getBlobClient(blobName);
-            blobClient.uploadFromFile(file.getAbsolutePath(), true);
-        }
-    }
-
-    /**
-     * Generates a User Delegation SAS URL (Read + List) for an Azure Blob container.
-     * Uses {@link TokenCredential} so no storage account key is needed.
-     *
-     * @param storageAccountName Storage account name.
-     * @param containerName      Container name.
-     * @param credential         Credential with permissions to generate user delegation key.
-     * @return SAS URL for the container.
-     */
-    private static String generateUserDelegationSasUrl(String storageAccountName, String containerName,
-        TokenCredential credential) {
-        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-            .endpoint("https://" + storageAccountName + ".blob.core.windows.net")
-            .credential(credential)
-            .buildClient();
-
-        UserDelegationKey userDelegationKey = blobServiceClient.getUserDelegationKey(
-            OffsetDateTime.now(), OffsetDateTime.now().plusHours(1));
-
-        BlobContainerSasPermission permissions = new BlobContainerSasPermission()
-            .setReadPermission(true)
-            .setListPermission(true);
-
-        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(
-            OffsetDateTime.now().plusHours(1), permissions);
-
-        String sasToken = blobServiceClient.getBlobContainerClient(containerName)
-            .generateUserDelegationSas(sasValues, userDelegationKey);
-
-        return "https://" + storageAccountName + ".blob.core.windows.net/" + containerName + "?" + sasToken;
-    }
 }
