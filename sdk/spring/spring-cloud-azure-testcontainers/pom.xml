@@ -78,6 +78,12 @@
       <version>12.26.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-messaging-azure-servicebus</artifactId>
+      <version>5.24.1</version>  <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -101,6 +107,24 @@
     </dependency>
 
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-servicebus</artifactId>
+      <version>7.17.13</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-eventhubs</artifactId>
+      <version>5.20.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.sqlserver</groupId>
+      <artifactId>mssql-jdbc</artifactId>
+      <version>13.2.1.jre11</version> <!-- {x-version-update;springboot3_com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
       <version>6.2.9</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
@@ -122,6 +146,12 @@
       <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>1.21.3</version> <!-- {x-version-update;springboot3_org.testcontainers:junit-jupiter;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <version>4.3.0</version> <!-- {x-version-update;springboot3_org.awaitility:awaitility;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -169,6 +199,7 @@
               <includes>
                 <include>org.springframework.boot:spring-boot-testcontainers:[3.5.4]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
                 <include>org.testcontainers:azure:[1.21.3]</include> <!-- {x-include-update;springboot3_org.testcontainers:azure;external_dependency} -->
+                <include>com.microsoft.sqlserver:mssql-jdbc:[13.2.1.jre11]</include> <!-- {x-include-update;springboot3_com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

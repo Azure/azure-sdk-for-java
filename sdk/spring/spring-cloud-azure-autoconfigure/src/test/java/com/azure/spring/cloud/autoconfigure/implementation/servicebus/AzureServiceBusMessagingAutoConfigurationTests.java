@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.servicebus;
 import com.azure.core.credential.TokenCredential;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
@@ -31,7 +32,8 @@ import static org.mockito.Mockito.mock;
 class AzureServiceBusMessagingAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureServiceBusMessagingAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class, AzureServiceBusMessagingAutoConfiguration.class))
+        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new);
 
     @Test
     void disableServiceBusShouldNotConfigure() {
@@ -62,7 +64,6 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     @Test
     void withoutServiceBusConnectionShouldNotConfigure() {
         this.contextRunner
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class);
                 assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ConsumerContainerConfiguration.class);
@@ -75,7 +76,6 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusProcessorFactory.class);
                 assertThat(context).hasSingleBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class);
@@ -91,7 +91,6 @@ class AzureServiceBusMessagingAutoConfigurationTests {
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> assertThatIllegalStateException());
     }
 
@@ -99,7 +98,6 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     void withIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("defaultServiceBusMessageConverter");
@@ -113,7 +111,6 @@ class AzureServiceBusMessagingAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("serviceBusMessageConverter");
@@ -127,7 +124,6 @@ class AzureServiceBusMessagingAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean("userObjectMapper", ObjectMapper.class, ObjectMapper::new)
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
@@ -148,7 +144,6 @@ class AzureServiceBusMessagingAutoConfigurationTests {
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.servicebus.credential.token-credential-bean-name=customTokenCredential"
             )
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
 
                 // Verify that the properties contain the correct credential bean name

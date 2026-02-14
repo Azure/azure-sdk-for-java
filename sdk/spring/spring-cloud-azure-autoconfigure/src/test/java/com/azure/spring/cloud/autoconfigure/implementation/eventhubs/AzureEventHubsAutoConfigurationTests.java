@@ -75,7 +75,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     void configureWithoutConnectionStringAndNamespace() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.enabled=true")
-            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsAutoConfiguration.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsProperties.class));
     }
 
     @Test
@@ -274,6 +274,22 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
                 assertEquals(Duration.ofHours(2), processor.getLoadBalancing().getPartitionOwnershipExpirationInterval());
                 assertTrue(processor.getCheckpointStore().isCreateContainerIfNotExists());
 
+            });
+    }
+
+    @Test
+    void connectionDetailsOverridesPropertyConnectionString() {
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + connectionString
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsConnectionDetails.class, CustomAzureEventHubsConnectionDetails::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
+                AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
+                assertEquals(CustomAzureEventHubsConnectionDetails.CONNECTION_STRING, properties.getConnectionString());
             });
     }
 
