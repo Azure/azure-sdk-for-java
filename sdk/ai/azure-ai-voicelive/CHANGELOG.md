@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.5 (2026-02-13)
 
 ### Features Added
 
@@ -41,10 +41,6 @@
   - `FillerTrigger` → `InterimResponseTrigger`
   - `VoiceLiveSessionOptions.getFillerResponse()`/`setFillerResponse()` → `getInterimResponse()`/`setInterimResponse()`
   - Type values changed: `static_filler` → `static_interim_response`, `llm_filler` → `llm_interim_response`
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.0.0-beta.4 (2026-02-09)
 
