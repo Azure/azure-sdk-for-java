@@ -16,11 +16,14 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.ai.contentunderstanding.models.KnowledgeSource;
 import com.azure.ai.contentunderstanding.models.LabeledDataKnowledgeSource;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import com.azure.core.test.TestMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,23 +39,48 @@ import static org.junit.jupiter.api.Assertions.*;
  * For an easier labeling workflow, use Azure AI Content Understanding Studio at
  * https://contentunderstanding.ai.azure.com/
  *
- * Labeled receipt data is available in this repo at {@code src/samples/resources/receipt_labels}.
- * For LIVE mode with real training data: upload that folder to Azure Blob Storage, generate a
- * container SAS URL with List/Read permissions, then set the environment variables below. Use
- * {@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} if you uploaded into a subfolder
- * (e.g., "receipt_labels/"); omit or leave unset if files are at the container root.
+ * Labeled receipt data is available in this repo at {@code src/samples/resources/receipt_labels}
+ * (images and corresponding .labels.json files). To use it for training:
+ *
+ * <p><b>Manual instructions to upload labels into Azure Blob Storage:</b></p>
+ * <ol>
+ *   <li>Create an Azure Blob Storage container (or use an existing one).</li>
+ *   <li>Upload the contents of {@code src/samples/resources/receipt_labels} into the container.
+ *       You may upload into the container root or into a subfolder (e.g., "receipt_labels/").</li>
+ *   <li>Generate a SAS (Shared Access Signature) URL for the container with at least List and Read
+ *       permissions. In Azure Portal: Storage account → Containers → your container → Shared access
+ *       token; set expiry and permissions, then generate the SAS URL.</li>
+ *   <li>Set {@code CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL} to the full SAS URL
+ *       (e.g., {@code https://<account>.blob.core.windows.net/<container>?sv=...&se=...}).</li>
+ *   <li>If you uploaded into a subfolder, set {@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} to
+ *       that path (e.g., "receipt_labels/"). If files are at the container root, omit the prefix
+ *       or leave it unset.</li>
+ * </ol>
+ *
+ * <p>Each labeled document in the training folder includes:</p>
+ * <ul>
+ *   <li>The original file (e.g., PDF or image).</li>
+ *   <li>A corresponding .labels.json file with labeled fields.</li>
+ *   <li>A corresponding .result.json file with OCR results (optional).</li>
+ * </ul>
  *
  * <p><b>Required environment variables:</b></p>
  * <ul>
  *   <li>{@code CONTENTUNDERSTANDING_ENDPOINT} – Azure Content Understanding endpoint URL</li>
  * </ul>
  *
- * <p><b>Optional environment variables (for labeled training data; used in LIVE mode):</b></p>
+ * <p><b>Optional environment variables (for labeled training data):</b></p>
  * <ul>
  *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL} – SAS URL for the Azure Blob container
- *       with labeled training data.</li>
+ *       with labeled training data. If set, the analyzer is created with a labeled-data knowledge
+ *       source; otherwise, created without training data.</li>
  *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} – Path prefix within the container
- *       (e.g., "receipt_labels/"). Omit or leave unset if files are at the container root.</li>
+ *       (e.g., "receipt_labels/" or "CreateAnalyzerWithLabels/"). Omit or leave unset if files
+ *       are at the container root.</li>
+ *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT} – Storage account name for
+ *       auto-upload (Option B). Used when SAS URL is not set.</li>
+ *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER} – Container name for auto-upload
+ *       (Option B). Used when SAS URL is not set.</li>
  * </ul>
  */
 public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClientTestBase {
@@ -61,8 +89,8 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
      * Demonstrates creating an analyzer with labeled training data.
      *
      * This test creates an analyzer with field schema. If TRAINING_DATA_SAS_URL is provided,
-     * labeled training data will be used; otherwise, it demonstrates the API pattern without
-     * actual training data.
+     * labeled training data will be used; otherwise falls back to auto-upload if storage account
+     * and container are configured, or demonstrates the API pattern without actual training data.
      */
     @Test
     public void testCreateAnalyzerWithLabels() {
@@ -82,6 +110,21 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
             interceptorManager.getProxyVariableConsumer().accept(trainingDataPrefix != null ? trainingDataPrefix : "");
         } else {
             trainingDataPrefix = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX");
+        }
+
+        // Option B fallback: upload local label files and generate SAS URL
+        if ((trainingDataSasUrl == null || trainingDataSasUrl.trim().isEmpty()) && getTestMode() != TestMode.PLAYBACK) {
+            String storageAccount = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT");
+            String container = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER");
+            if (storageAccount != null
+                && !storageAccount.trim().isEmpty()
+                && container != null
+                && !container.trim().isEmpty()) {
+                TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+                String localDir = new File("src/samples/resources/receipt_labels").getAbsolutePath();
+                uploadTrainingData(storageAccount, container, credential, localDir, trainingDataPrefix);
+                trainingDataSasUrl = generateUserDelegationSasUrl(storageAccount, container, credential);
+            }
         }
 
         try {
@@ -132,12 +175,12 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
             itemsField.setItemDefinition(itemDefinition);
             fields.put("Items", itemsField);
 
-            // Total field
-            ContentFieldDefinition totalField = new ContentFieldDefinition();
-            totalField.setType(ContentFieldType.STRING);
-            totalField.setMethod(GenerationMethod.EXTRACT);
-            totalField.setDescription("Total amount");
-            fields.put("Total", totalField);
+            // TotalPrice field
+            ContentFieldDefinition totalPriceField = new ContentFieldDefinition();
+            totalPriceField.setType(ContentFieldType.STRING);
+            totalPriceField.setMethod(GenerationMethod.EXTRACT);
+            totalPriceField.setDescription("Total amount");
+            fields.put("TotalPrice", totalPriceField);
 
             ContentFieldSchema fieldSchema = new ContentFieldSchema();
             fieldSchema.setName("receipt_schema");
@@ -175,13 +218,15 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
             }
 
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
-                = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer);
+                = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer, true);
             ContentAnalyzer result = createPoller.getFinalResult();
 
             System.out.println("Analyzer created: " + analyzerId);
             System.out.println("  Description: " + result.getDescription());
             System.out.println("  Base analyzer: " + result.getBaseAnalyzerId());
             System.out.println("  Fields: " + result.getFieldSchema().getFields().size());
+            System.out.println("  Knowledge srcs: "
+                + (result.getKnowledgeSources() != null ? result.getKnowledgeSources().size() : 0));
             // END: com.azure.ai.contentunderstanding.createAnalyzerWithLabels
 
             // BEGIN: Assertion_ContentUnderstandingCreateAnalyzerWithLabels
@@ -199,7 +244,7 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
             Map<String, ContentFieldDefinition> resultFields = result.getFieldSchema().getFields();
             assertTrue(resultFields.containsKey("MerchantName"), "Should have MerchantName field");
             assertTrue(resultFields.containsKey("Items"), "Should have Items field");
-            assertTrue(resultFields.containsKey("Total"), "Should have Total field");
+            assertTrue(resultFields.containsKey("TotalPrice"), "Should have TotalPrice field");
 
             ContentFieldDefinition itemsFieldResult = resultFields.get("Items");
             assertEquals(ContentFieldType.ARRAY, itemsFieldResult.getType());
@@ -210,7 +255,7 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
             System.out.println("  MerchantName: String (Extract)");
             System.out.println("  Items: Array of Objects (Generate)");
             System.out.println("    - Quantity, Name, Price");
-            System.out.println("  Total: String (Extract)");
+            System.out.println("  TotalPrice: String (Extract)");
             // END: Assertion_ContentUnderstandingCreateAnalyzerWithLabels
 
             // If training data was provided, test the analyzer with a sample document
@@ -242,11 +287,11 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
                             System.out.println("  MerchantName: " + merchantName);
                         }
                     }
-                    if (docContent.getFields().containsKey("Total")) {
-                        ContentField totalFieldValue = docContent.getFields().get("Total");
-                        if (totalFieldValue != null) {
-                            String total = (String) totalFieldValue.getValue();
-                            System.out.println("  Total: " + total);
+                    if (docContent.getFields().containsKey("TotalPrice")) {
+                        ContentField totalPriceFieldValue = docContent.getFields().get("TotalPrice");
+                        if (totalPriceFieldValue != null) {
+                            String totalPrice = (String) totalPriceFieldValue.getValue();
+                            System.out.println("  TotalPrice: " + totalPrice);
                         }
                     }
                 }
@@ -256,9 +301,9 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
             System.out.println("\nCreateAnalyzerWithLabels API Pattern:");
             System.out.println("   1. Define field schema with nested structures (arrays, objects)");
             System.out.println("   2. Upload training data to Azure Blob Storage:");
-            System.out.println("      - Documents: receipt1.pdf, receipt2.pdf, ...");
-            System.out.println("      - Labels: receipt1.pdf.labels.json, receipt2.pdf.labels.json, ...");
-            System.out.println("      - OCR: receipt1.pdf.result.json, receipt2.pdf.result.json, ...");
+            System.out.println("      - Documents: receipt1.jpg, receipt2.jpg, ...");
+            System.out.println("      - Labels: receipt1.jpg.labels.json, receipt2.jpg.labels.json, ...");
+            System.out.println("      - OCR: receipt1.jpg.result.json, receipt2.jpg.result.json, ...");
             System.out.println("   3. Create LabeledDataKnowledgeSource with storage SAS URL");
             System.out.println("   4. Create analyzer with field schema and knowledge sources");
             System.out.println("   5. Use analyzer for document analysis");
@@ -280,4 +325,5 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
             }
         }
     }
+
 }
