@@ -31,6 +31,9 @@
     },
     "updateChangelogContentScript": {
       "path": "./eng/scripts/Automation-Sdk-UpdateChangelog.ps1"
+    },
+    "updateMetadataScript": {
+      "path": "./eng/scripts/Automation-Sdk-UpdateMetadata.ps1"
     }
   }
 }
