@@ -46,8 +46,6 @@ import com.azure.resourcemanager.domainregistration.implementation.models.NameId
 import com.azure.resourcemanager.domainregistration.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.domainregistration.models.DomainPatchResource;
 import com.azure.resourcemanager.domainregistration.models.DomainRecommendationSearchParameters;
-import com.azure.resourcemanager.domainregistration.models.DomainsRenewResponse;
-import com.azure.resourcemanager.domainregistration.models.DomainsUpdateResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -122,7 +120,7 @@ public final class DomainsClientImpl implements DomainsClient {
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<DomainsUpdateResponse> update(@HostParam("endpoint") String endpoint,
+        Mono<Response<DomainInner>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -131,7 +129,7 @@ public final class DomainsClientImpl implements DomainsClient {
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        DomainsUpdateResponse updateSync(@HostParam("endpoint") String endpoint,
+        Response<DomainInner> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -193,8 +191,8 @@ public final class DomainsClientImpl implements DomainsClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/renew")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<DomainsRenewResponse> renew(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Void>> renew(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
             Context context);
 
@@ -202,8 +200,8 @@ public final class DomainsClientImpl implements DomainsClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/renew")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        DomainsRenewResponse renewSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+        Response<Void> renewSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
             Context context);
 
@@ -725,10 +723,10 @@ public final class DomainsClientImpl implements DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a domain on successful completion of {@link Mono}.
+     * @return information about a domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DomainsUpdateResponse> updateWithResponseAsync(String resourceGroupName, String domainName,
+    private Mono<Response<DomainInner>> updateWithResponseAsync(String resourceGroupName, String domainName,
         DomainPatchResource domain) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -769,10 +767,10 @@ public final class DomainsClientImpl implements DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a domain.
+     * @return information about a domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainsUpdateResponse updateWithResponse(String resourceGroupName, String domainName,
+    public Response<DomainInner> updateWithResponse(String resourceGroupName, String domainName,
         DomainPatchResource domain, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -1132,10 +1130,10 @@ public final class DomainsClientImpl implements DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DomainsRenewResponse> renewWithResponseAsync(String resourceGroupName, String domainName) {
+    private Mono<Response<Void>> renewWithResponseAsync(String resourceGroupName, String domainName) {
         return FluxUtil
             .withContext(context -> service.renew(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, domainName, context))
@@ -1170,10 +1168,10 @@ public final class DomainsClientImpl implements DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainsRenewResponse renewWithResponse(String resourceGroupName, String domainName, Context context) {
+    public Response<Void> renewWithResponse(String resourceGroupName, String domainName, Context context) {
         return service.renewSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, domainName, context);
     }

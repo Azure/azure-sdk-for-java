@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.domainregistration.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -14,7 +15,6 @@ import com.azure.resourcemanager.domainregistration.models.Domain;
 import com.azure.resourcemanager.domainregistration.models.DomainPatchResource;
 import com.azure.resourcemanager.domainregistration.models.DomainPurchaseConsent;
 import com.azure.resourcemanager.domainregistration.models.DomainStatus;
-import com.azure.resourcemanager.domainregistration.models.DomainsRenewResponse;
 import com.azure.resourcemanager.domainregistration.models.HostName;
 import com.azure.resourcemanager.domainregistration.models.ProvisioningState;
 import com.azure.resourcemanager.domainregistration.models.ResourceNotRenewableReason;
@@ -252,7 +252,7 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         return this;
     }
 
-    public DomainsRenewResponse renewWithResponse(Context context) {
+    public Response<Void> renewWithResponse(Context context) {
         return serviceManager.domains().renewWithResponse(resourceGroupName, domainName, context);
     }
 

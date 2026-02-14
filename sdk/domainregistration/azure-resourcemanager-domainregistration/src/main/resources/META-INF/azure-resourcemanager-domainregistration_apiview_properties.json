@@ -71,8 +71,6 @@
     "com.azure.resourcemanager.domainregistration.models.DomainRecommendationSearchParameters": "Microsoft.DomainRegistration.DomainRecommendationSearchParameters",
     "com.azure.resourcemanager.domainregistration.models.DomainStatus": "Microsoft.DomainRegistration.DomainStatus",
     "com.azure.resourcemanager.domainregistration.models.DomainType": "Microsoft.DomainRegistration.DomainType",
-    "com.azure.resourcemanager.domainregistration.models.DomainsRenewHeaders": null,
-    "com.azure.resourcemanager.domainregistration.models.DomainsUpdateHeaders": null,
     "com.azure.resourcemanager.domainregistration.models.HostName": "Microsoft.DomainRegistration.HostName",
     "com.azure.resourcemanager.domainregistration.models.HostNameType": "Microsoft.DomainRegistration.HostNameType",
     "com.azure.resourcemanager.domainregistration.models.LogSpecification": "Microsoft.DomainRegistration.LogSpecification",

@@ -21,7 +21,6 @@ import com.azure.resourcemanager.domainregistration.models.DomainControlCenterSs
 import com.azure.resourcemanager.domainregistration.models.DomainOwnershipIdentifier;
 import com.azure.resourcemanager.domainregistration.models.DomainRecommendationSearchParameters;
 import com.azure.resourcemanager.domainregistration.models.Domains;
-import com.azure.resourcemanager.domainregistration.models.DomainsRenewResponse;
 import com.azure.resourcemanager.domainregistration.models.NameIdentifier;
 
 public final class DomainsImpl implements Domains {
@@ -87,7 +86,7 @@ public final class DomainsImpl implements Domains {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new DomainImpl(inner1, this.manager()));
     }
 
-    public DomainsRenewResponse renewWithResponse(String resourceGroupName, String domainName, Context context) {
+    public Response<Void> renewWithResponse(String resourceGroupName, String domainName, Context context) {
         return this.serviceClient().renewWithResponse(resourceGroupName, domainName, context);
     }
 

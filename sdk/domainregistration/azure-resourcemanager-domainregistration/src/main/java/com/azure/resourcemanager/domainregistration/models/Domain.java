@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.domainregistration.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -627,9 +628,9 @@ public interface Domain {
      * @throws com.azure.resourcemanager.domainregistration.models.DefaultErrorResponseErrorException thrown if the
      * request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
-    DomainsRenewResponse renewWithResponse(Context context);
+    Response<Void> renewWithResponse(Context context);
 
     /**
      * Renew a domain.

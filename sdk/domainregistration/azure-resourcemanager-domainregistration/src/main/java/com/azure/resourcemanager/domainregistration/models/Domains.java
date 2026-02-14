@@ -156,9 +156,9 @@ public interface Domains {
      * @throws com.azure.resourcemanager.domainregistration.models.DefaultErrorResponseErrorException thrown if the
      * request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
-    DomainsRenewResponse renewWithResponse(String resourceGroupName, String domainName, Context context);
+    Response<Void> renewWithResponse(String resourceGroupName, String domainName, Context context);
 
     /**
      * Renew a domain.

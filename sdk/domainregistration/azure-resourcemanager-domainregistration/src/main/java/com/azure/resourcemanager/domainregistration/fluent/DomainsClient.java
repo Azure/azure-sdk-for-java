@@ -18,8 +18,6 @@ import com.azure.resourcemanager.domainregistration.fluent.models.DomainOwnershi
 import com.azure.resourcemanager.domainregistration.fluent.models.NameIdentifierInner;
 import com.azure.resourcemanager.domainregistration.models.DomainPatchResource;
 import com.azure.resourcemanager.domainregistration.models.DomainRecommendationSearchParameters;
-import com.azure.resourcemanager.domainregistration.models.DomainsRenewResponse;
-import com.azure.resourcemanager.domainregistration.models.DomainsUpdateResponse;
 
 /**
  * An instance of this class provides access to all the operations defined in DomainsClient.
@@ -147,10 +145,10 @@ public interface DomainsClient {
      * @throws com.azure.resourcemanager.domainregistration.models.DefaultErrorResponseErrorException thrown if the
      * request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a domain.
+     * @return information about a domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainsUpdateResponse updateWithResponse(String resourceGroupName, String domainName, DomainPatchResource domain,
+    Response<DomainInner> updateWithResponse(String resourceGroupName, String domainName, DomainPatchResource domain,
         Context context);
 
     /**
@@ -284,10 +282,10 @@ public interface DomainsClient {
      * @throws com.azure.resourcemanager.domainregistration.models.DefaultErrorResponseErrorException thrown if the
      * request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainsRenewResponse renewWithResponse(String resourceGroupName, String domainName, Context context);
+    Response<Void> renewWithResponse(String resourceGroupName, String domainName, Context context);
 
     /**
      * Renew a domain.
