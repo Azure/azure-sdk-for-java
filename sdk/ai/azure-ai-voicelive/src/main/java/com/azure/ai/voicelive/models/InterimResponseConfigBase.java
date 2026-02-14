@@ -13,76 +13,76 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Base model for filler response configuration.
+ * Base model for interim response configuration.
  */
 @Fluent
-public class FillerResponseConfigBase implements JsonSerializable<FillerResponseConfigBase> {
+public class InterimResponseConfigBase implements JsonSerializable<InterimResponseConfigBase> {
 
     /*
-     * The type of filler response configuration.
+     * The type of interim response configuration.
      */
     @Generated
-    private FillerResponseConfigType type = FillerResponseConfigType.fromString("FillerResponseConfigBase");
+    private InterimResponseConfigType type = InterimResponseConfigType.fromString("InterimResponseConfigBase");
 
     /*
-     * List of triggers that can fire the filler. Any trigger can activate the filler (OR logic).
+     * List of triggers that can fire the interim response. Any trigger can activate it (OR logic).
      * Supported: 'latency', 'tool'.
      */
     @Generated
-    private List<FillerTrigger> triggers;
+    private List<InterimResponseTrigger> triggers;
 
     /*
-     * Latency threshold in milliseconds before triggering filler response. Default is 2000ms.
+     * Latency threshold in milliseconds before triggering interim response. Default is 2000ms.
      */
     @Generated
     private Integer latencyThresholdMs;
 
     /**
-     * Creates an instance of FillerResponseConfigBase class.
+     * Creates an instance of InterimResponseConfigBase class.
      */
     @Generated
-    public FillerResponseConfigBase() {
+    public InterimResponseConfigBase() {
     }
 
     /**
-     * Get the type property: The type of filler response configuration.
+     * Get the type property: The type of interim response configuration.
      *
      * @return the type value.
      */
     @Generated
-    public FillerResponseConfigType getType() {
+    public InterimResponseConfigType getType() {
         return this.type;
     }
 
     /**
-     * Get the triggers property: List of triggers that can fire the filler. Any trigger can activate the filler (OR
+     * Get the triggers property: List of triggers that can fire the interim response. Any trigger can activate it (OR
      * logic).
      * Supported: 'latency', 'tool'.
      *
      * @return the triggers value.
      */
     @Generated
-    public List<FillerTrigger> getTriggers() {
+    public List<InterimResponseTrigger> getTriggers() {
         return this.triggers;
     }
 
     /**
-     * Set the triggers property: List of triggers that can fire the filler. Any trigger can activate the filler (OR
+     * Set the triggers property: List of triggers that can fire the interim response. Any trigger can activate it (OR
      * logic).
      * Supported: 'latency', 'tool'.
      *
      * @param triggers the triggers value to set.
-     * @return the FillerResponseConfigBase object itself.
+     * @return the InterimResponseConfigBase object itself.
      */
     @Generated
-    public FillerResponseConfigBase setTriggers(List<FillerTrigger> triggers) {
+    public InterimResponseConfigBase setTriggers(List<InterimResponseTrigger> triggers) {
         this.triggers = triggers;
         return this;
     }
 
     /**
-     * Get the latencyThresholdMs property: Latency threshold in milliseconds before triggering filler response. Default
-     * is 2000ms.
+     * Get the latencyThresholdMs property: Latency threshold in milliseconds before triggering interim response.
+     * Default is 2000ms.
      *
      * @return the latencyThresholdMs value.
      */
@@ -92,14 +92,14 @@ public class FillerResponseConfigBase implements JsonSerializable<FillerResponse
     }
 
     /**
-     * Set the latencyThresholdMs property: Latency threshold in milliseconds before triggering filler response. Default
-     * is 2000ms.
+     * Set the latencyThresholdMs property: Latency threshold in milliseconds before triggering interim response.
+     * Default is 2000ms.
      *
      * @param latencyThresholdMs the latencyThresholdMs value to set.
-     * @return the FillerResponseConfigBase object itself.
+     * @return the InterimResponseConfigBase object itself.
      */
     @Generated
-    public FillerResponseConfigBase setLatencyThresholdMs(Integer latencyThresholdMs) {
+    public InterimResponseConfigBase setLatencyThresholdMs(Integer latencyThresholdMs) {
         this.latencyThresholdMs = latencyThresholdMs;
         return this;
     }
@@ -119,15 +119,15 @@ public class FillerResponseConfigBase implements JsonSerializable<FillerResponse
     }
 
     /**
-     * Reads an instance of FillerResponseConfigBase from the JsonReader.
+     * Reads an instance of InterimResponseConfigBase from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of FillerResponseConfigBase if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of InterimResponseConfigBase if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the FillerResponseConfigBase.
+     * @throws IOException If an error occurs while reading the InterimResponseConfigBase.
      */
     @Generated
-    public static FillerResponseConfigBase fromJson(JsonReader jsonReader) throws IOException {
+    public static InterimResponseConfigBase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -144,10 +144,10 @@ public class FillerResponseConfigBase implements JsonSerializable<FillerResponse
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("llm_filler".equals(discriminatorValue)) {
-                    return LlmFillerResponseConfig.fromJson(readerToUse.reset());
-                } else if ("static_filler".equals(discriminatorValue)) {
-                    return BasicFillerResponseConfig.fromJson(readerToUse.reset());
+                if ("llm_interim_response".equals(discriminatorValue)) {
+                    return LlmInterimResponseConfig.fromJson(readerToUse.reset());
+                } else if ("static_interim_response".equals(discriminatorValue)) {
+                    return StaticInterimResponseConfig.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -156,25 +156,26 @@ public class FillerResponseConfigBase implements JsonSerializable<FillerResponse
     }
 
     @Generated
-    static FillerResponseConfigBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static InterimResponseConfigBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            FillerResponseConfigBase deserializedFillerResponseConfigBase = new FillerResponseConfigBase();
+            InterimResponseConfigBase deserializedInterimResponseConfigBase = new InterimResponseConfigBase();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedFillerResponseConfigBase.type = FillerResponseConfigType.fromString(reader.getString());
+                    deserializedInterimResponseConfigBase.type
+                        = InterimResponseConfigType.fromString(reader.getString());
                 } else if ("triggers".equals(fieldName)) {
-                    List<FillerTrigger> triggers
-                        = reader.readArray(reader1 -> FillerTrigger.fromString(reader1.getString()));
-                    deserializedFillerResponseConfigBase.triggers = triggers;
+                    List<InterimResponseTrigger> triggers
+                        = reader.readArray(reader1 -> InterimResponseTrigger.fromString(reader1.getString()));
+                    deserializedInterimResponseConfigBase.triggers = triggers;
                 } else if ("latency_threshold_ms".equals(fieldName)) {
-                    deserializedFillerResponseConfigBase.latencyThresholdMs = reader.getNullable(JsonReader::getInt);
+                    deserializedInterimResponseConfigBase.latencyThresholdMs = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedFillerResponseConfigBase;
+            return deserializedInterimResponseConfigBase;
         });
     }
 }

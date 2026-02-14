@@ -12,44 +12,44 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Configuration for basic/static filler response generation.
+ * Configuration for static interim response generation.
  * Randomly selects from configured texts when any trigger condition is met.
  */
 @Fluent
-public final class BasicFillerResponseConfig extends FillerResponseConfigBase {
+public final class StaticInterimResponseConfig extends InterimResponseConfigBase {
 
     /*
-     * The type of filler response configuration.
+     * The type of interim response configuration.
      */
     @Generated
-    private FillerResponseConfigType type = FillerResponseConfigType.STATIC_FILLER;
+    private InterimResponseConfigType type = InterimResponseConfigType.STATIC_INTERIM_RESPONSE;
 
     /*
-     * List of filler text options to randomly select from.
+     * List of interim response text options to randomly select from.
      */
     @Generated
     private List<String> texts;
 
     /**
-     * Creates an instance of BasicFillerResponseConfig class.
+     * Creates an instance of StaticInterimResponseConfig class.
      */
     @Generated
-    public BasicFillerResponseConfig() {
+    public StaticInterimResponseConfig() {
     }
 
     /**
-     * Get the type property: The type of filler response configuration.
+     * Get the type property: The type of interim response configuration.
      *
      * @return the type value.
      */
     @Generated
     @Override
-    public FillerResponseConfigType getType() {
+    public InterimResponseConfigType getType() {
         return this.type;
     }
 
     /**
-     * Get the texts property: List of filler text options to randomly select from.
+     * Get the texts property: List of interim response text options to randomly select from.
      *
      * @return the texts value.
      */
@@ -59,13 +59,13 @@ public final class BasicFillerResponseConfig extends FillerResponseConfigBase {
     }
 
     /**
-     * Set the texts property: List of filler text options to randomly select from.
+     * Set the texts property: List of interim response text options to randomly select from.
      *
      * @param texts the texts value to set.
-     * @return the BasicFillerResponseConfig object itself.
+     * @return the StaticInterimResponseConfig object itself.
      */
     @Generated
-    public BasicFillerResponseConfig setTexts(List<String> texts) {
+    public StaticInterimResponseConfig setTexts(List<String> texts) {
         this.texts = texts;
         return this;
     }
@@ -75,7 +75,7 @@ public final class BasicFillerResponseConfig extends FillerResponseConfigBase {
      */
     @Generated
     @Override
-    public BasicFillerResponseConfig setTriggers(List<FillerTrigger> triggers) {
+    public StaticInterimResponseConfig setTriggers(List<InterimResponseTrigger> triggers) {
         super.setTriggers(triggers);
         return this;
     }
@@ -85,7 +85,7 @@ public final class BasicFillerResponseConfig extends FillerResponseConfigBase {
      */
     @Generated
     @Override
-    public BasicFillerResponseConfig setLatencyThresholdMs(Integer latencyThresholdMs) {
+    public StaticInterimResponseConfig setLatencyThresholdMs(Integer latencyThresholdMs) {
         super.setLatencyThresholdMs(latencyThresholdMs);
         return this;
     }
@@ -106,37 +106,38 @@ public final class BasicFillerResponseConfig extends FillerResponseConfigBase {
     }
 
     /**
-     * Reads an instance of BasicFillerResponseConfig from the JsonReader.
+     * Reads an instance of StaticInterimResponseConfig from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BasicFillerResponseConfig if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the BasicFillerResponseConfig.
+     * @return An instance of StaticInterimResponseConfig if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StaticInterimResponseConfig.
      */
     @Generated
-    public static BasicFillerResponseConfig fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticInterimResponseConfig fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BasicFillerResponseConfig deserializedBasicFillerResponseConfig = new BasicFillerResponseConfig();
+            StaticInterimResponseConfig deserializedStaticInterimResponseConfig = new StaticInterimResponseConfig();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("triggers".equals(fieldName)) {
-                    List<FillerTrigger> triggers
-                        = reader.readArray(reader1 -> FillerTrigger.fromString(reader1.getString()));
-                    deserializedBasicFillerResponseConfig.setTriggers(triggers);
+                    List<InterimResponseTrigger> triggers
+                        = reader.readArray(reader1 -> InterimResponseTrigger.fromString(reader1.getString()));
+                    deserializedStaticInterimResponseConfig.setTriggers(triggers);
                 } else if ("latency_threshold_ms".equals(fieldName)) {
-                    deserializedBasicFillerResponseConfig.setLatencyThresholdMs(reader.getNullable(JsonReader::getInt));
+                    deserializedStaticInterimResponseConfig
+                        .setLatencyThresholdMs(reader.getNullable(JsonReader::getInt));
                 } else if ("type".equals(fieldName)) {
-                    deserializedBasicFillerResponseConfig.type
-                        = FillerResponseConfigType.fromString(reader.getString());
+                    deserializedStaticInterimResponseConfig.type
+                        = InterimResponseConfigType.fromString(reader.getString());
                 } else if ("texts".equals(fieldName)) {
                     List<String> texts = reader.readArray(reader1 -> reader1.getString());
-                    deserializedBasicFillerResponseConfig.texts = texts;
+                    deserializedStaticInterimResponseConfig.texts = texts;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedBasicFillerResponseConfig;
+            return deserializedStaticInterimResponseConfig;
         });
     }
 }
