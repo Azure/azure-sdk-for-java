@@ -4,8 +4,8 @@
 
 module com.azure.ai.agents {
     requires transitive com.azure.core;
-    requires openai.java.client.okhttp;
-    requires openai.java.core;
+    requires transitive openai.java.client.okhttp;
+    requires transitive openai.java.core;
 
     exports com.azure.ai.agents;
     exports com.azure.ai.agents.models;
