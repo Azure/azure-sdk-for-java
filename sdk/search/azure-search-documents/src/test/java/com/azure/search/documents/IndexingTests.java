@@ -4,22 +4,26 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPoint;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.core.util.Context;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.ReadValueCallback;
 import com.azure.search.documents.indexes.SearchIndexClient;
-import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
-import com.azure.search.documents.test.environment.models.Author;
-import com.azure.search.documents.test.environment.models.Book;
-import com.azure.search.documents.test.environment.models.Hotel;
-import com.azure.search.documents.test.environment.models.HotelAddress;
-import com.azure.search.documents.test.environment.models.HotelRoom;
-import com.azure.search.documents.test.environment.models.LoudHotel;
+import com.azure.search.documents.testingmodels.Author;
+import com.azure.search.documents.testingmodels.Book;
+import com.azure.search.documents.testingmodels.Hotel;
+import com.azure.search.documents.testingmodels.HotelAddress;
+import com.azure.search.documents.testingmodels.HotelRoom;
+import com.azure.search.documents.testingmodels.LoudHotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,7 +34,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -38,19 +41,23 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.convertFromMapStringObject;
+import static com.azure.search.documents.TestHelpers.convertToIndexAction;
+import static com.azure.search.documents.TestHelpers.convertToMapStringObject;
+import static com.azure.search.documents.TestHelpers.createIndexAction;
 import static com.azure.search.documents.TestHelpers.setupSharedIndex;
 import static com.azure.search.documents.TestHelpers.verifyHttpResponseError;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -130,9 +137,10 @@ public class IndexingTests extends SearchTestBase {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String expectedHotelId = getRandomDocumentKey();
-        List<Hotel> hotels = Collections.singletonList(new Hotel().hotelId(expectedHotelId));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(
+            convertToIndexAction(new Hotel().hotelId(expectedHotelId), IndexActionType.UPLOAD));
 
-        List<IndexingResult> result = client.uploadDocuments(hotels).getResults();
+        List<IndexingResult> result = client.indexDocuments(batch).getResults();
         assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
     }
 
@@ -146,9 +154,10 @@ public class IndexingTests extends SearchTestBase {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String expectedHotelId = getRandomDocumentKey();
-        List<Hotel> hotels = Collections.singletonList(new Hotel().hotelId(expectedHotelId));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(
+            convertToIndexAction(new Hotel().hotelId(expectedHotelId), IndexActionType.UPLOAD));
 
-        StepVerifier.create(asyncClient.uploadDocuments(hotels))
+        StepVerifier.create(asyncClient.indexDocuments(batch))
             .assertNext(result -> assertIndexActionSucceeded(expectedHotelId, result.getResults().get(0), 201))
             .verifyComplete();
     }
@@ -163,12 +172,11 @@ public class IndexingTests extends SearchTestBase {
         SearchClient client = getClient(BOOKS_INDEX_NAME);
 
         String isbn = getRandomDocumentKey();
-        List<Book> books = new ArrayList<>();
-        books.add(new Book().ISBN(isbn)
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(convertToIndexAction(new Book().ISBN(isbn)
             .title("Lord of the Rings")
-            .author(new Author().firstName("J.R.R").lastName("Tolkien")));
+            .author(new Author().firstName("J.R.R").lastName("Tolkien")), IndexActionType.UPLOAD));
 
-        List<IndexingResult> result = client.uploadDocuments(books).getResults();
+        List<IndexingResult> result = client.indexDocuments(batch).getResults();
         assertIndexActionSucceeded(isbn, result.get(0), 201);
     }
 
@@ -182,12 +190,11 @@ public class IndexingTests extends SearchTestBase {
         SearchAsyncClient asyncClient = getAsyncClient(BOOKS_INDEX_NAME);
 
         String isbn = getRandomDocumentKey();
-        List<Book> books = new ArrayList<>();
-        books.add(new Book().ISBN(isbn)
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(convertToIndexAction(new Book().ISBN(isbn)
             .title("Lord of the Rings")
-            .author(new Author().firstName("J.R.R").lastName("Tolkien")));
+            .author(new Author().firstName("J.R.R").lastName("Tolkien")), IndexActionType.UPLOAD));
 
-        StepVerifier.create(asyncClient.uploadDocuments(books))
+        StepVerifier.create(asyncClient.indexDocuments(batch))
             .assertNext(result -> assertIndexActionSucceeded(isbn, result.getResults().get(0), 201))
             .verifyComplete();
     }
@@ -204,12 +211,15 @@ public class IndexingTests extends SearchTestBase {
         String hotel1Key = getRandomDocumentKey();
         String hotel2Key = getRandomDocumentKey();
 
-        client.uploadDocuments(Arrays.asList(new Hotel().hotelId(hotel1Key), new Hotel().hotelId(hotel2Key)));
+        client.indexDocuments(
+            new IndexDocumentsBatch(convertToIndexAction(new Hotel().hotelId(hotel1Key), IndexActionType.UPLOAD),
+                convertToIndexAction(new Hotel().hotelId(hotel2Key), IndexActionType.UPLOAD)));
 
         waitForIndexing();
 
-        IndexDocumentsBatch<Hotel> deleteBatch
-            = new IndexDocumentsBatch<Hotel>().addDeleteActions("HotelId", Arrays.asList(hotel1Key, hotel2Key));
+        IndexDocumentsBatch deleteBatch = new IndexDocumentsBatch(
+            createIndexAction(IndexActionType.DELETE, Collections.singletonMap("HotelId", hotel1Key)),
+            createIndexAction(IndexActionType.DELETE, Collections.singletonMap("HotelId", hotel2Key)));
 
         IndexDocumentsResult documentIndexResult = client.indexDocuments(deleteBatch);
 
@@ -230,13 +240,17 @@ public class IndexingTests extends SearchTestBase {
         String hotel1Key = getRandomDocumentKey();
         String hotel2Key = getRandomDocumentKey();
 
-        asyncClient.uploadDocuments(Arrays.asList(new Hotel().hotelId(hotel1Key), new Hotel().hotelId(hotel2Key)))
+        asyncClient
+            .indexDocuments(
+                new IndexDocumentsBatch(convertToIndexAction(new Hotel().hotelId(hotel1Key), IndexActionType.UPLOAD),
+                    convertToIndexAction(new Hotel().hotelId(hotel2Key), IndexActionType.UPLOAD)))
             .block();
 
         waitForIndexing();
 
-        IndexDocumentsBatch<Hotel> deleteBatch
-            = new IndexDocumentsBatch<Hotel>().addDeleteActions("HotelId", Arrays.asList(hotel1Key, hotel2Key));
+        IndexDocumentsBatch deleteBatch = new IndexDocumentsBatch(
+            createIndexAction(IndexActionType.DELETE, Collections.singletonMap("HotelId", hotel1Key)),
+            createIndexAction(IndexActionType.DELETE, Collections.singletonMap("HotelId", hotel2Key)));
 
         StepVerifier.create(asyncClient.indexDocuments(deleteBatch)).assertNext(result -> {
             assertEquals(2, result.getResults().size());
@@ -256,13 +270,13 @@ public class IndexingTests extends SearchTestBase {
 
         String hotelId = getRandomDocumentKey();
         Hotel hotel = new Hotel().hotelId(hotelId).category("Luxury");
-        List<Hotel> hotels = Collections.singletonList(hotel);
 
-        client.uploadDocuments(hotels);
+        client.indexDocuments(new IndexDocumentsBatch(convertToIndexAction(hotel, IndexActionType.UPLOAD)));
         waitForIndexing();
 
         hotel.category("ignored");
-        IndexDocumentsResult documentIndexResult = client.deleteDocuments(hotels);
+        IndexDocumentsResult documentIndexResult
+            = client.indexDocuments(new IndexDocumentsBatch(convertToIndexAction(hotel, IndexActionType.DELETE)));
 
         assertEquals(1, documentIndexResult.getResults().size());
         assertIndexActionSucceeded(hotelId, documentIndexResult.getResults().get(0), 200);
@@ -279,17 +293,21 @@ public class IndexingTests extends SearchTestBase {
 
         String hotelId = getRandomDocumentKey();
         Hotel hotel = new Hotel().hotelId(hotelId).category("Luxury");
-        List<Hotel> hotels = Collections.singletonList(hotel);
 
-        asyncClient.uploadDocuments(hotels).block();
+        asyncClient.indexDocuments(new IndexDocumentsBatch(convertToIndexAction(hotel, IndexActionType.UPLOAD)))
+            .block();
         waitForIndexing();
 
         hotel.category("ignored");
 
-        StepVerifier.create(asyncClient.deleteDocuments(hotels)).assertNext(result -> {
-            assertEquals(1, result.getResults().size());
-            assertIndexActionSucceeded(hotelId, result.getResults().get(0), 200);
-        }).verifyComplete();
+        StepVerifier
+            .create(asyncClient
+                .indexDocuments(new IndexDocumentsBatch(convertToIndexAction(hotel, IndexActionType.DELETE))))
+            .assertNext(result -> {
+                assertEquals(1, result.getResults().size());
+                assertIndexActionSucceeded(hotelId, result.getResults().get(0), 200);
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -302,17 +320,17 @@ public class IndexingTests extends SearchTestBase {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
-        SearchDocument searchDocument = new SearchDocument();
+        Map<String, Object> searchDocument = new LinkedHashMap<>();
         searchDocument.put("HotelId", hotelId);
         searchDocument.put("Category", "Luxury");
-        List<SearchDocument> docs = Collections.singletonList(searchDocument);
 
-        client.uploadDocuments(docs);
+        client.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, searchDocument)));
 
         waitForIndexing();
 
         searchDocument.put("Category", "ignored");
-        IndexDocumentsResult documentIndexResult = client.deleteDocuments(docs);
+        IndexDocumentsResult documentIndexResult
+            = client.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.DELETE, searchDocument)));
 
         assertEquals(1, documentIndexResult.getResults().size());
         assertIndexActionSucceeded(hotelId, documentIndexResult.getResults().get(0), 200);
@@ -328,20 +346,24 @@ public class IndexingTests extends SearchTestBase {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
-        SearchDocument searchDocument = new SearchDocument();
+        Map<String, Object> searchDocument = new LinkedHashMap<>();
         searchDocument.put("HotelId", hotelId);
         searchDocument.put("Category", "Luxury");
-        List<SearchDocument> docs = Collections.singletonList(searchDocument);
 
-        asyncClient.uploadDocuments(docs).block();
+        asyncClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, searchDocument)))
+            .block();
         waitForIndexing();
 
         searchDocument.put("Category", "ignored");
 
-        StepVerifier.create(asyncClient.deleteDocuments(docs)).assertNext(result -> {
-            assertEquals(1, result.getResults().size());
-            assertIndexActionSucceeded(hotelId, result.getResults().get(0), 200);
-        }).verifyComplete();
+        StepVerifier
+            .create(asyncClient
+                .indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.DELETE, searchDocument))))
+            .assertNext(result -> {
+                assertEquals(1, result.getResults().size());
+                assertIndexActionSucceeded(hotelId, result.getResults().get(0), 200);
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -362,15 +384,14 @@ public class IndexingTests extends SearchTestBase {
         Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel"); // merging with a non-existing document
         Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<Hotel> batch
-            = new IndexDocumentsBatch<Hotel>().addUploadActions(Collections.singletonList(hotel1))
-                .addDeleteActions(Collections.singletonList(randomHotel))
-                .addMergeActions(Collections.singletonList(nonExistingHotel))
-                .addMergeOrUploadActions(Collections.singletonList(hotel3))
-                .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(convertToIndexAction(hotel1, IndexActionType.UPLOAD),
+            convertToIndexAction(randomHotel, IndexActionType.DELETE),
+            convertToIndexAction(nonExistingHotel, IndexActionType.MERGE),
+            convertToIndexAction(hotel3, IndexActionType.MERGE_OR_UPLOAD),
+            convertToIndexAction(hotel2, IndexActionType.UPLOAD));
 
-        IndexBatchException ex = assertThrows(IndexBatchException.class, () -> client.indexDocumentsWithResponse(batch,
-            new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE));
+        IndexBatchException ex = assertThrows(IndexBatchException.class,
+            () -> client.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true), null));
 
         List<IndexingResult> results = ex.getIndexingResults();
         assertEquals(results.size(), batch.getActions().size());
@@ -382,7 +403,7 @@ public class IndexingTests extends SearchTestBase {
         assertSuccessfulIndexResult(results.get(4), hotel2Id, 201);
 
         for (Hotel hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
-            Hotel actual = client.getDocument(hotel.hotelId(), Hotel.class);
+            Hotel actual = getAndConvertDocument(client, hotel.hotelId(), Hotel::fromJson);
             assertObjectEquals(hotel, actual, true);
         }
     }
@@ -405,15 +426,16 @@ public class IndexingTests extends SearchTestBase {
         Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel"); // merging with a non-existing document
         Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<Hotel> batch
-            = new IndexDocumentsBatch<Hotel>().addUploadActions(Collections.singletonList(hotel1))
-                .addDeleteActions(Collections.singletonList(randomHotel))
-                .addMergeActions(Collections.singletonList(nonExistingHotel))
-                .addMergeOrUploadActions(Collections.singletonList(hotel3))
-                .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch batch
+            = new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(hotel1)),
+                createIndexAction(IndexActionType.DELETE, convertToMapStringObject(randomHotel)),
+                createIndexAction(IndexActionType.MERGE, convertToMapStringObject(nonExistingHotel)),
+                createIndexAction(IndexActionType.MERGE_OR_UPLOAD, convertToMapStringObject(hotel3)),
+                createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(hotel2)));
 
         StepVerifier
-            .create(asyncClient.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true)))
+            .create(asyncClient.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true),
+                null))
             .verifyErrorSatisfies(throwable -> {
                 IndexBatchException ex = assertInstanceOf(IndexBatchException.class, throwable);
 
@@ -428,7 +450,8 @@ public class IndexingTests extends SearchTestBase {
             });
 
         for (Hotel hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
-            getAndValidateDocumentAsync(asyncClient, hotel.hotelId(), Hotel.class, hotel,
+            getAndValidateDocumentAsync(asyncClient, hotel.hotelId(), hotel,
+                map -> convertFromMapStringObject(map, Hotel::fromJson),
                 (expected, actual) -> assertObjectEquals(expected, actual, true));
         }
     }
@@ -445,21 +468,20 @@ public class IndexingTests extends SearchTestBase {
         String hotel1Id = getRandomDocumentKey();
         String hotel2Id = getRandomDocumentKey();
         String hotel3Id = getRandomDocumentKey();
-        SearchDocument hotel1 = prepareDynamicallyTypedHotel(hotel1Id);
-        SearchDocument hotel2 = prepareDynamicallyTypedHotel(hotel2Id);
-        SearchDocument hotel3 = prepareDynamicallyTypedHotel(hotel3Id);
-        SearchDocument nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
-        SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
+        Map<String, Object> hotel1 = prepareDynamicallyTypedHotel(hotel1Id);
+        Map<String, Object> hotel2 = prepareDynamicallyTypedHotel(hotel2Id);
+        Map<String, Object> hotel3 = prepareDynamicallyTypedHotel(hotel3Id);
+        Map<String, Object> nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
+        Map<String, Object> randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<SearchDocument> batch
-            = new IndexDocumentsBatch<SearchDocument>().addUploadActions(Collections.singletonList(hotel1))
-                .addDeleteActions(Collections.singletonList(randomHotel))
-                .addMergeActions(Collections.singletonList(nonExistingHotel))
-                .addMergeOrUploadActions(Collections.singletonList(hotel3))
-                .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, hotel1),
+            createIndexAction(IndexActionType.DELETE, randomHotel),
+            createIndexAction(IndexActionType.MERGE, nonExistingHotel),
+            createIndexAction(IndexActionType.MERGE_OR_UPLOAD, hotel3),
+            createIndexAction(IndexActionType.UPLOAD, hotel3));
 
-        Response<IndexDocumentsResult> resultResponse = client.indexDocumentsWithResponse(batch,
-            new IndexDocumentsOptions().setThrowOnAnyError(false), Context.NONE);
+        Response<IndexDocumentsResult> resultResponse
+            = client.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(false), null);
         List<IndexingResult> results = resultResponse.getValue().getResults();
         assertEquals(207, resultResponse.getStatusCode());
         assertSuccessfulIndexResult(results.get(0), hotel1Id, 201);
@@ -468,8 +490,8 @@ public class IndexingTests extends SearchTestBase {
         assertSuccessfulIndexResult(results.get(3), hotel3Id, 201);
         assertSuccessfulIndexResult(results.get(4), hotel2Id, 201);
 
-        for (SearchDocument hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
-            SearchDocument actual = client.getDocument(hotel.get("HotelId").toString(), SearchDocument.class);
+        for (Map<String, Object> hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
+            Map<String, Object> actual = client.getDocument(hotel.get("HotelId").toString()).getAdditionalProperties();
             assertMapEquals(hotel, actual, true);
         }
     }
@@ -486,22 +508,21 @@ public class IndexingTests extends SearchTestBase {
         String hotel1Id = getRandomDocumentKey();
         String hotel2Id = getRandomDocumentKey();
         String hotel3Id = getRandomDocumentKey();
-        SearchDocument hotel1 = prepareDynamicallyTypedHotel(hotel1Id);
-        SearchDocument hotel2 = prepareDynamicallyTypedHotel(hotel2Id);
-        SearchDocument hotel3 = prepareDynamicallyTypedHotel(hotel3Id);
-        SearchDocument nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
-        SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
+        Map<String, Object> hotel1 = prepareDynamicallyTypedHotel(hotel1Id);
+        Map<String, Object> hotel2 = prepareDynamicallyTypedHotel(hotel2Id);
+        Map<String, Object> hotel3 = prepareDynamicallyTypedHotel(hotel3Id);
+        Map<String, Object> nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
+        Map<String, Object> randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<SearchDocument> batch
-            = new IndexDocumentsBatch<SearchDocument>().addUploadActions(Collections.singletonList(hotel1))
-                .addDeleteActions(Collections.singletonList(randomHotel))
-                .addMergeActions(Collections.singletonList(nonExistingHotel))
-                .addMergeOrUploadActions(Collections.singletonList(hotel3))
-                .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, hotel1),
+            createIndexAction(IndexActionType.DELETE, randomHotel),
+            createIndexAction(IndexActionType.MERGE, nonExistingHotel),
+            createIndexAction(IndexActionType.MERGE_OR_UPLOAD, hotel3),
+            createIndexAction(IndexActionType.UPLOAD, hotel2));
 
         StepVerifier
-            .create(
-                asyncClient.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(false)))
+            .create(asyncClient.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(false),
+                null))
             .assertNext(resultResponse -> {
                 List<IndexingResult> results = resultResponse.getValue().getResults();
                 assertEquals(207, resultResponse.getStatusCode());
@@ -513,8 +534,8 @@ public class IndexingTests extends SearchTestBase {
             })
             .verifyComplete();
 
-        for (SearchDocument hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
-            getAndValidateDocumentAsync(asyncClient, hotel.get("HotelId").toString(), SearchDocument.class, hotel,
+        for (Map<String, Object> hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
+            getAndValidateDocumentAsync(asyncClient, hotel.get("HotelId").toString(), hotel, map -> map,
                 (expected, actual) -> assertMapEquals(expected, actual, true));
         }
     }
@@ -531,18 +552,17 @@ public class IndexingTests extends SearchTestBase {
         String hotel1Id = getRandomDocumentKey();
         String hotel2Id = getRandomDocumentKey();
         String hotel3Id = getRandomDocumentKey();
-        SearchDocument hotel1 = prepareDynamicallyTypedHotel(hotel1Id);
-        SearchDocument hotel2 = prepareDynamicallyTypedHotel(hotel2Id);
-        SearchDocument hotel3 = prepareDynamicallyTypedHotel(hotel3Id);
-        SearchDocument nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
-        SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
+        Map<String, Object> hotel1 = prepareDynamicallyTypedHotel(hotel1Id);
+        Map<String, Object> hotel2 = prepareDynamicallyTypedHotel(hotel2Id);
+        Map<String, Object> hotel3 = prepareDynamicallyTypedHotel(hotel3Id);
+        Map<String, Object> nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
+        Map<String, Object> randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<SearchDocument> batch
-            = new IndexDocumentsBatch<SearchDocument>().addUploadActions(Collections.singletonList(hotel1))
-                .addDeleteActions(Collections.singletonList(randomHotel))
-                .addMergeActions(Collections.singletonList(nonExistingHotel))
-                .addMergeOrUploadActions(Collections.singletonList(hotel3))
-                .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, hotel1),
+            createIndexAction(IndexActionType.DELETE, randomHotel),
+            createIndexAction(IndexActionType.MERGE, nonExistingHotel),
+            createIndexAction(IndexActionType.MERGE_OR_UPLOAD, hotel3),
+            createIndexAction(IndexActionType.UPLOAD, hotel2));
 
         IndexBatchException ex = assertThrows(IndexBatchException.class, () -> client.indexDocuments(batch));
         List<IndexingResult> results = ex.getIndexingResults();
@@ -554,8 +574,8 @@ public class IndexingTests extends SearchTestBase {
         assertSuccessfulIndexResult(results.get(3), hotel3Id, 201);
         assertSuccessfulIndexResult(results.get(4), hotel2Id, 201);
 
-        for (SearchDocument hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
-            SearchDocument actual = client.getDocument(hotel.get("HotelId").toString(), SearchDocument.class);
+        for (Map<String, Object> hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
+            Map<String, Object> actual = client.getDocument(hotel.get("HotelId").toString()).getAdditionalProperties();
             assertMapEquals(hotel, actual, true);
         }
     }
@@ -572,18 +592,17 @@ public class IndexingTests extends SearchTestBase {
         String hotel1Id = getRandomDocumentKey();
         String hotel2Id = getRandomDocumentKey();
         String hotel3Id = getRandomDocumentKey();
-        SearchDocument hotel1 = prepareDynamicallyTypedHotel(hotel1Id);
-        SearchDocument hotel2 = prepareDynamicallyTypedHotel(hotel2Id);
-        SearchDocument hotel3 = prepareDynamicallyTypedHotel(hotel3Id);
-        SearchDocument nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
-        SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
+        Map<String, Object> hotel1 = prepareDynamicallyTypedHotel(hotel1Id);
+        Map<String, Object> hotel2 = prepareDynamicallyTypedHotel(hotel2Id);
+        Map<String, Object> hotel3 = prepareDynamicallyTypedHotel(hotel3Id);
+        Map<String, Object> nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
+        Map<String, Object> randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<SearchDocument> batch
-            = new IndexDocumentsBatch<SearchDocument>().addUploadActions(Collections.singletonList(hotel1))
-                .addDeleteActions(Collections.singletonList(randomHotel))
-                .addMergeActions(Collections.singletonList(nonExistingHotel))
-                .addMergeOrUploadActions(Collections.singletonList(hotel3))
-                .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, hotel1),
+            createIndexAction(IndexActionType.DELETE, randomHotel),
+            createIndexAction(IndexActionType.MERGE, nonExistingHotel),
+            createIndexAction(IndexActionType.MERGE_OR_UPLOAD, hotel3),
+            createIndexAction(IndexActionType.UPLOAD, hotel2));
 
         StepVerifier.create(asyncClient.indexDocuments(batch)).verifyErrorSatisfies(throwable -> {
             IndexBatchException ex = assertInstanceOf(IndexBatchException.class, throwable);
@@ -598,8 +617,8 @@ public class IndexingTests extends SearchTestBase {
             assertSuccessfulIndexResult(results.get(4), hotel2Id, 201);
         });
 
-        for (SearchDocument hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
-            getAndValidateDocumentAsync(asyncClient, hotel.get("HotelId").toString(), SearchDocument.class, hotel,
+        for (Map<String, Object> hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
+            getAndValidateDocumentAsync(asyncClient, hotel.get("HotelId").toString(), hotel, map -> map,
                 (expected, actual) -> assertMapEquals(expected, actual, true));
         }
     }
@@ -608,49 +627,55 @@ public class IndexingTests extends SearchTestBase {
     public void indexWithInvalidDocumentThrowsExceptionSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
-        List<SearchDocument> docs = Collections.singletonList(new SearchDocument());
-
-        assertHttpResponseException(() -> client.uploadDocuments(docs), HttpURLConnection.HTTP_BAD_REQUEST, null);
+        assertHttpResponseException(
+            () -> client.indexDocuments(
+                new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, new LinkedHashMap<>()))),
+            HttpURLConnection.HTTP_BAD_REQUEST, null);
     }
 
     @Test
     public void indexWithInvalidDocumentThrowsExceptionAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
-        List<SearchDocument> docs = Collections.singletonList(new SearchDocument());
-
-        StepVerifier.create(asyncClient.uploadDocuments(docs))
+        StepVerifier
+            .create(asyncClient.indexDocuments(
+                new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, new LinkedHashMap<>()))))
             .verifyErrorSatisfies(
                 throwable -> verifyHttpResponseError(throwable, HttpURLConnection.HTTP_BAD_REQUEST, null));
     }
 
     @Test
-    public void canRoundtripBoundaryValuesSync() {
+    public void roundTripBoundaryValuesSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
 
-        client.uploadDocuments(boundaryConditionDocs);
+        client.indexDocuments(new IndexDocumentsBatch(boundaryConditionDocs.stream()
+            .map(doc -> createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(doc)))
+            .collect(Collectors.toList())));
         waitForIndexing();
 
         for (Hotel expected : boundaryConditionDocs) {
-            Hotel actual = client.getDocument(expected.hotelId(), Hotel.class);
+            Hotel actual = getAndConvertDocument(client, expected.hotelId(), Hotel::fromJson);
 
             assertObjectEquals(expected, actual, true);
         }
     }
 
     @Test
-    public void canRoundtripBoundaryValuesAsync() {
+    public void roundTripBoundaryValuesAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
 
-        asyncClient.uploadDocuments(boundaryConditionDocs).block();
+        asyncClient.indexDocuments(new IndexDocumentsBatch(boundaryConditionDocs.stream()
+            .map(doc -> createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(doc)))
+            .collect(Collectors.toList()))).block();
         waitForIndexing();
 
         for (Hotel expected : boundaryConditionDocs) {
-            getAndValidateDocumentAsync(asyncClient, expected.hotelId(), Hotel.class, expected,
+            getAndValidateDocumentAsync(asyncClient, expected.hotelId(), expected,
+                map -> convertFromMapStringObject(map, Hotel::fromJson),
                 (ignored, actual) -> assertObjectEquals(expected, actual, true));
         }
     }
@@ -665,23 +690,24 @@ public class IndexingTests extends SearchTestBase {
             = OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0), ZoneOffset.ofHours(-8));
 
         String isbn1 = getRandomDocumentKey();
-        Map<String, Object> book1 = new HashMap<>();
+        Map<String, Object> book1 = new LinkedHashMap<>();
         book1.put("ISBN", isbn1);
         book1.put("PublishDate", utcTime);
 
         String isbn2 = getRandomDocumentKey();
-        Map<String, Object> book2 = new HashMap<>();
+        Map<String, Object> book2 = new LinkedHashMap<>();
         book2.put("ISBN", isbn2);
         book2.put("PublishDate", utcTimeMinusEight);
 
-        client.uploadDocuments(Arrays.asList(book1, book2));
+        client.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, book1),
+            createIndexAction(IndexActionType.UPLOAD, book2)));
         waitForIndexing();
 
-        SearchDocument actualBook1 = client.getDocument(isbn1, SearchDocument.class);
+        Map<String, Object> actualBook1 = client.getDocument(isbn1).getAdditionalProperties();
         assertEquals(utcTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actualBook1.get("PublishDate"));
 
         // Azure AI Search normalizes to UTC, so we compare instants
-        SearchDocument actualBook2 = client.getDocument(isbn2, SearchDocument.class);
+        Map<String, Object> actualBook2 = client.getDocument(isbn2).getAdditionalProperties();
         assertEquals(
             utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
             actualBook2.get("PublishDate"));
@@ -697,24 +723,25 @@ public class IndexingTests extends SearchTestBase {
             = OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0), ZoneOffset.ofHours(-8));
 
         String isbn1 = getRandomDocumentKey();
-        SearchDocument book1 = new SearchDocument();
+        Map<String, Object> book1 = new LinkedHashMap<>();
         book1.put("ISBN", isbn1);
         book1.put("PublishDate", utcTime);
 
         String isbn2 = getRandomDocumentKey();
-        SearchDocument book2 = new SearchDocument();
+        Map<String, Object> book2 = new LinkedHashMap<>();
         book2.put("ISBN", isbn2);
         book2.put("PublishDate", utcTimeMinusEight);
 
-        asyncClient.uploadDocuments(Arrays.asList(book1, book2)).block();
+        asyncClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, book1),
+            createIndexAction(IndexActionType.UPLOAD, book2))).block();
         waitForIndexing();
 
-        getAndValidateDocumentAsync(asyncClient, isbn1, SearchDocument.class, book1, (expected,
+        getAndValidateDocumentAsync(asyncClient, isbn1, book1, map -> map, (ignored,
             actual) -> assertEquals(utcTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actual.get("PublishDate")));
 
         // Azure AI Search normalizes to UTC, so we compare instants
-        getAndValidateDocumentAsync(asyncClient, isbn2, SearchDocument.class, book2,
-            (expected, actual) -> assertEquals(
+        getAndValidateDocumentAsync(asyncClient, isbn2, book2, map -> map,
+            (ignored, actual) -> assertEquals(
                 utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
                 actual.get("PublishDate")));
     }
@@ -731,13 +758,15 @@ public class IndexingTests extends SearchTestBase {
             new Book().ISBN(isbn2)
                 .publishDate(OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0), ZoneOffset.ofHours(-8))));
 
-        client.uploadDocuments(books);
+        client.indexDocuments(new IndexDocumentsBatch(books.stream()
+            .map(book -> createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(book)))
+            .collect(Collectors.toList())));
 
-        Book actualBook1 = client.getDocument(isbn1, Book.class);
+        Book actualBook1 = getAndConvertDocument(client, isbn1, Book::fromJson);
         assertEquals(books.get(0).publishDate(), actualBook1.publishDate());
 
         // Azure AI Search normalizes to UTC, so we compare instants
-        Book actualBook2 = client.getDocument(isbn2, Book.class);
+        Book actualBook2 = getAndConvertDocument(client, isbn2, Book::fromJson);
         assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC),
             actualBook2.publishDate().withOffsetSameInstant(ZoneOffset.UTC));
     }
@@ -754,14 +783,16 @@ public class IndexingTests extends SearchTestBase {
             new Book().ISBN(isbn2)
                 .publishDate(OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0), ZoneOffset.ofHours(-8))));
 
-        asyncClient.uploadDocuments(books).block();
+        asyncClient.indexDocuments(new IndexDocumentsBatch(books.stream()
+            .map(book -> createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(book)))
+            .collect(Collectors.toList()))).block();
 
-        getAndValidateDocumentAsync(asyncClient, isbn1, Book.class, null,
-            (expected, actual) -> assertEquals(books.get(0).publishDate(), actual.publishDate()));
+        getAndValidateDocumentAsync(asyncClient, isbn1, null, map -> convertFromMapStringObject(map, Book::fromJson),
+            (ignored, actual) -> assertEquals(books.get(0).publishDate(), actual.publishDate()));
 
         // Azure AI Search normalizes to UTC, so we compare instants
-        getAndValidateDocumentAsync(asyncClient, isbn2, Book.class, null,
-            (expected, actual) -> assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC),
+        getAndValidateDocumentAsync(asyncClient, isbn2, null, map -> convertFromMapStringObject(map, Book::fromJson),
+            (ignored, actual) -> assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC),
                 actual.publishDate().withOffsetSameInstant(ZoneOffset.UTC)));
     }
 
@@ -780,14 +811,16 @@ public class IndexingTests extends SearchTestBase {
         // Fields whose values get updated are updated, and whose values get erased remain the same.
         Hotel expectedDoc = canMergeStaticallyTypedDocumentsExpected(hotelId);
 
-        List<Hotel> originalDocs = Collections.singletonList(originalDoc);
-        client.uploadDocuments(originalDocs);
+        client.indexDocuments(
+            new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(originalDoc))));
 
-        client.mergeDocuments(Collections.singletonList(updatedDoc));
-        assertObjectEquals(expectedDoc, client.getDocument(hotelId, Hotel.class), true);
+        client.indexDocuments(
+            new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE, convertToMapStringObject(updatedDoc))));
+        assertObjectEquals(expectedDoc, getAndConvertDocument(client, hotelId, Hotel::fromJson), true);
 
-        client.mergeDocuments(originalDocs);
-        assertObjectEquals(originalDoc, client.getDocument(hotelId, Hotel.class), true);
+        client.indexDocuments(
+            new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE, convertToMapStringObject(originalDoc))));
+        assertObjectEquals(originalDoc, getAndConvertDocument(client, hotelId, Hotel::fromJson), true);
     }
 
     @Test
@@ -805,17 +838,27 @@ public class IndexingTests extends SearchTestBase {
         // Fields whose values get updated are updated, and whose values get erased remain the same.
         Hotel expectedDoc = canMergeStaticallyTypedDocumentsExpected(hotelId);
 
-        List<Hotel> originalDocs = Collections.singletonList(originalDoc);
-        asyncClient.uploadDocuments(originalDocs).block();
+        asyncClient
+            .indexDocuments(new IndexDocumentsBatch(
+                createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(originalDoc))))
+            .block();
 
-        asyncClient.mergeDocuments(Collections.singletonList(updatedDoc)).block();
+        asyncClient
+            .indexDocuments(
+                new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE, convertToMapStringObject(updatedDoc))))
+            .block();
 
-        getAndValidateDocumentAsync(asyncClient, hotelId, Hotel.class, expectedDoc,
+        getAndValidateDocumentAsync(asyncClient, hotelId, expectedDoc,
+            map -> convertFromMapStringObject(map, Hotel::fromJson),
             (expected, actual) -> assertObjectEquals(expected, actual, true));
 
-        asyncClient.mergeDocuments(originalDocs).block();
+        asyncClient
+            .indexDocuments(new IndexDocumentsBatch(
+                createIndexAction(IndexActionType.MERGE, convertToMapStringObject(originalDoc))))
+            .block();
 
-        getAndValidateDocumentAsync(asyncClient, hotelId, Hotel.class, originalDoc,
+        getAndValidateDocumentAsync(asyncClient, hotelId, originalDoc,
+            map -> convertFromMapStringObject(map, Hotel::fromJson),
             (expected, actual) -> assertObjectEquals(expected, actual, true));
     }
 
@@ -830,7 +873,8 @@ public class IndexingTests extends SearchTestBase {
 
         String hotelId = getRandomDocumentKey();
         IndexBatchException ex = assertThrows(IndexBatchException.class,
-            () -> client.mergeDocuments(Collections.singletonList(prepareStaticallyTypedHotel(hotelId))));
+            () -> client.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE,
+                convertToMapStringObject(prepareStaticallyTypedHotel(hotelId))))));
 
         List<IndexingResult> results = ex.getIndexingResults();
         assertFailedIndexResult(results.get(0), hotelId, HttpResponseStatus.NOT_FOUND.code());
@@ -847,7 +891,8 @@ public class IndexingTests extends SearchTestBase {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
-        StepVerifier.create(asyncClient.mergeDocuments(Collections.singletonList(prepareStaticallyTypedHotel(hotelId))))
+        StepVerifier.create(asyncClient.indexDocuments(new IndexDocumentsBatch(
+            createIndexAction(IndexActionType.MERGE, convertToMapStringObject(prepareStaticallyTypedHotel(hotelId))))))
             .verifyErrorSatisfies(throwable -> {
                 IndexBatchException ex = assertInstanceOf(IndexBatchException.class, throwable);
 
@@ -866,20 +911,22 @@ public class IndexingTests extends SearchTestBase {
         LoudHotel updatedDoc = canSetExplicitNullsInStaticallyTypedDocumentUpdated(hotelId);
         LoudHotel expectedDoc = canSetExplicitNullsInStaticallyTypedDocumentExpected(hotelId);
 
-        List<LoudHotel> originalDocs = Collections.singletonList(originalDoc);
-        client.uploadDocuments(originalDocs);
+        client.indexDocuments(
+            new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(originalDoc))));
         waitForIndexing();
 
-        client.mergeDocuments(Collections.singletonList(updatedDoc));
+        client.indexDocuments(
+            new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE, convertToMapStringObject(updatedDoc))));
         waitForIndexing();
 
-        LoudHotel actualDoc1 = client.getDocument(hotelId, LoudHotel.class);
+        LoudHotel actualDoc1 = getAndConvertDocument(client, hotelId, LoudHotel::fromJson);
         assertObjectEquals(expectedDoc, actualDoc1, true);
 
-        client.uploadDocuments(originalDocs);
+        client.indexDocuments(
+            new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(originalDoc))));
         waitForIndexing();
 
-        LoudHotel actualDoc2 = client.getDocument(hotelId, LoudHotel.class);
+        LoudHotel actualDoc2 = getAndConvertDocument(client, hotelId, LoudHotel::fromJson);
         assertObjectEquals(originalDoc, actualDoc2, true);
     }
 
@@ -892,20 +939,30 @@ public class IndexingTests extends SearchTestBase {
         LoudHotel updatedDoc = canSetExplicitNullsInStaticallyTypedDocumentUpdated(hotelId);
         LoudHotel expectedDoc = canSetExplicitNullsInStaticallyTypedDocumentExpected(hotelId);
 
-        List<LoudHotel> originalDocs = Collections.singletonList(originalDoc);
-        asyncClient.uploadDocuments(originalDocs).block();
+        asyncClient
+            .indexDocuments(new IndexDocumentsBatch(
+                createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(originalDoc))))
+            .block();
         waitForIndexing();
 
-        asyncClient.mergeDocuments(Collections.singletonList(updatedDoc)).block();
+        asyncClient
+            .indexDocuments(
+                new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE, convertToMapStringObject(updatedDoc))))
+            .block();
         waitForIndexing();
 
-        getAndValidateDocumentAsync(asyncClient, hotelId, LoudHotel.class, expectedDoc,
+        getAndValidateDocumentAsync(asyncClient, hotelId, expectedDoc,
+            map -> convertFromMapStringObject(map, LoudHotel::fromJson),
             (expected, actual) -> assertObjectEquals(expected, actual, true));
 
-        asyncClient.uploadDocuments(originalDocs).block();
+        asyncClient
+            .indexDocuments(new IndexDocumentsBatch(
+                createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(originalDoc))))
+            .block();
         waitForIndexing();
 
-        getAndValidateDocumentAsync(asyncClient, hotelId, LoudHotel.class, originalDoc,
+        getAndValidateDocumentAsync(asyncClient, hotelId, originalDoc,
+            map -> convertFromMapStringObject(map, LoudHotel::fromJson),
             (expected, actual) -> assertObjectEquals(expected, actual, true));
     }
 
@@ -914,24 +971,23 @@ public class IndexingTests extends SearchTestBase {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
-        SearchDocument originalDoc = canMergeDynamicDocumentsOriginal(hotelId);
-        SearchDocument updatedDoc = canMergeDynamicDocumentsUpdated(hotelId);
-        SearchDocument expectedDoc = canMergeDynamicDocumentsExpected(hotelId);
+        Map<String, Object> originalDoc = canMergeDynamicDocumentsOriginal(hotelId);
+        Map<String, Object> updatedDoc = canMergeDynamicDocumentsUpdated(hotelId);
+        Map<String, Object> expectedDoc = canMergeDynamicDocumentsExpected(hotelId);
 
-        List<SearchDocument> originalDocs = Collections.singletonList(originalDoc);
-        client.mergeOrUploadDocuments(originalDocs);
+        client.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE_OR_UPLOAD, originalDoc)));
         waitForIndexing();
 
-        client.mergeDocuments(Collections.singletonList(updatedDoc));
+        client.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE, updatedDoc)));
         waitForIndexing();
 
-        SearchDocument actualDoc = client.getDocument(hotelId, SearchDocument.class);
+        Map<String, Object> actualDoc = client.getDocument(hotelId).getAdditionalProperties();
         assertObjectEquals(expectedDoc, actualDoc, true);
 
-        client.mergeOrUploadDocuments(originalDocs);
+        client.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE_OR_UPLOAD, originalDoc)));
         waitForIndexing();
 
-        actualDoc = client.getDocument(hotelId, SearchDocument.class);
+        actualDoc = client.getDocument(hotelId).getAdditionalProperties();
         assertMapEquals(originalDoc, actualDoc, false, "properties");
     }
 
@@ -940,24 +996,28 @@ public class IndexingTests extends SearchTestBase {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
-        SearchDocument originalDoc = canMergeDynamicDocumentsOriginal(hotelId);
-        SearchDocument updatedDoc = canMergeDynamicDocumentsUpdated(hotelId);
-        SearchDocument expectedDoc = canMergeDynamicDocumentsExpected(hotelId);
+        Map<String, Object> originalDoc = canMergeDynamicDocumentsOriginal(hotelId);
+        Map<String, Object> updatedDoc = canMergeDynamicDocumentsUpdated(hotelId);
+        Map<String, Object> expectedDoc = canMergeDynamicDocumentsExpected(hotelId);
 
-        List<SearchDocument> originalDocs = Collections.singletonList(originalDoc);
-        asyncClient.mergeOrUploadDocuments(originalDocs).block();
+        asyncClient
+            .indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE_OR_UPLOAD, originalDoc)))
+            .block();
         waitForIndexing();
 
-        asyncClient.mergeDocuments(Collections.singletonList(updatedDoc)).block();
+        asyncClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE, updatedDoc)))
+            .block();
         waitForIndexing();
 
-        getAndValidateDocumentAsync(asyncClient, hotelId, SearchDocument.class, expectedDoc,
+        getAndValidateDocumentAsync(asyncClient, hotelId, expectedDoc, map -> map,
             (expected, actual) -> assertObjectEquals(expected, actual, true));
 
-        asyncClient.mergeOrUploadDocuments(originalDocs).block();
+        asyncClient
+            .indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE_OR_UPLOAD, originalDoc)))
+            .block();
         waitForIndexing();
 
-        getAndValidateDocumentAsync(asyncClient, hotelId, SearchDocument.class, originalDoc,
+        getAndValidateDocumentAsync(asyncClient, hotelId, originalDoc, map -> map,
             (expected, actual) -> assertObjectEquals(expected, actual, true, "properties"));
     }
 
@@ -970,33 +1030,45 @@ public class IndexingTests extends SearchTestBase {
         String hotel3Id = getRandomDocumentKey();
         String hotel4Id = getRandomDocumentKey();
 
-        List<Hotel> hotelsToUpload = Arrays.asList(new Hotel().hotelId(hotel1Id), new Hotel().hotelId(hotel2Id));
+        List<IndexAction> hotelsToUpload = Arrays.asList(
+            createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(new Hotel().hotelId(hotel1Id))),
+            createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(new Hotel().hotelId(hotel2Id))));
 
-        List<Hotel> hotelsToMerge = Collections.singletonList(new Hotel().hotelId(hotel1Id).rating(5));
+        IndexAction hotelsToMerge = createIndexAction(IndexActionType.MERGE,
+            convertToMapStringObject(new Hotel().hotelId(hotel1Id).rating(5)));
 
-        List<Hotel> hotelsToMergeOrUpload
-            = Arrays.asList(new Hotel().hotelId(hotel3Id).rating(4), new Hotel().hotelId(hotel4Id).rating(1));
+        List<IndexAction> hotelsToMergeOrUpload = Arrays.asList(
+            createIndexAction(IndexActionType.MERGE_OR_UPLOAD,
+                convertToMapStringObject(new Hotel().hotelId(hotel3Id).rating(4))),
+            createIndexAction(IndexActionType.MERGE_OR_UPLOAD,
+                convertToMapStringObject(new Hotel().hotelId(hotel4Id).rating(1))));
 
-        List<Hotel> hotelsToDelete = Collections.singletonList(new Hotel().hotelId(hotel4Id));
+        IndexAction hotelsToDelete
+            = createIndexAction(IndexActionType.DELETE, convertToMapStringObject(new Hotel().hotelId(hotel4Id)));
 
-        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>().addUploadActions(hotelsToUpload)
-            .addMergeOrUploadActions(hotelsToMergeOrUpload);
+        List<IndexAction> batchActions = new ArrayList<>();
+        batchActions.addAll(hotelsToUpload);
+        batchActions.addAll(hotelsToMergeOrUpload);
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(batchActions);
 
-        validateIndexResponseSync(client.uploadDocumentsWithResponse(hotelsToUpload, null, Context.NONE), 2);
+        validateIndexResponseSync(
+            client.indexDocumentsWithResponse(new IndexDocumentsBatch(hotelsToUpload), null, null), 2);
         waitForIndexing();
 
-        validateIndexResponseSync(client.mergeDocumentsWithResponse(hotelsToMerge, null, Context.NONE), 1);
-        validateIndexResponseSync(client.mergeOrUploadDocumentsWithResponse(hotelsToMergeOrUpload, null, Context.NONE),
-            2);
+        validateIndexResponseSync(client.indexDocumentsWithResponse(new IndexDocumentsBatch(hotelsToMerge), null, null),
+            1);
+        validateIndexResponseSync(
+            client.indexDocumentsWithResponse(new IndexDocumentsBatch(hotelsToMergeOrUpload), null, null), 2);
         waitForIndexing();
 
-        validateIndexResponseSync(client.deleteDocumentsWithResponse(hotelsToDelete, null, Context.NONE), 1);
+        validateIndexResponseSync(
+            client.indexDocumentsWithResponse(new IndexDocumentsBatch(hotelsToDelete), null, null), 1);
         waitForIndexing();
 
-        validateIndexResponseSync(client.indexDocumentsWithResponse(batch, null, Context.NONE), 4);
+        validateIndexResponseSync(client.indexDocumentsWithResponse(batch, null, null), 4);
         waitForIndexing();
 
-        assertEquals(4, client.getDocument(hotel3Id, SearchDocument.class).get("Rating"));
+        assertEquals(4, client.getDocument(hotel3Id).getAdditionalProperties().get("Rating"));
     }
 
     @Test
@@ -1008,43 +1080,62 @@ public class IndexingTests extends SearchTestBase {
         String hotel3Id = getRandomDocumentKey();
         String hotel4Id = getRandomDocumentKey();
 
-        List<Hotel> hotelsToUpload = Arrays.asList(new Hotel().hotelId(hotel1Id), new Hotel().hotelId(hotel2Id));
+        List<IndexAction> hotelsToUpload = Arrays.asList(
+            createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(new Hotel().hotelId(hotel1Id))),
+            createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(new Hotel().hotelId(hotel2Id))));
 
-        List<Hotel> hotelsToMerge = Collections.singletonList(new Hotel().hotelId(hotel1Id).rating(5));
+        IndexAction hotelsToMerge = createIndexAction(IndexActionType.MERGE,
+            convertToMapStringObject(new Hotel().hotelId(hotel1Id).rating(5)));
 
-        List<Hotel> hotelsToMergeOrUpload
-            = Arrays.asList(new Hotel().hotelId(hotel3Id).rating(4), new Hotel().hotelId(hotel4Id).rating(1));
+        List<IndexAction> hotelsToMergeOrUpload = Arrays.asList(
+            createIndexAction(IndexActionType.MERGE_OR_UPLOAD,
+                convertToMapStringObject(new Hotel().hotelId(hotel3Id).rating(4))),
+            createIndexAction(IndexActionType.MERGE_OR_UPLOAD,
+                convertToMapStringObject(new Hotel().hotelId(hotel4Id).rating(1))));
 
-        List<Hotel> hotelsToDelete = Collections.singletonList(new Hotel().hotelId(hotel4Id));
+        IndexAction hotelsToDelete
+            = createIndexAction(IndexActionType.DELETE, convertToMapStringObject(new Hotel().hotelId(hotel4Id)));
 
-        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>().addUploadActions(hotelsToUpload)
-            .addMergeOrUploadActions(hotelsToMergeOrUpload);
+        List<IndexAction> batchActions = new ArrayList<>();
+        batchActions.addAll(hotelsToUpload);
+        batchActions.addAll(hotelsToMergeOrUpload);
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(batchActions);
 
-        validateIndexResponseAsync(asyncClient.uploadDocumentsWithResponse(hotelsToUpload, null), 2);
-
-        waitForIndexing();
-
-        validateIndexResponseAsync(asyncClient.mergeDocumentsWithResponse(hotelsToMerge, null), 1);
-        validateIndexResponseAsync(asyncClient.mergeOrUploadDocumentsWithResponse(hotelsToMergeOrUpload, null), 2);
-
-        waitForIndexing();
-
-        validateIndexResponseAsync(asyncClient.deleteDocumentsWithResponse(hotelsToDelete, null), 1);
-
-        waitForIndexing();
-
-        validateIndexResponseAsync(asyncClient.indexDocumentsWithResponse(batch, null), 4);
+        validateIndexResponseAsync(
+            asyncClient.indexDocumentsWithResponse(new IndexDocumentsBatch(hotelsToUpload), null, null), 2);
 
         waitForIndexing();
 
-        getAndValidateDocumentAsync(asyncClient, hotel3Id, SearchDocument.class, null,
-            (expected, actual) -> assertEquals(4, actual.get("Rating")));
+        validateIndexResponseAsync(
+            asyncClient.indexDocumentsWithResponse(new IndexDocumentsBatch(hotelsToMerge), null, null), 1);
+        validateIndexResponseAsync(
+            asyncClient.indexDocumentsWithResponse(new IndexDocumentsBatch(hotelsToMergeOrUpload), null, null), 2);
+
+        waitForIndexing();
+
+        validateIndexResponseAsync(
+            asyncClient.indexDocumentsWithResponse(new IndexDocumentsBatch(hotelsToDelete), null, null), 1);
+
+        waitForIndexing();
+
+        validateIndexResponseAsync(asyncClient.indexDocumentsWithResponse(batch, null, null), 4);
+
+        waitForIndexing();
+
+        getAndValidateDocumentAsync(asyncClient, hotel3Id, null, map -> map,
+            (ignored, actual) -> assertEquals(4, actual.get("Rating")));
     }
 
-    private static <T> void getAndValidateDocumentAsync(SearchAsyncClient asyncClient, String key, Class<T> type,
-        T expected, BiConsumer<T, T> comparator) {
-        StepVerifier.create(asyncClient.getDocument(key, type))
-            .assertNext(actual -> comparator.accept(expected, actual))
+    private static <T extends JsonSerializable<T>> T getAndConvertDocument(SearchClient client, String key,
+        ReadValueCallback<JsonReader, T> converter) {
+        return convertFromMapStringObject(client.getDocument(key).getAdditionalProperties(), converter);
+    }
+
+    private static <T> void getAndValidateDocumentAsync(SearchAsyncClient asyncClient, String key, T expected,
+        ReadValueCallback<Map<String, Object>, T> converter, BiConsumer<T, T> comparator) {
+        StepVerifier.create(asyncClient.getDocument(key))
+            .assertNext(actual -> comparator.accept(expected,
+                assertDoesNotThrow(() -> converter.read(actual.getAdditionalProperties()))))
             .verifyComplete();
     }
 
@@ -1065,10 +1156,12 @@ public class IndexingTests extends SearchTestBase {
     static Hotel prepareStaticallyTypedHotel(String hotelId) {
         return new Hotel().hotelId(hotelId)
             .hotelName("Fancy Stay")
-            .description(
-                "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.")
-            .descriptionFr(
-                "Meilleur hôtel en ville si vous aimez les hôtels de luxe. Ils ont une magnifique piscine à débordement, un spa et un concierge très utile. L'emplacement est parfait – en plein centre, à proximité de toutes les attractions touristiques. Nous recommandons fortement cet hôtel.")
+            .description("Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and "
+                + "a really helpful concierge. The location is perfect -- right downtown, close to all the tourist "
+                + "attractions. We highly recommend this hotel.")
+            .descriptionFr("Meilleur hôtel en ville si vous aimez les hôtels de luxe. Ils ont une magnifique piscine "
+                + "à débordement, un spa et un concierge très utile. L'emplacement est parfait – en plein centre, à "
+                + "proximité de toutes les attractions touristiques. Nous recommandons fortement cet hôtel.")
             .category("Luxury")
             .tags(Arrays.asList("pool", "view", "wifi", "concierge"))
             .parkingIncluded(false)
@@ -1083,9 +1176,9 @@ public class IndexingTests extends SearchTestBase {
                 .country("United States"));
     }
 
-    SearchDocument prepareDynamicallyTypedHotel(String hotelId) {
+    Map<String, Object> prepareDynamicallyTypedHotel(String hotelId) {
 
-        SearchDocument room1 = new SearchDocument();
+        Map<String, Object> room1 = new LinkedHashMap<>();
         room1.put("Description", "Budget Room, 1 Queen Bed");
         room1.put("Description_fr", null);
         room1.put("Type", "Budget Room");
@@ -1095,7 +1188,7 @@ public class IndexingTests extends SearchTestBase {
         room1.put("SmokingAllowed", true);
         room1.put("Tags", Arrays.asList("vcr/dvd", "great view"));
 
-        SearchDocument room2 = new SearchDocument();
+        Map<String, Object> room2 = new LinkedHashMap<>();
         room2.put("Description", "Budget Room, 1 King Bed");
         room2.put("Description_fr", null);
         room2.put("Type", "Budget Room");
@@ -1105,9 +1198,9 @@ public class IndexingTests extends SearchTestBase {
         room2.put("SmokingAllowed", true);
         room2.put("Tags", Arrays.asList("vcr/dvd", "seaside view"));
 
-        List<SearchDocument> rooms = Arrays.asList(room1, room2);
+        List<Map<String, Object>> rooms = Arrays.asList(room1, room2);
 
-        SearchDocument address = new SearchDocument();
+        Map<String, Object> address = new LinkedHashMap<>();
         address.put("StreetAddress", "One Microsoft way");
         address.put("City", "Redmond");
         address.put("StateProvince", "Washington");
@@ -1115,19 +1208,21 @@ public class IndexingTests extends SearchTestBase {
         address.put("Country", "US");
 
         // TODO (alzimmer): Determine if this should be used to create the hotel document.
-        SearchDocument location = new SearchDocument();
+        Map<String, Object> location = new LinkedHashMap<>();
         location.put("type", "Point");
         location.put("coordinates", Arrays.asList(-122.131577, 47.678581));
         location.put("crs", null);
 
-        SearchDocument hotel = new SearchDocument();
+        Map<String, Object> hotel = new LinkedHashMap<>();
         hotel.put("HotelId", hotelId);
         hotel.put("HotelName", "Fancy Stay Hotel");
         hotel.put("Description",
-            "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.");
+            "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a "
+                + "spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the "
+                + "tourist attractions. We highly recommend this hotel.");
         hotel.put("Description_fr", null);
         hotel.put("Address", address);
-        hotel.put("Location", null);
+        hotel.put("Location", location);
         hotel.put("Category", "Luxury");
         hotel.put("Tags", Arrays.asList("pool", "view", "wifi", "concierge"));
         hotel.put("LastRenovationDate", OffsetDateTime.parse("2019-01-30T00:00:00Z"));
@@ -1159,17 +1254,13 @@ public class IndexingTests extends SearchTestBase {
         assertEquals(expectedStatusCode, result.getStatusCode());
     }
 
-    @SuppressWarnings({ "UseOfObsoleteDateTimeApi", "deprecation" })
     List<Hotel> getBoundaryValues() {
-        Date maxEpoch = Date.from(Instant.ofEpochMilli(253402300799000L));
-        Date minEpoch = Date.from(Instant.ofEpochMilli(-2208988800000L));
         return Arrays.asList(
             // Minimum values
             new Hotel().hotelId(getRandomDocumentKey())
                 .category("")
-                .lastRenovationDate(new Date(minEpoch.getYear(), minEpoch.getMonth(), minEpoch.getDate(),
-                    minEpoch.getHours(), minEpoch.getMinutes(), minEpoch.getSeconds()))
-                .location(new GeoPoint(-180.0, -90.0))   // South pole, date line from the west
+                .lastRenovationDate(OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+                .location(new GeoPoint(-180.0, -90.0))   // South Pole, date line from the west
                 .parkingIncluded(false)
                 .rating(Integer.MIN_VALUE)
                 .tags(Collections.emptyList())
@@ -1178,9 +1269,8 @@ public class IndexingTests extends SearchTestBase {
             // Maximum values
             new Hotel().hotelId(getRandomDocumentKey())
                 .category("test")   // No meaningful string max since there is no length limit (other than payload size or term length).
-                .lastRenovationDate(new Date(maxEpoch.getYear(), maxEpoch.getMonth(), maxEpoch.getDate(),
-                    maxEpoch.getHours(), maxEpoch.getMinutes(), maxEpoch.getSeconds()))
-                .location(new GeoPoint(180.0, 90.0))     // North pole, date line from the east
+                .lastRenovationDate(OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 0, ZoneOffset.UTC))
+                .location(new GeoPoint(180.0, 90.0))     // North Pole, date line from the east
                 .parkingIncluded(true)
                 .rating(Integer.MAX_VALUE)
                 .tags(Collections.singletonList("test"))    // No meaningful string max; see above.
@@ -1217,10 +1307,13 @@ public class IndexingTests extends SearchTestBase {
         // Define hotels
         return new Hotel().hotelId(key)
             .hotelName("Secret Point Motel")
-            .description(
-                "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
-            .descriptionFr(
-                "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .description("The hotel is ideally located on the main commercial artery of the city in the heart of New "
+                + "York. A few minutes away is Time's Square and the historic centre of the city, as well as other "
+                + "places of interest that make New York one of America's most attractive and cosmopolitan cities.")
+            .descriptionFr("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein "
+                + "cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la "
+                + "ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus "
+                + "attractives et cosmopolites de l'Amérique.")
             .category("Boutique")
             .tags(Arrays.asList("pool", "air conditioning", "concierge"))
             .parkingIncluded(false)
@@ -1253,7 +1346,8 @@ public class IndexingTests extends SearchTestBase {
     }
 
     private static Hotel canMergeStaticallyTypedDocumentsUpdated(String key) {
-        // Update category, tags, parking included, rating, and rooms. Erase description, last renovation date, location and address.
+        // Update category, tags, parking included, rating, and rooms. Erase description, last renovation date,
+        // location and address.
         return new Hotel().hotelId(key)
             .hotelName("Secret Point Motel")
             .description(null)
@@ -1277,10 +1371,13 @@ public class IndexingTests extends SearchTestBase {
         // Fields whose values get updated are updated, and whose values get erased remain the same.
         return new Hotel().hotelId(key)
             .hotelName("Secret Point Motel")
-            .description(
-                "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
-            .descriptionFr(
-                "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .description("The hotel is ideally located on the main commercial artery of the city in the heart of New "
+                + "York. A few minutes away is Time's Square and the historic centre of the city, as well as other "
+                + "places of interest that make New York one of America's most attractive and cosmopolitan cities.")
+            .descriptionFr("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein "
+                + "cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la "
+                + "ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus "
+                + "attractives et cosmopolites de l'Amérique.")
             .category("Economy")
             .tags(Arrays.asList("pool", "air conditioning"))
             .parkingIncluded(true)
@@ -1305,10 +1402,13 @@ public class IndexingTests extends SearchTestBase {
     private static LoudHotel canSetExplicitNullsInStaticallyTypedDocumentOriginal(String key) {
         return new LoudHotel().HOTELID(key)
             .HOTELNAME("Secret Point Motel")
-            .DESCRIPTION(
-                "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
-            .DESCRIPTIONFRENCH(
-                "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .DESCRIPTION("The hotel is ideally located on the main commercial artery of the city in the heart of New "
+                + "York. A few minutes away is Time's Square and the historic centre of the city, as well as other "
+                + "places of interest that make New York one of America's most attractive and cosmopolitan cities.")
+            .DESCRIPTIONFRENCH("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein "
+                + "cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la "
+                + "ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus "
+                + "attractives et cosmopolites de l'Amérique.")
             .CATEGORY("Boutique")
             .TAGS(Arrays.asList("pool", "air conditioning", "concierge"))
             .PARKINGINCLUDED(false)
@@ -1363,8 +1463,10 @@ public class IndexingTests extends SearchTestBase {
         return new LoudHotel().HOTELID(key)
             .HOTELNAME("Secret Point Motel")
             .DESCRIPTION(null)
-            .DESCRIPTIONFRENCH(
-                "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .DESCRIPTIONFRENCH("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein "
+                + "cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la "
+                + "ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus "
+                + "attractives et cosmopolites de l'Amérique.")
             .CATEGORY("Boutique")
             .TAGS(Arrays.asList("pool", "air conditioning"))
             .PARKINGINCLUDED(true)
@@ -1390,14 +1492,17 @@ public class IndexingTests extends SearchTestBase {
                     .tags(new String[] { "vcr/dvd", "balcony" })));
     }
 
-    private static SearchDocument canMergeDynamicDocumentsOriginal(String key) {
-        SearchDocument originalDoc = new SearchDocument();
+    private static Map<String, Object> canMergeDynamicDocumentsOriginal(String key) {
+        Map<String, Object> originalDoc = new LinkedHashMap<>();
         originalDoc.put("HotelId", key);
         originalDoc.put("HotelName", "Secret Point Motel");
-        originalDoc.put("Description",
-            "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.");
-        originalDoc.put("Description_fr",
-            "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.");
+        originalDoc.put("Description", "The hotel is ideally located on the main commercial artery of the city in the "
+            + "heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as "
+            + "other places of interest that make New York one of America's most attractive and cosmopolitan cities.");
+        originalDoc.put("Description_fr", "L'hôtel est idéalement situé sur la principale artère commerciale de la "
+            + "ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique "
+            + "de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus "
+            + "attractives et cosmopolites de l'Amérique.");
         originalDoc.put("Category", "Boutique");
         originalDoc.put("Tags", Arrays.asList("pool", "air conditioning", "concierge"));
         originalDoc.put("ParkingIncluded", false);
@@ -1406,7 +1511,7 @@ public class IndexingTests extends SearchTestBase {
         originalDoc.put("Rating", 4);
         originalDoc.put("Location", new GeoPoint(-73.965403, 40.760586));
 
-        SearchDocument originalAddress = new SearchDocument();
+        Map<String, Object> originalAddress = new LinkedHashMap<>();
         originalAddress.put("StreetAddress", "677 5th Ave");
         originalAddress.put("City", "New York");
         originalAddress.put("StateProvince", "NY");
@@ -1414,7 +1519,7 @@ public class IndexingTests extends SearchTestBase {
         originalAddress.put("Country", "USA");
         originalDoc.put("Address", originalAddress);
 
-        SearchDocument originalRoom1 = new SearchDocument();
+        Map<String, Object> originalRoom1 = new LinkedHashMap<>();
         originalRoom1.put("Description", "Budget Room, 1 Queen Bed (Cityside)");
         originalRoom1.put("Description_fr", "Chambre Économique, 1 grand lit (côté ville)");
         originalRoom1.put("Type", "Budget Room");
@@ -1424,7 +1529,7 @@ public class IndexingTests extends SearchTestBase {
         originalRoom1.put("SmokingAllowed", true);
         originalRoom1.put("Tags", Collections.singletonList("vcr/dvd"));
 
-        SearchDocument originalRoom2 = new SearchDocument();
+        Map<String, Object> originalRoom2 = new LinkedHashMap<>();
         originalRoom2.put("Description", "Budget Room, 1 King Bed (Mountain View)");
         originalRoom2.put("Description_fr", "Chambre Économique, 1 très grand lit (Mountain View)");
         originalRoom2.put("Type", "Budget Room");
@@ -1439,8 +1544,8 @@ public class IndexingTests extends SearchTestBase {
         return originalDoc;
     }
 
-    private static SearchDocument canMergeDynamicDocumentsUpdated(String key) {
-        SearchDocument updatedDoc = new SearchDocument();
+    private static Map<String, Object> canMergeDynamicDocumentsUpdated(String key) {
+        Map<String, Object> updatedDoc = new LinkedHashMap<>();
         updatedDoc.put("HotelId", key);
         updatedDoc.put("Description", null);
         updatedDoc.put("Category", "Economy");
@@ -1449,9 +1554,9 @@ public class IndexingTests extends SearchTestBase {
         updatedDoc.put("LastRenovationDate", null);
         updatedDoc.put("Rating", 3);
         updatedDoc.put("Location", null);
-        updatedDoc.put("Address", new SearchDocument());
+        updatedDoc.put("Address", new LinkedHashMap<>());
 
-        SearchDocument updatedRoom1 = new SearchDocument();
+        Map<String, Object> updatedRoom1 = new LinkedHashMap<>();
         updatedRoom1.put("Description", null);
         updatedRoom1.put("Type", "Budget Room");
         updatedRoom1.put("BaseRate", 10.5);
@@ -1464,13 +1569,15 @@ public class IndexingTests extends SearchTestBase {
         return updatedDoc;
     }
 
-    private static SearchDocument canMergeDynamicDocumentsExpected(String key) {
-        SearchDocument expectedDoc = new SearchDocument();
+    private static Map<String, Object> canMergeDynamicDocumentsExpected(String key) {
+        Map<String, Object> expectedDoc = new LinkedHashMap<>();
         expectedDoc.put("HotelId", key);
         expectedDoc.put("HotelName", "Secret Point Motel");
         expectedDoc.put("Description", null);
-        expectedDoc.put("Description_fr",
-            "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.");
+        expectedDoc.put("Description_fr", "L'hôtel est idéalement situé sur la principale artère commerciale de la "
+            + "ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique "
+            + "de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus "
+            + "attractives et cosmopolites de l'Amérique.");
         expectedDoc.put("Category", "Economy");
         expectedDoc.put("Tags", Arrays.asList("pool", "air conditioning"));
         expectedDoc.put("ParkingIncluded", true);

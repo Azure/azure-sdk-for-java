@@ -140,6 +140,8 @@ public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> 
     private final RntbdToken backendRequestDurationMilliseconds;
     @JsonProperty
     private final RntbdToken correlatedActivityId;
+    @JsonProperty
+    private final RntbdToken globalNRegionCommittedGLSN;
 
     // endregion
 
@@ -200,6 +202,7 @@ public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> 
         this.xpRole = this.get(RntbdResponseHeader.XPRole);
         this.backendRequestDurationMilliseconds = this.get(RntbdResponseHeader.BackendRequestDurationMilliseconds);
         this.correlatedActivityId = this.get(RntbdResponseHeader.CorrelatedActivityId);
+        this.globalNRegionCommittedGLSN = this.get(RntbdResponseHeader.GlobalNRegionCommittedGLSN);
     }
 
     boolean isPayloadPresent() {
@@ -304,6 +307,7 @@ public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> 
         this.mapValue(this.xpRole, BackendHeaders.XP_ROLE, Integer::parseInt, headers);
         this.mapValue(this.backendRequestDurationMilliseconds, BackendHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS, Double::parseDouble, headers);
         this.mapValue(this.correlatedActivityId, HttpHeaders.CORRELATED_ACTIVITY_ID, UUID::fromString, headers);
+        this.mapValue(this.globalNRegionCommittedGLSN, BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN, Long::parseLong, headers);
     }
 
     @Override
@@ -503,6 +507,10 @@ public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> 
 
         collector.accept(this.correlatedActivityId, token ->
             toUuidEntry(HttpHeaders.CORRELATED_ACTIVITY_ID, token));
+
+        collector.accept(this.globalNRegionCommittedGLSN, token ->
+            toLongEntry(BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN, token)
+        );
     }
 
     private void mapValue(final RntbdToken token, final String name, final Function<String, Object> parse, final Map<String, String> headers) {

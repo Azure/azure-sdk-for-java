@@ -1339,7 +1339,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
                 bulkInsert(createdFeedCollection, docDefList)
                     .last()
-                    .flatMap(cosmosItemResponse -> {
+                    .flatMap(response -> {
                         logger.info("Start first Change feed processor");
                         return changeFeedProcessorFirst.start().subscribeOn(Schedulers.boundedElastic())
                                                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT));
