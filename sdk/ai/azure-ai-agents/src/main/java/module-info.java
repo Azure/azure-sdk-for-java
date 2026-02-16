@@ -6,7 +6,6 @@ module com.azure.ai.agents {
     requires transitive com.azure.core;
     requires openai.java.client.okhttp;
     requires openai.java.core;
-    requires com.fasterxml.jackson.databind;
 
     exports com.azure.ai.agents;
     exports com.azure.ai.agents.models;
