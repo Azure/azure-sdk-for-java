@@ -547,6 +547,12 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
             jsonWriter.writeFieldName("max_response_output_tokens");
             this.maxResponseOutputTokens.writeTo(jsonWriter);
         }
+        jsonWriter.writeStringField("reasoning_effort",
+            this.reasoningEffort == null ? null : this.reasoningEffort.toString());
+        if (this.interimResponse != null) {
+            jsonWriter.writeFieldName("interim_response");
+            this.interimResponse.writeTo(jsonWriter);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -614,6 +620,12 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
                 } else if ("max_response_output_tokens".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.maxResponseOutputTokens
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("reasoning_effort".equals(fieldName)) {
+                    deserializedVoiceLiveSessionOptions.reasoningEffort
+                        = ReasoningEffort.fromString(reader.getString());
+                } else if ("interim_response".equals(fieldName)) {
+                    deserializedVoiceLiveSessionOptions.interimResponse
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
                 }
@@ -656,6 +668,68 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
     @Generated
     public VoiceLiveSessionOptions setMaxResponseOutputTokens(BinaryData maxResponseOutputTokens) {
         this.maxResponseOutputTokens = maxResponseOutputTokens;
+        return this;
+    }
+
+    /*
+     * Constrains effort on reasoning for reasoning models. Check model documentation for supported values for each
+     * model.
+     * Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+     */
+    @Generated
+    private ReasoningEffort reasoningEffort;
+
+    /**
+     * Get the reasoningEffort property: Constrains effort on reasoning for reasoning models. Check model documentation
+     * for supported values for each model.
+     * Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+     *
+     * @return the reasoningEffort value.
+     */
+    @Generated
+    public ReasoningEffort getReasoningEffort() {
+        return this.reasoningEffort;
+    }
+
+    /**
+     * Set the reasoningEffort property: Constrains effort on reasoning for reasoning models. Check model documentation
+     * for supported values for each model.
+     * Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+     *
+     * @param reasoningEffort the reasoningEffort value to set.
+     * @return the VoiceLiveSessionOptions object itself.
+     */
+    @Generated
+    public VoiceLiveSessionOptions setReasoningEffort(ReasoningEffort reasoningEffort) {
+        this.reasoningEffort = reasoningEffort;
+        return this;
+    }
+
+    /*
+     * Configuration for interim response generation during latency or tool calls.
+     */
+    @Generated
+    private BinaryData interimResponse;
+
+    /**
+     * Get the interimResponse property: Configuration for interim response generation during latency or tool calls.
+     *
+     * @return the interimResponse value.
+     */
+    @Generated
+    public BinaryData getInterimResponse() {
+        return this.interimResponse;
+    }
+
+    /**
+     * Set the interimResponse property: Configuration for interim response generation during latency or tool calls.
+     *
+     * @param interimResponse the interimResponse value to set.
+     * @return the VoiceLiveSessionOptions object itself.
+     */
+    @Generated
+    public VoiceLiveSessionOptions setInterimResponse(BinaryData interimResponse) {
+        this.interimResponse = interimResponse;
         return this;
     }
 }

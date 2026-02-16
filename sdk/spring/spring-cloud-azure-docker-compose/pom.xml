@@ -62,7 +62,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.33.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.33.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.fasterxml.jackson.core</groupId>
@@ -74,7 +74,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.28.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.28.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -99,6 +99,24 @@
     </dependency>
 
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-servicebus</artifactId>
+      <version>7.17.17</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-eventhubs</artifactId>
+      <version>5.21.3</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-messaging-azure-servicebus</artifactId>
+      <version>7.1.0-beta.1</version>  <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test</artifactId>
       <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-test;external_dependency} -->
@@ -120,6 +138,12 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>3.27.6</version> <!-- {x-version-update;springboot4_org.assertj:assertj-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <version>4.3.0</version> <!-- {x-version-update;springboot4_org.awaitility:awaitility;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

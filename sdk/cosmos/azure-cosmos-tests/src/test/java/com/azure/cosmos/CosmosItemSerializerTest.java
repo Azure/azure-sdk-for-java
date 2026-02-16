@@ -162,8 +162,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
 
     @AfterClass(groups = { "fast", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.client).isNotNull();
-        this.client.close();
+        safeCloseSyncClient(this.client);
     }
 
     @DataProvider(name = "testConfigs_requestLevelSerializer")

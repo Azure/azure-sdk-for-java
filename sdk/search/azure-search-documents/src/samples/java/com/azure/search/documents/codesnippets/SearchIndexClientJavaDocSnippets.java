@@ -10,8 +10,6 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SynonymMap;
-
-import java.util.Arrays;
 @SuppressWarnings("unused")
 public class SearchIndexClientJavaDocSnippets {
 
@@ -36,50 +34,49 @@ public class SearchIndexClientJavaDocSnippets {
     public static void createIndex() {
         searchIndexClient = createSearchIndexClient();
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createIndex#SearchIndex
-        SearchIndex searchIndex = new SearchIndex("indexName", Arrays.asList(
-            new SearchField("hotelId", SearchFieldDataType.STRING)
+        SearchIndex searchIndex = new SearchIndex("indexName",
+            new SearchField("HotelId", SearchFieldDataType.STRING)
                 .setKey(true)
                 .setFilterable(true)
                 .setSortable(true),
-            new SearchField("hotelName", SearchFieldDataType.STRING)
+            new SearchField("HotelName", SearchFieldDataType.STRING)
                 .setSearchable(true)
                 .setFilterable(true)
                 .setSortable(true),
-            new SearchField("description", SearchFieldDataType.STRING)
+            new SearchField("Description", SearchFieldDataType.STRING)
                 .setSearchable(true)
                 .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE),
-            new SearchField("descriptionFr", SearchFieldDataType.STRING)
+            new SearchField("DescriptionFr", SearchFieldDataType.STRING)
                 .setSearchable(true)
                 .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE),
-            new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+            new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
                 .setSearchable(true)
                 .setFilterable(true)
                 .setFacetable(true),
-            new SearchField("address", SearchFieldDataType.COMPLEX)
+            new SearchField("Address", SearchFieldDataType.COMPLEX)
                 .setFields(
-                    new SearchField("streetAddress", SearchFieldDataType.STRING)
+                    new SearchField("StreetAddress", SearchFieldDataType.STRING)
                         .setSearchable(true),
-                    new SearchField("city", SearchFieldDataType.STRING)
+                    new SearchField("City", SearchFieldDataType.STRING)
                         .setFilterable(true)
                         .setSortable(true)
                         .setFacetable(true),
-                    new SearchField("stateProvince", SearchFieldDataType.STRING)
+                    new SearchField("StateProvince", SearchFieldDataType.STRING)
                         .setSearchable(true)
                         .setFilterable(true)
                         .setSortable(true)
                         .setFacetable(true),
-                    new SearchField("country", SearchFieldDataType.STRING)
+                    new SearchField("Country", SearchFieldDataType.STRING)
                         .setSearchable(true)
                         .setSynonymMapNames("synonymMapName")
                         .setFilterable(true)
                         .setSortable(true)
                         .setFacetable(true),
-                    new SearchField("postalCode", SearchFieldDataType.STRING)
+                    new SearchField("PostalCode", SearchFieldDataType.STRING)
                         .setSearchable(true)
                         .setFilterable(true)
                         .setSortable(true)
-                        .setFacetable(true))
-        ));
+                        .setFacetable(true)));
 
         searchIndexClient.createIndex(searchIndex);
         // END: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createIndex#SearchIndex
@@ -113,13 +110,14 @@ public class SearchIndexClientJavaDocSnippets {
      */
     public static void updateIndex() {
         searchIndexClient = createSearchIndexClient();
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateIndex#SearchIndex
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createOrUpdateIndex#SearchIndex
         SearchIndex searchIndex = searchIndexClient.getIndex("indexName");
         if (searchIndex != null) {
-            searchIndex.setFields(new SearchField("newField", SearchFieldDataType.STRING));
+            searchIndex.getFields().clear();
+            searchIndex.getFields().add(new SearchField("newField", SearchFieldDataType.STRING));
             searchIndexClient.createOrUpdateIndex(searchIndex);
         }
-        // END: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateIndex#SearchIndex
+        // END: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createOrUpdateIndex#SearchIndex
     }
 
     /**
@@ -150,7 +148,8 @@ public class SearchIndexClientJavaDocSnippets {
     public static void listSynonymMaps() {
         searchIndexClient = createSearchIndexClient();
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listSynonymMaps
-        searchIndexClient.listSynonymMaps().forEach(synonymMap -> System.out.println(synonymMap.getName()));
+        searchIndexClient.listSynonymMaps().getSynonymMaps()
+            .forEach(synonymMap -> System.out.println(synonymMap.getName()));
         // END: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listSynonymMaps
     }
 
@@ -172,13 +171,14 @@ public class SearchIndexClientJavaDocSnippets {
      */
     public static void updateSynonymMap() {
         searchIndexClient = createSearchIndexClient();
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateSynonymMap#SynonymMap
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createOrUpdateSynonymMap#SynonymMap
         SynonymMap synonymMap = searchIndexClient.getSynonymMap("synonymMapName");
         if (synonymMap != null) {
-            synonymMap.setSynonyms("inn,hotel,motel");
+            synonymMap.getSynonyms().clear();
+            synonymMap.getSynonyms().add("inn,hotel,motel");
             searchIndexClient.createOrUpdateSynonymMap(synonymMap);
         }
-        // END: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateSynonymMap#SynonymMap
+        // END: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createOrUpdateSynonymMap#SynonymMap
     }
 
     /**

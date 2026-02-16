@@ -948,7 +948,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
     }
 
     @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean primaryAddressOnly, boolean isReadMany) throws JsonProcessingException {
+    public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean primaryAddressOnly, boolean isReadMany) throws JsonProcessingException, InterruptedException {
 
         boolean shouldRetryCrossRegion = false;
 
@@ -996,7 +996,27 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 ruleId,
                 shouldRetryCrossRegion
             );
-            this.validateAddressRefreshWithForceRefresh(cosmosDiagnostics, (operationType == OperationType.ReadFeed || operationType == OperationType.Query));
+            // Allow time for the background address refresh to complete before validating diagnostics.
+            // The address refresh for LEASE_NOT_FOUND is triggered asynchronously via
+            // startBackgroundAddressRefresh() on Schedulers.boundedElastic().
+            // Instead of a fixed sleep, poll until the validation passes or a timeout is reached
+            long addressRefreshDeadlineNanos = System.nanoTime() + Duration.ofSeconds(5).toNanos();
+            AssertionError lastAssertionError = null;
+            while (System.nanoTime() < addressRefreshDeadlineNanos) {
+                try {
+                    this.validateAddressRefreshWithForceRefresh(
+                        cosmosDiagnostics,
+                        (operationType == OperationType.ReadFeed || operationType == OperationType.Query));
+                    lastAssertionError = null;
+                    break;
+                } catch (AssertionError assertionError) {
+                    lastAssertionError = assertionError;
+                    Thread.sleep(100);
+                }
+            }
+            if (lastAssertionError != null) {
+                throw lastAssertionError;
+            }
 
         } finally {
             serverErrorRule.disable();
