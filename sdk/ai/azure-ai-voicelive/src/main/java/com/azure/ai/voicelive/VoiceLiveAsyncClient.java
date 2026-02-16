@@ -9,10 +9,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import com.azure.ai.voicelive.models.AgentSessionConfig;
 import com.azure.ai.voicelive.models.VoiceLiveRequestOptions;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -158,12 +161,66 @@ public final class VoiceLiveAsyncClient {
     }
 
     /**
-     * Gets the API version.
+     * Starts a new VoiceLiveSessionAsyncClient for real-time voice communication with an Azure AI Foundry agent.
      *
-     * @return The API version.
+     * <p>This method configures the session to connect directly to an Azure AI Foundry agent,
+     * using the agent configuration to set the appropriate query parameters.</p>
+     *
+     * @param agentConfig The agent session configuration containing the agent name, project name,
+     *                    and optional parameters.
+     * @return A Mono containing the connected VoiceLiveSessionAsyncClient.
+     * @throws NullPointerException if {@code agentConfig} is null.
      */
-    String getApiVersion() {
-        return apiVersion;
+    public Mono<VoiceLiveSessionAsyncClient> startSession(AgentSessionConfig agentConfig) {
+        Objects.requireNonNull(agentConfig, "'agentConfig' cannot be null");
+
+        return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, null, agentConfig.toQueryParameters()))
+            .flatMap(wsEndpoint -> {
+                VoiceLiveSessionAsyncClient session;
+                if (keyCredential != null) {
+                    session = new VoiceLiveSessionAsyncClient(wsEndpoint, keyCredential);
+                } else {
+                    session = new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential);
+                }
+                return session.connect(additionalHeaders).thenReturn(session);
+            });
+    }
+
+    /**
+     * Starts a new VoiceLiveSessionAsyncClient for real-time voice communication with an Azure AI Foundry agent
+     * and custom request options.
+     *
+     * <p>This method configures the session to connect directly to an Azure AI Foundry agent,
+     * combining the agent configuration with additional custom options.</p>
+     *
+     * @param agentConfig The agent session configuration containing the agent name, project name,
+     *                    and optional parameters.
+     * @param requestOptions Custom query parameters and headers for the request.
+     * @return A Mono containing the connected VoiceLiveSessionAsyncClient.
+     * @throws NullPointerException if {@code agentConfig} or {@code requestOptions} is null.
+     */
+    public Mono<VoiceLiveSessionAsyncClient> startSession(AgentSessionConfig agentConfig,
+        VoiceLiveRequestOptions requestOptions) {
+        Objects.requireNonNull(agentConfig, "'agentConfig' cannot be null");
+        Objects.requireNonNull(requestOptions, "'requestOptions' cannot be null");
+
+        // Merge agent config params with custom query params (custom params take precedence)
+        Map<String, String> mergedParams = new LinkedHashMap<>(agentConfig.toQueryParameters());
+        if (requestOptions.getCustomQueryParameters() != null) {
+            mergedParams.putAll(requestOptions.getCustomQueryParameters());
+        }
+
+        return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, null, mergedParams)).flatMap(wsEndpoint -> {
+            VoiceLiveSessionAsyncClient session;
+            if (keyCredential != null) {
+                session = new VoiceLiveSessionAsyncClient(wsEndpoint, keyCredential);
+            } else {
+                session = new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential);
+            }
+            // Merge additional headers with custom headers from requestOptions
+            HttpHeaders mergedHeaders = mergeHeaders(additionalHeaders, requestOptions.getCustomHeaders());
+            return session.connect(mergedHeaders).thenReturn(session);
+        });
     }
 
     /**
@@ -176,10 +233,14 @@ public final class VoiceLiveAsyncClient {
     private HttpHeaders mergeHeaders(HttpHeaders baseHeaders, HttpHeaders customHeaders) {
         HttpHeaders merged = new HttpHeaders();
         if (baseHeaders != null) {
-            baseHeaders.forEach(header -> merged.set(header.getName(), header.getValue()));
+            for (HttpHeader header : baseHeaders) {
+                merged.set(HttpHeaderName.fromString(header.getName()), header.getValue());
+            }
         }
         if (customHeaders != null) {
-            customHeaders.forEach(header -> merged.set(header.getName(), header.getValue()));
+            for (HttpHeader header : customHeaders) {
+                merged.set(HttpHeaderName.fromString(header.getName()), header.getValue());
+            }
         }
         return merged;
     }

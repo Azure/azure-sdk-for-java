@@ -160,8 +160,10 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
         jsonWriter.writeStringField("style", this.style);
         jsonWriter.writeStringField("model", this.model == null ? null : this.model.toString());
         jsonWriter.writeJsonField("video", this.video);
+        jsonWriter.writeJsonField("scene", this.scene);
         jsonWriter.writeStringField("output_protocol",
             this.outputProtocol == null ? null : this.outputProtocol.toString());
+        jsonWriter.writeBooleanField("output_audit_audio", this.outputAuditAudio);
         return jsonWriter.writeEndObject();
     }
 
@@ -184,7 +186,9 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
             String style = null;
             PhotoAvatarBaseModes model = null;
             VideoParams video = null;
+            Scene scene = null;
             AvatarOutputProtocol outputProtocol = null;
+            Boolean outputAuditAudio = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -202,8 +206,12 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
                     model = PhotoAvatarBaseModes.fromString(reader.getString());
                 } else if ("video".equals(fieldName)) {
                     video = VideoParams.fromJson(reader);
+                } else if ("scene".equals(fieldName)) {
+                    scene = Scene.fromJson(reader);
                 } else if ("output_protocol".equals(fieldName)) {
                     outputProtocol = AvatarOutputProtocol.fromString(reader.getString());
+                } else if ("output_audit_audio".equals(fieldName)) {
+                    outputAuditAudio = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -214,7 +222,9 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
             deserializedAvatarConfiguration.style = style;
             deserializedAvatarConfiguration.model = model;
             deserializedAvatarConfiguration.video = video;
+            deserializedAvatarConfiguration.scene = scene;
             deserializedAvatarConfiguration.outputProtocol = outputProtocol;
+            deserializedAvatarConfiguration.outputAuditAudio = outputAuditAudio;
             return deserializedAvatarConfiguration;
         });
     }
@@ -300,6 +310,67 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
     @Generated
     public AvatarConfiguration setOutputProtocol(AvatarOutputProtocol outputProtocol) {
         this.outputProtocol = outputProtocol;
+        return this;
+    }
+
+    /*
+     * Configuration for the avatar's zoom level, position, rotation and movement amplitude in the video frame.
+     */
+    @Generated
+    private Scene scene;
+
+    /*
+     * When enabled, forwards audit audio via WebSocket for review/debugging purposes, even when avatar output is
+     * delivered via WebRTC.
+     */
+    @Generated
+    private Boolean outputAuditAudio;
+
+    /**
+     * Get the scene property: Configuration for the avatar's zoom level, position, rotation and movement amplitude in
+     * the video frame.
+     *
+     * @return the scene value.
+     */
+    @Generated
+    public Scene getScene() {
+        return this.scene;
+    }
+
+    /**
+     * Set the scene property: Configuration for the avatar's zoom level, position, rotation and movement amplitude in
+     * the video frame.
+     *
+     * @param scene the scene value to set.
+     * @return the AvatarConfiguration object itself.
+     */
+    @Generated
+    public AvatarConfiguration setScene(Scene scene) {
+        this.scene = scene;
+        return this;
+    }
+
+    /**
+     * Get the outputAuditAudio property: When enabled, forwards audit audio via WebSocket for review/debugging
+     * purposes, even when avatar output is delivered via WebRTC.
+     *
+     * @return the outputAuditAudio value.
+     */
+    @Generated
+    public Boolean isOutputAuditAudio() {
+        return this.outputAuditAudio;
+    }
+
+    /**
+     * Set the outputAuditAudio property: When enabled, forwards audit audio via WebSocket for review/debugging
+     * purposes, even when avatar output is delivered via WebRTC.
+     *
+     * @param outputAuditAudio the outputAuditAudio value to set.
+     * @return the AvatarConfiguration object itself.
+     */
+    @Generated
+    public AvatarConfiguration setOutputAuditAudio(Boolean outputAuditAudio) {
+        this.outputAuditAudio = outputAuditAudio;
         return this;
     }
 }

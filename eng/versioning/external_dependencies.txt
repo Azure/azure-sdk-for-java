@@ -43,7 +43,6 @@ commons-net:commons-net;3.9.0
 io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
 io.fabric8:kubernetes-client;6.12.1
-io.netty:netty-bom;4.1.130.Final
 io.netty:netty-buffer;4.1.130.Final
 io.netty:netty-common;4.1.130.Final
 io.netty:netty-codec;4.1.130.Final
@@ -58,7 +57,6 @@ io.netty:netty-transport;4.1.130.Final
 io.netty:netty-transport-native-epoll;4.1.130.Final
 io.netty:netty-transport-native-unix-common;4.1.130.Final
 io.netty:netty-transport-native-kqueue;4.1.130.Final
-io.projectreactor:reactor-bom;2024.0.9
 io.projectreactor.netty:reactor-netty-http;1.2.13
 io.projectreactor:reactor-core;3.7.14
 io.vertx:vertx-codegen;4.5.23
