@@ -16,47 +16,10 @@ import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 @Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class ConnectionsClientTest extends ClientTestBase {
 
-    private AIProjectClientBuilder clientBuilder;
-    private ConnectionsClient connectionsClient;
-
-    private void setup(HttpClient httpClient) {
-        clientBuilder = getClientBuilder(httpClient);
-        connectionsClient = clientBuilder.buildConnectionsClient();
-    }
-
-    /**
-     * Helper method to verify a Connection has valid properties.
-     * @param connection The connection to validate
-     * @param expectedName The expected name of the connection, or null if no specific name is expected
-     * @param expectedType The expected connection type, or null if no specific type is expected
-     * @param shouldBeDefault Whether the connection should be a default connection, or null if not checking this property
-     */
-    private void assertValidConnection(Connection connection, String expectedName, ConnectionType expectedType,
-        Boolean shouldBeDefault) {
-        Assertions.assertNotNull(connection);
-        Assertions.assertNotNull(connection.getName());
-        Assertions.assertNotNull(connection.getId());
-        Assertions.assertNotNull(connection.getType());
-        Assertions.assertNotNull(connection.getTarget());
-        Assertions.assertNotNull(connection.getCredentials());
-
-        if (expectedName != null) {
-            Assertions.assertEquals(expectedName, connection.getName());
-        }
-
-        if (expectedType != null) {
-            Assertions.assertEquals(expectedType, connection.getType());
-        }
-
-        if (shouldBeDefault != null) {
-            Assertions.assertEquals(shouldBeDefault, connection.isDefault());
-        }
-    }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testListConnections(HttpClient httpClient) {
-        setup(httpClient);
+    public void testListConnections(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
 
         // Verify that listing connections returns results
         Iterable<Connection> connections = connectionsClient.listConnections();
@@ -78,8 +41,8 @@ public class ConnectionsClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testListConnectionsWithFilters(HttpClient httpClient) {
-        setup(httpClient);
+    public void testListConnectionsWithFilters(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
 
         // Test listing connections with type filter
         Iterable<Connection> azureOpenAIConnections
@@ -103,8 +66,8 @@ public class ConnectionsClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testGetConnectionWithoutCredentials(HttpClient httpClient) {
-        setup(httpClient);
+    public void testGetConnectionWithoutCredentials(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
 
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
 
@@ -126,8 +89,8 @@ public class ConnectionsClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testGetConnectionWithCredentials(HttpClient httpClient) {
-        setup(httpClient);
+    public void testGetConnectionWithCredentials(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
 
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
 

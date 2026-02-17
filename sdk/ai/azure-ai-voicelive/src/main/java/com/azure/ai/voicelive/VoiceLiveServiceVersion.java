@@ -17,7 +17,12 @@ public enum VoiceLiveServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2025-10-01}.
      */
-    V2025_10_01("2025-10-01");
+    V2025_10_01("2025-10-01"),
+
+    /**
+     * Service version {@code 2026-01-01-preview}.
+     */
+    V2026_01_01_PREVIEW("2026-01-01-preview");
 
     private final String version;
 

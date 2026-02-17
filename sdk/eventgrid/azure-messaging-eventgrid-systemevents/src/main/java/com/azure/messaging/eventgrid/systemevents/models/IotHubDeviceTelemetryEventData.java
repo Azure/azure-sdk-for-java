@@ -70,8 +70,13 @@ public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventPr
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("body", getBody(),
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("body", getBody(), (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 

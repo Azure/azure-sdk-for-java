@@ -148,7 +148,9 @@ public final class WorkspacePurgeBodyFilters implements JsonSerializable<Workspa
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("column", this.column);
         jsonWriter.writeStringField("operator", this.operator);
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         jsonWriter.writeStringField("key", this.key);
         return jsonWriter.writeEndObject();
     }

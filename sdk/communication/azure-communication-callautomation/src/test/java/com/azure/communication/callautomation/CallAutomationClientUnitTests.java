@@ -11,8 +11,10 @@ import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
+import com.azure.communication.common.CommunicationCloudEnvironment;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
@@ -111,6 +113,32 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient
             = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>("", 204))));
         CallInvite target = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
+        RedirectCallOptions redirectCallOptions = new RedirectCallOptions(CALL_INCOMING_CALL_CONTEXT, target);
+
+        Response<Void> redirectCallResponse
+            = callAutomationClient.redirectCallWithResponse(redirectCallOptions, Context.NONE);
+
+        assertEquals(204, redirectCallResponse.getStatusCode());
+    }
+
+    @Test
+    public void redirectCallWithMicrosoftTeamsAppIdentifier() {
+        CallAutomationClient callAutomationClient
+            = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>("", 204))));
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        CallInvite target = new CallInvite(teamsAppIdentifier);
+
+        callAutomationClient.redirectCall(CALL_INCOMING_CALL_CONTEXT, target);
+    }
+
+    @Test
+    public void redirectCallWithResponseMicrosoftTeamsAppIdentifier() {
+        CallAutomationClient callAutomationClient
+            = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>("", 204))));
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        CallInvite target = new CallInvite(teamsAppIdentifier);
         RedirectCallOptions redirectCallOptions = new RedirectCallOptions(CALL_INCOMING_CALL_CONTEXT, target);
 
         Response<Void> redirectCallResponse
