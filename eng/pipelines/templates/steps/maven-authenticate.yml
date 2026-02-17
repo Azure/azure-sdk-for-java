@@ -1,12 +1,6 @@
 steps:
-  # Copy settings.xml to default Maven location
-  - pwsh: |
-      $m2Dir = if ($env:USERPROFILE) { "$env:USERPROFILE\.m2" } else { "$HOME/.m2" }
-      New-Item -ItemType Directory -Force -Path $m2Dir | Out-Null
-      Copy-Item -Path "$(Build.SourcesDirectory)/eng/settings.xml" -Destination "$m2Dir/settings.xml"
-    displayName: 'Setup Maven settings'
-
   # Authenticate with Azure Artifacts feeds
+  # Repo URLs are defined in azure-sdk-parent pom.xml with id 'test-maven-feed'
   - task: MavenAuthenticate@0
     displayName: 'Maven Authenticate'
     inputs:

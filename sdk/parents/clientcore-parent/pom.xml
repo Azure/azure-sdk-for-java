@@ -1668,4 +1668,55 @@
       </build>
     </profile>
   </profiles>
+
+  <!-- Route all dependency resolution through Azure Artifacts feed -->
+  <repositories>
+    <!-- Azure Artifacts feed for all dependencies -->
+    <repository>
+      <id>test-maven-feed</id>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/test-maven-feed/maven/v1</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <!-- Disable default Maven Central -->
+    <repository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <!-- Azure Artifacts feed for all plugins -->
+    <pluginRepository>
+      <id>test-maven-feed</id>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/test-maven-feed/maven/v1</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+    <!-- Disable default Maven Central for plugins -->
+    <pluginRepository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 </project>
