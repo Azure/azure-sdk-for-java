@@ -7,8 +7,8 @@ package com.azure.resourcemanager.communication.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.EmailServiceResource;
@@ -22,20 +22,20 @@ public final class EmailServicesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"dataLocation\":\"jzbexilzznfq\"},\"location\":\"vwpm\",\"tags\":{\"jhwqytjrybnw\":\"ruoujmk\",\"enq\":\"ewgdrjervn\",\"ndoygmifthnzdnd\":\"eh\",\"nayqi\":\"l\"},\"id\":\"ynduha\",\"name\":\"hqlkthumaqo\",\"type\":\"bgycduiertgccym\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"dataLocation\":\"t\"},\"location\":\"vfbtkuwh\",\"tags\":{\"koymkcd\":\"ykojoxafnndlpic\",\"pkkpw\":\"h\",\"jxywsuws\":\"reqnovvqfov\",\"aeneqnzarrwl\":\"rsndsytgadgvra\"},\"id\":\"uu\",\"name\":\"jfqka\",\"type\":\"e\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CommunicationManager manager = CommunicationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EmailServiceResource> response
-            = manager.emailServices().listByResourceGroup("t", com.azure.core.util.Context.NONE);
+            = manager.emailServices().listByResourceGroup("erpqlpqwcciuqg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vwpm", response.iterator().next().location());
-        Assertions.assertEquals("ruoujmk", response.iterator().next().tags().get("jhwqytjrybnw"));
-        Assertions.assertEquals("jzbexilzznfq", response.iterator().next().dataLocation());
+        Assertions.assertEquals("vfbtkuwh", response.iterator().next().location());
+        Assertions.assertEquals("ykojoxafnndlpic", response.iterator().next().tags().get("koymkcd"));
+        Assertions.assertEquals("t", response.iterator().next().dataLocation());
     }
 }

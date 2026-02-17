@@ -12,11 +12,9 @@ import java.util.function.Consumer;
 /**
  * Options passed when {@link SearchClientBuilder.SearchIndexingBufferedSenderBuilder#onActionError(Consumer)} is
  * called.
- *
- * @param <T> Type of the document in the action.
  */
-public final class OnActionErrorOptions<T> {
-    private final IndexAction<T> action;
+public final class OnActionErrorOptions {
+    private final IndexAction action;
 
     private Throwable throwable;
     private IndexingResult indexingResult;
@@ -26,7 +24,7 @@ public final class OnActionErrorOptions<T> {
      *
      * @param action Action that failed with an error.
      */
-    public OnActionErrorOptions(IndexAction<T> action) {
+    public OnActionErrorOptions(IndexAction action) {
         this.action = action;
     }
 
@@ -35,7 +33,7 @@ public final class OnActionErrorOptions<T> {
      *
      * @return The action.
      */
-    public IndexAction<T> getAction() {
+    public IndexAction getAction() {
         return action;
     }
 
@@ -45,7 +43,7 @@ public final class OnActionErrorOptions<T> {
      * @param throwable Throwable that caused the action to fail.
      * @return The updated OnActionErrorOptions object.
      */
-    public OnActionErrorOptions<T> setThrowable(Throwable throwable) {
+    public OnActionErrorOptions setThrowable(Throwable throwable) {
         this.throwable = throwable;
         return this;
     }
@@ -65,7 +63,7 @@ public final class OnActionErrorOptions<T> {
      * @param indexingResult The indexing result for the action.
      * @return The updated OnActionErrorOptions object.
      */
-    public OnActionErrorOptions<T> setIndexingResult(IndexingResult indexingResult) {
+    public OnActionErrorOptions setIndexingResult(IndexingResult indexingResult) {
         this.indexingResult = indexingResult;
         return this;
     }

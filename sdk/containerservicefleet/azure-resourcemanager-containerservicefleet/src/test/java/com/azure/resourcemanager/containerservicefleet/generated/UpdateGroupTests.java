@@ -15,29 +15,29 @@ public final class UpdateGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateGroup model = BinaryData.fromString(
-            "{\"name\":\"mryw\",\"beforeGates\":[{\"displayName\":\"qftiy\",\"type\":\"Approval\"},{\"displayName\":\"n\",\"type\":\"Approval\"},{\"displayName\":\"vyxlwhzlsicohoqq\",\"type\":\"Approval\"},{\"displayName\":\"lryav\",\"type\":\"Approval\"}],\"afterGates\":[{\"displayName\":\"nmmqhgyxzkon\",\"type\":\"Approval\"}]}")
+            "{\"name\":\"nrmfqjhhk\",\"beforeGates\":[{\"displayName\":\"jy\",\"type\":\"Approval\"},{\"displayName\":\"xxjyngudivkrtsw\",\"type\":\"Approval\"},{\"displayName\":\"zvszj\",\"type\":\"Approval\"},{\"displayName\":\"vjfdx\",\"type\":\"Approval\"}],\"afterGates\":[{\"displayName\":\"vtcqaqtdo\",\"type\":\"Approval\"}]}")
             .toObject(UpdateGroup.class);
-        Assertions.assertEquals("mryw", model.name());
-        Assertions.assertEquals("qftiy", model.beforeGates().get(0).displayName());
+        Assertions.assertEquals("nrmfqjhhk", model.name());
+        Assertions.assertEquals("jy", model.beforeGates().get(0).displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.beforeGates().get(0).type());
-        Assertions.assertEquals("nmmqhgyxzkon", model.afterGates().get(0).displayName());
+        Assertions.assertEquals("vtcqaqtdo", model.afterGates().get(0).displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.afterGates().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateGroup model = new UpdateGroup().withName("mryw")
-            .withBeforeGates(Arrays.asList(new GateConfiguration().withDisplayName("qftiy").withType(GateType.APPROVAL),
-                new GateConfiguration().withDisplayName("n").withType(GateType.APPROVAL),
-                new GateConfiguration().withDisplayName("vyxlwhzlsicohoqq").withType(GateType.APPROVAL),
-                new GateConfiguration().withDisplayName("lryav").withType(GateType.APPROVAL)))
+        UpdateGroup model = new UpdateGroup().withName("nrmfqjhhk")
+            .withBeforeGates(Arrays.asList(new GateConfiguration().withDisplayName("jy").withType(GateType.APPROVAL),
+                new GateConfiguration().withDisplayName("xxjyngudivkrtsw").withType(GateType.APPROVAL),
+                new GateConfiguration().withDisplayName("zvszj").withType(GateType.APPROVAL),
+                new GateConfiguration().withDisplayName("vjfdx").withType(GateType.APPROVAL)))
             .withAfterGates(
-                Arrays.asList(new GateConfiguration().withDisplayName("nmmqhgyxzkon").withType(GateType.APPROVAL)));
+                Arrays.asList(new GateConfiguration().withDisplayName("vtcqaqtdo").withType(GateType.APPROVAL)));
         model = BinaryData.fromObject(model).toObject(UpdateGroup.class);
-        Assertions.assertEquals("mryw", model.name());
-        Assertions.assertEquals("qftiy", model.beforeGates().get(0).displayName());
+        Assertions.assertEquals("nrmfqjhhk", model.name());
+        Assertions.assertEquals("jy", model.beforeGates().get(0).displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.beforeGates().get(0).type());
-        Assertions.assertEquals("nmmqhgyxzkon", model.afterGates().get(0).displayName());
+        Assertions.assertEquals("vtcqaqtdo", model.afterGates().get(0).displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.afterGates().get(0).type());
     }
 }

@@ -3,9 +3,12 @@
 
 package com.azure.ai.translation.text;
 
+import java.util.Arrays;
+
 import com.azure.ai.translation.text.models.TextType;
-import com.azure.ai.translation.text.models.TranslateOptions;
+import com.azure.ai.translation.text.models.TranslateInputItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
+import com.azure.ai.translation.text.models.TranslationTarget;
 import com.azure.ai.translation.text.models.TranslationText;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -29,16 +32,16 @@ public class TranslateTextType {
                 .region(region)
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
+        
+        TranslateInputItem input = new TranslateInputItem(
+            "<html><body>This <b>is</b> a test.</body></html>", 
+            Arrays.asList(new TranslationTarget("en"))
+        ).setLanguage("cs").setTextType(TextType.HTML);
 
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("en")
-            .setSourceLanguage("cs")
-            .setTextType(TextType.HTML);
-
-        TranslatedTextItem translation = client.translate("<html><body>This <b>is</b> a test.</body></html>", translateOptions);
+        TranslatedTextItem translation = client.translate(Arrays.asList(input)).get(0);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
-            System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Text was translated to: '" + textTranslation.getLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
     }
 }

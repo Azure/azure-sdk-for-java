@@ -52,9 +52,7 @@ class FunctionToolTest {
     @Test
     void testSetDescriptionWithNull() {
         // Act & Assert
-        assertDoesNotThrow(() -> {
-            functionTool.setDescription(null);
-        });
+        assertDoesNotThrow(() -> functionTool.setDescription(null));
         assertNull(functionTool.getDescription());
     }
 
@@ -84,9 +82,7 @@ class FunctionToolTest {
     @Test
     void testSetParametersWithNull() {
         // Act & Assert
-        assertDoesNotThrow(() -> {
-            functionTool.setParameters(null);
-        });
+        assertDoesNotThrow(() -> functionTool.setParameters(null));
         assertNull(functionTool.getParameters());
     }
 
@@ -172,7 +168,7 @@ class FunctionToolTest {
             assertNotEquals(tool1, tool3);
 
             // Test with null
-            assertNotEquals(tool1, null);
+            assertNotNull(tool1);
         }
     }
 

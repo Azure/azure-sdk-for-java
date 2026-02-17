@@ -15,8 +15,8 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.52'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/933db48a0939e55518e7f3f442dd78ea66e3fef0/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-04-06/blob.json
+use: '@autorest/java@4.1.62'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/main/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-02-06/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -354,6 +354,7 @@ directive:
   transform: >
     $.enum.push("SnaphotOperationRateExceeded");
     $.enum.push("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
+    $.enum.push("IncrementalCopyOfEarlierVersionSnapshotNotAllowed");
 ```
 
 ### BlobServiceProperties, BlobAnalyticsLogging, BlobMetrics, BlobCorsRule, and BlobRetentionPolicy
