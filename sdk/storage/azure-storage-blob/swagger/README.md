@@ -354,6 +354,7 @@ directive:
   transform: >
     $.enum.push("SnaphotOperationRateExceeded");
     $.enum.push("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
+    $.enum.push("IncrementalCopyOfEarlierVersionSnapshotNotAllowed");
 ```
 
 ### BlobServiceProperties, BlobAnalyticsLogging, BlobMetrics, BlobCorsRule, and BlobRetentionPolicy
