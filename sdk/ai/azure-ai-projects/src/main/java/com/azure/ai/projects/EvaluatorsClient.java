@@ -51,7 +51,7 @@ public final class EvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -122,7 +122,7 @@ public final class EvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -183,7 +183,7 @@ public final class EvaluatorsClient {
      * Get the specific version of the EvaluatorVersion. The service returns 404 Not Found error if the EvaluatorVersion
      * does not exist.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -264,7 +264,7 @@ public final class EvaluatorsClient {
     /**
      * Create a new EvaluatorVersion with auto incremented version id.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -307,9 +307,9 @@ public final class EvaluatorsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -372,7 +372,7 @@ public final class EvaluatorsClient {
     /**
      * Update an existing EvaluatorVersion with the given version id.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -415,9 +415,9 @@ public final class EvaluatorsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
