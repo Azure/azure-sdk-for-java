@@ -3,6 +3,7 @@
 ## 12.34.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for `AccessTierIfModifiedSince` and `AccessTierIfUnmodifiedSince` to conditionally perform `BlobClient.delete` operations.
 - Added support for missing SKU names `STANDARD_GZRS`, `STANDARD_RAGZRS` and `PREMIUM_ZRS` when using `getAccountInfo()` API.
 - Added support for error code `INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED`. This replaces `INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED` which has been deprecated.
 - Added support for Dynamic User Delegation SAS.
