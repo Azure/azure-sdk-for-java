@@ -112,8 +112,9 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
         }
 
         CosmosTransactionalBulkExecutionOptionsImpl cosmosBulkExecutionOptions = new CosmosTransactionalBulkExecutionOptionsImpl();
-        Flux<CosmosBatch> inputFlux = Flux
+        Flux<CosmosBatchBulkOperation> inputFlux = Flux
             .fromIterable(cosmosBatches)
+            .map(CosmosBatchBulkOperation::new)
             .delayElements(Duration.ofMillis(100));
         final TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
             container,
@@ -178,7 +179,7 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
 
         final TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
             this.container,
-            Flux.fromIterable(cosmosBatches),
+            Flux.fromIterable(cosmosBatches).map(CosmosBatchBulkOperation::new),
             new CosmosTransactionalBulkExecutionOptionsImpl());
 
         try {
@@ -231,7 +232,7 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
         CosmosTransactionalBulkExecutionOptionsImpl cosmosBulkExecutionOptions = new CosmosTransactionalBulkExecutionOptionsImpl();
         final TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
             container,
-            Flux.fromIterable(cosmosBatches),
+            Flux.fromIterable(cosmosBatches).map(CosmosBatchBulkOperation::new),
             cosmosBulkExecutionOptions);
         Flux<CosmosBulkTransactionalBatchResponse> bulkResponseFlux =
             Flux.deferContextual(context -> executor.execute());
@@ -285,7 +286,7 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
         transactionalBulkExecutionOptions.setMaxOperationsConcurrency(1);
         final TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
           container,
-          Flux.fromIterable(cosmosBatches),
+          Flux.fromIterable(cosmosBatches).map(CosmosBatchBulkOperation::new),
           transactionalBulkExecutionOptions);
 
         List<CosmosBulkTransactionalBatchResponse> responses = executor.execute().collectList().block();
@@ -333,7 +334,7 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
             optsSerial.setMaxOperationsConcurrency(1);
             final TransactionalBulkExecutor serialExecutor = new TransactionalBulkExecutor(
                 container,
-                Flux.fromIterable(cosmosBatches),
+                Flux.fromIterable(cosmosBatches).map(CosmosBatchBulkOperation::new),
                 optsSerial);
 
             long startSerial = System.currentTimeMillis();
@@ -349,7 +350,7 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
             optsParallel.setMaxOperationsConcurrency(batchCount);
             final TransactionalBulkExecutor parallelExecutor = new TransactionalBulkExecutor(
                 container,
-                Flux.fromIterable(cosmosBatches),
+                Flux.fromIterable(cosmosBatches).map(CosmosBatchBulkOperation::new),
                 optsParallel);
 
             long startParallel = System.currentTimeMillis();
@@ -390,7 +391,7 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
 
         final TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
             container,
-            Flux.fromIterable(Arrays.asList(batch)),
+            Flux.fromIterable(Arrays.asList(batch)).map(CosmosBatchBulkOperation::new),
             new CosmosTransactionalBulkExecutionOptionsImpl());
 
         try {

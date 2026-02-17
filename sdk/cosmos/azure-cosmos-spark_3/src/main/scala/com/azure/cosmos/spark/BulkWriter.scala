@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 // scalastyle:off underscore.import
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, BulkExecutorDiagnosticsTracker, ItemBulkOperation}
-import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, UUIDs}
+import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, ImplementationBridgeHelpers, UUIDs}
 import com.azure.cosmos.models._
 import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterInputBoundedElastic, bulkWriterRequestsBoundedElastic, bulkWriterResponsesBoundedElastic, getThreadInfo, readManyBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
@@ -913,6 +913,8 @@ private class BulkWriter
     }
   }
 
+  private val itemBulkOperationAccessor = ImplementationBridgeHelpers.ItemBulkOperationHelper.getItemBulkOperationAccessor
+
   private[this] def getActiveOperationsLog(
                                               activeOperationsSnapshot: mutable.Set[CosmosItemOperation],
                                               activeReadManyOperationsSnapshot: mutable.Set[ReadManyOperation]): String = {
@@ -929,6 +931,10 @@ private class BulkWriter
         sb.append("->")
         val ctx = itemOperation.getContext[OperationContext]
         sb.append(s"${ctx.partitionKeyValue}/${ctx.itemId}/${ctx.eTag}(${ctx.attemptNumber})")
+        val statusTracker = itemBulkOperationAccessor.getStatusTracker(itemOperation)
+        if (statusTracker != null && statusTracker.getTotalCount > 0) {
+          sb.append(s", statusHistory=${statusTracker.toString}")
+        }
       })
 
     // add readMany snapshot logs

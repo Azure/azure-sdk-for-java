@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos.implementation.batch.{BulkExecutorDiagnosticsTracker, CosmosBulkTransactionalBatchResponse, TransactionalBulkExecutor}
+import com.azure.cosmos.implementation.batch.{BulkExecutorDiagnosticsTracker, CosmosBatchBulkOperation, CosmosBulkTransactionalBatchResponse, TransactionalBulkExecutor}
 import com.azure.cosmos.implementation.{CosmosTransactionalBulkExecutionOptionsImpl, UUIDs}
 import com.azure.cosmos.models.{CosmosBatch, CosmosBatchResponse}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
@@ -93,7 +93,7 @@ private class TransactionalBulkWriter
   private val activeBatches = new ConcurrentHashMap[PartitionKey, CosmosBatchOperation].asScala
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val transactionalBulkInputEmitter: Sinks.Many[TransactionalBulkItem] = Sinks.many().unicast().onBackpressureBuffer()
-  private val transactionalBatchInputEmitter: Sinks.Many[CosmosBatch] = Sinks.many().unicast().onBackpressureBuffer()
+  private val transactionalBatchInputEmitter: Sinks.Many[CosmosBatchBulkOperation] = Sinks.many().unicast().onBackpressureBuffer()
 
   // for transactional batch, all rows/items from the dataframe should be grouped as one cosmos batch
   private val transactionalBatchPartitionKeyScheduled = java.util.concurrent.ConcurrentHashMap.newKeySet[PartitionKey]().asScala
@@ -268,7 +268,7 @@ private class TransactionalBulkWriter
         try {
           // all the operations in the batch will have the same partition key value
           // get the partition key value from the first result
-          val partitionKeyValue = resp.getCosmosBatch.getPartitionKeyValue
+          val partitionKeyValue = resp.getCosmosBatchBulkOperation.getCosmosBatch.getPartitionKeyValue
           val activeBatchOperationOpt = activeBatches.remove(partitionKeyValue)
           val pendingBatchOperationRetriesOpt = pendingBatchRetries.remove(partitionKeyValue)
 
@@ -291,7 +291,7 @@ private class TransactionalBulkWriter
                 case Some(cosmosException: CosmosException) =>
                   handleNonSuccessfulStatusCode(
                     batchOperation.operationContext,
-                    batchOperation.cosmosBatch,
+                    batchOperation.cosmosBatchBulkOperation,
                     None,
                     isGettingRetried,
                     Some(cosmosException))
@@ -307,7 +307,7 @@ private class TransactionalBulkWriter
             } else if (!resp.getResponse.isSuccessStatusCode) {
               handleNonSuccessfulStatusCode(
                 batchOperation.operationContext,
-                batchOperation.cosmosBatch,
+                batchOperation.cosmosBatchBulkOperation,
                 Some(resp.getResponse),
                 isGettingRetried,
                 None)
@@ -359,6 +359,7 @@ private class TransactionalBulkWriter
     throwIfCapturedExceptionExists()
 
     val activeTasksSemaphoreTimeout = 10
+    val cosmosBatchBulkOperation = new CosmosBatchBulkOperation(cosmosBatch)
     val operationContext =
       new OperationContext(
         cosmosBatch.getPartitionKeyValue,
@@ -402,7 +403,7 @@ private class TransactionalBulkWriter
     val cnt = totalScheduledMetrics.getAndAdd(cosmosBatch.getOperations.size())
     log.logTrace(s"total scheduled $cnt, Context: ${operationContext.toString} $getThreadInfo")
 
-    scheduleBatchInternal(CosmosBatchOperation(cosmosBatch, operationContext))
+    scheduleBatchInternal(CosmosBatchOperation(cosmosBatchBulkOperation, operationContext))
   }
 
   private def scheduleBatchInternal(cosmosBatchOperation: CosmosBatchOperation): Unit = {
@@ -414,9 +415,9 @@ private class TransactionalBulkWriter
     }
 
     activeBatches.put(
-      cosmosBatchOperation.cosmosBatch.getPartitionKeyValue,
+      cosmosBatchOperation.cosmosBatchBulkOperation.getCosmosBatch.getPartitionKeyValue,
       cosmosBatchOperation)
-    transactionalBatchInputEmitter.emitNext(cosmosBatchOperation.cosmosBatch, emitFailureHandler)
+    transactionalBatchInputEmitter.emitNext(cosmosBatchOperation.cosmosBatchBulkOperation, emitFailureHandler)
   }
 
   //scalastyle:off method.length
@@ -424,7 +425,7 @@ private class TransactionalBulkWriter
   private[this] def handleNonSuccessfulStatusCode
   (
     operationContext: OperationContext,
-    cosmosBatch: CosmosBatch,
+    cosmosBatchBulkOperation: CosmosBatchBulkOperation,
     cosmosBatchResponse: Option[CosmosBatchResponse],
     isGettingRetried: AtomicBoolean,
     responseException: Option[CosmosException]
@@ -466,7 +467,7 @@ private class TransactionalBulkWriter
         s"Context: {${operationContext.toString}} $getThreadInfo")
 
       val batchOperationRetry = CosmosBatchOperation(
-        cosmosBatch,
+        cosmosBatchBulkOperation,
         new OperationContext(
           operationContext.partitionKeyValueInput,
           operationContext.attemptNumber + 1,
@@ -474,8 +475,8 @@ private class TransactionalBulkWriter
       )
 
       this.scheduleRetry(
-        trackPendingRetryAction = () => pendingBatchRetries.put(cosmosBatch.getPartitionKeyValue, batchOperationRetry).isEmpty,
-        clearPendingRetryAction = () => pendingBatchRetries.remove(cosmosBatch.getPartitionKeyValue).isDefined,
+        trackPendingRetryAction = () => pendingBatchRetries.put(cosmosBatchBulkOperation.getCosmosBatch.getPartitionKeyValue, batchOperationRetry).isEmpty,
+        clearPendingRetryAction = () => pendingBatchRetries.remove(cosmosBatchBulkOperation.getCosmosBatch.getPartitionKeyValue).isDefined,
         batchOperationRetry,
         effectiveStatusCode)
       isGettingRetried.set(true)
@@ -519,18 +520,27 @@ private class TransactionalBulkWriter
     // flatten the batches
     activeOperationsSnapshot
       .values
-      .flatMap(batchOperation =>
-        batchOperation.cosmosBatch.getOperations.asScala.map(itemOperation => (itemOperation, batchOperation.operationContext.attemptNumber)))
+      .flatMap(batchOperation => {
+        val statusTracker = batchOperation.cosmosBatchBulkOperation.getStatusTracker
+        val statusHistory = if (statusTracker != null && statusTracker.getTotalCount > 0) {
+          Some(statusTracker.toString)
+        } else {
+          None
+        }
+        batchOperation.cosmosBatchBulkOperation.getCosmosBatch.getOperations.asScala.map(itemOperation =>
+          (itemOperation, batchOperation.operationContext.attemptNumber, statusHistory))
+      })
       .toList
       .take(TransactionalBulkWriter.maxItemOperationsToShowInErrorMessage)
-      .foreach(itemOperationAttemptPair => {
+      .foreach(itemOperationTuple => {
         if (sb.nonEmpty) {
           sb.append(", ")
         }
 
-        sb.append(itemOperationAttemptPair._1.getOperationType)
+        sb.append(itemOperationTuple._1.getOperationType)
         sb.append("->")
-        sb.append(s"${itemOperationAttemptPair._1.getId}/${itemOperationAttemptPair._1.getPartitionKeyValue}/(${itemOperationAttemptPair._2})")
+        sb.append(s"${itemOperationTuple._1.getId}/${itemOperationTuple._1.getPartitionKeyValue}/(${itemOperationTuple._2})")
+        itemOperationTuple._3.foreach(history => sb.append(s", statusHistory=$history"))
       })
 
     sb.toString()
@@ -548,8 +558,8 @@ private class TransactionalBulkWriter
       snapshot.keys.forall(partitionKey => {
         if (current.contains(partitionKey)) {
 
-          snapshot(partitionKey).cosmosBatch.getOperations.asScala.forall(itemOperationSnapshot => {
-            current(partitionKey).cosmosBatch.getOperations.asScala.exists(currentOperation =>
+          snapshot(partitionKey).cosmosBatchBulkOperation.getCosmosBatch.getOperations.asScala.forall(itemOperationSnapshot => {
+            current(partitionKey).cosmosBatchBulkOperation.getCosmosBatch.getOperations.asScala.exists(currentOperation =>
               itemOperationSnapshot.getOperationType == currentOperation.getOperationType
                 && itemOperationSnapshot.getPartitionKeyValue == currentOperation.getPartitionKeyValue
                 && Objects.equals(itemOperationSnapshot.getId, currentOperation.getId)
@@ -607,7 +617,7 @@ private class TransactionalBulkWriter
             (pendingRetriesSnapshot ++ activeOperationsSnapshot)
               .toList
               .sortBy(op => op._2.operationContext.sequenceNumber)
-              .map(batchOperationPartitionKeyPair => batchOperationPartitionKeyPair._2.cosmosBatch)
+              .map(batchOperationPartitionKeyPair => batchOperationPartitionKeyPair._2.cosmosBatchBulkOperation.getCosmosBatch)
               .flatMap(batch => batch.getOperations.asScala)
           )
         } else {
@@ -702,7 +712,7 @@ private class TransactionalBulkWriter
                       // re-validating whether the operation is still active - if so, just re-enqueue another retry
                       // this is harmless - because all bulkItemOperations from Spark connector are always idempotent
                       // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
-                      transactionalBatchInputEmitter.emitNext(operationPartitionKeyPair._2.cosmosBatch, TransactionalBulkWriter.emitFailureHandler)
+                      transactionalBatchInputEmitter.emitNext(operationPartitionKeyPair._2.cosmosBatchBulkOperation, TransactionalBulkWriter.emitFailureHandler)
                       log.logWarning(s"Re-enqueued a retry for pending active batch task "
                         + s"(${operationPartitionKeyPair._1})' "
                         + s"- Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
@@ -850,7 +860,7 @@ private class TransactionalBulkWriter
     }
   }
 
-  private case class CosmosBatchOperation(cosmosBatch: CosmosBatch, operationContext: OperationContext)
+  private case class CosmosBatchOperation(cosmosBatchBulkOperation: CosmosBatchBulkOperation, operationContext: OperationContext)
   private case class TransactionalBulkItem(partitionKey: PartitionKey, objectNode: ObjectNode)
 }
 
