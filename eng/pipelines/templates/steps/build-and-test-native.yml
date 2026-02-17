@@ -44,8 +44,7 @@ steps:
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       publishJUnitResults: false
       goals: 'install'
-    env:
-      ${{ insert }}: ${{ parameters.TestEnvVars }}
+    env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   - task: Maven@4
@@ -58,8 +57,7 @@ steps:
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       publishJUnitResults: false
       goals: ${{ parameters.TestGoals }}
-    env:
-      ${{ insert }}: ${{ parameters.TestEnvVars }}
+    env: ${{ parameters.TestEnvVars }}
     # we want to run this when TestFromSource isn't true
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
@@ -98,8 +96,7 @@ steps:
       javaHomeOption: 'Path'
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       publishJUnitResults: false
-    env:
-      ${{ insert }}: ${{ parameters.TestEnvVars }}
+    env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - task: Maven@4
@@ -121,8 +118,7 @@ steps:
       # lifecycle that test or verify targets would execute. The libraries were already
       # compiled and installed in the previous task, this tasks only runs tests.
       goals: ${{ parameters.TestGoals }}
-    env:
-      ${{ insert }}: ${{ parameters.TestEnvVars }}
+    env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - template: /eng/pipelines/templates/steps/retain-test-logs.yml

@@ -142,8 +142,7 @@ steps:
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
         goals: ${{ parameters.TestGoals }}
-      env:
-        ${{ insert }}: ${{ parameters.TestEnvVars }}
+      env: ${{ parameters.TestEnvVars }}
 
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
@@ -239,8 +238,7 @@ steps:
         # lifecycle that test or verify targets would execute. The libraries were already
         # compiled and installed in the previous task, this tasks only runs tests.
         goals: ${{ parameters.TestGoals }}
-      env:
-        ${{ insert }}: ${{ parameters.TestEnvVars }}
+      env: ${{ parameters.TestEnvVars }}
       condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - ${{ if eq(parameters.TestVersionSupport, 'true') }}:

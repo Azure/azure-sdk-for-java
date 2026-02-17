@@ -65,6 +65,7 @@ jobs:
             - 'sdk/storage'
             - 'sdk/tools'
             - 'sdk/trafficmanager/azure-resourcemanager-trafficmanager'
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
       - task: Maven@4
         displayName: 'Install Unreleased Dependencies'
         condition: ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '')
@@ -77,8 +78,6 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-        env:
-          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       - script: |
           python -m pip install termcolor
         displayName: 'Install python module'
@@ -113,6 +112,3 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           goals: 'clean install -Pdev '
-        env:
-          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-
