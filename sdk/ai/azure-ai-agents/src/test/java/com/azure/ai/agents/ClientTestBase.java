@@ -105,7 +105,9 @@ public class ClientTestBase extends TestProxyTestBase {
     }
 
     private void addCustomMatchers() {
-        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie")));
+        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie",
+            "X-Stainless-Arch", "X-Stainless-Lang", "X-Stainless-OS", "X-Stainless-OS-Version",
+            "X-Stainless-Package-Version", "X-Stainless-Runtime", "X-Stainless-Runtime-Version")));
     }
 
     protected void sleep(long millis) {

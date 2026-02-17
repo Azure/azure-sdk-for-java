@@ -7,7 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.identity.AzureAuthorityHosts;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,9 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRepositoryAnonymousAccessTests extends ContainerRegistryClientsTestBase {
-    @BeforeEach
-    void beforeEach() throws InterruptedException {
-        importImage(getTestMode(), ANONYMOUS_REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME,
+    @BeforeAll
+    public static void setupSharedResources() {
+        importImage(ANONYMOUS_REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME,
             Arrays.asList("latest", "v1", "v2", "v3", "v4"), ANONYMOUS_REGISTRY_ENDPOINT);
     }
 

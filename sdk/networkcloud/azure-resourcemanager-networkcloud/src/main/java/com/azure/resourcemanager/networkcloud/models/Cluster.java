@@ -167,8 +167,8 @@ public interface Cluster {
     String clusterManagerId();
 
     /**
-     * Gets the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster privileges. The
-     * service principal to be used by the cluster during Arc Appliance installation.
+     * Gets the clusterServicePrincipal property: Field Deprecated: Use managed identity to provide cluster privileges.
+     * The service principal to be used by the cluster during Arc Appliance installation.
      * 
      * @return the clusterServicePrincipal value.
      */
@@ -570,10 +570,10 @@ public interface Cluster {
          */
         interface WithClusterServicePrincipal {
             /**
-             * Specifies the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster
+             * Specifies the clusterServicePrincipal property: Field Deprecated: Use managed identity to provide cluster
              * privileges. The service principal to be used by the cluster during Arc Appliance installation..
              * 
-             * @param clusterServicePrincipal Deprecated: Use managed identity to provide cluster privileges. The
+             * @param clusterServicePrincipal Field Deprecated: Use managed identity to provide cluster privileges. The
              * service principal to be used by the cluster during Arc Appliance installation.
              * @return the next definition stage.
              */
@@ -616,11 +616,10 @@ public interface Cluster {
         interface WithComputeRackDefinitions {
             /**
              * Specifies the computeRackDefinitions property: The list of rack definitions for the compute racks in a
-             * multi-rack
-             * cluster, or an empty list in a single-rack cluster..
+             * multi-rack cluster, or an empty list in a single-rack cluster..
              * 
-             * @param computeRackDefinitions The list of rack definitions for the compute racks in a multi-rack
-             * cluster, or an empty list in a single-rack cluster.
+             * @param computeRackDefinitions The list of rack definitions for the compute racks in a multi-rack cluster,
+             * or an empty list in a single-rack cluster.
              * @return the next definition stage.
              */
             WithCreate withComputeRackDefinitions(List<RackDefinition> computeRackDefinitions);
@@ -858,10 +857,10 @@ public interface Cluster {
          */
         interface WithClusterServicePrincipal {
             /**
-             * Specifies the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster
+             * Specifies the clusterServicePrincipal property: Field Deprecated: Use managed identity to provide cluster
              * privileges. The service principal to be used by the cluster during Arc Appliance installation..
              * 
-             * @param clusterServicePrincipal Deprecated: Use managed identity to provide cluster privileges. The
+             * @param clusterServicePrincipal Field Deprecated: Use managed identity to provide cluster privileges. The
              * service principal to be used by the cluster during Arc Appliance installation.
              * @return the next definition stage.
              */
@@ -904,11 +903,10 @@ public interface Cluster {
         interface WithComputeRackDefinitions {
             /**
              * Specifies the computeRackDefinitions property: The list of rack definitions for the compute racks in a
-             * multi-rack
-             * cluster, or an empty list in a single-rack cluster..
+             * multi-rack cluster, or an empty list in a single-rack cluster..
              * 
-             * @param computeRackDefinitions The list of rack definitions for the compute racks in a multi-rack
-             * cluster, or an empty list in a single-rack cluster.
+             * @param computeRackDefinitions The list of rack definitions for the compute racks in a multi-rack cluster,
+             * or an empty list in a single-rack cluster.
              * @return the next definition stage.
              */
             Update withComputeRackDefinitions(List<RackDefinition> computeRackDefinitions);

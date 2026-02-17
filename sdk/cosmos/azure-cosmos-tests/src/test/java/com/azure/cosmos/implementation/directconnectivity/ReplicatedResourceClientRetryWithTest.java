@@ -16,10 +16,10 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.http.HttpHeaders;
-import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,11 +27,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReplicatedResourceClientRetryWithTest {
     protected static final int TIMEOUT = 120000;
@@ -155,14 +154,10 @@ public class ReplicatedResourceClientRetryWithTest {
 
     public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator, long timeout) {
-        TestSubscriber<List<StoreResult>> testSubscriber = new TestSubscriber<>();
-
-        single.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(single)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     public static void validateSuccess(Mono<StoreResponse> single,
@@ -172,14 +167,10 @@ public class ReplicatedResourceClientRetryWithTest {
 
     public static void validateSuccess(Mono<StoreResponse> single,
                                        StoreResponseValidator validator, long timeout) {
-        TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
-
-        single.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(single)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     private PartitionKeyRange partitionKeyRangeWithId(String id) {

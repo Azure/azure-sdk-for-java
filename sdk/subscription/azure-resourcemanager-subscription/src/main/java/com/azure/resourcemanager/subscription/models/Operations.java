@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.subscription.models;
 
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
 /**
@@ -14,20 +14,20 @@ public interface Operations {
     /**
      * Lists all of the available Microsoft.Subscription API operations.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list operations along with {@link Response}.
+     * @return result of the request to list operations as paginated response with {@link PagedIterable}.
      */
-    Response<OperationListResult> listWithResponse(Context context);
+    PagedIterable<Operation> list();
 
     /**
      * Lists all of the available Microsoft.Subscription API operations.
      * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list operations.
+     * @return result of the request to list operations as paginated response with {@link PagedIterable}.
      */
-    OperationListResult list();
+    PagedIterable<Operation> list(Context context);
 }
