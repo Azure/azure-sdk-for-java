@@ -909,6 +909,7 @@ public final class ShareServiceAsyncClient {
     public Mono<Response<UserDelegationKey>>
         getUserDelegationKeyWithResponse(ShareGetUserDelegationKeyOptions options) {
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> getUserDelegationKeyWithResponse(options.getStartsOn(),
                 options.getExpiresOn(), options.getDelegatedUserTenantId(), context));
         } catch (RuntimeException ex) {

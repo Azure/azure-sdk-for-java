@@ -767,6 +767,7 @@ public final class QueueServiceAsyncClient {
     public Mono<Response<UserDelegationKey>>
         getUserDelegationKeyWithResponse(QueueGetUserDelegationKeyOptions options) {
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> getUserDelegationKeyWithResponse(options.getStartsOn(),
                 options.getExpiresOn(), options.getDelegatedUserTenantId(), context));
         } catch (RuntimeException ex) {

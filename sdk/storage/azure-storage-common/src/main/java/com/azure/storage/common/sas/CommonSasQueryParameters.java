@@ -9,6 +9,8 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.TimeAndFormat;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -119,11 +121,16 @@ public class CommonSasQueryParameters {
             removeSasParametersFromMap);
         this.delegatedUserObjectId = getQueryParameter(queryParamsMap,
             Constants.UrlConstants.SAS_DELEGATED_USER_OBJECT_ID, removeSasParametersFromMap);
-        this.requestHeaders = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_REQUEST_HEADERS,
+
+        List<String> tempRequestHeaders = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_REQUEST_HEADERS,
             removeSasParametersFromMap, SasImplUtils::parseRequestHeadersAndQueryParameterString);
-        this.requestQueryParameters
-            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_REQUEST_QUERY_PARAMETERS,
+        this.requestHeaders = tempRequestHeaders == null ? null
+            : Collections.unmodifiableList(new ArrayList<>(tempRequestHeaders));
+
+        List<String> tempRequestQueryParameters = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_REQUEST_QUERY_PARAMETERS,
                 removeSasParametersFromMap, SasImplUtils::parseRequestHeadersAndQueryParameterString);
+        this.requestQueryParameters = tempRequestQueryParameters == null ? null
+            : Collections.unmodifiableList(new ArrayList<>(tempRequestQueryParameters));
     }
 
     /**
@@ -521,7 +528,7 @@ public class CommonSasQueryParameters {
      * @return A list of request headers.
      */
     public List<String> getRequestHeaders() {
-        return requestHeaders;
+        return requestHeaders == null ? null : Collections.unmodifiableList(new ArrayList<>(requestHeaders));
     }
 
     /**
@@ -534,6 +541,6 @@ public class CommonSasQueryParameters {
      * @return A list of request query parameters.
      */
     public List<String> getRequestQueryParameters() {
-        return requestQueryParameters;
+        return requestQueryParameters == null ? null : Collections.unmodifiableList(new ArrayList<>(requestQueryParameters));
     }
 }

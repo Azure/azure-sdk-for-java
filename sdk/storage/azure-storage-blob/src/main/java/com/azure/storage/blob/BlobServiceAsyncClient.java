@@ -900,6 +900,7 @@ public final class BlobServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(BlobGetUserDelegationKeyOptions options) {
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> getUserDelegationKeyWithResponse(options.getStartsOn(),
                 options.getExpiresOn(), options.getDelegatedUserTenantId(), context));
         } catch (RuntimeException ex) {

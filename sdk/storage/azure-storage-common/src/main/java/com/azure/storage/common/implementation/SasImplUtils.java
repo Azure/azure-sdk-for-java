@@ -153,9 +153,9 @@ public class SasImplUtils {
     }
 
     /**
-     * Formats request headers for SAS signing.
+     * Formats request query parameters for SAS signing.
      *
-     * @param requestQueryParameters The map of request headers to format.
+     * @param requestQueryParameters The map of request query parameters to format.
      * @param includeKeyValues Whether to include the values of the query parameters in the formatted string.
      * If false, only the keys will be included, separated by commas.
      * @return A formatted string with or without values depending on the includeKeyValues parameter.
