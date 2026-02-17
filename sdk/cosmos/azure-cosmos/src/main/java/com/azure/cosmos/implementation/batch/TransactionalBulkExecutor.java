@@ -320,7 +320,7 @@ public final class TransactionalBulkExecutor implements Disposable {
 
                             logger.trace(
                                 "SetRetryPolicy for cosmos batch, PkValue: {}, TotalCount: {}, Context: {}, {}",
-                                cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
+                                cosmosBatchBulkOperation.getPartitionKeyValue(),
                                 totalCount.get(),
                                 this.operationContextText,
                                 getThreadInfo()
@@ -350,8 +350,8 @@ public final class TransactionalBulkExecutor implements Disposable {
                         .subscribeOn(this.executionScheduler)
                         .flatMap(cosmosBatchBulkOperation -> {
                             logger.trace("Before Resolve PkRangeId, PkValue: {}, OpCount: {}, Context: {} {}",
-                                cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
-                                cosmosBatchBulkOperation.getCosmosBatch().getOperations().size(),
+                                cosmosBatchBulkOperation.getPartitionKeyValue(),
+                                cosmosBatchBulkOperation.getOperationSize(),
                                 this.operationContextText,
                                 getThreadInfo());
 
@@ -365,8 +365,8 @@ public final class TransactionalBulkExecutor implements Disposable {
 
                                     logTraceOrWarning("Resolved PkRangeId: {}, PkValue: {}, OpCount: {}, Context: {} {}",
                                         pkRangeId,
-                                        cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
-                                        cosmosBatchBulkOperation.getCosmosBatch().getOperations().size(),
+                                        cosmosBatchBulkOperation.getPartitionKeyValue(),
+                                        cosmosBatchBulkOperation.getOperationSize(),
                                         this.operationContextText,
                                         getThreadInfo());
 
@@ -475,15 +475,15 @@ public final class TransactionalBulkExecutor implements Disposable {
                         .then();
                 })
                 .then(Mono.defer(() -> {
-                    totalOperationsInFlight.addAndGet(cosmosBatchBulkOperation.getCosmosBatch().getOperations().size());
+                    totalOperationsInFlight.addAndGet(cosmosBatchBulkOperation.getOperationSize());
                     totalBatchesInFlight.incrementAndGet();
                     logTraceOrWarning(
                         "Flush cosmos batch, PKRangeId: {}, PkValue: {}, TotalOpsInFlight: {}, TotalBatchesInFlight: {}, BatchOpCount: {}, Context: {} {}",
                         thresholds.getPartitionKeyRangeId(),
-                        cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
+                        cosmosBatchBulkOperation.getPartitionKeyValue(),
                         totalOperationsInFlight.get(),
                         totalBatchesInFlight.get(),
-                        cosmosBatchBulkOperation.getCosmosBatch().getOperations().size(),
+                        cosmosBatchBulkOperation.getOperationSize(),
                         this.operationContextText,
                         getThreadInfo());
 
@@ -510,17 +510,17 @@ public final class TransactionalBulkExecutor implements Disposable {
         int totalOpsInFlightSnapshot = totalOperationsInFlight.get();
         int totalBatchesInFlightSnapshot = totalConcurrentBatchesInFlight.get();
 
-        boolean canFlush = (cosmosBatchBulkOperation.getCosmosBatch().getOperations().size() + totalOpsInFlightSnapshot <= targetBatchSizeSnapshot)
+        boolean canFlush = (cosmosBatchBulkOperation.getOperationSize() + totalOpsInFlightSnapshot <= targetBatchSizeSnapshot)
             || (totalBatchesInFlightSnapshot <= 0);
 
         logTraceOrWarning(
             "canFlushCosmosBatch - PkRangeId: {}, PkValue: {}, TargetBatchSize {}, TotalOpsInFlight: {}, TotalBatchesInFlight: {}, BatchOpCount: {}, CanFlush {}, Context: {} {}",
             partitionScopeThresholds.getPartitionKeyRangeId(),
-            cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
+            cosmosBatchBulkOperation.getPartitionKeyValue(),
             targetBatchSizeSnapshot,
             totalOpsInFlightSnapshot,
             totalBatchesInFlightSnapshot,
-            cosmosBatchBulkOperation.getCosmosBatch().getOperations().size(),
+            cosmosBatchBulkOperation.getOperationSize(),
             canFlush,
             this.operationContextText,
             getThreadInfo());
@@ -562,7 +562,7 @@ public final class TransactionalBulkExecutor implements Disposable {
             logDebugOrWarning(
                 "enqueueForRetry - Retry in group sink for PkRangeId: {}, PkValue: {}, Batch trackingId: {}, Context: {} {}",
                 thresholds.getPartitionKeyRangeId(),
-                cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
+                cosmosBatchBulkOperation.getPartitionKeyValue(),
                 batchTrackingId,
                 this.operationContextText,
                 getThreadInfo());
@@ -573,7 +573,7 @@ public final class TransactionalBulkExecutor implements Disposable {
             logDebugOrWarning(
                 "enqueueForRetry - Retry in group sink for PkRangeId: {}, PkValue: {}, BackoffTime: {}, Batch trackingId: {}, Context: {} {}",
                 thresholds.getPartitionKeyRangeId(),
-                cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
+                cosmosBatchBulkOperation.getPartitionKeyValue(),
                 backOffTime,
                 batchTrackingId,
                 this.operationContextText,
@@ -601,8 +601,8 @@ public final class TransactionalBulkExecutor implements Disposable {
         logTraceOrWarning(
             "executeTransactionalBatchWithThresholds - PkRangeId: {}, PkValue: {}, BatchOpCount:{}, TrackingId: {}, Context: {} {}",
             thresholds.getPartitionKeyRangeId(),
-            cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
-            cosmosBatchBulkOperation.getCosmosBatch().getOperations().size(),
+            cosmosBatchBulkOperation.getPartitionKeyValue(),
+            cosmosBatchBulkOperation.getOperationSize(),
             batchTrackingId,
             this.operationContextText,
             getThreadInfo());
@@ -616,8 +616,8 @@ public final class TransactionalBulkExecutor implements Disposable {
                 logTraceOrWarning(
                     "Response for transactional batch - PkRangeId: {}, PkValue: {}, BatchOpCount: {}, ResponseOpCount: {}, StatusCode: {}, SubStatusCode: {}, ActivityId: {}, Batch trackingId {}, Context: {} {}",
                     thresholds.getPartitionKeyRangeId(),
-                    cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
-                    cosmosBatchBulkOperation.getCosmosBatch().getOperations().size(),
+                    cosmosBatchBulkOperation.getPartitionKeyValue(),
+                    cosmosBatchBulkOperation.getOperationSize(),
                     response.getResults().size(),
                     response.getStatusCode(),
                     response.getSubStatusCode(),
@@ -660,15 +660,15 @@ public final class TransactionalBulkExecutor implements Disposable {
                     batchTrackingId);
             })
             .doFinally(signalType -> {
-                int totalOpsInFlightSnapshot = totalOperationsInFlight.addAndGet(-cosmosBatchBulkOperation.getCosmosBatch().getOperations().size());
+                int totalOpsInFlightSnapshot = totalOperationsInFlight.addAndGet(-cosmosBatchBulkOperation.getOperationSize());
                 int totalBatchesInFlightSnapshot = totalBatchesInFlight.decrementAndGet();
                 flushSignalGroupSink.emitNext(1, serializedEmitFailureHandler);
                 logTraceOrWarning(
                     "CosmosBatch completed, emit flush signal - SignalType: {}, PkRangeId: {}, PkValue: {}, BatchOpCount: {}, TotalOpsInFlight: {}, TotalBatchesInFlight: {}, Context: {} {}",
                     signalType,
                     thresholds.getPartitionKeyRangeId(),
-                    cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
-                    cosmosBatchBulkOperation.getCosmosBatch().getOperations().size(),
+                    cosmosBatchBulkOperation.getPartitionKeyValue(),
+                    cosmosBatchBulkOperation.getOperationSize(),
                     totalOpsInFlightSnapshot,
                     totalBatchesInFlightSnapshot,
                     this.operationContextText,
@@ -678,13 +678,13 @@ public final class TransactionalBulkExecutor implements Disposable {
     }
 
     private void recordSuccessfulResponseInThreshold(CosmosBatchBulkOperation cosmosBatchBulkOperation, PartitionScopeThresholds thresholds) {
-        for (int i = 0; i < cosmosBatchBulkOperation.getCosmosBatch().getOperations().size(); i++) {
+        for (int i = 0; i < cosmosBatchBulkOperation.getOperationSize(); i++) {
             thresholds.recordSuccessfulOperation();
         }
     }
 
     private void recordResponseForRetryInThreshold(CosmosBatchBulkOperation cosmosBatchBulkOperation, PartitionScopeThresholds thresholds) {
-        for (int i = 0; i < cosmosBatchBulkOperation.getCosmosBatch().getOperations().size(); i++) {
+        for (int i = 0; i < cosmosBatchBulkOperation.getOperationSize(); i++) {
             thresholds.recordEnqueuedRetry();
         }
     }
@@ -699,8 +699,8 @@ public final class TransactionalBulkExecutor implements Disposable {
         logDebugOrWarning(
             "handleUnsuccessfulResponse - PkRangeId: {}, PkValue: {}, BatchOpCount: {}, StatusCode {}, SubStatusCode {}, Batch trackingId {}, Context: {} {}",
             thresholds.getPartitionKeyRangeId(),
-            cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
-            cosmosBatchBulkOperation.getCosmosBatch().getOperations().size(),
+            cosmosBatchBulkOperation.getPartitionKeyValue(),
+            cosmosBatchBulkOperation.getOperationSize(),
             response.getStatusCode(),
             response.getSubStatusCode(),
             batchTrackingId,
@@ -720,7 +720,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                 logDebugOrWarning(
                     "handleUnsuccessfulResponse - Can not be retried. PkRangeId: {}, PkValue: {}, Batch trackingId {}, Context: {} {}",
                     thresholds.getPartitionKeyRangeId(),
-                    cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
+                    cosmosBatchBulkOperation.getPartitionKeyValue(),
                     batchTrackingId,
                     this.operationContextText,
                     getThreadInfo(),
@@ -745,7 +745,7 @@ public final class TransactionalBulkExecutor implements Disposable {
 
         logDebugOrWarning(
             "HandleTransactionalBatchExecutionException - PkRangeId: {}, PkRangeValue: {}, Exception {}, Batch TrackingId {}, Context: {} {}",
-            cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
+            cosmosBatchBulkOperation.getPartitionKeyValue(),
             thresholds.getPartitionKeyRangeId(),
             exception,
             batchTrackingId,
@@ -767,7 +767,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                         logDebugOrWarning(
                             "HandleTransactionalBatchExecutionException - Retry in main sink for PkRangeId: {}, PkValue: {}, Error {}, Batch TrackingId {}, Context: {} {}",
                             thresholds.getPartitionKeyRangeId(),
-                            cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
+                            cosmosBatchBulkOperation.getPartitionKeyValue(),
                             exception,
                             batchTrackingId,
                             this.operationContextText,
@@ -827,7 +827,7 @@ public final class TransactionalBulkExecutor implements Disposable {
         return BulkExecutorUtil.resolvePartitionKeyRangeId(
             docClientWrapper,
             container,
-            cosmosBatchBulkOperation.getCosmosBatch().getPartitionKeyValue(),
+            cosmosBatchBulkOperation.getPartitionKeyValue(),
             null);
     }
 

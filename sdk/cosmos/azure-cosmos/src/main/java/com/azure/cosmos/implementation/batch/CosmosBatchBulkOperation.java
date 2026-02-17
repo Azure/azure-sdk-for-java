@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.PartitionKey;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -25,6 +26,14 @@ public final class CosmosBatchBulkOperation {
 
     public CosmosBatch getCosmosBatch() {
         return this.cosmosBatch;
+    }
+
+    public PartitionKey getPartitionKeyValue() {
+        return this.cosmosBatch.getPartitionKeyValue();
+    }
+
+    public int getOperationSize() {
+        return this.cosmosBatch.getOperations().size();
     }
 
     public BulkOperationStatusTracker getStatusTracker() {

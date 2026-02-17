@@ -268,7 +268,7 @@ private class TransactionalBulkWriter
         try {
           // all the operations in the batch will have the same partition key value
           // get the partition key value from the first result
-          val partitionKeyValue = resp.getCosmosBatchBulkOperation.getCosmosBatch.getPartitionKeyValue
+          val partitionKeyValue = resp.getCosmosBatchBulkOperation.getPartitionKeyValue
           val activeBatchOperationOpt = activeBatches.remove(partitionKeyValue)
           val pendingBatchOperationRetriesOpt = pendingBatchRetries.remove(partitionKeyValue)
 
@@ -415,7 +415,7 @@ private class TransactionalBulkWriter
     }
 
     activeBatches.put(
-      cosmosBatchOperation.cosmosBatchBulkOperation.getCosmosBatch.getPartitionKeyValue,
+      cosmosBatchOperation.cosmosBatchBulkOperation.getPartitionKeyValue,
       cosmosBatchOperation)
     transactionalBatchInputEmitter.emitNext(cosmosBatchOperation.cosmosBatchBulkOperation, emitFailureHandler)
   }
@@ -475,8 +475,8 @@ private class TransactionalBulkWriter
       )
 
       this.scheduleRetry(
-        trackPendingRetryAction = () => pendingBatchRetries.put(cosmosBatchBulkOperation.getCosmosBatch.getPartitionKeyValue, batchOperationRetry).isEmpty,
-        clearPendingRetryAction = () => pendingBatchRetries.remove(cosmosBatchBulkOperation.getCosmosBatch.getPartitionKeyValue).isDefined,
+        trackPendingRetryAction = () => pendingBatchRetries.put(cosmosBatchBulkOperation.getPartitionKeyValue, batchOperationRetry).isEmpty,
+        clearPendingRetryAction = () => pendingBatchRetries.remove(cosmosBatchBulkOperation.getPartitionKeyValue).isDefined,
         batchOperationRetry,
         effectiveStatusCode)
       isGettingRetried.set(true)
