@@ -21,6 +21,7 @@ import com.azure.resourcemanager.monitor.models.ResultType;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -46,7 +47,7 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
     @DoNotRecord(skipInPlayback = true)
     public void canListEventsAndMetrics() {
         // make sure there exists a VM
-        Region region = Region.US_WEST;
+        Region region = Region.US_WEST3;
         String vmName = generateRandomResourceName("jMonitorVm_", 18);
         VirtualMachine vm = ensureVM(region,
             resourceManager.resourceGroups().define(rgName).withRegion(region).create(), vmName, "10.0.0.0/28");
@@ -130,6 +131,7 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
+    @Disabled("Azure SQL Server should have Microsoft Entra-only authentication enabled during creation.")
     public void canListEventsAndMetricsWithWhiteSpaceInResourceId() {
         Region region = Region.US_EAST;
         SqlElasticPool pool = ensureElasticPoolWithWhiteSpace(region, rgName);

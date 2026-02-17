@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class TagTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Tag model
-            = BinaryData.fromString("{\"name\":\"fiwjmygtdssls\",\"value\":\"tmweriofzpyq\"}").toObject(Tag.class);
-        Assertions.assertEquals("fiwjmygtdssls", model.name());
-        Assertions.assertEquals("tmweriofzpyq", model.value());
+        Tag model = BinaryData.fromString("{\"name\":\"qeqxo\",\"value\":\"z\"}").toObject(Tag.class);
+        Assertions.assertEquals("qeqxo", model.name());
+        Assertions.assertEquals("z", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Tag model = new Tag().withName("fiwjmygtdssls").withValue("tmweriofzpyq");
+        Tag model = new Tag().withName("qeqxo").withValue("z");
         model = BinaryData.fromObject(model).toObject(Tag.class);
-        Assertions.assertEquals("fiwjmygtdssls", model.name());
-        Assertions.assertEquals("tmweriofzpyq", model.value());
+        Assertions.assertEquals("qeqxo", model.name());
+        Assertions.assertEquals("z", model.value());
     }
 }

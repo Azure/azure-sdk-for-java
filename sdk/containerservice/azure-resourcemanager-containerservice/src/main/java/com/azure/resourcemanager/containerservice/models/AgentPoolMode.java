@@ -29,16 +29,6 @@ public final class AgentPoolMode extends ExpandableStringEnum<AgentPoolMode> {
     public static final AgentPoolMode GATEWAY = fromString("Gateway");
 
     /**
-     * Static value ManagedSystem for AgentPoolMode.
-     */
-    public static final AgentPoolMode MANAGED_SYSTEM = fromString("ManagedSystem");
-
-    /**
-     * Static value Machines for AgentPoolMode.
-     */
-    public static final AgentPoolMode MACHINES = fromString("Machines");
-
-    /**
      * Creates a new instance of AgentPoolMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

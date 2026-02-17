@@ -38,10 +38,12 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -290,6 +292,58 @@ public class BulkExecutorTest extends BatchTestBase {
 
             Thread.sleep(10);
             iterations++;
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void executeBulk_tooManyRequest_recordInThresholds() throws Exception {
+        this.container = createContainer(database);
+
+        String pkValue = UUID.randomUUID().toString();
+        TestDoc testDoc = this.populateTestDoc(pkValue);
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(pkValue)));
+
+        FaultInjectionRule tooManyRequestRule =
+            new FaultInjectionRuleBuilder("ttrs-" + UUID.randomUUID())
+                .condition(new FaultInjectionConditionBuilder().operationType(FaultInjectionOperationType.BATCH_ITEM).build())
+                .result(FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST).times(1).build())
+                .duration(Duration.ofSeconds(30))
+                .hitLimit(1)
+                .build();
+
+        CosmosBulkExecutionOptionsImpl cosmosBulkExecutionOptions = new CosmosBulkExecutionOptionsImpl();
+        final BulkExecutor<Object> executor = new BulkExecutor<>(
+            container,
+            Flux.fromArray(cosmosItemOperations.toArray(new CosmosItemOperation[0])),
+            cosmosBulkExecutionOptions);
+
+        try {
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(tooManyRequestRule)).block();
+
+            List<CosmosBulkOperationResponse<Object>> responses = executor.execute().collectList().block();
+
+            assertThat(responses.size()).isEqualTo(1);
+
+            // inspect partitionScopeThresholds via reflection and verify a retry was recorded
+            Field mapField = BulkExecutor.class.getDeclaredField("partitionScopeThresholds");
+            mapField.setAccessible(true);
+            Map<?, ?> thresholdsMap = (Map<?, ?>) mapField.get(executor);
+
+            assertThat(thresholdsMap).isNotEmpty();
+            Object thresholdsObj = thresholdsMap.values().iterator().next();
+            PartitionScopeThresholds thresholds = (PartitionScopeThresholds) thresholdsObj;
+
+            PartitionScopeThresholds.CurrentIntervalThresholds current = thresholds.getCurrentThresholds();
+            long retried = current.currentRetriedOperationCount.get();
+
+            assertThat(retried).isEqualTo(1);
+
+        } finally {
+            tooManyRequestRule.disable();
+            if (executor != null && !executor.isDisposed()) {
+                executor.dispose();
+            }
         }
     }
 }

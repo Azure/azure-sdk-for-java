@@ -25,9 +25,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
 import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.testng.SkipException;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -64,7 +62,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
         try {
             createdContainer = getSharedMultiPartitionCosmosContainer(client);
-            truncateCollection(createdContainer);
+            cleanUpContainer(createdContainer);
 
             createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
 
@@ -350,8 +348,13 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             .endToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
             .credential(credential);
 
-        try (CosmosAsyncClient cosmosAsyncClient = builder.buildAsyncClient()) {
-            String dbname = "db_" + UUID.randomUUID();
+        FaultInjectionRule readItemFaultInjectionRule = null;
+        FaultInjectionRule queryItemFaultInjectionRule = null;
+        CosmosAsyncClient cosmosAsyncClient = null;
+        String dbname = "db_" + UUID.randomUUID();
+
+        try {
+            cosmosAsyncClient = builder.buildAsyncClient();
             String containerName = "container_" + UUID.randomUUID();
             CosmosContainerProperties properties = new CosmosContainerProperties(containerName, "/mypk");
             cosmosAsyncClient.createDatabaseIfNotExists(dbname).block();
@@ -375,7 +378,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 .expectComplete()
                 .verify();
 
-            injectFailure(container, FaultInjectionOperationType.READ_ITEM, null);
+            readItemFaultInjectionRule = injectFailure(container, FaultInjectionOperationType.READ_ITEM, null);
 
             // Should timeout after injected delay
             verifyExpectError(cosmosItemResponseMono);
@@ -391,7 +394,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 .expectComplete()
                 .verify();
 
-            FaultInjectionRule faultInjectionRule = injectFailure(container, FaultInjectionOperationType.QUERY_ITEM, null);
+            queryItemFaultInjectionRule = injectFailure(container, FaultInjectionOperationType.QUERY_ITEM, null);
 
             // Should timeout after injected delay
             StepVerifier.create(queryPagedFlux)
@@ -425,11 +428,27 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 .expectComplete()
                 .verify();
 
-            faultInjectionRule.disable();
             // delete the database
-            cosmosAsyncClient.getDatabase(dbname).delete().block();
-        }
+        } finally {
+            if (readItemFaultInjectionRule != null) {
+                readItemFaultInjectionRule.disable();
+            }
+            if (queryItemFaultInjectionRule != null) {
+                queryItemFaultInjectionRule.disable();
+            }
 
+            if (cosmosAsyncClient != null) {
+                cosmosAsyncClient
+                    .getDatabase(dbname)
+                    .delete()
+                    .onErrorResume(throwable -> {
+                        logger.warn("Failed to delete database {}", dbname, throwable);
+                        return Mono.empty();
+                    })
+                    .block();
+                safeClose(cosmosAsyncClient);
+            }
+        }
     }
 
 
@@ -454,7 +473,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             .connectionType(FaultInjectionConnectionType.DIRECT)
             .build();
 
-        FaultInjectionRule rule = new FaultInjectionRuleBuilder("InjectedResponseDelay")
+        FaultInjectionRule rule = new FaultInjectionRuleBuilder("InjectedResponseDelay-" + UUID.randomUUID())
             .condition(condition)
             .result(result)
             .build();
@@ -485,7 +504,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                     partitionKeys == null ? UUID.randomUUID().toString() : partitionKeys.get(random.nextInt(partitionKeys.size()))));
         }
 
-        List<TestObject> documentInserted = bulkInsertBlocking(container, documentsToInsert);
+        List<TestObject> documentInserted = insertAllItemsBlocking(container, documentsToInsert, true);
 
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 

@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,6 +43,17 @@ public final class WorkspaceFeatures implements JsonSerializable<WorkspaceFeatur
      * Disable Non-AAD based Auth.
      */
     private Boolean disableLocalAuth;
+
+    /*
+     * An indication if the specify workspace is limited to sentinel's unified billing model only.
+     */
+    private Boolean unifiedSentinelBillingOnly;
+
+    /*
+     * List of associations for the workspace. Indicates if the workspace is associated with any of the following
+     * experiences: MDC, Sentinel, SentinelGraph, etc.
+     */
+    private List<String> associations;
 
     /*
      * Workspace features.
@@ -158,6 +170,26 @@ public final class WorkspaceFeatures implements JsonSerializable<WorkspaceFeatur
     }
 
     /**
+     * Get the unifiedSentinelBillingOnly property: An indication if the specify workspace is limited to sentinel's
+     * unified billing model only.
+     * 
+     * @return the unifiedSentinelBillingOnly value.
+     */
+    public Boolean unifiedSentinelBillingOnly() {
+        return this.unifiedSentinelBillingOnly;
+    }
+
+    /**
+     * Get the associations property: List of associations for the workspace. Indicates if the workspace is associated
+     * with any of the following experiences: MDC, Sentinel, SentinelGraph, etc.
+     * 
+     * @return the associations value.
+     */
+    public List<String> associations() {
+        return this.associations;
+    }
+
+    /**
      * Get the additionalProperties property: Workspace features.
      * 
      * @return the additionalProperties value.
@@ -233,6 +265,12 @@ public final class WorkspaceFeatures implements JsonSerializable<WorkspaceFeatur
                     deserializedWorkspaceFeatures.clusterResourceId = reader.getString();
                 } else if ("disableLocalAuth".equals(fieldName)) {
                     deserializedWorkspaceFeatures.disableLocalAuth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("unifiedSentinelBillingOnly".equals(fieldName)) {
+                    deserializedWorkspaceFeatures.unifiedSentinelBillingOnly
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("associations".equals(fieldName)) {
+                    List<String> associations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWorkspaceFeatures.associations = associations;
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

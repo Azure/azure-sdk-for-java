@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public final class WorkloadNetworksCreateVMGroupSamples {
     /*
-     * x-ms-original-file: 2024-09-01/WorkloadNetworks_CreateVMGroup.json
+     * x-ms-original-file: 2025-09-01/WorkloadNetworks_CreateVMGroup.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateVMGroup.

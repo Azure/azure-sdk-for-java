@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.aad.security;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.JwtBearerGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -17,9 +17,8 @@ import java.time.Instant;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AadJwtBearerGrantRequestEntityConverterTests {
+class AadJwtBearerGrantRequestParametersConverterTests {
 
-    @SuppressWarnings("unchecked")
     @Test
     void requestedTokenUseParameter() {
         ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("test")
@@ -35,12 +34,17 @@ class AadJwtBearerGrantRequestEntityConverterTests {
                      .expiresAt(Instant.ofEpochMilli(Instant.now().plusSeconds(60).toEpochMilli()))
                      .build();
         JwtBearerGrantRequest request = new JwtBearerGrantRequest(clientRegistration, jwt);
-        AadJwtBearerGrantRequestEntityConverter converter =
-            new AadJwtBearerGrantRequestEntityConverter();
-        RequestEntity<MultiValueMap<String, String>> entity =
-            (RequestEntity<MultiValueMap<String, String>>) converter.convert(request);
-        MultiValueMap<String, String> parameters = entity.getBody();
+        AadJwtBearerGrantRequestParametersConverter converter =
+            new AadJwtBearerGrantRequestParametersConverter();
+        MultiValueMap<String, String> parameters = converter.convert(request);
+        Assertions.assertNotNull(parameters);
         assertTrue(parameters.containsKey("requested_token_use"));
         assertEquals("on_behalf_of", parameters.getFirst("requested_token_use"));
+        // Verify that the converter does not add grant_type or other standard OAuth2 parameters
+        // to avoid duplication when composed with DefaultOAuth2TokenRequestParametersConverter
+        Assertions.assertFalse(parameters.containsKey("grant_type"), 
+            "Converter should not add grant_type to avoid duplication");
+        assertEquals(1, parameters.size(), 
+            "Converter should only add the Azure-specific parameter");
     }
 }

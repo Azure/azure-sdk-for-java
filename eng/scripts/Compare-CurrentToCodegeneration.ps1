@@ -181,8 +181,7 @@ $generateScript = {
       }
 
       # Update code snippets before comparing the diff
-      # TODO: remove spotless:apply when issue fixed in emitter
-      $mvnOutput = (& mvn --no-transfer-progress codesnippet:update-codesnippet spotless:apply 2>&1)
+      $mvnOutput = (& mvn --no-transfer-progress codesnippet:update-codesnippet 2>&1)
       if ($LastExitCode -ne 0) {
         Write-Host "$separatorBar`nError updating TypeSpec codesnippets in directory $directory`n$([String]::Join("`n", $mvnOutput))`n$separatorBar"
         throw
@@ -209,7 +208,14 @@ $generateScript = {
 }
 
 # Timeout is set to 60 seconds per script.
-$timeout = 60 * $generationInformations.Count
+$scriptTimeoutInSeconds = 60
+$timeout = $scriptTimeoutInSeconds * $generationInformations.Count
+# Ensure a minimum timeout of 5 times the script timeout
+# This is for scenarios where there are only a few scripts to run. Some script with large TypeSpec source can take a few minutes.
+$minimumTimeout = 5 * $scriptTimeoutInSeconds
+if ($timeout -lt $minimumTimeout) {
+  $timeout = $minimumTimeout
+}
 
 $job = $generationInformations | ForEach-Object -Parallel $generateScript -ThrottleLimit $Parallelization -AsJob
 
@@ -217,8 +223,14 @@ $job = $generationInformations | ForEach-Object -Parallel $generateScript -Throt
 $job | Wait-Job -Timeout $timeout | Out-Null
 $job | Receive-Job 2>$null | Out-Null
 
+$jobTimeout = $job.State -eq 'Running'
+$jobFailed = $job.State -eq 'Failed'
+if ($jobTimeout) {
+  Write-Host "The aggregated generate job timed out after $timeout seconds."
+}
+
 # Clean up generated code, so that next step will not be affected.
 git reset --hard | Out-Null
 git clean -fd . | Out-Null
 
-exit $job.State -eq 'Failed'
+exit $jobFailed -or $jobTimeout

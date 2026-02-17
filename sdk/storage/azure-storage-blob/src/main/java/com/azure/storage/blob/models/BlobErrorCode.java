@@ -389,11 +389,11 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     public static final BlobErrorCode INCREMENTAL_COPY_BLOB_MISMATCH = fromString("IncrementalCopyBlobMismatch");
 
     /**
-     * Static value IncrementalCopyOfEarlierVersionSnapshotNotAllowed for BlobErrorCode.
+     * Static value IncrementalCopyOfEarlierSnapshotNotAllowed for BlobErrorCode.
      */
     @Generated
-    public static final BlobErrorCode INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED
-        = fromString("IncrementalCopyOfEarlierVersionSnapshotNotAllowed");
+    public static final BlobErrorCode INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED
+        = fromString("IncrementalCopyOfEarlierSnapshotNotAllowed");
 
     /**
      * Static value IncrementalCopySourceMustBeSnapshot for BlobErrorCode.
@@ -729,12 +729,22 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     /**
      * Static value IncrementalCopyOfEralierVersionSnapshotNotAllowed for BlobErrorCode.
      *
-     * @deprecated Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED}
+     * @deprecated Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED}
      */
     @Generated
     @Deprecated
     public static final BlobErrorCode INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED
         = fromString("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
+
+    /**
+     * Static value IncrementalCopyOfEarlierVersionSnapshotNotAllowed for BlobErrorCode.
+     *
+     * @deprecated Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED}
+     */
+    @Generated
+    @Deprecated
+    public static final BlobErrorCode INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED
+        = fromString("IncrementalCopyOfEarlierVersionSnapshotNotAllowed");
 
     /**
      * Creates a new instance of BlobErrorCode value.
