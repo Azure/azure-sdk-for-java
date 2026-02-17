@@ -323,8 +323,14 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("bounds", this.bounds, (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeStringField("dtype", this.dtype);
-        jsonWriter.writeArrayField("band_metadata", this.bandMetadata, (writer, element) -> writer.writeArray(element,
-            (writer1, element1) -> writer1.writeUntyped(element1 == null ? null : element1.toObject(Object.class))));
+        jsonWriter.writeArrayField("band_metadata", this.bandMetadata,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> {
+                if (element1 == null) {
+                    writer1.writeNull();
+                } else {
+                    element1.writeTo(writer1);
+                }
+            }));
         jsonWriter.writeArrayField("band_descriptions", this.bandDescriptions,
             (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
         jsonWriter.writeStringField("nodata_type", this.noDataType == null ? null : this.noDataType.toString());
