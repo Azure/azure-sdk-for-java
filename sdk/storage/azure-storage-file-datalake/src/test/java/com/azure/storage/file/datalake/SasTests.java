@@ -6,6 +6,7 @@ import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.AccountSasPermission;
@@ -29,6 +30,7 @@ import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeGetUserDelegationKeyOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.sas.PathSasPermission;
@@ -47,6 +49,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getTidFromToken;
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.verifySasAndTokenInRequest;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -782,8 +785,9 @@ public class SasTests extends DataLakeTestBase {
     public void sasImplUtilStringToSignUserDelegationKey(OffsetDateTime startTime, String keyOid, String keyTid,
         OffsetDateTime keyStart, OffsetDateTime keyExpiry, String keyService, String keyVersion, String keyValue,
         SasIpRange ipRange, SasProtocol protocol, String cacheControl, String disposition, String encoding,
-        String language, String type, String saoid, String suoid, String cid, Map<String, String> requestHeaders,
-        Map<String, String> requestQueryParameters, String expectedStringToSign) {
+        String language, String type, String saoid, String suoid, String cid, String delegatedUserObjectId,
+        String signedDelegatedUserTid, Map<String, String> requestHeaders, Map<String, String> requestQueryParameters,
+        String expectedStringToSign) {
 
         OffsetDateTime e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         PathSasPermission p = new PathSasPermission().setReadPermission(true);
@@ -804,7 +808,8 @@ public class SasTests extends DataLakeTestBase {
             .setAgentObjectId(suoid)
             .setRequestHeaders(requestHeaders)
             .setRequestQueryParameters(requestQueryParameters)
-            .setSasIpRange(ipRange);
+            .setSasIpRange(ipRange)
+            .setDelegatedUserObjectId(delegatedUserObjectId);
 
         UserDelegationKey key = new UserDelegationKey().setSignedObjectId(keyOid)
             .setSignedTenantId(keyTid)
@@ -812,7 +817,8 @@ public class SasTests extends DataLakeTestBase {
             .setSignedExpiry(keyExpiry)
             .setSignedService(keyService)
             .setSignedVersion(keyVersion)
-            .setValue(keyValue);
+            .setValue(keyValue)
+            .setSignedDelegatedUserTenantId(signedDelegatedUserTid);
 
         DataLakeSasImplUtil util = new DataLakeSasImplUtil(v, "fileSystemName", "pathName", false);
         util.ensureState();
@@ -968,6 +974,122 @@ public class SasTests extends DataLakeTestBase {
                 .buildFileClient();
 
             assertDoesNotThrow(() -> client.getProperties());
+        });
+    }
+
+    @Test
+    @LiveOnly // Cannot record Entra ID token
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
+    public void dataLakeFileSystemSasUserDelegationDelegatedTenantId() {
+        liveTestScenarioWithRetry(() -> {
+            FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            String tid = getTidFromToken(tokenCredential);
+            String oid = getOidFromToken(tokenCredential);
+
+            DataLakeGetUserDelegationKeyOptions options
+                = new DataLakeGetUserDelegationKeyOptions(expiryTime).setDelegatedUserTenantId(tid);
+            UserDelegationKey userDelegationKey
+                = getOAuthServiceClient().getUserDelegationKeyWithResponse(options, null, Context.NONE).getValue();
+
+            assertNotNull(userDelegationKey);
+            assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
+
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, userDelegationKey);
+
+            assertTrue(sas.contains("sduoid=" + oid));
+            assertTrue(sas.contains("skdutid=" + tid));
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            DataLakeFileSystemClient client
+                = instrument(new DataLakeFileSystemClientBuilder().endpoint(dataLakeFileSystemClient.getFileSystemUrl())
+                    .sasToken(sas)
+                    .credential(tokenCredential)).buildClient();
+
+            Response<PathProperties> response
+                = client.getFileClient(pathName).getPropertiesWithResponse(null, null, Context.NONE);
+            verifySasAndTokenInRequest(response);
+        });
+    }
+
+    @Test
+    @LiveOnly // Cannot record Entra ID token
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
+    public void dataLakeFileSystemSasUserDelegationDelegatedTenantIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            String tid = getTidFromToken(tokenCredential);
+
+            DataLakeGetUserDelegationKeyOptions options
+                = new DataLakeGetUserDelegationKeyOptions(expiryTime).setDelegatedUserTenantId(tid);
+            UserDelegationKey userDelegationKey
+                = getOAuthServiceClient().getUserDelegationKeyWithResponse(options, null, Context.NONE).getValue();
+
+            assertNotNull(userDelegationKey);
+            assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
+
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions);
+            String sas = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, userDelegationKey);
+
+            assertTrue(sas.contains("skdutid=" + tid));
+            assertFalse(sas.contains("sduoid="));
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            DataLakeFileSystemClient client
+                = instrument(new DataLakeFileSystemClientBuilder().endpoint(dataLakeFileSystemClient.getFileSystemUrl())
+                    .sasToken(sas)).buildClient();
+
+            DataLakeStorageException e
+                = assertThrows(DataLakeStorageException.class, () -> client.listPaths().iterator().hasNext());
+            assertEquals(403, e.getStatusCode());
+            assertEquals("AuthenticationFailed", e.getErrorCode());
+        });
+    }
+
+    @Test
+    @LiveOnly // Cannot record Entra ID token
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
+    public void dataLakeFileSystemSasUserDelegationDelegatedTenantIdRoundTrip() {
+        liveTestScenarioWithRetry(() -> {
+            FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            String tid = getTidFromToken(tokenCredential);
+            String oid = getOidFromToken(tokenCredential);
+
+            DataLakeGetUserDelegationKeyOptions options
+                = new DataLakeGetUserDelegationKeyOptions(expiryTime).setDelegatedUserTenantId(tid);
+            UserDelegationKey userDelegationKey
+                = getOAuthServiceClient().getUserDelegationKeyWithResponse(options, null, Context.NONE).getValue();
+
+            assertNotNull(userDelegationKey);
+            assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
+
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, userDelegationKey);
+
+            BlobUrlParts originalParts = BlobUrlParts.parse(dataLakeFileSystemClient.getFileSystemUrl() + "?" + sas);
+
+            BlobUrlParts roundTripParts = BlobUrlParts.parse(originalParts.toUrl());
+
+            assertEquals(originalParts.toUrl().toString(), roundTripParts.toUrl().toString());
+            assertEquals(originalParts.getCommonSasQueryParameters().encode(),
+                roundTripParts.getCommonSasQueryParameters().encode());
         });
     }
 

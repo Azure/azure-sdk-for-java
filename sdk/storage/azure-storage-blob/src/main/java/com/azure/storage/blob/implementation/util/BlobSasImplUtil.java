@@ -247,8 +247,9 @@ public class BlobSasImplUtil {
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID,
+                userDelegationKey.getSignedDelegatedUserTenantId());
 
-            /* Only parameters relevant for user delegation SAS. */
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID,
                 this.authorizedAadObjectId);
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
@@ -447,7 +448,8 @@ public class BlobSasImplUtil {
                 key.getSignedVersion() == null ? "" : key.getSignedVersion(),
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 "", /* suoid - empty since this applies to HNS only accounts. */
-                this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
+                this.correlationId == null ? "" : this.correlationId,
+                key.getSignedDelegatedUserTenantId() == null ? "" : key.getSignedDelegatedUserTenantId(),
                 this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource,
@@ -471,7 +473,8 @@ public class BlobSasImplUtil {
                 key.getSignedVersion() == null ? "" : key.getSignedVersion(),
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 "", /* suoid - empty since this applies to HNS only accounts. */
-                this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
+                this.correlationId == null ? "" : this.correlationId,
+                key.getSignedDelegatedUserTenantId() == null ? "" : key.getSignedDelegatedUserTenantId(),
                 this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource,

@@ -245,6 +245,8 @@ public class DataLakeSasImplUtil {
                 this.authorizedAadObjectId);
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AGENT_OBJECT_ID, this.unauthorizedAadObjectId);
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID,
+                userDelegationKey.getSignedDelegatedUserTenantId());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DELEGATED_USER_OBJECT_ID,
                 this.delegatedUserObjectId);
         }
@@ -273,7 +275,7 @@ public class DataLakeSasImplUtil {
     }
 
     /**
-     * <p>Ensures that the builder's properties are in a consistent state.
+     * <p> Ensures that the builder's properties are in a consistent state.
      * 1. If there is no identifier set, ensure expiryTime and permissions are set.
      * 2. Resource name is chosen by:
      *    a. If "BlobName" is _not_ set, it is a container resource.
@@ -449,7 +451,8 @@ public class DataLakeSasImplUtil {
                 key.getSignedVersion() == null ? "" : key.getSignedVersion(),
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
-                this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
+                this.correlationId == null ? "" : this.correlationId,
+                key.getSignedDelegatedUserTenantId() == null ? "" : key.getSignedDelegatedUserTenantId(),
                 this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource, "", /* Version segment. */
@@ -473,7 +476,8 @@ public class DataLakeSasImplUtil {
                 key.getSignedVersion() == null ? "" : key.getSignedVersion(),
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
-                this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
+                this.correlationId == null ? "" : this.correlationId,
+                key.getSignedDelegatedUserTenantId() == null ? "" : key.getSignedDelegatedUserTenantId(),
                 this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource, "", /* Version segment. */
