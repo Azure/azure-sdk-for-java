@@ -43,32 +43,10 @@
     </license>
   </licenses>
 
-  <!-- Repositories definitions -->
-  <repositories>
-    <repository>
-      <id>central</id>
-      
-      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/test-maven-feed/maven/v1</url>
-      
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>central</id>
-      
-      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/test-maven-feed/maven/v1</url>
-      
-    </pluginRepository>
-  </pluginRepositories>
-
   <distributionManagement>
     <snapshotRepository>
       <id>central</id>
-      
       <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/test-maven-feed/maven/v1</url>
-      
-      
     </snapshotRepository>
     <site>
       <id>azure-java-build-docs</id>

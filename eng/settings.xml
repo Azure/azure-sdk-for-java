@@ -2,12 +2,12 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                       https://maven.apache.org/xsd/settings-1.0.0.xsd">
   <mirrors>
-    <!-- Mirror all requests to Azure Artifacts feed, except Confluent (not available as upstream) -->
+    <!-- Mirror all requests to Azure Artifacts feed, except Confluent and Spring Milestone -->
     <mirror>
       <id>test-maven-feed</id>
       <name>Azure Artifacts Maven Mirror</name>
       <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/test-maven-feed/maven/v1</url>
-      <mirrorOf>*,!confluent</mirrorOf>
+      <mirrorOf>external:*,!confluent,!repository.spring.milestone</mirrorOf>
     </mirror>
-  </mirrors>
+  </mirrors>  
 </settings>
