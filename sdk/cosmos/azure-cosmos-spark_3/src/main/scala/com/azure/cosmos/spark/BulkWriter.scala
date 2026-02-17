@@ -913,7 +913,6 @@ private class BulkWriter
     }
   }
 
-  private val itemBulkOperationAccessor = ImplementationBridgeHelpers.ItemBulkOperationHelper.getItemBulkOperationAccessor
 
   private[this] def getActiveOperationsLog(
                                               activeOperationsSnapshot: mutable.Set[CosmosItemOperation],
@@ -931,7 +930,10 @@ private class BulkWriter
         sb.append("->")
         val ctx = itemOperation.getContext[OperationContext]
         sb.append(s"${ctx.partitionKeyValue}/${ctx.itemId}/${ctx.eTag}(${ctx.attemptNumber})")
-        val statusTracker = itemBulkOperationAccessor.getStatusTracker(itemOperation)
+        val statusTracker =
+          if (itemOperation.isInstanceOf[ItemBulkOperation[_, _]])
+            itemOperation.asInstanceOf[ItemBulkOperation[_, _]].getStatusTracker
+          else null
         if (statusTracker != null && statusTracker.getTotalCount > 0) {
           sb.append(s", statusHistory=${statusTracker.toString}")
         }

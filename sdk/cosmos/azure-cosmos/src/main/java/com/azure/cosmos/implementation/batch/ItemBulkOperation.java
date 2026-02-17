@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -199,19 +199,4 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
         return this.bulkOperationStatusTracker;
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    // the following helper/accessor only helps to access this class outside of this package.//
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
-        ImplementationBridgeHelpers.ItemBulkOperationHelper.setItemBulkOperationAccessor(
-            itemOperation -> {
-                if (itemOperation instanceof ItemBulkOperation<?, ?>) {
-                    return ((ItemBulkOperation<?, ?>) itemOperation).getStatusTracker();
-                }
-                return null;
-            }
-        );
-    }
-
-    static { initialize(); }
 }

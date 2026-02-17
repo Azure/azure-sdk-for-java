@@ -31,7 +31,7 @@ import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.batch.BulkOperationStatusTracker;
+
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
@@ -61,7 +61,7 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.CosmosItemOperation;
+
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
@@ -1291,41 +1291,6 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBatchAccessor {
             List<ItemBatchOperation<?>> getOperationsInternal(CosmosBatch cosmosBatch);
-        }
-    }
-
-    public static final class ItemBulkOperationHelper {
-        private static AtomicBoolean itemBulkOperationClassLoaded = new AtomicBoolean(false);
-        private static AtomicReference<ItemBulkOperationAccessor> accessor = new AtomicReference<>();
-
-        private ItemBulkOperationHelper() {
-        }
-
-        public static ItemBulkOperationAccessor getItemBulkOperationAccessor() {
-            if (!itemBulkOperationClassLoaded.get()) {
-                logger.debug("Initializing ItemBulkOperationAccessor...");
-                initializeAllAccessors();
-            }
-
-            ItemBulkOperationAccessor snapshot = accessor.get();
-            if (snapshot == null) {
-                logger.error("ItemBulkOperationAccessor is not initialized yet!");
-            }
-
-            return snapshot;
-        }
-
-        public static void setItemBulkOperationAccessor(ItemBulkOperationAccessor newAccessor) {
-            if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("ItemBulkOperationAccessor already initialized!");
-            } else {
-                logger.debug("Setting ItemBulkOperationAccessor...");
-                itemBulkOperationClassLoaded.set(true);
-            }
-        }
-
-        public interface ItemBulkOperationAccessor {
-            BulkOperationStatusTracker getStatusTracker(CosmosItemOperation itemBulkOperation);
         }
     }
 
