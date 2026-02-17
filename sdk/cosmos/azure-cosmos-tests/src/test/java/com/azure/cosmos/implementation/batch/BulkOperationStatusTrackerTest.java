@@ -13,7 +13,6 @@ public class BulkOperationStatusTrackerTest {
     public void emptyTrackerShouldHaveZeroCount() {
         BulkOperationStatusTracker tracker = new BulkOperationStatusTracker();
 
-        assertThat(tracker.getTotalCount()).isEqualTo(0);
         assertThat(tracker.toString()).isEqualTo("[]");
     }
 
@@ -23,7 +22,6 @@ public class BulkOperationStatusTrackerTest {
 
         tracker.recordStatusCode(429, 3200);
 
-        assertThat(tracker.getTotalCount()).isEqualTo(1);
         assertThat(tracker.toString()).contains("429/3200");
         assertThat(tracker.toString()).contains("count=1");
     }
@@ -36,7 +34,6 @@ public class BulkOperationStatusTrackerTest {
         tracker.recordStatusCode(429, 3200);
         tracker.recordStatusCode(429, 3200);
 
-        assertThat(tracker.getTotalCount()).isEqualTo(3);
         assertThat(tracker.toString()).contains("429/3200");
         assertThat(tracker.toString()).contains("count=3");
     }
@@ -47,8 +44,6 @@ public class BulkOperationStatusTrackerTest {
 
         tracker.recordStatusCode(429, 3200);
         tracker.recordStatusCode(410, 1002);
-
-        assertThat(tracker.getTotalCount()).isEqualTo(2);
 
         String result = tracker.toString();
         assertThat(result).contains("429/3200");
@@ -69,8 +64,6 @@ public class BulkOperationStatusTrackerTest {
         tracker.recordStatusCode(429, 3200);
         tracker.recordStatusCode(429, 3200);
 
-        assertThat(tracker.getTotalCount()).isEqualTo(6);
-
         String result = tracker.toString();
         assertThat(result).contains("count=3");
         assertThat(result).contains("410/1002");
@@ -83,8 +76,6 @@ public class BulkOperationStatusTrackerTest {
 
         tracker.recordStatusCode(429, 3200);
         tracker.recordStatusCode(429, 3201);
-
-        assertThat(tracker.getTotalCount()).isEqualTo(2);
 
         String result = tracker.toString();
         assertThat(result).contains("429/3200");

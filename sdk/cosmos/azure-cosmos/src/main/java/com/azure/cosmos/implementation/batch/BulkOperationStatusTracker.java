@@ -44,17 +44,6 @@ public final class BulkOperationStatusTracker {
         this.entries.add(new StatusCodeEntry(statusCode, subStatusCode));
     }
 
-    /**
-     * Returns the total number of status code records across all entries.
-     */
-    public int getTotalCount() {
-        int total = 0;
-        for (StatusCodeEntry entry : this.entries) {
-            total += entry.count;
-        }
-        return total;
-    }
-
     @Override
     public String toString() {
         if (this.entries.isEmpty()) {

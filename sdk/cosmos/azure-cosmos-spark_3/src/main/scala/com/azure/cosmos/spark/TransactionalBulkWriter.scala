@@ -522,7 +522,7 @@ private class TransactionalBulkWriter
       .values
       .flatMap(batchOperation => {
         val statusTracker = batchOperation.cosmosBatchBulkOperation.getStatusTracker
-        val statusHistory = if (statusTracker != null && statusTracker.getTotalCount > 0) {
+        val statusHistory = if (statusTracker != null) {
           Some(statusTracker.toString)
         } else {
           None

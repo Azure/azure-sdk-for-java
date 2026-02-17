@@ -17,6 +17,7 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
@@ -420,6 +421,68 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
         } finally {
             tooManyRequestRule.disable();
             if (executor != null && !executor.isDisposed()) {
+                executor.dispose();
+            }
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void executeTransactionalBulk_tooManyRequest_recordStatusHistory() {
+        this.container = createContainer(database);
+        String connectionMode = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getConnectionMode(this.client);
+
+        String pkValue = UUID.randomUUID().toString();
+        CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(pkValue));
+        TestDoc testDoc = this.populateTestDoc(pkValue);
+        batch.createItemOperation(testDoc);
+
+        FaultInjectionConditionBuilder conditionBuilder =
+            new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.BATCH_ITEM);
+        if (connectionMode.equals(ConnectionMode.GATEWAY.toString())) {
+            conditionBuilder.connectionType(FaultInjectionConnectionType.GATEWAY);
+        }
+
+        FaultInjectionRule tooManyRequestRule =
+            new FaultInjectionRuleBuilder("statusTracker-429-" + UUID.randomUUID())
+                .condition(conditionBuilder.build())
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType
+                            .TOO_MANY_REQUEST)
+                        .times(1)
+                        .build())
+                .duration(Duration.ofSeconds(30))
+                .hitLimit(2)
+                .build();
+
+        final TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
+            container,
+            Flux.fromIterable(Arrays.asList(batch)).map(CosmosBatchBulkOperation::new),
+            new CosmosTransactionalBulkExecutionOptionsImpl());
+
+        try {
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(tooManyRequestRule)).block();
+
+            List<CosmosBulkTransactionalBatchResponse> responses = executor.execute().collectList().block();
+
+            assertThat(responses.size()).isEqualTo(1);
+            CosmosBulkTransactionalBatchResponse resp = responses.get(0);
+            assertThat(resp.getResponse()).isNotNull();
+
+            BulkOperationStatusTracker statusTracker = resp.getCosmosBatchBulkOperation().getStatusTracker();
+            assertThat(statusTracker).isNotNull();
+
+            String statusHistory = statusTracker.toString();
+            assertThat(statusHistory).contains("429/");
+            assertThat(statusHistory).contains("count=2");
+
+        } finally {
+            tooManyRequestRule.disable();
+            if (!executor.isDisposed()) {
                 executor.dispose();
             }
         }

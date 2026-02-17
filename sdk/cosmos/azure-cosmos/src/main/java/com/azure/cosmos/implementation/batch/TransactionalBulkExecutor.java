@@ -774,7 +774,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                             getThreadInfo());
 
                         // retry - but don't mark as enqueued for retry in thresholds
-                        mainSink.emitNext(cosmosBatchBulkOperation, serializedEmitFailureHandler); //TODO: validate booking marking for concurrent ops in flight
+                        mainSink.emitNext(cosmosBatchBulkOperation, serializedEmitFailureHandler);
                         return Mono.empty();
                     } else {
                         return retryOtherExceptions(

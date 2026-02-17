@@ -888,7 +888,7 @@ private class BulkWriter
 
       val message = s"All retries exhausted for '${itemOperation.getOperationType}' bulk operation - " +
         s"statusCode=[$effectiveStatusCode:$effectiveSubStatusCode] " +
-        s"itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}]"
+        s"itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], attemptNumber=${context.attemptNumber}"
 
       val exceptionToBeThrown = responseException match {
         case Some(e) =>
@@ -913,7 +913,6 @@ private class BulkWriter
     }
   }
 
-
   private[this] def getActiveOperationsLog(
                                               activeOperationsSnapshot: mutable.Set[CosmosItemOperation],
                                               activeReadManyOperationsSnapshot: mutable.Set[ReadManyOperation]): String = {
@@ -930,12 +929,10 @@ private class BulkWriter
         sb.append("->")
         val ctx = itemOperation.getContext[OperationContext]
         sb.append(s"${ctx.partitionKeyValue}/${ctx.itemId}/${ctx.eTag}(${ctx.attemptNumber})")
-        val statusTracker =
-          if (itemOperation.isInstanceOf[ItemBulkOperation[_, _]])
-            itemOperation.asInstanceOf[ItemBulkOperation[_, _]].getStatusTracker
-          else null
-        if (statusTracker != null && statusTracker.getTotalCount > 0) {
-          sb.append(s", statusHistory=${statusTracker.toString}")
+        itemOperation match {
+          case op: ItemBulkOperation[_, _] =>
+            sb.append(s", statusHistory=${op.getStatusTracker.toString}")
+          case _ =>
         }
       })
 
