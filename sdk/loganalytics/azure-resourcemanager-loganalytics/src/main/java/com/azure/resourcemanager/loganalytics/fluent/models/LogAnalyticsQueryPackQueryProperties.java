@@ -270,7 +270,9 @@ public final class LogAnalyticsQueryPackQueryProperties
         jsonWriter.writeJsonField("related", this.related);
         jsonWriter.writeMapField("tags", this.tags,
             (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
-        jsonWriter.writeUntypedField("properties", this.properties);
+        if (this.properties != null) {
+            jsonWriter.writeUntypedField("properties", this.properties);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -6,13 +6,14 @@ package com.azure.resourcemanager.communication.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.CommunicationServiceResource;
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.communication.models.PublicNetworkAccess;
 import com.azure.resourcemanager.communication.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -27,32 +28,37 @@ public final class CommunicationServicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hostName\":\"sfwxosowzxc\",\"dataLocation\":\"gicjooxdjeb\",\"notificationHubId\":\"ucww\",\"version\":\"ovbvmeueciv\",\"immutableResourceId\":\"zceuojgjrw\",\"linkedDomains\":[\"iotwmcdytdxwit\",\"nrjawgqwg\",\"hniskxfbkpyc\"]},\"identity\":{\"principalId\":\"3fe3db54-7aa6-4c28-997b-f30b04c93b0b\",\"tenantId\":\"620b147c-fea6-4022-9b3b-18f9659bb674\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"dauwhvylwzbtd\":{\"principalId\":\"de08871c-265c-41a1-a5fd-96bb91f18ec4\",\"clientId\":\"09bbd313-650a-4094-8224-949b1be0ada7\"},\"jznb\":{\"principalId\":\"5e766b65-0963-4241-8a1a-5dfa709e7d9d\",\"clientId\":\"5d5b0eeb-9906-4d45-8a3a-59af98b09f94\"}}},\"location\":\"ow\",\"tags\":{\"lupj\":\"rzqlveu\",\"riplrbpbewtg\":\"khfxobbcswsrt\"},\"id\":\"fgb\",\"name\":\"c\",\"type\":\"wxzvlvqhjkb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hostName\":\"mnvdfzn\",\"dataLocation\":\"daodvxzbncblyl\",\"notificationHubId\":\"tdbhhxsrzdzu\",\"version\":\"rsc\",\"immutableResourceId\":\"t\",\"linkedDomains\":[\"fiwjmygtdssls\",\"tmweriofzpyq\",\"emwabnet\"],\"publicNetworkAccess\":\"Disabled\",\"disableLocalAuth\":true},\"identity\":{\"principalId\":\"004886f8-de57-43e8-aa5c-74d3faf760a2\",\"tenantId\":\"4987e090-466b-41bf-b7b7-a23c8d2fd219\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"wubmwmbesldn\":{\"principalId\":\"6f01cab6-2bee-455c-a15f-32eecde6e4ea\",\"clientId\":\"533fa957-844d-47d7-b6b0-f6b63265783f\"},\"tppjflcx\":{\"principalId\":\"366b980b-4f8d-4b35-a8fe-7cacab7b2d58\",\"clientId\":\"ca7695ad-110a-4379-9510-665c63c51401\"},\"okonzmnsikvmkqz\":{\"principalId\":\"f3b88ba3-b2f4-4728-8214-55f92687a654\",\"clientId\":\"9876766d-0323-4d1b-9c09-0cb5ea39b591\"},\"kdltfzxmhhvhg\":{\"principalId\":\"681bfdea-cd6a-4cfe-9711-82feec627e8e\",\"clientId\":\"ddcd7b5e-583b-4256-a0a1-4d9fd5a1dabe\"}}},\"location\":\"eodkwobda\",\"tags\":{\"dlkzgxhuri\":\"ibqdxbxwakbogqx\",\"ebxmubyynt\":\"lbpodxunk\",\"tkoievseotgq\":\"lrb\"},\"id\":\"l\",\"name\":\"tmuwlauwzi\",\"type\":\"xbmp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CommunicationManager manager = CommunicationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CommunicationServiceResource response = manager.communicationServices()
-            .define("kfrlhrxsbky")
-            .withRegion("hcdhmdual")
-            .withExistingResourceGroup("bh")
-            .withTags(mapOf("adm", "qpv", "r", "sr", "fmisg", "vxpvgomz"))
+            .define("qaqtdoqmcbxvwvxy")
+            .withRegion("gdrjervnaenqpe")
+            .withExistingResourceGroup("xivetvt")
+            .withTags(mapOf("mifthnzdnd", "doy", "nayqi", "l", "hqlkthumaqo", "ynduha", "aolps", "bgycduiertgccym"))
             .withIdentity(
                 new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("ahvljuaha", new UserAssignedIdentity())))
-            .withDataLocation("z")
-            .withLinkedDomains(Arrays.asList("eyvjusrtslhspkde", "maofmxagkv"))
+                    .withUserAssignedIdentities(mapOf("cjhwq", new UserAssignedIdentity(), "r",
+                        new UserAssignedIdentity(), "wj", new UserAssignedIdentity())))
+            .withDataLocation("tkblmpewww")
+            .withLinkedDomains(Arrays.asList("qfsubcgjbirx", "pybsrfbjfdtw", "sotftpvj", "bexilzznfqqnv"))
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+            .withDisableLocalAuth(true)
             .create();
 
-        Assertions.assertEquals("ow", response.location());
-        Assertions.assertEquals("rzqlveu", response.tags().get("lupj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("gicjooxdjeb", response.dataLocation());
-        Assertions.assertEquals("iotwmcdytdxwit", response.linkedDomains().get(0));
+        Assertions.assertEquals("eodkwobda", response.location());
+        Assertions.assertEquals("ibqdxbxwakbogqx", response.tags().get("dlkzgxhuri"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("daodvxzbncblyl", response.dataLocation());
+        Assertions.assertEquals("fiwjmygtdssls", response.linkedDomains().get(0));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.publicNetworkAccess());
+        Assertions.assertTrue(response.disableLocalAuth());
     }
 
     // Use "Map.of" if available

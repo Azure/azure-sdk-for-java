@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.SavedSearch;
@@ -21,27 +21,26 @@ public final class SavedSearchesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"gm\",\"properties\":{\"category\":\"rwahzjmucftbyr\",\"displayName\":\"lrohkpig\",\"query\":\"fusuckzmkwklsno\",\"functionAlias\":\"xmqeqalh\",\"functionParameters\":\"nhg\",\"version\":2571955917130233939,\"tags\":[{\"name\":\"fsvkhgbvqtanarfd\",\"value\":\"pukhpyrne\"},{\"name\":\"zjcpeogk\",\"value\":\"nmg\"}]},\"id\":\"ro\",\"name\":\"xddbhfhpfpaz\",\"type\":\"zoyw\"}";
+            = "{\"etag\":\"uvbxngr\",\"properties\":{\"category\":\"bwggahtt\",\"displayName\":\"lswva\",\"query\":\"qfutlxjo\",\"functionAlias\":\"asunwqrjzfrgq\",\"functionParameters\":\"ohcmbu\",\"version\":765942631551785851,\"tags\":[{\"name\":\"hmbpyryxamebly\",\"value\":\"yvk\"},{\"name\":\"kmrocxne\",\"value\":\"v\"}]},\"id\":\"mtodl\",\"name\":\"pyapucygvoav\",\"type\":\"unssxlghieegjl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SavedSearch response = manager.savedSearches()
-            .getWithResponse("ruuuybnch", "szizoyuelyetndnb", "qyggagfl", com.azure.core.util.Context.NONE)
-            .getValue();
+        SavedSearch response
+            = manager.savedSearches().getWithResponse("z", "izvg", "gat", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("gm", response.etag());
-        Assertions.assertEquals("rwahzjmucftbyr", response.category());
-        Assertions.assertEquals("lrohkpig", response.displayName());
-        Assertions.assertEquals("fusuckzmkwklsno", response.query());
-        Assertions.assertEquals("xmqeqalh", response.functionAlias());
-        Assertions.assertEquals("nhg", response.functionParameters());
-        Assertions.assertEquals(2571955917130233939L, response.version());
-        Assertions.assertEquals("fsvkhgbvqtanarfd", response.tags().get(0).name());
-        Assertions.assertEquals("pukhpyrne", response.tags().get(0).value());
+        Assertions.assertEquals("uvbxngr", response.etag());
+        Assertions.assertEquals("bwggahtt", response.category());
+        Assertions.assertEquals("lswva", response.displayName());
+        Assertions.assertEquals("qfutlxjo", response.query());
+        Assertions.assertEquals("asunwqrjzfrgq", response.functionAlias());
+        Assertions.assertEquals("ohcmbu", response.functionParameters());
+        Assertions.assertEquals(765942631551785851L, response.version());
+        Assertions.assertEquals("hmbpyryxamebly", response.tags().get(0).name());
+        Assertions.assertEquals("yvk", response.tags().get(0).value());
     }
 }

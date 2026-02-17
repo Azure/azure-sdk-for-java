@@ -44,6 +44,27 @@
 - [Delete](#senderusernames_delete)
 - [Get](#senderusernames_get)
 - [ListByDomains](#senderusernames_listbydomains)
+
+## SmtpUsernames
+
+- [CreateOrUpdate](#smtpusernames_createorupdate)
+- [Delete](#smtpusernames_delete)
+- [Get](#smtpusernames_get)
+- [List](#smtpusernames_list)
+
+## SuppressionListAddresses
+
+- [CreateOrUpdate](#suppressionlistaddresses_createorupdate)
+- [Delete](#suppressionlistaddresses_delete)
+- [Get](#suppressionlistaddresses_get)
+- [List](#suppressionlistaddresses_list)
+
+## SuppressionLists
+
+- [CreateOrUpdate](#suppressionlists_createorupdate)
+- [Delete](#suppressionlists_delete)
+- [Get](#suppressionlists_get)
+- [ListByDomain](#suppressionlists_listbydomain)
 ### CommunicationServices_CheckNameAvailability
 
 ```java
@@ -55,7 +76,7 @@ import com.azure.resourcemanager.communication.models.NameAvailabilityParameters
 public final class CommunicationServicesCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/checkNameAvailabilityAvailable.json
      */
     /**
@@ -72,7 +93,7 @@ public final class CommunicationServicesCheckNameAvailabilitySamples {
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/checkNameAvailabilityUnavailable.json
      */
     /**
@@ -94,6 +115,7 @@ public final class CommunicationServicesCheckNameAvailabilitySamples {
 ```java
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.communication.models.PublicNetworkAccess;
 
 /**
  * Samples for CommunicationServices CreateOrUpdate.
@@ -101,7 +123,7 @@ import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType
 public final class CommunicationServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/createOrUpdate.json
      */
     /**
@@ -120,7 +142,28 @@ public final class CommunicationServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
+     * communicationServices/createOrUpdateWithPublicNetworkAccess.json
+     */
+    /**
+     * Sample code: Create or update resource with PublicNetworkAccess.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void createOrUpdateResourceWithPublicNetworkAccess(
+        com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.communicationServices()
+            .define("MyCommunicationResource")
+            .withRegion("Global")
+            .withExistingResourceGroup("MyResourceGroup")
+            .withDataLocation("United States")
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/createOrUpdateWithSystemAssignedIdentity.json
      */
     /**
@@ -138,6 +181,27 @@ public final class CommunicationServicesCreateOrUpdateSamples {
             .withDataLocation("United States")
             .create();
     }
+
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
+     * communicationServices/createOrUpdateWithDisableLocalAuth.json
+     */
+    /**
+     * Sample code: Create or update resource with DisableLocalAuth.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void createOrUpdateResourceWithDisableLocalAuth(
+        com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.communicationServices()
+            .define("MyCommunicationResource")
+            .withRegion("Global")
+            .withExistingResourceGroup("MyResourceGroup")
+            .withDataLocation("United States")
+            .withDisableLocalAuth(true)
+            .create();
+    }
 }
 ```
 
@@ -150,7 +214,7 @@ public final class CommunicationServicesCreateOrUpdateSamples {
 public final class CommunicationServicesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/delete.json
      */
     /**
@@ -174,7 +238,7 @@ public final class CommunicationServicesDeleteSamples {
 public final class CommunicationServicesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/get.json
      */
     /**
@@ -201,7 +265,7 @@ import com.azure.resourcemanager.communication.models.LinkNotificationHubParamet
 public final class CommunicationServicesLinkNotificationHubSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/linkNotificationHub.json
      */
     /**
@@ -229,7 +293,7 @@ public final class CommunicationServicesLinkNotificationHubSamples {
 public final class CommunicationServicesListSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/listBySubscription.json
      */
     /**
@@ -252,7 +316,7 @@ public final class CommunicationServicesListSamples {
 public final class CommunicationServicesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/listByResourceGroup.json
      */
     /**
@@ -275,7 +339,7 @@ public final class CommunicationServicesListByResourceGroupSamples {
 public final class CommunicationServicesListKeysSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/listKeys.json
      */
     /**
@@ -302,7 +366,7 @@ import com.azure.resourcemanager.communication.models.RegenerateKeyParameters;
 public final class CommunicationServicesRegenerateKeySamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/regenerateKey.json
      */
     /**
@@ -324,6 +388,7 @@ public final class CommunicationServicesRegenerateKeySamples {
 import com.azure.resourcemanager.communication.models.CommunicationServiceResource;
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.communication.models.PublicNetworkAccess;
 import com.azure.resourcemanager.communication.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -334,7 +399,7 @@ import java.util.Map;
 public final class CommunicationServicesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/update.json
      */
     /**
@@ -352,7 +417,7 @@ public final class CommunicationServicesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/updateWithUserAssignedIdentity.json
      */
     /**
@@ -375,7 +440,48 @@ public final class CommunicationServicesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
+     * communicationServices/updateWithPublicNetworkAccess.json
+     */
+    /**
+     * Sample code: Update resource to add PublicNetworkAccess.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void
+        updateResourceToAddPublicNetworkAccess(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        CommunicationServiceResource resource = manager.communicationServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("newTag", "newVal"))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
+     * communicationServices/updateWithDisableLocalAuth.json
+     */
+    /**
+     * Sample code: Update resource to add DisableLocalAuth.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void
+        updateResourceToAddDisableLocalAuth(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        CommunicationServiceResource resource = manager.communicationServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("newTag", "newVal")).withDisableLocalAuth(true).apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/updateWithSystemAssignedIdentity.json
      */
     /**
@@ -397,7 +503,7 @@ public final class CommunicationServicesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/updateRemoveSystemIdentity.json
      */
     /**
@@ -419,7 +525,7 @@ public final class CommunicationServicesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/updateWithSystemAndUserIdentity.json
      */
     /**
@@ -467,7 +573,7 @@ import com.azure.resourcemanager.communication.models.VerificationType;
 public final class DomainsCancelVerificationSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/domains/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/domains/
      * cancelVerification.json
      */
     /**
@@ -495,7 +601,7 @@ import com.azure.resourcemanager.communication.models.DomainManagement;
 public final class DomainsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/domains/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/domains/
      * createOrUpdate.json
      */
     /**
@@ -524,7 +630,7 @@ public final class DomainsCreateOrUpdateSamples {
 public final class DomainsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/domains/delete.
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/domains/delete.
      * json
      */
     /**
@@ -548,7 +654,7 @@ public final class DomainsDeleteSamples {
 public final class DomainsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/domains/get.json
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/domains/get.json
      */
     /**
      * Sample code: Get Domains resource.
@@ -575,7 +681,7 @@ import com.azure.resourcemanager.communication.models.VerificationType;
 public final class DomainsInitiateVerificationSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/domains/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/domains/
      * initiateVerification.json
      */
     /**
@@ -601,7 +707,7 @@ public final class DomainsInitiateVerificationSamples {
 public final class DomainsListByEmailServiceResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/domains/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/domains/
      * listByEmailService.json
      */
     /**
@@ -629,7 +735,7 @@ import com.azure.resourcemanager.communication.models.UserEngagementTracking;
 public final class DomainsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/domains/update.
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/domains/update.
      * json
      */
     /**
@@ -656,7 +762,7 @@ public final class DomainsUpdateSamples {
 public final class EmailServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/emailServices/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/emailServices/
      * createOrUpdate.json
      */
     /**
@@ -685,7 +791,7 @@ public final class EmailServicesCreateOrUpdateSamples {
 public final class EmailServicesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/emailServices/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/emailServices/
      * delete.json
      */
     /**
@@ -709,7 +815,7 @@ public final class EmailServicesDeleteSamples {
 public final class EmailServicesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/emailServices/get
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/emailServices/get
      * .json
      */
     /**
@@ -734,7 +840,7 @@ public final class EmailServicesGetByResourceGroupSamples {
 public final class EmailServicesListSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/emailServices/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/emailServices/
      * listBySubscription.json
      */
     /**
@@ -758,7 +864,7 @@ public final class EmailServicesListSamples {
 public final class EmailServicesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/emailServices/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/emailServices/
      * listByResourceGroup.json
      */
     /**
@@ -782,7 +888,7 @@ public final class EmailServicesListByResourceGroupSamples {
 public final class EmailServicesListVerifiedExchangeOnlineDomainsSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/emailServices/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/emailServices/
      * getVerifiedExchangeOnlineDomains.json
      */
     /**
@@ -810,7 +916,7 @@ import java.util.Map;
 public final class EmailServicesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/emailServices/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/emailServices/
      * update.json
      */
     /**
@@ -850,7 +956,7 @@ public final class EmailServicesUpdateSamples {
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/operationsList.json
      */
     /**
@@ -873,7 +979,7 @@ public final class OperationsListSamples {
 public final class SenderUsernamesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/senderUsernames/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/senderUsernames/
      * createOrUpdate.json
      */
     /**
@@ -902,7 +1008,7 @@ public final class SenderUsernamesCreateOrUpdateSamples {
 public final class SenderUsernamesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/senderUsernames/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/senderUsernames/
      * delete.json
      */
     /**
@@ -928,7 +1034,7 @@ public final class SenderUsernamesDeleteSamples {
 public final class SenderUsernamesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/senderUsernames/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/senderUsernames/
      * get.json
      */
     /**
@@ -954,7 +1060,7 @@ public final class SenderUsernamesGetSamples {
 public final class SenderUsernamesListByDomainsSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/senderUsernames/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/senderUsernames/
      * listByDomain.json
      */
     /**
@@ -966,6 +1072,327 @@ public final class SenderUsernamesListByDomainsSamples {
         getSenderUsernamesResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
         manager.senderUsernames()
             .listByDomains("contosoResourceGroup", "contosoEmailService", "contoso.com",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SmtpUsernames_CreateOrUpdate
+
+```java
+/**
+ * Samples for SmtpUsernames CreateOrUpdate.
+ */
+public final class SmtpUsernamesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/smtpUsername/
+     * createOrUpdate.json
+     */
+    /**
+     * Sample code: CreateOrUpdate SmtpUsername resource.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void
+        createOrUpdateSmtpUsernameResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.smtpUsernames()
+            .define("smtpusername1")
+            .withExistingCommunicationService("contosoResourceGroup", "contosoACSService")
+            .withUsername("newuser1@contoso.com")
+            .withEntraApplicationId("aaaa1111-bbbb-2222-3333-aaaa111122bb")
+            .withTenantId("aaaa1111-bbbb-2222-3333-aaaa11112222")
+            .create();
+    }
+}
+```
+
+### SmtpUsernames_Delete
+
+```java
+/**
+ * Samples for SmtpUsernames Delete.
+ */
+public final class SmtpUsernamesDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/smtpUsername/
+     * delete.json
+     */
+    /**
+     * Sample code: Delete a SmtpUsername resource.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void
+        deleteASmtpUsernameResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.smtpUsernames()
+            .deleteWithResponse("MyResourceGroup", "contosoACSService", "smtpusername1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SmtpUsernames_Get
+
+```java
+/**
+ * Samples for SmtpUsernames Get.
+ */
+public final class SmtpUsernamesGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/smtpUsername/get.
+     * json
+     */
+    /**
+     * Sample code: Get a SmtpUsername resource.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void getASmtpUsernameResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.smtpUsernames()
+            .getWithResponse("contosoResourceGroup", "contosoACSService", "smtpusername1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SmtpUsernames_List
+
+```java
+/**
+ * Samples for SmtpUsernames List.
+ */
+public final class SmtpUsernamesListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/smtpUsername/
+     * getAll.json
+     */
+    /**
+     * Sample code: Get all SmtpUsername resources for a CommunicationService resource.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void getAllSmtpUsernameResourcesForACommunicationServiceResource(
+        com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.smtpUsernames().list("contosoResourceGroup", "contosoACSService", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SuppressionListAddresses_CreateOrUpdate
+
+```java
+/**
+ * Samples for SuppressionListAddresses CreateOrUpdate.
+ */
+public final class SuppressionListAddressesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/suppressionLists/
+     * createOrUpdateAddress.json
+     */
+    /**
+     * Sample code: CreateOrUpdate SuppressionListAddress resource.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void createOrUpdateSuppressionListAddressResource(
+        com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.suppressionListAddresses()
+            .define("11112222-3333-4444-5555-aaaabbbbcccc")
+            .withExistingSuppressionList("contosoResourceGroup", "contosoEmailService", "contoso.com",
+                "aaaa1111-bbbb-2222-3333-aaaa11112222")
+            .withEmail("newuser1@fabrikam.com")
+            .withFirstName("updatedFirstName")
+            .create();
+    }
+}
+```
+
+### SuppressionListAddresses_Delete
+
+```java
+/**
+ * Samples for SuppressionListAddresses Delete.
+ */
+public final class SuppressionListAddressesDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/suppressionLists/
+     * deleteAddress.json
+     */
+    /**
+     * Sample code: Delete a SuppressionListAddress resource.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void
+        deleteASuppressionListAddressResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.suppressionListAddresses()
+            .deleteWithResponse("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
+                "aaaa1111-bbbb-2222-3333-aaaa11112222", "11112222-3333-4444-5555-999999999999",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SuppressionListAddresses_Get
+
+```java
+/**
+ * Samples for SuppressionListAddresses Get.
+ */
+public final class SuppressionListAddressesGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/suppressionLists/
+     * getAddress.json
+     */
+    /**
+     * Sample code: Get a SuppressionListAddress resource.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void
+        getASuppressionListAddressResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.suppressionListAddresses()
+            .getWithResponse("contosoResourceGroup", "contosoEmailService", "contoso.com",
+                "aaaa1111-bbbb-2222-3333-aaaa11112222", "11112222-3333-4444-5555-aaaabbbbcccc",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SuppressionListAddresses_List
+
+```java
+/**
+ * Samples for SuppressionListAddresses List.
+ */
+public final class SuppressionListAddressesListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/suppressionLists/
+     * getAddresses.json
+     */
+    /**
+     * Sample code: Get all SuppressionListAddresses resources for a SuppressionList resource.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void getAllSuppressionListAddressesResourcesForASuppressionListResource(
+        com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.suppressionListAddresses()
+            .list("contosoResourceGroup", "contosoEmailService", "contoso.com", "aaaa1111-bbbb-2222-3333-aaaa11112222",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SuppressionLists_CreateOrUpdate
+
+```java
+/**
+ * Samples for SuppressionLists CreateOrUpdate.
+ */
+public final class SuppressionListsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/suppressionLists/
+     * createOrUpdateSuppressionList.json
+     */
+    /**
+     * Sample code: CreateOrUpdate SuppressionLists resource.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void
+        createOrUpdateSuppressionListsResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.suppressionLists()
+            .define("aaaa1111-bbbb-2222-3333-aaaa11112222")
+            .withExistingDomain("contosoResourceGroup", "contosoEmailService", "contoso.com")
+            .withListName("contosoNewsAlerts")
+            .create();
+    }
+}
+```
+
+### SuppressionLists_Delete
+
+```java
+/**
+ * Samples for SuppressionLists Delete.
+ */
+public final class SuppressionListsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/suppressionLists/
+     * deleteSuppressionList.json
+     */
+    /**
+     * Sample code: Delete a SuppressionLists resource.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void
+        deleteASuppressionListsResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.suppressionLists()
+            .deleteWithResponse("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
+                "aaaa1111-bbbb-2222-3333-aaaa11112222", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SuppressionLists_Get
+
+```java
+/**
+ * Samples for SuppressionLists Get.
+ */
+public final class SuppressionListsGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/suppressionLists/
+     * getSuppressionList.json
+     */
+    /**
+     * Sample code: Get a SuppressionList resource.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void
+        getASuppressionListResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.suppressionLists()
+            .getWithResponse("contosoResourceGroup", "contosoEmailService", "contoso.com",
+                "aaaa1111-bbbb-2222-3333-aaaa11112222", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SuppressionLists_ListByDomain
+
+```java
+/**
+ * Samples for SuppressionLists ListByDomain.
+ */
+public final class SuppressionListsListByDomainSamples {
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/suppressionLists/
+     * getSuppressionLists.json
+     */
+    /**
+     * Sample code: Get all SuppressionLists resources.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void
+        getAllSuppressionListsResources(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.suppressionLists()
+            .listByDomain("contosoResourceGroup", "contosoEmailService", "contoso.com",
                 com.azure.core.util.Context.NONE);
     }
 }

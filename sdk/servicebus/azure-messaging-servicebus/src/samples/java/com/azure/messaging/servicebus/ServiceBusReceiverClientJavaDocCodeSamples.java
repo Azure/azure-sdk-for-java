@@ -114,7 +114,6 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
         // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
-        // 'disableAutoComplete' indicates that users will explicitly settle their message.
         ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace, credential)
             .receiver() // Use this for session or non-session enabled queue or topic/subscriptions

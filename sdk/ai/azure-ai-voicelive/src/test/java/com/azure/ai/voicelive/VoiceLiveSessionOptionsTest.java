@@ -12,14 +12,11 @@ import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
 import com.azure.ai.voicelive.models.ToolChoiceSelection;
 import com.azure.ai.voicelive.models.VoiceLiveFunctionDefinition;
-import com.azure.ai.voicelive.models.VoiceLiveToolDefinition;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
+import com.azure.ai.voicelive.models.VoiceLiveToolDefinition;
 import com.azure.core.util.BinaryData;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 /**
  * Unit tests for {@link VoiceLiveSessionOptions}.
  */
-@ExtendWith(MockitoExtension.class)
 class VoiceLiveSessionOptionsTest {
 
     private VoiceLiveSessionOptions sessionOptions;

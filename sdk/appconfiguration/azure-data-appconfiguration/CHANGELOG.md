@@ -1,17 +1,30 @@
 # Release History
 
-## 1.9.0-beta.1 (Unreleased)
+## 1.10.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added a pipeline policy to handle query parameters to make sure the keys are always in lower case and in alphabetical order.
-- Added audience policy to provide more meaningful error messages for Azure Active Directory authentication failures. The policy detects AAD audience-related errors and provides clear guidance on audience configuration issues.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.9.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 1.9.0 (2026-01-14)
+
+### Features Added
+
+- Added a pipeline policy to handle query parameters to make sure the keys are always in lower case and in alphabetical order.
+- Added audience policy to provide more meaningful error messages for Azure Active Directory authentication failures. The policy detects AAD audience-related errors and provides clear guidance on audience configuration issues.
 
 ## 1.8.5 (2025-10-27)
 

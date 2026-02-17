@@ -101,8 +101,8 @@ public interface Racks {
     /**
      * Delete the rack.
      * 
-     * Delete the provided rack.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource is
+     * managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
@@ -116,8 +116,8 @@ public interface Racks {
     /**
      * Delete the rack.
      * 
-     * Delete the provided rack.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource is
+     * managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
@@ -164,8 +164,8 @@ public interface Racks {
     /**
      * Delete the rack.
      * 
-     * Delete the provided rack.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource is
+     * managed by the system.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,8 +178,8 @@ public interface Racks {
     /**
      * Delete the rack.
      * 
-     * Delete the provided rack.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource is
+     * managed by the system.
      * 
      * @param id the resource ID.
      * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify

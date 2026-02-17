@@ -198,18 +198,14 @@ public final class RendersImpl {
      * 
      * 
      * 
-     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
-     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
-     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
-     * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
-     * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
-     * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
+     * The `Get Map Tiles` API enables users to request map tiles in either vector or raster formats, typically for
+     * integration into a map control or SDK. Supported tile types include Azure Maps road tiles and real-time Weather
+     * Radar tiles. By default, the Azure Maps [Web SDK](/azure/azure-maps/about-azure-maps#web-sdk) uses vector tiles
+     * for rendering its web map control.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param tileIndex Parameter group.
      * @param timeStamp The desired date and time of the requested tile. This parameter must be specified in the
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
@@ -258,18 +254,14 @@ public final class RendersImpl {
      * 
      * 
      * 
-     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
-     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
-     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
-     * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
-     * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
-     * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
+     * The `Get Map Tiles` API enables users to request map tiles in either vector or raster formats, typically for
+     * integration into a map control or SDK. Supported tile types include Azure Maps road tiles and real-time Weather
+     * Radar tiles. By default, the Azure Maps [Web SDK](/azure/azure-maps/about-azure-maps#web-sdk) uses vector tiles
+     * for rendering its web map control.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param tileIndex Parameter group.
      * @param timeStamp The desired date and time of the requested tile. This parameter must be specified in the
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
@@ -323,18 +315,14 @@ public final class RendersImpl {
      * 
      * 
      * 
-     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
-     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
-     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
-     * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
-     * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
-     * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
+     * The `Get Map Tiles` API enables users to request map tiles in either vector or raster formats, typically for
+     * integration into a map control or SDK. Supported tile types include Azure Maps road tiles and real-time Weather
+     * Radar tiles. By default, the Azure Maps [Web SDK](/azure/azure-maps/about-azure-maps#web-sdk) uses vector tiles
+     * for rendering its web map control.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param tileIndex Parameter group.
      * @param timeStamp The desired date and time of the requested tile. This parameter must be specified in the
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
@@ -382,18 +370,14 @@ public final class RendersImpl {
      * 
      * 
      * 
-     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
-     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
-     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
-     * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
-     * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
-     * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
+     * The `Get Map Tiles` API enables users to request map tiles in either vector or raster formats, typically for
+     * integration into a map control or SDK. Supported tile types include Azure Maps road tiles and real-time Weather
+     * Radar tiles. By default, the Azure Maps [Web SDK](/azure/azure-maps/about-azure-maps#web-sdk) uses vector tiles
+     * for rendering its web map control.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param tileIndex Parameter group.
      * @param timeStamp The desired date and time of the requested tile. This parameter must be specified in the
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
@@ -442,18 +426,14 @@ public final class RendersImpl {
      * 
      * 
      * 
-     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
-     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
-     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
-     * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
-     * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
-     * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
+     * The `Get Map Tiles` API enables users to request map tiles in either vector or raster formats, typically for
+     * integration into a map control or SDK. Supported tile types include Azure Maps road tiles and real-time Weather
+     * Radar tiles. By default, the Azure Maps [Web SDK](/azure/azure-maps/about-azure-maps#web-sdk) uses vector tiles
+     * for rendering its web map control.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param tileIndex Parameter group.
      * @param timeStamp The desired date and time of the requested tile. This parameter must be specified in the
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
@@ -503,18 +483,14 @@ public final class RendersImpl {
      * 
      * 
      * 
-     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
-     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
-     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
-     * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
-     * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
-     * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
+     * The `Get Map Tiles` API enables users to request map tiles in either vector or raster formats, typically for
+     * integration into a map control or SDK. Supported tile types include Azure Maps road tiles and real-time Weather
+     * Radar tiles. By default, the Azure Maps [Web SDK](/azure/azure-maps/about-azure-maps#web-sdk) uses vector tiles
+     * for rendering its web map control.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param tileIndex Parameter group.
      * @param timeStamp The desired date and time of the requested tile. This parameter must be specified in the
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
@@ -562,18 +538,14 @@ public final class RendersImpl {
      * 
      * 
      * 
-     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
-     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
-     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
-     * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
-     * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
-     * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
+     * The `Get Map Tiles` API enables users to request map tiles in either vector or raster formats, typically for
+     * integration into a map control or SDK. Supported tile types include Azure Maps road tiles and real-time Weather
+     * Radar tiles. By default, the Azure Maps [Web SDK](/azure/azure-maps/about-azure-maps#web-sdk) uses vector tiles
+     * for rendering its web map control.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param tileIndex Parameter group.
      * @param timeStamp The desired date and time of the requested tile. This parameter must be specified in the
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
@@ -622,18 +594,14 @@ public final class RendersImpl {
      * 
      * 
      * 
-     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
-     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
-     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
-     * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
-     * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
-     * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
+     * The `Get Map Tiles` API enables users to request map tiles in either vector or raster formats, typically for
+     * integration into a map control or SDK. Supported tile types include Azure Maps road tiles and real-time Weather
+     * Radar tiles. By default, the Azure Maps [Web SDK](/azure/azure-maps/about-azure-maps#web-sdk) uses vector tiles
+     * for rendering its web map control.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param tileIndex Parameter group.
      * @param timeStamp The desired date and time of the requested tile. This parameter must be specified in the
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
@@ -688,18 +656,14 @@ public final class RendersImpl {
      * 
      * 
      * 
-     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
-     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
-     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
-     * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
-     * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
-     * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
+     * The `Get Map Tiles` API enables users to request map tiles in either vector or raster formats, typically for
+     * integration into a map control or SDK. Supported tile types include Azure Maps road tiles and real-time Weather
+     * Radar tiles. By default, the Azure Maps [Web SDK](/azure/azure-maps/about-azure-maps#web-sdk) uses vector tiles
+     * for rendering its web map control.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param tileIndex Parameter group.
      * @param timeStamp The desired date and time of the requested tile. This parameter must be specified in the
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
@@ -752,10 +716,8 @@ public final class RendersImpl {
      * The Get Map Tileset API allows users to request metadata for a tileset.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -775,10 +737,8 @@ public final class RendersImpl {
      * The Get Map Tileset API allows users to request metadata for a tileset.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -801,10 +761,8 @@ public final class RendersImpl {
      * The Get Map Tileset API allows users to request metadata for a tileset.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -823,10 +781,8 @@ public final class RendersImpl {
      * The Get Map Tileset API allows users to request metadata for a tileset.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -846,10 +802,8 @@ public final class RendersImpl {
      * The Get Map Tileset API allows users to request metadata for a tileset.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -869,10 +823,8 @@ public final class RendersImpl {
      * The Get Map Tileset API allows users to request metadata for a tileset.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -892,10 +844,8 @@ public final class RendersImpl {
      * tileset.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param zoom Zoom level for the desired map attribution.
      * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
      * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by WGS84
@@ -922,10 +872,8 @@ public final class RendersImpl {
      * tileset.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param zoom Zoom level for the desired map attribution.
      * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
      * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by WGS84
@@ -957,10 +905,8 @@ public final class RendersImpl {
      * tileset.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param zoom Zoom level for the desired map attribution.
      * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
      * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by WGS84
@@ -986,10 +932,8 @@ public final class RendersImpl {
      * tileset.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param zoom Zoom level for the desired map attribution.
      * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
      * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by WGS84
@@ -1017,10 +961,8 @@ public final class RendersImpl {
      * tileset.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param zoom Zoom level for the desired map attribution.
      * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
      * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by WGS84
@@ -1047,10 +989,8 @@ public final class RendersImpl {
      * tileset.
      * 
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
-     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
-     * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
-     * API](https://docs.microsoft.com/rest/api/maps-creator/tileset). The ready-to-use tilesets supplied by Azure Maps
-     * are listed below. For example, microsoft.base.
+     * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The ready-to-use tilesets
+     * supplied by Azure Maps are listed below. For example, microsoft.base.
      * @param zoom Zoom level for the desired map attribution.
      * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
      * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by WGS84
