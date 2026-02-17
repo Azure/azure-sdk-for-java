@@ -42,7 +42,6 @@ import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static com.azure.core.util.BinaryData.fromObject;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -230,8 +229,8 @@ public class SearchRequestUrlRewriterPolicyTests {
                 skillsetUrl),
             Arguments.of(toCallable(() -> indexerClient.deleteSkillsetWithResponse(skillset.getName(), null)),
                 skillsetUrl),
-            Arguments.of(toCallable(
-                () -> indexerClient.resetSkillsWithResponse(skillset.getName(), fromObject(new SkillNames()), null)),
+            Arguments.of(
+                toCallable(() -> indexerClient.resetSkillsWithResponse(skillset.getName(), new SkillNames(), null)),
                 skillsetUrl + "/search.resetskills"),
 
             Arguments.of(
@@ -269,8 +268,7 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(toCallable(indexerAsyncClient.deleteSkillsetWithResponse(skillset.getName(), null)),
                 skillsetUrl),
             Arguments.of(
-                toCallable(
-                    indexerAsyncClient.resetSkillsWithResponse(skillset.getName(), fromObject(new SkillNames()), null)),
+                toCallable(indexerAsyncClient.resetSkillsWithResponse(skillset.getName(), new SkillNames(), null)),
                 skillsetUrl + "/search.resetskills"));
     }
 

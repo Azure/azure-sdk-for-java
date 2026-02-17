@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.{CosmosPagedFlux, CosmosPagedIterable}
-import reactor.core.scheduler.Schedulers
 
 import java.util.concurrent.{ExecutorService, SynchronousQueue, ThreadPoolExecutor, TimeUnit, TimeoutException}
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
@@ -67,7 +66,6 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
 
   private[spark] var currentFeedResponseIterator: Option[BufferedIterator[FeedResponse[TSparkRow]]] = None
   private[spark] var currentItemIterator: Option[BufferedIterator[TSparkRow]] = None
-  private val lastPagedFlux = new AtomicReference[Option[CosmosPagedFlux[TSparkRow]]](None)
 
   private val totalChangesCnt = new AtomicLong(0)
 
@@ -112,17 +110,10 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
       val feedResponseIterator = currentFeedResponseIterator match {
         case Some(existing) => existing
         case None =>
-          val newPagedFlux = Some(cosmosPagedFluxFactory.apply(lastContinuationToken.get))
-          lastPagedFlux.getAndSet(newPagedFlux) match {
-            case Some(oldPagedFlux) => {
-              logInfo(s"Attempting to cancel oldPagedFlux, Context: $operationContextString")
-              oldPagedFlux.cancelOn(Schedulers.boundedElastic()).onErrorComplete().subscribe().dispose()
-            }
-            case None =>
-          }
+          val newPagedFlux = cosmosPagedFluxFactory.apply(lastContinuationToken.get)
           currentFeedResponseIterator = Some(
             new CosmosPagedIterable[TSparkRow](
-              newPagedFlux.get,
+              newPagedFlux,
               pageSize,
               pagePrefetchBufferSize
             )
@@ -276,13 +267,11 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
     }
   }
 
-  //  Correct way to cancel a flux and dispose it
-  //  https://github.com/reactor/reactor-core/blob/main/reactor-core/src/test/java/reactor/core/publisher/scenarios/FluxTests.java#L837
+  //  Clean up iterator references - the underlying Reactor subscription
+  //  from Flux.toIterable() will be cleaned up when the iterator is GC'd
   override def close(): Unit = {
-    lastPagedFlux.getAndSet(None) match {
-      case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic()).onErrorComplete().subscribe().dispose()
-      case None =>
-    }
+    currentItemIterator = None
+    currentFeedResponseIterator = None
   }
 }
 
