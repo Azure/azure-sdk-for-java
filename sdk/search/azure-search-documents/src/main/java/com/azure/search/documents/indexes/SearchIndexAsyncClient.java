@@ -219,7 +219,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -244,9 +244,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -354,7 +354,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -421,7 +421,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -596,9 +596,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -871,7 +871,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -883,9 +883,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -984,7 +984,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1022,9 +1022,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1119,7 +1119,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1142,9 +1142,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2862,7 +2862,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves a synonym map definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2905,7 +2905,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new synonym map.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2930,9 +2930,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2976,7 +2976,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves an index definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3179,7 +3179,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3371,7 +3371,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new search index.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3546,9 +3546,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3742,7 +3742,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Returns statistics for the given index, including a document count and storage usage.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3771,7 +3771,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Shows how an analyzer breaks text into tokens.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3788,9 +3788,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3826,7 +3826,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves an alias definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3857,7 +3857,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Lists all aliases available for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3886,7 +3886,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new search alias.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3898,9 +3898,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3931,7 +3931,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves a knowledge base definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3988,7 +3988,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Lists all knowledge bases available for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4043,7 +4043,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new knowledge base.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4081,9 +4081,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4141,7 +4141,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves a knowledge source definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4184,7 +4184,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Lists all knowledge sources available for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4224,7 +4224,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new knowledge source.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4247,9 +4247,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4292,7 +4292,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves the status of a knowledge source.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4339,7 +4339,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Gets service level statistics for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4392,7 +4392,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves a summary of statistics for all indexes in the search service.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
