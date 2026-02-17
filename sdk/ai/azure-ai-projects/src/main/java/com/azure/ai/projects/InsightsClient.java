@@ -39,204 +39,6 @@ public final class InsightsClient {
     }
 
     /**
-     * Get a specific insight by Id.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>includeCoordinates</td><td>Boolean</td><td>No</td><td>Whether to include coordinates for visualization in
-     * the response. Defaults to false.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     metadata (Required): {
-     *         createdAt: OffsetDateTime (Required)
-     *         completedAt: OffsetDateTime (Optional)
-     *     }
-     *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
-     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
-     *     }
-     *     result (Optional): {
-     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param id The unique identifier for the insights report.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specific insight by Id along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(id, requestOptions);
-    }
-
-    /**
-     * List all insights in reverse chronological order (newest first).
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>type</td><td>String</td><td>No</td><td>Filter by the type of analysis. Allowed values:
-     * "EvaluationRunClusterInsight", "AgentClusterInsight", "EvaluationComparison".</td></tr>
-     * <tr><td>evalId</td><td>String</td><td>No</td><td>Filter by the evaluation ID.</td></tr>
-     * <tr><td>runId</td><td>String</td><td>No</td><td>Filter by the evaluation run ID.</td></tr>
-     * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
-     * <tr><td>includeCoordinates</td><td>Boolean</td><td>No</td><td>Whether to include coordinates for visualization in
-     * the response. Defaults to false.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     metadata (Required): {
-     *         createdAt: OffsetDateTime (Required)
-     *         completedAt: OffsetDateTime (Optional)
-     *     }
-     *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
-     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
-     *     }
-     *     result (Optional): {
-     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of Insight items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
-    }
-
-    /**
-     * Get a specific insight by Id.
-     *
-     * @param id The unique identifier for the insights report.
-     * @param includeCoordinates Whether to include coordinates for visualization in the response. Defaults to false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific insight by Id.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Insight get(String id, Boolean includeCoordinates) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (includeCoordinates != null) {
-            requestOptions.addQueryParam("includeCoordinates", String.valueOf(includeCoordinates), false);
-        }
-        return getWithResponse(id, requestOptions).getValue().toObject(Insight.class);
-    }
-
-    /**
-     * Get a specific insight by Id.
-     *
-     * @param id The unique identifier for the insights report.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific insight by Id.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Insight get(String id) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(id, requestOptions).getValue().toObject(Insight.class);
-    }
-
-    /**
-     * List all insights in reverse chronological order (newest first).
-     *
-     * @param type Filter by the type of analysis.
-     * @param evalId Filter by the evaluation ID.
-     * @param runId Filter by the evaluation run ID.
-     * @param agentName Filter by the agent name.
-     * @param includeCoordinates Whether to include coordinates for visualization in the response. Defaults to false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Insight items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Insight> list(InsightType type, String evalId, String runId, String agentName,
-        Boolean includeCoordinates) {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        if (type != null) {
-            requestOptions.addQueryParam("type", type.toString(), false);
-        }
-        if (evalId != null) {
-            requestOptions.addQueryParam("evalId", evalId, false);
-        }
-        if (runId != null) {
-            requestOptions.addQueryParam("runId", runId, false);
-        }
-        if (agentName != null) {
-            requestOptions.addQueryParam("agentName", agentName, false);
-        }
-        if (includeCoordinates != null) {
-            requestOptions.addQueryParam("includeCoordinates", String.valueOf(includeCoordinates), false);
-        }
-        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Insight.class));
-    }
-
-    /**
-     * List all insights in reverse chronological order (newest first).
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Insight items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Insight> list() {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Insight.class));
-    }
-
-    /**
      * Generate Insights.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -301,8 +103,104 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> generateWithResponse(BinaryData insight, RequestOptions requestOptions) {
-        return this.serviceClient.generateWithResponse(insight, requestOptions);
+    public Response<BinaryData> generateInsightWithResponse(BinaryData insight, RequestOptions requestOptions) {
+        return this.serviceClient.generateInsightWithResponse(insight, requestOptions);
+    }
+
+    /**
+     * Get a specific insight by Id.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeCoordinates</td><td>Boolean</td><td>No</td><td>Whether to include coordinates for visualization in
+     * the response. Defaults to false.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     metadata (Required): {
+     *         createdAt: OffsetDateTime (Required)
+     *         completedAt: OffsetDateTime (Optional)
+     *     }
+     *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     displayName: String (Required)
+     *     request (Required): {
+     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
+     *     }
+     *     result (Optional): {
+     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param id The unique identifier for the insights report.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a specific insight by Id along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getInsightWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.getInsightWithResponse(id, requestOptions);
+    }
+
+    /**
+     * List all insights in reverse chronological order (newest first).
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Filter by the type of analysis. Allowed values:
+     * "EvaluationRunClusterInsight", "AgentClusterInsight", "EvaluationComparison".</td></tr>
+     * <tr><td>evalId</td><td>String</td><td>No</td><td>Filter by the evaluation ID.</td></tr>
+     * <tr><td>runId</td><td>String</td><td>No</td><td>Filter by the evaluation run ID.</td></tr>
+     * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
+     * <tr><td>includeCoordinates</td><td>Boolean</td><td>No</td><td>Whether to include coordinates for visualization in
+     * the response. Defaults to false.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     metadata (Required): {
+     *         createdAt: OffsetDateTime (Required)
+     *         completedAt: OffsetDateTime (Optional)
+     *     }
+     *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     displayName: String (Required)
+     *     request (Required): {
+     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
+     *     }
+     *     result (Optional): {
+     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of Insight items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listInsights(RequestOptions requestOptions) {
+        return this.serviceClient.listInsights(requestOptions);
     }
 
     /**
@@ -319,9 +217,114 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Insight generate(Insight insight) {
-        // Generated convenience method for generateWithResponse
+    public Insight generateInsight(Insight insight) {
+        // Generated convenience method for generateInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return generateWithResponse(BinaryData.fromObject(insight), requestOptions).getValue().toObject(Insight.class);
+        return generateInsightWithResponse(BinaryData.fromObject(insight), requestOptions).getValue()
+            .toObject(Insight.class);
+    }
+
+    /**
+     * Get a specific insight by Id.
+     *
+     * @param id The unique identifier for the insights report.
+     * @param includeCoordinates Whether to include coordinates for visualization in the response. Defaults to false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific insight by Id.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Insight getInsight(String id, Boolean includeCoordinates) {
+        // Generated convenience method for getInsightWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (includeCoordinates != null) {
+            requestOptions.addQueryParam("includeCoordinates", String.valueOf(includeCoordinates), false);
+        }
+        return getInsightWithResponse(id, requestOptions).getValue().toObject(Insight.class);
+    }
+
+    /**
+     * Get a specific insight by Id.
+     *
+     * @param id The unique identifier for the insights report.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific insight by Id.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Insight getInsight(String id) {
+        // Generated convenience method for getInsightWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getInsightWithResponse(id, requestOptions).getValue().toObject(Insight.class);
+    }
+
+    /**
+     * List all insights in reverse chronological order (newest first).
+     *
+     * @param type Filter by the type of analysis.
+     * @param evalId Filter by the evaluation ID.
+     * @param runId Filter by the evaluation run ID.
+     * @param agentName Filter by the agent name.
+     * @param includeCoordinates Whether to include coordinates for visualization in the response. Defaults to false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Insight items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Insight> listInsights(InsightType type, String evalId, String runId, String agentName,
+        Boolean includeCoordinates) {
+        // Generated convenience method for listInsights
+        RequestOptions requestOptions = new RequestOptions();
+        if (type != null) {
+            requestOptions.addQueryParam("type", type.toString(), false);
+        }
+        if (evalId != null) {
+            requestOptions.addQueryParam("evalId", evalId, false);
+        }
+        if (runId != null) {
+            requestOptions.addQueryParam("runId", runId, false);
+        }
+        if (agentName != null) {
+            requestOptions.addQueryParam("agentName", agentName, false);
+        }
+        if (includeCoordinates != null) {
+            requestOptions.addQueryParam("includeCoordinates", String.valueOf(includeCoordinates), false);
+        }
+        return serviceClient.listInsights(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Insight.class));
+    }
+
+    /**
+     * List all insights in reverse chronological order (newest first).
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Insight items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Insight> listInsights() {
+        // Generated convenience method for listInsights
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listInsights(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Insight.class));
     }
 }

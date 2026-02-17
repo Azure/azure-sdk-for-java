@@ -336,41 +336,6 @@ public final class DatasetsAsyncClient {
     }
 
     /**
-     * List the latest version of each DatasetVersion.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(uri_file/uri_folder) (Required)
-     *     dataUri: String (Optional, Required on create)
-     *     isReference: Boolean (Optional)
-     *     connectionName: String (Optional)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listLatest(RequestOptions requestOptions) {
-        return this.serviceClient.listLatestAsync(requestOptions);
-    }
-
-    /**
      * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
      * does not exist.
      * <p><strong>Response Body Schema</strong></p>
@@ -489,36 +454,6 @@ public final class DatasetsAsyncClient {
     }
 
     /**
-     * List the latest version of each DatasetVersion.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatasetVersion> listLatest() {
-        // Generated convenience method for listLatest
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listLatest(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, DatasetVersion>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
      * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
      * does not exist.
      *
@@ -590,5 +525,70 @@ public final class DatasetsAsyncClient {
         return createOrUpdateVersionWithResponse(name, version, datasetVersionInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
+    }
+
+    /**
+     * List the latest version of each DatasetVersion.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listLatestVersion(RequestOptions requestOptions) {
+        return this.serviceClient.listLatestVersionAsync(requestOptions);
+    }
+
+    /**
+     * List the latest version of each DatasetVersion.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DatasetVersion> listLatestVersion() {
+        // Generated convenience method for listLatestVersion
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listLatestVersion(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DatasetVersion>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 }

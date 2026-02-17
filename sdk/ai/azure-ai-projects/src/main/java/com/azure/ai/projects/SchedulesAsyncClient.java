@@ -58,8 +58,8 @@ public final class SchedulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(id, requestOptions);
+    public Mono<Response<Void>> deleteScheduleWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.deleteScheduleWithResponseAsync(id, requestOptions);
     }
 
     /**
@@ -106,8 +106,8 @@ public final class SchedulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(id, requestOptions);
+    public Mono<Response<BinaryData>> getScheduleWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.getScheduleWithResponseAsync(id, requestOptions);
     }
 
     /**
@@ -162,8 +162,8 @@ public final class SchedulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> listSchedules(RequestOptions requestOptions) {
+        return this.serviceClient.listSchedulesAsync(requestOptions);
     }
 
     /**
@@ -243,134 +243,44 @@ public final class SchedulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String id, BinaryData resource,
+    public Mono<Response<BinaryData>> createOrUpdateScheduleWithResponse(String id, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(id, resource, requestOptions);
+        return this.serviceClient.createOrUpdateScheduleWithResponseAsync(id, resource, requestOptions);
     }
 
     /**
-     * Delete a schedule.
+     * Get a schedule run by id.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     scheduleId: String (Required)
+     *     success: boolean (Required)
+     *     triggerTime: String (Optional)
+     *     error: String (Optional)
+     *     properties (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
      *
-     * @param id Identifier of the schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param scheduleId The unique identifier of the schedule.
+     * @param runId The unique identifier of the schedule run.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return a schedule run by id along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(String id) {
-        // Generated convenience method for deleteWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteWithResponse(id, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Get a schedule by id.
-     *
-     * @param id Identifier of the schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule by id on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Schedule> get(String id) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Schedule.class));
-    }
-
-    /**
-     * List all schedules.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Schedule items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Schedule> list() {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Schedule>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Schedule.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Create or update operation template.
-     *
-     * @param id Identifier of the schedule.
-     * @param resource The resource instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule model on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Schedule> createOrUpdate(String id, Schedule resource) {
-        // Generated convenience method for createOrUpdateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createOrUpdateWithResponse(id, BinaryData.fromObject(resource), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Schedule.class));
-    }
-
-    /**
-     * List all schedule runs.
-     *
-     * @param id Identifier of the schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduleRun items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ScheduleRun> listRuns(String id) {
-        // Generated convenience method for listRuns
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listRuns(id, requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, ScheduleRun>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(ScheduleRun.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+    public Mono<Response<BinaryData>> getScheduleRunWithResponse(String scheduleId, String runId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getScheduleRunWithResponseAsync(scheduleId, runId, requestOptions);
     }
 
     /**
@@ -411,65 +321,49 @@ public final class SchedulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listRuns(String id, RequestOptions requestOptions) {
-        return this.serviceClient.listRunsAsync(id, requestOptions);
+    public PagedFlux<BinaryData> listScheduleRuns(String id, RequestOptions requestOptions) {
+        return this.serviceClient.listScheduleRunsAsync(id, requestOptions);
     }
 
     /**
-     * Get a schedule run by id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     scheduleId: String (Required)
-     *     success: boolean (Required)
-     *     triggerTime: String (Optional)
-     *     error: String (Optional)
-     *     properties (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
+     * Delete a schedule.
      *
-     * @param scheduleId The unique identifier of the schedule.
-     * @param runId The unique identifier of the schedule run.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a schedule run by id along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getRunWithResponse(String scheduleId, String runId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getRunWithResponseAsync(scheduleId, runId, requestOptions);
-    }
-
-    /**
-     * Get a schedule run by id.
-     *
-     * @param scheduleId The unique identifier of the schedule.
-     * @param runId The unique identifier of the schedule run.
+     * @param id Identifier of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule run by id on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ScheduleRun> getRun(String scheduleId, String runId) {
-        // Generated convenience method for getRunWithResponse
+    public Mono<Void> deleteSchedule(String id) {
+        // Generated convenience method for deleteScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getRunWithResponse(scheduleId, runId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ScheduleRun.class));
+        return deleteScheduleWithResponse(id, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Get a schedule by id.
+     *
+     * @param id Identifier of the schedule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a schedule by id on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Schedule> getSchedule(String id) {
+        // Generated convenience method for getScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getScheduleWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Schedule.class));
     }
 
     /**
@@ -487,8 +381,8 @@ public final class SchedulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Schedule> list(ScheduleTaskType type, Boolean enabled) {
-        // Generated convenience method for list
+    public PagedFlux<Schedule> listSchedules(ScheduleTaskType type, Boolean enabled) {
+        // Generated convenience method for listSchedules
         RequestOptions requestOptions = new RequestOptions();
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
@@ -496,7 +390,7 @@ public final class SchedulesAsyncClient {
         if (enabled != null) {
             requestOptions.addQueryParam("enabled", String.valueOf(enabled), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listSchedules(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -509,6 +403,81 @@ public final class SchedulesAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * List all schedules.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Schedule items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Schedule> listSchedules() {
+        // Generated convenience method for listSchedules
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listSchedules(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Schedule>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Schedule.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Create or update operation template.
+     *
+     * @param id Identifier of the schedule.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schedule model on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Schedule> createOrUpdateSchedule(String id, Schedule resource) {
+        // Generated convenience method for createOrUpdateScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createOrUpdateScheduleWithResponse(id, BinaryData.fromObject(resource), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Schedule.class));
+    }
+
+    /**
+     * Get a schedule run by id.
+     *
+     * @param scheduleId The unique identifier of the schedule.
+     * @param runId The unique identifier of the schedule run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a schedule run by id on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ScheduleRun> getScheduleRun(String scheduleId, String runId) {
+        // Generated convenience method for getScheduleRunWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getScheduleRunWithResponse(scheduleId, runId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ScheduleRun.class));
     }
 
     /**
@@ -527,8 +496,8 @@ public final class SchedulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ScheduleRun> listRuns(String id, ScheduleTaskType type, Boolean enabled) {
-        // Generated convenience method for listRuns
+    public PagedFlux<ScheduleRun> listScheduleRuns(String id, ScheduleTaskType type, Boolean enabled) {
+        // Generated convenience method for listScheduleRuns
         RequestOptions requestOptions = new RequestOptions();
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
@@ -536,7 +505,39 @@ public final class SchedulesAsyncClient {
         if (enabled != null) {
             requestOptions.addQueryParam("enabled", String.valueOf(enabled), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listRuns(id, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listScheduleRuns(id, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ScheduleRun>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(ScheduleRun.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List all schedule runs.
+     *
+     * @param id Identifier of the schedule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ScheduleRun items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ScheduleRun> listScheduleRuns(String id) {
+        // Generated convenience method for listScheduleRuns
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listScheduleRuns(id, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)

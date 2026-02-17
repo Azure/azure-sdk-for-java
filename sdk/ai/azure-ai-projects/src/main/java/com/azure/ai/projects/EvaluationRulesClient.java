@@ -85,8 +85,8 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(id, requestOptions);
+    public Response<BinaryData> getEvaluationRuleWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.getEvaluationRuleWithResponse(id, requestOptions);
     }
 
     /**
@@ -112,8 +112,8 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponse(id, requestOptions);
+    public Response<Void> deleteEvaluationRuleWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.deleteEvaluationRuleWithResponse(id, requestOptions);
     }
 
     /**
@@ -185,9 +185,9 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String id, BinaryData evaluationRule,
+    public Response<BinaryData> createOrUpdateEvaluationRuleWithResponse(String id, BinaryData evaluationRule,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponse(id, evaluationRule, requestOptions);
+        return this.serviceClient.createOrUpdateEvaluationRuleWithResponse(id, evaluationRule, requestOptions);
     }
 
     /**
@@ -244,8 +244,33 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
+    public PagedIterable<BinaryData> listEvaluationRules(RequestOptions requestOptions) {
+        return this.serviceClient.listEvaluationRules(requestOptions);
+    }
+
+    /**
+     * Get an evaluation rule.
+     *
+     * @param id Unique identifier for the evaluation rule.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an evaluation rule.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EvaluationRule getEvaluationRule(String id, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for getEvaluationRuleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return getEvaluationRuleWithResponse(id, requestOptions).getValue().toObject(EvaluationRule.class);
     }
 
     /**
@@ -262,10 +287,34 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationRule get(String id) {
-        // Generated convenience method for getWithResponse
+    public EvaluationRule getEvaluationRule(String id) {
+        // Generated convenience method for getEvaluationRuleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(id, requestOptions).getValue().toObject(EvaluationRule.class);
+        return getEvaluationRuleWithResponse(id, requestOptions).getValue().toObject(EvaluationRule.class);
+    }
+
+    /**
+     * Delete an evaluation rule.
+     *
+     * @param id Unique identifier for the evaluation rule.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteEvaluationRule(String id, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for deleteEvaluationRuleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        deleteEvaluationRuleWithResponse(id, requestOptions).getValue();
     }
 
     /**
@@ -281,10 +330,10 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String id) {
-        // Generated convenience method for deleteWithResponse
+    public void deleteEvaluationRule(String id) {
+        // Generated convenience method for deleteEvaluationRuleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteWithResponse(id, requestOptions).getValue();
+        deleteEvaluationRuleWithResponse(id, requestOptions).getValue();
     }
 
     /**
@@ -292,6 +341,8 @@ public final class EvaluationRulesClient {
      *
      * @param id Unique identifier for the evaluation rule.
      * @param evaluationRule Evaluation rule resource.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -302,88 +353,23 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationRule createOrUpdate(String id, EvaluationRule evaluationRule) {
-        // Generated convenience method for createOrUpdateWithResponse
+    public EvaluationRule createOrUpdateEvaluationRule(String id, EvaluationRule evaluationRule,
+        FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for createOrUpdateEvaluationRuleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrUpdateWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions).getValue()
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return createOrUpdateEvaluationRuleWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions)
+            .getValue()
             .toObject(EvaluationRule.class);
     }
 
     /**
-     * List all evaluation rules.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of EvaluationRule items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluationRule> list() {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluationRule.class));
-    }
-
-    /**
-     * Get an evaluation rule.
-     *
-     * @param id Unique identifier for the evaluation rule.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an evaluation rule.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationRule get(String id, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getWithResponse(id, requestOptions).getValue().toObject(EvaluationRule.class);
-    }
-
-    /**
-     * Delete an evaluation rule.
-     *
-     * @param id Unique identifier for the evaluation rule.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String id, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for deleteWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        deleteWithResponse(id, requestOptions).getValue();
-    }
-
-    /**
      * Create or update an evaluation rule.
      *
      * @param id Unique identifier for the evaluation rule.
      * @param evaluationRule Evaluation rule resource.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -394,14 +380,11 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationRule createOrUpdate(String id, EvaluationRule evaluationRule,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for createOrUpdateWithResponse
+    public EvaluationRule createOrUpdateEvaluationRule(String id, EvaluationRule evaluationRule) {
+        // Generated convenience method for createOrUpdateEvaluationRuleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return createOrUpdateWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions).getValue()
+        return createOrUpdateEvaluationRuleWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions)
+            .getValue()
             .toObject(EvaluationRule.class);
     }
 
@@ -423,9 +406,9 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluationRule> list(EvaluationRuleActionType actionType, String agentName, Boolean enabled,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for list
+    public PagedIterable<EvaluationRule> listEvaluationRules(EvaluationRuleActionType actionType, String agentName,
+        Boolean enabled, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for listEvaluationRules
         RequestOptions requestOptions = new RequestOptions();
         if (actionType != null) {
             requestOptions.addQueryParam("actionType", actionType.toString(), false);
@@ -439,7 +422,26 @@ public final class EvaluationRulesClient {
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return serviceClient.list(requestOptions)
+        return serviceClient.listEvaluationRules(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluationRule.class));
+    }
+
+    /**
+     * List all evaluation rules.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of EvaluationRule items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EvaluationRule> listEvaluationRules() {
+        // Generated convenience method for listEvaluationRules
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listEvaluationRules(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluationRule.class));
     }
 }

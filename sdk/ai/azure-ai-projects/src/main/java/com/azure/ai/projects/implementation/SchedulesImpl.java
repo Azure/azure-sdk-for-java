@@ -85,7 +85,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deleteSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Foundry-Features") String foundryFeatures, RequestOptions requestOptions, Context context);
 
@@ -95,9 +95,9 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("id") String id, @HeaderParam("Foundry-Features") String foundryFeatures,
-            RequestOptions requestOptions, Context context);
+        Response<Void> deleteScheduleSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @HeaderParam("Foundry-Features") String foundryFeatures, RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{id}")
         @ExpectedResponses({ 200 })
@@ -105,7 +105,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -116,7 +116,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -127,7 +127,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listSchedules(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -137,7 +137,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listSchedulesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -147,7 +147,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> createOrUpdateSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData resource,
@@ -159,7 +159,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createOrUpdateScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData resource,
@@ -171,7 +171,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getRun(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getScheduleRun(@HostParam("endpoint") String endpoint,
             @PathParam("schedule_id") String scheduleId, @PathParam("run_id") String runId,
             @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -182,7 +182,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getRunSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getScheduleRunSync(@HostParam("endpoint") String endpoint,
             @PathParam("schedule_id") String scheduleId, @PathParam("run_id") String runId,
             @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -193,7 +193,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listRuns(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listScheduleRuns(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -204,7 +204,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listRunsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listScheduleRunsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -215,7 +215,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listSchedulesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -225,7 +225,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listSchedulesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -235,7 +235,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listRunsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listScheduleRunsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -245,7 +245,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listRunsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listScheduleRunsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
@@ -262,9 +262,9 @@ public final class SchedulesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteScheduleWithResponseAsync(String id, RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deleteSchedule(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), id, foundryFeatures, requestOptions, context));
     }
 
@@ -280,9 +280,9 @@ public final class SchedulesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String id, RequestOptions requestOptions) {
+    public Response<Void> deleteScheduleWithResponse(String id, RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
-        return service.deleteSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
+        return service.deleteScheduleSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
             foundryFeatures, requestOptions, Context.NONE);
     }
 
@@ -329,10 +329,10 @@ public final class SchedulesImpl {
      * @return a schedule by id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getScheduleWithResponseAsync(String id, RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getSchedule(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), id, foundryFeatures, accept, requestOptions, context));
     }
 
@@ -379,10 +379,10 @@ public final class SchedulesImpl {
      * @return a schedule by id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> getScheduleWithResponse(String id, RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
+        return service.getScheduleSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
             foundryFeatures, accept, requestOptions, Context.NONE);
     }
 
@@ -438,11 +438,11 @@ public final class SchedulesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSchedulesSinglePageAsync(RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(),
+            .withContext(context -> service.listSchedules(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
@@ -499,12 +499,12 @@ public final class SchedulesImpl {
      * @return paged collection of Schedule items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listSchedulesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listSinglePageAsync(requestOptions),
-            nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listSchedulesSinglePageAsync(requestOptions),
+            nextLink -> listSchedulesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -558,10 +558,10 @@ public final class SchedulesImpl {
      * @return paged collection of Schedule items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSchedulesSinglePage(RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
+        Response<BinaryData> res = service.listSchedulesSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
@@ -618,12 +618,12 @@ public final class SchedulesImpl {
      * @return paged collection of Schedule items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listSchedules(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listSinglePage(requestOptions),
-            nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listSchedulesSinglePage(requestOptions),
+            nextLink -> listSchedulesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -702,14 +702,14 @@ public final class SchedulesImpl {
      * @return schedule model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String id, BinaryData resource,
+    public Mono<Response<BinaryData>> createOrUpdateScheduleWithResponseAsync(String id, BinaryData resource,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                id, foundryFeatures, contentType, accept, resource, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createOrUpdateSchedule(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), id, foundryFeatures, contentType, accept, resource,
+            requestOptions, context));
     }
 
     /**
@@ -788,13 +788,14 @@ public final class SchedulesImpl {
      * @return schedule model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String id, BinaryData resource,
+    public Response<BinaryData> createOrUpdateScheduleWithResponse(String id, BinaryData resource,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
-            foundryFeatures, contentType, accept, resource, requestOptions, Context.NONE);
+        return service.createOrUpdateScheduleSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), id, foundryFeatures, contentType, accept, resource,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -826,11 +827,11 @@ public final class SchedulesImpl {
      * @return a schedule run by id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getRunWithResponseAsync(String scheduleId, String runId,
+    public Mono<Response<BinaryData>> getScheduleRunWithResponseAsync(String scheduleId, String runId,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRun(this.client.getEndpoint(), scheduleId, runId,
+        return FluxUtil.withContext(context -> service.getScheduleRun(this.client.getEndpoint(), scheduleId, runId,
             foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -863,10 +864,11 @@ public final class SchedulesImpl {
      * @return a schedule run by id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRunWithResponse(String scheduleId, String runId, RequestOptions requestOptions) {
+    public Response<BinaryData> getScheduleRunWithResponse(String scheduleId, String runId,
+        RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        return service.getRunSync(this.client.getEndpoint(), scheduleId, runId, foundryFeatures,
+        return service.getScheduleRunSync(this.client.getEndpoint(), scheduleId, runId, foundryFeatures,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -908,11 +910,11 @@ public final class SchedulesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listRunsSinglePageAsync(String id, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listScheduleRunsSinglePageAsync(String id, RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listRuns(this.client.getEndpoint(),
+            .withContext(context -> service.listScheduleRuns(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), id, foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
@@ -955,12 +957,12 @@ public final class SchedulesImpl {
      * @return paged collection of ScheduleRun items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listRunsAsync(String id, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listScheduleRunsAsync(String id, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listRunsSinglePageAsync(id, requestOptions),
-            nextLink -> listRunsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listScheduleRunsSinglePageAsync(id, requestOptions),
+            nextLink -> listScheduleRunsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1000,10 +1002,10 @@ public final class SchedulesImpl {
      * @return paged collection of ScheduleRun items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listRunsSinglePage(String id, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listScheduleRunsSinglePage(String id, RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listRunsSync(this.client.getEndpoint(),
+        Response<BinaryData> res = service.listScheduleRunsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), id, foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
@@ -1046,12 +1048,12 @@ public final class SchedulesImpl {
      * @return paged collection of ScheduleRun items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listRuns(String id, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listScheduleRuns(String id, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listRunsSinglePage(id, requestOptions),
-            nextLink -> listRunsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listScheduleRunsSinglePage(id, requestOptions),
+            nextLink -> listScheduleRunsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1098,12 +1100,13 @@ public final class SchedulesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSchedulesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), foundryFeatures, accept,
-                requestOptions, context))
+            .withContext(context -> service.listSchedulesNext(nextLink, this.client.getEndpoint(), foundryFeatures,
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1151,11 +1154,11 @@ public final class SchedulesImpl {
      * @return paged collection of Schedule items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSchedulesNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listNextSync(nextLink, this.client.getEndpoint(), foundryFeatures, accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listSchedulesNextSync(nextLink, this.client.getEndpoint(), foundryFeatures,
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -1189,13 +1192,13 @@ public final class SchedulesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listRunsNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listScheduleRunsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listRunsNext(nextLink, this.client.getEndpoint(), foundryFeatures, accept,
-                requestOptions, context))
+            .withContext(context -> service.listScheduleRunsNext(nextLink, this.client.getEndpoint(), foundryFeatures,
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1228,11 +1231,11 @@ public final class SchedulesImpl {
      * @return paged collection of ScheduleRun items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listRunsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listScheduleRunsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listRunsNextSync(nextLink, this.client.getEndpoint(), foundryFeatures,
-            accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listScheduleRunsNextSync(nextLink, this.client.getEndpoint(),
+            foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

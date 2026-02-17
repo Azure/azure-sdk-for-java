@@ -91,8 +91,8 @@ public final class EvaluationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(id, requestOptions);
+    public Mono<Response<BinaryData>> getEvaluationRuleWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.getEvaluationRuleWithResponseAsync(id, requestOptions);
     }
 
     /**
@@ -118,8 +118,8 @@ public final class EvaluationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(id, requestOptions);
+    public Mono<Response<Void>> deleteEvaluationRuleWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.deleteEvaluationRuleWithResponseAsync(id, requestOptions);
     }
 
     /**
@@ -191,9 +191,9 @@ public final class EvaluationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String id, BinaryData evaluationRule,
+    public Mono<Response<BinaryData>> createOrUpdateEvaluationRuleWithResponse(String id, BinaryData evaluationRule,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(id, evaluationRule, requestOptions);
+        return this.serviceClient.createOrUpdateEvaluationRuleWithResponseAsync(id, evaluationRule, requestOptions);
     }
 
     /**
@@ -250,8 +250,34 @@ public final class EvaluationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> listEvaluationRules(RequestOptions requestOptions) {
+        return this.serviceClient.listEvaluationRulesAsync(requestOptions);
+    }
+
+    /**
+     * Get an evaluation rule.
+     *
+     * @param id Unique identifier for the evaluation rule.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an evaluation rule on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EvaluationRule> getEvaluationRule(String id, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for getEvaluationRuleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return getEvaluationRuleWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(EvaluationRule.class));
     }
 
     /**
@@ -268,11 +294,36 @@ public final class EvaluationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluationRule> get(String id) {
-        // Generated convenience method for getWithResponse
+    public Mono<EvaluationRule> getEvaluationRule(String id) {
+        // Generated convenience method for getEvaluationRuleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
+        return getEvaluationRuleWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluationRule.class));
+    }
+
+    /**
+     * Delete an evaluation rule.
+     *
+     * @param id Unique identifier for the evaluation rule.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteEvaluationRule(String id, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for deleteEvaluationRuleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return deleteEvaluationRuleWithResponse(id, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -289,10 +340,10 @@ public final class EvaluationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(String id) {
-        // Generated convenience method for deleteWithResponse
+    public Mono<Void> deleteEvaluationRule(String id) {
+        // Generated convenience method for deleteEvaluationRuleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteWithResponse(id, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteEvaluationRuleWithResponse(id, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -300,6 +351,8 @@ public final class EvaluationRulesAsyncClient {
      *
      * @param id Unique identifier for the evaluation rule.
      * @param evaluationRule Evaluation rule resource.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -310,102 +363,23 @@ public final class EvaluationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluationRule> createOrUpdate(String id, EvaluationRule evaluationRule) {
-        // Generated convenience method for createOrUpdateWithResponse
+    public Mono<EvaluationRule> createOrUpdateEvaluationRule(String id, EvaluationRule evaluationRule,
+        FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for createOrUpdateEvaluationRuleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrUpdateWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions)
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return createOrUpdateEvaluationRuleWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluationRule.class));
     }
 
     /**
-     * List all evaluation rules.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of EvaluationRule items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluationRule> list() {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, EvaluationRule>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(EvaluationRule.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Get an evaluation rule.
-     *
-     * @param id Unique identifier for the evaluation rule.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an evaluation rule on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluationRule> get(String id, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(EvaluationRule.class));
-    }
-
-    /**
-     * Delete an evaluation rule.
-     *
-     * @param id Unique identifier for the evaluation rule.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(String id, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for deleteWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return deleteWithResponse(id, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Create or update an evaluation rule.
      *
      * @param id Unique identifier for the evaluation rule.
      * @param evaluationRule Evaluation rule resource.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -416,14 +390,10 @@ public final class EvaluationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluationRule> createOrUpdate(String id, EvaluationRule evaluationRule,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for createOrUpdateWithResponse
+    public Mono<EvaluationRule> createOrUpdateEvaluationRule(String id, EvaluationRule evaluationRule) {
+        // Generated convenience method for createOrUpdateEvaluationRuleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return createOrUpdateWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions)
+        return createOrUpdateEvaluationRuleWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluationRule.class));
     }
@@ -446,9 +416,9 @@ public final class EvaluationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluationRule> list(EvaluationRuleActionType actionType, String agentName, Boolean enabled,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for list
+    public PagedFlux<EvaluationRule> listEvaluationRules(EvaluationRuleActionType actionType, String agentName,
+        Boolean enabled, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for listEvaluationRules
         RequestOptions requestOptions = new RequestOptions();
         if (actionType != null) {
             requestOptions.addQueryParam("actionType", actionType.toString(), false);
@@ -462,7 +432,37 @@ public final class EvaluationRulesAsyncClient {
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listEvaluationRules(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, EvaluationRule>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(EvaluationRule.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List all evaluation rules.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of EvaluationRule items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<EvaluationRule> listEvaluationRules() {
+        // Generated convenience method for listEvaluationRules
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listEvaluationRules(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
