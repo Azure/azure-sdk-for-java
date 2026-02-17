@@ -13,6 +13,8 @@ import org.springframework.util.StringUtils;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
 
+import com.azure.spring.cloud.appconfiguration.config.implementation.ValidationUtil;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.NotNull;
 
@@ -33,11 +35,12 @@ public final class AppConfigurationKeyValueSelector {
      */
     private static final String LABEL_SEPARATOR = ",";
 
-    @NotNull
+
     /**
      * Filters configurations by key prefix. Defaults to {@code /application/} when
      * not explicitly set. Must not be {@code null} or contain asterisks ({@code *}).
      */
+    @NotNull
     private String keyFilter = "";
 
     /**
@@ -196,19 +199,7 @@ public final class AppConfigurationKeyValueSelector {
             "Snapshots can't use label filters");
         Assert.isTrue(!(tagsFilter != null && !tagsFilter.isEmpty() && StringUtils.hasText(snapshotName)),
             "Snapshots can't use tag filters");
-        if (tagsFilter != null) {
-            for (String tagFilter : tagsFilter) {
-                Assert.isTrue(StringUtils.hasText(tagFilter), 
-                    "Tag filter entries must not be null or empty");
-                Assert.isTrue(tagFilter.contains("="), 
-                    "Tag filter entries must be in tagName=tagValue format");
-                String[] parts = tagFilter.split("=", 2);
-                Assert.isTrue(StringUtils.hasText(parts[0]), 
-                    "Tag name must not be empty in tag filter: " + tagFilter);
-                Assert.isTrue(parts.length == 2 && StringUtils.hasText(parts[1]), 
-                    "Tag value must not be empty in tag filter: " + tagFilter);
-            }
-        }
+        ValidationUtil.validateTagsFilter(tagsFilter);
     }
 
     private String mapLabel(String label) {

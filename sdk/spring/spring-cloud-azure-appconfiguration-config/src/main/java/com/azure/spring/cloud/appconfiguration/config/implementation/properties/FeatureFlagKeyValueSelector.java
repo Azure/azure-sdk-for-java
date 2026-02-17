@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.azure.spring.cloud.appconfiguration.config.implementation.ValidationUtil;
+
 import jakarta.annotation.PostConstruct;
 
 /**
@@ -159,19 +161,7 @@ public final class FeatureFlagKeyValueSelector {
         if (labelFilter != null) {
             Assert.isTrue(!labelFilter.contains("*"), "LabelFilter must not contain asterisk(*)");
         }
-        if (tagsFilter != null) {
-            for (String tagFilter : tagsFilter) {
-                Assert.isTrue(StringUtils.hasText(tagFilter), 
-                    "Tag filter entries must not be null or empty");
-                Assert.isTrue(tagFilter.contains("="), 
-                    "Tag filter entries must be in tagName=tagValue format");
-                String[] parts = tagFilter.split("=", 2);
-                Assert.isTrue(StringUtils.hasText(parts[0]), 
-                    "Tag name must not be empty in tag filter: " + tagFilter);
-                Assert.isTrue(parts.length == 2 && StringUtils.hasText(parts[1]), 
-                    "Tag value must not be empty in tag filter: " + tagFilter);
-            }
-        }
+        ValidationUtil.validateTagsFilter(tagsFilter);
     }
 
     private String mapLabel(String label) {
