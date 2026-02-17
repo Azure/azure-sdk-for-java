@@ -21,7 +21,7 @@ public class NetworkFailureTest extends TestSuiteBase {
     private static final int TIMEOUT = ClientRetryPolicy.MaxRetryCount * ClientRetryPolicy.RetryIntervalInMS + 60000;
     private final DocumentCollection collectionDefinition;
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    @Factory(dataProvider = "internalClientBuilders")
     public NetworkFailureTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
         this.collectionDefinition = getInternalCollectionDefinition();
