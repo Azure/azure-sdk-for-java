@@ -124,12 +124,14 @@ public class CommonSasQueryParameters {
 
         List<String> tempRequestHeaders = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_REQUEST_HEADERS,
             removeSasParametersFromMap, SasImplUtils::parseRequestHeadersAndQueryParameterString);
-        this.requestHeaders = tempRequestHeaders == null ? null
-            : Collections.unmodifiableList(new ArrayList<>(tempRequestHeaders));
+        this.requestHeaders
+            = tempRequestHeaders == null ? null : Collections.unmodifiableList(new ArrayList<>(tempRequestHeaders));
 
-        List<String> tempRequestQueryParameters = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_REQUEST_QUERY_PARAMETERS,
+        List<String> tempRequestQueryParameters
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_REQUEST_QUERY_PARAMETERS,
                 removeSasParametersFromMap, SasImplUtils::parseRequestHeadersAndQueryParameterString);
-        this.requestQueryParameters = tempRequestQueryParameters == null ? null
+        this.requestQueryParameters = tempRequestQueryParameters == null
+            ? null
             : Collections.unmodifiableList(new ArrayList<>(tempRequestQueryParameters));
     }
 
@@ -541,6 +543,8 @@ public class CommonSasQueryParameters {
      * @return A list of request query parameters.
      */
     public List<String> getRequestQueryParameters() {
-        return requestQueryParameters == null ? null : Collections.unmodifiableList(new ArrayList<>(requestQueryParameters));
+        return requestQueryParameters == null
+            ? null
+            : Collections.unmodifiableList(new ArrayList<>(requestQueryParameters));
     }
 }
