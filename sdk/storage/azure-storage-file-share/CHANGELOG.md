@@ -2,8 +2,9 @@
 
 ## 12.30.0-beta.1 (Unreleased)
 
-### Features Added
 
+### Features Added
+- Added support for improved error handling for file share provisioning.
 ### Breaking Changes
 
 ### Bugs Fixed
