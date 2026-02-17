@@ -67,11 +67,6 @@
     </dependency>
     <!-- Align Okio with azure-core-http-okhttp to prevent module-path conflicts in tests. -->
     <dependency>
-      <groupId>com.squareup.okio</groupId>
-      <artifactId>okio-jvm</artifactId>
-      <version>3.16.0</version> <!-- {x-version-update;com.squareup.okio:okio-jvm;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.57.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
