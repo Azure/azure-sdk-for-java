@@ -99,9 +99,10 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
         System.out.println("Input - item_id: " + itemId);
 
         GetAssetStatisticsOptions options = new GetAssetStatisticsOptions().setAssets(Arrays.asList("image"));
-        Map<String, Map<String, BandStatistics>> statistics
-            = dataClient.getAssetStatistics(collectionId, itemId, options);
+        AssetStatisticsResponse response = dataClient.getAssetStatistics(collectionId, itemId, options);
 
+        assertNotNull(response, "Response should not be null");
+        Map<String, BandStatisticsMap> statistics = response.getAdditionalProperties();
         assertNotNull(statistics, "Statistics should not be null");
         assertTrue(statistics.containsKey("image"), "Should contain statistics for 'image' asset");
 

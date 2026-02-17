@@ -9,6 +9,7 @@ import com.azure.analytics.planetarycomputer.models.TileMatrix;
 import com.azure.analytics.planetarycomputer.models.TileMatrixSet;
 import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
 import com.azure.analytics.planetarycomputer.models.TilerInfo;
+import com.azure.analytics.planetarycomputer.models.TilerInfoMapResponse;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -93,8 +94,10 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
         System.out.println("Input - collection_id: " + collectionId);
         System.out.println("Input - item_id: " + itemId);
 
-        Map<String, TilerInfo> assets = dataClient.getItemAssetDetails(collectionId, itemId);
+        TilerInfoMapResponse response = dataClient.getItemAssetDetails(collectionId, itemId);
 
+        assertNotNull(response, "Response should not be null");
+        Map<String, TilerInfo> assets = response.getAdditionalProperties();
         assertNotNull(assets, "Assets dictionary should not be null");
         assertTrue(assets.size() > 0, "Should have at least one asset");
 
