@@ -8,24 +8,30 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Possible Intrusion Detection profile values.
+ * Specifies the Intrusion Detection signature profile to apply.
+ * 
+ * Values:
+ * - Off: IDPS profiles disabled; uses the same signature set that existed before profiles.
+ * - Emerging: Signatures of the newest, most recent threats.
+ * - Core: Complete, modern, standard set of signatures.
+ * - Extended: Core signatures plus older legacy signatures for maximum coverage.
  */
 public final class FirewallPolicyIntrusionDetectionProfileType
     extends ExpandableStringEnum<FirewallPolicyIntrusionDetectionProfileType> {
     /**
-     * Static value Basic for FirewallPolicyIntrusionDetectionProfileType.
+     * Static value Off for FirewallPolicyIntrusionDetectionProfileType.
      */
-    public static final FirewallPolicyIntrusionDetectionProfileType BASIC = fromString("Basic");
+    public static final FirewallPolicyIntrusionDetectionProfileType OFF = fromString("Off");
 
     /**
-     * Static value Standard for FirewallPolicyIntrusionDetectionProfileType.
+     * Static value Emerging for FirewallPolicyIntrusionDetectionProfileType.
      */
-    public static final FirewallPolicyIntrusionDetectionProfileType STANDARD = fromString("Standard");
+    public static final FirewallPolicyIntrusionDetectionProfileType EMERGING = fromString("Emerging");
 
     /**
-     * Static value Advanced for FirewallPolicyIntrusionDetectionProfileType.
+     * Static value Core for FirewallPolicyIntrusionDetectionProfileType.
      */
-    public static final FirewallPolicyIntrusionDetectionProfileType ADVANCED = fromString("Advanced");
+    public static final FirewallPolicyIntrusionDetectionProfileType CORE = fromString("Core");
 
     /**
      * Static value Extended for FirewallPolicyIntrusionDetectionProfileType.

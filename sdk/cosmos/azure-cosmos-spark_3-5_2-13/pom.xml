@@ -11,7 +11,7 @@
   </parent>
   <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>azure-cosmos-spark_3-5_2-13</artifactId>
-  <version>4.43.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;current} -->
+  <version>4.44.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;current} -->
   <packaging>jar</packaging>
   <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-5_2-13</url>
   <name>OLTP Spark 3.5 Connector for Azure Cosmos DB SQL API</name>
@@ -117,6 +117,7 @@
         </file>
         <property>
           <name>spark-e2e_3-5_2-13</name>
+          <value>true</value>
         </property>
       </activation>
       <build>
@@ -141,6 +142,12 @@
             <version>2.1.0</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
             <configuration>
               <argLine>${scalatest.argLine}</argLine>
+              <config>stdOut=true,verbose=true,stdErr=true</config>
+              <noScalaTestIgnore>false</noScalaTestIgnore>
+              <stdout>FDEF</stdout>
+              <stderr>FDEF</stderr>
+              <forkMode>once</forkMode>
+              <logForkedProcessCommand>true</logForkedProcessCommand>
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>

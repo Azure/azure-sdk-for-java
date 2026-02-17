@@ -296,7 +296,7 @@ public final class EasmAsyncClient {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }
@@ -541,7 +541,7 @@ public final class EasmAsyncClient {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }

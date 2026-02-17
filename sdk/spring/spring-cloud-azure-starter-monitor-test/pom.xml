@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
     <relativePath/> <!--By default Maven assumes the parent pom is in the parent folder. This line avoids a Maven warning.
      In Maven, a profile can only be shared with inheritance and a pom can only have one parent.
      spring-boot-starter-parent contains a native-test profile gathering the configuration allowing to execute a Spring native test.-->
@@ -31,7 +31,7 @@
       <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-bom</artifactId>
-        <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-bom;external_dependency} -->
+        <version>1.58.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-bom;external_dependency} -->
         <type>pom</type>
         <scope>runtime</scope>
       </dependency>
@@ -42,35 +42,41 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-      <version>7.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
+      <version>7.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webmvc</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-webmvc;external_dependency} -->
+      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-webmvc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jdbc</artifactId>
-      <version>4.0.0</version><!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-data-jdbc;external_dependency} -->
+      <version>4.0.2</version><!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-data-jdbc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-resttestclient</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-resttestclient;external_dependency} -->
+      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-resttestclient;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-restclient</artifactId>
+      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-restclient;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.azure.cosmos.spark</groupId>
+    <artifactId>azure-cosmos-spark_3</artifactId>
+    <version>0.0.1-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3;current} -->
+    <relativePath>../azure-cosmos-spark_3</relativePath>
+  </parent>
+  <groupId>com.azure.cosmos.spark</groupId>
+  <artifactId>azure-cosmos-spark_4-0_2-13</artifactId>
+  <version>4.44.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13;current} -->
+  <packaging>jar</packaging>
+  <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_4-0_2-13</url>
+  <name>OLTP Spark 4.0 Connector for Azure Cosmos DB SQL API</name>
+  <description>OLTP Spark 4.0 Connector for Azure Cosmos DB SQL API</description>
+  <scm>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git/sdk/cosmos/azure-cosmos-spark_4-0_2-13</connection>
+    <developerConnection></developerConnection>
+    <url>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_4-0_2-13</url>
+  </scm>
+  <organization>
+    <name>Microsoft Corporation</name>
+    <url>http://microsoft.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
+  </developers>
+  <properties>
+    <cosmos.spark.skip>false</cosmos.spark.skip>
+    <cosmos-spark-version>4.0</cosmos-spark-version>
+    <scala.binary.version>2.13</scala.binary.version>
+    <scala.version>2.13.17</scala.version> <!-- {x-version-update;cosmos-scala213_org.scala-lang:scala-library;external_dependency} -->
+    <scala-java8-compat.version>0.9.1</scala-java8-compat.version> <!-- {x-version-update;cosmos-scala213_org.scala-lang.modules:scala-java8-compat_2.13;external_dependency} -->
+    <reactor-scala-extensions.version>0.8.0</reactor-scala-extensions.version> <!-- {x-version-update;cosmos-scala213_io.projectreactor:reactor-scala-extensions_2.13;external_dependency} -->
+    <scalatest.version>3.2.2</scalatest.version> <!-- {x-version-update;cosmos-scala213_org.scalatest:scalatest_2.13;external_dependency} -->
+    <scalatest-flatspec.version>3.2.3</scalatest-flatspec.version> <!-- {x-version-update;cosmos-scala213_org.scalatest:scalatest-flatspec_2.13;external_dependency} -->
+    <scalactic.version>3.2.3</scalactic.version> <!-- {x-version-update;cosmos-scala213_org.scalactic:scalactic_2.13;external_dependency} -->
+    <scalamock.version>5.0.0</scalamock.version> <!-- {x-version-update;cosmos-scala213_org.scalamock:scalamock_2.13;external_dependency} -->
+    <spotless.skip>true</spotless.skip>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.6.1</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>add-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${basedir}/../azure-cosmos-spark_3/src/main/scala</source>
+                <source>${basedir}/src/main/scala</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-test-sources</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${basedir}/../azure-cosmos-spark_3/src/test/scala</source>
+                <source>${basedir}/src/test/scala</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-resources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>add-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource><directory>${basedir}/../azure-cosmos-spark_3/src/main/resources</directory></resource>
+                <resource><directory>${basedir}/src/main/resources</directory></resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>spark-e2e_4-0_2-13</id>
+      <activation>
+        <!-- Java 17+ -->
+        <jdk>[17,)</jdk>
+        <file>
+          <exists>${basedir}/scalastyle_config.xml</exists>
+        </file>
+        <property>
+          <name>spark-e2e_4-0_2-13</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <includes>
+                <include>**/*.*</include>
+                <include>**/*Test.*</include>
+                <include>**/*Suite.*</include>
+                <include>**/*Spec.*</include>
+              </includes>
+              <skipTests>true</skipTests>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest-maven-plugin</artifactId>
+            <version>2.1.0</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
+            <configuration>
+              <argLine>${scalatest.argLine}</argLine>
+              <config>stdOut=true,verbose=true,stdErr=true</config>
+              <noScalaTestIgnore>false</noScalaTestIgnore>
+              <stdout>FDEF</stdout>
+              <stderr>FDEF</stderr>
+              <forkMode>once</forkMode>
+              <logForkedProcessCommand>true</logForkedProcessCommand>
+              <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+              <junitxml>.</junitxml>
+              <filereports>SparkTestSuite.txt</filereports>
+              <suffixes>(ITest|Test|Spec|Suite)</suffixes> <!-- every test -->
+            </configuration>
+            <executions>
+              <execution>
+                <id>test</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- Disable unit tests for Java < 17 - Spark 4.0 dependencies require Java 17+ to run -->
+      <id>spark-4-0-disable-tests-java-lt-17</id>
+      <activation>
+        <jdk>(,17)</jdk>
+      </activation>
+      <properties>
+        <skipTests>true</skipTests>
+      </properties>
+    </profile>
+    <profile>
+      <id>java9-plus</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <properties>
+        <scalatest.argLine>--add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.base/jdk.internal.ref=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/sun.nio.cs=ALL-UNNAMED --add-opens=java.base/sun.security.action=ALL-UNNAMED --add-opens=java.base/sun.util.calendar=ALL-UNNAMED --add-opens=java.security.jgss/sun.security.krb5=ALL-UNNAMED -Djdk.reflect.useDirectMethodHandle=false</scalatest.argLine>
+      </properties>
+    </profile>
+  </profiles>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql_2.13</artifactId>
+      <version>4.0.0</version> <!-- {x-version-update;cosmos-spark_4-0_org.apache.spark:spark-sql_2.13;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>io.netty</groupId>
+          <artifactId>netty-all</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-scala_2.13</artifactId>
+      <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-scala_2.13;external_dependency} -->
+    </dependency>
+  </dependencies>
+</project>

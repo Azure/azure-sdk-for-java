@@ -1,12 +1,54 @@
 # Release History
 
-## 7.0.0-beta.2 (Unreleased)
+## 7.1.0 (Not Released)
+
+### Spring Cloud Azure Autoconfigure
+
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### New Features
+
+- Add ConnectionDetails for ServiceBus. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+
+### Spring Cloud Azure Docker Compose
+
+This section includes changes in `spring-cloud-azure-docker-compose` module.
+
+#### New Features
+
+- Add ServiceBusDockerComposeConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+
+### Spring Cloud Azure Test Containers
+
+This section includes changes in `spring-cloud-azure-testcontainers` module.
+
+#### New Features
+
+- Add ServiceBusContainerConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+
+### Spring Cloud Azure Starter Monitor
+
+This section includes changes in `spring-cloud-azure-starter-monitor` module.
+
+#### Other Changes
+
+- Support spring-cloud-azure-starter-monitor in Spring Boot 4. [#47624](https://github.com/Azure/azure-sdk-for-java/issues/47624)
+
+## 7.0.0 (2026-02-03)
+- This release is compatible with Spring Boot 4.0.0-4.0.2. (Note: 4.0.x (x>2) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.1.0. (Note: 2025.1.x (x>0) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.3.4.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 
+- Fixed OAuth2 JWT Bearer grant request parameter duplication issue where `grant_type` was being duplicated when using the on-behalf-of flow, causing `AADSTS70003: unsupported_grant_type` error. [#47657](https://github.com/Azure/azure-sdk-for-java/issues/47657)
 - Fix `ClassNotFoundException: com.nimbusds.oauth2.sdk.util.StringUtils` in Active Directory starter. ([#47600](https://github.com/Azure/azure-sdk-for-java/issues/47600))
 
 ### Spring Cloud Azure Appconfiguration Config
@@ -15,6 +57,10 @@ This section includes changes in `spring-cloud-azure-appconfiguration-config` mo
 #### Bugs Fixed
 
 - Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`. ([#47587](https://github.com/Azure/azure-sdk-for-java/issues/47587))
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#700-2026-02-03) for more details.
 
 ## 7.0.0-beta.1 (2025-12-23)
 - This release is compatible with Spring Boot 4.0.0. (Note: 4.0.x (x>0) should be supported, but they aren't tested with this release.)

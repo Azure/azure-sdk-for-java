@@ -120,8 +120,13 @@ public final class SolutionTemplateVersionProperties implements JsonSerializable
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("configurations", this.configurations);
-        jsonWriter.writeMapField("specification", this.specification,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("specification", this.specification, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("orchestratorType",
             this.orchestratorType == null ? null : this.orchestratorType.toString());
         return jsonWriter.writeEndObject();

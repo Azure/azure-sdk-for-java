@@ -71,7 +71,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.77.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.79.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -102,17 +102,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.54.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+      <version>2.54.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -127,7 +127,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -143,12 +143,12 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.58.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.61</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <version>1.0.0-beta.62</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -178,7 +178,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.27.7</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -208,7 +208,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-test</artifactId>
-      <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
+      <version>1.0.0-beta.18</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
       <scope>test</scope>
     </dependency>
 
@@ -296,6 +296,7 @@
                 <include>org.apache.spark:spark-sql_2.12:[${spark34.version}]</include>
                 <include>org.apache.spark:spark-sql_2.12:[${spark35.version}]</include>
                 <include>org.apache.spark:spark-sql_2.13:[${spark35.version}]</include>
+                <include>org.apache.spark:spark-sql_2.13:[4.0.0]</include><!-- {x-include-update;cosmos-spark_4-0_org.apache.spark:spark-sql_2.13;external_dependency} -->
                 <include>org.scala-lang:scala-library:[${scala.version}]</include>
                 <include>org.scala-lang.modules:scala-java8-compat_2.12:[${scala-java8-compat.version}]</include>
                 <include>org.scala-lang.modules:scala-java8-compat_2.13:[${scala-java8-compat.version}]</include>
@@ -315,7 +316,7 @@
                 <include>io.micrometer:micrometer-core:[1.15.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-core;external_dependency} -->
                 <include>com.microsoft.azure:applicationinsights-core:[2.6.4]</include> <!-- {x-include-update;cosmos_com.microsoft.azure:applicationinsights-core;external_dependency} -->
                 <include>com.globalmentor:hadoop-bare-naked-local-fs:[0.1.0]</include> <!-- {x-include-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-api:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.58.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -743,74 +744,6 @@
         </plugins>
       </build>
     </profile>
-
-    <profile>
-      <id>unit</id>
-      <activation>
-        <file>
-          <exists>${basedir}/scalastyle_config.xml</exists>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
-                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
-                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
-              </systemPropertyVariables>
-              <includes>
-                <include>**/*.*</include>
-                <include>**/*Test.*</include>
-                <include>**/*Suite.*</include>
-                <include>**/*Spec.*</include>
-              </includes>
-              <skipTests>true</skipTests>
-              <properties>
-                <property>
-                  <name>surefire.testng.verbose</name>
-                  <value>2</value>
-                </property>
-                <property>
-                  <name>listener</name>
-                  <value>com.azure.cosmos.CosmosNettyLeakDetectorFactory</value>
-                </property>
-              </properties>
-            </configuration>
-          </plugin>
-          <!-- To use the ScalaTest Maven plugin, SureFire needs to be disabled and ScalaTest enabled -->
-          <!-- enable scalatest -->
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
-            <version>2.1.0</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
-            <configuration>
-              <systemProperties>
-                <cosmos-spark-version>${cosmos-spark-version}</cosmos-spark-version>
-              </systemProperties>
-              <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
-              <junitxml>.</junitxml>
-              <filereports>SparkTestSuite.txt</filereports>
-              <suffixes>(Spec|[^I]Test|Suite)</suffixes> <!-- unit tests which do not require cosmos db -->
-            </configuration>
-            <executions>
-              <execution>
-                <id>test</id>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
     <!-- Library cannot build for Java 10 and below -->
     <profile>
       <id>java8</id>

@@ -15,8 +15,12 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** An immutable client-side representation of an Azure registry task. */
-@Fluent()
+/**
+ * An immutable client-side representation of an Azure registry task.
+ * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
+ */
+@Deprecated
+@Fluent
 public interface RegistryTask
     extends Resource, HasInnerModel<TaskInner>, Refreshable<RegistryTask>, Updatable<RegistryTask.Update> {
 

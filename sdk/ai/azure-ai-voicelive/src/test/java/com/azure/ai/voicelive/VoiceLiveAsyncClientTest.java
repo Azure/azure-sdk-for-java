@@ -3,6 +3,8 @@
 
 package com.azure.ai.voicelive;
 
+import com.azure.ai.voicelive.models.AgentSessionConfig;
+import com.azure.ai.voicelive.models.VoiceLiveRequestOptions;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpHeaders;
@@ -69,7 +71,7 @@ class VoiceLiveAsyncClientTest {
     @Test
     void testStartSessionWithNullOptions() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> client.startSession(null));
+        assertThrows(NullPointerException.class, () -> client.startSession((String) null));
     }
 
     @Test
@@ -86,7 +88,7 @@ class VoiceLiveAsyncClientTest {
     @Test
     void testStartSessionWithNullModel() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> client.startSession(null));
+        assertThrows(NullPointerException.class, () -> client.startSession((String) null));
     }
 
     @Test
@@ -126,9 +128,8 @@ class VoiceLiveAsyncClientTest {
         });
 
         // Test null parameter validation for startSession methods
-        assertThrows(NullPointerException.class, () -> client.startSession(null));
-
-        assertThrows(NullPointerException.class, () -> client.startSession(null));
+        assertThrows(NullPointerException.class, () -> client.startSession((String) null));
+        assertThrows(NullPointerException.class, () -> client.startSession((VoiceLiveRequestOptions) null));
     }
 
     @Test
@@ -149,4 +150,78 @@ class VoiceLiveAsyncClientTest {
             // The returned Mono should contain a VoiceLiveSessionAsyncClient when subscribed
         });
     }
+
+    @Test
+    void testStartSessionWithoutModel() {
+        // Test that startSession() without parameters works
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession();
+            assertNotNull(sessionMono);
+        });
+    }
+
+    @Test
+    void testStartSessionWithAgentConfig() {
+        // Arrange
+        AgentSessionConfig agentConfig = new AgentSessionConfig("test-agent", "test-project");
+
+        // Act & Assert
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(agentConfig);
+            assertNotNull(sessionMono);
+        });
+    }
+
+    @Test
+    void testStartSessionWithAgentConfigAllOptions() {
+        // Arrange
+        AgentSessionConfig agentConfig = new AgentSessionConfig("test-agent", "test-project").setAgentVersion("1.0")
+            .setConversationId("conv-123")
+            .setAuthenticationIdentityClientId("client-id");
+
+        // Act & Assert
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(agentConfig);
+            assertNotNull(sessionMono);
+        });
+    }
+
+    @Test
+    void testStartSessionWithNullAgentConfig() {
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> client.startSession((AgentSessionConfig) null));
+    }
+
+    @Test
+    void testStartSessionWithAgentConfigAndRequestOptions() {
+        // Arrange
+        AgentSessionConfig agentConfig = new AgentSessionConfig("test-agent", "test-project");
+        VoiceLiveRequestOptions requestOptions
+            = new VoiceLiveRequestOptions().addCustomQueryParameter("custom-param", "value");
+
+        // Act & Assert
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(agentConfig, requestOptions);
+            assertNotNull(sessionMono);
+        });
+    }
+
+    @Test
+    void testStartSessionWithAgentConfigAndNullRequestOptions() {
+        // Arrange
+        AgentSessionConfig agentConfig = new AgentSessionConfig("test-agent", "test-project");
+
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> client.startSession(agentConfig, null));
+    }
+
+    @Test
+    void testStartSessionWithNullAgentConfigAndValidRequestOptions() {
+        // Arrange
+        VoiceLiveRequestOptions requestOptions = new VoiceLiveRequestOptions();
+
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> client.startSession((AgentSessionConfig) null, requestOptions));
+    }
+
 }

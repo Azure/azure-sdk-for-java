@@ -3,37 +3,32 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, BulkExecutorDiagnosticsTracker, ItemBulkOperation, TransactionalBulkExecutor}
-import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, CosmosBulkExecutionOptionsImpl, ImplementationBridgeHelpers, UUIDs}
-import com.azure.cosmos.models._
-import com.azure.cosmos.spark.TransactionalBulkWriter.{BulkOperationFailedException, bulkWriterInputBoundedElastic, bulkWriterRequestsBoundedElastic, bulkWriterResponsesBoundedElastic, getThreadInfo}
+import com.azure.cosmos.implementation.batch.{BulkExecutorDiagnosticsTracker, CosmosBulkTransactionalBatchResponse, TransactionalBulkExecutor}
+import com.azure.cosmos.implementation.{CosmosTransactionalBulkExecutionOptionsImpl, UUIDs}
+import com.azure.cosmos.models.{CosmosBatch, CosmosBatchResponse}
+import com.azure.cosmos.spark.BulkWriter.getThreadInfo
+import com.azure.cosmos.spark.TransactionalBulkWriter.{BulkOperationFailedException, DefaultMaxPendingOperationPerCore, emitFailureHandler, transactionalBatchInputBoundedElastic, transactionalBulkWriterInputBoundedElastic, transactionalBulkWriterRequestsBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
 import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
 import reactor.core.Scannable
-import reactor.core.publisher.{Flux, Mono}
+import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scheduler.Scheduler
 
-import java.util
 import java.util.Objects
-import java.util.concurrent.{ScheduledFuture, ScheduledThreadPoolExecutor}
-import scala.collection.concurrent.TrieMap
-import scala.collection.convert.ImplicitConversions.`collection AsScalaIterable`
+import java.util.concurrent.ConcurrentHashMap
 import scala.collection.mutable
+import scala.compat.java8.FunctionConverters.enrichAsJavaFunction
 import scala.concurrent.duration.Duration
 // scalastyle:on underscore.import
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.guava25.base.Preconditions
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.models.PartitionKey
-import com.azure.cosmos.spark.TransactionalBulkWriter.{DefaultMaxPendingOperationPerCore, emitFailureHandler}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import reactor.core.Disposable
 import reactor.core.publisher.Sinks
 import reactor.core.publisher.Sinks.{EmitFailureHandler, EmitResult}
-import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scheduler.Schedulers
 
@@ -51,7 +46,6 @@ private class TransactionalBulkWriter
 (
   container: CosmosAsyncContainer,
   containerConfig: CosmosContainerConfig,
-  partitionKeyDefinition: PartitionKeyDefinition,
   writeConfig: CosmosWriteConfig,
   diagnosticsConfig: DiagnosticsConfig,
   outputMetricsPublisher: OutputMetricsPublisherTrait,
@@ -63,7 +57,7 @@ private class TransactionalBulkWriter
   private val verboseLoggingAfterReEnqueueingRetriesEnabled = new AtomicBoolean(false)
 
   private val cpuCount = SparkUtils.getNumberOfHostCPUCores
-  
+
   // NOTE: The public API config property is "maxPendingOperations" for backward compatibility,
   // but internally TransactionalBulkWriter limits concurrent *batches* not individual operations.
   // This is semantically correct because transactional batches are atomic units.
@@ -75,7 +69,9 @@ private class TransactionalBulkWriter
   }
   private val maxPendingOperations = writeConfig.bulkMaxPendingOperations
     .getOrElse(DefaultMaxPendingOperationPerCore)
-  private val maxConcurrentPartitions = writeConfig.maxConcurrentCosmosPartitions match {
+
+  private val transactionalBulkExecutionConfigs = writeConfig.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteTransactionalBulkExecutionConfigs]
+  private val maxConcurrentPartitions = transactionalBulkExecutionConfigs.maxConcurrentCosmosPartitions match {
     // using the provided maximum of concurrent partitions per Spark partition on the input data
     // multiplied by 2 to leave space for partition splits during ingestion
     case Some(configuredMaxConcurrentPartitions) => 2 * configuredMaxConcurrentPartitions
@@ -83,75 +79,53 @@ private class TransactionalBulkWriter
     // multiplied by 2 to leave space for partition splits during ingestion
     case None => 2 * ContainerFeedRangesCache.getFeedRanges(container, containerConfig.feedRangeRefreshIntervalInSecondsOpt).block().size
   }
-  // Validate write strategy for transactional batches
-  require(writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemOverwrite,
-    s"Transactional batches only support ItemOverwrite (upsert) write strategy. Requested: ${writeConfig.itemWriteStrategy}")
 
   log.logInfo(
     s"TransactionalBulkWriter instantiated (Host CPU count: $cpuCount, maxPendingBatches: $maxPendingBatches, " +
-  s"maxPendingOperations: $maxPendingOperations, maxConcurrentPartitions: $maxConcurrentPartitions ...")
-
+      s"maxPendingOperations: $maxPendingOperations, maxConcurrentPartitions: $maxConcurrentPartitions ...")
 
   private val closed = new AtomicBoolean(false)
   private val lock = new ReentrantLock
   private val pendingTasksCompleted = lock.newCondition
   private val pendingRetries = new AtomicLong(0)
-  private val pendingBulkWriteRetries = java.util.concurrent.ConcurrentHashMap.newKeySet[CosmosItemOperation]().asScala
-  private val activeTasks = new AtomicInteger(0)
+  private val pendingBatchRetries = new ConcurrentHashMap[PartitionKey, CosmosBatchOperation].asScala
+  private val activeBatchTasks = new AtomicInteger(0)
+  private val activeBatches = new ConcurrentHashMap[PartitionKey, CosmosBatchOperation].asScala
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
-  private val bulkInputEmitter: Sinks.Many[CosmosBatch] = Sinks.many().unicast().onBackpressureBuffer()
+  private val transactionalBulkInputEmitter: Sinks.Many[TransactionalBulkItem] = Sinks.many().unicast().onBackpressureBuffer()
+  private val transactionalBatchInputEmitter: Sinks.Many[CosmosBatch] = Sinks.many().unicast().onBackpressureBuffer()
 
-  // Partition key buffering for batch construction
-  // Buffer holds tuples of (ObjectNode, OperationContext, effectiveOperationType)
-  private var currentPartitionKey: PartitionKey = null
-  private val currentBatchOperations = new mutable.ListBuffer[(ObjectNode, OperationContext, String)]()
-  private val batchConstructionLock = new Object()
+  // for transactional batch, all rows/items from the dataframe should be grouped as one cosmos batch
+  private val transactionalBatchPartitionKeyScheduled = java.util.concurrent.ConcurrentHashMap.newKeySet[PartitionKey]().asScala
 
-  // Batch-level tracking - BatchTracker holds all information about a batch
-  private case class BatchTracker(
-    batchId: String,
-    operations: List[CosmosItemOperation],
-    contexts: List[OperationContext],
-    sourceData: List[(ObjectNode, OperationContext, String)],
-    attemptNumber: Int
-  )
-  
-  // Map batch ID to BatchTracker
-  private val activeBatches = new java.util.concurrent.ConcurrentHashMap[String, BatchTracker]().asScala
-  // Map batch ID to collected responses for that batch
-  private val batchResponseCollector = new java.util.concurrent.ConcurrentHashMap[String, java.util.concurrent.ConcurrentLinkedQueue[CosmosBulkOperationResponse[Object]]]().asScala
-  // Map individual operation to its batch ID for response grouping
-  private val operationToBatchId = new java.util.concurrent.ConcurrentHashMap[CosmosItemOperation, String]().asScala
-  // Semaphore limits number of outstanding batches
   private val semaphore = new Semaphore(maxPendingBatches)
-  private val activeBatchCount = new AtomicInteger(0)
-  // Track batches being retried
-  private val pendingBatchRetries = java.util.concurrent.ConcurrentHashMap.newKeySet[String]().asScala
 
-  private val totalScheduledMetrics = new AtomicLong(0)
+  private val totalScheduledMetrics = new AtomicLong(0) // this will be for each operation
   private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
 
   private val maxOperationTimeout = java.time.Duration.ofSeconds(CosmosConstants.batchOperationEndToEndTimeoutInSeconds)
   private val endToEndTimeoutPolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(maxOperationTimeout)
     .enable(true)
     .build
-  private val cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions(TransactionalBulkWriter.bulkProcessingThresholds)
-
-  private val cosmosBulkExecutionOptionsImpl = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-    .getCosmosBulkExecutionOptionsAccessor
-    .getImpl(cosmosBulkExecutionOptions)
+  private val cosmosTransactionalBulkExecutionOptions = new CosmosTransactionalBulkExecutionOptionsImpl()
   private val monotonicOperationCounter = new AtomicLong(0)
 
-  cosmosBulkExecutionOptionsImpl.setSchedulerOverride(bulkWriterRequestsBoundedElastic)
-  cosmosBulkExecutionOptionsImpl.setMaxConcurrentCosmosPartitions(maxConcurrentPartitions)
-  cosmosBulkExecutionOptionsImpl.setCosmosEndToEndLatencyPolicyConfig(endToEndTimeoutPolicy)
+  cosmosTransactionalBulkExecutionOptions.setSchedulerOverride(transactionalBulkWriterRequestsBoundedElastic)
+  cosmosTransactionalBulkExecutionOptions.setMaxConcurrentCosmosPartitions(maxConcurrentPartitions)
+  cosmosTransactionalBulkExecutionOptions.setCosmosEndToEndLatencyPolicyConfig(endToEndTimeoutPolicy)
+  if (transactionalBulkExecutionConfigs.maxConcurrentOperations.isDefined) {
+    cosmosTransactionalBulkExecutionOptions.setMaxOperationsConcurrency(transactionalBulkExecutionConfigs.maxConcurrentOperations.get)
+  }
+  if (transactionalBulkExecutionConfigs.maxConcurrentBatches.isDefined) {
+    cosmosTransactionalBulkExecutionOptions.setMaxBatchesConcurrency(transactionalBulkExecutionConfigs.maxConcurrentBatches.get)
+  }
 
   private class ForwardingMetricTracker(val verboseLoggingEnabled: AtomicBoolean) extends BulkExecutorDiagnosticsTracker {
     override def trackDiagnostics(ctx: CosmosDiagnosticsContext): Unit = {
       val ctxOption = Option.apply(ctx)
       outputMetricsPublisher.trackWriteOperation(0, ctxOption)
       if (ctxOption.isDefined && verboseLoggingEnabled.get) {
-        TransactionalBulkWriter.log.logWarning(s"Track bulk operation after re-enqueued retry: ${ctxOption.get.toJson}")
+        TransactionalBulkWriter.log.logWarning(s"Track transactional bulk operation after re-enqueued retry: ${ctxOption.get.toJson}")
       }
     }
 
@@ -160,43 +134,18 @@ private class TransactionalBulkWriter
     }
   }
 
-  cosmosBulkExecutionOptionsImpl.setDiagnosticsTracker(
-      new ForwardingMetricTracker(verboseLoggingAfterReEnqueueingRetriesEnabled)
-    )
+  cosmosTransactionalBulkExecutionOptions.setDiagnosticsTracker(
+    new ForwardingMetricTracker(verboseLoggingAfterReEnqueueingRetriesEnabled)
+  )
 
-  ThroughputControlHelper.populateThroughputControlGroupName(cosmosBulkExecutionOptions, writeConfig.throughputControlConfig)
-
-  writeConfig.maxMicroBatchPayloadSizeInBytes match {
-    case Some(customMaxMicroBatchPayloadSizeInBytes) =>
-      cosmosBulkExecutionOptionsImpl
-        .setMaxMicroBatchPayloadSizeInBytes(customMaxMicroBatchPayloadSizeInBytes)
-    case None =>
-  }
-
-  writeConfig.initialMicroBatchSize match {
-    case Some(customInitialMicroBatchSize) =>
-      cosmosBulkExecutionOptions.setInitialMicroBatchSize(Math.max(1, customInitialMicroBatchSize))
-    case None =>
-  }
-
-  writeConfig.maxMicroBatchSize match {
-    case Some(customMaxMicroBatchSize) =>
-     cosmosBulkExecutionOptions.setMaxMicroBatchSize(
-       Math.max(
-        1,
-        Math.min(customMaxMicroBatchSize, BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST)
-       )
-     )
-    case None =>
-  }
+  ThroughputControlHelper.populateThroughputControlGroupName(cosmosTransactionalBulkExecutionOptions, writeConfig.throughputControlConfig)
 
   private val operationContext = initializeOperationContext()
-
 
   private def initializeOperationContext(): SparkTaskContext = {
     val taskContext = TaskContext.get
 
-    val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUIDs.nonBlockingRandomUUID(), "transactional-BulkWriter")
+    val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUIDs.nonBlockingRandomUUID(), "TransactionalBulkWriter")
 
     if (taskContext != null) {
       val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
@@ -209,7 +158,7 @@ private class TransactionalBulkWriter
         DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
-      cosmosBulkExecutionOptionsImpl
+      cosmosTransactionalBulkExecutionOptions
         .setOperationContextAndListenerTuple(operationContextAndListenerTuple)
 
       taskDiagnosticsContext
@@ -222,127 +171,28 @@ private class TransactionalBulkWriter
     }
   }
 
-
-
-
-  private def processBatchResponses(
-                                      batchId: String,
-                                      batchTracker: BatchTracker,
-                                      responseQueue: java.util.concurrent.ConcurrentLinkedQueue[CosmosBulkOperationResponse[Object]]): Unit = {
-    
-    var hasRetryableError = false
-    var hasFatalError = false
-    var fatalException: Throwable = null
-    val successCount = new AtomicInteger(0)
-    
-    // Analyze all responses to make batch-level decision
-    val responses = responseQueue.asScala.toList
-    responses.zipWithIndex.foreach { case (resp, idx) =>
-      val context = batchTracker.contexts(idx)
-      val itemResponse = resp.getResponse
-      
-      if (resp.getException != null) {
-        Option(resp.getException) match {
-          case Some(cosmosException: CosmosException) =>
-            val statusCode = cosmosException.getStatusCode
-            val subStatusCode = cosmosException.getSubStatusCode
-            
-            if (shouldIgnore(statusCode, subStatusCode)) {
-              successCount.incrementAndGet()
-            } else if (shouldRetry(statusCode, subStatusCode, context)) {
-              hasRetryableError = true
-              log.logDebug(s"Batch $batchId has retryable error: $statusCode:$subStatusCode for item ${context.itemId}")
-            } else {
-              hasFatalError = true
-              fatalException = cosmosException
-              log.logError(s"Batch $batchId has fatal error: $statusCode:$subStatusCode for item ${context.itemId}")
-            }
-          case _ =>
-            hasFatalError = true
-            fatalException = resp.getException
-            log.logError(s"Batch $batchId has unexpected exception for item ${context.itemId}", resp.getException)
-        }
-      } else if (Option(itemResponse).isEmpty || !itemResponse.isSuccessStatusCode) {
-        val statusCode = Option(itemResponse).map(_.getStatusCode).getOrElse(CosmosConstants.StatusCodes.Timeout)
-        val subStatusCode = Option(itemResponse).map(_.getSubStatusCode).getOrElse(0)
-        
-        if (shouldIgnore(statusCode, subStatusCode)) {
-          successCount.incrementAndGet()
-        } else if (shouldRetry(statusCode, subStatusCode, context)) {
-          hasRetryableError = true
-          log.logDebug(s"Batch $batchId has retryable error: $statusCode:$subStatusCode for item ${context.itemId}")
-        } else {
-          hasFatalError = true
-          fatalException = new BulkOperationFailedException(statusCode, subStatusCode,
-            s"Fatal error in batch $batchId for item ${context.itemId}", null)
-          log.logError(s"Batch $batchId has fatal error: $statusCode:$subStatusCode for item ${context.itemId}")
-        }
-      } else {
-        // Success
-        successCount.incrementAndGet()
-      }
+  private def scheduleRetry(
+                             trackPendingRetryAction: () => Boolean,
+                             clearPendingRetryAction: () => Boolean,
+                             cosmosBatchOperation: CosmosBatchOperation,
+                             statusCode: Int): Unit = {
+    if (trackPendingRetryAction()) {
+      this.pendingRetries.incrementAndGet()
     }
-    
-    // Make batch-level decision
-    if (hasFatalError) {
-      // Fatal error - fail entire batch
-      log.logError(s"Batch $batchId failed with fatal error, cannot retry")
-      captureIfFirstFailure(fatalException)
-      cancelWork()
-      cleanupBatch(batchId, batchTracker.operations.size)
-    } else if (hasRetryableError) {
-      // Retry entire batch atomically
-      log.logWarning(s"Batch $batchId has retryable errors, will retry entire batch atomically")
-      scheduleBatchRetry(batchId, batchTracker)
-      cleanupBatch(batchId, batchTracker.operations.size)
-    } else {
-      // All operations succeeded
-      log.logDebug(s"Batch $batchId completed successfully with ${successCount.get} operations")
-      outputMetricsPublisher.trackWriteOperation(successCount.get, None)
-      totalSuccessfulIngestionMetrics.addAndGet(successCount.get)
-      cleanupBatch(batchId, batchTracker.operations.size)
-    }
-  }
-  
-  private def cleanupBatch(batchId: String, operationCount: Int): Unit = {
-    // Clean up batch tracking
-    activeBatches.remove(batchId)
-    batchResponseCollector.remove(batchId)
-    pendingBatchRetries.remove(batchId)
-    
-    // Release semaphore
-    activeBatchCount.decrementAndGet()
-    semaphore.release()
-    log.logTrace(s"Released semaphore for batch $batchId, activeBatchCount: ${activeBatchCount.get} $getThreadInfo")
-    
-    // Mark task completion for all operations in batch
-    (1 to operationCount).foreach(_ => markTaskCompletion())
-  }
-  
-  private def scheduleBatchRetry(batchId: String, batchTracker: BatchTracker): Unit = {
-    this.pendingRetries.incrementAndGet()
-    pendingBatchRetries.add(batchId)
-    
-    // Determine if this is a timeout to apply delay
-    val hasTimeout = batchResponseCollector.get(batchId).exists { queue =>
-      queue.asScala.exists { resp =>
-        val statusCode = Option(resp.getResponse).map(_.getStatusCode)
-          .orElse(Option(resp.getException).collect { case ce: CosmosException => ce.getStatusCode })
-          .getOrElse(CosmosConstants.StatusCodes.Timeout)
-        Exceptions.isTimeout(statusCode)
-      }
-    }
-    
+
+    // this is to ensure the submission will happen on a different thread in background
+    // and doesn't block the active thread
     val deferredRetryMono = SMono.defer(() => {
-      log.logWarning(s"Retrying batch $batchId with ${batchTracker.operations.size} operations, " +
-        s"attempt ${batchTracker.attemptNumber + 1}")
-      
-      retryBatch(batchTracker)
-      this.pendingRetries.decrementAndGet()
+      scheduleBatchInternal(cosmosBatchOperation)
+
+      if (clearPendingRetryAction()) {
+        this.pendingRetries.decrementAndGet()
+      }
+
       SMono.empty
     })
-    
-    if (hasTimeout) {
+
+    if (Exceptions.isTimeout(statusCode)) {
       deferredRetryMono
         .delaySubscription(
           Duration(
@@ -359,202 +209,128 @@ private class TransactionalBulkWriter
         .subscribe()
     }
   }
-  
-  private def retryBatch(batchTracker: BatchTracker): Unit = {
-    // Acquire semaphore for retry
-    val activeTasksSemaphoreTimeout = 10
-    val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
-    var activeBatchesSnapshot = Set.empty[String]
-    var pendingBatchRetriesSnapshot = Set.empty[String]
-    
-    while (!semaphore.tryAcquire(activeTasksSemaphoreTimeout, TimeUnit.MINUTES)) {
-      if (subscriptionDisposable.isDisposed) {
-        captureIfFirstFailure(
-          new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already"))
-      }
-      
-      throwIfProgressStaled(
-        "Batch retry semaphore acquisition",
-        activeBatchesSnapshot.flatMap(id => activeBatches.get(id).map(_.operations).getOrElse(List.empty)).toSet,
-        pendingBatchRetriesSnapshot.flatMap(id => activeBatches.get(id).map(_.operations).getOrElse(List.empty)).toSet,
-        numberOfIntervalsWithIdenticalActiveOperationSnapshots,
-        allowRetryOnNewBulkWriterInstance = false)
 
-      activeBatchesSnapshot = activeBatches.keySet.toSet
-      pendingBatchRetriesSnapshot = pendingBatchRetries.toSet
-    }
-    
-    activeBatchCount.incrementAndGet()
-    
-    // Generate new batch ID for retry
-    val newBatchId = java.util.UUID.randomUUID().toString
-    
-    // Recreate batch with incremented attempt numbers
-    val partitionKey = batchTracker.operations.head.getPartitionKeyValue
-    val batch = CosmosBatch.createCosmosBatch(partitionKey)
-    val updatedContexts = new scala.collection.mutable.ListBuffer[OperationContext]()
-    
-    batchTracker.sourceData.foreach { case (objectNode, context, _) =>
-      batch.upsertItemOperation(objectNode)
-      val updatedContext = new OperationContext(
-        context.itemId,
-        context.partitionKeyValue,
-        context.eTag,
-        batchTracker.attemptNumber + 1,
-        context.sequenceNumber,
-        context.sourceItem
-      )
-      updatedContexts += updatedContext
-    }
-    
-    // Create new BatchTracker for retry
-    val batchOperations = batch.getOperations()
-    val operationsList = batchOperations.asScala.toList
-    val newBatchTracker = BatchTracker(
-      batchId = newBatchId,
-      operations = operationsList,
-      contexts = updatedContexts.toList,
-      sourceData = batchTracker.sourceData,
-      attemptNumber = batchTracker.attemptNumber + 1
-    )
-    
-    // Register new batch
-    activeBatches.put(newBatchId, newBatchTracker)
-    batchResponseCollector.put(newBatchId, new java.util.concurrent.ConcurrentLinkedQueue[CosmosBulkOperationResponse[Object]]())
-    operationsList.foreach(op => operationToBatchId.put(op, newBatchId))
-    
-    log.logDebug(s"Created retry batch $newBatchId (original: ${batchTracker.batchId}) with ${operationsList.size} operations")
-    
-    // Emit retry batch
-    bulkInputEmitter.emitNext(batch, emitFailureHandler)
-  }
-
-  private def scheduleRetry(
-                               trackPendingRetryAction: () => Boolean,
-                               clearPendingRetryAction: () => Boolean,
-                               partitionKey: PartitionKey,
-                               objectNode: ObjectNode,
-                               operationContext: OperationContext,
-                               statusCode: Int): Unit = {
-      if (trackPendingRetryAction()) {
-        this.pendingRetries.incrementAndGet()
-      }
-      // this is to ensure the submission will happen on a different thread in background
-      // and doesn't block the active thread
-      val deferredRetryMono = SMono.defer(() => {
-          scheduleWriteInternal(
-              partitionKey,
-              objectNode,
-              new OperationContext(
-                  operationContext.itemId,
-                  operationContext.partitionKeyValue,
-                  operationContext.eTag,
-                  operationContext.attemptNumber + 1,
-                  operationContext.sequenceNumber))
-          if (clearPendingRetryAction()) {
-            this.pendingRetries.decrementAndGet()
-          }
-          SMono.empty
-      })
-
-      if (Exceptions.isTimeout(statusCode)) {
-          deferredRetryMono
-              .delaySubscription(
-                  Duration(
-                      TransactionalBulkWriter.minDelayOn408RequestTimeoutInMs +
-                          scala.util.Random.nextInt(
-                              TransactionalBulkWriter.maxDelayOn408RequestTimeoutInMs - TransactionalBulkWriter.minDelayOn408RequestTimeoutInMs),
-                      TimeUnit.MILLISECONDS),
-                  Schedulers.boundedElastic())
-              .subscribeOn(Schedulers.boundedElastic())
-              .subscribe()
-
-      } else {
-          deferredRetryMono
-              .subscribeOn(Schedulers.boundedElastic())
-              .subscribe()
-      }
-  }
-
-  private val subscriptionDisposable: Disposable = {
-    log.logTrace(s"subscriptionDisposable, Context: ${operationContext.toString} $getThreadInfo")
-
-    val inputFlux = bulkInputEmitter
+  private val bulkInputSubscriptionDisposable: Disposable = {
+    log.logTrace(s"bulkInputSubscriptionDisposable, Context: ${operationContext.toString} $getThreadInfo")
+    transactionalBulkInputEmitter
       .asFlux()
       .onBackpressureBuffer()
-      .publishOn(bulkWriterInputBoundedElastic)
+      .bufferUntilChanged[PartitionKey](
+        new Function[TransactionalBulkItem, PartitionKey] {
+          override def apply(x: TransactionalBulkItem): PartitionKey = x.partitionKey
+        }.asJava
+      )
+      .flatMap(bulkItemsList => {
+        if (bulkItemsList.size() == 0) {
+          SMono.empty
+        } else {
+          val cosmosBatch = CosmosBatch.createCosmosBatch(bulkItemsList.get(0).partitionKey)
+          bulkItemsList.forEach(bulkItem => {
+            writeConfig.itemWriteStrategy match {
+              case ItemWriteStrategy.ItemOverwrite => cosmosBatch.upsertItemOperation(bulkItem.objectNode)
+              case _ => throw new IllegalStateException(s"Item write strategy ${writeConfig.itemWriteStrategy} is not supported for bulk with transactional")
+            }
+          })
+
+          scheduleBatch(cosmosBatch)
+          SMono.empty
+        }
+      })
+      .publishOn(transactionalBulkWriterInputBoundedElastic)
       .doOnError(t => {
-        log.logError(s"Input publishing flux failed, Context: ${operationContext.toString} $getThreadInfo", t)
+        log.logError(s"Bulk input publishing flux failed, Context: ${operationContext.toString} $getThreadInfo", t)
+      })
+      .subscribe()
+  }
+
+  private val batchSubscriptionDisposable: Disposable = {
+    log.logTrace(s"batchSubscriptionDisposable, Context: ${operationContext.toString} $getThreadInfo")
+
+    val batchInputFlux = transactionalBatchInputEmitter
+      .asFlux()
+      .onBackpressureBuffer()
+      .publishOn(transactionalBatchInputBoundedElastic)
+      .doOnError(t => {
+        log.logError(s"Batch input publishing flux failed, Context: ${operationContext.toString} $getThreadInfo", t)
       })
 
-    // Use TransactionalBulkExecutor which internally uses SinglePartitionKeyServerBatchRequest
-    // with setAtomicBatch(true) and setShouldContinueOnError(false) for true transactional semantics
-    val cosmosBulkExecutionOptionsImpl = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-      .getCosmosBulkExecutionOptionsAccessor
-      .getImpl(cosmosBulkExecutionOptions)
-    
-    val transactionalExecutor = new TransactionalBulkExecutor[Object](
+    val transactionalExecutor = new TransactionalBulkExecutor(
       container,
-      inputFlux,
-      cosmosBulkExecutionOptionsImpl)
+      batchInputFlux,
+      cosmosTransactionalBulkExecutionOptions)
 
-    val bulkOperationResponseFlux: SFlux[CosmosBulkOperationResponse[Object]] =
-      transactionalExecutor
-          .execute()
-          .onBackpressureBuffer()
-          .publishOn(bulkWriterResponsesBoundedElastic)
-          .doOnError(t => {
-            log.logError(s"Transactional bulk execution flux failed, Context: ${operationContext.toString} $getThreadInfo", t)
-          })
-          .asScala
+    val batchResponseFlux: SFlux[CosmosBulkTransactionalBatchResponse] = transactionalExecutor.execute().asScala
 
-    bulkOperationResponseFlux.subscribe(
+    batchResponseFlux.subscribe(
       resp => {
+        val isGettingRetried = new AtomicBoolean(false)
+        val shouldSkipTaskCompletion = new AtomicBoolean(false)
         try {
-          val itemOperation = resp.getOperation
-          
-          // Find which batch this operation belongs to
-          val batchIdOption = operationToBatchId.get(itemOperation)
-          
-          if (batchIdOption.isEmpty) {
-            logInfoOrWarning(s"Cannot find batch ID for operation '${itemOperation.getOperationType} " +
-              s"${itemOperation.getPartitionKeyValue}/${itemOperation.getId}'. This can happen when " +
+          // all the operations in the batch will have the same partition key value
+          // get the partition key value from the first result
+          val partitionKeyValue = resp.getCosmosBatch.getPartitionKeyValue
+          val activeBatchOperationOpt = activeBatches.remove(partitionKeyValue)
+          val pendingBatchOperationRetriesOpt = pendingBatchRetries.remove(partitionKeyValue)
+
+          if (pendingBatchOperationRetriesOpt.isDefined) {
+            pendingRetries.decrementAndGet()
+          }
+
+          if (activeBatchOperationOpt.isEmpty) {
+            // can't find the batch operation in list of active operations!
+            logInfoOrWarning(s"Cannot find active batch operation for '$partitionKeyValue'. This can happen when " +
               s"retries get re-enqueued.")
-          } else {
-            val batchId = batchIdOption.get
-            
-            // Add response to batch collector
-            batchResponseCollector.get(batchId) match {
-              case Some(responseQueue) =>
-                responseQueue.add(resp)
-                
-                // Check if we've received all responses for this batch
-                val batchTrackerOption = activeBatches.get(batchId)
-                if (batchTrackerOption.isDefined) {
-                  val batchTracker = batchTrackerOption.get
-                  val expectedCount = batchTracker.operations.size
-                  val receivedCount = responseQueue.size()
-                  
-                  if (receivedCount == expectedCount) {
-                    // All responses received - process batch
-                    processBatchResponses(batchId, batchTracker, responseQueue)
-                  }
-                }
-              case None =>
-                log.logWarning(s"Response collector not found for batch $batchId")
+            shouldSkipTaskCompletion.set(true)
+          }
+
+          if (activeBatchOperationOpt.isDefined || pendingBatchOperationRetriesOpt.isDefined) {
+            val batchOperation = activeBatchOperationOpt.orElse(pendingBatchOperationRetriesOpt).get
+
+            if (resp.getException != null) {
+              Option(resp.getException) match {
+                case Some(cosmosException: CosmosException) =>
+                  handleNonSuccessfulStatusCode(
+                    batchOperation.operationContext,
+                    batchOperation.cosmosBatch,
+                    None,
+                    isGettingRetried,
+                    Some(cosmosException))
+                case _ =>
+                  log.logWarning(
+                    s"unexpected failure: partitionKeyValue=[" +
+                      s"${batchOperation.operationContext}], encountered , attemptNumber=${batchOperation.operationContext.attemptNumber}, " +
+                      s"exceptionMessage=${resp.getException.getMessage}, " +
+                      s"Context: ${operationContext.toString} $getThreadInfo", resp.getException)
+                  captureIfFirstFailure(resp.getException)
+                  cancelWork()
+              }
+            } else if (!resp.getResponse.isSuccessStatusCode) {
+              handleNonSuccessfulStatusCode(
+                batchOperation.operationContext,
+                batchOperation.cosmosBatch,
+                Some(resp.getResponse),
+                isGettingRetried,
+                None)
+            } else {
+              // no error case
+              outputMetricsPublisher.trackWriteOperation(resp.getResponse.size(), None)
+              totalSuccessfulIngestionMetrics.addAndGet(resp.getResponse.size())
             }
           }
         }
-        catch {
-          case ex: Exception =>
-            log.logError(s"Error processing bulk operation response, Context: ${operationContext.toString} $getThreadInfo", ex)
-            captureIfFirstFailure(ex)
-            cancelWork()
+        finally {
+          if (!isGettingRetried.get) {
+            semaphore.release()
+          }
+        }
+
+        if (!shouldSkipTaskCompletion.get) {
+          markTaskCompletion()
         }
       },
       errorConsumer = Option.apply(
         ex => {
-          log.logError(s"Unexpected failure code path in Bulk ingestion, " +
+          log.logError(s"Unexpected failure code path in transactional batch ingestion, " +
             s"Context: ${operationContext.toString} $getThreadInfo", ex)
           // if there is any failure this closes the bulk.
           // at this point bulk api doesn't allow any retrying
@@ -574,168 +350,95 @@ private class TransactionalBulkWriter
     Preconditions.checkState(!closed.get())
     throwIfCapturedExceptionExists()
 
-    val operationContext = new OperationContext(
-      getId(objectNode),
-      partitionKeyValue,
-      getETag(objectNode),
-      1,
-      monotonicOperationCounter.incrementAndGet(),
-      None)
+    val transactionalBulkItem = TransactionalBulkItem(partitionKeyValue, objectNode)
+    transactionalBulkInputEmitter.emitNext(transactionalBulkItem, emitFailureHandler)
+  }
 
-    val cnt = totalScheduledMetrics.getAndIncrement()
+  private def scheduleBatch(cosmosBatch: CosmosBatch): Unit = {
+    Preconditions.checkState(!closed.get())
+    throwIfCapturedExceptionExists()
+
+    val activeTasksSemaphoreTimeout = 10
+    val operationContext =
+      new OperationContext(
+        cosmosBatch.getPartitionKeyValue,
+        1,
+        monotonicOperationCounter.incrementAndGet())
+    if (!transactionalBatchPartitionKeyScheduled.add(cosmosBatch.getPartitionKeyValue)) {
+      log.logError(s"There are already existing cosmos batch operation scheduled for partition key ${cosmosBatch.getPartitionKeyValue}," +
+        s" transactional is not guaranteed, fail")
+      SMono.error(new IllegalStateException(s"Transactional is not guaranteed for partition key ${cosmosBatch.getPartitionKeyValue}"))
+    }
+
+    val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
+    // Don't clone the activeOperations for the first iteration
+    // to reduce perf impact before the Semaphore has been acquired
+    // this means if the semaphore can't be acquired within 10 minutes
+    // the first attempt will always assume it wasn't stale - so effectively we
+    // allow staleness for ten additional minutes - which is perfectly fine
+    var activeCosmosBatchSnapshot = mutable.Map.empty[PartitionKey, CosmosBatchOperation]
+    var pendingCosmosBatchSnapshot = mutable.Map.empty[PartitionKey, CosmosBatchOperation]
+
+    log.logTrace(
+      s"Before TryAcquire ${totalScheduledMetrics.get}, Context: ${operationContext.toString} $getThreadInfo")
+    while (!semaphore.tryAcquire(activeTasksSemaphoreTimeout, TimeUnit.MINUTES)) {
+      log.logDebug(s"Not able to acquire semaphore, Context: ${operationContext.toString} $getThreadInfo")
+      if (bulkInputSubscriptionDisposable.isDisposed || batchSubscriptionDisposable.isDisposed) {
+        captureIfFirstFailure(
+          new IllegalStateException("Can't accept any new work - TransactionalBulkWriter has been disposed already"))
+      }
+
+      throwIfProgressStaled(
+        "Semaphore acquisition",
+        activeCosmosBatchSnapshot,
+        pendingCosmosBatchSnapshot,
+        numberOfIntervalsWithIdenticalActiveOperationSnapshots,
+        allowRetryOnNewBulkWriterInstance = false)
+
+      activeCosmosBatchSnapshot = activeBatches.clone()
+      pendingCosmosBatchSnapshot = pendingBatchRetries.clone()
+    }
+
+    val cnt = totalScheduledMetrics.getAndAdd(cosmosBatch.getOperations.size())
     log.logTrace(s"total scheduled $cnt, Context: ${operationContext.toString} $getThreadInfo")
 
-    scheduleWriteInternal(partitionKeyValue, objectNode, operationContext)
+    scheduleBatchInternal(CosmosBatchOperation(cosmosBatch, operationContext))
   }
 
-  private def scheduleWriteInternal(partitionKeyValue: PartitionKey,
-                                    objectNode: ObjectNode,
-                                    operationContext: OperationContext): Unit = {
-      activeTasks.incrementAndGet()
-      if (operationContext.attemptNumber > 1) {
-        logInfoOrWarning(s"TransactionalBulkWriter scheduleWrite attemptCnt: ${operationContext.attemptNumber}, " +
-              s"Context: ${operationContext.toString} $getThreadInfo")
-      }
+  private def scheduleBatchInternal(cosmosBatchOperation: CosmosBatchOperation): Unit = {
+    activeBatchTasks.incrementAndGet()
 
-      scheduleBulkWriteInternal(partitionKeyValue, objectNode, operationContext)
-  }
-
-  private def scheduleBulkWriteInternal(partitionKeyValue: PartitionKey,
-                                        objectNode: ObjectNode,
-                                        operationContext: OperationContext): Unit = {
-
-    // For transactional batches, only upsert is supported
-    // This is validated in the constructor
-    val effectiveOperationType = "upsert"
-
-    // Buffer operation for batch construction
-    this.addOperationToBatch(partitionKeyValue, objectNode, operationContext, effectiveOperationType)
-  }
-
-  private[this] def addOperationToBatch(partitionKey: PartitionKey,
-                                        objectNode: ObjectNode,
-                                        operationContext: OperationContext,
-                                        effectiveOperationType: String): Unit = {
-
-    batchConstructionLock.synchronized {
-      // Check if partition key changed - flush existing batch if needed
-      if (currentPartitionKey != null && !currentPartitionKey.equals(partitionKey)) {
-        flushCurrentBatch()
-      }
-
-      // Initialize partition key if this is the first operation
-      if (currentPartitionKey == null) {
-        currentPartitionKey = partitionKey
-      }
-
-      // Add operation data to buffer
-      currentBatchOperations += ((objectNode, operationContext, effectiveOperationType))
-
-      // Note: We don't auto-flush at 100 operations in transactional mode because:
-      // 1. Auto-splitting would break transactional atomicity
-      // 2. The service will reject batches with >100 operations with a clear error
-      // 3. Users should ensure their transactional batches respect the 100 operation limit
+    if (cosmosBatchOperation.operationContext.attemptNumber > 1) {
+      logInfoOrWarning(s"bulk scheduleWrite attemptCnt: ${cosmosBatchOperation.operationContext.attemptNumber}, " +
+        s"Context: ${operationContext.toString} $getThreadInfo")
     }
-  }
 
-  private[this] def flushCurrentBatch(): Unit = {
-    // Must be called within batchConstructionLock.synchronized
-    if (currentBatchOperations.nonEmpty && currentPartitionKey != null) {
-      // Acquire semaphore before emitting batch - this limits concurrent batches
-      val activeTasksSemaphoreTimeout = 10
-      val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
-      var activeBatchesSnapshot = Set.empty[String]
-      var pendingBatchRetriesSnapshot = Set.empty[String]
-      
-      log.logTrace(s"Before acquiring semaphore for batch emission, activeBatchCount: ${activeBatchCount.get} $getThreadInfo")
-      while (!semaphore.tryAcquire(activeTasksSemaphoreTimeout, TimeUnit.MINUTES)) {
-        log.logDebug(s"Not able to acquire semaphore for batch, activeBatchCount: ${activeBatchCount.get} $getThreadInfo")
-        if (subscriptionDisposable.isDisposed) {
-          captureIfFirstFailure(
-            new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already"))
-        }
-
-        throwIfProgressStaled(
-          "Batch semaphore acquisition",
-          activeBatchesSnapshot.flatMap(batchId => activeBatches.get(batchId).map(_.operations).getOrElse(List.empty)).toSet,
-          pendingBatchRetriesSnapshot.flatMap(batchId => activeBatches.get(batchId).map(_.operations).getOrElse(List.empty)).toSet,
-          numberOfIntervalsWithIdenticalActiveOperationSnapshots,
-          allowRetryOnNewBulkWriterInstance = false)
-
-        activeBatchesSnapshot = activeBatches.keySet.toSet
-        pendingBatchRetriesSnapshot = pendingBatchRetries.toSet
-      }
-      
-      activeBatchCount.incrementAndGet()
-      log.logTrace(s"Acquired semaphore for batch emission, activeBatchCount: ${activeBatchCount.get} $getThreadInfo")
-      
-      // Generate unique batch ID
-      val batchId = java.util.UUID.randomUUID().toString
-      
-      // Build the batch using the builder API
-      val batch = CosmosBatch.createCosmosBatch(currentPartitionKey)
-
-      // Build the batch and keep track of context for each operation
-      // For transactional batches, all operations are upserts
-      val contextList = new scala.collection.mutable.ListBuffer[OperationContext]()
-
-      currentBatchOperations.foreach { case (objectNode, operationContext, _) =>
-        batch.upsertItemOperation(objectNode)
-        contextList += operationContext
-      }
-
-      // After building the batch, get the operations and create BatchTracker
-      val batchOperations = batch.getOperations()
-      val operationsList = batchOperations.asScala.toList
-      
-      // Create BatchTracker with all batch information
-      val batchTracker = BatchTracker(
-        batchId = batchId,
-        operations = operationsList,
-        contexts = contextList.toList,
-        sourceData = currentBatchOperations.toList,
-        attemptNumber = 1
-      )
-      
-      // Register batch and map operations to batch ID
-      activeBatches.put(batchId, batchTracker)
-      batchResponseCollector.put(batchId, new java.util.concurrent.ConcurrentLinkedQueue[CosmosBulkOperationResponse[Object]]())
-      operationsList.foreach(op => operationToBatchId.put(op, batchId))
-      
-      log.logDebug(s"Created batch $batchId with ${operationsList.size} operations")
-
-      // Emit the batch
-      bulkInputEmitter.emitNext(batch, emitFailureHandler)
-
-      // Clear the buffer
-      currentBatchOperations.clear()
-      currentPartitionKey = null
-    }
-  }
-
-  private[this] def finalFlushBatch(): Unit = {
-    batchConstructionLock.synchronized {
-      flushCurrentBatch()
-    }
+    activeBatches.put(
+      cosmosBatchOperation.cosmosBatch.getPartitionKeyValue,
+      cosmosBatchOperation)
+    transactionalBatchInputEmitter.emitNext(cosmosBatchOperation.cosmosBatch, emitFailureHandler)
   }
 
   //scalastyle:off method.length
   //scalastyle:off cyclomatic.complexity
   private[this] def handleNonSuccessfulStatusCode
   (
-    context: OperationContext,
-    itemOperation: CosmosItemOperation,
-    itemResponse: CosmosBulkItemResponse,
+    operationContext: OperationContext,
+    cosmosBatch: CosmosBatch,
+    cosmosBatchResponse: Option[CosmosBatchResponse],
     isGettingRetried: AtomicBoolean,
     responseException: Option[CosmosException]
   ) : Unit = {
 
-    val exceptionMessage = responseException match {
-      case Some(e) => e.getMessage
-      case None => ""
+    val exceptionMessage = cosmosBatchResponse match {
+      case Some(r) => r.getErrorMessage
+      case None => responseException match {
+        case Some(e) => e.getMessage
+        case None => ""
+      }
     }
 
-    val effectiveStatusCode = Option(itemResponse) match {
+    val effectiveStatusCode = cosmosBatchResponse match {
       case Some(r) => r.getStatusCode
       case None => responseException match {
         case Some(e) => e.getStatusCode
@@ -743,7 +446,7 @@ private class TransactionalBulkWriter
       }
     }
 
-    val effectiveSubStatusCode = Option(itemResponse) match {
+    val effectiveSubStatusCode = cosmosBatchResponse match {
       case Some(r) => r.getSubStatusCode
       case None => responseException match {
         case Some(e) => e.getSubStatusCode
@@ -751,49 +454,41 @@ private class TransactionalBulkWriter
       }
     }
 
-    log.logDebug(s"encountered item operation response with status code " +
+    log.logDebug(s"encountered batch operation response with status code " +
       s"$effectiveStatusCode:$effectiveSubStatusCode, " +
       s"Context: ${operationContext.toString} $getThreadInfo")
-    if (shouldIgnore(effectiveStatusCode, effectiveSubStatusCode)) {
-      log.logDebug(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
-        s"ignored encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', " +
-        s"Context: ${operationContext.toString}")
-      totalSuccessfulIngestionMetrics.getAndIncrement()
-      // work done
-    } else if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, context)) {
+
+    if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, operationContext)) {
       // requeue
-      log.logWarning(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
+      log.logWarning(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
         s"encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', will retry! " +
-        s"attemptNumber=${context.attemptNumber}, exceptionMessage=$exceptionMessage,  " +
+        s"attemptNumber=${operationContext.attemptNumber}, exceptionMessage=${exceptionMessage},  " +
         s"Context: {${operationContext.toString}} $getThreadInfo")
 
-      // During retry, use the original objectNode to ensure consistency
-      val sourceItem = itemOperation match {
-          case _: ItemBulkOperation[ObjectNode, OperationContext] =>
-              context.sourceItem match {
-                  case Some(bulkOperationSourceItem) => bulkOperationSourceItem
-                  case None => itemOperation.getItem.asInstanceOf[ObjectNode]
-              }
-          case _ => itemOperation.getItem.asInstanceOf[ObjectNode]
-      }
+      val batchOperationRetry = CosmosBatchOperation(
+        cosmosBatch,
+        new OperationContext(
+          operationContext.partitionKeyValueInput,
+          operationContext.attemptNumber + 1,
+          operationContext.sequenceNumber)
+      )
 
       this.scheduleRetry(
-        trackPendingRetryAction = () => pendingBulkWriteRetries.add(itemOperation),
-        clearPendingRetryAction = () => pendingBulkWriteRetries.remove(itemOperation),
-        itemOperation.getPartitionKeyValue,
-        sourceItem,
-        context,
+        trackPendingRetryAction = () => pendingBatchRetries.put(cosmosBatch.getPartitionKeyValue, batchOperationRetry).isEmpty,
+        clearPendingRetryAction = () => pendingBatchRetries.remove(cosmosBatch.getPartitionKeyValue).isDefined,
+        batchOperationRetry,
         effectiveStatusCode)
       isGettingRetried.set(true)
+
     } else {
-      log.logError(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
+      log.logError(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
         s"encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', all retries exhausted! " +
-        s"attemptNumber=${context.attemptNumber}, exceptionMessage=$exceptionMessage, " +
+        s"attemptNumber=${operationContext.attemptNumber}, exceptionMessage=${exceptionMessage}, " +
         s"Context: {${operationContext.toString} $getThreadInfo")
 
-      val message = s"All retries exhausted for '${itemOperation.getOperationType}' bulk operation - " +
+      val message = s"All retries exhausted for batch operation - " +
         s"statusCode=[$effectiveStatusCode:$effectiveSubStatusCode] " +
-        s"itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}]"
+        s"partitionKeyValue=[${operationContext.partitionKeyValueInput}]"
 
       val exceptionToBeThrown = responseException match {
         case Some(e) =>
@@ -806,9 +501,9 @@ private class TransactionalBulkWriter
       cancelWork()
     }
   }
+
   //scalastyle:on method.length
   //scalastyle:on cyclomatic.complexity
-
   private[this] def throwIfCapturedExceptionExists(): Unit = {
     val errorSnapshot = errorCaptureFirstException.get()
     if (errorSnapshot != null) {
@@ -818,42 +513,52 @@ private class TransactionalBulkWriter
     }
   }
 
-  private[this] def getActiveOperationsLog(
-                                              activeOperationsSnapshot: Set[CosmosItemOperation]): String = {
+  private[this] def getActiveOperationsLog(activeOperationsSnapshot: mutable.Map[PartitionKey, CosmosBatchOperation]): String = {
     val sb = new StringBuilder()
 
+    // flatten the batches
     activeOperationsSnapshot
+      .values
+      .flatMap(batchOperation =>
+        batchOperation.cosmosBatch.getOperations.asScala.map(itemOperation => (itemOperation, batchOperation.operationContext.attemptNumber)))
+      .toList
       .take(TransactionalBulkWriter.maxItemOperationsToShowInErrorMessage)
-      .foreach(itemOperation => {
+      .foreach(itemOperationAttemptPair => {
         if (sb.nonEmpty) {
           sb.append(", ")
         }
 
-        sb.append(itemOperation.getOperationType)
+        sb.append(itemOperationAttemptPair._1.getOperationType)
         sb.append("->")
-        val ctx = itemOperation.getContext[OperationContext]
-        sb.append(s"${ctx.partitionKeyValue}/${ctx.itemId}/${ctx.eTag}(${ctx.attemptNumber})")
+        sb.append(s"${itemOperationAttemptPair._1.getId}/${itemOperationAttemptPair._1.getPartitionKeyValue}/(${itemOperationAttemptPair._2})")
       })
 
     sb.toString()
   }
 
-  private[this] def sameBulkWriteOperations
+  private[this] def sameBatchOperations
   (
-    snapshot: Set[CosmosItemOperation],
-    current: Set[CosmosItemOperation]
+    snapshot: mutable.Map[PartitionKey, CosmosBatchOperation],
+    current:  mutable.Map[PartitionKey, CosmosBatchOperation]
   ): Boolean = {
 
     if (snapshot.size != current.size) {
       false
     } else {
-      snapshot.forall(snapshotOperation => {
-        current.exists(
-          currentOperation => snapshotOperation.getOperationType == currentOperation.getOperationType
-          && snapshotOperation.getPartitionKeyValue == currentOperation.getPartitionKeyValue
-          && Objects.equals(snapshotOperation.getId, currentOperation.getId)
-          && Objects.equals(snapshotOperation.getItem[ObjectNode], currentOperation.getItem[ObjectNode])
-        )
+      snapshot.keys.forall(partitionKey => {
+        if (current.contains(partitionKey)) {
+
+          snapshot(partitionKey).cosmosBatch.getOperations.asScala.forall(itemOperationSnapshot => {
+            current(partitionKey).cosmosBatch.getOperations.asScala.exists(currentOperation =>
+              itemOperationSnapshot.getOperationType == currentOperation.getOperationType
+                && itemOperationSnapshot.getPartitionKeyValue == currentOperation.getPartitionKeyValue
+                && Objects.equals(itemOperationSnapshot.getId, currentOperation.getId)
+                && Objects.equals(itemOperationSnapshot.getItem[Object], currentOperation.getItem[Object])
+            )
+          })
+        } else {
+          false
+        }
       })
     }
   }
@@ -861,18 +566,14 @@ private class TransactionalBulkWriter
   private[this] def throwIfProgressStaled
   (
     operationName: String,
-    activeOperationsSnapshot: Set[CosmosItemOperation],
-    pendingRetriesSnapshot: Set[CosmosItemOperation],
+    activeOperationsSnapshot: mutable.Map[PartitionKey, CosmosBatchOperation],
+    pendingRetriesSnapshot: mutable.Map[PartitionKey, CosmosBatchOperation],
     numberOfIntervalsWithIdenticalActiveOperationSnapshots: AtomicLong,
     allowRetryOnNewBulkWriterInstance: Boolean
   ): Unit = {
-
     val operationsLog = getActiveOperationsLog(activeOperationsSnapshot)
 
-    val currentActiveOperations = activeBatches.values.flatMap(_.operations).toSet
-    val currentPendingRetries = pendingBatchRetries.flatMap(batchId => activeBatches.get(batchId).map(_.operations).getOrElse(List.empty)).toSet
-    if (sameBulkWriteOperations(pendingRetriesSnapshot ++ activeOperationsSnapshot, currentActiveOperations ++ currentPendingRetries)) {
-
+    if (sameBatchOperations(pendingRetriesSnapshot ++ activeOperationsSnapshot, activeBatches ++ pendingBatchRetries)) {
       numberOfIntervalsWithIdenticalActiveOperationSnapshots.incrementAndGet()
       log.logWarning(
         s"$operationName has been waiting $numberOfIntervalsWithIdenticalActiveOperationSnapshots " +
@@ -882,7 +583,7 @@ private class TransactionalBulkWriter
     } else {
       numberOfIntervalsWithIdenticalActiveOperationSnapshots.set(0)
       logInfoOrWarning(
-        s"$operationName is waiting for active bulkWrite operations: $operationsLog " +
+        s"$operationName is waiting for active batch operations: $operationsLog " +
           s"Context: ${operationContext.toString} $getThreadInfo"
       )
     }
@@ -894,34 +595,40 @@ private class TransactionalBulkWriter
     } else {
       writeConfig.maxRetryNoProgressIntervalInSeconds
     }
+
     val maxAllowedIntervalWithoutAnyProgressExceeded = secondsWithoutProgress >= maxNoProgressIntervalInSeconds
 
     if (maxAllowedIntervalWithoutAnyProgressExceeded) {
+      val exception = {
+        // order by batch sequence number
+        // then return all operations inside the batch
+        val retriableRemainingOperations = if (allowRetryOnNewBulkWriterInstance) {
+          Some(
+            (pendingRetriesSnapshot ++ activeOperationsSnapshot)
+              .toList
+              .sortBy(op => op._2.operationContext.sequenceNumber)
+              .map(batchOperationPartitionKeyPair => batchOperationPartitionKeyPair._2.cosmosBatch)
+              .flatMap(batch => batch.getOperations.asScala)
+          )
+        } else {
+          None
+        }
 
-      val retriableRemainingOperations = if (allowRetryOnNewBulkWriterInstance) {
-        Some(
-          (pendingRetriesSnapshot ++ activeOperationsSnapshot)
-            .toList
-            .sortBy(op => op.getContext[OperationContext].sequenceNumber)
-        )
-      } else {
-        None
+        new BulkWriterNoProgressException(
+          s"Stale batch bulk ingestion identified in $operationName - the following active operations have not been " +
+            s"completed (first ${TransactionalBulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
+            s"$maxNoProgressIntervalInSeconds seconds: $operationsLog",
+          commitAttempt,
+          retriableRemainingOperations)
       }
 
-      val exception = new BulkWriterNoProgressException(
-        s"Stale bulk ingestion identified in $operationName - the following active operations have not been " +
-          s"completed (first ${TransactionalBulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
-          s"$maxNoProgressIntervalInSeconds seconds: $operationsLog",
-        commitAttempt,
-        retriableRemainingOperations)
-
       captureIfFirstFailure(exception)
-
       cancelWork()
     }
 
     throwIfCapturedExceptionExists()
   }
+
 
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
   // scalastyle:off method.length
@@ -930,13 +637,13 @@ private class TransactionalBulkWriter
     this.synchronized {
       try {
         if (!closed.get()) {
-          // Flush any remaining batched operations before closing
-          finalFlushBatch()
-          
-          log.logInfo(s"flushAndClose invoked $getThreadInfo")
-          val totalActiveOperations = activeBatches.values.map(_.operations.size).sum
+          log.logInfo(s"flushAndClose invoked, Context: ${operationContext.toString} $getThreadInfo")
           log.logInfo(s"completed so far ${totalSuccessfulIngestionMetrics.get()}, " +
-            s"pending bulkWrite tasks (operations across ${activeBatches.size} batches): $totalActiveOperations $getThreadInfo")
+            s"pending batch tasks ${activeBatches.size}" +
+            s" Context: ${operationContext.toString} $getThreadInfo")
+
+          logInfoOrWarning(s"invoking transactionalBulkInputEmitter.onComplete(), Context: ${operationContext.toString} $getThreadInfo")
+          transactionalBulkInputEmitter.emitComplete(TransactionalBulkWriter.emitFailureHandlerForComplete)
 
           // error handling, if there is any error and the subscription is cancelled
           // the remaining tasks will not be processed hence we never reach activeTasks = 0
@@ -944,16 +651,16 @@ private class TransactionalBulkWriter
           lock.lock()
           try {
             val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
-            var activeTasksSnapshot = activeTasks.get()
+            var activeTasksSnapshot = activeBatchTasks.get()
             var pendingRetriesSnapshot = pendingRetries.get()
             while ((pendingRetriesSnapshot > 0 || activeTasksSnapshot > 0)
               && errorCaptureFirstException.get == null) {
 
               logInfoOrWarning(
-                s"Waiting for pending activeTasks $activeTasksSnapshot and/or pendingRetries " +
+                s"Waiting for pending activeBatchTasks $activeTasksSnapshot and/or pendingBatchRetries " +
                   s"$pendingRetriesSnapshot,  Context: ${operationContext.toString} $getThreadInfo")
-              val activeOperationsSnapshot = activeBatches.values.flatMap(_.operations).toSet
-              val pendingOperationsSnapshot = pendingBatchRetries.flatMap(batchId => activeBatches.get(batchId).map(_.operations).getOrElse(List.empty)).toSet
+              val activeOperationsSnapshot = activeBatches.clone()
+              val pendingOperationsSnapshot = pendingBatchRetries.clone()
               val awaitCompleted = pendingTasksCompleted.await(writeConfig.flushCloseIntervalInSeconds, TimeUnit.SECONDS)
               if (!awaitCompleted) {
                 throwIfProgressStaled(
@@ -965,73 +672,73 @@ private class TransactionalBulkWriter
                 )
 
                 if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get > 0L) {
-
-
-                  val buffered = Scannable.from(bulkInputEmitter).scan(Scannable.Attr.BUFFERED)
+                  val bulkInputBuffered = Scannable.from(transactionalBulkInputEmitter).scan(Scannable.Attr.BUFFERED)
+                  val batchBuffered = Scannable.from(transactionalBatchInputEmitter).scan(Scannable.Attr.BUFFERED)
 
                   if (verboseLoggingAfterReEnqueueingRetriesEnabled.compareAndSet(false, true)) {
                     log.logWarning(s"Starting to re-enqueue retries. Enabling verbose logs. "
                       + s"Number of intervals with identical pending operations: "
-                      + s"$numberOfIntervalsWithIdenticalActiveOperationSnapshots Active Bulk Operations: "
-                      + s"$activeOperationsSnapshot,  "
-                      + s"PendingRetries: $pendingRetriesSnapshot, Buffered tasks: $buffered "
+                      + s"$numberOfIntervalsWithIdenticalActiveOperationSnapshots Active Batch Operations: "
+                      + s"$activeOperationsSnapshot, "
+                      + s"PendingRetries: $pendingRetriesSnapshot, "
+                      + s"Buffered bulk input tasks: $bulkInputBuffered, "
+                      + s"Buffered batch input tasks: $batchBuffered, "
                       + s"Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
                       + s"Context: ${operationContext.toString} $getThreadInfo")
                   } else if ((numberOfIntervalsWithIdenticalActiveOperationSnapshots.get % 3) == 0) {
                     log.logWarning(s"Reattempting to re-enqueue retries. Enabling verbose logs. "
                       + s"Number of intervals with identical pending operations: "
-                      + s"$numberOfIntervalsWithIdenticalActiveOperationSnapshots Active Bulk Operations: "
+                      + s"$numberOfIntervalsWithIdenticalActiveOperationSnapshots Active Batch Operations: "
                       + s"$activeOperationsSnapshot,  "
-                      + s"PendingRetries: $pendingRetriesSnapshot, Buffered tasks: $buffered "
+                      + s"PendingRetries: $pendingRetriesSnapshot, "
+                      + s"Buffered bulk input tasks: $bulkInputBuffered, "
+                      + s"Buffered batch input tasks: $batchBuffered, "
                       + s"Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
                       + s"Context: ${operationContext.toString} $getThreadInfo")
                   }
 
-                  activeOperationsSnapshot.foreach(operation => {
-                    // Note: In transactional batch mode, we don't retry individual operations
-                    // because batches are constructed and executed atomically. The executor
-                    // handles retries at the batch level. Individual operation retry would require
-                    // reconstructing batches, which could lead to incorrect retry behavior.
-                    // Failed batches will be retried by Spark's task retry mechanism.
-                    log.logTrace(s"Skipping individual operation retry in transactional batch mode - "
-                      + s"Context: ${operationContext.toString} $getThreadInfo")
+                  activeOperationsSnapshot.foreach(operationPartitionKeyPair => {
+                    if (activeBatches.contains(operationPartitionKeyPair._1)) {
+                      // re-validating whether the operation is still active - if so, just re-enqueue another retry
+                      // this is harmless - because all bulkItemOperations from Spark connector are always idempotent
+                      // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
+                      transactionalBatchInputEmitter.emitNext(operationPartitionKeyPair._2.cosmosBatch, TransactionalBulkWriter.emitFailureHandler)
+                      log.logWarning(s"Re-enqueued a retry for pending active batch task "
+                        + s"(${operationPartitionKeyPair._1})' "
+                        + s"- Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
+                        + s"Context: ${operationContext.toString} $getThreadInfo")
+                    }
                   })
                 }
               }
 
-              activeTasksSnapshot = activeTasks.get()
+              activeTasksSnapshot = activeBatchTasks.get()
               pendingRetriesSnapshot = pendingRetries.get()
               val semaphoreAvailablePermitsSnapshot = semaphore.availablePermits()
 
               if (awaitCompleted) {
-                logInfoOrWarning(s"Waiting completed for pending activeTasks $activeTasksSnapshot, pendingRetries " +
+                logInfoOrWarning(s"Waiting completed for pending activeBatchTasks $activeTasksSnapshot, pendingBatchRetries " +
                   s"$pendingRetriesSnapshot Context: ${operationContext.toString} $getThreadInfo")
               } else {
-                logInfoOrWarning(s"Waiting interrupted for pending activeTasks $activeTasksSnapshot , pendingRetries " +
+                logInfoOrWarning(s"Waiting interrupted for pending activeBatchTasks $activeTasksSnapshot , pendingBatchRetries " +
                   s"$pendingRetriesSnapshot - available permits $semaphoreAvailablePermitsSnapshot, " +
                   s"Context: ${operationContext.toString} $getThreadInfo")
               }
             }
 
-            logInfoOrWarning(s"Waiting completed for pending activeTasks $activeTasksSnapshot, pendingRetries " +
+            logInfoOrWarning(s"Waiting completed for pending activeBatchTasks $activeTasksSnapshot, pendingBatchRetries " +
               s"$pendingRetriesSnapshot Context: ${operationContext.toString} $getThreadInfo")
           } finally {
             lock.unlock()
           }
 
-          logInfoOrWarning(s"invoking bulkInputEmitter.onComplete(), Context: ${operationContext.toString} $getThreadInfo")
-          // Release any remaining batch permits
-          val remainingBatches = activeBatchCount.get()
-          if (remainingBatches > 0) {
-            semaphore.release(remainingBatches)
-            log.logDebug(s"Released $remainingBatches batch permits during cleanup")
-          }
-          bulkInputEmitter.emitComplete(TransactionalBulkWriter.emitFailureHandlerForComplete)
+
+          logInfoOrWarning(s"invoking transactionalBatchInputEmitter.onComplete(), Context: ${operationContext.toString} $getThreadInfo")
+          semaphore.release(Math.max(0, activeBatchTasks.get()))
+          transactionalBatchInputEmitter.emitComplete(TransactionalBulkWriter.emitFailureHandlerForComplete)
 
           throwIfCapturedExceptionExists()
-
-          assume(activeTasks.get() <= 0)
-
+          assume(activeBatchTasks.get() <= 0)
           assume(activeBatches.isEmpty)
           assume(semaphore.availablePermits() >= maxPendingBatches)
 
@@ -1047,14 +754,16 @@ private class TransactionalBulkWriter
           }
         }
       } finally {
-        subscriptionDisposable.dispose()
-        closed.set(true)
+        bulkInputSubscriptionDisposable.dispose()
+        batchSubscriptionDisposable.dispose()
       }
+
+      closed.set(true)
     }
   }
+
   // scalastyle:on method.length
   // scalastyle:on cyclomatic.complexity
-
   private def logInfoOrWarning(msg: => String): Unit = {
     if (this.verboseLoggingAfterReEnqueueingRetriesEnabled.get()) {
       log.logWarning(msg)
@@ -1066,9 +775,9 @@ private class TransactionalBulkWriter
   private def markTaskCompletion(): Unit = {
     lock.lock()
     try {
-      val activeTasksLeftSnapshot = activeTasks.decrementAndGet()
+      val activeTasksLeftSnapshot = activeBatchTasks.decrementAndGet()
       val exceptionSnapshot = errorCaptureFirstException.get()
-      log.logTrace(s"markTaskCompletion, Active tasks left: $activeTasksLeftSnapshot, " +
+      log.logTrace(s"markTaskCompletion, Active batch tasks left: $activeTasksLeftSnapshot, " +
         s"error: $exceptionSnapshot, Context: ${operationContext.toString} $getThreadInfo")
       if (activeTasksLeftSnapshot == 0 || exceptionSnapshot != null) {
         pendingTasksCompleted.signal()
@@ -1090,38 +799,24 @@ private class TransactionalBulkWriter
   }
 
   private def cancelWork(): Unit = {
-    val totalActiveOperations = activeBatches.values.map(_.operations.size).sum
-    logInfoOrWarning(s"cancelling remaining unprocessed tasks ${activeTasks.get} " +
-        s"[bulkWrite tasks (operations across ${activeBatches.size} batches): $totalActiveOperations] " +
-        s"Context: ${operationContext.toString}")
-    subscriptionDisposable.dispose()
-  }
-
-  private def shouldIgnore(statusCode: Int, subStatusCode: Int): Boolean = {
-    // Transactional batches only support ItemOverwrite - no errors to ignore
-    false
+    logInfoOrWarning(s"cancelling remaining unprocessed tasks ${activeBatchTasks.get} " +
+      s"[batch tasks ${activeBatches.size}]" +
+      s"Context: ${operationContext.toString}")
+    bulkInputSubscriptionDisposable.dispose()
+    batchSubscriptionDisposable.dispose()
   }
 
   private def shouldRetry(statusCode: Int, subStatusCode: Int, operationContext: OperationContext): Boolean = {
     var returnValue = false
     if (operationContext.attemptNumber < writeConfig.maxRetryCount) {
-      // Transactional batches only support ItemOverwrite (upsert)
-      // Upsert can return 404/0 in rare cases (when due to TTL expiration there is a race condition)
       returnValue = Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
-        statusCode == 0 || // Gateway mode reports inability to connect due to PoolAcquirePendingLimitException as status code 0
-        Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
+        statusCode == 0 // Gateway mode reports inability to connect due to PoolAcquirePendingLimitException as status code 0
     }
 
     log.logDebug(s"Should retry statusCode '$statusCode:$subStatusCode' -> $returnValue, " +
       s"Context: ${operationContext.toString} $getThreadInfo")
 
     returnValue
-  }
-
-  private def getId(objectNode: ObjectNode) = {
-    val idField = objectNode.get(CosmosConstants.Properties.Id)
-    assume(idField != null && idField.isTextual)
-    idField.textValue()
   }
 
   /**
@@ -1136,50 +831,27 @@ private class TransactionalBulkWriter
       captureIfFirstFailure(
         new IllegalStateException(s"The Spark task was aborted, Context: ${operationContext.toString}"))
     } else {
-      log.logWarning(s"BulkWriter aborted and commit retried, Context: ${operationContext.toString} $getThreadInfo")
+      log.logWarning(s"TransactionalBulkWriter aborted and commit retried, Context: ${operationContext.toString} $getThreadInfo")
     }
     cancelWork()
   }
 
   private class OperationContext
   (
-    itemIdInput: String,
-    partitionKeyValueInput: PartitionKey,
-    eTagInput: Option[String],
+    val partitionKeyValueInput: PartitionKey,
     val attemptNumber: Int,
     val sequenceNumber: Long,
-    /** starts from 1 * */
-    sourceItemInput: Option[ObjectNode] = None) // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
+    /** starts from 1 * */)
   {
-    private val ctxCore: OperationContextCore = OperationContextCore(itemIdInput, partitionKeyValueInput, eTagInput, sourceItemInput)
-
-    override def equals(obj: Any): Boolean = ctxCore.equals(obj)
-
-    override def hashCode(): Int = ctxCore.hashCode()
-
+    override def equals(obj: Any): Boolean = partitionKeyValueInput.equals(obj)
+    override def hashCode(): Int = partitionKeyValueInput.hashCode()
     override def toString: String = {
-      ctxCore.toString + s", attemptNumber = $attemptNumber"
+      partitionKeyValueInput.toString + s", attemptNumber = $attemptNumber"
     }
-
-    def itemId: String = ctxCore.itemId
-
-    def partitionKeyValue: PartitionKey = ctxCore.partitionKeyValue
-
-    def eTag: Option[String] = ctxCore.eTag
-
-    def sourceItem: Option[ObjectNode] = ctxCore.sourceItem
   }
 
-  private case class OperationContextCore
-  (
-    itemId: String,
-    partitionKeyValue: PartitionKey,
-    eTag: Option[String],
-    sourceItem: Option[ObjectNode] = None) // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
-  {
-    override def productPrefix: String = "OperationContext"
-  }
-
+  private case class CosmosBatchOperation(cosmosBatch: CosmosBatch, operationContext: OperationContext)
+  private case class TransactionalBulkItem(partitionKey: PartitionKey, objectNode: ObjectNode)
 }
 
 private object TransactionalBulkWriter {
@@ -1188,9 +860,10 @@ private object TransactionalBulkWriter {
   private val maxDelayOn408RequestTimeoutInMs = 3000
   private val minDelayOn408RequestTimeoutInMs = 500
   private val maxItemOperationsToShowInErrorMessage = 10
-  private val BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME = "bulk-writer-requests-bounded-elastic"
-  private val BULK_WRITER_INPUT_BOUNDED_ELASTIC_THREAD_NAME = "bulk-writer-input-bounded-elastic"
-  private val BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME = "bulk-writer-responses-bounded-elastic"
+  private val TRANSACTIONAL_BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-requests-bounded-elastic"
+  private val TRANSACTIONAL_BULK_WRITER_INPUT_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-input-bounded-elastic"
+  private val TRANSACTIONAL_BATCH_INPUT_BOUNDED_ELASTIC_THREAD_NAME = "transactional-batch-input-bounded-elastic"
+  private val TRANSACTIONAL_BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-responses-bounded-elastic"
   private val TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60 // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
   //scalastyle:on magic.number
 
@@ -1218,48 +891,48 @@ private object TransactionalBulkWriter {
       }
     }
 
-  private val emitFailureHandlerForComplete: EmitFailureHandler = (signalType, emitResult) => {
-    if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) {
-      log.logWarning(s"emitFailureHandlerForComplete - Signal:$signalType, Result:$emitResult")
-      true
-    } else if (emitResult.equals(EmitResult.FAIL_CANCELLED) ||
-      emitResult.equals(EmitResult.FAIL_TERMINATED) ||
-      emitResult.equals(EmitResult.FAIL_OVERFLOW)) {
-      log.logWarning(s"emitFailureHandlerForComplete - Signal:$signalType, Result:$emitResult")
-      false
-    } else {
-      log.logError(s"emitFailureHandlerForComplete - Signal:$signalType, Result:$emitResult")
-      false
+  val emitFailureHandlerForComplete: EmitFailureHandler =
+    (signalType, emitResult) => {
+      if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) {
+        log.logDebug(s"emitFailureHandlerForComplete - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
+        true
+      } else if (emitResult.equals(EmitResult.FAIL_CANCELLED) || emitResult.equals(EmitResult.FAIL_TERMINATED)) {
+        log.logDebug(s"emitFailureHandlerForComplete - Already completed - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
+        false
+      } else {
+        log.logError(s"emitFailureHandlerForComplete - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
+        false
+      }
     }
-  }
 
-  private val bulkProcessingThresholds = new CosmosBulkExecutionThresholdsState()
-
-  // For batch-level backpressure: use a conservative estimate of concurrent batches across the JVM
-  // Each batch can have up to 100 operations, so this sizing provides headroom for the scheduler queues
-  private val maxPendingBatchesPerJVM: Int = DefaultMaxPendingOperationPerCore * SparkUtils.getNumberOfHostCPUCores / 50
+  private val maxPendingOperationsPerJVM: Int = DefaultMaxPendingOperationPerCore * SparkUtils.getNumberOfHostCPUCores
 
   // Custom bounded elastic scheduler to consume input flux
-  val bulkWriterRequestsBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+  val transactionalBulkWriterRequestsBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
     Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingBatchesPerJVM,
-    BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
+    TRANSACTIONAL_BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME,
     TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
   // Custom bounded elastic scheduler to consume input flux
-  val bulkWriterInputBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+  val transactionalBulkWriterInputBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
     Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingBatchesPerJVM,
-    BULK_WRITER_INPUT_BOUNDED_ELASTIC_THREAD_NAME,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
+    TRANSACTIONAL_BULK_WRITER_INPUT_BOUNDED_ELASTIC_THREAD_NAME,
+    TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
+
+  val transactionalBatchInputBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
+    TRANSACTIONAL_BATCH_INPUT_BOUNDED_ELASTIC_THREAD_NAME,
     TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
   // Custom bounded elastic scheduler to switch off IO thread to process response.
-  val bulkWriterResponsesBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+  val transactionalBulkWriterResponsesBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
     Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + maxPendingBatchesPerJVM,
-    BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + maxPendingOperationsPerJVM,
+    TRANSACTIONAL_BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME,
     TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
-
 
   def getThreadInfo: String = {
     val t = Thread.currentThread()
@@ -1267,12 +940,13 @@ private object TransactionalBulkWriter {
       case Some(group) => group.getName
       case None => "n/a"
     }
+
     s"Thread[Name: ${t.getName}, Group: $group, IsDaemon: ${t.isDaemon} Id: ${t.getId}]"
   }
 
   private class BulkOperationFailedException(statusCode: Int, subStatusCode: Int, message:String, cause: Throwable)
     extends CosmosException(statusCode, message, null, cause) {
-      BridgeInternal.setSubStatusCode(this, subStatusCode)
+    BridgeInternal.setSubStatusCode(this, subStatusCode)
   }
 }
 
