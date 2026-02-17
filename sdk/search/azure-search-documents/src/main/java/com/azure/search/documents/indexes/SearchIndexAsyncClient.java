@@ -859,207 +859,6 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Lists all indexes available for a search service.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
-     * properties. In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     fields (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
-     *             key: Boolean (Optional)
-     *             retrievable: Boolean (Optional)
-     *             stored: Boolean (Optional)
-     *             searchable: Boolean (Optional)
-     *             filterable: Boolean (Optional)
-     *             sortable: Boolean (Optional)
-     *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
-     *             sensitivityLabel: Boolean (Optional)
-     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
-     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
-     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
-     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
-     *             dimensions: Integer (Optional)
-     *             vectorSearchProfile: String (Optional)
-     *             vectorEncoding: String(packedBit) (Optional)
-     *             synonymMaps (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             fields (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     ]
-     *     scoringProfiles (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             text (Optional): {
-     *                 weights (Required): {
-     *                     String: double (Required)
-     *                 }
-     *             }
-     *             functions (Optional): [
-     *                  (Optional){
-     *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
-     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
-     *                 }
-     *             ]
-     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
-     *         }
-     *     ]
-     *     defaultScoringProfile: String (Optional)
-     *     corsOptions (Optional): {
-     *         allowedOrigins (Required): [
-     *             String (Required)
-     *         ]
-     *         maxAgeInSeconds: Long (Optional)
-     *     }
-     *     suggesters (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             searchMode: String (Required)
-     *             sourceFields (Required): [
-     *                 String (Required)
-     *             ]
-     *         }
-     *     ]
-     *     analyzers (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     tokenizers (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     tokenFilters (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     charFilters (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     normalizers (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     similarity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     semantic (Optional): {
-     *         defaultConfiguration: String (Optional)
-     *         configurations (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 prioritizedFields (Required): {
-     *                     titleField (Optional): {
-     *                         fieldName: String (Required)
-     *                     }
-     *                     prioritizedContentFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     prioritizedKeywordsFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
-     *                 flightingOptIn: Boolean (Optional)
-     *             }
-     *         ]
-     *     }
-     *     vectorSearch (Optional): {
-     *         profiles (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 algorithm: String (Required)
-     *                 vectorizer: String (Optional)
-     *                 compression: String (Optional)
-     *             }
-     *         ]
-     *         algorithms (Optional): [
-     *              (Optional){
-     *                 kind: String(hnsw/exhaustiveKnn) (Required)
-     *                 name: String (Required)
-     *             }
-     *         ]
-     *         vectorizers (Optional): [
-     *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
-     *                 name: String (Required)
-     *             }
-     *         ]
-     *         compressions (Optional): [
-     *              (Optional){
-     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
-     *                 name: String (Required)
-     *                 rescoringOptions (Optional): {
-     *                     enableRescoring: Boolean (Optional)
-     *                     defaultOversampling: Double (Optional)
-     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
-     *                 }
-     *                 truncationDimension: Integer (Optional)
-     *             }
-     *         ]
-     *     }
-     *     permissionFilterOption: String(enabled/disabled) (Optional)
-     *     purviewEnabled: Boolean (Optional)
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a List Indexes request as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listIndexes(RequestOptions requestOptions) {
-        return this.serviceClient.listIndexesAsync(requestOptions);
-    }
-
-    /**
      * Creates a new search alias or updates an alias if it already exists.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1170,35 +969,6 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAliasWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.deleteAliasWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Lists all aliases available for a search service.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     indexes (Required): [
-     *         String (Required)
-     *     ]
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a List Aliases request as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAliases(RequestOptions requestOptions) {
-        return this.serviceClient.listAliasesAsync(requestOptions);
     }
 
     /**
@@ -1337,61 +1107,6 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Lists all knowledge bases available for a search service.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     knowledgeSources (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     models (Optional): [
-     *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
-     *         }
-     *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     description: String (Optional)
-     *     retrievalInstructions: String (Optional)
-     *     answerInstructions: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result from listing knowledge bases as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listKnowledgeBases(RequestOptions requestOptions) {
-        return this.serviceClient.listKnowledgeBasesAsync(requestOptions);
-    }
-
-    /**
      * Creates a new knowledge source or updates an knowledge source if it already exists.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1494,75 +1209,6 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.deleteKnowledgeSourceWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Lists all knowledge sources available for a search service.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result from listing knowledge sources as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listKnowledgeSources(RequestOptions requestOptions) {
-        return this.serviceClient.listKnowledgeSourcesAsync(requestOptions);
-    }
-
-    /**
-     * Retrieves a summary of statistics for all indexes in the search service.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     documentCount: long (Required)
-     *     storageSize: long (Required)
-     *     vectorIndexSize: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a request to retrieve stats summary of all indexes as paginated response with
-     * {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listIndexStatsSummary(RequestOptions requestOptions) {
-        return this.serviceClient.listIndexStatsSummaryAsync(requestOptions);
     }
 
     /**
@@ -1699,9 +1345,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> getSynonymMap(String name) {
-        // Generated convenience method for hiddenGeneratedgetSynonymMapWithResponse
+        // Generated convenience method for hiddenGeneratedGetSynonymMapWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetSynonymMapWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetSynonymMapWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SynonymMap.class));
     }
 
@@ -1842,9 +1488,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap) {
-        // Generated convenience method for hiddenGeneratedcreateSynonymMapWithResponse
+        // Generated convenience method for hiddenGeneratedCreateSynonymMapWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedcreateSynonymMapWithResponse(BinaryData.fromObject(synonymMap), requestOptions)
+        return hiddenGeneratedCreateSynonymMapWithResponse(BinaryData.fromObject(synonymMap), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SynonymMap.class));
     }
@@ -1999,9 +1645,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndex> getIndex(String name) {
-        // Generated convenience method for hiddenGeneratedgetIndexWithResponse
+        // Generated convenience method for hiddenGeneratedGetIndexWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetIndexWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetIndexWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndex.class));
     }
 
@@ -2021,7 +1667,7 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndex> listIndexes(List<String> select) {
-        // Generated convenience method for listIndexes
+        // Generated convenience method for hiddenGeneratedListIndexes
         RequestOptions requestOptions = new RequestOptions();
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -2030,7 +1676,7 @@ public final class SearchIndexAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listIndexes(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexes(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -2058,9 +1704,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndex> listIndexes() {
-        // Generated convenience method for listIndexes
+        // Generated convenience method for hiddenGeneratedListIndexes
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listIndexes(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexes(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -2088,7 +1734,7 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listIndexNames() {
         RequestOptions requestOptions = new RequestOptions().addQueryParam("$select", "name");
-        PagedFlux<BinaryData> pagedFluxResponse = listIndexes(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexes(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -2119,9 +1765,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndex> createIndex(SearchIndex index) {
-        // Generated convenience method for hiddenGeneratedcreateIndexWithResponse
+        // Generated convenience method for hiddenGeneratedCreateIndexWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedcreateIndexWithResponse(BinaryData.fromObject(index), requestOptions)
+        return hiddenGeneratedCreateIndexWithResponse(BinaryData.fromObject(index), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndex.class));
     }
@@ -2141,9 +1787,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetIndexStatisticsResult> getIndexStatistics(String name) {
-        // Generated convenience method for hiddenGeneratedgetIndexStatisticsWithResponse
+        // Generated convenience method for hiddenGeneratedGetIndexStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetIndexStatisticsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetIndexStatisticsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(GetIndexStatisticsResult.class));
     }
 
@@ -2163,9 +1809,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeResult> analyzeText(String name, AnalyzeTextOptions request) {
-        // Generated convenience method for hiddenGeneratedanalyzeTextWithResponse
+        // Generated convenience method for hiddenGeneratedAnalyzeTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedanalyzeTextWithResponse(name, BinaryData.fromObject(request), requestOptions)
+        return hiddenGeneratedAnalyzeTextWithResponse(name, BinaryData.fromObject(request), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeResult.class));
     }
@@ -2310,9 +1956,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAlias> getAlias(String name) {
-        // Generated convenience method for hiddenGeneratedgetAliasWithResponse
+        // Generated convenience method for hiddenGeneratedGetAliasWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetAliasWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetAliasWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchAlias.class));
     }
 
@@ -2329,9 +1975,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchAlias> listAliases() {
-        // Generated convenience method for listAliases
+        // Generated convenience method for hiddenGeneratedListAliases
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listAliases(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListAliases(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -2362,9 +2008,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAlias> createAlias(SearchAlias alias) {
-        // Generated convenience method for hiddenGeneratedcreateAliasWithResponse
+        // Generated convenience method for hiddenGeneratedCreateAliasWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedcreateAliasWithResponse(BinaryData.fromObject(alias), requestOptions)
+        return hiddenGeneratedCreateAliasWithResponse(BinaryData.fromObject(alias), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchAlias.class));
     }
@@ -2487,9 +2133,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeBase> getKnowledgeBase(String name) {
-        // Generated convenience method for hiddenGeneratedgetKnowledgeBaseWithResponse
+        // Generated convenience method for hiddenGeneratedGetKnowledgeBaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetKnowledgeBaseWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetKnowledgeBaseWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBase.class));
     }
 
@@ -2506,9 +2152,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KnowledgeBase> listKnowledgeBases() {
-        // Generated convenience method for listKnowledgeBases
+        // Generated convenience method for hiddenGeneratedListKnowledgeBases
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listKnowledgeBases(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeBases(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -2538,9 +2184,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeBase> createKnowledgeBase(KnowledgeBase knowledgeBase) {
-        // Generated convenience method for hiddenGeneratedcreateKnowledgeBaseWithResponse
+        // Generated convenience method for hiddenGeneratedCreateKnowledgeBaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedcreateKnowledgeBaseWithResponse(BinaryData.fromObject(knowledgeBase), requestOptions)
+        return hiddenGeneratedCreateKnowledgeBaseWithResponse(BinaryData.fromObject(knowledgeBase), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBase.class));
     }
@@ -2680,9 +2326,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeSource> getKnowledgeSource(String name) {
-        // Generated convenience method for hiddenGeneratedgetKnowledgeSourceWithResponse
+        // Generated convenience method for hiddenGeneratedGetKnowledgeSourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetKnowledgeSourceWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetKnowledgeSourceWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSource.class));
     }
 
@@ -2699,9 +2345,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KnowledgeSource> listKnowledgeSources() {
-        // Generated convenience method for listKnowledgeSources
+        // Generated convenience method for hiddenGeneratedListKnowledgeSources
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listKnowledgeSources(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListKnowledgeSources(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -2731,9 +2377,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeSource> createKnowledgeSource(KnowledgeSource knowledgeSource) {
-        // Generated convenience method for hiddenGeneratedcreateKnowledgeSourceWithResponse
+        // Generated convenience method for hiddenGeneratedCreateKnowledgeSourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedcreateKnowledgeSourceWithResponse(BinaryData.fromObject(knowledgeSource), requestOptions)
+        return hiddenGeneratedCreateKnowledgeSourceWithResponse(BinaryData.fromObject(knowledgeSource), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSource.class));
     }
@@ -2754,9 +2400,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeSourceStatus> getKnowledgeSourceStatus(String name) {
-        // Generated convenience method for hiddenGeneratedgetKnowledgeSourceStatusWithResponse
+        // Generated convenience method for hiddenGeneratedGetKnowledgeSourceStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetKnowledgeSourceStatusWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetKnowledgeSourceStatusWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceStatus.class));
     }
 
@@ -2773,9 +2419,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchServiceStatistics> getServiceStatistics() {
-        // Generated convenience method for hiddenGeneratedgetServiceStatisticsWithResponse
+        // Generated convenience method for hiddenGeneratedGetServiceStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetServiceStatisticsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetServiceStatisticsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchServiceStatistics.class));
     }
 
@@ -2793,9 +2439,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IndexStatisticsSummary> listIndexStatsSummary() {
-        // Generated convenience method for listIndexStatsSummary
+        // Generated convenience method for hiddenGeneratedListIndexStatsSummary
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listIndexStatsSummary(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexStatsSummary(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -3068,6 +2714,152 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
+     * Lists all indexes available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Indexes request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndex> listIndexes(RequestOptions requestOptions) {
+        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listIndexesAsync(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchIndex>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SearchIndex.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Lists all aliases available for a search service.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Aliases request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchAlias> listAliases(RequestOptions requestOptions) {
+        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listAliasesAsync(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchAlias>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SearchAlias.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Lists all knowledge bases available for a search service.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return result from listing knowledge bases as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KnowledgeBase> listKnowledgeBases(RequestOptions requestOptions) {
+        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listKnowledgeBasesAsync(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, KnowledgeBase>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBase.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Lists all knowledge sources available for a search service.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return result from listing knowledge sources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KnowledgeSource> listKnowledgeSources(RequestOptions requestOptions) {
+        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listKnowledgeSourcesAsync(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, KnowledgeSource>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSource.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IndexStatisticsSummary> listIndexStatsSummary(RequestOptions requestOptions) {
+        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listIndexStatsSummaryAsync(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, IndexStatisticsSummary>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(IndexStatisticsSummary.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
      * Retrieves a synonym map definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -3106,7 +2898,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetSynonymMapWithResponse(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedGetSynonymMapWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getSynonymMapWithResponseAsync(name, requestOptions);
     }
 
@@ -3176,7 +2968,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedcreateSynonymMapWithResponse(BinaryData synonymMap,
+    Mono<Response<BinaryData>> hiddenGeneratedCreateSynonymMapWithResponse(BinaryData synonymMap,
         RequestOptions requestOptions) {
         return this.serviceClient.createSynonymMapWithResponseAsync(synonymMap, requestOptions);
     }
@@ -3371,8 +3163,209 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetIndexWithResponse(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedGetIndexWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexWithResponseAsync(name, requestOptions);
+    }
+
+    /**
+     * Lists all indexes available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     fields (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
+     *             key: Boolean (Optional)
+     *             retrievable: Boolean (Optional)
+     *             stored: Boolean (Optional)
+     *             searchable: Boolean (Optional)
+     *             filterable: Boolean (Optional)
+     *             sortable: Boolean (Optional)
+     *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabel: Boolean (Optional)
+     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
+     *             dimensions: Integer (Optional)
+     *             vectorSearchProfile: String (Optional)
+     *             vectorEncoding: String(packedBit) (Optional)
+     *             synonymMaps (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             fields (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     *     scoringProfiles (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             text (Optional): {
+     *                 weights (Required): {
+     *                     String: double (Required)
+     *                 }
+     *             }
+     *             functions (Optional): [
+     *                  (Optional){
+     *                     type: String (Required)
+     *                     fieldName: String (Required)
+     *                     boost: double (Required)
+     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
+     *                 }
+     *             ]
+     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
+     *         }
+     *     ]
+     *     defaultScoringProfile: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     suggesters (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             searchMode: String (Required)
+     *             sourceFields (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     analyzers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     charFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     normalizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     similarity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     semantic (Optional): {
+     *         defaultConfiguration: String (Optional)
+     *         configurations (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 prioritizedFields (Required): {
+     *                     titleField (Optional): {
+     *                         fieldName: String (Required)
+     *                     }
+     *                     prioritizedContentFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     prioritizedKeywordsFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
+     *             }
+     *         ]
+     *     }
+     *     vectorSearch (Optional): {
+     *         profiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 algorithm: String (Required)
+     *                 vectorizer: String (Optional)
+     *                 compression: String (Optional)
+     *             }
+     *         ]
+     *         algorithms (Optional): [
+     *              (Optional){
+     *                 kind: String(hnsw/exhaustiveKnn) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         vectorizers (Optional): [
+     *              (Optional){
+     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         compressions (Optional): [
+     *              (Optional){
+     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
+     *                 name: String (Required)
+     *                 rescoringOptions (Optional): {
+     *                     enableRescoring: Boolean (Optional)
+     *                     defaultOversampling: Double (Optional)
+     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
+     *                 }
+     *                 truncationDimension: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Indexes request as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BinaryData> hiddenGeneratedListIndexes(RequestOptions requestOptions) {
+        return this.serviceClient.listIndexesAsync(requestOptions);
     }
 
     /**
@@ -3742,7 +3735,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedcreateIndexWithResponse(BinaryData index, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedCreateIndexWithResponse(BinaryData index, RequestOptions requestOptions) {
         return this.serviceClient.createIndexWithResponseAsync(index, requestOptions);
     }
 
@@ -3770,7 +3763,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetIndexStatisticsWithResponse(String name,
+    Mono<Response<BinaryData>> hiddenGeneratedGetIndexStatisticsWithResponse(String name,
         RequestOptions requestOptions) {
         return this.serviceClient.getIndexStatisticsWithResponseAsync(name, requestOptions);
     }
@@ -3825,7 +3818,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedanalyzeTextWithResponse(String name, BinaryData request,
+    Mono<Response<BinaryData>> hiddenGeneratedAnalyzeTextWithResponse(String name, BinaryData request,
         RequestOptions requestOptions) {
         return this.serviceClient.analyzeTextWithResponseAsync(name, request, requestOptions);
     }
@@ -3857,8 +3850,37 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetAliasWithResponse(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedGetAliasWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getAliasWithResponseAsync(name, requestOptions);
+    }
+
+    /**
+     * Lists all aliases available for a search service.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     indexes (Required): [
+     *         String (Required)
+     *     ]
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Aliases request as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BinaryData> hiddenGeneratedListAliases(RequestOptions requestOptions) {
+        return this.serviceClient.listAliasesAsync(requestOptions);
     }
 
     /**
@@ -3902,7 +3924,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedcreateAliasWithResponse(BinaryData alias, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedCreateAliasWithResponse(BinaryData alias, RequestOptions requestOptions) {
         return this.serviceClient.createAliasWithResponseAsync(alias, requestOptions);
     }
 
@@ -3959,8 +3981,63 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedGetKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getKnowledgeBaseWithResponseAsync(name, requestOptions);
+    }
+
+    /**
+     * Lists all knowledge bases available for a search service.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     knowledgeSources (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     description: String (Optional)
+     *     retrievalInstructions: String (Optional)
+     *     answerInstructions: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return result from listing knowledge bases as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BinaryData> hiddenGeneratedListKnowledgeBases(RequestOptions requestOptions) {
+        return this.serviceClient.listKnowledgeBasesAsync(requestOptions);
     }
 
     /**
@@ -4056,7 +4133,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedcreateKnowledgeBaseWithResponse(BinaryData knowledgeBase,
+    Mono<Response<BinaryData>> hiddenGeneratedCreateKnowledgeBaseWithResponse(BinaryData knowledgeBase,
         RequestOptions requestOptions) {
         return this.serviceClient.createKnowledgeBaseWithResponseAsync(knowledgeBase, requestOptions);
     }
@@ -4099,9 +4176,49 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetKnowledgeSourceWithResponse(String name,
+    Mono<Response<BinaryData>> hiddenGeneratedGetKnowledgeSourceWithResponse(String name,
         RequestOptions requestOptions) {
         return this.serviceClient.getKnowledgeSourceWithResponseAsync(name, requestOptions);
+    }
+
+    /**
+     * Lists all knowledge sources available for a search service.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return result from listing knowledge sources as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BinaryData> hiddenGeneratedListKnowledgeSources(RequestOptions requestOptions) {
+        return this.serviceClient.listKnowledgeSourcesAsync(requestOptions);
     }
 
     /**
@@ -4167,7 +4284,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedcreateKnowledgeSourceWithResponse(BinaryData knowledgeSource,
+    Mono<Response<BinaryData>> hiddenGeneratedCreateKnowledgeSourceWithResponse(BinaryData knowledgeSource,
         RequestOptions requestOptions) {
         return this.serviceClient.createKnowledgeSourceWithResponseAsync(knowledgeSource, requestOptions);
     }
@@ -4214,7 +4331,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetKnowledgeSourceStatusWithResponse(String name,
+    Mono<Response<BinaryData>> hiddenGeneratedGetKnowledgeSourceStatusWithResponse(String name,
         RequestOptions requestOptions) {
         return this.serviceClient.getKnowledgeSourceStatusWithResponseAsync(name, requestOptions);
     }
@@ -4268,7 +4385,36 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetServiceStatisticsWithResponse(RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedGetServiceStatisticsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getServiceStatisticsWithResponseAsync(requestOptions);
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     documentCount: long (Required)
+     *     storageSize: long (Required)
+     *     vectorIndexSize: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BinaryData> hiddenGeneratedListIndexStatsSummary(RequestOptions requestOptions) {
+        return this.serviceClient.listIndexStatsSummaryAsync(requestOptions);
     }
 }

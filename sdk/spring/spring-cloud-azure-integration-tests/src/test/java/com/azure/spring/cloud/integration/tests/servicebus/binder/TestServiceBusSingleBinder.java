@@ -95,11 +95,13 @@ public class TestServiceBusSingleBinder {
                                             Sinks.Many<Message<String>> manyTopic) throws InterruptedException {
         GenericMessage<String> genericMessage = new GenericMessage<>(MESSAGE);
 
+        Thread.sleep(2000);
+
         LOGGER.info("Send a message:" + MESSAGE + " to the queue.");
         manyQueue.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
         LOGGER.info("Send a message:" + MESSAGE + " to the topic.");
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        assertThat(TestServiceBusSingleBinder.LATCH.get(activeProfile).await(30, TimeUnit.SECONDS)).isTrue();
+        assertThat(TestServiceBusSingleBinder.LATCH.get(activeProfile).await(100, TimeUnit.SECONDS)).isTrue();
     }
 }

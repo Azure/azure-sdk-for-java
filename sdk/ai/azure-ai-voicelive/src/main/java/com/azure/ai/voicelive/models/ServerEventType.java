@@ -295,18 +295,6 @@ public final class ServerEventType extends ExpandableStringEnum<ServerEventType>
         = fromString("response.mcp_call_arguments.done");
 
     /**
-     * Static value mcp_approval_request for ServerEventType.
-     */
-    @Generated
-    public static final ServerEventType MCP_APPROVAL_REQUEST = fromString("mcp_approval_request");
-
-    /**
-     * Static value mcp_approval_response for ServerEventType.
-     */
-    @Generated
-    public static final ServerEventType MCP_APPROVAL_RESPONSE = fromString("mcp_approval_response");
-
-    /**
      * Static value response.mcp_call.in_progress for ServerEventType.
      */
     @Generated
@@ -325,37 +313,8 @@ public final class ServerEventType extends ExpandableStringEnum<ServerEventType>
     public static final ServerEventType RESPONSE_MCP_CALL_FAILED = fromString("response.mcp_call.failed");
 
     /**
-     * Static value response.foundry_agent_call_arguments.delta for ServerEventType.
+     * Static value warning for ServerEventType.
      */
     @Generated
-    public static final ServerEventType RESPONSE_FOUNDRY_AGENT_CALL_ARGUMENTS_DELTA
-        = fromString("response.foundry_agent_call_arguments.delta");
-
-    /**
-     * Static value response.foundry_agent_call_arguments.done for ServerEventType.
-     */
-    @Generated
-    public static final ServerEventType RESPONSE_FOUNDRY_AGENT_CALL_ARGUMENTS_DONE
-        = fromString("response.foundry_agent_call_arguments.done");
-
-    /**
-     * Static value response.foundry_agent_call.in_progress for ServerEventType.
-     */
-    @Generated
-    public static final ServerEventType RESPONSE_FOUNDRY_AGENT_CALL_IN_PROGRESS
-        = fromString("response.foundry_agent_call.in_progress");
-
-    /**
-     * Static value response.foundry_agent_call.completed for ServerEventType.
-     */
-    @Generated
-    public static final ServerEventType RESPONSE_FOUNDRY_AGENT_CALL_COMPLETED
-        = fromString("response.foundry_agent_call.completed");
-
-    /**
-     * Static value response.foundry_agent_call.failed for ServerEventType.
-     */
-    @Generated
-    public static final ServerEventType RESPONSE_FOUNDRY_AGENT_CALL_FAILED
-        = fromString("response.foundry_agent_call.failed");
+    public static final ServerEventType WARNING = fromString("warning");
 }

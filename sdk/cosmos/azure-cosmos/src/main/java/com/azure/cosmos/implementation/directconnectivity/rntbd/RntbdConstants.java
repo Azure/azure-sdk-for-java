@@ -907,7 +907,8 @@ public final class RntbdConstants {
         HasTentativeWrites((short) 0x003D, RntbdTokenType.Byte, false),
         SessionToken((short) 0x003E, RntbdTokenType.String, false),
         BackendRequestDurationMilliseconds((short) 0X0051, RntbdTokenType.Double, false),
-        CorrelatedActivityId((short) 0X0052, RntbdTokenType.Guid, false);
+        CorrelatedActivityId((short) 0X0052, RntbdTokenType.Guid, false),
+        GlobalNRegionCommittedGLSN((short) 0x0078, RntbdTokenType.LongLong, false);
 
         public static final Map<Short, RntbdResponseHeader> map;
         public static final EnumSet<RntbdResponseHeader> set = EnumSet.allOf(RntbdResponseHeader.class);
