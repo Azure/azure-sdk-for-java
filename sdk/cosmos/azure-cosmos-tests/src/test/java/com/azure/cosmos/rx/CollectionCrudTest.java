@@ -289,6 +289,72 @@ public class CollectionCrudTest extends TestSuiteBase {
     }
 
 
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void createCollectionWithLazyIndexing(String collectionName) throws InterruptedException {
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
+        
+        // set indexing mode to LAZY
+        IndexingPolicy indexingPolicy = new IndexingPolicy();
+        indexingPolicy.setIndexingMode(IndexingMode.LAZY);
+        collectionDefinition.setIndexingPolicy(indexingPolicy);
+
+        Mono<CosmosContainerResponse> createObservable = database
+                .createContainer(collectionDefinition);
+
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
+                .withId(collectionDefinition.getId())
+                .indexingMode(IndexingMode.LAZY)
+                .build();
+
+        validateSuccess(createObservable, validator);
+        safeDeleteAllCollections(database);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void readCollectionWithLazyIndexing(String collectionName) throws InterruptedException {
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
+        
+        // set indexing mode to LAZY
+        IndexingPolicy indexingPolicy = new IndexingPolicy();
+        indexingPolicy.setIndexingMode(IndexingMode.LAZY);
+        collectionDefinition.setIndexingPolicy(indexingPolicy);
+
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
+
+        Mono<CosmosContainerResponse> readObservable = collection.read();
+
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
+                .withId(collection.getId())
+                .indexingMode(IndexingMode.LAZY)
+                .build();
+        validateSuccess(readObservable, validator);
+        safeDeleteAllCollections(database);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void replaceCollectionWithLazyIndexing(String collectionName) throws InterruptedException  {
+        // create a collection with CONSISTENT mode first
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
+        CosmosContainerProperties collectionSettings = collection.read().block().getProperties();
+        // sanity check - default should be CONSISTENT
+        assertThat(collectionSettings.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
+
+        // replace indexing mode to LAZY
+        IndexingPolicy indexingPolicy = new IndexingPolicy();
+        indexingPolicy.setIndexingMode(IndexingMode.LAZY);
+        collectionSettings.setIndexingPolicy(indexingPolicy);
+        Mono<CosmosContainerResponse> replaceObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
+
+        // validate
+        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
+                .indexingMode(IndexingMode.LAZY).build();
+        validateSuccess(replaceObservable, validator);
+        safeDeleteAllCollections(database);
+    }
+
     @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void sessionTokenConsistencyCollectionDeleteCreateSameName() {
         CosmosAsyncClient client1 = getClientBuilder().buildAsyncClient();
