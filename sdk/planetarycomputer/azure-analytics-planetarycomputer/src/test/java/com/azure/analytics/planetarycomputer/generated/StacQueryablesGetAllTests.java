@@ -4,7 +4,8 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import java.util.Map;
+import com.azure.analytics.planetarycomputer.models.QueryableDefinitionsResponse;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +15,9 @@ public final class StacQueryablesGetAllTests extends PlanetaryComputerProClientT
     @Disabled
     public void testStacQueryablesGetAllTests() {
         // method invocation
-        Map<String, Object> response = stacClient.listQueryables();
+        QueryableDefinitionsResponse response = stacClient.listQueryables();
+
+        // response assertion
+        Assertions.assertNotNull(response);
     }
 }

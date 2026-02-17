@@ -4,7 +4,8 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import java.util.Map;
+import com.azure.analytics.planetarycomputer.models.ClassMapLegendResponse;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +15,9 @@ public final class MapsClassMapLegendsGetTests extends PlanetaryComputerProClien
     @Disabled
     public void testMapsClassMapLegendsGetTests() {
         // method invocation
-        Map<String, Object> response = dataClient.getClassMapLegend("mtbs-severity", null, null);
+        ClassMapLegendResponse response = dataClient.getClassMapLegend("mtbs-severity", null, null);
+
+        // response assertion
+        Assertions.assertNotNull(response);
     }
 }

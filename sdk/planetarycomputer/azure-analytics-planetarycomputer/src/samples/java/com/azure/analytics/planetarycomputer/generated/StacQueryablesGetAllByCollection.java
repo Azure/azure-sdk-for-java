@@ -6,9 +6,9 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
+import com.azure.analytics.planetarycomputer.models.QueryableDefinitionsResponse;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.util.Map;
 
 public class StacQueryablesGetAllByCollection {
     public static void main(String[] args) {
@@ -17,7 +17,7 @@ public class StacQueryablesGetAllByCollection {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-collection-queryables.stac-queryables-get-all-by-collection
-        Map<String, Object> response = stacClient.getCollectionQueryables("naip-atl");
+        QueryableDefinitionsResponse response = stacClient.getCollectionQueryables("naip-atl");
         // END:com.azure.analytics.planetarycomputer.generated.stac-get-collection-queryables.stac-queryables-get-all-by-collection
     }
 }

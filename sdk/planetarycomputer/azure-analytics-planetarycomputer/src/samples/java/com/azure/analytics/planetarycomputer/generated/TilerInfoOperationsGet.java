@@ -6,11 +6,10 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
-import com.azure.analytics.planetarycomputer.models.TilerInfo;
+import com.azure.analytics.planetarycomputer.models.TilerInfoMapResponse;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
-import java.util.Map;
 
 public class TilerInfoOperationsGet {
     public static void main(String[] args) {
@@ -19,7 +18,7 @@ public class TilerInfoOperationsGet {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-item-asset-details.tiler-info-operations-get
-        Map<String, TilerInfo> response
+        TilerInfoMapResponse response
             = dataClient.getItemAssetDetails("naip-atl", "ga_m_3308421_se_16_060_20211114", Arrays.asList("image"));
         // END:com.azure.analytics.planetarycomputer.generated.data-get-item-asset-details.tiler-info-operations-get
     }

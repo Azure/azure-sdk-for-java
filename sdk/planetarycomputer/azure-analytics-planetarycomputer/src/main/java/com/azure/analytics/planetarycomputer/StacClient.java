@@ -8,6 +8,7 @@ import com.azure.analytics.planetarycomputer.implementation.MultipartFormDataHel
 import com.azure.analytics.planetarycomputer.implementation.StacsImpl;
 import com.azure.analytics.planetarycomputer.models.Operation;
 import com.azure.analytics.planetarycomputer.models.PartitionType;
+import com.azure.analytics.planetarycomputer.models.QueryableDefinitionsResponse;
 import com.azure.analytics.planetarycomputer.models.RenderOption;
 import com.azure.analytics.planetarycomputer.models.StacAssetData;
 import com.azure.analytics.planetarycomputer.models.StacAssetUrlSigningMode;
@@ -37,7 +38,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -3166,7 +3166,9 @@ public final class StacClient {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *      (Optional): {
+     *         String: Object (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -3176,7 +3178,7 @@ public final class StacClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return queryable definitions response along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3193,7 +3195,9 @@ public final class StacClient {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *      (Optional): {
+     *         String: Object (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -3204,7 +3208,7 @@ public final class StacClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return queryable definitions response along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4427,14 +4431,14 @@ public final class StacClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return queryable definitions response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> listQueryables() {
+    public QueryableDefinitionsResponse listQueryables() {
         // Generated convenience method for listQueryablesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listQueryablesWithResponse(requestOptions).getValue().toObject(TYPE_REFERENCE_MAP_STRING_OBJECT);
+        return listQueryablesWithResponse(requestOptions).getValue().toObject(QueryableDefinitionsResponse.class);
     }
 
     /**
@@ -4449,15 +4453,15 @@ public final class StacClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return queryable definitions response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> getCollectionQueryables(String collectionId) {
+    public QueryableDefinitionsResponse getCollectionQueryables(String collectionId) {
         // Generated convenience method for getCollectionQueryablesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getCollectionQueryablesWithResponse(collectionId, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_MAP_STRING_OBJECT);
+            .toObject(QueryableDefinitionsResponse.class);
     }
 
     /**
@@ -4532,10 +4536,5 @@ public final class StacClient {
     @Generated
     private static final TypeReference<List<RenderOption>> TYPE_REFERENCE_LIST_RENDER_OPTION
         = new TypeReference<List<RenderOption>>() {
-        };
-
-    @Generated
-    private static final TypeReference<Map<String, Object>> TYPE_REFERENCE_MAP_STRING_OBJECT
-        = new TypeReference<Map<String, Object>>() {
         };
 }

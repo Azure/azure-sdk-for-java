@@ -4,9 +4,9 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.models.TilerInfo;
+import com.azure.analytics.planetarycomputer.models.TilerInfoMapResponse;
 import java.util.Arrays;
-import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,10 @@ public final class TilerInfoOperationsGetTests extends PlanetaryComputerProClien
     @Disabled
     public void testTilerInfoOperationsGetTests() {
         // method invocation
-        Map<String, TilerInfo> response
+        TilerInfoMapResponse response
             = dataClient.getItemAssetDetails("naip-atl", "ga_m_3308421_se_16_060_20211114", Arrays.asList("image"));
+
+        // response assertion
+        Assertions.assertNotNull(response);
     }
 }

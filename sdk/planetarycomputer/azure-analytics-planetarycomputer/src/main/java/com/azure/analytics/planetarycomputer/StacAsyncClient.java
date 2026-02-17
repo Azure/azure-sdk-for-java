@@ -8,6 +8,7 @@ import com.azure.analytics.planetarycomputer.implementation.MultipartFormDataHel
 import com.azure.analytics.planetarycomputer.implementation.StacsImpl;
 import com.azure.analytics.planetarycomputer.models.Operation;
 import com.azure.analytics.planetarycomputer.models.PartitionType;
+import com.azure.analytics.planetarycomputer.models.QueryableDefinitionsResponse;
 import com.azure.analytics.planetarycomputer.models.RenderOption;
 import com.azure.analytics.planetarycomputer.models.StacAssetData;
 import com.azure.analytics.planetarycomputer.models.StacAssetUrlSigningMode;
@@ -38,7 +39,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
@@ -3189,7 +3189,9 @@ public final class StacAsyncClient {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *      (Optional): {
+     *         String: Object (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -3199,7 +3201,7 @@ public final class StacAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return queryable definitions response along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3216,7 +3218,9 @@ public final class StacAsyncClient {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *      (Optional): {
+     *         String: Object (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -3227,7 +3231,7 @@ public final class StacAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return queryable definitions response along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4476,15 +4480,15 @@ public final class StacAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return queryable definitions response on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, Object>> listQueryables() {
+    public Mono<QueryableDefinitionsResponse> listQueryables() {
         // Generated convenience method for listQueryablesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listQueryablesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_MAP_STRING_OBJECT));
+            .map(protocolMethodData -> protocolMethodData.toObject(QueryableDefinitionsResponse.class));
     }
 
     /**
@@ -4499,15 +4503,15 @@ public final class StacAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return queryable definitions response on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, Object>> getCollectionQueryables(String collectionId) {
+    public Mono<QueryableDefinitionsResponse> getCollectionQueryables(String collectionId) {
         // Generated convenience method for getCollectionQueryablesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getCollectionQueryablesWithResponse(collectionId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_MAP_STRING_OBJECT));
+            .map(protocolMethodData -> protocolMethodData.toObject(QueryableDefinitionsResponse.class));
     }
 
     /**
@@ -4582,10 +4586,5 @@ public final class StacAsyncClient {
     @Generated
     private static final TypeReference<List<RenderOption>> TYPE_REFERENCE_LIST_RENDER_OPTION
         = new TypeReference<List<RenderOption>>() {
-        };
-
-    @Generated
-    private static final TypeReference<Map<String, Object>> TYPE_REFERENCE_MAP_STRING_OBJECT
-        = new TypeReference<Map<String, Object>>() {
         };
 }

@@ -6,7 +6,8 @@ package com.azure.analytics.planetarycomputer;
 
 import com.azure.analytics.planetarycomputer.implementation.DatasImpl;
 import com.azure.analytics.planetarycomputer.implementation.models.RegisterMosaicsSearchRequest;
-import com.azure.analytics.planetarycomputer.models.BandStatistics;
+import com.azure.analytics.planetarycomputer.models.AssetStatisticsResponse;
+import com.azure.analytics.planetarycomputer.models.ClassMapLegendResponse;
 import com.azure.analytics.planetarycomputer.models.ColorMapNames;
 import com.azure.analytics.planetarycomputer.models.CropGeoJsonOptions;
 import com.azure.analytics.planetarycomputer.models.Feature;
@@ -35,8 +36,8 @@ import com.azure.analytics.planetarycomputer.models.TileMatrixSet;
 import com.azure.analytics.planetarycomputer.models.TilerAssetGeoJson;
 import com.azure.analytics.planetarycomputer.models.TilerCoreModelsResponsesPoint;
 import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
-import com.azure.analytics.planetarycomputer.models.TilerInfo;
 import com.azure.analytics.planetarycomputer.models.TilerInfoGeoJsonFeature;
+import com.azure.analytics.planetarycomputer.models.TilerInfoMapResponse;
 import com.azure.analytics.planetarycomputer.models.TilerMosaicSearchRegistrationResponse;
 import com.azure.analytics.planetarycomputer.models.TilerStacItemStatistics;
 import com.azure.analytics.planetarycomputer.models.TilerStacSearchRegistration;
@@ -55,7 +56,6 @@ import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -239,28 +239,32 @@ public final class DataClient {
      * <pre>
      * {@code
      * {
-     *     String (Required): {
+     *      (Optional): {
      *         String (Required): {
-     *             min: double (Required)
-     *             max: double (Required)
-     *             mean: double (Required)
-     *             count: double (Required)
-     *             sum: double (Required)
-     *             std: double (Required)
-     *             median: double (Required)
-     *             majority: double (Required)
-     *             minority: double (Required)
-     *             unique: double (Required)
-     *             histogram (Required): [
-     *                  (Required)[
-     *                     double (Required)
-     *                 ]
-     *             ]
-     *             valid_percent: double (Required)
-     *             masked_pixels: double (Required)
-     *             valid_pixels: double (Required)
-     *             percentile_2: double (Required)
-     *             percentile_98: double (Required)
+     *              (Optional): {
+     *                 String (Required): {
+     *                     min: double (Required)
+     *                     max: double (Required)
+     *                     mean: double (Required)
+     *                     count: double (Required)
+     *                     sum: double (Required)
+     *                     std: double (Required)
+     *                     median: double (Required)
+     *                     majority: double (Required)
+     *                     minority: double (Required)
+     *                     unique: double (Required)
+     *                     histogram (Required): [
+     *                          (Required)[
+     *                             double (Required)
+     *                         ]
+     *                     ]
+     *                     valid_percent: double (Required)
+     *                     masked_pixels: double (Required)
+     *                     valid_pixels: double (Required)
+     *                     percentile_2: double (Required)
+     *                     percentile_98: double (Required)
+     *                 }
+     *             }
      *         }
      *     }
      * }
@@ -274,7 +278,7 @@ public final class DataClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return return dataset's statistics along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -794,46 +798,48 @@ public final class DataClient {
      * <pre>
      * {@code
      * {
-     *     String (Required): {
-     *         bounds (Required): [
-     *             double (Required)
-     *         ]
-     *         band_metadata (Optional): [
-     *              (Optional)[
-     *                 BinaryData (Optional)
+     *      (Optional): {
+     *         String (Required): {
+     *             bounds (Required): [
+     *                 double (Required)
      *             ]
-     *         ]
-     *         band_descriptions (Optional): [
-     *              (Optional)[
+     *             band_metadata (Optional): [
+     *                  (Optional)[
+     *                     BinaryData (Optional)
+     *                 ]
+     *             ]
+     *             band_descriptions (Optional): [
+     *                  (Optional)[
+     *                     String (Optional)
+     *                 ]
+     *             ]
+     *             dtype: String (Required)
+     *             nodata_type: String(Alpha/Mask/Internal/Nodata/None) (Optional)
+     *             colorinterp (Optional): [
      *                 String (Optional)
      *             ]
-     *         ]
-     *         dtype: String (Required)
-     *         nodata_type: String(Alpha/Mask/Internal/Nodata/None) (Optional)
-     *         colorinterp (Optional): [
-     *             String (Optional)
-     *         ]
-     *         driver: String (Optional)
-     *         count: Integer (Optional)
-     *         width: Integer (Optional)
-     *         height: Integer (Optional)
-     *         overviews (Optional): [
-     *             int (Optional)
-     *         ]
-     *         scales (Optional): [
-     *             int (Optional)
-     *         ]
-     *         offsets (Optional): [
-     *             int (Optional)
-     *         ]
-     *         colormap (Optional): {
-     *             String (Required): [
-     *                 String (Required)
+     *             driver: String (Optional)
+     *             count: Integer (Optional)
+     *             width: Integer (Optional)
+     *             height: Integer (Optional)
+     *             overviews (Optional): [
+     *                 int (Optional)
      *             ]
+     *             scales (Optional): [
+     *                 int (Optional)
+     *             ]
+     *             offsets (Optional): [
+     *                 int (Optional)
+     *             ]
+     *             colormap (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
+     *             minzoom: Integer (Optional)
+     *             maxzoom: Integer (Optional)
+     *             crs: String (Optional)
      *         }
-     *         minzoom: Integer (Optional)
-     *         maxzoom: Integer (Optional)
-     *         crs: String (Optional)
      *     }
      * }
      * }
@@ -846,7 +852,7 @@ public final class DataClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return return dataset's basic info along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1778,7 +1784,9 @@ public final class DataClient {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *      (Optional): {
+     *         String: Object (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -1839,9 +1847,13 @@ public final class DataClient {
      * 
      * <pre>
      * {@code
-     * {
-     *     String: Object (Required)
-     * }
+     * [
+     *      (Required)[
+     *          (Required)[
+     *             long (Required)
+     *         ]
+     *     ]
+     * ]
      * }
      * </pre>
      * 
@@ -2671,11 +2683,11 @@ public final class DataClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return return dataset's statistics.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Map<String, BandStatistics>> getAssetStatistics(String collectionId, String itemId,
+    public AssetStatisticsResponse getAssetStatistics(String collectionId, String itemId,
         GetAssetStatisticsOptions options) {
         // Generated convenience method for getAssetStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2742,7 +2754,7 @@ public final class DataClient {
             requestOptions.addQueryParam("histogram_range", histogramRange, false);
         }
         return getAssetStatisticsWithResponse(collectionId, itemId, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_MAP_STRING_MAP_STRING_BAND_STATISTICS);
+            .toObject(AssetStatisticsResponse.class);
     }
 
     /**
@@ -3156,11 +3168,11 @@ public final class DataClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return return dataset's basic info.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, TilerInfo> getItemAssetDetails(String collectionId, String itemId, List<String> assets) {
+    public TilerInfoMapResponse getItemAssetDetails(String collectionId, String itemId, List<String> assets) {
         // Generated convenience method for getItemAssetDetailsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (assets != null) {
@@ -3171,7 +3183,7 @@ public final class DataClient {
             }
         }
         return getItemAssetDetailsWithResponse(collectionId, itemId, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_MAP_STRING_TILER_INFO);
+            .toObject(TilerInfoMapResponse.class);
     }
 
     /**
@@ -3187,15 +3199,15 @@ public final class DataClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return return dataset's basic info.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, TilerInfo> getItemAssetDetails(String collectionId, String itemId) {
+    public TilerInfoMapResponse getItemAssetDetails(String collectionId, String itemId) {
         // Generated convenience method for getItemAssetDetailsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getItemAssetDetailsWithResponse(collectionId, itemId, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_MAP_STRING_TILER_INFO);
+            .toObject(TilerInfoMapResponse.class);
     }
 
     /**
@@ -4219,7 +4231,7 @@ public final class DataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> getClassMapLegend(String classmapName, Integer trimStart, Integer trimEnd) {
+    public ClassMapLegendResponse getClassMapLegend(String classmapName, Integer trimStart, Integer trimEnd) {
         // Generated convenience method for getClassMapLegendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (trimStart != null) {
@@ -4229,7 +4241,7 @@ public final class DataClient {
             requestOptions.addQueryParam("trim_end", String.valueOf(trimEnd), false);
         }
         return getClassMapLegendWithResponse(classmapName, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_MAP_STRING_OBJECT);
+            .toObject(ClassMapLegendResponse.class);
     }
 
     /**
@@ -4250,11 +4262,11 @@ public final class DataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> getClassMapLegend(String classmapName) {
+    public ClassMapLegendResponse getClassMapLegend(String classmapName) {
         // Generated convenience method for getClassMapLegendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getClassMapLegendWithResponse(classmapName, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_MAP_STRING_OBJECT);
+            .toObject(ClassMapLegendResponse.class);
     }
 
     /**
@@ -4323,7 +4335,7 @@ public final class DataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> getIntervalLegend(String classmapName, Integer trimStart, Integer trimEnd) {
+    public List<List<List<Long>>> getIntervalLegend(String classmapName, Integer trimStart, Integer trimEnd) {
         // Generated convenience method for getIntervalLegendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (trimStart != null) {
@@ -4333,7 +4345,7 @@ public final class DataClient {
             requestOptions.addQueryParam("trim_end", String.valueOf(trimEnd), false);
         }
         return getIntervalLegendWithResponse(classmapName, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_MAP_STRING_OBJECT);
+            .toObject(TYPE_REFERENCE_LIST_LIST_LIST_LONG);
     }
 
     /**
@@ -4400,11 +4412,11 @@ public final class DataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> getIntervalLegend(String classmapName) {
+    public List<List<List<Long>>> getIntervalLegend(String classmapName) {
         // Generated convenience method for getIntervalLegendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getIntervalLegendWithResponse(classmapName, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_MAP_STRING_OBJECT);
+            .toObject(TYPE_REFERENCE_LIST_LIST_LIST_LONG);
     }
 
     /**
@@ -5095,6 +5107,11 @@ public final class DataClient {
     }
 
     @Generated
+    private static final TypeReference<List<List<List<Long>>>> TYPE_REFERENCE_LIST_LIST_LIST_LONG
+        = new TypeReference<List<List<List<Long>>>>() {
+        };
+
+    @Generated
     private static final TypeReference<List<String>> TYPE_REFERENCE_LIST_STRING = new TypeReference<List<String>>() {
     };
 
@@ -5104,22 +5121,7 @@ public final class DataClient {
         };
 
     @Generated
-    private static final TypeReference<Map<String, Map<String, BandStatistics>>> TYPE_REFERENCE_MAP_STRING_MAP_STRING_BAND_STATISTICS
-        = new TypeReference<Map<String, Map<String, BandStatistics>>>() {
-        };
-
-    @Generated
-    private static final TypeReference<Map<String, TilerInfo>> TYPE_REFERENCE_MAP_STRING_TILER_INFO
-        = new TypeReference<Map<String, TilerInfo>>() {
-        };
-
-    @Generated
     private static final TypeReference<List<TilerAssetGeoJson>> TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON
         = new TypeReference<List<TilerAssetGeoJson>>() {
-        };
-
-    @Generated
-    private static final TypeReference<Map<String, Object>> TYPE_REFERENCE_MAP_STRING_OBJECT
-        = new TypeReference<Map<String, Object>>() {
         };
 }

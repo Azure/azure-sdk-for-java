@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import java.util.Map;
+import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +14,6 @@ public final class MapsIntervalLegendsGetByClassMapNameTests extends PlanetaryCo
     @Disabled
     public void testMapsIntervalLegendsGetByClassMapNameTests() {
         // method invocation
-        Map<String, Object> response = dataClient.getIntervalLegend("modis-64A1", null, null);
+        List<List<List<Long>>> response = dataClient.getIntervalLegend("modis-64A1", null, null);
     }
 }

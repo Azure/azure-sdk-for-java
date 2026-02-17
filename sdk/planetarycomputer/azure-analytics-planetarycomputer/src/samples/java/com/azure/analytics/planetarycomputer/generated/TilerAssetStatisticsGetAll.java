@@ -6,12 +6,11 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
-import com.azure.analytics.planetarycomputer.models.BandStatistics;
+import com.azure.analytics.planetarycomputer.models.AssetStatisticsResponse;
 import com.azure.analytics.planetarycomputer.models.GetAssetStatisticsOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
-import java.util.Map;
 
 public class TilerAssetStatisticsGetAll {
     public static void main(String[] args) {
@@ -20,8 +19,8 @@ public class TilerAssetStatisticsGetAll {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-asset-statistics.tiler-asset-statistics-get-all
-        Map<String, Map<String, BandStatistics>> response = dataClient.getAssetStatistics("naip-atl",
-            "ga_m_3308421_se_16_060_20211114", new GetAssetStatisticsOptions().setAssets(Arrays.asList("image")));
+        AssetStatisticsResponse response = dataClient.getAssetStatistics("naip-atl", "ga_m_3308421_se_16_060_20211114",
+            new GetAssetStatisticsOptions().setAssets(Arrays.asList("image")));
         // END:com.azure.analytics.planetarycomputer.generated.data-get-asset-statistics.tiler-asset-statistics-get-all
     }
 }

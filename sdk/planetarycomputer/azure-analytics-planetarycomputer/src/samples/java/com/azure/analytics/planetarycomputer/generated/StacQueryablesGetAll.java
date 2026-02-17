@@ -6,9 +6,9 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
+import com.azure.analytics.planetarycomputer.models.QueryableDefinitionsResponse;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.util.Map;
 
 public class StacQueryablesGetAll {
     public static void main(String[] args) {
@@ -17,7 +17,7 @@ public class StacQueryablesGetAll {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-list-queryables.stac-queryables-get-all
-        Map<String, Object> response = stacClient.listQueryables();
+        QueryableDefinitionsResponse response = stacClient.listQueryables();
         // END:com.azure.analytics.planetarycomputer.generated.stac-list-queryables.stac-queryables-get-all
     }
 }

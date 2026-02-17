@@ -4,10 +4,10 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.models.BandStatistics;
+import com.azure.analytics.planetarycomputer.models.AssetStatisticsResponse;
 import com.azure.analytics.planetarycomputer.models.GetAssetStatisticsOptions;
 import java.util.Arrays;
-import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,10 @@ public final class TilerAssetStatisticsGetAllTests extends PlanetaryComputerProC
     @Disabled
     public void testTilerAssetStatisticsGetAllTests() {
         // method invocation
-        Map<String, Map<String, BandStatistics>> response = dataClient.getAssetStatistics("naip-atl",
-            "ga_m_3308421_se_16_060_20211114", new GetAssetStatisticsOptions().setAssets(Arrays.asList("image")));
+        AssetStatisticsResponse response = dataClient.getAssetStatistics("naip-atl", "ga_m_3308421_se_16_060_20211114",
+            new GetAssetStatisticsOptions().setAssets(Arrays.asList("image")));
+
+        // response assertion
+        Assertions.assertNotNull(response);
     }
 }

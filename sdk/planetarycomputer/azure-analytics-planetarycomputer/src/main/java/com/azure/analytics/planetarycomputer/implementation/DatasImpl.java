@@ -1046,28 +1046,32 @@ public final class DatasImpl {
      * <pre>
      * {@code
      * {
-     *     String (Required): {
+     *      (Optional): {
      *         String (Required): {
-     *             min: double (Required)
-     *             max: double (Required)
-     *             mean: double (Required)
-     *             count: double (Required)
-     *             sum: double (Required)
-     *             std: double (Required)
-     *             median: double (Required)
-     *             majority: double (Required)
-     *             minority: double (Required)
-     *             unique: double (Required)
-     *             histogram (Required): [
-     *                  (Required)[
-     *                     double (Required)
-     *                 ]
-     *             ]
-     *             valid_percent: double (Required)
-     *             masked_pixels: double (Required)
-     *             valid_pixels: double (Required)
-     *             percentile_2: double (Required)
-     *             percentile_98: double (Required)
+     *              (Optional): {
+     *                 String (Required): {
+     *                     min: double (Required)
+     *                     max: double (Required)
+     *                     mean: double (Required)
+     *                     count: double (Required)
+     *                     sum: double (Required)
+     *                     std: double (Required)
+     *                     median: double (Required)
+     *                     majority: double (Required)
+     *                     minority: double (Required)
+     *                     unique: double (Required)
+     *                     histogram (Required): [
+     *                          (Required)[
+     *                             double (Required)
+     *                         ]
+     *                     ]
+     *                     valid_percent: double (Required)
+     *                     masked_pixels: double (Required)
+     *                     valid_pixels: double (Required)
+     *                     percentile_2: double (Required)
+     *                     percentile_98: double (Required)
+     *                 }
+     *             }
      *         }
      *     }
      * }
@@ -1081,7 +1085,7 @@ public final class DatasImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return return dataset's statistics along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAssetStatisticsWithResponseAsync(String collectionId, String itemId,
@@ -1141,28 +1145,32 @@ public final class DatasImpl {
      * <pre>
      * {@code
      * {
-     *     String (Required): {
+     *      (Optional): {
      *         String (Required): {
-     *             min: double (Required)
-     *             max: double (Required)
-     *             mean: double (Required)
-     *             count: double (Required)
-     *             sum: double (Required)
-     *             std: double (Required)
-     *             median: double (Required)
-     *             majority: double (Required)
-     *             minority: double (Required)
-     *             unique: double (Required)
-     *             histogram (Required): [
-     *                  (Required)[
-     *                     double (Required)
-     *                 ]
-     *             ]
-     *             valid_percent: double (Required)
-     *             masked_pixels: double (Required)
-     *             valid_pixels: double (Required)
-     *             percentile_2: double (Required)
-     *             percentile_98: double (Required)
+     *              (Optional): {
+     *                 String (Required): {
+     *                     min: double (Required)
+     *                     max: double (Required)
+     *                     mean: double (Required)
+     *                     count: double (Required)
+     *                     sum: double (Required)
+     *                     std: double (Required)
+     *                     median: double (Required)
+     *                     majority: double (Required)
+     *                     minority: double (Required)
+     *                     unique: double (Required)
+     *                     histogram (Required): [
+     *                          (Required)[
+     *                             double (Required)
+     *                         ]
+     *                     ]
+     *                     valid_percent: double (Required)
+     *                     masked_pixels: double (Required)
+     *                     valid_pixels: double (Required)
+     *                     percentile_2: double (Required)
+     *                     percentile_98: double (Required)
+     *                 }
+     *             }
      *         }
      *     }
      * }
@@ -1176,7 +1184,7 @@ public final class DatasImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return return dataset's statistics along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAssetStatisticsWithResponse(String collectionId, String itemId,
@@ -2210,46 +2218,48 @@ public final class DatasImpl {
      * <pre>
      * {@code
      * {
-     *     String (Required): {
-     *         bounds (Required): [
-     *             double (Required)
-     *         ]
-     *         band_metadata (Optional): [
-     *              (Optional)[
-     *                 BinaryData (Optional)
+     *      (Optional): {
+     *         String (Required): {
+     *             bounds (Required): [
+     *                 double (Required)
      *             ]
-     *         ]
-     *         band_descriptions (Optional): [
-     *              (Optional)[
+     *             band_metadata (Optional): [
+     *                  (Optional)[
+     *                     BinaryData (Optional)
+     *                 ]
+     *             ]
+     *             band_descriptions (Optional): [
+     *                  (Optional)[
+     *                     String (Optional)
+     *                 ]
+     *             ]
+     *             dtype: String (Required)
+     *             nodata_type: String(Alpha/Mask/Internal/Nodata/None) (Optional)
+     *             colorinterp (Optional): [
      *                 String (Optional)
      *             ]
-     *         ]
-     *         dtype: String (Required)
-     *         nodata_type: String(Alpha/Mask/Internal/Nodata/None) (Optional)
-     *         colorinterp (Optional): [
-     *             String (Optional)
-     *         ]
-     *         driver: String (Optional)
-     *         count: Integer (Optional)
-     *         width: Integer (Optional)
-     *         height: Integer (Optional)
-     *         overviews (Optional): [
-     *             int (Optional)
-     *         ]
-     *         scales (Optional): [
-     *             int (Optional)
-     *         ]
-     *         offsets (Optional): [
-     *             int (Optional)
-     *         ]
-     *         colormap (Optional): {
-     *             String (Required): [
-     *                 String (Required)
+     *             driver: String (Optional)
+     *             count: Integer (Optional)
+     *             width: Integer (Optional)
+     *             height: Integer (Optional)
+     *             overviews (Optional): [
+     *                 int (Optional)
      *             ]
+     *             scales (Optional): [
+     *                 int (Optional)
+     *             ]
+     *             offsets (Optional): [
+     *                 int (Optional)
+     *             ]
+     *             colormap (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
+     *             minzoom: Integer (Optional)
+     *             maxzoom: Integer (Optional)
+     *             crs: String (Optional)
      *         }
-     *         minzoom: Integer (Optional)
-     *         maxzoom: Integer (Optional)
-     *         crs: String (Optional)
      *     }
      * }
      * }
@@ -2262,7 +2272,7 @@ public final class DatasImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return return dataset's basic info along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getItemAssetDetailsWithResponseAsync(String collectionId, String itemId,
@@ -2289,46 +2299,48 @@ public final class DatasImpl {
      * <pre>
      * {@code
      * {
-     *     String (Required): {
-     *         bounds (Required): [
-     *             double (Required)
-     *         ]
-     *         band_metadata (Optional): [
-     *              (Optional)[
-     *                 BinaryData (Optional)
+     *      (Optional): {
+     *         String (Required): {
+     *             bounds (Required): [
+     *                 double (Required)
      *             ]
-     *         ]
-     *         band_descriptions (Optional): [
-     *              (Optional)[
+     *             band_metadata (Optional): [
+     *                  (Optional)[
+     *                     BinaryData (Optional)
+     *                 ]
+     *             ]
+     *             band_descriptions (Optional): [
+     *                  (Optional)[
+     *                     String (Optional)
+     *                 ]
+     *             ]
+     *             dtype: String (Required)
+     *             nodata_type: String(Alpha/Mask/Internal/Nodata/None) (Optional)
+     *             colorinterp (Optional): [
      *                 String (Optional)
      *             ]
-     *         ]
-     *         dtype: String (Required)
-     *         nodata_type: String(Alpha/Mask/Internal/Nodata/None) (Optional)
-     *         colorinterp (Optional): [
-     *             String (Optional)
-     *         ]
-     *         driver: String (Optional)
-     *         count: Integer (Optional)
-     *         width: Integer (Optional)
-     *         height: Integer (Optional)
-     *         overviews (Optional): [
-     *             int (Optional)
-     *         ]
-     *         scales (Optional): [
-     *             int (Optional)
-     *         ]
-     *         offsets (Optional): [
-     *             int (Optional)
-     *         ]
-     *         colormap (Optional): {
-     *             String (Required): [
-     *                 String (Required)
+     *             driver: String (Optional)
+     *             count: Integer (Optional)
+     *             width: Integer (Optional)
+     *             height: Integer (Optional)
+     *             overviews (Optional): [
+     *                 int (Optional)
      *             ]
+     *             scales (Optional): [
+     *                 int (Optional)
+     *             ]
+     *             offsets (Optional): [
+     *                 int (Optional)
+     *             ]
+     *             colormap (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
+     *             minzoom: Integer (Optional)
+     *             maxzoom: Integer (Optional)
+     *             crs: String (Optional)
      *         }
-     *         minzoom: Integer (Optional)
-     *         maxzoom: Integer (Optional)
-     *         crs: String (Optional)
      *     }
      * }
      * }
@@ -2341,7 +2353,7 @@ public final class DatasImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return return dataset's basic info along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getItemAssetDetailsWithResponse(String collectionId, String itemId,
@@ -4194,7 +4206,9 @@ public final class DatasImpl {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *      (Optional): {
+     *         String: Object (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -4236,7 +4250,9 @@ public final class DatasImpl {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *      (Optional): {
+     *         String: Object (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -4298,9 +4314,13 @@ public final class DatasImpl {
      * 
      * <pre>
      * {@code
-     * {
-     *     String: Object (Required)
-     * }
+     * [
+     *      (Required)[
+     *          (Required)[
+     *             long (Required)
+     *         ]
+     *     ]
+     * ]
      * }
      * </pre>
      * 
@@ -4386,9 +4406,13 @@ public final class DatasImpl {
      * 
      * <pre>
      * {@code
-     * {
-     *     String: Object (Required)
-     * }
+     * [
+     *      (Required)[
+     *          (Required)[
+     *             long (Required)
+     *         ]
+     *     ]
+     * ]
      * }
      * </pre>
      * 
