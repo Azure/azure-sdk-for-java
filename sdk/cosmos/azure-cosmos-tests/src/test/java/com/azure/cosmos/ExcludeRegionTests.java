@@ -124,7 +124,28 @@ public class ExcludeRegionTests extends TestSuiteBase {
         TestObject createdItem = TestObject.create();
         this.cosmosAsyncContainer.createItem(createdItem).block();
 
-        Thread.sleep(1000);
+        // Wait for item to be replicated across regions with retry logic instead of fixed sleep
+        // This makes the test more resilient to timing variations in CI environments
+        int maxRetries = 5;
+        int retryCount = 0;
+        boolean itemReplicated = false;
+        while (retryCount < maxRetries && !itemReplicated) {
+            try {
+                Thread.sleep(500); // Shorter incremental waits
+                CosmosDiagnosticsContext diagnostics = this.performDocumentOperation(
+                    cosmosAsyncContainer, 
+                    OperationType.Read,  // Use read to verify replication
+                    createdItem, 
+                    null, 
+                    INF_E2E_TIMEOUT);
+                itemReplicated = true;
+            } catch (Exception e) {
+                retryCount++;
+                if (retryCount >= maxRetries) {
+                    throw e;
+                }
+            }
+        }
 
         CosmosDiagnosticsContext cosmosDiagnosticsContextBeforeRegionExclusion
             = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, null, INF_E2E_TIMEOUT);
@@ -316,10 +337,27 @@ public class ExcludeRegionTests extends TestSuiteBase {
 
                 cosmosAsyncContainer.createItem(itemToBeDeleted, cosmosItemRequestOptions).block();
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                // Wait for item creation to propagate with retry mechanism
+                // instead of fixed sleep to handle timing variations in CI
+                int maxRetries = 5;
+                for (int i = 0; i < maxRetries; i++) {
+                    try {
+                        Thread.sleep(300); // Shorter incremental waits
+                        // Verify item exists before attempting delete
+                        cosmosAsyncContainer.readItem(
+                            itemToBeDeleted.getId(),
+                            new PartitionKey(itemToBeDeleted.getMypk()),
+                            TestObject.class
+                        ).block();
+                        break; // Item is ready
+                    } catch (CosmosException e) {
+                        if (i == maxRetries - 1) {
+                            throw e; // Rethrow on last retry
+                        }
+                        // Continue retrying
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
 
                 CosmosItemResponse<Object> itemResponse
