@@ -124,6 +124,7 @@ steps:
       env:
         JAVA_HOME: $(PowerShellJavaHome)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         ${{ insert }}: ${{ parameters.TestEnvVars }}
 
   - ${{ else }}:
@@ -215,6 +216,7 @@ steps:
         # task above
         JAVA_HOME: $(PowerShellJavaHome)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         ${{ insert }}: ${{ parameters.TestEnvVars }}
 
   - ${{ else }}:
