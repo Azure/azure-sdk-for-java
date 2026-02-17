@@ -54,4 +54,10 @@ public final class EvaluationRuleActionType extends ExpandableStringEnum<Evaluat
     public static Collection<EvaluationRuleActionType> values() {
         return values(EvaluationRuleActionType.class);
     }
+
+    /**
+     * Human evaluation preview.
+     */
+    @Generated
+    public static final EvaluationRuleActionType HUMAN_EVALUATION_PREVIEW = fromString("humanEvaluationPreview");
 }
