@@ -15,6 +15,7 @@ public final class CosmosBatchBulkOperation {
 
     private final CosmosBatch cosmosBatch;
     private final BulkOperationStatusTracker statusTracker;
+    private TransactionalBatchRetryPolicy retryPolicy;
 
     public CosmosBatchBulkOperation(CosmosBatch cosmosBatch) {
         checkNotNull(cosmosBatch, "Argument 'cosmosBatch' must not be null.");
@@ -28,5 +29,13 @@ public final class CosmosBatchBulkOperation {
 
     public BulkOperationStatusTracker getStatusTracker() {
         return this.statusTracker;
+    }
+
+    public void setRetryPolicy(TransactionalBatchRetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
+    }
+
+    public TransactionalBatchRetryPolicy getRetryPolicy() {
+        return this.retryPolicy;
     }
 }

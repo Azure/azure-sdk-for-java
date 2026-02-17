@@ -73,9 +73,6 @@ public final class TransactionalBulkExecutor implements Disposable {
     private static final ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor cosmosBatchRequestOptionsAccessor =
         ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
 
-    private static final ImplementationBridgeHelpers.CosmosBatchHelper.CosmosBatchAccessor cosmosBatchAccessor =
-        ImplementationBridgeHelpers.CosmosBatchHelper.getCosmosBatchAccessor();
-
     private final CosmosAsyncContainer container;
     private final AsyncDocumentClient docClientWrapper;
     private final String operationContextText;
@@ -548,7 +545,7 @@ public final class TransactionalBulkExecutor implements Disposable {
             BridgeInternal.getLink(container),
             resourceThrottleRetryPolicy);
 
-        cosmosBatchAccessor.setRetryPolicy(cosmosBatchBulkOperation.getCosmosBatch(), retryPolicy);
+        cosmosBatchBulkOperation.setRetryPolicy(retryPolicy);
     }
 
     private Mono<CosmosBulkTransactionalBatchResponse> enqueueForRetry(
@@ -762,8 +759,8 @@ public final class TransactionalBulkExecutor implements Disposable {
                 cosmosException.getStatusCode(),
                 cosmosException.getSubStatusCode());
 
-            return cosmosBatchAccessor
-                .getRetryPolicy(cosmosBatchBulkOperation.getCosmosBatch())
+            return cosmosBatchBulkOperation
+                .getRetryPolicy()
                 .shouldRetryInMainSink(cosmosException)
                 .flatMap(shouldRetryInMainSink -> {
                     if (shouldRetryInMainSink) {
@@ -783,7 +780,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                         return retryOtherExceptions(
                             cosmosBatchBulkOperation,
                             groupSink,
-                            cosmosBatchAccessor.getRetryPolicy(cosmosBatchBulkOperation.getCosmosBatch()),
+                            cosmosBatchBulkOperation.getRetryPolicy(),
                             cosmosException,
                             thresholds,
                             batchTrackingId);

@@ -34,7 +34,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.batch.BulkOperationStatusTracker;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
-import com.azure.cosmos.implementation.batch.TransactionalBatchRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -1292,8 +1291,6 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBatchAccessor {
             List<ItemBatchOperation<?>> getOperationsInternal(CosmosBatch cosmosBatch);
-            CosmosBatch setRetryPolicy(CosmosBatch cosmosBatch, TransactionalBatchRetryPolicy transactionalBatchRetryPolicy);
-            TransactionalBatchRetryPolicy getRetryPolicy(CosmosBatch cosmosBatch);
         }
     }
 
