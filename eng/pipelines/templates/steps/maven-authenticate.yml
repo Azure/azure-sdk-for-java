@@ -1,7 +1,7 @@
 steps:
   # Authenticate with Azure Artifacts feeds
-  # Repo URLs are defined in azure-sdk-parent pom.xml with id 'test-maven-feed'
+  # Repo URLs are defined in azure-sdk-parent pom.xml with id 'azure-sdk-for-java'
   - task: MavenAuthenticate@0
     displayName: 'Maven Authenticate'
     inputs:
-      artifactsFeeds: 'test-maven-feed'
+      artifactsFeeds: 'azure-sdk-for-java'
