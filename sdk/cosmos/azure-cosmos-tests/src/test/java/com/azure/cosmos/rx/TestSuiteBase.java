@@ -74,6 +74,7 @@ import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
@@ -1980,11 +1981,124 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    protected void truncateCollection(DocumentCollection collection) {
-        // This is a no-op placeholder - the original implementation likely deleted all documents
-        // For shared test collections, we don't actually want to delete all documents
-        // since other tests might depend on them
-        logger.info("truncateCollection called for {}", collection.getId());
+    protected static void truncateCollection(DocumentCollection collection) {
+        logger.info("Truncating DocumentCollection {} ...", collection.getId());
+
+        try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+            .key(TestConfigurations.MASTER_KEY)
+            .endpoint(TestConfigurations.HOST)
+            .buildAsyncClient()) {
+
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            options.setMaxDegreeOfParallelism(-1);
+
+            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
+
+            logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
+
+            String altLink = collection.getAltLink();
+            // Normalize altLink so both "dbs/.../colls/..." and "/dbs/.../colls/..." are handled consistently.
+            String normalizedAltLink = StringUtils.strip(altLink, "/");
+            String[] altLinkSegments = normalizedAltLink.split("/");
+            // altLink format (after normalization): dbs/{dbName}/colls/{collName}
+            String databaseName = altLinkSegments[1];
+            String containerName = altLinkSegments[3];
+
+            CosmosAsyncContainer container = cosmosClient.getDatabase(databaseName).getContainer(containerName);
+
+            Flux<CosmosItemOperation> deleteOperations =
+                container
+                    .queryItems( "SELECT * FROM root", options, Document.class)
+                    .byPage()
+                    .publishOn(Schedulers.parallel())
+                    .flatMap(page -> Flux.fromIterable(page.getResults()))
+                    .map(doc -> {
+                        PartitionKey partitionKey = PartitionKeyHelper.extractPartitionKeyFromDocument(doc, collection.getPartitionKey());
+                        if (partitionKey == null) {
+                            partitionKey = PartitionKey.NONE;
+                        }
+
+                        return CosmosBulkOperations.getDeleteItemOperation(doc.getId(), partitionKey);
+                    });
+
+            CosmosBulkExecutionOptions bulkOptions = new CosmosBulkExecutionOptions();
+            ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                .getCosmosBulkExecutionOptionsAccessor()
+                .getImpl(bulkOptions)
+                .setCosmosEndToEndLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(65))
+                        .build());
+
+            cosmosClient.getDatabase(databaseName)
+                        .getContainer(containerName)
+                        .executeBulkOperations(deleteOperations, bulkOptions)
+                        .flatMap(response -> {
+                            if (response.getException() != null) {
+                                Exception ex = response.getException();
+                                if (ex instanceof CosmosException) {
+                                    CosmosException cosmosException = (CosmosException) ex;
+                                    if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND
+                                        && cosmosException.getSubStatusCode() == 0) {
+                                        return Mono.empty();
+                                    }
+                                }
+                                return Mono.error(ex);
+                            }
+                            if (response.getResponse() != null
+                                && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                                return Mono.empty();
+                            }
+                            if (response.getResponse() != null
+                                && !response.getResponse().isSuccessStatusCode()) {
+                                CosmosException bulkException = BridgeInternal.createCosmosException(
+                                    response.getResponse().getStatusCode(),
+                                    "Bulk delete operation failed with status code " + response.getResponse().getStatusCode());
+                                BridgeInternal.setSubStatusCode(bulkException, response.getResponse().getSubStatusCode());
+                                return Mono.error(bulkException);
+                            }
+                            return Mono.just(response);
+                        })
+                        .blockLast();
+
+            logger.info("Truncating DocumentCollection {} triggers ...", collection.getId());
+
+            container
+                .getScripts()
+                .queryTriggers("SELECT * FROM root", new CosmosQueryRequestOptions())
+                .byPage()
+                .publishOn(Schedulers.parallel())
+                .flatMap(page -> Flux.fromIterable(page.getResults()))
+                .flatMap(trigger -> container.getScripts().getTrigger(trigger.getId()).delete()).then().block();
+
+            logger.info("Truncating DocumentCollection {} storedProcedures ...", collection.getId());
+
+            container
+                .getScripts()
+                .queryStoredProcedures("SELECT * FROM root", new CosmosQueryRequestOptions())
+                .byPage()
+                .publishOn(Schedulers.parallel())
+                .flatMap(page -> Flux.fromIterable(page.getResults()))
+                .flatMap(storedProcedure -> {
+                    return container.getScripts().getStoredProcedure(storedProcedure.getId()).delete();
+                })
+                .then()
+                .block();
+
+            logger.info("Truncating DocumentCollection {} udfs ...", collection.getId());
+
+            container
+                .getScripts()
+                .queryUserDefinedFunctions("SELECT * FROM root", new CosmosQueryRequestOptions())
+                .byPage()
+                .publishOn(Schedulers.parallel()).flatMap(page -> Flux.fromIterable(page.getResults()))
+                .flatMap(udf -> {
+                    return container.getScripts().getUserDefinedFunction(udf.getId()).delete();
+                })
+                .then()
+                .block();
+        }
+
+        logger.info("Finished truncating DocumentCollection {}.", collection.getId());
     }
 
     protected static void deleteDocumentIfExists(AsyncDocumentClient client, String databaseId, String collectionId, String docId) {
