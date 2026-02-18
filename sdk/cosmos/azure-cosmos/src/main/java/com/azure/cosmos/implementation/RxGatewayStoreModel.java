@@ -479,6 +479,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                             if (reactorNettyRequestRecord != null) {
                                 rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
+                                rsp.setChannelId(reactorNettyRequestRecord.getChannelId());
+                                rsp.setParentChannelId(reactorNettyRequestRecord.getParentChannelId());
+                                rsp.setHttp2(reactorNettyRequestRecord.isHttp2());
 
                                 if (this.gatewayServerErrorInjector != null) {
                                     // only configure when fault injection is used
@@ -605,7 +608,12 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                     .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
                     }
 
-                    BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager);
+                    BridgeInternal.recordGatewayResponse(
+                        request.requestContext.cosmosDiagnostics,
+                        request,
+                        dce,
+                        globalEndpointManager,
+                        httpRequest.reactorNettyRequestRecord());
                 }
 
                 return Mono.error(dce);
@@ -627,6 +635,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
 
                     request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
+
+                    // Always set the request URI so endpoint is captured in diagnostics on cancellation.
+                    // The endpoint is known at request-send time and should not be lost on cancellation.
+                    ImplementationBridgeHelpers
+                        .CosmosExceptionHelper
+                        .getCosmosExceptionAccessor()
+                        .setRequestUri(oce, Uri.create(httpRequest.uri().toString()));
 
                     if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
 
@@ -653,7 +668,12 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                     request.faultInjectionRequestContext
                                         .getFaultInjectionRuleEvaluationResults(transportRequestId));
 
-                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager);
+                            BridgeInternal.recordGatewayResponse(
+                                request.requestContext.cosmosDiagnostics,
+                                request,
+                                oce,
+                                globalEndpointManager,
+                                reactorNettyRequestRecord);
                         }
                     }
                 }

@@ -39,6 +39,9 @@ public final class ReactorNettyRequestRecord {
     private volatile Instant timeSent;
     private volatile Instant timeReceived;
     private volatile Instant timeCompleted;
+    private volatile String channelId;
+    private volatile String parentChannelId;
+    private volatile boolean isHttp2;
     private final long transportRequestId;
 
     public ReactorNettyRequestRecord() {
@@ -203,5 +206,57 @@ public final class ReactorNettyRequestRecord {
 
     public long getTransportRequestId() {
         return transportRequestId;
+    }
+
+    /**
+     * Gets the channel ID (netty channel short text ID) used for this request.
+     * For HTTP/2, this is the stream channel ID. For HTTP/1.1, same as parentChannelId.
+     * @return channelId
+     */
+    public String getChannelId() {
+        return this.channelId;
+    }
+
+    /**
+     * Sets the channel ID.
+     * @param channelId the netty channel ID
+     */
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
+    /**
+     * Gets the parent channel ID — the TCP connection identity.
+     * For HTTP/2: this is the parent TCP channel (shared across multiplexed streams).
+     * For HTTP/1.1: same as channelId (no multiplexing).
+     * Use this to determine if two requests shared the same physical TCP connection.
+     * @return parentChannelId
+     */
+    public String getParentChannelId() {
+        return this.parentChannelId;
+    }
+
+    /**
+     * Sets the parent channel ID.
+     * @param parentChannelId the parent TCP connection channel ID
+     */
+    public void setParentChannelId(String parentChannelId) {
+        this.parentChannelId = parentChannelId;
+    }
+
+    /**
+     * Returns true if this request was sent over HTTP/2.
+     * @return true if HTTP/2, false if HTTP/1.1
+     */
+    public boolean isHttp2() {
+        return this.isHttp2;
+    }
+
+    /**
+     * Sets whether this request used HTTP/2.
+     * @param isHttp2 true if HTTP/2
+     */
+    public void setHttp2(boolean isHttp2) {
+        this.isHttp2 = isHttp2;
     }
 }

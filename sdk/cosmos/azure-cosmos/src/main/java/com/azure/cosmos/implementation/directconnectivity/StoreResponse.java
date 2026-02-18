@@ -42,6 +42,9 @@ public class StoreResponse {
     private final Map<String, Set<String>> replicaStatusList;
     private String faultInjectionRuleId;
     private List<String> faultInjectionRuleEvaluationResults;
+    private String channelId;
+    private String parentChannelId;
+    private boolean isHttp2;
 
     private final JsonNodeStorePayload responsePayload;
     private final String endpoint;
@@ -318,5 +321,29 @@ public class StoreResponse {
 
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    public String getChannelId() {
+        return this.channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getParentChannelId() {
+        return this.parentChannelId;
+    }
+
+    public void setParentChannelId(String parentChannelId) {
+        this.parentChannelId = parentChannelId;
+    }
+
+    public boolean isHttp2() {
+        return this.isHttp2;
+    }
+
+    public void setHttp2(boolean isHttp2) {
+        this.isHttp2 = isHttp2;
     }
 }

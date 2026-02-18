@@ -6,6 +6,7 @@ import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
@@ -247,24 +248,71 @@ public class ReactorNettyClient implements HttpClient {
             logger.trace("STATE {}, Connection {}, Time {}", state, conn, time);
 
             if (state.equals(HttpClientState.CONNECTED)) {
-                if (conn instanceof ConnectionObserver) {
-                    ConnectionObserver observer = (ConnectionObserver) conn;
-                    ReactorNettyRequestRecord requestRecord =
-                        observer.currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
-                    if (requestRecord == null) {
-                        throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
+                // For HTTP/2: conn.channel() is the stream child channel (one per request).
+                // channel.parent() is the TCP connection channel (shared across multiplexed streams).
+                // For HTTP/1.1: conn.channel() is the TCP connection itself; channel.parent() is null.
+                Channel channel = conn.channel();
+                boolean isHttp2 = channel.parent() != null;
+                if (isHttp2) {
+                    String channelId = channel.id().asShortText();
+                    String parentChannelId = channel.parent().id().asShortText();
+                    logger.debug("CONNECTED channelId={}, parentChannelId={}, isHttp2=true, Time={}",
+                        channelId, parentChannelId, time);
+                    if (conn instanceof ConnectionObserver) {
+                        ConnectionObserver observer = (ConnectionObserver) conn;
+                        ReactorNettyRequestRecord requestRecord =
+                            observer.currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
+                        if (requestRecord == null) {
+                            throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
+                        }
+                        requestRecord.setTimeConnected(time);
+                        requestRecord.setChannelId(channelId);
+                        requestRecord.setParentChannelId(parentChannelId);
+                        requestRecord.setHttp2(true);
                     }
-                    requestRecord.setTimeConnected(time);
+                } else {
+                    if (conn instanceof ConnectionObserver) {
+                        ConnectionObserver observer = (ConnectionObserver) conn;
+                        ReactorNettyRequestRecord requestRecord =
+                            observer.currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
+                        if (requestRecord == null) {
+                            throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
+                        }
+                        requestRecord.setTimeConnected(time);
+                    }
                 }
             } else if (state.equals(HttpClientState.ACQUIRED)) {
-                if (conn instanceof ConnectionObserver) {
-                    ConnectionObserver observer = (ConnectionObserver) conn;
-                    ReactorNettyRequestRecord requestRecord =
-                        observer.currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
-                    if (requestRecord == null) {
-                        throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
+                Channel channel = conn.channel();
+                boolean isHttp2 = channel.parent() != null;
+                if (isHttp2) {
+                    String channelId = channel.id().asShortText();
+                    String parentChannelId = channel.parent().id().asShortText();
+                    logger.debug("ACQUIRED channelId={}, parentChannelId={}, isHttp2=true, Time={}",
+                        channelId, parentChannelId, time);
+                    if (conn instanceof ConnectionObserver) {
+                        ConnectionObserver observer = (ConnectionObserver) conn;
+                        ReactorNettyRequestRecord requestRecord =
+                            observer.currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
+                        if (requestRecord == null) {
+                            throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
+                        }
+                        requestRecord.setTimeAcquired(time);
+                        if (requestRecord.getChannelId() == null) {
+                            requestRecord.setChannelId(channelId);
+                            requestRecord.setParentChannelId(parentChannelId);
+                            requestRecord.setHttp2(true);
+                        }
                     }
-                    requestRecord.setTimeAcquired(time);
+                } else {
+                    if (conn instanceof ConnectionObserver) {
+                        ConnectionObserver observer = (ConnectionObserver) conn;
+                        ReactorNettyRequestRecord requestRecord =
+                            observer.currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
+                        if (requestRecord == null) {
+                            throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
+                        }
+                        requestRecord.setTimeAcquired(time);
+                    }
                 }
             } else if (state.equals(HttpClientState.STREAM_CONFIGURED)) {
                 if (conn instanceof HttpClientRequest) {
