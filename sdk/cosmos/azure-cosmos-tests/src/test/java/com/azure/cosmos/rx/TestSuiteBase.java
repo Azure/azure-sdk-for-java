@@ -1948,11 +1948,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    protected static void deleteUserIfExists(AsyncDocumentClient client, String databaseId, String oderId) {
+    protected static void deleteUserIfExists(AsyncDocumentClient client, String databaseId, String userId) {
         if (client != null) {
             try {
-                client.readUser("/dbs/" + databaseId + "/users/" + oderId, null).block();
-                client.deleteUser("/dbs/" + databaseId + "/users/" + oderId, null).block();
+                client.readUser("/dbs/" + databaseId + "/users/" + userId, null).block();
+                client.deleteUser("/dbs/" + databaseId + "/users/" + userId, null).block();
             } catch (Exception e) {
                 // Ignore if not found
             }
