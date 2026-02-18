@@ -56,6 +56,30 @@ Merging Pull Requests (for project contributors with write access)
 `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1`<br>*(might need to type `yes` to override key if it already exists)*<br><br>
 2.- Set up `git` by running:<br> `git config --system core.longpaths true`
 
+### Azure Artifacts Feed Setup
+
+This repository uses an internal Azure Artifacts feed to resolve dependencies. To authenticate with the feed, you need to set up the Maven credential provider.
+
+Setting up the credential provider involves these main steps:
+1. Bootstrap the Maven Credential Provider
+2. Add the Maven extension to your project
+
+For detailed instructions, refer to the [Maven Credential Provider documentation](https://eng.ms/docs/coreai/devdiv/one-engineering-system-1es/1es-docs/azure-artifacts/maven-credprovider).
+
+> **Note:** For Maven Azure DevOps pipeline authentication, use the [MavenAuthenticate@0](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/maven-authenticate-v0) pipeline task.
+
+#### Troubleshooting 401 Unauthorized errors
+
+If you encounter a `401 Unauthorized` error when running Maven commands:
+
+1. **Request access to Azure SDK DevOps**: If you haven't already, [request access to the Azure SDK organization](https://eng.ms/docs/products/azure-developer-experience/onboard/access).
+
+2. **Verify Azure CLI login**: Run `az account show` to ensure you're logged in with the correct account that has access to the Azure SDK organization.
+
+3. **Re-authenticate**: Run `az login` to refresh your credentials.
+
+4. **Verify feed access**: Ensure your Azure account has access to the [azure-sdk-for-java feed](https://dev.azure.com/azure-sdk/public/_packaging?_a=feed&feed=azure-sdk-for-java).
+
 ### Building and Unit Testing
 
 Refer to the [build wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning how to build Java SDKs
