@@ -12,7 +12,7 @@ import com.openai.services.blocking.ConversationService;
 @ServiceClient(builder = AgentsClientBuilder.class)
 public final class ConversationsClient {
 
-    private final ConversationService openAIConversationClient;
+    private final ConversationService conversationService;
 
     /**
      * Initializes an instance of ConversationsClient class.
@@ -20,7 +20,7 @@ public final class ConversationsClient {
      * @param openAIClient the service client implementation.
      */
     ConversationsClient(OpenAIClient openAIClient) {
-        this.openAIConversationClient = openAIClient.conversations();
+        this.conversationService = openAIClient.conversations();
     }
 
     /**
@@ -29,6 +29,6 @@ public final class ConversationsClient {
      * @return the OpenAI conversation service client.
      */
     public ConversationService getConversationService() {
-        return this.openAIConversationClient;
+        return this.conversationService;
     }
 }

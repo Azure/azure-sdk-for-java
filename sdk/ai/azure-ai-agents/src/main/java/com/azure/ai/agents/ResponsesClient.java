@@ -22,7 +22,7 @@ import java.util.Objects;
  */
 @ServiceClient(builder = AgentsClientBuilder.class)
 public final class ResponsesClient {
-    private final ResponseService openAIResponsesClient;
+    private final ResponseService responseService;
 
     /**
      * Initializes an instance of ResponsesClient class using the official OpenAI client library.
@@ -30,7 +30,7 @@ public final class ResponsesClient {
      * @param openAIClient the OpenAI client.
      */
     ResponsesClient(OpenAIClient openAIClient) {
-        this.openAIResponsesClient = openAIClient.responses();
+        this.responseService = openAIClient.responses();
     }
 
     /**
@@ -39,7 +39,7 @@ public final class ResponsesClient {
      * @return the OpenAI response service client.
      */
     public ResponseService getResponseService() {
-        return openAIResponsesClient;
+        return responseService;
     }
 
     /**
@@ -74,7 +74,7 @@ public final class ResponsesClient {
         additionalBodyProperties.put("agent", agentRefJsonValue);
 
         params.additionalBodyProperties(additionalBodyProperties);
-        return this.openAIResponsesClient.create(params.build());
+        return this.responseService.create(params.build());
     }
 
     /**
@@ -94,7 +94,7 @@ public final class ResponsesClient {
         additionalBodyProperties.put("agent", agentRefJsonValue);
 
         params.additionalBodyProperties(additionalBodyProperties);
-        return this.openAIResponsesClient.create(params.build());
+        return this.responseService.create(params.build());
     }
 
     /**
