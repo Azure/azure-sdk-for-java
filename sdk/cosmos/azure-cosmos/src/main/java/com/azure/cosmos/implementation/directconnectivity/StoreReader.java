@@ -837,6 +837,7 @@ public class StoreReader {
             Double backendLatencyInMs = null;
             Double retryAfterInMs = null;
             long itemLSN = -1;
+            long globalNRegionCommittedLSN = -1;
 
             if (replicaStatusList != null) {
                 storeResponse.getReplicaStatusList().putAll(replicaStatusList);
@@ -878,6 +879,10 @@ public class StoreReader {
 
             if ((headerValue = storeResponse.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN)) != null) {
                 globalCommittedLSN = Long.parseLong(headerValue);
+            }
+
+            if ((headerValue = storeResponse.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN)) != null) {
+                globalNRegionCommittedLSN = Long.parseLong(headerValue);
             }
 
             if ((headerValue = storeResponse.getHeaderValue(
@@ -924,6 +929,7 @@ public class StoreReader {
                     /* isValid: */true,
                     /* storePhysicalAddress: */ storePhysicalAddress,
                     /* globalCommittedLSN: */ globalCommittedLSN,
+                    /* globalNRegionCommittedLSN: */ globalNRegionCommittedLSN,
                     /* numberOfReadRegions: */ numberOfReadRegions,
                     /* itemLSN: */ itemLSN,
                     /* getSessionToken: */ sessionToken,
@@ -942,6 +948,7 @@ public class StoreReader {
                 int numberOfReadRegions = -1;
                 Double backendLatencyInMs = null;
                 Double retryAfterInMs = null;
+                long globalNRegionCommittedLSN = -1;
 
                 if (replicaStatusList != null) {
                     ImplementationBridgeHelpers
@@ -994,6 +1001,11 @@ public class StoreReader {
                     globalCommittedLSN = Long.parseLong(headerValue);
                 }
 
+                headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN);
+                if (!Strings.isNullOrEmpty(headerValue)) {
+                    globalNRegionCommittedLSN = Long.parseLong(headerValue);
+                }
+
                 headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     backendLatencyInMs = Double.parseDouble(headerValue);
@@ -1041,6 +1053,7 @@ public class StoreReader {
                             ? ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor().getRequestUri(cosmosException)
                             : storePhysicalAddress,
                         /* globalCommittedLSN: */ globalCommittedLSN,
+                        /* globalNRegionCommittedLSN: */ globalNRegionCommittedLSN,
                         /* numberOfReadRegions: */ numberOfReadRegions,
                         /* itemLSN: */ -1,
                         /* getSessionToken: */ sessionToken,
@@ -1067,6 +1080,7 @@ public class StoreReader {
                         /* isValid: */ false,
                         /* storePhysicalAddress: */ storePhysicalAddress,
                         /* globalCommittedLSN: */-1,
+                        /* globalNRegionCommittedLSN: */-1,
                         /* numberOfReadRegions: */ 0,
                         /* itemLSN: */ -1,
                         /* getSessionToken: */ null,
