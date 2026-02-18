@@ -987,6 +987,7 @@
         "clientime",
         "ctxt",
         "etags",
+        "GZRS",
         "HTBB",
         "IPMISMATCH",
         "myaccountname",
@@ -1003,6 +1004,7 @@
         "myjavacontainerbuffereduploadlength",
         "myjavacontainerparallelupload",
         "RAGRS",
+        "RAGZRS",
         "saoid"
       ]
     },

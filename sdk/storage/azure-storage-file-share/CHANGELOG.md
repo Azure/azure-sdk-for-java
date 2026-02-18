@@ -3,6 +3,8 @@
 ## 12.30.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for improved error handling for file share provisioning.
+- Added cross-tenant support for principal bound delegation SAS.
 
 ### Breaking Changes
 

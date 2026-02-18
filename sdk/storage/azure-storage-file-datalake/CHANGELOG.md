@@ -3,6 +3,8 @@
 ## 12.27.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for Dynamic User Delegation SAS.
+- Added cross-tenant support for principal bound delegation SAS.
 
 ### Breaking Changes
 
