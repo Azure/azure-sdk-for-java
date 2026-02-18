@@ -5107,6 +5107,11 @@ public final class DataClient {
     }
 
     @Generated
+    private static final TypeReference<List<List<List<Long>>>> TYPE_REFERENCE_LIST_LIST_LIST_LONG
+        = new TypeReference<List<List<List<Long>>>>() {
+        };
+
+    @Generated
     private static final TypeReference<List<String>> TYPE_REFERENCE_LIST_STRING = new TypeReference<List<String>>() {
     };
 
@@ -5118,10 +5123,5 @@ public final class DataClient {
     @Generated
     private static final TypeReference<List<TilerAssetGeoJson>> TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON
         = new TypeReference<List<TilerAssetGeoJson>>() {
-        };
-
-    @Generated
-    private static final TypeReference<List<List<List<Long>>>> TYPE_REFERENCE_LIST_LIST_LIST_LONG
-        = new TypeReference<List<List<List<Long>>>>() {
         };
 }
