@@ -1899,9 +1899,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     protected static void safeDeleteDatabase(AsyncDocumentClient client, String databaseId) {
         if (client != null && databaseId != null) {
             try {
-                client.deleteDatabase("/dbs/" + databaseId, null).block();
+                client.deleteDatabase(TestUtils.getDatabaseNameLink(databaseId), null).block();
             } catch (Exception e) {
-                // Ignore deletion errors
+                System.err.println("Failed to delete database '" + databaseId + "': " + e.getMessage());
             }
         }
     }
