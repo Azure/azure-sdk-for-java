@@ -117,7 +117,7 @@ public class IndexesClientTest extends ClientTestBase {
                 = new AzureAISearchIndex().setConnectionName(aiSearchConnectionName).setIndexName(aiSearchIndexName);
 
             // Create or update the index
-            Index createdIndex = indexesClient.createOrUpdate(indexName, indexVersion, searchIndex);
+            Index createdIndex = indexesClient.createOrUpdateVersion(indexName, indexVersion, searchIndex);
 
             // Verify the created/updated index
             assertValidIndex(createdIndex, indexName, indexVersion);

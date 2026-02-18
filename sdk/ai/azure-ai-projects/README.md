@@ -63,7 +63,7 @@ SchedulesClient schedulesClient = builder.buildSchedulesClient();
 In the particular case of the `EvaluationsClient`, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
 
 ```java com.azure.ai.projects.evaluationsClientInit
-EvalService evalService = evaluationsClient.getOpenAIClient();
+EvalService evalService = evaluationsClient.getEvalService();
 ```
 
 For the Agents operation, you can use the `azure-ai-agents` package which is available as transitive dependency:
@@ -119,7 +119,7 @@ String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION"
 String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
 String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "");
 
-Index index = indexesClient.createOrUpdate(
+Index index = indexesClient.createOrUpdateVersion(
     indexName,
     indexVersion,
     new AzureAISearchIndex()

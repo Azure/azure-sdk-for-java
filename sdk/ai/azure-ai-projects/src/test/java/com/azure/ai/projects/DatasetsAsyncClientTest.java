@@ -85,7 +85,8 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
         // Collect datasets into a list
         List<DatasetVersion> datasetsList = new ArrayList<>();
 
-        StepVerifier.create(datasetsAsyncClient.listLatest().doOnNext(datasetsList::add).then()).verifyComplete();
+        StepVerifier.create(datasetsAsyncClient.listLatestVersion().doOnNext(datasetsList::add).then())
+            .verifyComplete();
 
         // Verify we found at least one dataset
         Assertions.assertFalse(datasetsList.isEmpty(), "Expected at least one dataset");

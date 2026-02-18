@@ -81,7 +81,7 @@ public class DatasetsClientTest extends ClientTestBase {
         DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
 
         // Verify that listing datasets returns results
-        Iterable<DatasetVersion> datasets = datasetsClient.listLatest();
+        Iterable<DatasetVersion> datasets = datasetsClient.listLatestVersion();
         Assertions.assertNotNull(datasets);
 
         // Verify that at least one dataset can be retrieved

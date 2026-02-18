@@ -35,7 +35,7 @@ public final class ReadmeSamples {
         // END: com.azure.ai.projects.clientInitialization
 
         // BEGIN: com.azure.ai.projects.evaluationsClientInit
-        EvalService evalService = evaluationsClient.getOpenAIClient();
+        EvalService evalService = evaluationsClient.getEvalService();
         // END: com.azure.ai.projects.evaluationsClientInit
 
         // BEGIN: com.azure.ai.projects.openAIClient
