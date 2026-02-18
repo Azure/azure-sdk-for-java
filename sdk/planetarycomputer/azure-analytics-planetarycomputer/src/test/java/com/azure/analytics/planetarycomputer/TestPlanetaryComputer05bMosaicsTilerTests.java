@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer;
 import com.azure.analytics.planetarycomputer.models.FilterLanguage;
 import com.azure.analytics.planetarycomputer.models.ImageParameters;
 import com.azure.analytics.planetarycomputer.models.ImageResponse;
-import com.azure.analytics.planetarycomputer.models.Geometry;
 import com.azure.analytics.planetarycomputer.models.Polygon;
 import com.azure.analytics.planetarycomputer.models.RegisterMosaicsSearchOptions;
 import com.azure.analytics.planetarycomputer.models.StacItemPointAsset;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,7 +39,7 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("Assets")
-    public void test05_06_GetMosaicsAssetsForPoint() {
+    public void test0506GetMosaicsAssetsForPoint() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -91,7 +89,7 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("Assets")
-    public void test05_07_GetMosaicsAssetsForTile() {
+    public void test0507GetMosaicsAssetsForTile() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -126,7 +124,7 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
      */
     @Test
     @Tag("StaticImage")
-    public void test05_08_CreateStaticImage() {
+    public void test0508CreateStaticImage() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -186,7 +184,7 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
     @Test
     @Disabled("Image ID from createStaticImage is sanitized causing URL mismatch with recording")
     @Tag("StaticImage")
-    public void test05_09_GetStaticImage() {
+    public void test0509GetStaticImage() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();

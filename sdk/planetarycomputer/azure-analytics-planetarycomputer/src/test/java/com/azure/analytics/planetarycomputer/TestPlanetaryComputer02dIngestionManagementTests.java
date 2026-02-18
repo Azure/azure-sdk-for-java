@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class TestPlanetaryComputer02dIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionDefinition")
-    public void test02_14_ListIngestions() {
+    public void test0214ListIngestions() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -72,7 +71,7 @@ public class TestPlanetaryComputer02dIngestionManagementTests extends PlanetaryC
     @Test
     @Disabled("SDK codegen bug: getImportType() returns enum instead of string")
     @Tag("IngestionDefinition")
-    public void test02_15_GetIngestion() {
+    public void test0215GetIngestion() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -116,7 +115,7 @@ public class TestPlanetaryComputer02dIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionRun")
-    public void test02_16_ListRuns() {
+    public void test0216ListRuns() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();

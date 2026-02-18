@@ -7,8 +7,6 @@ import com.azure.analytics.planetarycomputer.models.AssetMetadata;
 import com.azure.analytics.planetarycomputer.models.FileDetails;
 import com.azure.analytics.planetarycomputer.models.StacAssetData;
 import com.azure.analytics.planetarycomputer.models.StacCollection;
-import com.azure.core.http.HttpHeader;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -16,8 +14,7 @@ import org.junit.jupiter.api.Tag;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,7 +27,7 @@ public class TestPlanetaryComputer08bCollectionLifecycleTests extends PlanetaryC
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("CollectionAsset")
-    public void test08_04_CreateCollectionAsset() {
+    public void test0804CreateCollectionAsset() {
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
         String assetId = "test-asset";
@@ -68,7 +65,7 @@ public class TestPlanetaryComputer08bCollectionLifecycleTests extends PlanetaryC
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("CollectionAsset")
-    public void test08_05_ReplaceCollectionAsset() {
+    public void test0805ReplaceCollectionAsset() {
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
         String assetId = "test-asset";
@@ -97,7 +94,7 @@ public class TestPlanetaryComputer08bCollectionLifecycleTests extends PlanetaryC
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("CollectionAsset")
-    public void test08_06_DeleteCollectionAsset() {
+    public void test0806DeleteCollectionAsset() {
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
         String assetId = "test-asset";

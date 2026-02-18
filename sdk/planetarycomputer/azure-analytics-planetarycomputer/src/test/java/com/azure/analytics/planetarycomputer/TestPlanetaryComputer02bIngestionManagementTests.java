@@ -5,7 +5,6 @@ package com.azure.analytics.planetarycomputer;
 
 import com.azure.analytics.planetarycomputer.models.IngestionDefinition;
 import com.azure.analytics.planetarycomputer.models.IngestionRun;
-import com.azure.analytics.planetarycomputer.models.IngestionSource;
 import com.azure.analytics.planetarycomputer.models.IngestionSourceSummary;
 import com.azure.analytics.planetarycomputer.models.Operation;
 import com.azure.core.http.rest.PagedIterable;
@@ -15,7 +14,6 @@ import com.azure.analytics.planetarycomputer.models.IngestionType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +35,7 @@ public class TestPlanetaryComputer02bIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionDefinition")
-    public void test02_04_UpdateIngestionDefinition() {
+    public void test0204UpdateIngestionDefinition() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -84,7 +82,7 @@ public class TestPlanetaryComputer02bIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionRun")
-    public void test02_05_CreateIngestionRun() {
+    public void test0205CreateIngestionRun() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -123,7 +121,7 @@ public class TestPlanetaryComputer02bIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionRun")
-    public void test02_06_GetIngestionRunStatus() {
+    public void test0206GetIngestionRunStatus() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -171,7 +169,7 @@ public class TestPlanetaryComputer02bIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Operations")
-    public void test02_07_ListOperations() {
+    public void test0207ListOperations() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
 
@@ -204,7 +202,7 @@ public class TestPlanetaryComputer02bIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Operations")
-    public void test02_08_GetOperationById() {
+    public void test0208GetOperationById() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();

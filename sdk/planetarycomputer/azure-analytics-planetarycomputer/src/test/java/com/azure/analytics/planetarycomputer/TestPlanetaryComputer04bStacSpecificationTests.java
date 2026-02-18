@@ -8,7 +8,6 @@ import com.azure.analytics.planetarycomputer.models.StacItem;
 import com.azure.analytics.planetarycomputer.models.StacSearchParameters;
 import com.azure.analytics.planetarycomputer.models.StacSearchSortingDirection;
 import com.azure.analytics.planetarycomputer.models.StacSortExtension;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
@@ -32,7 +31,7 @@ public class TestPlanetaryComputer04bStacSpecificationTests extends PlanetaryCom
      */
     @Test
     @Tag("Search")
-    public void test04_08_SearchItemsWithTemporalFilter() {
+    public void test0408SearchItemsWithTemporalFilter() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -79,7 +78,7 @@ public class TestPlanetaryComputer04bStacSpecificationTests extends PlanetaryCom
      */
     @Test
     @Tag("Search")
-    public void test04_09_SearchItemsWithSorting() {
+    public void test0409SearchItemsWithSorting() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -140,7 +139,7 @@ public class TestPlanetaryComputer04bStacSpecificationTests extends PlanetaryCom
      */
     @Test
     @Tag("Items")
-    public void test04_12_GetItem() {
+    public void test0412GetItem() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();

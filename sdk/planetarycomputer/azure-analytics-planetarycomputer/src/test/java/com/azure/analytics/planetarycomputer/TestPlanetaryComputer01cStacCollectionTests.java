@@ -12,8 +12,6 @@ import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,7 +30,7 @@ public class TestPlanetaryComputer01cStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Thumbnail")
-    public void test01_11_GetCollectionThumbnail() throws Exception {
+    public void test0111GetCollectionThumbnail() throws Exception {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -97,7 +95,7 @@ public class TestPlanetaryComputer01cStacCollectionTests extends PlanetaryComput
     @Test
     @Tag("RenderOptions")
     @Tag("Mutation")
-    public void test01_12_CreateRenderOption() {
+    public void test0112CreateRenderOption() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();

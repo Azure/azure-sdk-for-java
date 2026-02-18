@@ -42,7 +42,7 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("RegisterSearch")
-    public void test05_01_RegisterMosaicsSearch() {
+    public void test0501RegisterMosaicsSearch() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -88,7 +88,7 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("SearchInfo")
-    public void test05_02_GetMosaicsSearchInfo() {
+    public void test0502GetMosaicsSearchInfo() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -121,7 +121,7 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("TileJson")
-    public void test05_03_GetMosaicsTileJson() {
+    public void test0503GetMosaicsTileJson() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -166,7 +166,7 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("Tile")
-    public void test05_04_GetMosaicsTile() {
+    public void test0504GetMosaicsTile() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -218,7 +218,7 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("WMTS")
-    public void test05_05_GetMosaicsWmtsCapabilities() {
+    public void test0505GetMosaicsWmtsCapabilities() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();

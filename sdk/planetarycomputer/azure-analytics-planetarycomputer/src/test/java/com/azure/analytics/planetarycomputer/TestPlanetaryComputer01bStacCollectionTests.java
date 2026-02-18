@@ -31,7 +31,7 @@ public class TestPlanetaryComputer01bStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("TileSettings")
-    public void test01_06_GetTileSettings() {
+    public void test0106GetTileSettings() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -62,7 +62,7 @@ public class TestPlanetaryComputer01bStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Mosaics")
-    public void test01_07_ListMosaics() {
+    public void test0107ListMosaics() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -99,7 +99,7 @@ public class TestPlanetaryComputer01bStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Queryables")
-    public void test01_08_GetCollectionQueryables() {
+    public void test0108GetCollectionQueryables() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -143,7 +143,7 @@ public class TestPlanetaryComputer01bStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Queryables")
-    public void test01_09_ListQueryables() {
+    public void test0109ListQueryables() {
         // Arrange
         StacClient stacClient = getStacClient();
 
@@ -180,7 +180,7 @@ public class TestPlanetaryComputer01bStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Configuration")
-    public void test01_10_GetCollectionConfiguration() {
+    public void test0110GetCollectionConfiguration() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();

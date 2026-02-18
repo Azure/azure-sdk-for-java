@@ -3,7 +3,6 @@
 
 package com.azure.analytics.planetarycomputer;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

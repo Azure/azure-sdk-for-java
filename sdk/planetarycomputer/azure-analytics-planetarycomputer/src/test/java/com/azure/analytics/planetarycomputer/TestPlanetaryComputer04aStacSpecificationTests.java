@@ -8,7 +8,6 @@ import com.azure.analytics.planetarycomputer.models.StacCollection;
 import com.azure.analytics.planetarycomputer.models.StacConformanceClasses;
 import com.azure.analytics.planetarycomputer.models.StacItemCollection;
 import com.azure.analytics.planetarycomputer.models.StacItem;
-import com.azure.analytics.planetarycomputer.models.StacSearchParameters;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
@@ -31,7 +30,7 @@ public class TestPlanetaryComputer04aStacSpecificationTests extends PlanetaryCom
      */
     @Test
     @Tag("Conformance")
-    public void test04_01_GetConformanceClass() {
+    public void test0401GetConformanceClass() {
         // Arrange
         StacClient stacClient = getStacClient();
 
@@ -83,7 +82,7 @@ public class TestPlanetaryComputer04aStacSpecificationTests extends PlanetaryCom
      */
     @Test
     @Tag("Collections")
-    public void test04_03_ListCollections() {
+    public void test0403ListCollections() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -140,7 +139,7 @@ public class TestPlanetaryComputer04aStacSpecificationTests extends PlanetaryCom
      */
     @Test
     @Tag("Specification")
-    public void test04_04_GetCollection_SpecificationCompliance() {
+    public void test0404GetCollectionSpecificationCompliance() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -179,7 +178,7 @@ public class TestPlanetaryComputer04aStacSpecificationTests extends PlanetaryCom
      */
     @Test
     @Tag("Items")
-    public void test04_06_GetItemCollection() {
+    public void test0406GetItemCollection() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();

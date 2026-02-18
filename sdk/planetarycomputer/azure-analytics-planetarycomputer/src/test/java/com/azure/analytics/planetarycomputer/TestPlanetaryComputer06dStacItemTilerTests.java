@@ -22,7 +22,7 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("Preview")
-    public void test06_16_GetPreviewWithFormat() {
+    public void test0616GetPreviewWithFormat() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -36,13 +36,14 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
         byte[] imageBytes = imageData.toBytes();
         byte[] jpegMagic = new byte[] { (byte) 0xFF, (byte) 0xD8, (byte) 0xFF };
         assertTrue(imageBytes.length > 100);
-        for (int i = 0; i < jpegMagic.length; i++)
+        for (int i = 0; i < jpegMagic.length; i++) {
             assertEquals(jpegMagic[i], imageBytes[i]);
+        }
     }
 
     @Test
     @Tag("TileJson")
-    public void test06_17_GetTileJson() {
+    public void test0617GetTileJson() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -64,7 +65,7 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("Tile")
-    public void test06_18_GetTile() {
+    public void test0618GetTile() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -79,14 +80,15 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
         assertTrue(imageBytes.length > 100);
-        for (int i = 0; i < pngMagic.length; i++)
+        for (int i = 0; i < pngMagic.length; i++) {
             assertEquals(pngMagic[i], imageBytes[i]);
+        }
         System.out.println("Tile image retrieved: " + imageBytes.length + " bytes");
     }
 
     @Test
     @Tag("Assets")
-    public void test06_19_ListAvailableAssets() {
+    public void test0619ListAvailableAssets() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();

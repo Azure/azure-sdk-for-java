@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +22,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     @Test
     @Disabled("Recording has body mismatch - needs to be re-recorded")
     @Tag("Crop")
-    public void test06_11_CropGeoJsonWithDimensions() {
+    public void test0611CropGeoJsonWithDimensions() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -43,14 +41,15 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
         assertTrue(imageBytes.length > 100);
-        for (int i = 0; i < pngMagic.length; i++)
+        for (int i = 0; i < pngMagic.length; i++) {
             assertEquals(pngMagic[i], imageBytes[i]);
+        }
     }
 
     @Test
     @Disabled("Recording has body mismatch - needs to be re-recorded")
     @Tag("Statistics")
-    public void test06_12_GetGeoJsonStatistics() {
+    public void test0612GetGeoJsonStatistics() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -72,7 +71,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     @Test
     @Disabled("SDK codegen bug: double path parameters serialized incorrectly - server returns validation error")
     @Tag("Part")
-    public void test06_13_GetPart() {
+    public void test0613GetPart() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -88,14 +87,15 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
         assertTrue(imageBytes.length > 100);
-        for (int i = 0; i < pngMagic.length; i++)
+        for (int i = 0; i < pngMagic.length; i++) {
             assertEquals(pngMagic[i], imageBytes[i]);
+        }
     }
 
     @Test
     @Disabled("SDK codegen bug: double path parameters serialized incorrectly - server returns validation error")
     @Tag("Part")
-    public void test06_14_GetPartWithDimensions() {
+    public void test0614GetPartWithDimensions() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -111,14 +111,15 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
         assertTrue(imageBytes.length > 100);
-        for (int i = 0; i < pngMagic.length; i++)
+        for (int i = 0; i < pngMagic.length; i++) {
             assertEquals(pngMagic[i], imageBytes[i]);
+        }
     }
 
     @Test
     @Disabled("SDK codegen bug: double path parameters serialized incorrectly")
     @Tag("Point")
-    public void test06_15_GetPoint() {
+    public void test0615GetPoint() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();

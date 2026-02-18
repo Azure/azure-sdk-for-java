@@ -7,7 +7,6 @@ import com.azure.analytics.planetarycomputer.models.GetPreviewOptions;
 import com.azure.analytics.planetarycomputer.models.StacItemBounds;
 import com.azure.analytics.planetarycomputer.models.TileMatrix;
 import com.azure.analytics.planetarycomputer.models.TileMatrixSet;
-import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
 import com.azure.analytics.planetarycomputer.models.TilerInfo;
 import com.azure.analytics.planetarycomputer.models.TilerInfoMapResponse;
 import com.azure.core.util.BinaryData;
@@ -32,7 +31,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
     @Test
     @Tag("TileMatrices")
     @Tag("TileMatrixDefinitions")
-    public void test06_01_GetTileMatrixDefinitions() {
+    public void test0601GetTileMatrixDefinitions() {
         DataClient dataClient = getDataClient();
         String tileMatrixSetId = "WebMercatorQuad";
 
@@ -67,7 +66,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("TileMatrices")
-    public void test06_02_ListTileMatrices() {
+    public void test0602ListTileMatrices() {
         DataClient dataClient = getDataClient();
 
         System.out.println("Testing getTileMatrices to get all available tile matrix set IDs");
@@ -86,7 +85,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("Assets")
-    public void test06_03_GetItemAssetDetails() {
+    public void test0603GetItemAssetDetails() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -114,7 +113,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("Bounds")
-    public void test06_04_GetBounds() {
+    public void test0604GetBounds() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -142,7 +141,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("Preview")
-    public void test06_05_GetPreview() {
+    public void test0605GetPreview() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();

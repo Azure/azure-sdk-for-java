@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
-import java.net.URI;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +32,7 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionSource")
-    public void test02_09_DeleteIngestionSource() {
+    public void test0209DeleteIngestionSource() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String containerUri = testEnvironment.getIngestionContainerUri();
@@ -72,7 +71,7 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Operations")
-    public void test02_10_CancelOperation() {
+    public void test0210CancelOperation() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -114,7 +113,7 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Operations")
-    public void test02_11_CancelAllOperations() {
+    public void test0211CancelAllOperations() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
 
@@ -135,7 +134,7 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
     @Test
     @Disabled("SDK codegen bug: getKind() returns 'SasToken' instead of 'SharedAccessSignatureTokenIngestionSource'")
     @Tag("IngestionSource")
-    public void test02_12_GetSource() {
+    public void test0212GetSource() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String containerUri = testEnvironment.getIngestionContainerUri();
@@ -176,7 +175,7 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionSource")
-    public void test02_13_ReplaceSource() {
+    public void test0213ReplaceSource() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String containerUri = testEnvironment.getIngestionContainerUri();

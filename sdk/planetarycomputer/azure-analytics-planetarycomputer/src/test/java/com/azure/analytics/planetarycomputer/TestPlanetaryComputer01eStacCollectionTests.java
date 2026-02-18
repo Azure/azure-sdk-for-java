@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +28,7 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Mutation")
-    public void test01_15_AddMosaic() {
+    public void test0115AddMosaic() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -65,7 +63,7 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
      * Java method: getMosaic(collectionId, mosaicId)
      */
     @Test
-    public void test01_16_GetMosaic() {
+    public void test0116GetMosaic() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -97,7 +95,7 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Mutation")
-    public void test01_17_ReplaceMosaic() {
+    public void test0117ReplaceMosaic() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -134,7 +132,7 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Mutation")
-    public void test01_17a_DeleteMosaic() {
+    public void test0117aDeleteMosaic() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();

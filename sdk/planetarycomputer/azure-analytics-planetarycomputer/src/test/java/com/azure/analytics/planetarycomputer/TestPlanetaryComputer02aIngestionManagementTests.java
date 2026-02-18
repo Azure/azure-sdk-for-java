@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +37,7 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("ManagedIdentity")
-    public void test02_01_ListManagedIdentities() {
+    public void test0201ListManagedIdentities() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
 
@@ -85,7 +84,7 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Sources")
-    public void test02_ListSources() {
+    public void test02ListSources() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
 
@@ -120,7 +119,7 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Sources")
-    public void test02_02_CreateManagedIdentityIngestionSource() {
+    public void test0202CreateManagedIdentityIngestionSource() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String containerUri = testEnvironment.getIngestionContainerUri();
@@ -183,7 +182,7 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Sources")
-    public void test02_02a_CreateSASTokenIngestionSource() {
+    public void test0202aCreateSASTokenIngestionSource() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String sasContainerUri = testEnvironment.getIngestionSasContainerUri();
@@ -224,7 +223,7 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
     @Test
     @Disabled("LRO polling times out - infrastructure not ready")
     @Tag("IngestionDefinition")
-    public void test02_03_CreateIngestionDefinition() {
+    public void test0203CreateIngestionDefinition() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
