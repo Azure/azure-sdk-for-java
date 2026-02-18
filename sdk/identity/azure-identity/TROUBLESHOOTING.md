@@ -210,13 +210,13 @@ You can manually verify that the Azure Developer CLI is properly authenticated a
 
 - In Azure Developer CLI versions >= 1.23.0:
 
-    ```sh
+    ```bash
     azd auth status
     ```
 
 - In Azure Developer CLI versions < 1.23.0:
 
-    ```sh
+    ```bash
     azd config list
     ```
 
