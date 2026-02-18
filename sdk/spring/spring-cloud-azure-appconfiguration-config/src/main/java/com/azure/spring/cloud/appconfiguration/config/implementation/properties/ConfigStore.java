@@ -264,29 +264,28 @@ public final class ConfigStore {
         }
 
         if (StringUtils.hasText(connectionString)) {
-            String endpoint = (AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connectionString));
+            String parsedEndpoint = AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connectionString);
             try {
                 // new URI is used to validate the endpoint as a valid URI
-                new URI(endpoint);
-                this.endpoint = endpoint;
+                new URI(parsedEndpoint);
+                this.endpoint = parsedEndpoint;
             } catch (URISyntaxException e) {
                 throw new IllegalStateException("Endpoint in connection string is not a valid URI.", e);
             }
-        } else if (connectionStrings.size() > 0) {
+        } else if (!connectionStrings.isEmpty()) {
             for (String connection : connectionStrings) {
-
-                String endpoint = (AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connection));
+                String parsedEndpoint = AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connection);
                 try {
                     // new URI is used to validate the endpoint as a valid URI
-                    new URI(endpoint).toURL();
+                    new URI(parsedEndpoint).toURL();
                     if (!StringUtils.hasText(this.endpoint)) {
-                        this.endpoint = endpoint;
+                        this.endpoint = parsedEndpoint;
                     }
                 } catch (MalformedURLException | URISyntaxException | IllegalArgumentException e) {
                     throw new IllegalStateException("Endpoint in connection string is not a valid URI.", e);
                 }
             }
-        } else if (endpoints.size() > 0) {
+        } else if (!endpoints.isEmpty()) {
             endpoint = endpoints.get(0);
         }
 

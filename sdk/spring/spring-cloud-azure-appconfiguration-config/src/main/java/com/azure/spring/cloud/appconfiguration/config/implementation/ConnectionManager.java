@@ -243,6 +243,43 @@ class ConnectionManager {
     }
 
     /**
+     * Gets the duration in milliseconds until the next client becomes available (exits backoff).
+     * Returns 0 if a client is already available, or the minimum wait time if all clients are in backoff.
+     * 
+     * @return duration in milliseconds until next client is available, or 0 if one is available now
+     */
+    long getMillisUntilNextClientAvailable() {
+        Instant now = Instant.now();
+        Instant earliestAvailable = Instant.MAX;
+
+        // Check configured clients
+        if (clients != null) {
+            for (AppConfigurationReplicaClient client : clients) {
+                Instant backoffEnd = client.getBackoffEndTime();
+                if (!backoffEnd.isAfter(now)) {
+                    return 0; // Client available now
+                }
+                if (backoffEnd.isBefore(earliestAvailable)) {
+                    earliestAvailable = backoffEnd;
+                }
+            }
+        }
+
+        // Check auto-failover clients
+        for (AppConfigurationReplicaClient client : autoFailoverClients.values()) {
+            Instant backoffEnd = client.getBackoffEndTime();
+            if (!backoffEnd.isAfter(now)) {
+                return 0; // Client available now
+            }
+            if (backoffEnd.isBefore(earliestAvailable)) {
+                earliestAvailable = backoffEnd;
+            }
+        }
+
+        return earliestAvailable.toEpochMilli() - now.toEpochMilli();
+    }
+
+    /**
      * Updates the synchronization token for the specified client endpoint.
      * 
      * @param endpoint the endpoint URL of the client to update; may be null (method will have no effect if null)
