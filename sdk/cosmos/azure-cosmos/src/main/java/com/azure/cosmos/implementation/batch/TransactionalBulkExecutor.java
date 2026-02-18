@@ -630,11 +630,11 @@ public final class TransactionalBulkExecutor implements Disposable {
                     diagnosticsTracker.trackDiagnostics(response.getDiagnostics().getDiagnosticsContext());
                 }
 
-                cosmosBatchBulkOperation.getStatusTracker().recordStatusCode(
-                    response.getStatusCode(),
-                    response.getSubStatusCode());
-
                 if (response.isSuccessStatusCode()) {
+                    cosmosBatchBulkOperation.getStatusTracker().recordStatusCode(
+                        response.getStatusCode(),
+                        response.getSubStatusCode());
+
                     recordSuccessfulResponseInThreshold(cosmosBatchBulkOperation, thresholds);
                     return Mono.just(
                         new CosmosBulkTransactionalBatchResponse(
@@ -745,8 +745,8 @@ public final class TransactionalBulkExecutor implements Disposable {
 
         logDebugOrWarning(
             "HandleTransactionalBatchExecutionException - PkRangeId: {}, PkRangeValue: {}, Exception {}, Batch TrackingId {}, Context: {} {}",
-            cosmosBatchBulkOperation.getPartitionKeyValue(),
             thresholds.getPartitionKeyRangeId(),
+            cosmosBatchBulkOperation.getPartitionKeyValue(),
             exception,
             batchTrackingId,
             this.operationContextText,

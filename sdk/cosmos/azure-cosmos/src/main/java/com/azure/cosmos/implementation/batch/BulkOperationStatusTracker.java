@@ -46,16 +46,18 @@ public final class BulkOperationStatusTracker {
 
     @Override
     public String toString() {
-        if (this.entries.isEmpty()) {
+        List<StatusCodeEntry> snapshot = new ArrayList<>(this.entries);
+
+        if (snapshot.isEmpty()) {
             return "[]";
         }
 
         StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < this.entries.size(); i++) {
+        for (int i = 0; i < snapshot.size(); i++) {
             if (i > 0) {
                 sb.append(", ");
             }
-            sb.append(this.entries.get(i).toString());
+            sb.append(snapshot.get(i).toString());
         }
         sb.append("]");
         return sb.toString();
