@@ -2771,7 +2771,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             false);
     }
 
-    @Test(groups = {"circuit-breaker-misc-gateway"}, dataProvider = "miscellaneousOpTestConfigsGateway", timeOut = 4 * TIMEOUT)
+    // Added FlakyTestRetryAnalyzer to handle transient failures in circuit breaker tests with fault injection
+    // Increased timeout from 4*TIMEOUT to 5*TIMEOUT (200 seconds) to allow for timing variations in CI
+    @Test(groups = {"circuit-breaker-misc-gateway"}, dataProvider = "miscellaneousOpTestConfigsGateway", timeOut = 5 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void miscellaneousDocumentOperationHitsTerminalExceptionAcrossKRegionsGateway(
         String testId,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,

@@ -274,7 +274,10 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    // Increased timeout from TIMEOUT to SETUP_TIMEOUT to account for collection creation time
+    // during TestState initialization, especially in CI environments where collection creation
+    // can take longer than 40 seconds
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void readItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
