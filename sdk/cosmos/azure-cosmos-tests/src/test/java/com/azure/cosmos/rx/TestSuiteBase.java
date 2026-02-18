@@ -278,22 +278,29 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             // Initialize internal shared resources for tests using AsyncDocumentClient
             SHARED_DATABASE_INTERNAL = new Database();
             SHARED_DATABASE_INTERNAL.setId(SHARED_DATABASE.getId());
+            SHARED_DATABASE_INTERNAL.setSelfLink(String.format("dbs/%s", SHARED_DATABASE.getId()));
 
             SHARED_MULTI_PARTITION_COLLECTION_INTERNAL = new DocumentCollection();
             SHARED_MULTI_PARTITION_COLLECTION_INTERNAL.setId(SHARED_MULTI_PARTITION_COLLECTION.getId());
             SHARED_MULTI_PARTITION_COLLECTION_INTERNAL.setResourceId(
                 SHARED_MULTI_PARTITION_COLLECTION.read().block().getProperties().getResourceId());
+            SHARED_MULTI_PARTITION_COLLECTION_INTERNAL.setSelfLink(
+                String.format("dbs/%s/colls/%s", SHARED_DATABASE.getId(), SHARED_MULTI_PARTITION_COLLECTION.getId()));
 
             SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL = new DocumentCollection();
             SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL.setId(SHARED_SINGLE_PARTITION_COLLECTION.getId());
             SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL.setResourceId(
                 SHARED_SINGLE_PARTITION_COLLECTION.read().block().getProperties().getResourceId());
+            SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL.setSelfLink(
+                String.format("dbs/%s/colls/%s", SHARED_DATABASE.getId(), SHARED_SINGLE_PARTITION_COLLECTION.getId()));
 
             SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL = new DocumentCollection();
             SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL.setId(
                 SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES.getId());
             SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL.setResourceId(
                 SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES.read().block().getProperties().getResourceId());
+            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL.setSelfLink(
+                String.format("dbs/%s/colls/%s", SHARED_DATABASE.getId(), SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES.getId()));
         }
     }
 
