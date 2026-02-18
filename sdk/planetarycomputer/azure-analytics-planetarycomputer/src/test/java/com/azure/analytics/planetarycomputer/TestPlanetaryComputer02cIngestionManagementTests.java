@@ -32,7 +32,7 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionSource")
-    public void test0209DeleteIngestionSource() {
+    public void test02_09_DeleteIngestionSource() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String containerUri = testEnvironment.getIngestionContainerUri();
@@ -71,7 +71,7 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Operations")
-    public void test0210CancelOperation() {
+    public void test02_10_CancelOperation() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -113,7 +113,7 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Operations")
-    public void test0211CancelAllOperations() {
+    public void test02_11_CancelAllOperations() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
 
@@ -134,7 +134,7 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
     @Test
     @Disabled("SDK codegen bug: getKind() returns 'SasToken' instead of 'SharedAccessSignatureTokenIngestionSource'")
     @Tag("IngestionSource")
-    public void test0212GetSource() {
+    public void test02_12_GetSource() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String containerUri = testEnvironment.getIngestionContainerUri();
@@ -175,7 +175,7 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionSource")
-    public void test0213ReplaceSource() {
+    public void test02_13_ReplaceSource() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String containerUri = testEnvironment.getIngestionContainerUri();

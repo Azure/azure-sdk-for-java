@@ -28,7 +28,7 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Mutation")
-    public void test0115AddMosaic() {
+    public void test01_15_AddMosaic() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -63,7 +63,7 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
      * Java method: getMosaic(collectionId, mosaicId)
      */
     @Test
-    public void test0116GetMosaic() {
+    public void test01_16_GetMosaic() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -95,7 +95,7 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Mutation")
-    public void test0117ReplaceMosaic() {
+    public void test01_17_ReplaceMosaic() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -132,7 +132,7 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Mutation")
-    public void test0117aDeleteMosaic() {
+    public void test01_17a_DeleteMosaic() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();

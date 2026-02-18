@@ -24,7 +24,7 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("Info")
-    public void test0606GetInfoGeoJson() {
+    public void test06_06_GetInfoGeoJson() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -40,7 +40,7 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("Statistics")
-    public void test0607ListStatistics() {
+    public void test06_07_ListStatistics() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -58,7 +58,7 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
     @Test
     @Disabled("SDK codegen bug: getWmtsCapabilities returns byte[] but SDK tries to parse XML as JSON")
     @Tag("WMTS")
-    public void test0608GetWmtsCapabilities() {
+    public void test06_08_GetWmtsCapabilities() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -90,7 +90,7 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("Statistics")
-    public void test0609GetAssetStatistics() {
+    public void test06_09_GetAssetStatistics() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -113,7 +113,7 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
     @Test
     @Disabled("Recording has body mismatch - needs to be re-recorded")
     @Tag("Crop")
-    public void test0610CropGeoJson() {
+    public void test06_10_CropGeoJson() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();

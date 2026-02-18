@@ -35,7 +35,7 @@ public class TestPlanetaryComputer02bIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionDefinition")
-    public void test0204UpdateIngestionDefinition() {
+    public void test02_04_UpdateIngestionDefinition() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -82,7 +82,7 @@ public class TestPlanetaryComputer02bIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionRun")
-    public void test0205CreateIngestionRun() {
+    public void test02_05_CreateIngestionRun() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -121,7 +121,7 @@ public class TestPlanetaryComputer02bIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionRun")
-    public void test0206GetIngestionRunStatus() {
+    public void test02_06_GetIngestionRunStatus() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -169,7 +169,7 @@ public class TestPlanetaryComputer02bIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Operations")
-    public void test0207ListOperations() {
+    public void test02_07_ListOperations() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
 
@@ -202,7 +202,7 @@ public class TestPlanetaryComputer02bIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Operations")
-    public void test0208GetOperationById() {
+    public void test02_08_GetOperationById() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();

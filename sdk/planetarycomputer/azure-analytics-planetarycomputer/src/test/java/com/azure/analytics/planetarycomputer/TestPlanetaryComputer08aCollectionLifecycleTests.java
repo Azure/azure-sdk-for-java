@@ -29,7 +29,7 @@ public class TestPlanetaryComputer08aCollectionLifecycleTests extends PlanetaryC
     @Test
     @Disabled("Recording incomplete - missing final GET request after LRO completion - needs to be re-recorded")
     @Tag("CreateCollection")
-    public void test0801BeginCreateCollection() {
+    public void test08_01_BeginCreateCollection() {
         StacClient stacClient = getStacClient();
 
         System.out.println("Test collection ID: " + TEST_COLLECTION_ID);
@@ -85,7 +85,7 @@ public class TestPlanetaryComputer08aCollectionLifecycleTests extends PlanetaryC
     @Test
     @Disabled("Recording shows collection not found - test depends on test08_01 which needs re-recording")
     @Tag("UpdateCollection")
-    public void test0802CreateOrReplaceCollection() {
+    public void test08_02_CreateOrReplaceCollection() {
         StacClient stacClient = getStacClient();
 
         System.out.println("Test collection ID: " + TEST_COLLECTION_ID);
@@ -109,7 +109,7 @@ public class TestPlanetaryComputer08aCollectionLifecycleTests extends PlanetaryC
     @Test
     @Disabled("Recording shows collection not found - test depends on test08_01 which needs re-recording")
     @Tag("DeleteCollection")
-    public void test0803DeleteCollection() {
+    public void test08_03_DeleteCollection() {
         StacClient stacClient = getStacClient();
 
         System.out.println("Test collection ID: " + TEST_COLLECTION_ID);

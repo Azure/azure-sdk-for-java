@@ -22,7 +22,7 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("Preview")
-    public void test0616GetPreviewWithFormat() {
+    public void test06_16_GetPreviewWithFormat() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -43,7 +43,7 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("TileJson")
-    public void test0617GetTileJson() {
+    public void test06_17_GetTileJson() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -65,7 +65,7 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("Tile")
-    public void test0618GetTile() {
+    public void test06_18_GetTile() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -88,7 +88,7 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("Assets")
-    public void test0619ListAvailableAssets() {
+    public void test06_19_ListAvailableAssets() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();

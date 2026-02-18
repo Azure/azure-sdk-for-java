@@ -39,7 +39,7 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("Assets")
-    public void test0506GetMosaicsAssetsForPoint() {
+    public void test05_06_GetMosaicsAssetsForPoint() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -89,7 +89,7 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("Assets")
-    public void test0507GetMosaicsAssetsForTile() {
+    public void test05_07_GetMosaicsAssetsForTile() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -124,7 +124,7 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
      */
     @Test
     @Tag("StaticImage")
-    public void test0508CreateStaticImage() {
+    public void test05_08_CreateStaticImage() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -184,7 +184,7 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
     @Test
     @Disabled("Image ID from createStaticImage is sanitized causing URL mismatch with recording")
     @Tag("StaticImage")
-    public void test0509GetStaticImage() {
+    public void test05_09_GetStaticImage() {
         // Arrange
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();

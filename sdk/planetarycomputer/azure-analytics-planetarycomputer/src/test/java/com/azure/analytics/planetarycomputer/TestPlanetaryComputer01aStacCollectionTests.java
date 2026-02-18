@@ -29,7 +29,7 @@ public class TestPlanetaryComputer01aStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Collections")
-    public void test0101ListCollections() {
+    public void test01_01_ListCollections() {
         // Arrange
         StacClient stacClient = getStacClient();
 
@@ -80,7 +80,7 @@ public class TestPlanetaryComputer01aStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Conformance")
-    public void test0102GetConformanceClass() {
+    public void test01_02_GetConformanceClass() {
         // Arrange
         StacClient stacClient = getStacClient();
 
@@ -112,7 +112,7 @@ public class TestPlanetaryComputer01aStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("GetCollection")
-    public void test0103GetCollection() {
+    public void test01_03_GetCollection() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -167,7 +167,7 @@ public class TestPlanetaryComputer01aStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Partition")
-    public void test0104GetPartitionType() {
+    public void test01_04_GetPartitionType() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -197,7 +197,7 @@ public class TestPlanetaryComputer01aStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("RenderOptions")
-    public void test0105ListRenderOptions() {
+    public void test01_05_ListRenderOptions() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();

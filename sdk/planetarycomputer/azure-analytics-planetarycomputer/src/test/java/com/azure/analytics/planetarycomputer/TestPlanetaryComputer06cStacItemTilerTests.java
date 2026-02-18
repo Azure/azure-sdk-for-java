@@ -22,7 +22,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     @Test
     @Disabled("Recording has body mismatch - needs to be re-recorded")
     @Tag("Crop")
-    public void test0611CropGeoJsonWithDimensions() {
+    public void test06_11_CropGeoJsonWithDimensions() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -49,7 +49,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     @Test
     @Disabled("Recording has body mismatch - needs to be re-recorded")
     @Tag("Statistics")
-    public void test0612GetGeoJsonStatistics() {
+    public void test06_12_GetGeoJsonStatistics() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -71,7 +71,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     @Test
     @Disabled("SDK codegen bug: double path parameters serialized incorrectly - server returns validation error")
     @Tag("Part")
-    public void test0613GetPart() {
+    public void test06_13_GetPart() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -95,7 +95,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     @Test
     @Disabled("SDK codegen bug: double path parameters serialized incorrectly - server returns validation error")
     @Tag("Part")
-    public void test0614GetPartWithDimensions() {
+    public void test06_14_GetPartWithDimensions() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -119,7 +119,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     @Test
     @Disabled("SDK codegen bug: double path parameters serialized incorrectly")
     @Tag("Point")
-    public void test0615GetPoint() {
+    public void test06_15_GetPoint() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();

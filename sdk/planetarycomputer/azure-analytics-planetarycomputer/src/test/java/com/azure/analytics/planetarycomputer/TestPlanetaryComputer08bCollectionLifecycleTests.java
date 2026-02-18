@@ -26,7 +26,7 @@ public class TestPlanetaryComputer08bCollectionLifecycleTests extends PlanetaryC
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("CollectionAsset")
-    public void test0804CreateCollectionAsset() {
+    public void test08_04_CreateCollectionAsset() {
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
         String assetId = "test-asset";
@@ -64,7 +64,7 @@ public class TestPlanetaryComputer08bCollectionLifecycleTests extends PlanetaryC
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("CollectionAsset")
-    public void test0805ReplaceCollectionAsset() {
+    public void test08_05_ReplaceCollectionAsset() {
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
         String assetId = "test-asset";
@@ -93,7 +93,7 @@ public class TestPlanetaryComputer08bCollectionLifecycleTests extends PlanetaryC
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("CollectionAsset")
-    public void test0806DeleteCollectionAsset() {
+    public void test08_06_DeleteCollectionAsset() {
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
         String assetId = "test-asset";

@@ -37,7 +37,7 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("ManagedIdentity")
-    public void test0201ListManagedIdentities() {
+    public void test02_01_ListManagedIdentities() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
 
@@ -84,7 +84,7 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Sources")
-    public void test02ListSources() {
+    public void test02_ListSources() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
 
@@ -119,7 +119,7 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Sources")
-    public void test0202CreateManagedIdentityIngestionSource() {
+    public void test02_02_CreateManagedIdentityIngestionSource() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String containerUri = testEnvironment.getIngestionContainerUri();
@@ -182,7 +182,7 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("Sources")
-    public void test0202aCreateSASTokenIngestionSource() {
+    public void test02_02a_CreateSASTokenIngestionSource() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String sasContainerUri = testEnvironment.getIngestionSasContainerUri();
@@ -223,7 +223,7 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
     @Test
     @Disabled("LRO polling times out - infrastructure not ready")
     @Tag("IngestionDefinition")
-    public void test0203CreateIngestionDefinition() {
+    public void test02_03_CreateIngestionDefinition() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();

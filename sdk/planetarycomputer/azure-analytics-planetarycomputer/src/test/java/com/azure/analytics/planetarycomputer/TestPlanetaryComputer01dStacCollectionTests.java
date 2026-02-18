@@ -25,7 +25,7 @@ public class TestPlanetaryComputer01dStacCollectionTests extends PlanetaryComput
      * Java method: getRenderOption(collectionId, renderOptionId)
      */
     @Test
-    public void test0113GetRenderOption() {
+    public void test01_13_GetRenderOption() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -50,7 +50,7 @@ public class TestPlanetaryComputer01dStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Mutation")
-    public void test0114ReplaceRenderOption() {
+    public void test01_14_ReplaceRenderOption() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -83,7 +83,7 @@ public class TestPlanetaryComputer01dStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Mutation")
-    public void test0114aDeleteRenderOption() {
+    public void test01_14a_DeleteRenderOption() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();

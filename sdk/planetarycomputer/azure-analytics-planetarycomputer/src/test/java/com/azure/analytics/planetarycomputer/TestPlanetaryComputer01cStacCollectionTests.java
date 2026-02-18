@@ -29,7 +29,7 @@ public class TestPlanetaryComputer01cStacCollectionTests extends PlanetaryComput
      */
     @Test
     @Tag("Thumbnail")
-    public void test0111GetCollectionThumbnail() throws Exception {
+    public void test01_11_GetCollectionThumbnail() throws Exception {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -94,7 +94,7 @@ public class TestPlanetaryComputer01cStacCollectionTests extends PlanetaryComput
     @Test
     @Tag("RenderOptions")
     @Tag("Mutation")
-    public void test0112CreateRenderOption() {
+    public void test01_12_CreateRenderOption() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();

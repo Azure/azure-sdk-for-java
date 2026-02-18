@@ -31,7 +31,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
     @Test
     @Tag("TileMatrices")
     @Tag("TileMatrixDefinitions")
-    public void test0601GetTileMatrixDefinitions() {
+    public void test06_01_GetTileMatrixDefinitions() {
         DataClient dataClient = getDataClient();
         String tileMatrixSetId = "WebMercatorQuad";
 
@@ -66,7 +66,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("TileMatrices")
-    public void test0602ListTileMatrices() {
+    public void test06_02_ListTileMatrices() {
         DataClient dataClient = getDataClient();
 
         System.out.println("Testing getTileMatrices to get all available tile matrix set IDs");
@@ -85,7 +85,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
     @Test
     @Disabled("Missing session recording - needs to be recorded")
     @Tag("Assets")
-    public void test0603GetItemAssetDetails() {
+    public void test06_03_GetItemAssetDetails() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -113,7 +113,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("Bounds")
-    public void test0604GetBounds() {
+    public void test06_04_GetBounds() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
@@ -141,7 +141,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
 
     @Test
     @Tag("Preview")
-    public void test0605GetPreview() {
+    public void test06_05_GetPreview() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();

@@ -30,7 +30,7 @@ public class TestPlanetaryComputer02dIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionDefinition")
-    public void test0214ListIngestions() {
+    public void test02_14_ListIngestions() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -71,7 +71,7 @@ public class TestPlanetaryComputer02dIngestionManagementTests extends PlanetaryC
     @Test
     @Disabled("SDK codegen bug: getImportType() returns enum instead of string")
     @Tag("IngestionDefinition")
-    public void test0215GetIngestion() {
+    public void test02_15_GetIngestion() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -115,7 +115,7 @@ public class TestPlanetaryComputer02dIngestionManagementTests extends PlanetaryC
      */
     @Test
     @Tag("IngestionRun")
-    public void test0216ListRuns() {
+    public void test02_16_ListRuns() {
         // Arrange
         IngestionClient ingestionClient = getIngestionClient();
         String collectionId = testEnvironment.getCollectionId();

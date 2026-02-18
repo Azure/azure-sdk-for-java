@@ -31,7 +31,7 @@ public class TestPlanetaryComputer04bStacSpecificationTests extends PlanetaryCom
      */
     @Test
     @Tag("Search")
-    public void test0408SearchItemsWithTemporalFilter() {
+    public void test04_08_SearchItemsWithTemporalFilter() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -78,7 +78,7 @@ public class TestPlanetaryComputer04bStacSpecificationTests extends PlanetaryCom
      */
     @Test
     @Tag("Search")
-    public void test0409SearchItemsWithSorting() {
+    public void test04_09_SearchItemsWithSorting() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();
@@ -139,7 +139,7 @@ public class TestPlanetaryComputer04bStacSpecificationTests extends PlanetaryCom
      */
     @Test
     @Tag("Items")
-    public void test0412GetItem() {
+    public void test04_12_GetItem() {
         // Arrange
         StacClient stacClient = getStacClient();
         String collectionId = testEnvironment.getCollectionId();

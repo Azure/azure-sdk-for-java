@@ -24,7 +24,7 @@ public class TestPlanetaryComputer07MapLegendsTests extends PlanetaryComputerTes
 
     @Test
     @Tag("ClassMapLegend")
-    public void test0701GetClassMapLegend() throws Exception {
+    public void test07_01_GetClassMapLegend() throws Exception {
         DataClient dataClient = getDataClient();
         String classmapName = "mtbs-severity";
 
@@ -73,7 +73,7 @@ public class TestPlanetaryComputer07MapLegendsTests extends PlanetaryComputerTes
 
     @Test
     @Tag("IntervalLegend")
-    public void test0702GetIntervalLegend() throws Exception {
+    public void test07_02_GetIntervalLegend() throws Exception {
         DataClient dataClient = getDataClient();
         String colormapName = "modis-64A1";
 
