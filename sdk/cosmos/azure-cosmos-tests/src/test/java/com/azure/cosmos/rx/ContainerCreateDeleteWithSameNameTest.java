@@ -630,6 +630,14 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
 
                 container.executeBulkOperations(Flux.fromIterable(itemOperations)).blockLast();
 
+                // Add delay to ensure bulk operations are fully indexed before querying
+                // This prevents race conditions in CI where indexing may lag behind write completion
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
                 String query = "select * from c";
                 CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, TestObject.class);
                 FeedResponseListValidator<TestObject> queryValidator = new FeedResponseListValidator.Builder<TestObject>()

@@ -303,6 +303,10 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     pointWriter.flushAndClose()
 
+    // Add a small delay to allow metrics to be fully aggregated after flush
+    // This prevents race conditions where metrics snapshot is taken before all writes are recorded
+    Thread.sleep(100)
+
     metricsPublisher.getRecordsWrittenSnapshot() shouldEqual 2 * items.size
     metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
     metricsPublisher.getTotalRequestChargeSnapshot() > 5 * 2 * items.size shouldEqual true
