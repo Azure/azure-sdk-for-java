@@ -246,6 +246,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
             this.writeRegions = new ArrayList<>(this.getAccountLevelLocationContext(databaseAccount, true).serviceOrderedWriteableRegions);
+            this.readRegions = new ArrayList<>(this.getAccountLevelLocationContext(databaseAccount, false).serviceOrderedReadableRegions);
 
             CosmosAsyncDatabase sharedAsyncDatabase = getSharedCosmosDatabase(testClient);
             CosmosAsyncContainer sharedMultiPartitionCosmosContainerWithIdAsPartitionKey = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(testClient);
@@ -274,6 +275,32 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
     }
 
+    // Lazy initialization helper for data providers
+    // Data providers are called before @BeforeClass, so we need to initialize regions on-demand
+    private List<String> getWriteRegionsForDataProvider() {
+        if (this.writeRegions == null) {
+            try (CosmosAsyncClient testClient = getClientBuilder().buildAsyncClient()) {
+                RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(testClient);
+                GlobalEndpointManager globalEndpointManager = documentClient.getGlobalEndpointManager();
+                DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+                this.writeRegions = new ArrayList<>(this.getAccountLevelLocationContext(databaseAccount, true).serviceOrderedWriteableRegions);
+            }
+        }
+        return this.writeRegions;
+    }
+
+    private List<String> getReadRegionsForDataProvider() {
+        if (this.readRegions == null) {
+            try (CosmosAsyncClient testClient = getClientBuilder().buildAsyncClient()) {
+                RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(testClient);
+                GlobalEndpointManager globalEndpointManager = documentClient.getGlobalEndpointManager();
+                DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+                this.readRegions = new ArrayList<>(this.getAccountLevelLocationContext(databaseAccount, false).serviceOrderedReadableRegions);
+            }
+        }
+        return this.readRegions;
+    }
+
     @DataProvider(name = "miscellaneousOpTestConfigsDirect")
     public Object[][] miscellaneousOpTestConfigsDirect() {
 
@@ -293,7 +320,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(10),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -318,7 +345,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.UPSERT_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -343,7 +370,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -368,7 +395,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.DELETE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -393,7 +420,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.PATCH_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -418,7 +445,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -444,7 +471,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(10),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -469,7 +496,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.BATCH_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -493,7 +520,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(10),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -517,7 +544,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with Server injected 410s in the first preferred region with availability strategy enabled.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(50)),
                 this.buildServerGeneratedGoneErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
@@ -541,7 +568,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with Server injected 410s in the first preferred region with availability strategy enabled.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(50)),
                 this.buildServerGeneratedGoneErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
@@ -565,7 +592,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with Server injected 410s in the first preferred region with availability strategy enabled.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(50)),
                 this.buildServerGeneratedGoneErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
@@ -603,7 +630,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(10),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -628,7 +655,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.UPSERT_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -653,7 +680,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -678,7 +705,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.DELETE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -703,7 +730,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.PATCH_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -728,7 +755,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -754,7 +781,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(10),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -779,7 +806,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.BATCH_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -803,7 +830,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(10),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -827,7 +854,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -852,7 +879,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(5),
                 this.buildInternalServerErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -876,7 +903,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -902,7 +929,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -926,7 +953,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with GW Response Delay in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withResponseDelay(Duration.ofSeconds(60))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 this.buildGwResponseDelayFaultInjectionRules,
@@ -951,7 +978,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -975,7 +1002,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with 429s in the first preferred region and also availability strategy enabled.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(50)),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
@@ -1000,7 +1027,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -1025,7 +1052,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -1049,7 +1076,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with GW Response Delay in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withResponseDelay(Duration.ofSeconds(60))
                     .withFaultInjectionDuration(Duration.ofSeconds(50)),
                 this.buildGwResponseDelayFaultInjectionRules,
@@ -1074,7 +1101,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with GW Response Delay in the first preferred region and also availability strategy enabled.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withResponseDelay(Duration.ofSeconds(60))
                     .withFaultInjectionDuration(Duration.ofSeconds(50)),
                 this.buildGwResponseDelayFaultInjectionRules,
@@ -1100,7 +1127,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with GW Response Delay in the first preferred region and also availability strategy enabled.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withResponseDelay(Duration.ofSeconds(60))
                     .withFaultInjectionDuration(Duration.ofSeconds(50)),
                 this.buildGwResponseDelayFaultInjectionRulesWoOpScoping,
@@ -1125,7 +1152,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with GW Response Delay in the first preferred region and also availability strategy enabled.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withResponseDelay(Duration.ofSeconds(60))
                     .withFaultInjectionDuration(Duration.ofSeconds(50)),
                 this.buildGwResponseDelayFaultInjectionRules,
@@ -1151,7 +1178,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -1175,7 +1202,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with internal server error in all preferred regions.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions)
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider())
                     .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -1199,7 +1226,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with internal server error in all preferred regions.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions)
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider())
                     .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -1223,7 +1250,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with internal server error in all preferred regions.", FaultInjectionOperationType.UPSERT_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions)
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider())
                     .withHitLimit(5),
                 this.buildInternalServerErrorFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
@@ -1368,7 +1395,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withHitLimit(10)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1)),
                 this.buildServiceUnavailableFaultInjectionRules,
                 executeReadManyOperation,
                 NO_END_TO_END_TIMEOUT,
@@ -1392,7 +1419,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withHitLimit(10)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1)),
                 this.buildInternalServerErrorFaultInjectionRules,
                 executeReadManyOperation,
                 NO_END_TO_END_TIMEOUT,
@@ -1416,7 +1443,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1)),
                 this.buildServerGeneratedGoneErrorFaultInjectionRules,
                 executeReadManyOperation,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -1440,7 +1467,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1)),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 executeReadManyOperation,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -1464,7 +1491,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1)),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 executeReadManyOperation,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -1489,7 +1516,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withHitLimit(10)
-                    .withFaultInjectionApplicableRegions(this.writeRegions),
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider()),
                 this.buildInternalServerErrorFaultInjectionRules,
                 executeReadManyOperation,
                 NO_END_TO_END_TIMEOUT,
@@ -1512,7 +1539,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 "Test faulty read many operation with too many requests error in first preferred region with threshold-based availability strategy enabled.",
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 executeReadManyOperation,
@@ -1626,7 +1653,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withHitLimit(10)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1)),
                 this.buildServiceUnavailableFaultInjectionRules,
                 executeReadAllOperation,
                 NO_END_TO_END_TIMEOUT,
@@ -1650,7 +1677,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withHitLimit(10)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1)),
                 this.buildInternalServerErrorFaultInjectionRules,
                 executeReadAllOperation,
                 NO_END_TO_END_TIMEOUT,
@@ -1674,7 +1701,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1)),
                 this.buildServerGeneratedGoneErrorFaultInjectionRules,
                 executeReadAllOperation,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -1698,7 +1725,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1)),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 executeReadAllOperation,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -1722,7 +1749,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1)),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 executeReadAllOperation,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
@@ -1747,7 +1774,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withHitLimit(10)
-                    .withFaultInjectionApplicableRegions(this.writeRegions),
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider()),
                 this.buildInternalServerErrorFaultInjectionRules,
                 executeReadAllOperation,
                 NO_END_TO_END_TIMEOUT,
@@ -1770,7 +1797,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 "Test faulty read all operation with too many requests error in first preferred region with threshold-based availability strategy enabled.",
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 executeReadAllOperation,
@@ -1883,7 +1910,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 executeReadAllOperation,
@@ -1901,7 +1928,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 //                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
 //                    .withOverrideFaultInjectionOperationType(true)
 //                    .withHitLimit(3)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+//                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
 //                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
 //                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
 //                executeReadAllOperation,
@@ -1915,7 +1942,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 executeReadAllOperation,
@@ -1961,7 +1988,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 executeReadManyOperation,
@@ -1979,7 +2006,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 //                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
 //                    .withOverrideFaultInjectionOperationType(true)
 //                    .withHitLimit(3)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+//                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
 //                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
 //                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
 //                executeReadManyOperation,
@@ -1993,7 +2020,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 executeReadManyOperation,
@@ -2014,7 +2041,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2027,7 +2054,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2040,7 +2067,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2053,7 +2080,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2066,7 +2093,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2079,7 +2106,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2092,7 +2119,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2105,7 +2132,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2118,7 +2145,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2131,7 +2158,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2144,7 +2171,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2157,7 +2184,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2170,7 +2197,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2183,7 +2210,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2196,7 +2223,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2209,7 +2236,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2222,7 +2249,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2235,7 +2262,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2248,7 +2275,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2261,7 +2288,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2274,7 +2301,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2287,7 +2314,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2300,7 +2327,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2313,7 +2340,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2326,7 +2353,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2339,7 +2366,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2352,7 +2379,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2372,7 +2399,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2385,7 +2412,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2398,7 +2425,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2411,7 +2438,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2424,7 +2451,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2437,7 +2464,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2450,7 +2477,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2463,7 +2490,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2476,7 +2503,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2489,7 +2516,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2502,7 +2529,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2515,7 +2542,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2528,7 +2555,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2541,7 +2568,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2554,7 +2581,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2567,7 +2594,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2580,7 +2607,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2593,7 +2620,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2606,7 +2633,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2619,7 +2646,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2632,7 +2659,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2645,7 +2672,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2658,7 +2685,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2671,7 +2698,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2684,7 +2711,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2697,7 +2724,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildReadWriteSessionNotAvailableFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -2710,7 +2737,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
                     .withOverrideFaultInjectionOperationType(true)
                     .withHitLimit(3)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                     .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
                 this.buildTooManyRequestsErrorFaultInjectionRules,
                 NO_REGION_SWITCH_HINT,
@@ -4159,7 +4186,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             FaultInjectionRuleParamsWrapper paramsWrapper = new FaultInjectionRuleParamsWrapper()
                 .withFaultInjectionOperationType(FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES)
-                .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                .withFaultInjectionApplicableRegions(getWriteRegionsForDataProvider().subList(0, 1))
                 .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY)
                 .withResponseDelay(Duration.ofSeconds(1))          // far beyond 10 ms e2e timeout
                 .withFaultInjectionDuration(Duration.ofSeconds(5))
