@@ -53,6 +53,9 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.support.ErrorMessage;
+import org.springframework.retry.backoff.ExponentialBackOffPolicy;
+import org.springframework.retry.policy.SimpleRetryPolicy;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -91,6 +94,7 @@ public class ServiceBusMessageChannelBinder extends
 
     private final List<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers = new ArrayList<>();
     private final List<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers = new ArrayList<>();
+    private RetryTemplate retryTemplate;
 
     /**
      * Construct a {@link ServiceBusMessageChannelBinder} with the specified headersToEmbed and {@link ServiceBusChannelProvisioner}.
@@ -148,6 +152,16 @@ public class ServiceBusMessageChannelBinder extends
         inboundAdapter.setInstrumentationId(instrumentationId);
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
         inboundAdapter.setMessageConverter(messageConverter);
+        
+        // Configure retry if maxAttempts > 1
+        if (properties.getMaxAttempts() > 1) {
+            // Use injected RetryTemplate if available, otherwise create one from properties
+            RetryTemplate retryTemplateToUse = this.retryTemplate != null 
+                ? this.retryTemplate 
+                : createRetryTemplate(properties);
+            inboundAdapter.setRetryTemplate(retryTemplateToUse);
+        }
+        
         return inboundAdapter;
     }
 
@@ -375,6 +389,40 @@ public class ServiceBusMessageChannelBinder extends
         if (processorFactoryCustomizer != null) {
             this.processorFactoryCustomizers.add(processorFactoryCustomizer);
         }
+    }
+
+    /**
+     * Set a custom retry template for message processing retries.
+     * If not set, a retry template will be created automatically based on consumer properties when maxAttempts > 1.
+     *
+     * @param retryTemplate the retry template to use
+     */
+    public void setRetryTemplate(RetryTemplate retryTemplate) {
+        this.retryTemplate = retryTemplate;
+    }
+
+    /**
+     * Create a RetryTemplate based on the consumer properties.
+     *
+     * @param properties the extended consumer properties
+     * @return the configured RetryTemplate
+     */
+    private RetryTemplate createRetryTemplate(ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        RetryTemplate retryTemplate = new RetryTemplate();
+
+        // Configure retry policy
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+        retryPolicy.setMaxAttempts(properties.getMaxAttempts());
+        retryTemplate.setRetryPolicy(retryPolicy);
+
+        // Configure backoff policy
+        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+        backOffPolicy.setInitialInterval(properties.getBackOffInitialInterval());
+        backOffPolicy.setMultiplier(properties.getBackOffMultiplier());
+        backOffPolicy.setMaxInterval(properties.getBackOffMaxInterval());
+        retryTemplate.setBackOffPolicy(backOffPolicy);
+
+        return retryTemplate;
     }
 
 }
