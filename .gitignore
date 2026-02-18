@@ -123,3 +123,4 @@ stress-test-addons*
 # Temp typespec files
 TempTypeSpecFiles/
 sdk/planetarycomputer/azure-analytics-planetarycomputer/TEST_ANALYSIS.md
+.claude/
