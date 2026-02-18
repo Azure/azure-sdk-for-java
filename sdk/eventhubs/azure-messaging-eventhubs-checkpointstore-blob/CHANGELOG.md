@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed `updateCheckpoint` to properly handle checkpoints when `offsetString` is available but `offset` is null, preventing potential data loss during checkpoint updates.
+
 ### Other Changes
 
 ## 1.21.3 (2026-01-29)
@@ -626,4 +628,3 @@ store checkpoints and balance partition load among all instances of Event Proces
 
 - Initial offset provider for each partition is not implemented.
 - Interoperability with Event Processors of other language SDKs like Python is not supported.
-
