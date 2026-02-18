@@ -12,7 +12,6 @@ import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
