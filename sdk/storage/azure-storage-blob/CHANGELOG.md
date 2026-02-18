@@ -1,6 +1,6 @@
 # Release History
 
-## 12.34.0-beta.1 (Unreleased)
+## 12.34.0-beta.1 (2026-02-18)
 
 ### Features Added
 - Added support for specifying a source customer-provided encryption key when using `AppendBlobClient.appendBlockFromUrl()`,
@@ -10,12 +10,7 @@
 - Added support for error code `INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED`. This replaces `INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED` which has been deprecated.
 - Added support for Dynamic User Delegation SAS.
 - Added cross-tenant support for principal bound delegation SAS.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service version 2026-04-06.
 
 ## 12.33.2 (2026-02-05)
 
