@@ -19,7 +19,7 @@ public class StoreHeaderTests extends TestSuiteBase {
 
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "internalClientBuilders")
+    @Factory(dataProvider = "internalClientBuildersWithSessionConsistency")
     public StoreHeaderTests(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
     }
