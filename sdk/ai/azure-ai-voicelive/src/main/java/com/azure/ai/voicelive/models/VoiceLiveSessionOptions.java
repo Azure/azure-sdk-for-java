@@ -549,9 +549,9 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
         }
         jsonWriter.writeStringField("reasoning_effort",
             this.reasoningEffort == null ? null : this.reasoningEffort.toString());
-        if (this.fillerResponse != null) {
-            jsonWriter.writeFieldName("filler_response");
-            this.fillerResponse.writeTo(jsonWriter);
+        if (this.interimResponse != null) {
+            jsonWriter.writeFieldName("interim_response");
+            this.interimResponse.writeTo(jsonWriter);
         }
         return jsonWriter.writeEndObject();
     }
@@ -623,8 +623,8 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
                 } else if ("reasoning_effort".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.reasoningEffort
                         = ReasoningEffort.fromString(reader.getString());
-                } else if ("filler_response".equals(fieldName)) {
-                    deserializedVoiceLiveSessionOptions.fillerResponse
+                } else if ("interim_response".equals(fieldName)) {
+                    deserializedVoiceLiveSessionOptions.interimResponse
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
@@ -679,12 +679,6 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
     @Generated
     private ReasoningEffort reasoningEffort;
 
-    /*
-     * Configuration for filler response generation during latency or tool calls.
-     */
-    @Generated
-    private BinaryData fillerResponse;
-
     /**
      * Get the reasoningEffort property: Constrains effort on reasoning for reasoning models. Check model documentation
      * for supported values for each model.
@@ -711,25 +705,31 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
         return this;
     }
 
-    /**
-     * Get the fillerResponse property: Configuration for filler response generation during latency or tool calls.
-     *
-     * @return the fillerResponse value.
+    /*
+     * Configuration for interim response generation during latency or tool calls.
      */
     @Generated
-    public BinaryData getFillerResponse() {
-        return this.fillerResponse;
+    private BinaryData interimResponse;
+
+    /**
+     * Get the interimResponse property: Configuration for interim response generation during latency or tool calls.
+     *
+     * @return the interimResponse value.
+     */
+    @Generated
+    public BinaryData getInterimResponse() {
+        return this.interimResponse;
     }
 
     /**
-     * Set the fillerResponse property: Configuration for filler response generation during latency or tool calls.
+     * Set the interimResponse property: Configuration for interim response generation during latency or tool calls.
      *
-     * @param fillerResponse the fillerResponse value to set.
+     * @param interimResponse the interimResponse value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
     @Generated
-    public VoiceLiveSessionOptions setFillerResponse(BinaryData fillerResponse) {
-        this.fillerResponse = fillerResponse;
+    public VoiceLiveSessionOptions setInterimResponse(BinaryData interimResponse) {
+        this.interimResponse = interimResponse;
         return this;
     }
 }
