@@ -18,6 +18,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
 import com.azure.developer.loadtesting.implementation.LoadTestRunClientImpl;
@@ -33,6 +34,7 @@ import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
 import com.azure.developer.loadtesting.models.TimeGrain;
 import com.azure.developer.loadtesting.models.TimeSeriesElement;
 import java.time.OffsetDateTime;
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -44,6 +46,8 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = LoadTestRunClientBuilder.class, isAsync = true)
 public final class LoadTestRunAsyncClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(LoadTestRunAsyncClient.class);
 
     @Generated
     private final LoadTestRunClientImpl serviceClient;
@@ -565,6 +569,106 @@ public final class LoadTestRunAsyncClient {
     public Mono<Response<BinaryData>> createOrUpdateServerMetricsConfigWithResponse(String testRunId, BinaryData body,
         RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateServerMetricsConfigWithResponseAsync(testRunId, body, requestOptions);
+    }
+
+    /**
+     * Starts a test run and polls the status of the test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     * or hyphen characters.
+     * @param body Load test run model.
+     * @param testRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
+     * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
+     * @return A {@link PollerFlux} to poll on and retrieve the test run
+     * status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginTestRun(String testRunId, BinaryData body,
+        RequestOptions testRunRequestOptions) {
+        RequestOptions defaultRequestOptions = new RequestOptions();
+        if (testRunRequestOptions != null) {
+            defaultRequestOptions.setContext(testRunRequestOptions.getContext());
+        }
+        return new PollerFlux<>(Duration.ofSeconds(5),
+            (context) -> createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions)
+                .flatMap(FluxUtil::toMono),
+            (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono)
+                .flatMap(testRunBinary -> PollingUtils
+                    .getPollResponseMono(() -> PollingUtils.getTestRunStatus(testRunBinary))),
+            (activationResponse, context) -> stopTestRunWithResponse(testRunId, defaultRequestOptions)
+                .flatMap(FluxUtil::toMono),
+            (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono));
+    }
+
+    /**
+     * Starts a test run and polls the status of the test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     * or hyphen characters.
+     * @param body Load test run model.
+     * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
+     * @return A {@link PollerFlux} to poll on and retrieve the test run
+     * status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<LoadTestRun, LoadTestRun> beginTestRun(String testRunId, LoadTestRun body) {
+        return new PollerFlux<>(Duration.ofSeconds(5), (context) -> createOrUpdateTestRun(testRunId, body),
+            (context) -> getTestRun(testRunId).flatMap(
+                testRunBinary -> PollingUtils.getPollResponseMono(() -> PollingUtils.getTestRunStatus(testRunBinary))),
+            (activationResponse, context) -> stopTestRun(testRunId), (context) -> getTestRun(testRunId));
+    }
+
+    /**
+     * Starts a test profile run and polls the status of the test profile run.
+     *
+     * @param testProfileRunId Unique name for the test profile run, must contain only lower-case alphabetic, numeric,
+     * underscore
+     * or hyphen characters.
+     * @param body Test Profile Run model.
+     * @param testProfileRunRequestOptions The options to configure the file upload HTTP request before HTTP client
+     * sends it.
+     * @throws ResourceNotFoundException when a test profile with {@code testProfileId} doesn't exist.
+     * @return A {@link PollerFlux} to poll on and retrieve the test run
+     * status(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginTestProfileRun(String testProfileRunId, BinaryData body,
+        RequestOptions testProfileRunRequestOptions) {
+        RequestOptions defaultRequestOptions = new RequestOptions();
+        if (testProfileRunRequestOptions != null) {
+            defaultRequestOptions.setContext(testProfileRunRequestOptions.getContext());
+        }
+        return new PollerFlux<>(Duration.ofSeconds(5),
+            (context) -> createOrUpdateTestProfileRunWithResponse(testProfileRunId, body, testProfileRunRequestOptions)
+                .flatMap(FluxUtil::toMono),
+            (context) -> getTestRunWithResponse(testProfileRunId, defaultRequestOptions).flatMap(FluxUtil::toMono)
+                .flatMap(testRunBinary -> PollingUtils
+                    .getPollResponseMono(() -> PollingUtils.getTestRunStatus(testRunBinary))),
+            (activationResponse, context) -> stopTestRunWithResponse(testProfileRunId, defaultRequestOptions)
+                .flatMap(FluxUtil::toMono),
+            (context) -> getTestRunWithResponse(testProfileRunId, defaultRequestOptions).flatMap(FluxUtil::toMono));
+    }
+
+    /**
+     * Starts a test profile run and polls the status of the test profile run.
+     *
+     * @param testProfileRunId Unique name for the test profile run, must contain only lower-case alphabetic, numeric,
+     * underscore
+     * or hyphen characters.
+     * @param body Test Profile Run model.
+     * @throws ResourceNotFoundException when a test profile with {@code testProfileId} doesn't exist.
+     * @return A {@link PollerFlux} to poll on and retrieve the test run
+     * status(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<TestProfileRun, TestProfileRun> beginTestProfileRun(String testProfileRunId,
+        TestProfileRun body) {
+        return new PollerFlux<>(Duration.ofSeconds(5),
+            (context) -> createOrUpdateTestProfileRun(testProfileRunId, body),
+            (context) -> getTestProfileRun(testProfileRunId).flatMap(testProfileRunBinary -> PollingUtils
+                .getPollResponseMono(() -> PollingUtils.getTestProfileRunStatus(testProfileRunBinary))),
+            (activationResponse, context) -> stopTestProfileRun(testProfileRunId),
+            (context) -> getTestProfileRun(testProfileRunId));
     }
 
     /**

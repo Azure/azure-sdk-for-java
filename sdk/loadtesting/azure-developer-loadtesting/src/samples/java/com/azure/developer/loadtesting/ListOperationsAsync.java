@@ -71,7 +71,8 @@ public final class ListOperationsAsync {
             null, // executionFrom
             null, // executionTo
             "EXECUTING,DONE", // status
-            null // testRunIds (List<String>)
+            null, // testRunIds (List<String>)
+            null
         );
 
         testRuns.subscribe(testRun -> {

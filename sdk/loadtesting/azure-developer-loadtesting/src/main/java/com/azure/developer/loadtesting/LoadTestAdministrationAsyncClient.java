@@ -17,6 +17,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
@@ -33,6 +34,7 @@ import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
 import com.azure.developer.loadtesting.models.Trigger;
 import com.azure.developer.loadtesting.models.TriggerState;
 import java.time.OffsetDateTime;
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -44,6 +46,8 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = LoadTestAdministrationClientBuilder.class, isAsync = true)
 public final class LoadTestAdministrationAsyncClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(LoadTestAdministrationAsyncClient.class);
 
     @Generated
     private final LoadTestAdministrationClientImpl serviceClient;
@@ -447,6 +451,57 @@ public final class LoadTestAdministrationAsyncClient {
     public Mono<Response<BinaryData>> createOrUpdateServerMetricsConfigWithResponse(String testId, BinaryData body,
         RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateServerMetricsConfigWithResponseAsync(testId, body, requestOptions);
+    }
+
+    /**
+     * Uploads file and polls the validation status of the uploaded file.
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
+     * @param fileUploadRequestOptions The options to configure the file upload HTTP request before HTTP client sends
+     * it.
+     * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
+     * @return A {@link PollerFlux} to poll on and retrieve the file info with validation status.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginUploadTestFile(String testId, String fileName, BinaryData body,
+        RequestOptions fileUploadRequestOptions) {
+        RequestOptions defaultRequestOptions = new RequestOptions();
+        if (fileUploadRequestOptions != null) {
+            defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());
+        }
+        return new PollerFlux<>(Duration.ofSeconds(2),
+            (context) -> uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions)
+                .flatMap(FluxUtil::toMono)
+                .flatMap(fileBinaryData -> PollingUtils
+                    .getPollResponseMono(() -> PollingUtils.getValidationStatus(fileBinaryData)))
+                .flatMap(fileValidationPollResp -> Mono.just(fileValidationPollResp.getValue())),
+            (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono)
+                .flatMap(fileBinaryData -> PollingUtils
+                    .getPollResponseMono(() -> PollingUtils.getValidationStatus(fileBinaryData))),
+            (activationResponse, context) -> Mono
+                .error(LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+            (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono));
+    }
+
+    /**
+     * Uploads file and polls the validation status of the uploaded file.
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
+     * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
+     * @return A {@link PollerFlux} to poll on and retrieve the file info with validation status.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<TestFileInfo, TestFileInfo> beginUploadTestFile(String testId, String fileName, BinaryData body) {
+        return new PollerFlux<>(Duration.ofSeconds(2), (context) -> uploadTestFile(testId, fileName, body),
+            (context) -> getTestFile(testId, fileName).flatMap(
+                fileResp -> PollingUtils.getPollResponseMono(() -> PollingUtils.getValidationStatus(fileResp))),
+            (activationResponse, context) -> Mono
+                .error(LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+            (context) -> getTestFile(testId, fileName));
     }
 
     /**

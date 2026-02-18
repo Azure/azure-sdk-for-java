@@ -246,8 +246,8 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
             null, // executionFrom (OffsetDateTime)
             null, // executionTo (OffsetDateTime)
             null, // status
-            null // maxPageSize (Integer)
-        );
+            null, // maxPageSize (Integer)
+            null);
 
         StepVerifier.create(pagedFlux.any(testRun -> newTestRunIdAsync.equals(testRun.getTestRunId())))
             .expectNext(true)
