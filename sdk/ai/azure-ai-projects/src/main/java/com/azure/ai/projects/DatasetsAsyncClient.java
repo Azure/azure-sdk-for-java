@@ -197,8 +197,8 @@ public final class DatasetsAsyncClient {
         }
         PendingUploadRequest request = new PendingUploadRequest();
         return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
-            String blobUri = pendingUploadResponse.getBlobReference().getBlobUri();
-            String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUri();
+            String blobUri = pendingUploadResponse.getBlobReference().getBlobUrl();
+            String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
             BlobAsyncClient blobClient = new BlobClientBuilder().endpoint(sasUri).blobName(name).buildAsyncClient();
             return blobClient.upload(BinaryData.fromFile(filePath), true).thenReturn(blobClient.getBlobUrl());
         }).flatMap(blobUrl -> {
@@ -228,8 +228,8 @@ public final class DatasetsAsyncClient {
         // Request a pending upload for the folder
         PendingUploadRequest request = new PendingUploadRequest();
         return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
-            String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUri();
-            String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUri();
+            String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUrl();
+            String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
             String containerUrl = blobContainerUri.substring(0, blobContainerUri.lastIndexOf('/'));
             // Find all files in the directory
             try {

@@ -183,8 +183,8 @@ public final class DatasetsClient {
         PendingUploadRequest body = new PendingUploadRequest();
         PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, body);
         BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
-        String blobUri = pendingUploadResponse.getBlobReference().getBlobUri();
-        BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUri()).blobName(name).buildClient();
+        String blobUri = pendingUploadResponse.getBlobReference().getBlobUrl();
+        BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUrl()).blobName(name).buildClient();
         blobClient.upload(BinaryData.fromFile(filePath));
         RequestOptions requestOptions = new RequestOptions();
         FileDatasetVersion datasetVersion = this
@@ -215,7 +215,7 @@ public final class DatasetsClient {
         // Request a pending upload for the folder
         PendingUploadRequest request = new PendingUploadRequest();
         PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, request);
-        String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUri();
+        String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUrl();
         BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
         String containerUrl = blobContainerUri.substring(0, blobContainerUri.lastIndexOf('/'));
         // Upload all files in the directory
@@ -224,7 +224,7 @@ public final class DatasetsClient {
             String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
             // Create blob client for each file
             BlobClient blobClient
-                = new BlobClientBuilder().endpoint(credential.getSasUri()).blobName(relativePath).buildClient();
+                = new BlobClientBuilder().endpoint(credential.getSasUrl()).blobName(relativePath).buildClient();
             // Upload the file
             blobClient.upload(BinaryData.fromFile(filePath), true);
         });
