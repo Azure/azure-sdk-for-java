@@ -202,7 +202,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    public void stageBlockMinWithBinaryDataFromFlux() {
+    public void stageBlockMinwithBinaryDataFromFlux() {
         Mono<Response<Void>> response = BinaryData.fromFlux(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong(), false)
             .flatMap(r -> blockBlobAsyncClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(), r)));
 
@@ -632,7 +632,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    public void commitBlockListMin() {
+    public void commitBlockListmin() {
         blockBlobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
         String blockID = getBlockID();
         List<String> ids = Collections.singletonList(blockID);
