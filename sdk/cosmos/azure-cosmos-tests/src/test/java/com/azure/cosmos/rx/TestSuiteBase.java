@@ -277,32 +277,37 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             SHARED_SINGLE_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 6000);
 
             // Initialize internal shared resources for tests using AsyncDocumentClient
+            // These need id, resourceId, selfLink, altLink, and partitionKey to be set properly
+            String databaseId = SHARED_DATABASE.getId();
+            String databaseResourceId = SHARED_DATABASE.read().block().getProperties().getResourceId();
+
             SHARED_DATABASE_INTERNAL = new Database();
-            SHARED_DATABASE_INTERNAL.setId(SHARED_DATABASE.getId());
-            SHARED_DATABASE_INTERNAL.setSelfLink(String.format("dbs/%s", SHARED_DATABASE.getId()));
+            SHARED_DATABASE_INTERNAL.setId(databaseId);
+            SHARED_DATABASE_INTERNAL.setResourceId(databaseResourceId);
+            SHARED_DATABASE_INTERNAL.setSelfLink(String.format("dbs/%s", databaseId));
 
-            SHARED_MULTI_PARTITION_COLLECTION_INTERNAL = new DocumentCollection();
-            SHARED_MULTI_PARTITION_COLLECTION_INTERNAL.setId(SHARED_MULTI_PARTITION_COLLECTION.getId());
-            SHARED_MULTI_PARTITION_COLLECTION_INTERNAL.setResourceId(
-                SHARED_MULTI_PARTITION_COLLECTION.read().block().getProperties().getResourceId());
-            SHARED_MULTI_PARTITION_COLLECTION_INTERNAL.setSelfLink(
-                String.format("dbs/%s/colls/%s", SHARED_DATABASE.getId(), SHARED_MULTI_PARTITION_COLLECTION.getId()));
-
-            SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL = new DocumentCollection();
-            SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL.setId(SHARED_SINGLE_PARTITION_COLLECTION.getId());
-            SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL.setResourceId(
-                SHARED_SINGLE_PARTITION_COLLECTION.read().block().getProperties().getResourceId());
-            SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL.setSelfLink(
-                String.format("dbs/%s/colls/%s", SHARED_DATABASE.getId(), SHARED_SINGLE_PARTITION_COLLECTION.getId()));
-
-            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL = new DocumentCollection();
-            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL.setId(
-                SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES.getId());
-            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL.setResourceId(
-                SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES.read().block().getProperties().getResourceId());
-            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL.setSelfLink(
-                String.format("dbs/%s/colls/%s", SHARED_DATABASE.getId(), SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES.getId()));
+            SHARED_MULTI_PARTITION_COLLECTION_INTERNAL = getInternalDocumentCollection(SHARED_MULTI_PARTITION_COLLECTION, databaseId);
+            SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL = getInternalDocumentCollection(SHARED_SINGLE_PARTITION_COLLECTION, databaseId);
+            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL =
+                getInternalDocumentCollection(SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES, databaseId);
         }
+    }
+
+    /**
+     * Creates a DocumentCollection with all required properties set for internal API tests.
+     * Sets: id, resourceId, selfLink, altLink, and partitionKey.
+     */
+    private static DocumentCollection getInternalDocumentCollection(CosmosAsyncContainer container, String databaseId) {
+        CosmosContainerProperties containerProperties = container.read().block().getProperties();
+
+        DocumentCollection collection = new DocumentCollection();
+        collection.setId(container.getId());
+        collection.setResourceId(containerProperties.getResourceId());
+        collection.setSelfLink(String.format("dbs/%s/colls/%s", databaseId, container.getId()));
+        collection.setAltLink(String.format("dbs/%s/colls/%s", databaseId, container.getId()));
+        collection.setPartitionKey(containerProperties.getPartitionKeyDefinition());
+
+        return collection;
     }
 
     @AfterSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master",
