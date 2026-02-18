@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config;
 
-import org.springframework.boot.bootstrap.BootstrapContext;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.bootstrap.BootstrapContext;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.endpoint.RefreshEndpoint;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationPullRefresh;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientFactory;
+import com.azure.spring.cloud.appconfiguration.config.implementation.StateHolder;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 
@@ -40,8 +41,9 @@ public class AppConfigurationWatchAutoConfiguration {
         AppConfigurationReplicaClientFactory clientFactory = context
             .get(AppConfigurationReplicaClientFactory.class);
         ReplicaLookUp replicaLookUp = context.get(ReplicaLookUp.class);
+        StateHolder stateHolder = context.get(StateHolder.class);
 
         return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(), replicaLookUp,
-            new AppConfigurationRefreshUtil());
+            stateHolder, new AppConfigurationRefreshUtil(stateHolder));
     }
 }

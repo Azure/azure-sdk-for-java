@@ -61,6 +61,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @param keyPrefixTrimValues prefixs to trim from key values
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
+    @Override
     public void initProperties(List<String> keyPrefixTrimValues, Context context) throws InvalidConfigurationPropertyValueException {
 
         List<String> labels = Arrays.asList(labelFilters);
@@ -128,7 +129,6 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
     void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
         throws InvalidConfigurationPropertyValueException {
         // Feature Flags aren't loaded as configuration, but are loaded as feature flags when loading a snapshot.
-        return;
     }
 
     private void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
