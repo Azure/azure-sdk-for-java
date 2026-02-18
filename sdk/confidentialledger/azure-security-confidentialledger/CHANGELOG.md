@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (2026-02-18)
+## 1.0.35 (2026-02-18)
 
 ### Features Added
 
@@ -9,12 +9,6 @@
   header when redirecting to the same scheme and to hosts that are the same as or subdomains of the original
   request (ports may differ). This fixes write operations (POST) being rejected when the Confidential Ledger
   service redirects from a secondary node to the primary node.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.0.34 (2026-01-29)
 
