@@ -37,6 +37,7 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
+import com.azure.storage.blob.options.BlobGetUserDelegationKeyOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -873,7 +874,7 @@ public final class BlobServiceAsyncClient {
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the user
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the user
      * delegation key.
      * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
      * @throws NullPointerException If {@code expiry} is null.
@@ -888,20 +889,44 @@ public final class BlobServiceAsyncClient {
         }
     }
 
+    /**
+     * Gets a user delegation key for use with this account's blob storage. Note: This method call is only valid when
+     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param options The {@link BlobGetUserDelegationKeyOptions options} to configure the request.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the user
+     * delegation key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(BlobGetUserDelegationKeyOptions options) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            return withContext(context -> getUserDelegationKeyWithResponse(options.getStartsOn(),
+                options.getExpiresOn(), options.getDelegatedUserTenantId(), context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
     Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Context context) {
-        StorageImplUtils.assertNotNull("expiry", expiry);
+        return getUserDelegationKeyWithResponse(start, expiry, null, context);
+    }
+
+    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
+        String delegatedUserTenantId, Context context) {
+        context = context == null ? Context.NONE : context;
+        throwOnAnonymousAccess();
         if (start != null && !start.isBefore(expiry)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
-        throwOnAnonymousAccess();
-        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getServices()
             .getUserDelegationKeyWithResponseAsync(
                 new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
+                    .setDelegatedUserTenantId(delegatedUserTenantId),
                 null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }

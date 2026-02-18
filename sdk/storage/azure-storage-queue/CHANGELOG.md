@@ -3,6 +3,7 @@
 ## 12.29.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added cross-tenant support for principal bound delegation SAS.
 
 ### Breaking Changes
 
