@@ -30,8 +30,8 @@ import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.t
  * Cosmos query class to handle the annotated queries. This overrides the execution and runs the query directly
  */
 public class StringBasedCosmosQuery extends AbstractCosmosQuery {
-    private static final Pattern COUNT_QUERY_PATTERN = Pattern.compile("^\\s*select\\s+value\\s+count.*", Pattern.CASE_INSENSITIVE);
-    private static final Pattern SUM_QUERY_PATTERN = Pattern.compile("^\\s*select\\s+value\\s+sum.*", Pattern.CASE_INSENSITIVE);
+    private static final Pattern COUNT_QUERY_PATTERN = Pattern.compile("^\\s*select\\s+value\\s+count.*", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+    private static final Pattern SUM_QUERY_PATTERN = Pattern.compile("^\\s*select\\s+value\\s+sum.*", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 
     private final String query;
 
