@@ -294,6 +294,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
         
         // set indexing mode to LAZY
+        // Note: LAZY indexing mode is deprecated and automatically converted to CONSISTENT by the server
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         indexingPolicy.setIndexingMode(IndexingMode.LAZY);
         collectionDefinition.setIndexingPolicy(indexingPolicy);
@@ -301,9 +302,10 @@ public class CollectionCrudTest extends TestSuiteBase {
         Mono<CosmosContainerResponse> createObservable = database
                 .createContainer(collectionDefinition);
 
+        // Validate that LAZY mode is converted to CONSISTENT by the server
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
                 .withId(collectionDefinition.getId())
-                .indexingMode(IndexingMode.LAZY)
+                .indexingMode(IndexingMode.CONSISTENT)
                 .build();
 
         validateSuccess(createObservable, validator);
@@ -315,6 +317,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
         
         // set indexing mode to LAZY
+        // Note: LAZY indexing mode is deprecated and automatically converted to CONSISTENT by the server
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         indexingPolicy.setIndexingMode(IndexingMode.LAZY);
         collectionDefinition.setIndexingPolicy(indexingPolicy);
@@ -324,9 +327,10 @@ public class CollectionCrudTest extends TestSuiteBase {
 
         Mono<CosmosContainerResponse> readObservable = collection.read();
 
+        // Validate that LAZY mode is converted to CONSISTENT by the server
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
                 .withId(collection.getId())
-                .indexingMode(IndexingMode.LAZY)
+                .indexingMode(IndexingMode.CONSISTENT)
                 .build();
         validateSuccess(readObservable, validator);
         safeDeleteAllCollections(database);
@@ -343,14 +347,15 @@ public class CollectionCrudTest extends TestSuiteBase {
         assertThat(collectionSettings.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
 
         // replace indexing mode to LAZY
+        // Note: LAZY indexing mode is deprecated and automatically converted to CONSISTENT by the server
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         indexingPolicy.setIndexingMode(IndexingMode.LAZY);
         collectionSettings.setIndexingPolicy(indexingPolicy);
         Mono<CosmosContainerResponse> replaceObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
-        // validate
+        // Validate that LAZY mode is converted to CONSISTENT by the server
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
-                .indexingMode(IndexingMode.LAZY).build();
+                .indexingMode(IndexingMode.CONSISTENT).build();
         validateSuccess(replaceObservable, validator);
         safeDeleteAllCollections(database);
     }
