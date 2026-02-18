@@ -43,6 +43,47 @@ import static org.apache.kafka.common.security.auth.SecurityProtocol.SASL_SSL;
 import static org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule.OAUTHBEARER_MECHANISM;
 import static org.springframework.util.StringUtils.delimitedListToStringArray;
 
+/**
+ * Abstract base class for Kafka properties bean post-processors that configure Azure authentication.
+ *
+ * <p>This class provides a framework for automatically configuring authentication properties for various
+ * Kafka client types (producers, consumers, and admins). It implements a strategy pattern to allow different
+ * authentication methods to be plugged in.</p>
+ *
+ * <h2>Architecture</h2>
+ * <p>The post-processor works in three phases:</p>
+ * <ol>
+ *   <li><strong>Detection</strong>: Identifies beans that need Kafka authentication configuration</li>
+ *   <li><strong>Configuration</strong>: Applies authentication settings using a {@link KafkaAuthenticationConfigurer}</li>
+ *   <li><strong>Cleanup</strong>: Removes Azure-specific properties that shouldn't be passed to Kafka clients</li>
+ * </ol>
+ *
+ * <h2>Supported Client Types</h2>
+ * <p>This processor handles authentication for:</p>
+ * <ul>
+ *   <li>Kafka Producers</li>
+ *   <li>Kafka Consumers</li>
+ *   <li>Kafka Admin Clients</li>
+ * </ul>
+ *
+ * <h2>Subclass Implementation</h2>
+ * <p>Subclasses must implement methods to:</p>
+ * <ul>
+ *   <li>Extract merged properties (all configuration sources combined)</li>
+ *   <li>Access raw property maps (for modification)</li>
+ *   <li>Determine which beans need processing</li>
+ * </ul>
+ *
+ * <h2>Authentication Configuration</h2>
+ * <p>The class uses {@link KafkaAuthenticationConfigurer} instances to apply authentication settings.
+ * The default implementation uses {@link OAuth2AuthenticationConfigurer} for OAuth2/OAUTHBEARER authentication.</p>
+ *
+ * @param <T> the type of Kafka properties bean to process
+ * @see KafkaAuthenticationConfigurer
+ * @see OAuth2AuthenticationConfigurer
+ * @see KafkaPropertiesBeanPostProcessor
+ * @see KafkaBinderConfigurationPropertiesBeanPostProcessor
+ */
 abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostProcessor, ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractKafkaPropertiesBeanPostProcessor.class);
@@ -190,13 +231,23 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
      * @param rawPropertiesMap the raw Kafka properties Map to configure JAAS to and remove Azure Properties from
      */
     private void replaceAzurePropertiesWithJaas(Map<String, Object> mergedProperties, Map<String, String> rawPropertiesMap) {
-        resolveJaasForAzure(mergedProperties)
-            .ifPresent(jaas -> {
-                configJaasToKafkaRawProperties(jaas, rawPropertiesMap);
-                logConfigureOAuthProperties();
-                configureKafkaUserAgent();
-            });
+        // Use strategy pattern to configure authentication
+        KafkaAuthenticationConfigurer configurer = createAuthenticationConfigurer();
+        if (configurer.canConfigure(mergedProperties)) {
+            configurer.configure(mergedProperties, rawPropertiesMap);
+            configureKafkaUserAgent();
+        }
         clearAzureProperties(rawPropertiesMap);
+    }
+
+    /**
+     * Creates the appropriate authentication configurer based on available Azure properties.
+     * Currently supports OAuth2 (OAUTHBEARER) authentication with Azure Identity.
+     *
+     * @return the authentication configurer to use
+     */
+    private KafkaAuthenticationConfigurer createAuthenticationConfigurer() {
+        return new OAuth2AuthenticationConfigurer(azureGlobalProperties, getLogger());
     }
 
     private Optional<Jaas> resolveJaasForAzure(Map<String, Object> mergedProperties) {
