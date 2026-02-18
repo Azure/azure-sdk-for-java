@@ -94,6 +94,8 @@ public class EventContext {
                 .setConsumerGroup(partitionContext.getConsumerGroup())
                 .setPartitionId(partitionContext.getPartitionId())
                 .setSequenceNumber(eventData.getSequenceNumber())
+                .setOffsetString(eventData.getOffsetString())
+            // setOffset is deprecated since 5.21.0, but we keep assignment for backward compatibility until setter is removed.
                 .setOffset(eventData.getOffset());
         return this.checkpointStore.updateCheckpoint(checkpoint);
     }
