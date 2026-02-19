@@ -59,7 +59,7 @@ com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-translation-text;1.1.8;2.0.0-beta.2
 com.azure:azure-ai-translation-document;1.0.7;1.1.0-beta.1
 com.azure:azure-ai-vision-face;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-ai-voicelive;1.0.0-beta.4;1.0.0-beta.5
+com.azure:azure-ai-voicelive;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-analytics-defender-easm;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-purview-datamap;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-onlineexperimentation;1.0.0-beta.1;1.0.0-beta.2
@@ -474,7 +474,7 @@ com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-redhatopenshift;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-fabric;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-computeschedule;1.1.0;1.2.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-trustedsigning;1.0.0-beta.1;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-trustedsigning;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-iotoperations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerorchestratorruntime;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-terraform;1.0.0-beta.1;1.0.0-beta.2
@@ -503,11 +503,11 @@ com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-fluxconf
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensions;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensiontypes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cloudhealth;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-resources-deploymentstacks;1.0.0;1.1.0
+com.azure.resourcemanager:azure-resourcemanager-resources-deploymentstacks;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-privatelinkscopes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resources-bicep;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-playwright;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-managedops;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-managedops;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-storagediscovery;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.0.0-beta.2
