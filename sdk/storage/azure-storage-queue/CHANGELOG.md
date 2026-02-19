@@ -1,6 +1,6 @@
 # Release History
 
-## 12.29.0-beta.1 (2026-02-18)
+## 12.29.0-beta.1 (2026-02-19)
 
 ### Features Added
 - Added cross-tenant support for principal bound delegation SAS.
