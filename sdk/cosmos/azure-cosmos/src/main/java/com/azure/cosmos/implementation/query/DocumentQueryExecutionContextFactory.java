@@ -146,7 +146,8 @@ public class DocumentQueryExecutionContextFactory {
                 client,
                 query,
                 resourceLink,
-                cosmosQueryRequestOptions);
+                cosmosQueryRequestOptions,
+                collection);
 
         return queryExecutionInfoMono.flatMap(
             partitionedQueryExecutionInfo -> {

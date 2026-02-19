@@ -4730,6 +4730,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             public GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
                 return RxDocumentClientImpl.this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
             }
+
+            @Override
+            public boolean useThinClient(RxDocumentServiceRequest request) {
+                return RxDocumentClientImpl.this.useThinClientStoreModel(request);
+            }
         };
     }
 
@@ -6518,7 +6523,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             resourceType == ResourceType.ClientEncryptionKey ||
             resourceType.isScript() && operationType != OperationType.ExecuteJavaScript ||
             resourceType == ResourceType.PartitionKeyRange ||
-            resourceType == ResourceType.PartitionKey && operationType == OperationType.Delete) {
+            resourceType == ResourceType.PartitionKey && operationType == OperationType.Delete ||
+            operationType == OperationType.QueryPlan) {
             return this.gatewayProxy;
         }
 
@@ -6556,7 +6562,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if ((operationType == OperationType.Query ||
                 operationType == OperationType.SqlQuery ||
                 operationType == OperationType.ReadFeed) &&
-                    Utils.isCollectionChild(request.getResourceType())) {
+                Utils.isCollectionChild(request.getResourceType())) {
                 // Go to gateway only when partition key range and partition key are not set. This should be very rare
                 if (request.getPartitionKeyRangeIdentity() == null &&
                         request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY) == null) {
@@ -8104,7 +8110,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
         if (!useThinClient
             || !this.globalEndpointManager.hasThinClientReadLocations()
-            || request.getResourceType() != ResourceType.Document) {
+            || request.getResourceType() != ResourceType.Document && !request.isExecuteStoredProcedureBasedRequest()) {
 
             return false;
         }
@@ -8114,7 +8120,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return operationType.isPointOperation()
                     || operationType == OperationType.Query
                     || operationType == OperationType.Batch
-                    || request.isChangeFeedRequest() && !request.isAllVersionsAndDeletesChangeFeedMode();
+                    || request.isChangeFeedRequest() && !request.isAllVersionsAndDeletesChangeFeedMode()
+                    || request.isExecuteStoredProcedureBasedRequest()
+                    || operationType == OperationType.QueryPlan;
     }
 
     private DocumentClientRetryPolicy getRetryPolicyForPointOperation(
