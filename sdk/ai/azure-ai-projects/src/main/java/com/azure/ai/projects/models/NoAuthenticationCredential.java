@@ -11,22 +11,22 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Agentic identity credential definition.
+ * Credentials that do not require authentication.
  */
 @Immutable
-public final class AgenticIdentityPreviewCredentials extends BaseCredentials {
+public final class NoAuthenticationCredential extends BaseCredential {
 
     /*
      * The type of credential used by the connection
      */
     @Generated
-    private CredentialType type = CredentialType.AGENTIC_IDENTITY_PREVIEW;
+    private CredentialType type = CredentialType.NONE;
 
     /**
-     * Creates an instance of AgenticIdentityPreviewCredentials class.
+     * Creates an instance of NoAuthenticationCredential class.
      */
     @Generated
-    private AgenticIdentityPreviewCredentials() {
+    private NoAuthenticationCredential() {
     }
 
     /**
@@ -52,28 +52,27 @@ public final class AgenticIdentityPreviewCredentials extends BaseCredentials {
     }
 
     /**
-     * Reads an instance of AgenticIdentityPreviewCredentials from the JsonReader.
+     * Reads an instance of NoAuthenticationCredential from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AgenticIdentityPreviewCredentials if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AgenticIdentityPreviewCredentials.
+     * @return An instance of NoAuthenticationCredential if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NoAuthenticationCredential.
      */
     @Generated
-    public static AgenticIdentityPreviewCredentials fromJson(JsonReader jsonReader) throws IOException {
+    public static NoAuthenticationCredential fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AgenticIdentityPreviewCredentials deserializedAgenticIdentityPreviewCredentials
-                = new AgenticIdentityPreviewCredentials();
+            NoAuthenticationCredential deserializedNoAuthenticationCredential = new NoAuthenticationCredential();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedAgenticIdentityPreviewCredentials.type = CredentialType.fromString(reader.getString());
+                    deserializedNoAuthenticationCredential.type = CredentialType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedAgenticIdentityPreviewCredentials;
+            return deserializedNoAuthenticationCredential;
         });
     }
 }
