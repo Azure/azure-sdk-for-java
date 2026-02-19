@@ -160,7 +160,7 @@ public class DatasetsSample {
         PendingUploadResponse response = datasetsClient.pendingUpload(datasetName, datasetVersion, request);
 
         System.out.println("Pending upload initiated with ID: " + response.getPendingUploadId());
-        System.out.println("Blob URI: " + response.getBlobReference().getBlobUri());
+        System.out.println("Blob URI: " + response.getBlobReference().getBlobUrl());
 
         // END:com.azure.ai.projects.DatasetsSample.pendingUploadSample
     }

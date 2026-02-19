@@ -165,7 +165,7 @@ public class DatasetsAsyncSample {
         return datasetsAsyncClient.pendingUpload(datasetName, datasetVersion, request)
             .doOnNext(response -> {
                 System.out.println("Pending upload initiated with ID: " + response.getPendingUploadId());
-                System.out.println("Blob URI: " + response.getBlobReference().getBlobUri());
+                System.out.println("Blob URI: " + response.getBlobReference().getBlobUrl());
             });
 
         // END:com.azure.ai.projects.DatasetsAsyncSample.pendingUploadSample

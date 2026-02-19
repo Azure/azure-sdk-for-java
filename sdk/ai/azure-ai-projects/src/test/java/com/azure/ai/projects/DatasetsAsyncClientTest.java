@@ -176,7 +176,7 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
                 Assertions.assertNotNull(response);
                 Assertions.assertNotNull(response.getPendingUploadId());
                 Assertions.assertNotNull(response.getBlobReference());
-                Assertions.assertNotNull(response.getBlobReference().getBlobUri());
+                Assertions.assertNotNull(response.getBlobReference().getBlobUrl());
                 Assertions.assertNotNull(response.getBlobReference().getCredential());
             })
             .verifyComplete();
