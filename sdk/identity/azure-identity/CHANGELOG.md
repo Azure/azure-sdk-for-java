@@ -11,6 +11,8 @@
 - Fixed `NullPointerException` in `IdentityClientOptions` when running in GraalVM native images (e.g., Quarkus applications). Replaced reflection-dependent `AzureIdentityEnvVars` enum usage with direct string literal to ensure compatibility with native compilation.
 - Fixed logging for token authentication errors to include full stack traces with inner exceptions. Previously, error logs referenced "inner exceptions" but only logged the error message, making debugging difficult.
 
+- Fixed `AzureCliCredential` fails in non-interactive environments due to hardcoded `/bin/sh` PATH resolution on MacOS and Linux.
+
 ### Other Changes
 - Removed unused jetty, redisson, and lettuce-core dependencies.
 
