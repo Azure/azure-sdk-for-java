@@ -1,6 +1,6 @@
 # Release History
 
-## 12.27.0-beta.1 (2026-02-18)
+## 12.27.0-beta.1 (2026-02-19)
 
 ### Features Added
 - Added support for Dynamic User Delegation SAS.
