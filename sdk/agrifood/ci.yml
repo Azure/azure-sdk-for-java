@@ -11,7 +11,6 @@ trigger:
       - sdk/agrifood/
     exclude:
       - sdk/agrifood/pom.xml
-      - sdk/agrifood/azure-verticals-agrifood-farming/pom.xml
       - sdk/agrifood/azure-resourcemanager-agrifood/pom.xml
 
 pr:
@@ -26,14 +25,9 @@ pr:
       - sdk/agrifood/
     exclude:
       - sdk/agrifood/pom.xml
-      - sdk/agrifood/azure-verticals-agrifood-farming/pom.xml
       - sdk/agrifood/azure-resourcemanager-agrifood/pom.xml
 
 parameters:
-- name: release_azureverticalsagrifoodfarming
-  displayName: 'azure-verticals-agrifood-farming'
-  type: boolean
-  default: true
 - name: release_azureresourcemanageragrifood
   displayName: 'azure-resourcemanager-agrifood'
   type: boolean
@@ -44,10 +38,6 @@ extends:
   parameters:
     ServiceDirectory: agrifood
     Artifacts:
-      - name: azure-verticals-agrifood-farming
-        groupId: com.azure
-        safeName: azureverticalsagrifoodfarming
-        releaseInBatch: ${{ parameters.release_azureverticalsagrifoodfarming }}
       - name: azure-resourcemanager-agrifood
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanageragrifood

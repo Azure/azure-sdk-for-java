@@ -1510,8 +1510,7 @@ private object CosmosWriteConfig {
     defaultValue = Option.apply(false),
     parseFromStringFunction = bulkTransactionalAsString => bulkTransactionalAsString.toBoolean,
     helpMessage = "Cosmos DB Item Write bulk transactional batch mode enabled - requires bulk write to be enabled. " +
-      "Spark 3.5+ provides automatic distribution/ordering for transactional batch. " +
-      "On Spark 3.3/3.4, transactional batch is supported but requires manual sorting for optimal performance.")
+      "Requires Spark 3.5 or later.")
 
   private val microBatchPayloadSizeInBytes = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkPayloadSizeInBytes,
     defaultValue = Option.apply(BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES),

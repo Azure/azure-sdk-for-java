@@ -81,8 +81,6 @@ public class VoiceLiveToolDefinition implements JsonSerializable<VoiceLiveToolDe
                     return VoiceLiveFunctionDefinition.fromJson(readerToUse.reset());
                 } else if ("mcp".equals(discriminatorValue)) {
                     return MCPServer.fromJson(readerToUse.reset());
-                } else if ("foundry_agent".equals(discriminatorValue)) {
-                    return FoundryAgentTool.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

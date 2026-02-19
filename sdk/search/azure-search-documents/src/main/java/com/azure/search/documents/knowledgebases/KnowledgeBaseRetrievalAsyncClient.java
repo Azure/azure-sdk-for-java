@@ -89,13 +89,13 @@ public final class KnowledgeBaseRetrievalAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeBaseRetrievalResponse> retrieve(String knowledgeBaseName,
         KnowledgeBaseRetrievalRequest retrievalRequest, String querySourceAuthorization) {
-        // Generated convenience method for hiddenGeneratedretrieveWithResponse
+        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (querySourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
                 querySourceAuthorization);
         }
-        return hiddenGeneratedretrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
+        return hiddenGeneratedRetrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBaseRetrievalResponse.class));
     }
@@ -117,9 +117,9 @@ public final class KnowledgeBaseRetrievalAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeBaseRetrievalResponse> retrieve(String knowledgeBaseName,
         KnowledgeBaseRetrievalRequest retrievalRequest) {
-        // Generated convenience method for hiddenGeneratedretrieveWithResponse
+        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedretrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
+        return hiddenGeneratedRetrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBaseRetrievalResponse.class));
     }
@@ -268,7 +268,7 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedretrieveWithResponse(String knowledgeBaseName,
+    Mono<Response<BinaryData>> hiddenGeneratedRetrieveWithResponse(String knowledgeBaseName,
         BinaryData retrievalRequest, RequestOptions requestOptions) {
         return this.serviceClient.retrieveWithResponseAsync(knowledgeBaseName, retrievalRequest, requestOptions);
     }

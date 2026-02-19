@@ -55,10 +55,4 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
      */
     @Generated
     public static final ToolType MCP = fromString("mcp");
-
-    /**
-     * Static value foundry_agent for ToolType.
-     */
-    @Generated
-    public static final ToolType FOUNDRY_AGENT = fromString("foundry_agent");
 }

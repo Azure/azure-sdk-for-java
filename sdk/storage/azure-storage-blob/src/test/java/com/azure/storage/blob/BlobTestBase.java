@@ -57,6 +57,7 @@ import com.azure.storage.blob.specialized.BlobLeaseClient;
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
@@ -86,6 +87,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.Callable;
@@ -1287,5 +1289,27 @@ public class BlobTestBase extends TestProxyTestBase {
             assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
                 received.getStaticWebsite().getErrorDocument404Path());
         }
+    }
+
+    public static HttpPipelinePolicy getAddHeadersAndQueryPolicy(Map<String, String> requestHeaders,
+        Map<String, String> requestQueryParams) {
+        // Create policy to add headers and query params to request
+        return (context, next) -> {
+            // Add request headers
+            for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
+                context.getHttpRequest().setHeader(HttpHeaderName.fromString(entry.getKey()), entry.getValue());
+            }
+
+            // Add query parameters
+            String extraQuery = requestQueryParams.entrySet()
+                .stream()
+                .map(e -> Utility.urlEncode(e.getKey()) + "=" + Utility.urlEncode(e.getValue()))
+                .collect(Collectors.joining("&"));
+
+            String currentUrl = context.getHttpRequest().getUrl().toString();
+            context.getHttpRequest().setUrl(currentUrl + "&" + extraQuery);
+
+            return next.process();
+        };
     }
 }
