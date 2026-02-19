@@ -949,6 +949,33 @@ public class IdentityClientTests {
     }
 
     @Test
+    public void testGetAzdErrorMessageReturnsExtractedMessage() {
+        // Should return extracted user-friendly message when available
+        String output = "{\"data\":{\"message\":\"run azd auth login\"}}";
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.getAzdErrorMessage(output);
+        assertEquals("run azd auth login", result);
+    }
+
+    @Test
+    public void testGetAzdErrorMessageFallsBackForNoValidMessages() {
+        // Should return the raw input when extractUserFriendlyErrorFromAzdOutput returns null
+        String output = "{\"data\":{\"notamessage\":\"Not a message\"}}\n" + "This is not JSON";
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.getAzdErrorMessage(output);
+        assertEquals(output, result);
+    }
+
+    @Test
+    public void testGetAzdErrorMessageFallsBackForWhitespaceOnlyInput() {
+        // Should return the whitespace string when extraction returns null
+        String output = "   \n\n   \t  ";
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.getAzdErrorMessage(output);
+        assertEquals(output, result);
+    }
+
+    @Test
     public void testManagedCredentialSkipsImdsProbing() {
         String accessToken = "token";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
