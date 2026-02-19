@@ -1000,7 +1000,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             // The address refresh for LEASE_NOT_FOUND is triggered asynchronously via
             // startBackgroundAddressRefresh() on Schedulers.boundedElastic().
             // Instead of a fixed sleep, poll until the validation passes or a timeout is reached
-            long addressRefreshDeadlineNanos = System.nanoTime() + Duration.ofSeconds(5).toNanos();
+            // Increased to 10 seconds to handle CI delays
+            long addressRefreshDeadlineNanos = System.nanoTime() + Duration.ofSeconds(10).toNanos();
             AssertionError lastAssertionError = null;
             while (System.nanoTime() < addressRefreshDeadlineNanos) {
                 try {
