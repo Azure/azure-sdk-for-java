@@ -7,7 +7,6 @@ import com.azure.analytics.planetarycomputer.models.IngestionDefinition;
 import com.azure.analytics.planetarycomputer.models.IngestionRun;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.analytics.planetarycomputer.models.IngestionType;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
@@ -69,7 +68,6 @@ public class TestPlanetaryComputer02dIngestionManagementTests extends PlanetaryC
      * Java method: getIngestion(collectionId, ingestionId)
      */
     @Test
-    @Disabled("SDK codegen bug: getImportType() returns enum instead of string")
     @Tag("IngestionDefinition")
     public void test02_15_GetIngestion() {
         // Arrange
@@ -97,7 +95,7 @@ public class TestPlanetaryComputer02dIngestionManagementTests extends PlanetaryC
         assertNotNull(retrievedIngestion, "Retrieved ingestion should not be null");
         assertEquals(ingestionId, retrievedIngestion.getId(), "Ingestion ID should match");
         assertEquals("Test Ingestion for Retrieval", retrievedIngestion.getDisplayName(), "Display name should match");
-        assertEquals("StaticCatalog", retrievedIngestion.getImportType(), "Import type should match");
+        assertEquals(IngestionType.STATIC_CATALOG, retrievedIngestion.getImportType(), "Import type should match");
 
         System.out.println("Successfully retrieved ingestion:");
         System.out.println("  - ID: " + retrievedIngestion.getId());

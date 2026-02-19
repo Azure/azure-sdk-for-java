@@ -221,7 +221,7 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
      * Java method: beginCreate(collectionId, IngestionDefinition)
      */
     @Test
-    @Disabled("LRO polling times out - infrastructure not ready")
+    @Disabled("Recording incomplete - missing POST entry for create() call, only has DELETE LRO cleanup")
     @Tag("IngestionDefinition")
     public void test02_03_CreateIngestionDefinition() {
         // Arrange

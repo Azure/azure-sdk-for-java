@@ -83,7 +83,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("Missing session recording - needs to be recorded")
+    @Disabled("Recording has 424 error - server returned 'Unknown reference spec version' - needs re-recording")
     @Tag("Assets")
     public void test06_03_GetItemAssetDetails() {
         DataClient dataClient = getDataClient();

@@ -6,11 +6,11 @@ package com.azure.analytics.planetarycomputer;
 import com.azure.analytics.planetarycomputer.models.IngestionDefinition;
 import com.azure.analytics.planetarycomputer.models.IngestionRun;
 import com.azure.analytics.planetarycomputer.models.IngestionSource;
+import com.azure.analytics.planetarycomputer.models.IngestionSourceType;
 import com.azure.analytics.planetarycomputer.models.IngestionType;
 import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureTokenConnection;
 import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureTokenIngestionSource;
 import com.azure.core.exception.HttpResponseException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
@@ -132,7 +132,6 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
      * Java method: getSource(sourceId)
      */
     @Test
-    @Disabled("SDK codegen bug: getKind() returns 'SasToken' instead of 'SharedAccessSignatureTokenIngestionSource'")
     @Tag("IngestionSource")
     public void test02_12_GetSource() {
         // Arrange
@@ -158,7 +157,7 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
         // Assert
         assertNotNull(retrievedSource, "Retrieved source should not be null");
         assertEquals(sourceId, retrievedSource.getId(), "Source ID should match");
-        assertEquals("SharedAccessSignatureTokenIngestionSource", retrievedSource.getKind(), "Kind should match");
+        assertEquals(IngestionSourceType.SHARED_ACCESS_SIGNATURE_TOKEN, retrievedSource.getKind(), "Kind should match");
 
         System.out.println("Successfully retrieved source:");
         System.out.println("  - ID: " + retrievedSource.getId());

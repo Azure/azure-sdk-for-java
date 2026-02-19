@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryComputerTestBase {
 
     @Test
-    @Disabled("Recording has body mismatch - needs to be re-recorded")
+    @Disabled("No session recording exists - needs to be recorded in RECORD mode")
     @Tag("Crop")
     public void test06_11_CropGeoJsonWithDimensions() {
         DataClient dataClient = getDataClient();
@@ -47,7 +47,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("Recording has body mismatch - needs to be re-recorded")
+    @Disabled("No session recording exists - needs to be recorded in RECORD mode")
     @Tag("Statistics")
     public void test06_12_GetGeoJsonStatistics() {
         DataClient dataClient = getDataClient();
@@ -69,7 +69,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("SDK codegen bug: double path parameters serialized incorrectly - server returns validation error")
+    @Disabled("Codegen bug: URL path {maxy}.{format} is ambiguous - server can't parse double from '38.92.image.png'")
     @Tag("Part")
     public void test06_13_GetPart() {
         DataClient dataClient = getDataClient();
@@ -93,7 +93,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("SDK codegen bug: double path parameters serialized incorrectly - server returns validation error")
+    @Disabled("Codegen bug: URL path {maxy}.{format} is ambiguous - server can't parse double from '38.92.image.png'")
     @Tag("Part")
     public void test06_14_GetPartWithDimensions() {
         DataClient dataClient = getDataClient();
@@ -117,7 +117,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("SDK codegen bug: double path parameters serialized incorrectly")
+    @Disabled("Codegen bug: URL path {lon}.{lat} is ambiguous - server can't parse double path params")
     @Tag("Point")
     public void test06_15_GetPoint() {
         DataClient dataClient = getDataClient();

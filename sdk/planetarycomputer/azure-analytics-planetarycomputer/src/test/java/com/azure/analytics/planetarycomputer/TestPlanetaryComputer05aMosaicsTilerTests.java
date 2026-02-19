@@ -40,7 +40,7 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
      * Java method: registerMosaicsSearch(filter, filterLanguage, sortBy)
      */
     @Test
-    @Disabled("Missing session recording - needs to be recorded")
+    @Disabled("Recording has 400 error - filter Map serialized as string instead of JSON object")
     @Tag("RegisterSearch")
     public void test05_01_RegisterMosaicsSearch() {
         // Arrange

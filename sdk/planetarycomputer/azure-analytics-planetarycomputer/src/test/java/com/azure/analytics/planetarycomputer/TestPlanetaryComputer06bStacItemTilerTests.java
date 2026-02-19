@@ -4,6 +4,7 @@
 package com.azure.analytics.planetarycomputer;
 
 import com.azure.analytics.planetarycomputer.models.*;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -56,7 +57,6 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("SDK codegen bug: getWmtsCapabilities returns byte[] but SDK tries to parse XML as JSON")
     @Tag("WMTS")
     public void test06_08_GetWmtsCapabilities() {
         DataClient dataClient = getDataClient();
@@ -66,13 +66,18 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
         System.out.println("Input - collection_id: " + collectionId);
         System.out.println("Input - item_id: " + itemId);
 
-        // Recording doesn't have expression parameter
-        GetWmtsCapabilitiesOptions options = new GetWmtsCapabilitiesOptions().setTileFormat(TilerImageFormat.PNG)
-            .setTileScale(1)
-            .setMinZoom(7)
-            .setMaxZoom(14)
-            .setAssets(Arrays.asList("image"));
-        byte[] xmlBytes = dataClient.getWmtsCapabilities(collectionId, itemId, "WebMercatorQuad", options);
+        // Use WithResponse API to bypass the codegen bug where toObject(byte[].class)
+        // tries JSON deserialization on XML content. Build query params manually.
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        requestOptions.addQueryParam("tile_format", "png", false);
+        requestOptions.addQueryParam("tile_scale", "1", false);
+        requestOptions.addQueryParam("minzoom", "7", false);
+        requestOptions.addQueryParam("maxzoom", "14", false);
+        byte[] xmlBytes
+            = dataClient.getWmtsCapabilitiesWithResponse(collectionId, itemId, "WebMercatorQuad", requestOptions)
+                .getValue()
+                .toBytes();
 
         String xmlString = new String(xmlBytes, StandardCharsets.UTF_8);
 
@@ -111,7 +116,7 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("Recording has body mismatch - needs to be re-recorded")
+    @Disabled("No session recording exists - needs to be recorded in RECORD mode")
     @Tag("Crop")
     public void test06_10_CropGeoJson() {
         DataClient dataClient = getDataClient();
