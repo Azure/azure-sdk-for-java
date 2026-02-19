@@ -60,9 +60,22 @@ Merging Pull Requests (for project contributors with write access)
 
 This repository uses an internal Azure Artifacts feed to resolve dependencies. To authenticate with the feed, you need to set up the Maven credential provider.
 
-Setting up the credential provider involves these main steps:
-1. Bootstrap the Maven Credential Provider
-2. Add the Maven extension to your project
+To set up the credential provider:
+1. Bootstrap the Maven Credential Provider. Run the following command from a folder **outside** the `azure-sdk-for-java` repository:
+   ```bash
+   mvn dependency:get "-Dartifact=com.microsoft.azure:artifacts-maven-credprovider:3.1" "-DremoteRepositories=central::::https://pkgs.dev.azure.com/artifacts-public/PublicTools/_packaging/AzureArtifacts/maven/v1"
+   ```
+2. Add the Maven extension to `.mvn/extensions.xml` at the repository root:
+   ```xml
+   <extensions xmlns="http://maven.apache.org/EXTENSIONS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/EXTENSIONS/1.1.0 https://maven.apache.org/xsd/core-extensions-1.0.0.xsd">
+     <extension>
+       <groupId>com.microsoft.azure</groupId>
+       <artifactId>artifacts-maven-credprovider</artifactId>
+       <version>3.1</version>
+     </extension>
+   </extensions>
+   ```
 
 For detailed instructions, refer to the [Maven Credential Provider documentation](https://eng.ms/docs/coreai/devdiv/one-engineering-system-1es/1es-docs/azure-artifacts/maven-credprovider).
 
