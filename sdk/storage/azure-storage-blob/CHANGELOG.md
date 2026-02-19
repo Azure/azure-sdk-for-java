@@ -1,6 +1,6 @@
 # Release History
 
-## 12.34.0-beta.1 (2026-02-18)
+## 12.34.0-beta.1 (2026-02-19)
 
 ### Features Added
 - Added support for specifying a source customer-provided encryption key when using `AppendBlobClient.appendBlockFromUrl()`,
