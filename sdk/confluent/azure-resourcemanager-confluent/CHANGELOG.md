@@ -1,14 +1,409 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2026-02-19)
 
-### Features Added
+- Azure Resource Manager Confluent client library for Java. This package contains Microsoft Azure SDK for Confluent Management SDK.  Package api-version 2024-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OperationListResult` was removed
 
-### Other Changes
+#### `models.OrganizationResourceListResult` was removed
+
+#### `models.ListSchemaRegistryClustersResponse` was removed
+
+#### `models.GetEnvironmentsResponse` was removed
+
+#### `models.ConfluentAgreementResourceListResponse` was removed
+
+#### `models.ListClustersSuccessResponse` was removed
+
+#### `models.SCMetadataEntity` was modified
+
+* `validate()` was removed
+
+#### `models.ApiKeyResourceEntity` was modified
+
+* `ApiKeyResourceEntity()` was changed to private access
+* `validate()` was removed
+* `withEnvironment(java.lang.String)` was removed
+* `withKind(java.lang.String)` was removed
+* `withResourceName(java.lang.String)` was removed
+* `withRelated(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.UserRecord` was modified
+
+* `UserRecord()` was changed to private access
+* `withFullName(java.lang.String)` was removed
+* `withAuthType(java.lang.String)` was removed
+* `withEmail(java.lang.String)` was removed
+* `withMetadata(models.MetadataEntity)` was removed
+* `withId(java.lang.String)` was removed
+* `validate()` was removed
+* `withKind(java.lang.String)` was removed
+
+#### `models.ClusterByokEntity` was modified
+
+* `ClusterByokEntity()` was changed to private access
+* `withResourceName(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withRelated(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.OrganizationResourceUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+
+#### `models.SchemaRegistryClusterSpecEntity` was modified
+
+* `SchemaRegistryClusterSpecEntity()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withHttpEndpoint(java.lang.String)` was removed
+* `withEnvironment(models.SchemaRegistryClusterEnvironmentRegionEntity)` was removed
+* `withPackageProperty(java.lang.String)` was removed
+* `withRegion(models.SchemaRegistryClusterEnvironmentRegionEntity)` was removed
+* `validate()` was removed
+* `withCloud(java.lang.String)` was removed
+
+#### `models.ClusterStatusEntity` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterEnvironmentEntity` was modified
+
+* `ClusterEnvironmentEntity()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `withRelated(java.lang.String)` was removed
+* `withEnvironment(java.lang.String)` was removed
+* `withResourceName(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ServiceAccountRecord` was modified
+
+* `ServiceAccountRecord()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withKind(java.lang.String)` was removed
+* `validate()` was removed
+* `withId(java.lang.String)` was removed
+* `withMetadata(models.MetadataEntity)` was removed
+
+#### `models.CreateApiKeyModel` was modified
+
+* `validate()` was removed
+
+#### `models.SCClusterSpecEntity` was modified
+
+* `validate()` was removed
+
+#### `models.LinkOrganization` was modified
+
+* `validate()` was removed
+
+#### `models.SchemaRegistryClusterStatusEntity` was modified
+
+* `SchemaRegistryClusterStatusEntity()` was changed to private access
+* `validate()` was removed
+* `withPhase(java.lang.String)` was removed
+
+#### `models.SCClusterByokEntity` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterRecord` was modified
+
+* `ClusterRecord()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `withSpec(models.ClusterSpecEntity)` was removed
+* `withMetadata(models.MetadataEntity)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `validate()` was removed
+* `withStatus(models.ClusterStatusEntity)` was removed
+* `withKind(java.lang.String)` was removed
+
+#### `models.ClusterSpecEntity` was modified
+
+* `ClusterSpecEntity()` was changed to private access
+* `withNetwork(models.ClusterNetworkEntity)` was removed
+* `withConfig(models.ClusterConfigEntity)` was removed
+* `withKafkaBootstrapEndpoint(java.lang.String)` was removed
+* `withHttpEndpoint(java.lang.String)` was removed
+* `withAvailability(java.lang.String)` was removed
+* `withEnvironment(models.ClusterEnvironmentEntity)` was removed
+* `withRegion(java.lang.String)` was removed
+* `validate()` was removed
+* `withZone(java.lang.String)` was removed
+* `withApiEndpoint(java.lang.String)` was removed
+* `withByok(models.ClusterByokEntity)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withCloud(java.lang.String)` was removed
+
+#### `models.UserDetail` was modified
+
+* `validate()` was removed
+
+#### `models.AccessCreateRoleBindingRequestModel` was modified
+
+* `validate()` was removed
+
+#### `models.AccessInviteUserAccountModel` was modified
+
+* `validate()` was removed
+
+#### `models.ApiKeySpecEntity` was modified
+
+* `ApiKeySpecEntity()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withOwner(models.ApiKeyOwnerEntity)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+* `withSecret(java.lang.String)` was removed
+* `withResource(models.ApiKeyResourceEntity)` was removed
+
+#### `models.RoleBindingRecord` was modified
+
+* `RoleBindingRecord()` was removed
+* `withKind(java.lang.String)` was removed
+* `withPrincipal(java.lang.String)` was removed
+* `withRoleName(java.lang.String)` was removed
+* `withCrnPattern(java.lang.String)` was removed
+* `fromJson(com.azure.json.JsonReader)` was removed
+* `java.lang.String roleName()` -> `java.lang.String roleName()`
+* `java.lang.String crnPattern()` -> `java.lang.String crnPattern()`
+* `java.lang.String id()` -> `java.lang.String id()`
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `withId(java.lang.String)` was removed
+* `validate()` was removed
+* `withMetadata(models.MetadataEntity)` was removed
+* `java.lang.String kind()` -> `java.lang.String kind()`
+* `java.lang.String principal()` -> `java.lang.String principal()`
+* `models.MetadataEntity metadata()` -> `models.MetadataEntity metadata()`
+
+#### `models.OfferDetail` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterConfigEntity` was modified
+
+* `validate()` was removed
+
+#### `models.EnvironmentRecord` was modified
+
+* `EnvironmentRecord()` was changed to private access
+* `withMetadata(models.MetadataEntity)` was removed
+* `withKind(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.RegionRecord` was modified
+
+* `RegionRecord()` was changed to private access
+* `validate()` was removed
+* `withSpec(models.RegionSpecEntity)` was removed
+* `withMetadata(models.SCMetadataEntity)` was removed
+* `withId(java.lang.String)` was removed
+* `withKind(java.lang.String)` was removed
+
+#### `models.RegionSpecEntity` was modified
+
+* `RegionSpecEntity()` was changed to private access
+* `withCloud(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withPackages(java.util.List)` was removed
+* `validate()` was removed
+* `withRegionName(java.lang.String)` was removed
+
+#### `models.ListAccessRequestModel` was modified
+
+* `validate()` was removed
+
+#### `models.SCClusterNetworkEnvironmentEntity` was modified
+
+* `validate()` was removed
+
+#### `models.ConfluentListMetadata` was modified
+
+* `ConfluentListMetadata()` was changed to private access
+* `validate()` was removed
+* `withPrev(java.lang.String)` was removed
+* `withLast(java.lang.String)` was removed
+* `withFirst(java.lang.String)` was removed
+* `withNext(java.lang.String)` was removed
+* `withTotalSize(java.lang.Integer)` was removed
+
+#### `models.MetadataEntity` was modified
+
+* `MetadataEntity()` was changed to private access
+* `withCreatedAt(java.lang.String)` was removed
+* `withDeletedAt(java.lang.String)` was removed
+* `validate()` was removed
+* `withUpdatedAt(java.lang.String)` was removed
+* `withResourceName(java.lang.String)` was removed
+* `withSelf(java.lang.String)` was removed
+
+#### `models.AccessInvitedUserDetails` was modified
+
+* `validate()` was removed
+
+#### `models.ApiKeyOwnerEntity` was modified
+
+* `ApiKeyOwnerEntity()` was changed to private access
+* `withResourceName(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `validate()` was removed
+* `withKind(java.lang.String)` was removed
+* `withRelated(java.lang.String)` was removed
+
+#### `models.ClusterNetworkEntity` was modified
+
+* `ClusterNetworkEntity()` was changed to private access
+* `withEnvironment(java.lang.String)` was removed
+* `validate()` was removed
+* `withResourceName(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withRelated(java.lang.String)` was removed
+
+#### `models.SchemaRegistryClusterEnvironmentRegionEntity` was modified
+
+* `SchemaRegistryClusterEnvironmentRegionEntity()` was changed to private access
+* `withRelated(java.lang.String)` was removed
+* `validate()` was removed
+* `withId(java.lang.String)` was removed
+* `withResourceName(java.lang.String)` was removed
+
+### Features Added
+
+* `models.ConnectorStatus` was added
+
+* `models.DataFormatType` was added
+
+* `models.Clusters` was added
+
+* `models.ConnectorResource` was added
+
+* `models.KafkaAzureBlobStorageSourceConnectorInfo` was added
+
+* `models.TopicMetadataEntity` was added
+
+* `models.ConnectorServiceTypeInfoBase` was added
+
+* `models.PartnerConnectorType` was added
+
+* `models.Topics` was added
+
+* `models.SCEnvironmentRecord$DefinitionStages` was added
+
+* `models.SCEnvironmentRecord$UpdateStages` was added
+
+* `models.TopicRecord$DefinitionStages` was added
+
+* `models.ConnectorServiceType` was added
+
+* `models.ConnectorResource$Update` was added
+
+* `models.KafkaAzureSynapseAnalyticsSinkConnectorInfo` was added
+
+* `models.StreamGovernanceConfig` was added
+
+* `models.SCClusterRecord$DefinitionStages` was added
+
+* `models.AuthType` was added
+
+* `models.AzureSynapseAnalyticsSinkConnectorServiceInfo` was added
+
+* `models.AzureCosmosDBSourceConnectorServiceInfo` was added
+
+* `models.ConnectorResource$DefinitionStages` was added
+
+* `models.Connectors` was added
+
+* `models.Package` was added
+
+* `models.SCEnvironmentRecord$Update` was added
+
+* `models.SCClusterRecord$UpdateStages` was added
+
+* `models.KafkaAzureCosmosDBSinkConnectorInfo` was added
+
+* `models.TopicsInputConfig` was added
+
+* `models.PartnerInfoBase` was added
+
+* `models.AzureBlobStorageSourceConnectorServiceInfo` was added
+
+* `models.TopicsRelatedLink` was added
+
+* `models.KafkaAzureCosmosDBSourceConnectorInfo` was added
+
+* `models.SCEnvironmentRecord$Definition` was added
+
+* `models.TopicRecord` was added
+
+* `models.TopicRecord$Definition` was added
+
+* `models.ConnectorResource$Definition` was added
+
+* `models.ConnectorInfoBase` was added
+
+* `models.ConnectorResource$UpdateStages` was added
+
+* `models.AzureBlobStorageSinkConnectorServiceInfo` was added
+
+* `models.ConnectorType` was added
+
+* `models.SCClusterRecord$Update` was added
+
+* `models.KafkaAzureBlobStorageSinkConnectorInfo` was added
+
+* `models.AzureCosmosDBSinkConnectorServiceInfo` was added
+
+* `models.Environments` was added
+
+* `models.ConnectorClass` was added
+
+* `models.SCClusterRecord$Definition` was added
+
+#### `models.SCEnvironmentRecord` was modified
+
+* `streamGovernanceConfig()` was added
+* `resourceGroupName()` was added
+* `systemData()` was added
+* `type()` was added
+* `update()` was added
+
+#### `models.SCClusterSpecEntity` was modified
+
+* `withPackageProperty(models.Package)` was added
+* `packageProperty()` was added
+
+#### `ConfluentManager` was modified
+
+* `connectors()` was added
+* `environments()` was added
+* `clusters()` was added
+* `topics()` was added
+
+#### `models.RoleBindingRecord` was modified
+
+* `innerModel()` was added
+
+#### `models.SCClusterRecord` was modified
+
+* `type()` was added
+* `systemData()` was added
+* `resourceGroupName()` was added
+* `update()` was added
 
 ## 1.2.0 (2024-12-19)
 

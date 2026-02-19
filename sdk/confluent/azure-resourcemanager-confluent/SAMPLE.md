@@ -14,6 +14,23 @@
 - [ListServiceAccounts](#access_listserviceaccounts)
 - [ListUsers](#access_listusers)
 
+## Cluster
+
+- [CreateOrUpdate](#cluster_createorupdate)
+- [Delete](#cluster_delete)
+
+## Connector
+
+- [CreateOrUpdate](#connector_createorupdate)
+- [Delete](#connector_delete)
+- [Get](#connector_get)
+- [List](#connector_list)
+
+## Environment
+
+- [CreateOrUpdate](#environment_createorupdate)
+- [Delete](#environment_delete)
+
 ## MarketplaceAgreements
 
 - [Create](#marketplaceagreements_create)
@@ -42,6 +59,13 @@
 
 - [List](#organizationoperations_list)
 
+## Topics
+
+- [Create](#topics_create)
+- [Delete](#topics_delete)
+- [Get](#topics_get)
+- [List](#topics_list)
+
 ## Validations
 
 - [ValidateOrganization](#validations_validateorganization)
@@ -56,9 +80,7 @@ import com.azure.resourcemanager.confluent.models.AccessCreateRoleBindingRequest
  */
 public final class AccessCreateRoleBindingSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Access_CreateRoleBinding.
-     * json
+     * x-ms-original-file: 2024-07-01/Access_CreateRoleBinding.json
      */
     /**
      * Sample code: Access_CreateRoleBinding.
@@ -85,9 +107,7 @@ public final class AccessCreateRoleBindingSamples {
  */
 public final class AccessDeleteRoleBindingSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Access_DeleteRoleBinding.
-     * json
+     * x-ms-original-file: 2024-07-01/Access_DeleteRoleBinding.json
      */
     /**
      * Sample code: Access_DeleteRoleBinding.
@@ -113,8 +133,7 @@ import com.azure.resourcemanager.confluent.models.AccessInvitedUserDetails;
  */
 public final class AccessInviteUserSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Access_InviteUser.json
+     * x-ms-original-file: 2024-07-01/Access_InviteUser.json
      */
     /**
      * Sample code: Access_InviteUser.
@@ -144,8 +163,7 @@ import java.util.Map;
  */
 public final class AccessListClustersSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Access_ClusterList.json
+     * x-ms-original-file: 2024-07-01/Access_ClusterList.json
      */
     /**
      * Sample code: Access_ClusterList.
@@ -185,9 +203,7 @@ import java.util.Map;
  */
 public final class AccessListEnvironmentsSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Access_EnvironmentList.
-     * json
+     * x-ms-original-file: 2024-07-01/Access_EnvironmentList.json
      */
     /**
      * Sample code: Access_EnvironmentList.
@@ -227,9 +243,7 @@ import java.util.Map;
  */
 public final class AccessListInvitationsSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Access_InvitationsList.
-     * json
+     * x-ms-original-file: 2024-07-01/Access_InvitationsList.json
      */
     /**
      * Sample code: Access_InvitationsList.
@@ -270,8 +284,7 @@ import java.util.Map;
  */
 public final class AccessListRoleBindingNameListSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Access_RoleBindingNameList.json
+     * x-ms-original-file: 2024-07-01/Access_RoleBindingNameList.json
      */
     /**
      * Sample code: Access_RoleBindingNameList.
@@ -313,9 +326,7 @@ import java.util.Map;
  */
 public final class AccessListRoleBindingsSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Access_RoleBindingList.
-     * json
+     * x-ms-original-file: 2024-07-01/Access_RoleBindingList.json
      */
     /**
      * Sample code: Access_RoleBindingList.
@@ -355,8 +366,7 @@ import java.util.Map;
  */
 public final class AccessListServiceAccountsSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Access_ServiceAccountsList.json
+     * x-ms-original-file: 2024-07-01/Access_ServiceAccountsList.json
      */
     /**
      * Sample code: Access_ServiceAccountsList.
@@ -396,8 +406,7 @@ import java.util.Map;
  */
 public final class AccessListUsersSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Access_UsersList.json
+     * x-ms-original-file: 2024-07-01/Access_UsersList.json
      */
     /**
      * Sample code: Access_UsersList.
@@ -424,6 +433,228 @@ public final class AccessListUsersSamples {
 }
 ```
 
+### Cluster_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.confluent.models.Package;
+import com.azure.resourcemanager.confluent.models.SCClusterNetworkEnvironmentEntity;
+import com.azure.resourcemanager.confluent.models.SCClusterSpecEntity;
+
+/**
+ * Samples for Cluster CreateOrUpdate.
+ */
+public final class ClusterCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-07-01/Cluster_Create.json
+     */
+    /**
+     * Sample code: Cluster_CreateOrUpdate.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void clusterCreateOrUpdate(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.clusters()
+            .define("cluster-1")
+            .withExistingEnvironment("myResourceGroup", "myOrganization", "env-1")
+            .withSpec(new SCClusterSpecEntity().withPackageProperty(Package.ESSENTIALS)
+                .withRegion("us-east4")
+                .withEnvironment(new SCClusterNetworkEnvironmentEntity().withId("env-1")))
+            .create();
+    }
+}
+```
+
+### Cluster_Delete
+
+```java
+/**
+ * Samples for Cluster Delete.
+ */
+public final class ClusterDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-07-01/Cluster_Delete.json
+     */
+    /**
+     * Sample code: Cluster_Delete.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void clusterDelete(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.clusters()
+            .delete("myResourceGroup", "myOrganization", "env-12132", "dlz-f3a90de", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Connector_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.confluent.models.AuthType;
+import com.azure.resourcemanager.confluent.models.AzureBlobStorageSinkConnectorServiceInfo;
+import com.azure.resourcemanager.confluent.models.ConnectorClass;
+import com.azure.resourcemanager.confluent.models.ConnectorInfoBase;
+import com.azure.resourcemanager.confluent.models.ConnectorType;
+import com.azure.resourcemanager.confluent.models.DataFormatType;
+import com.azure.resourcemanager.confluent.models.KafkaAzureBlobStorageSinkConnectorInfo;
+import java.util.Arrays;
+
+/**
+ * Samples for Connector CreateOrUpdate.
+ */
+public final class ConnectorCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-07-01/Organization_CreateConnectorByName.json
+     */
+    /**
+     * Sample code: Connector_CreateOrUpdate.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void connectorCreateOrUpdate(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.connectors()
+            .define("connector-1")
+            .withExistingCluster("myResourceGroup", "myOrganization", "env-12132", "dlz-f3a90de")
+            .withConnectorBasicInfo(new ConnectorInfoBase().withConnectorType(ConnectorType.SINK)
+                .withConnectorClass(ConnectorClass.fromString("AZUREBLOBSTORAGESINK"))
+                .withConnectorName("connector-1"))
+            .withConnectorServiceTypeInfo(
+                new AzureBlobStorageSinkConnectorServiceInfo().withStorageAccountName("stcfaccount-1")
+                    .withStorageAccountKey("fakeTokenPlaceholder")
+                    .withStorageContainerName("continer-1"))
+            .withPartnerConnectorInfo(new KafkaAzureBlobStorageSinkConnectorInfo().withAuthType(AuthType.KAFKA_API_KEY)
+                .withInputFormat(DataFormatType.JSON)
+                .withOutputFormat(DataFormatType.JSON)
+                .withApiKey("fakeTokenPlaceholder")
+                .withApiSecret("fakeTokenPlaceholder")
+                .withTopics(Arrays.asList("topic-1"))
+                .withTopicsDir("topicsDir")
+                .withFlushSize("1000")
+                .withMaxTasks("2")
+                .withTimeInterval("DAILY"))
+            .create();
+    }
+}
+```
+
+### Connector_Delete
+
+```java
+/**
+ * Samples for Connector Delete.
+ */
+public final class ConnectorDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-07-01/Organization_DeleteConnectorByName.json
+     */
+    /**
+     * Sample code: Connector_Delete.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void connectorDelete(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.connectors()
+            .delete("myResourceGroup", "myOrganization", "env-12132", "dlz-f3a90de", "connector-1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Connector_Get
+
+```java
+/**
+ * Samples for Connector Get.
+ */
+public final class ConnectorGetSamples {
+    /*
+     * x-ms-original-file: 2024-07-01/Organization_GetConnectorByName.json
+     */
+    /**
+     * Sample code: Connector_Get.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void connectorGet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.connectors()
+            .getWithResponse("myResourceGroup", "myOrganization", "env-12132", "dlz-f3a90de", "connector-1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Connector_List
+
+```java
+/**
+ * Samples for Connector List.
+ */
+public final class ConnectorListSamples {
+    /*
+     * x-ms-original-file: 2024-07-01/Organization_ConnectorList.json
+     */
+    /**
+     * Sample code: Connector_List.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void connectorList(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.connectors()
+            .list("myResourceGroup", "myOrganization", "env-12132", "cluster-1", 10, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Environment_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.confluent.models.Package;
+import com.azure.resourcemanager.confluent.models.StreamGovernanceConfig;
+
+/**
+ * Samples for Environment CreateOrUpdate.
+ */
+public final class EnvironmentCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-07-01/Environment_Create.json
+     */
+    /**
+     * Sample code: Environment_CreateOrUpdate.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void environmentCreateOrUpdate(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.environments()
+            .define("env-1")
+            .withExistingOrganization("myResourceGroup", "myOrganization")
+            .withStreamGovernanceConfig(new StreamGovernanceConfig().withPackageProperty(Package.ESSENTIALS))
+            .create();
+    }
+}
+```
+
+### Environment_Delete
+
+```java
+/**
+ * Samples for Environment Delete.
+ */
+public final class EnvironmentDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-07-01/Environment_Delete.json
+     */
+    /**
+     * Sample code: Environment_Delete.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void environmentDelete(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.environments()
+            .delete("myResourceGroup", "myOrganization", "env-12132", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### MarketplaceAgreements_Create
 
 ```java
@@ -433,8 +664,7 @@ public final class AccessListUsersSamples {
  */
 public final class MarketplaceAgreementsCreateSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * MarketplaceAgreements_Create.json
+     * x-ms-original-file: 2024-07-01/MarketplaceAgreements_Create.json
      */
     /**
      * Sample code: MarketplaceAgreements_Create.
@@ -455,8 +685,7 @@ public final class MarketplaceAgreementsCreateSamples {
  */
 public final class MarketplaceAgreementsListSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * MarketplaceAgreements_List.json
+     * x-ms-original-file: 2024-07-01/MarketplaceAgreements_List.json
      */
     /**
      * Sample code: MarketplaceAgreements_List.
@@ -484,8 +713,7 @@ import java.util.Map;
  */
 public final class OrganizationCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Create.json
+     * x-ms-original-file: 2024-07-01/Organization_Create.json
      */
     /**
      * Sample code: Organization_Create.
@@ -538,15 +766,14 @@ import com.azure.resourcemanager.confluent.models.CreateApiKeyModel;
  */
 public final class OrganizationCreateApiKeySamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Organization_CreateClusterAPIKey.json
+     * x-ms-original-file: 2024-07-01/Organization_CreateClusterAPIKey.json
      */
     /**
-     * Sample code: Organization_CreateAPIKey.
+     * Sample code: Organization_CreateClusterAPIKey.
      * 
      * @param manager Entry point to ConfluentManager.
      */
-    public static void organizationCreateAPIKey(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+    public static void organizationCreateClusterAPIKey(com.azure.resourcemanager.confluent.ConfluentManager manager) {
         manager.organizations()
             .createApiKeyWithResponse("myResourceGroup", "myOrganization", "env-12132", "clusterId-123",
                 new CreateApiKeyModel().withName("CI kafka access key")
@@ -564,8 +791,7 @@ public final class OrganizationCreateApiKeySamples {
  */
 public final class OrganizationDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Delete.json
+     * x-ms-original-file: 2024-07-01/Organization_Delete.json
      */
     /**
      * Sample code: Confluent_Delete.
@@ -586,8 +812,7 @@ public final class OrganizationDeleteSamples {
  */
 public final class OrganizationDeleteClusterApiKeySamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Organization_DeleteClusterAPIKey.json
+     * x-ms-original-file: 2024-07-01/Organization_DeleteClusterAPIKey.json
      */
     /**
      * Sample code: Organization_DeleteClusterAPIKey.
@@ -610,8 +835,7 @@ public final class OrganizationDeleteClusterApiKeySamples {
  */
 public final class OrganizationGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Get.json
+     * x-ms-original-file: 2024-07-01/Organization_Get.json
      */
     /**
      * Sample code: Organization_Get.
@@ -633,8 +857,7 @@ public final class OrganizationGetByResourceGroupSamples {
  */
 public final class OrganizationGetClusterApiKeySamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Organization_GetClusterAPIKey.json
+     * x-ms-original-file: 2024-07-01/Organization_GetClusterAPIKey.json
      */
     /**
      * Sample code: Organization_GetClusterAPIKey.
@@ -657,8 +880,7 @@ public final class OrganizationGetClusterApiKeySamples {
  */
 public final class OrganizationGetClusterByIdSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Organization_GetClusterById.json
+     * x-ms-original-file: 2024-07-01/Organization_GetClusterById.json
      */
     /**
      * Sample code: Organization_GetClusterById.
@@ -667,7 +889,7 @@ public final class OrganizationGetClusterByIdSamples {
      */
     public static void organizationGetClusterById(com.azure.resourcemanager.confluent.ConfluentManager manager) {
         manager.organizations()
-            .getClusterByIdWithResponse("myResourceGroup", "myOrganization", "env-12132", "dlz-f3a90de",
+            .getClusterByIdWithResponse("myResourceGroup", "myOrganization", "env-12132", "ProdKafkaCluster",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -681,8 +903,7 @@ public final class OrganizationGetClusterByIdSamples {
  */
 public final class OrganizationGetEnvironmentByIdSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Organization_GetEnvironmentById.json
+     * x-ms-original-file: 2024-07-01/Organization_GetEnvironmentById.json
      */
     /**
      * Sample code: Organization_GetEnvironmentById.
@@ -691,7 +912,7 @@ public final class OrganizationGetEnvironmentByIdSamples {
      */
     public static void organizationGetEnvironmentById(com.azure.resourcemanager.confluent.ConfluentManager manager) {
         manager.organizations()
-            .getEnvironmentByIdWithResponse("myResourceGroup", "myOrganization", "dlz-f3a90de",
+            .getEnvironmentByIdWithResponse("myResourceGroup", "myOrganization", "prod-finance01",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -705,8 +926,7 @@ public final class OrganizationGetEnvironmentByIdSamples {
  */
 public final class OrganizationGetSchemaRegistryClusterByIdSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Organization_GetSchemaRegistryClusterById.json
+     * x-ms-original-file: 2024-07-01/Organization_GetSchemaRegistryClusterById.json
      */
     /**
      * Sample code: Organization_GetSchemaRegistryClusterById.
@@ -730,8 +950,7 @@ public final class OrganizationGetSchemaRegistryClusterByIdSamples {
  */
 public final class OrganizationListSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Organization_ListBySubscription.json
+     * x-ms-original-file: 2024-07-01/Organization_ListBySubscription.json
      */
     /**
      * Sample code: Organization_ListBySubscription.
@@ -752,8 +971,7 @@ public final class OrganizationListSamples {
  */
 public final class OrganizationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Organization_ListByResourceGroup.json
+     * x-ms-original-file: 2024-07-01/Organization_ListByResourceGroup.json
      */
     /**
      * Sample code: Organization_ListByResourceGroup.
@@ -774,9 +992,7 @@ public final class OrganizationListByResourceGroupSamples {
  */
 public final class OrganizationListClustersSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_ClusterList.
-     * json
+     * x-ms-original-file: 2024-07-01/Organization_ClusterList.json
      */
     /**
      * Sample code: Organization_ListClusters.
@@ -798,8 +1014,7 @@ public final class OrganizationListClustersSamples {
  */
 public final class OrganizationListEnvironmentsSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Organization_EnvironmentList.json
+     * x-ms-original-file: 2024-07-01/Organization_EnvironmentList.json
      */
     /**
      * Sample code: Organization_ListEnvironments.
@@ -825,9 +1040,7 @@ import java.util.Map;
  */
 public final class OrganizationListRegionsSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_ListRegions.
-     * json
+     * x-ms-original-file: 2024-07-01/Organization_ListRegions.json
      */
     /**
      * Sample code: Organization_ListRegions.
@@ -864,8 +1077,7 @@ public final class OrganizationListRegionsSamples {
  */
 public final class OrganizationListSchemaRegistryClustersSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Organization_ListSchemaRegistryClusters.json
+     * x-ms-original-file: 2024-07-01/Organization_ListSchemaRegistryClusters.json
      */
     /**
      * Sample code: Organization_ListSchemaRegistryClusters.
@@ -893,8 +1105,7 @@ import java.util.Map;
  */
 public final class OrganizationUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Update.json
+     * x-ms-original-file: 2024-07-01/Organization_Update.json
      */
     /**
      * Sample code: Confluent_Update.
@@ -930,8 +1141,7 @@ public final class OrganizationUpdateSamples {
  */
 public final class OrganizationOperationsListSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * OrganizationOperations_List.json
+     * x-ms-original-file: 2024-07-01/OrganizationOperations_List.json
      */
     /**
      * Sample code: OrganizationOperations_List.
@@ -940,6 +1150,106 @@ public final class OrganizationOperationsListSamples {
      */
     public static void organizationOperationsList(com.azure.resourcemanager.confluent.ConfluentManager manager) {
         manager.organizationOperations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Topics_Create
+
+```java
+import com.azure.resourcemanager.confluent.models.TopicsInputConfig;
+import java.util.Arrays;
+
+/**
+ * Samples for Topics Create.
+ */
+public final class TopicsCreateSamples {
+    /*
+     * x-ms-original-file: 2024-07-01/Topics_Create.json
+     */
+    /**
+     * Sample code: Topics_Create.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void topicsCreate(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.topics()
+            .define("topic-1")
+            .withExistingCluster("myResourceGroup", "myOrganization", "env-12132", "dlz-f3a90de")
+            .withInputConfigs(Arrays.asList(new TopicsInputConfig().withName("cleanup.policy").withValue("compact"),
+                new TopicsInputConfig().withName("retention.ms").withValue("86400000")))
+            .withPartitionsCount("1")
+            .withReplicationFactor("3")
+            .create();
+    }
+}
+```
+
+### Topics_Delete
+
+```java
+/**
+ * Samples for Topics Delete.
+ */
+public final class TopicsDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-07-01/Topics_Delete.json
+     */
+    /**
+     * Sample code: Topics_Delete.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void topicsDelete(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.topics()
+            .delete("myResourceGroup", "myOrganization", "env-12132", "dlz-f3a90de", "topic-1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Topics_Get
+
+```java
+/**
+ * Samples for Topics Get.
+ */
+public final class TopicsGetSamples {
+    /*
+     * x-ms-original-file: 2024-07-01/Topics_Get.json
+     */
+    /**
+     * Sample code: Topics_Get.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void topicsGet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.topics()
+            .getWithResponse("myResourceGroup", "myOrganization", "env-12132", "dlz-f3a90de", "topic-1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Topics_List
+
+```java
+/**
+ * Samples for Topics List.
+ */
+public final class TopicsListSamples {
+    /*
+     * x-ms-original-file: 2024-07-01/Organization_TopicList.json
+     */
+    /**
+     * Sample code: Organization_ListTopics.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void organizationListTopics(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.topics()
+            .list("myResourceGroup", "myOrganization", "env-12132", "cluster-1", 10, null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -959,8 +1269,7 @@ import java.util.Map;
  */
 public final class ValidationsValidateOrganizationSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Validations_ValidateOrganizations.json
+     * x-ms-original-file: 2024-07-01/Validations_ValidateOrganizations.json
      */
     /**
      * Sample code: Validations_ValidateOrganizations.
@@ -1016,8 +1325,7 @@ import java.util.Map;
  */
 public final class ValidationsValidateOrganizationV2Samples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
-     * Validations_ValidateOrganizationsV2.json
+     * x-ms-original-file: 2024-07-01/Validations_ValidateOrganizationsV2.json
      */
     /**
      * Sample code: Validations_ValidateOrganizations.
