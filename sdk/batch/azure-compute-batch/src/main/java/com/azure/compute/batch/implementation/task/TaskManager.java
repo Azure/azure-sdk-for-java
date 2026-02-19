@@ -228,33 +228,56 @@ public class TaskManager {
                             Thread.currentThread().interrupt();
                             throw logger.logExceptionAsError(new RuntimeException(e));
                         }
-                    } else {
-                        // No active threads: nothing to wait for.
-                        // Loop will exit if the queue is empty, or retry starting threads otherwise.
-                        continue;
-                    }
 
-                    // If no capacity for new workers or no tasks remain, clean up any finished threads
-                    List<Thread> finishedThreads = new ArrayList<>();
-                    for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
-                        if (entry.getKey().getState() == Thread.State.TERMINATED) {
-                            finishedThreads.add(entry.getKey());
-                            // If any exception is encountered, then stop immediately without waiting for
-                            // remaining active threads.
-                            innerException = entry.getValue().getException();
-                            if (innerException != null) {
-                                break;
+                        // Clean up any finished threads after waiting
+                        List<Thread> finishedThreads = new ArrayList<>();
+                        for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
+                            if (entry.getKey().getState() == Thread.State.TERMINATED) {
+                                finishedThreads.add(entry.getKey());
+                                // If any exception is encountered, then stop immediately without waiting for
+                                // remaining active threads.
+                                innerException = entry.getValue().getException();
+                                if (innerException != null) {
+                                    break;
+                                }
                             }
                         }
-                    }
 
-                    // Free the thread pool so we can start more threads to send the remaining add
-                    // tasks requests.
-                    threads.keySet().removeAll(finishedThreads);
+                        // Free the thread pool so we can start more threads to send the remaining add
+                        // tasks requests.
+                        threads.keySet().removeAll(finishedThreads);
 
-                    // Any errors happened, we stop.
-                    if (innerException != null || !failures.isEmpty()) {
-                        break;
+                        // Any errors happened, we stop.
+                        if (innerException != null || !failures.isEmpty()) {
+                            break;
+                        }
+                    } else {
+                        // No active threads: nothing to wait for.
+                        // Clean up any finished threads before continuing
+                        List<Thread> finishedThreads = new ArrayList<>();
+                        for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
+                            if (entry.getKey().getState() == Thread.State.TERMINATED) {
+                                finishedThreads.add(entry.getKey());
+                                // If any exception is encountered, then stop immediately without waiting for
+                                // remaining active threads.
+                                innerException = entry.getValue().getException();
+                                if (innerException != null) {
+                                    break;
+                                }
+                            }
+                        }
+
+                        // Free the thread pool so we can start more threads to send the remaining add
+                        // tasks requests.
+                        threads.keySet().removeAll(finishedThreads);
+
+                        // Any errors happened, we stop.
+                        if (innerException != null || !failures.isEmpty()) {
+                            break;
+                        }
+
+                        // Loop will exit if the queue is empty, or retry starting threads otherwise.
+                        continue;
                     }
 
                 }
