@@ -58,7 +58,51 @@ Merging Pull Requests (for project contributors with write access)
 
 ### Azure Artifacts Feed Setup
 
-This repository uses an internal Azure Artifacts feed to resolve dependencies. To authenticate with the feed, you need to set up the Maven credential provider.
+This repository uses an Azure Artifacts feed to resolve dependencies. The setup differs for external and internal contributors.
+
+#### External Contributors
+
+This repository routes all Maven dependencies through an Azure Artifacts feed, with Maven Central disabled. The feed serves cached packages anonymously, but requires authentication to fetch uncached packages from upstream sources.
+
+**If you encounter `401 Unauthorized` errors**, it means the dependency isn't cached in the feed yet. You have two options:
+
+1. **Submit your PR and let CI build it** - The CI system has authentication and can resolve all dependencies.
+
+2. **Override repository settings locally** - Add the following to your `~/.m2/settings.xml` file to re-enable Maven Central:
+   ```xml
+   <settings>
+     <profiles>
+       <profile>
+         <id>external-contributor</id>
+         <repositories>
+           <repository>
+             <id>central</id>
+             <url>https://repo.maven.apache.org/maven2</url>
+             <releases><enabled>true</enabled></releases>
+             <snapshots><enabled>false</enabled></snapshots>
+           </repository>
+         </repositories>
+         <pluginRepositories>
+           <pluginRepository>
+             <id>central</id>
+             <url>https://repo.maven.apache.org/maven2</url>
+             <releases><enabled>true</enabled></releases>
+             <snapshots><enabled>false</enabled></snapshots>
+           </pluginRepository>
+         </pluginRepositories>
+       </profile>
+     </profiles>
+     <activeProfiles>
+       <activeProfile>external-contributor</activeProfile>
+     </activeProfiles>
+   </settings>
+   ```
+
+> **Note:** Some unreleased dependencies may only be available in the Azure Artifacts feed. If you encounter missing dependencies with option 2, use option 1 instead.
+
+#### Internal Contributors (Microsoft Employees)
+
+Internal contributors should set up the Maven credential provider to authenticate with the Azure Artifacts feed.
 
 To set up the credential provider:
 1. Bootstrap the Maven Credential Provider. Run the following command from a folder **outside** the `azure-sdk-for-java` repository:
@@ -81,7 +125,7 @@ For detailed instructions, refer to the [Maven Credential Provider documentation
 
 > **Note:** For Maven Azure DevOps pipeline authentication, use the [MavenAuthenticate@0](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/maven-authenticate-v0) pipeline task.
 
-#### Troubleshooting 401 Unauthorized errors
+##### Troubleshooting 401 Unauthorized errors
 
 If you encounter a `401 Unauthorized` error when running Maven commands:
 
