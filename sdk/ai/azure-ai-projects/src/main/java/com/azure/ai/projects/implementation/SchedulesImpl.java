@@ -808,7 +808,7 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     scheduleId: String (Required)
      *     success: boolean (Required)
-     *     triggerTime: String (Optional)
+     *     triggerTime: OffsetDateTime (Optional)
      *     error: String (Optional)
      *     properties (Required): {
      *         String: String (Required)
@@ -845,7 +845,7 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     scheduleId: String (Required)
      *     success: boolean (Required)
-     *     triggerTime: String (Optional)
+     *     triggerTime: OffsetDateTime (Optional)
      *     error: String (Optional)
      *     properties (Required): {
      *         String: String (Required)
@@ -891,7 +891,7 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     scheduleId: String (Required)
      *     success: boolean (Required)
-     *     triggerTime: String (Optional)
+     *     triggerTime: OffsetDateTime (Optional)
      *     error: String (Optional)
      *     properties (Required): {
      *         String: String (Required)
@@ -939,7 +939,7 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     scheduleId: String (Required)
      *     success: boolean (Required)
-     *     triggerTime: String (Optional)
+     *     triggerTime: OffsetDateTime (Optional)
      *     error: String (Optional)
      *     properties (Required): {
      *         String: String (Required)
@@ -984,7 +984,7 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     scheduleId: String (Required)
      *     success: boolean (Required)
-     *     triggerTime: String (Optional)
+     *     triggerTime: OffsetDateTime (Optional)
      *     error: String (Optional)
      *     properties (Required): {
      *         String: String (Required)
@@ -1030,7 +1030,7 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     scheduleId: String (Required)
      *     success: boolean (Required)
-     *     triggerTime: String (Optional)
+     *     triggerTime: OffsetDateTime (Optional)
      *     error: String (Optional)
      *     properties (Required): {
      *         String: String (Required)
@@ -1173,7 +1173,7 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     scheduleId: String (Required)
      *     success: boolean (Required)
-     *     triggerTime: String (Optional)
+     *     triggerTime: OffsetDateTime (Optional)
      *     error: String (Optional)
      *     properties (Required): {
      *         String: String (Required)
@@ -1213,7 +1213,7 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     scheduleId: String (Required)
      *     success: boolean (Required)
-     *     triggerTime: String (Optional)
+     *     triggerTime: OffsetDateTime (Optional)
      *     error: String (Optional)
      *     properties (Required): {
      *         String: String (Required)

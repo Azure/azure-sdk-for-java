@@ -88,8 +88,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: String (Required)
-     *     modified_at: String (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -159,8 +159,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: String (Required)
-     *     modified_at: String (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -220,8 +220,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: String (Required)
-     *     modified_at: String (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -303,8 +303,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: String (Required)
-     *     modified_at: String (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -348,8 +348,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: String (Required)
-     *     modified_at: String (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -411,8 +411,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: String (Required)
-     *     modified_at: String (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -456,8 +456,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: String (Required)
-     *     modified_at: String (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)

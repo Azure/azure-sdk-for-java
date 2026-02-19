@@ -5,10 +5,13 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * One-time trigger.
@@ -26,7 +29,7 @@ public final class OneTimeTrigger extends Trigger {
      * Date and time for the one-time trigger in ISO 8601 format.
      */
     @Generated
-    private final String triggerAt;
+    private final OffsetDateTime triggerAt;
 
     /*
      * Time zone for the one-time trigger.
@@ -51,7 +54,7 @@ public final class OneTimeTrigger extends Trigger {
      * @return the triggerAt value.
      */
     @Generated
-    public String getTriggerAt() {
+    public OffsetDateTime getTriggerAt() {
         return this.triggerAt;
     }
 
@@ -84,7 +87,8 @@ public final class OneTimeTrigger extends Trigger {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("triggerAt", this.triggerAt);
+        jsonWriter.writeStringField("triggerAt",
+            this.triggerAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.triggerAt));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("timeZone", this.timeZone);
         return jsonWriter.writeEndObject();
@@ -102,14 +106,15 @@ public final class OneTimeTrigger extends Trigger {
     @Generated
     public static OneTimeTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String triggerAt = null;
+            OffsetDateTime triggerAt = null;
             TriggerType type = TriggerType.ONE_TIME;
             String timeZone = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("triggerAt".equals(fieldName)) {
-                    triggerAt = reader.getString();
+                    triggerAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("type".equals(fieldName)) {
                     type = TriggerType.fromString(reader.getString());
                 } else if ("timeZone".equals(fieldName)) {
@@ -131,7 +136,7 @@ public final class OneTimeTrigger extends Trigger {
      * @param triggerAt the triggerAt value to set.
      */
     @Generated
-    public OneTimeTrigger(String triggerAt) {
+    public OneTimeTrigger(OffsetDateTime triggerAt) {
         this.triggerAt = triggerAt;
     }
 }
