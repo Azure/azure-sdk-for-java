@@ -256,7 +256,14 @@ public class AsyncCache<TKey, TValue> {
             //    only affects cache staleness checks, not correctness.
             // 2. The serialization format remains unchanged (we still write the comparer for backward compatibility)
             // 3. Future format changes should increment the serialVersionUID to handle compatibility explicitly
-            Object unusedComparer = ois.readObject(); // Read and discard the serialized comparer to maintain format compatibility
+            try {
+                ois.readObject(); // Read and discard the serialized comparer to maintain format compatibility
+            } catch (InvalidClassException e) {
+                // The comparer's class may not be in SafeObjectInputStream's allowlist
+                // (e.g., SerializedLambda when a lambda comparer was serialized). Since we
+                // discard the comparer anyway and this is the last item in the stream, this is safe.
+                logger.debug("Skipped deserializing equality comparer: {}", e.getMessage());
+            }
             
             // Use the default equality comparer (same as AsyncCache constructor)
             @SuppressWarnings("unchecked")

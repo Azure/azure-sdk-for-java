@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.caches.SafeObjectInputStream;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -64,27 +65,24 @@ public class SerializableDocumentCollectionTests {
 
     @Test(groups = { "unit" })
     public void deserializeWithInvalidClassType_shouldFail() throws Exception {
-        // Create a malicious payload with a different class type instead of ObjectNode
+        // Serialize an unauthorized class (ArrayList) - this will trigger resolveClass()
+        // unlike String which uses a special TC_STRING type code and bypasses resolveClass()
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(baos);
-        
-        // Write a malicious object instead of ObjectNode
-        objectOutputStream.writeObject("MaliciousString");
+        objectOutputStream.writeObject(new ArrayList<>());
         objectOutputStream.flush();
         objectOutputStream.close();
 
-        // Attempt to deserialize - should fail with InvalidClassException
+        // Try to deserialize with SafeObjectInputStream that only allows SerializableDocumentCollection
         byte[] bytes = baos.toByteArray();
-        try {
-            ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-            ObjectInputStream ois = new ObjectInputStream(bais);
-            SerializableDocumentCollection deserializedDocumentCollection = (SerializableDocumentCollection) ois.readObject();
-            
-            // Should not reach here
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        try (SafeObjectInputStream sois = new SafeObjectInputStream(bais,
+                SerializableDocumentCollection.class.getName())) {
+            sois.readObject();
             org.testng.Assert.fail("Expected InvalidClassException to be thrown");
         } catch (java.io.InvalidClassException e) {
-            // Expected - the malicious class type was rejected
-            assertThat(e.getMessage()).contains("Expected ObjectNode");
+            // Expected - the unauthorized class type was rejected by SafeObjectInputStream
+            assertThat(e.getMessage()).contains("Unauthorized deserialization attempt");
         }
     }
 }
