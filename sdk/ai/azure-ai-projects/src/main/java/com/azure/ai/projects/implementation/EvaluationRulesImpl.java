@@ -203,7 +203,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -253,7 +253,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -357,7 +357,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -380,7 +380,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -434,7 +434,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -457,7 +457,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -497,7 +497,7 @@ public final class EvaluationRulesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluation", "humanEvaluationPreview".</td></tr>
+     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -521,7 +521,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -560,7 +560,7 @@ public final class EvaluationRulesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluation", "humanEvaluationPreview".</td></tr>
+     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -584,7 +584,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -621,7 +621,7 @@ public final class EvaluationRulesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluation", "humanEvaluationPreview".</td></tr>
+     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -645,7 +645,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -682,7 +682,7 @@ public final class EvaluationRulesImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluation", "humanEvaluationPreview".</td></tr>
+     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -706,7 +706,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -757,7 +757,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -812,7 +812,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation/humanEvaluationPreview) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)

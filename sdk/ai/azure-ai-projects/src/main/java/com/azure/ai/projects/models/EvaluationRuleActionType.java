@@ -19,12 +19,6 @@ public final class EvaluationRuleActionType extends ExpandableStringEnum<Evaluat
     public static final EvaluationRuleActionType CONTINUOUS_EVALUATION = fromString("continuousEvaluation");
 
     /**
-     * Human evaluation.
-     */
-    @Generated
-    public static final EvaluationRuleActionType HUMAN_EVALUATION = fromString("humanEvaluation");
-
-    /**
      * Creates a new instance of EvaluationRuleActionType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
