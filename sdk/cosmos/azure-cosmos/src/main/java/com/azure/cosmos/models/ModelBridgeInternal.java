@@ -5,7 +5,6 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
@@ -621,14 +620,6 @@ public final class ModelBridgeInternal {
 
         checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
         return requestOptions.isSplitHandlingDisabled();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosChangeFeedRequestOptions disableSplitHandling(
-        CosmosChangeFeedRequestOptions requestOptions) {
-
-        checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
-        return requestOptions.disableSplitHandling();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

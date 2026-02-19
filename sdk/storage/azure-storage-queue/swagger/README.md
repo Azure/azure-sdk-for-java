@@ -14,8 +14,8 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.52'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/main/specification/storage/data-plane/Microsoft.QueueStorage/stable/2026-02-06/queue.json
+use: '@autorest/java@4.1.62'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a30ef1ee2e9795f4d77e8c62fad52b33e60d4cb7/specification/storage/data-plane/Microsoft.QueueStorage/stable/2026-04-06/queue.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.queue
@@ -24,7 +24,7 @@ license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
 default-http-exception-type: com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal
 models-subpackage: implementation.models
-custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication,UserDelegationKey,KeyInfo
+custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication,UserDelegationKey
 custom-types-subpackage: models
 customization-class: src/main/java/QueueStorageCustomization.java
 use-input-stream-for-binary: true
@@ -149,6 +149,16 @@ directive:
   transform: >
     $.properties.SignedOid["x-ms-client-name"] = "signedObjectId";
     $.properties.SignedTid["x-ms-client-name"] = "signedTenantId";
+    $.properties.SignedDelegatedUserTid["x-ms-client-name"] = "signedDelegatedUserTenantId";
+```
+
+### Rename KeyInfo DelegatedUserTid
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.KeyInfo
+  transform: >
+    $.properties.DelegatedUserTid["x-ms-client-name"] = "delegatedUserTenantId";
 ```
 
 

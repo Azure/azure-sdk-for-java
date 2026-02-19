@@ -10,13 +10,13 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
+import com.azure.cosmos.kafka.connect.implementation.CosmosSDKThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.connect.data.Schema;
@@ -151,15 +151,18 @@ public class CosmosSourceTask extends SourceTask {
 
     private CosmosClientCacheItem getThroughputControlCosmosClientItem() {
         if (this.taskConfig.getThroughputControlConfig().isThroughputControlEnabled()
-            && this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
-            // throughput control is using a different database account config
-            return CosmosClientCache.getCosmosClient(
-                this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
-                this.taskConfig.getTaskId(),
-                this.taskConfig.getThroughputControlCosmosClientMetadataCachesSnapshot());
-        } else {
-            return this.cosmosClientItem;
+            && this.taskConfig.getThroughputControlConfig() instanceof CosmosSDKThroughputControlConfig) {
+            CosmosSDKThroughputControlConfig sdkConfig =
+                (CosmosSDKThroughputControlConfig) this.taskConfig.getThroughputControlConfig();
+            if (sdkConfig.getThroughputControlAccountConfig() != null) {
+                // throughput control is using a different database account config
+                return CosmosClientCache.getCosmosClient(
+                    sdkConfig.getThroughputControlAccountConfig(),
+                    this.taskConfig.getTaskId(),
+                    this.taskConfig.getThroughputControlCosmosClientMetadataCachesSnapshot());
+            }
         }
+        return this.cosmosClientItem;
     }
 
     @Override
@@ -323,7 +326,10 @@ public class CosmosSourceTask extends SourceTask {
             this.getChangeFeedRequestOptions(feedRangeTaskUnit);
 
         // split/merge will be handled in source task
-        ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
+        ImplementationBridgeHelpers
+            .CosmosChangeFeedRequestOptionsHelper
+            .getCosmosChangeFeedRequestOptionsAccessor()
+            .disableSplitHandling(changeFeedRequestOptions);
         CosmosThroughputControlHelper
             .tryPopulateThroughputControlGroupName(
                 changeFeedRequestOptions,

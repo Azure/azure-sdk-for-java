@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 /**
  * Mac address class to transfer mac address to hash mac address.
  */
+@SuppressWarnings("deprecation")
 public final class MacAddress {
 
     private static final String UNKNOWN_MAC_ADDRESS = "Unknown-Mac-Address";

@@ -341,6 +341,36 @@
           "justification" : "Remove deprecated method"
         },
         {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter void com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T>::<init>(===org.springframework.data.util.TypeInformation<T>===)",
+          "new" : "parameter void com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T>::<init>(===org.springframework.data.core.TypeInformation<T>===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter <T> com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T> com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext::createPersistentEntity(===org.springframework.data.util.TypeInformation<T>===)",
+          "new" : "parameter <T> com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T> com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext::createPersistentEntity(===org.springframework.data.core.TypeInformation<T>===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.QueryMethodEvaluationContextProvider===)",
+          "new" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.ValueExpressionDelegate===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.QueryMethodEvaluationContextProvider===)",
+          "new" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.ValueExpressionDelegate===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===org.springframework.util.concurrent.ListenableFutureCallback<java.lang.Void>===)",
+          "new" : "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===java.util.function.BiConsumer<java.lang.Void, java.lang.Throwable>===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
           "code": "java.method.numberOfParametersChanged",
           "old": {
             "matcher": "regex",
@@ -771,6 +801,79 @@
           "code": "java.field.removed",
           "old": "field com.azure.resourcemanager.network.models.SensitivityType.NONE",
           "justification": "Remove NonSensitivity for DDoS ruleset."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionProfileType.ADVANCED",
+          "justification": "Service no longer defines this intrusion detection profile type; enum values were removed during TypeSpec/Swagger alignment and are not supported by the backend."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionProfileType.BASIC",
+          "justification": "Service no longer defines this intrusion detection profile type; enum values were removed during TypeSpec/Swagger alignment and are not supported by the backend."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionProfileType.STANDARD",
+          "justification": "Service no longer defines this intrusion detection profile type; enum values were removed during TypeSpec/Swagger alignment and are not supported by the backend."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.compute.models.ExecutedValidation com.azure.resourcemanager.compute.models.ExecutedValidation::withStatus(com.azure.resourcemanager.compute.models.ValidationStatus)",
+          "justification": "ExecutedValidation is output-only; fluent setter removed as part of immutable model cleanup."
+        },
+        {
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.containerregistry.models.AutoGeneratedDomainNameLabelScope",
+          "justification": "Fix by service: the feature only exists in preview api-version."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.containerregistry.models.AutoGeneratedDomainNameLabelScope com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::autoGeneratedDomainNameLabelScope()",
+          "justification": "Fix by service: the feature only exists in preview api-version."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method java.lang.String com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::resourceGroupName()",
+          "justification": "Fix by service: the feature only exists in preview api-version."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
         }
       ]
     }

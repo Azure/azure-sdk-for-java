@@ -84,7 +84,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
     public void before_VeryLargeDocumentQueryTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
     }
 
     @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

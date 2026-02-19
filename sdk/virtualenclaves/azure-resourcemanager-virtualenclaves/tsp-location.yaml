@@ -1,0 +1,4 @@
+directory: specification/mission/Mission.Management
+commit: f52764d11d53276b79bbbba37f977ef0b03bbd2c
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

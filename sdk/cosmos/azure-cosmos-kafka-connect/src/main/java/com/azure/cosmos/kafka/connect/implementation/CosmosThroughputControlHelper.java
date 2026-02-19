@@ -25,14 +25,34 @@ public class CosmosThroughputControlHelper {
             return container;
         }
 
-        enableGlobalThroughputControl(container, throughputControlCosmosClient, cosmosThroughputControlConfig);
+        if (cosmosThroughputControlConfig instanceof CosmosServerThroughputControlConfig) {
+            enableServerThroughputControl(container, (CosmosServerThroughputControlConfig) cosmosThroughputControlConfig);
+        } else if (cosmosThroughputControlConfig instanceof CosmosSDKThroughputControlConfig) {
+            enableGlobalThroughputControl(container, throughputControlCosmosClient, (CosmosSDKThroughputControlConfig) cosmosThroughputControlConfig);
+        } else {
+            throw new IllegalStateException("Throughput control config type " + cosmosThroughputControlConfig.getClass() + " is not supported");
+        }
         return container;
+    }
+
+    private static void enableServerThroughputControl(
+        CosmosAsyncContainer container,
+        CosmosServerThroughputControlConfig throughputControlConfig) {
+
+        ThroughputControlGroupConfigBuilder groupConfigBuilder =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName(throughputControlConfig.getThroughputControlGroupName())
+                .throughputBucket(throughputControlConfig.getThroughputBucket());
+
+        applyPriorityLevel(groupConfigBuilder, throughputControlConfig);
+
+        container.enableServerThroughputControlGroup(groupConfigBuilder.build());
     }
 
     private static void enableGlobalThroughputControl(
         CosmosAsyncContainer container,
         CosmosAsyncClient throughputControlCosmosClient,
-        CosmosThroughputControlConfig throughputControlConfig) {
+        CosmosSDKThroughputControlConfig throughputControlConfig) {
 
         ThroughputControlGroupConfigBuilder groupConfigBuilder =
             new ThroughputControlGroupConfigBuilder().groupName(throughputControlConfig.getThroughputControlGroupName());
@@ -45,18 +65,7 @@ public class CosmosThroughputControlHelper {
             groupConfigBuilder.targetThroughputThreshold(throughputControlConfig.getTargetThroughputThreshold());
         }
 
-        switch (throughputControlConfig.getPriorityLevel()) {
-            case NONE:
-                break;
-            case LOW:
-                groupConfigBuilder.priorityLevel(PriorityLevel.LOW);
-                break;
-            case HIGH:
-                groupConfigBuilder.priorityLevel(PriorityLevel.HIGH);
-                break;
-            default:
-                throw new IllegalArgumentException("Priority level " + throughputControlConfig.getPriorityLevel() + " is not supported");
-        }
+        applyPriorityLevel(groupConfigBuilder, throughputControlConfig);
 
         GlobalThroughputControlConfigBuilder globalThroughputControlConfigBuilder =
             throughputControlCosmosClient.createGlobalThroughputControlConfigBuilder(
@@ -71,6 +80,24 @@ public class CosmosThroughputControlHelper {
         }
 
         container.enableGlobalThroughputControlGroup(groupConfigBuilder.build(), globalThroughputControlConfigBuilder.build());
+    }
+
+    private static void applyPriorityLevel(
+        ThroughputControlGroupConfigBuilder groupConfigBuilder,
+        CosmosThroughputControlConfig throughputControlConfig) {
+
+        switch (throughputControlConfig.getPriorityLevel()) {
+            case NONE:
+                break;
+            case LOW:
+                groupConfigBuilder.priorityLevel(PriorityLevel.LOW);
+                break;
+            case HIGH:
+                groupConfigBuilder.priorityLevel(PriorityLevel.HIGH);
+                break;
+            default:
+                throw new IllegalArgumentException("Priority level " + throughputControlConfig.getPriorityLevel() + " is not supported");
+        }
     }
 
     public static void tryPopulateThroughputControlGroupName(
