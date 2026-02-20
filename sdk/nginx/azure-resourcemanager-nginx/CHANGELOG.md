@@ -53,15 +53,15 @@
 #### `models.AnalysisDiagnostic` was modified
 
 * `AnalysisDiagnostic()` was changed to private access
-* `withMessage(java.lang.String)` was removed
-* `validate()` was removed
 * `withLine(float)` was removed
-* `withFile(java.lang.String)` was removed
+* `float line()` -> `double line()`
 * `withRule(java.lang.String)` was removed
-* `withDirective(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
 * `withId(java.lang.String)` was removed
-* `float line()` -> `double line()`
+* `validate()` was removed
+* `withDirective(java.lang.String)` was removed
+* `withFile(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
 
 #### `models.NginxFrontendIpConfiguration` was modified
 
@@ -74,8 +74,8 @@
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
-* `withDescription(java.lang.String)` was removed
 * `withProvider(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
 * `withOperation(java.lang.String)` was removed
 * `validate()` was removed
 * `withResource(java.lang.String)` was removed
@@ -87,23 +87,23 @@
 #### `models.DiagnosticItem` was modified
 
 * `DiagnosticItem()` was changed to private access
-* `withMessage(java.lang.String)` was removed
-* `withLine(float)` was removed
-* `withLevel(models.Level)` was removed
-* `float line()` -> `double line()`
 * `withFile(java.lang.String)` was removed
-* `validate()` was removed
-* `withId(java.lang.String)` was removed
-* `withRule(java.lang.String)` was removed
-* `withDirective(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
 * `withCategory(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
+* `withDirective(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withRule(java.lang.String)` was removed
+* `validate()` was removed
+* `withLevel(models.Level)` was removed
+* `withLine(float)` was removed
+* `float line()` -> `double line()`
 
 #### `models.NginxDeploymentUpdateProperties` was modified
 
-* `nginxAppProtect()` was removed
 * `validate()` was removed
 * `withNginxAppProtect(models.NginxDeploymentUpdatePropertiesNginxAppProtect)` was removed
+* `nginxAppProtect()` was removed
 
 #### `models.NginxLogging` was modified
 
@@ -133,8 +133,8 @@
 
 * `AnalysisResultData()` was changed to private access
 * `validate()` was removed
-* `withDiagnostics(java.util.List)` was removed
 * `withErrors(java.util.List)` was removed
+* `withDiagnostics(java.util.List)` was removed
 
 #### `models.NginxConfigurationRequestProperties` was modified
 
@@ -183,8 +183,8 @@
 
 * `WebApplicationFirewallComponentVersions()` was changed to private access
 * `withWafEngineVersion(java.lang.String)` was removed
-* `validate()` was removed
 * `withWafNginxVersion(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.NginxConfigurationProtectedFileRequest` was modified
 
@@ -210,8 +210,8 @@
 #### `models.WebApplicationFirewallPackage` was modified
 
 * `WebApplicationFirewallPackage()` was changed to private access
-* `withRevisionDatetime(java.time.OffsetDateTime)` was removed
 * `validate()` was removed
+* `withRevisionDatetime(java.time.OffsetDateTime)` was removed
 * `withVersion(java.lang.String)` was removed
 
 #### `models.AutoUpgradeProfile` was modified
@@ -230,8 +230,8 @@
 
 * `NginxConfigurationProtectedFileResponse()` was changed to private access
 * `withContentHash(java.lang.String)` was removed
-* `validate()` was removed
 * `withVirtualPath(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.NginxDeploymentApiKeyRequestProperties` was modified
 
@@ -292,8 +292,8 @@
 
 #### `NginxManager` was modified
 
-* `defaultWafPolicies()` was added
 * `wafPolicies()` was added
+* `defaultWafPolicies()` was added
 
 #### `models.WebApplicationFirewallStatus` was modified
 
