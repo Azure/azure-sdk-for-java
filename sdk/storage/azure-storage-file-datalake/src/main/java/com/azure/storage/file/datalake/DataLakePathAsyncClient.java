@@ -76,9 +76,7 @@ import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveO
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -1991,6 +1989,7 @@ public class DataLakePathAsyncClient {
      * must be preserved, they must be downloaded and included in the call to this method.
      *
      * @param tags Tags to associate with the path.
+     * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setTags(Map<String, String> tags) {
