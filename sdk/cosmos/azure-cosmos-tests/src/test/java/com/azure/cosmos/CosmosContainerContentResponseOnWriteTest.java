@@ -28,7 +28,7 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
     private CosmosDatabase createdDatabase;
 
     //  Currently Gateway and Direct TCP support minimal response feature.
-    @Factory(dataProvider = "clientBuildersWithDirectTcpWithContentResponseOnWriteDisabled")
+    @Factory(dataProvider = "emulatorClientBuildersContentResponseOnWriteEnabledFalse")
     public CosmosContainerContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

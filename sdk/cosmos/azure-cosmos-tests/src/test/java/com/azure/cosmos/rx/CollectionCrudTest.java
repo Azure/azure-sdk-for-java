@@ -52,7 +52,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase database;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "emulatorClientBuilders")
     public CollectionCrudTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;

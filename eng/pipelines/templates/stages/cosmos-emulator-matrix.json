@@ -11,6 +11,7 @@
       "Emulator Only Integration Tests Tcp - Java 8": {
           "ProfileFlag": "-Pemulator",
           "PROTOCOLS": "[\"Tcp\"]",
+          "CONNECTION_MODES": "[\"Direct\", \"Gateway\"]",
           "DESIRED_CONSISTENCIES": "[\"Session\"]",
           "JavaTestVersion": "1.8",
           "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
@@ -18,6 +19,7 @@
       "Emulator Only Integration Tests Tcp - Java 17": {
         "ProfileFlag": "-Pemulator",
         "PROTOCOLS": "[\"Tcp\"]",
+        "CONNECTION_MODES": "[\"Direct\", \"Gateway\"]",
         "DESIRED_CONSISTENCIES": "[\"Strong\"]",
         "JavaTestVersion": "1.17",
         "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"

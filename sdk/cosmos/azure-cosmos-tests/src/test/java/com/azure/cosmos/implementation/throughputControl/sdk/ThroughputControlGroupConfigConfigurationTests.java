@@ -26,7 +26,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
     private CosmosAsyncDatabase database;
     private CosmosAsyncContainer container;
 
-    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
+    @Factory(dataProvider = "emulatorClientBuilders")
     public ThroughputControlGroupConfigConfigurationTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;

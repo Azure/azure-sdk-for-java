@@ -65,7 +65,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
 
     private TracerUnderTest mockTracer;
 
-    @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
+    @Factory(dataProvider = "emulatorClientBuilders")
     public CosmosItemWriteRetriesTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilderWithReducedNetworkRequestTimeout(clientBuilder));
     }

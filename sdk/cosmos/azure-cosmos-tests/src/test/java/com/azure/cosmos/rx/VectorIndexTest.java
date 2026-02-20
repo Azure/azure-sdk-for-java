@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
@@ -58,16 +59,15 @@ public class VectorIndexTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase database;
 
+    @Factory(dataProvider = "emulatorClientBuilders")
+    public VectorIndexTest(CosmosClientBuilder cosmosClientBuilder) {
+        super(cosmosClientBuilder);
+    }
+
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_VectorIndexTest() {
         // set up the client
-        client = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .directMode(DirectConnectionConfig.getDefaultConfig())
-            .consistencyLevel(ConsistencyLevel.SESSION)
-            .contentResponseOnWriteEnabled(true)
-            .buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
 
         database = createDatabase(client, databaseId);
     }

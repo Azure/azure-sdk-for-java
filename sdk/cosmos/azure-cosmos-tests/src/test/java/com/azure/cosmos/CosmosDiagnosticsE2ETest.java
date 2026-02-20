@@ -54,7 +54,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     private CosmosClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirectSession")
+    @Factory(dataProvider = "emulatorClientBuilders")
     public CosmosDiagnosticsE2ETest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
