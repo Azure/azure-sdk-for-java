@@ -25,11 +25,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import org.mockito.ArgumentCaptor;
 
 public class PartitionControllerImplTests {
 
@@ -197,11 +201,18 @@ public class PartitionControllerImplTests {
                 .expectNext(lease)
                 .verifyComplete();
 
-        // addOrUpdateLease for childLease1 and childLease2 are executed async
-        // add some waiting time here so that we can capture all the calls
-        Thread.sleep(500);
+        // In merge scenarios, the same lease is reused. The flow is:
+        // 1. addOrUpdateLease(lease) -> acquire(lease) -> schedules worker
+        // 2. Worker encounters FeedRangeGoneException -> handleFeedRangeGone
+        // 3. handlePartitionGone returns same lease -> addOrUpdateLease(lease) called again
+        // The second addOrUpdateLease may call acquire() again (if worker stopped) or updateProperties() (if still running).
+        // This is a race condition in CI. Wait longer to ensure async operations complete.
+        Thread.sleep(2000);
 
-        verify(leaseManager, times(1)).acquire(lease);
+        // In merge scenarios with lease reuse, acquire can be called 1-2 times depending on timing
+        ArgumentCaptor<ServiceItemLeaseV1> acquireCaptor = ArgumentCaptor.forClass(ServiceItemLeaseV1.class);
+        verify(leaseManager, atLeast(1)).acquire(acquireCaptor.capture());
+        verify(leaseManager, atMost(2)).acquire(any(ServiceItemLeaseV1.class));
         verify(partitionSupervisorFactory, times(1)).create(lease);
         verify(leaseManager, times(1)).release(lease);
         verify(feedRangeGoneHandler, times(1)).handlePartitionGone();
