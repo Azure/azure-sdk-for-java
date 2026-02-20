@@ -274,6 +274,7 @@
     <module>sdk/virtualenclaves</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
+    <module>sdk/voicelive</module>
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
     <module>sdk/weightsandbiases</module>

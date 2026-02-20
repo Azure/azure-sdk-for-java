@@ -11,7 +11,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * An audio content part for a request.
+ * An audio content part for a request. This is supported only by realtime models (e.g., gpt-realtime). For text-based
+ * models, use `input_text` instead.
  */
 @Fluent
 public final class RequestAudioContentPart extends VoiceLiveContentPart {
@@ -23,17 +24,11 @@ public final class RequestAudioContentPart extends VoiceLiveContentPart {
     private ContentPartType type = ContentPartType.INPUT_AUDIO;
 
     /*
-     * The transcript property.
+     * Optional transcript of the audio content. This is not sent to the model, but will be attached to the message item
+     * for reference.
      */
     @Generated
     private String transcript;
-
-    /**
-     * Creates an instance of RequestAudioContentPart class.
-     */
-    @Generated
-    public RequestAudioContentPart() {
-    }
 
     /**
      * Get the type property: The type property.
@@ -47,7 +42,8 @@ public final class RequestAudioContentPart extends VoiceLiveContentPart {
     }
 
     /**
-     * Get the transcript property: The transcript property.
+     * Get the transcript property: Optional transcript of the audio content. This is not sent to the model, but will be
+     * attached to the message item for reference.
      *
      * @return the transcript value.
      */
@@ -57,7 +53,8 @@ public final class RequestAudioContentPart extends VoiceLiveContentPart {
     }
 
     /**
-     * Set the transcript property: The transcript property.
+     * Set the transcript property: Optional transcript of the audio content. This is not sent to the model, but will be
+     * attached to the message item for reference.
      *
      * @param transcript the transcript value to set.
      * @return the RequestAudioContentPart object itself.
@@ -75,6 +72,7 @@ public final class RequestAudioContentPart extends VoiceLiveContentPart {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("audio", this.audio);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("transcript", this.transcript);
         return jsonWriter.writeEndObject();
@@ -86,24 +84,60 @@ public final class RequestAudioContentPart extends VoiceLiveContentPart {
      * @param jsonReader The JsonReader being read.
      * @return An instance of RequestAudioContentPart if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RequestAudioContentPart.
      */
     @Generated
     public static RequestAudioContentPart fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RequestAudioContentPart deserializedRequestAudioContentPart = new RequestAudioContentPart();
+            String audio = null;
+            ContentPartType type = ContentPartType.INPUT_AUDIO;
+            String transcript = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedRequestAudioContentPart.type = ContentPartType.fromString(reader.getString());
+                if ("audio".equals(fieldName)) {
+                    audio = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = ContentPartType.fromString(reader.getString());
                 } else if ("transcript".equals(fieldName)) {
-                    deserializedRequestAudioContentPart.transcript = reader.getString();
+                    transcript = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            RequestAudioContentPart deserializedRequestAudioContentPart = new RequestAudioContentPart(audio);
+            deserializedRequestAudioContentPart.type = type;
+            deserializedRequestAudioContentPart.transcript = transcript;
             return deserializedRequestAudioContentPart;
         });
+    }
+
+    /*
+     * Base64-encoded audio bytes, these will be parsed as the format specified in the session input audio type
+     * configuration. This defaults to PCM 16-bit 24kHz mono if not specified.
+     */
+    @Generated
+    private final String audio;
+
+    /**
+     * Creates an instance of RequestAudioContentPart class.
+     *
+     * @param audio the audio value to set.
+     */
+    @Generated
+    public RequestAudioContentPart(String audio) {
+        this.audio = audio;
+    }
+
+    /**
+     * Get the audio property: Base64-encoded audio bytes, these will be parsed as the format specified in the session
+     * input audio type configuration. This defaults to PCM 16-bit 24kHz mono if not specified.
+     *
+     * @return the audio value.
+     */
+    @Generated
+    public String getAudio() {
+        return this.audio;
     }
 }

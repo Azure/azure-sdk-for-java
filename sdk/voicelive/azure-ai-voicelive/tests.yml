@@ -3,9 +3,9 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
-    ServiceDirectory: ai/azure-ai-voicelive
+    ServiceDirectory: voicelive/azure-ai-voicelive
     TestResourceDirectories:
-      - ai/azure-ai-voicelive/test-resources
+      - voicelive/azure-ai-voicelive/test-resources
     TimeoutInMinutes: 240
     EnvVars:
       AZURE_LOG_LEVEL: 2
