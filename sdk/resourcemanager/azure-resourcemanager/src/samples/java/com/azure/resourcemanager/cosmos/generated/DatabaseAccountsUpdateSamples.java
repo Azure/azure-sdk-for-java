@@ -11,6 +11,7 @@ import com.azure.resourcemanager.cosmos.models.Capacity;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
+import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentityUserAssignedIdentities;
@@ -29,7 +30,8 @@ import java.util.Map;
  */
 public final class DatabaseAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/
      * CosmosDBDatabaseAccountPatch.json
      */
     /**
@@ -74,7 +76,9 @@ public final class DatabaseAccountsUpdateSamples {
                 .withEnablePartitionMerge(true)
                 .withMinimalTlsVersion(MinimalTlsVersion.TLS)
                 .withEnableBurstCapacity(true)
-                .withEnablePerRegionPerPartitionAutoscale(true), com.azure.core.util.Context.NONE);
+                .withEnablePerRegionPerPartitionAutoscale(true)
+                .withEnablePriorityBasedExecution(true)
+                .withDefaultPriorityLevel(DefaultPriorityLevel.LOW), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class PrivateLinkResourcesListByServerSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
      * PrivateLinkResourcesList.json
      */
     /**
@@ -20,6 +20,7 @@ public final class PrivateLinkResourcesListByServerSamples {
      */
     public static void getsPrivateLinkResourcesForPostgreSQL(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.privateLinkResources().listByServer("Default", "test-svr", com.azure.core.util.Context.NONE);
+        manager.privateLinkResources()
+            .listByServer("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE);
     }
 }

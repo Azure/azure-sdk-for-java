@@ -12,27 +12,27 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Stores property that features impact on some metric if this recommended action is applied.
+ * Impact on some metric if this recommended action is applied.
  */
 @Fluent
 public final class ImpactRecord implements JsonSerializable<ImpactRecord> {
     /*
-     * Dimension name
+     * Dimension name.
      */
     private String dimensionName;
 
     /*
-     * Dimension unit
+     * Dimension unit.
      */
     private String unit;
 
     /*
-     * Optional property that can be used to store the QueryId if the metric is for a specific query.
+     * Optional property that can be used to store the identifier of the query, if the metric is for a specific query.
      */
     private Long queryId;
 
     /*
-     * Absolute value
+     * Absolute value.
      */
     private Double absoluteValue;
 
@@ -83,8 +83,8 @@ public final class ImpactRecord implements JsonSerializable<ImpactRecord> {
     }
 
     /**
-     * Get the queryId property: Optional property that can be used to store the QueryId if the metric is for a specific
-     * query.
+     * Get the queryId property: Optional property that can be used to store the identifier of the query, if the metric
+     * is for a specific query.
      * 
      * @return the queryId value.
      */
@@ -93,8 +93,8 @@ public final class ImpactRecord implements JsonSerializable<ImpactRecord> {
     }
 
     /**
-     * Set the queryId property: Optional property that can be used to store the QueryId if the metric is for a specific
-     * query.
+     * Set the queryId property: Optional property that can be used to store the identifier of the query, if the metric
+     * is for a specific query.
      * 
      * @param queryId the queryId value to set.
      * @return the ImpactRecord object itself.

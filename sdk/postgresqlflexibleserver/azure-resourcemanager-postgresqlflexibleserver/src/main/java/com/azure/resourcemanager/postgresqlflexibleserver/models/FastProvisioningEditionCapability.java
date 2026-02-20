@@ -11,32 +11,32 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Represents capability of a fast provisioning edition.
+ * Capability of a fast provisioning compute tier.
  */
 @Immutable
 public final class FastProvisioningEditionCapability extends CapabilityBase {
     /*
-     * Fast provisioning supported tier name
+     * Compute tier supporting fast provisioning.
      */
     private String supportedTier;
 
     /*
-     * Fast provisioning supported sku name
+     * Compute name (SKU) supporting fast provisioning.
      */
     private String supportedSku;
 
     /*
-     * Fast provisioning supported storage in Gb
+     * Storage size (in GB) supporting fast provisioning.
      */
     private Integer supportedStorageGb;
 
     /*
-     * Fast provisioning supported version
+     * Major version of PostgreSQL database engine supporting fast provisioning.
      */
     private String supportedServerVersions;
 
     /*
-     * Count of servers in cache matching the spec
+     * Count of servers in cache matching this specification.
      */
     private Integer serverCount;
 
@@ -57,7 +57,7 @@ public final class FastProvisioningEditionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedTier property: Fast provisioning supported tier name.
+     * Get the supportedTier property: Compute tier supporting fast provisioning.
      * 
      * @return the supportedTier value.
      */
@@ -66,7 +66,7 @@ public final class FastProvisioningEditionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedSku property: Fast provisioning supported sku name.
+     * Get the supportedSku property: Compute name (SKU) supporting fast provisioning.
      * 
      * @return the supportedSku value.
      */
@@ -75,7 +75,7 @@ public final class FastProvisioningEditionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedStorageGb property: Fast provisioning supported storage in Gb.
+     * Get the supportedStorageGb property: Storage size (in GB) supporting fast provisioning.
      * 
      * @return the supportedStorageGb value.
      */
@@ -84,7 +84,8 @@ public final class FastProvisioningEditionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedServerVersions property: Fast provisioning supported version.
+     * Get the supportedServerVersions property: Major version of PostgreSQL database engine supporting fast
+     * provisioning.
      * 
      * @return the supportedServerVersions value.
      */
@@ -93,7 +94,7 @@ public final class FastProvisioningEditionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the serverCount property: Count of servers in cache matching the spec.
+     * Get the serverCount property: Count of servers in cache matching this specification.
      * 
      * @return the serverCount value.
      */

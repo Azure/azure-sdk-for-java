@@ -1,12 +1,57 @@
 # Release History
 
-## 11.9.0-beta.1 (Unreleased)
+## 12.0.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 11.8.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.6.2` to version `1.6.3`.
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 11.9.0-beta.1 (2025-11-17)
 
 ### Features Added
 
 - Added back all service preview features dropped in `2025-09-01` service version release.
+- Added optional parameter `x-ms-enable-elevated-read` for elevated read access that bypasses document-level permission checks.
+- Added statistical aggregation properties to `FacetResult`: `avg`, `min`, `max`, and `cardinality` for enhanced analytics.
+- Added support for new Azure OpenAI models: `gpt-5`, `gpt-5-mini`, and `gpt-5-nano`.
+- Added support for `sharepoint` data source type in `SearchIndexerDataSourceType`.
+- Added support for new `KnowledgeSourceKind` types: `web`, `remoteSharePoint`, `indexedSharePoint`, and `indexedOneLake`.
+- Added `purviewEnabled` property to `SearchIndex` for Microsoft Purview integration.
+- Added `maxCumulativeIndexerRuntimeSeconds` property to `ServiceLimits` for runtime monitoring.
+- Added required `runtime` property to `SearchIndexerStatus` and `indexersRuntime` property to `ServiceStatistics`.
+- Added `product` enum value to `ScoringFunctionAggregation`.
+- Added enhanced knowledge source parameters: `sourceDataFields`, `searchFields`, `semanticConfigurationName` in `SearchIndexKnowledgeSourceParameters`.
+- Added Azure Data Lake Storage Gen2 support with `isADLSGen2` and `ingestionParameters` in `AzureBlobKnowledgeSourceParameters`.
+- Added partial content response support (HTTP 206) for knowledge base operations.
+- Added `error` property to `KnowledgeBaseActivityRecord` for enhanced error handling.
+- Added enhanced knowledge source parameters: `includeReferences`, `includeReferenceSourceData`, `alwaysQuerySource`, `rerankerThreshold` in `SearchIndexKnowledgeSourceParams`.
 
 ### Breaking Changes
+
+- **Knowledge Agent to Knowledge Base Migration**: Complete API rename from Knowledge Agent to Knowledge Base.
+  - All `KnowledgeAgent*` classes renamed to `KnowledgeBase*` (e.g., `KnowledgeAgent` → `KnowledgeBase`).
+  - API paths changed from `/agents` to `/knowledgebases`.
+  - Client parameter `AgentNameParameter` renamed to `KnowledgeBaseNameParameter`.
+  - All agent-related activity record types updated with new naming convention
+- Removed deprecated Knowledge Agent classes: `KnowledgeAgentOutputConfiguration`, `KnowledgeAgentRequestLimits`, `KnowledgeAgentModel`, `KnowledgeAgentModelKind`, `KnowledgeAgentAzureOpenAIModel`.
+- Removed properties from `KnowledgeSourceReference`:`includeReferences`,`includeReferenceSourceData`,`alwaysQuerySource`,`maxSubQueries`,`rerankerThreshold`
+- Removed `sourceDataSelect` property from `SearchIndexKnowledgeSourceParameters`.
+- Removed properties from `AzureBlobKnowledgeSourceParameters`: `identity`, `embeddingModel`, `chatCompletionModel`, `ingestionSchedule`, `disableImageVerbalization`.
 
 - Updated `RescoringOptions` to match what was changed in `11.8.0` release.
     - `isEnableRescoring` -> `isRescoringEnabled`
@@ -200,7 +245,7 @@ enabling multi-index grounding for agentic retrieval.
 - `QueryCaption` now supports a `maxCharLength` option to limit the character length of the caption.
 - `VectorizableTextQuery` now supports a `queryRewrites` option to specify the number query rewrites the service will generate.
 - `SemanticSearchOptions` now supports a `queryRewrites` option to specify the number query rewrites the service will generate.
-- `VectorSearchCompression` now supports configuring the `rescoringOptoins`.
+- `VectorSearchCompression` now supports configuring the `rescoringOptions`.
 - `IndexingParametersConfiguration` now supports two additional options for `MarkdownParsingSubmode` and `MarkdownHeaderDepth`.
 - Added a new skill: `DocumentIntelligenceLayoutSkill` that extracts content and layout information (as markdown), via Azure AI Services, from files within the enrichment pipeline.
 - Added 2 subtypes of `CognitiveServiceAccounts`: `AzureCognitiveServiceAccount` and `AzureCognitiveServiceAccountKey`.

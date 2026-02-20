@@ -6,8 +6,8 @@ package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.models.CertificateListDescription;
@@ -21,20 +21,21 @@ public final class CertificatesListByIotHubWithResponseMockTests {
     @Test
     public void testListByIotHubWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"subject\":\"coolsttpkiwkkb\",\"expiry\":\"Mon, 31 May 2021 01:02:38 GMT\",\"thumbprint\":\"ywvtylbfpnc\",\"isVerified\":false,\"created\":\"Sat, 16 Oct 2021 01:33:12 GMT\",\"updated\":\"Sat, 03 Apr 2021 12:46:32 GMT\",\"certificate\":\"thtywub\"},\"etag\":\"bihwqknfdnt\",\"id\":\"jchrdgoihxumw\",\"name\":\"ton\",\"type\":\"zj\"}]}";
+            = "{\"value\":[{\"properties\":{\"subject\":\"coolsttpkiwkkb\",\"expiry\":\"Mon, 31 May 2021 01:02:38 GMT\",\"thumbprint\":\"ywvtylbfpnc\",\"isVerified\":false,\"created\":\"Sat, 16 Oct 2021 01:33:12 GMT\",\"updated\":\"Sat, 03 Apr 2021 12:46:32 GMT\",\"certificate\":\"thtywub\",\"policyResourceId\":\"bihwqknfdnt\"},\"etag\":\"chrdgoihxumwcto\",\"id\":\"dzjlu\",\"name\":\"dfdlwggyts\",\"type\":\"wtovvtgsein\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         IotHubManager manager = IotHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateListDescription response = manager.certificates()
             .listByIotHubWithResponse("totxhojujb", "pelmcuvhixbjxyf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.value().get(0).properties().isVerified());
+        Assertions.assertFalse(response.value().get(0).properties().isVerified());
         Assertions.assertEquals("thtywub", response.value().get(0).properties().certificate());
+        Assertions.assertEquals("bihwqknfdnt", response.value().get(0).properties().policyResourceId());
     }
 }

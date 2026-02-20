@@ -10,7 +10,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeSup
 public final class NodeTypeSupportedSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeTypeSupportedSku model = BinaryData.fromString("{\"name\":\"iqtqzfavyvnq\",\"tier\":\"bar\"}")
+        NodeTypeSupportedSku model = BinaryData.fromString("{\"name\":\"dufiq\",\"tier\":\"ieuzaofjchvcyyy\"}")
             .toObject(NodeTypeSupportedSku.class);
     }
 }

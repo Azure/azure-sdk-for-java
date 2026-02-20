@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * plannerBucket.
+ * Represents a planner bucket.
  */
 @Fluent
 public final class MicrosoftGraphPlannerBucket extends MicrosoftGraphEntity {

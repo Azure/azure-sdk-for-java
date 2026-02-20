@@ -129,7 +129,8 @@ public interface ManagedNamespacesClient {
     ManagedNamespaceInner get(String resourceGroupName, String resourceName, String managedNamespaceName);
 
     /**
-     * Creates or updates a managed namespace in the specified managed cluster.
+     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
+     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -145,7 +146,8 @@ public interface ManagedNamespacesClient {
         String managedNamespaceName, ManagedNamespaceInner parameters);
 
     /**
-     * Creates or updates a managed namespace in the specified managed cluster.
+     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
+     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -161,7 +163,8 @@ public interface ManagedNamespacesClient {
         String resourceGroupName, String resourceName, String managedNamespaceName, ManagedNamespaceInner parameters);
 
     /**
-     * Creates or updates a managed namespace in the specified managed cluster.
+     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
+     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -177,7 +180,8 @@ public interface ManagedNamespacesClient {
         String resourceName, String managedNamespaceName, ManagedNamespaceInner parameters);
 
     /**
-     * Creates or updates a managed namespace in the specified managed cluster.
+     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
+     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -194,7 +198,8 @@ public interface ManagedNamespacesClient {
         String resourceName, String managedNamespaceName, ManagedNamespaceInner parameters, Context context);
 
     /**
-     * Creates or updates a managed namespace in the specified managed cluster.
+     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
+     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -210,7 +215,8 @@ public interface ManagedNamespacesClient {
         String managedNamespaceName, ManagedNamespaceInner parameters);
 
     /**
-     * Creates or updates a managed namespace in the specified managed cluster.
+     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
+     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -226,7 +232,8 @@ public interface ManagedNamespacesClient {
         ManagedNamespaceInner parameters);
 
     /**
-     * Creates or updates a managed namespace in the specified managed cluster.
+     * Creates or updates a namespace managed by ARM for the specified managed cluster. Users can configure aspects like
+     * resource quotas, network ingress/egress policies, and more. See aka.ms/aks/managed-namespaces for more details.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.

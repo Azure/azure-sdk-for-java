@@ -10,7 +10,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 public final class BillingInfoGetSamples {
     /*
      * x-ms-original-file:
-     * specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/BillingInfo_Get.json
+     * specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/
+     * BillingInfo_Get.json
      */
     /**
      * Sample code: BillingInfo_Get.

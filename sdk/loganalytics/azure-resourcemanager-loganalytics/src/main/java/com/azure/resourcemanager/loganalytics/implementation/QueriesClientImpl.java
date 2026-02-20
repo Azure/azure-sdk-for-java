@@ -30,6 +30,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.QueriesClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.LogAnalyticsQueryPackQueryInner;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPackQueryListResult;
@@ -65,13 +66,24 @@ public final class QueriesClientImpl implements QueriesClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "OperationalInsightsM")
+    @ServiceInterface(name = "OperationalInsightsManagementClientQueries")
     public interface QueriesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogAnalyticsQueryPackQueryListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("queryPackName") String queryPackName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$top") Long top,
+            @QueryParam("includeBody") Boolean includeBody, @QueryParam("$skipToken") String skipToken,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LogAnalyticsQueryPackQueryListResult> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("queryPackName") String queryPackName,
             @QueryParam("api-version") String apiVersion, @QueryParam("$top") Long top,
@@ -91,6 +103,18 @@ public final class QueriesClientImpl implements QueriesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/search")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LogAnalyticsQueryPackQueryListResult> searchSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("queryPackName") String queryPackName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$top") Long top,
+            @QueryParam("includeBody") Boolean includeBody, @QueryParam("$skipToken") String skipToken,
+            @BodyParam("application/json") LogAnalyticsQueryPackQuerySearchProperties querySearchProperties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -101,10 +125,31 @@ public final class QueriesClientImpl implements QueriesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LogAnalyticsQueryPackQueryInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("queryPackName") String queryPackName,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogAnalyticsQueryPackQueryInner>> put(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("queryPackName") String queryPackName,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") LogAnalyticsQueryPackQueryInner queryPayload,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LogAnalyticsQueryPackQueryInner> putSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("queryPackName") String queryPackName,
             @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
@@ -123,10 +168,31 @@ public final class QueriesClientImpl implements QueriesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LogAnalyticsQueryPackQueryInner> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("queryPackName") String queryPackName,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") LogAnalyticsQueryPackQueryInner queryPayload,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("queryPackName") String queryPackName,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("queryPackName") String queryPackName,
             @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
@@ -144,7 +210,23 @@ public final class QueriesClientImpl implements QueriesClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LogAnalyticsQueryPackQueryListResult> listNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogAnalyticsQueryPackQueryListResult>> searchNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LogAnalyticsQueryPackQueryListResult> searchNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -182,58 +264,14 @@ public final class QueriesClientImpl implements QueriesClient {
         if (queryPackName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
         }
-        final String apiVersion = "2019-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, queryPackName, apiVersion, top, includeBody, skipToken, accept, context))
+            .withContext(
+                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    queryPackName, this.client.getApiVersion(), top, includeBody, skipToken, accept, context))
             .<PagedResponse<LogAnalyticsQueryPackQueryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a list of Queries defined within a Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param top Maximum items returned in page.
-     * @param includeBody Flag indicating whether or not to return the body of each applicable query. If false, only
-     * return the query information.
-     * @param skipToken Base64 encoded token used to fetch the next page of items. Default is null.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Queries defined within a Log Analytics QueryPack along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LogAnalyticsQueryPackQueryInner>> listSinglePageAsync(String resourceGroupName,
-        String queryPackName, Long top, Boolean includeBody, String skipToken, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (queryPackName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-09-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, queryPackName,
-                apiVersion, top, includeBody, skipToken, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -285,18 +323,82 @@ public final class QueriesClientImpl implements QueriesClient {
      * @param includeBody Flag indicating whether or not to return the body of each applicable query. If false, only
      * return the query information.
      * @param skipToken Base64 encoded token used to fetch the next page of items. Default is null.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Queries defined within a Log Analytics QueryPack along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<LogAnalyticsQueryPackQueryInner> listSinglePage(String resourceGroupName,
+        String queryPackName, Long top, Boolean includeBody, String skipToken) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (queryPackName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<LogAnalyticsQueryPackQueryListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                queryPackName, this.client.getApiVersion(), top, includeBody, skipToken, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets a list of Queries defined within a Log Analytics QueryPack.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param queryPackName The name of the Log Analytics QueryPack resource.
+     * @param top Maximum items returned in page.
+     * @param includeBody Flag indicating whether or not to return the body of each applicable query. If false, only
+     * return the query information.
+     * @param skipToken Base64 encoded token used to fetch the next page of items. Default is null.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Queries defined within a Log Analytics QueryPack as paginated response with {@link PagedFlux}.
+     * @return a list of Queries defined within a Log Analytics QueryPack along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LogAnalyticsQueryPackQueryInner> listAsync(String resourceGroupName, String queryPackName,
-        Long top, Boolean includeBody, String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, queryPackName, top, includeBody, skipToken, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<LogAnalyticsQueryPackQueryInner> listSinglePage(String resourceGroupName,
+        String queryPackName, Long top, Boolean includeBody, String skipToken, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (queryPackName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<LogAnalyticsQueryPackQueryListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                queryPackName, this.client.getApiVersion(), top, includeBody, skipToken, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -315,7 +417,8 @@ public final class QueriesClientImpl implements QueriesClient {
         final Long top = null;
         final Boolean includeBody = null;
         final String skipToken = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, queryPackName, top, includeBody, skipToken));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, queryPackName, top, includeBody, skipToken),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -337,7 +440,9 @@ public final class QueriesClientImpl implements QueriesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogAnalyticsQueryPackQueryInner> list(String resourceGroupName, String queryPackName, Long top,
         Boolean includeBody, String skipToken, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, queryPackName, top, includeBody, skipToken, context));
+        return new PagedIterable<>(
+            () -> listSinglePage(resourceGroupName, queryPackName, top, includeBody, skipToken, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -381,67 +486,14 @@ public final class QueriesClientImpl implements QueriesClient {
         } else {
             querySearchProperties.validate();
         }
-        final String apiVersion = "2019-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.search(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    queryPackName, apiVersion, top, includeBody, skipToken, querySearchProperties, accept, context))
+            .withContext(context -> service.search(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, queryPackName, this.client.getApiVersion(), top, includeBody, skipToken,
+                querySearchProperties, accept, context))
             .<PagedResponse<LogAnalyticsQueryPackQueryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Search a list of Queries defined within a Log Analytics QueryPack according to given search properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param querySearchProperties Properties by which to search queries in the given Log Analytics QueryPack.
-     * @param top Maximum items returned in page.
-     * @param includeBody Flag indicating whether or not to return the body of each applicable query. If false, only
-     * return the query information.
-     * @param skipToken Base64 encoded token used to fetch the next page of items. Default is null.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of Log Analytics QueryPack-Query resources along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LogAnalyticsQueryPackQueryInner>> searchSinglePageAsync(String resourceGroupName,
-        String queryPackName, LogAnalyticsQueryPackQuerySearchProperties querySearchProperties, Long top,
-        Boolean includeBody, String skipToken, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (queryPackName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
-        }
-        if (querySearchProperties == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter querySearchProperties is required and cannot be null."));
-        } else {
-            querySearchProperties.validate();
-        }
-        final String apiVersion = "2019-09-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .search(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, queryPackName,
-                apiVersion, top, includeBody, skipToken, querySearchProperties, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -500,19 +552,97 @@ public final class QueriesClientImpl implements QueriesClient {
      * @param includeBody Flag indicating whether or not to return the body of each applicable query. If false, only
      * return the query information.
      * @param skipToken Base64 encoded token used to fetch the next page of items. Default is null.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the list of Log Analytics QueryPack-Query resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<LogAnalyticsQueryPackQueryInner> searchSinglePage(String resourceGroupName,
+        String queryPackName, LogAnalyticsQueryPackQuerySearchProperties querySearchProperties, Long top,
+        Boolean includeBody, String skipToken) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (queryPackName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
+        }
+        if (querySearchProperties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter querySearchProperties is required and cannot be null."));
+        } else {
+            querySearchProperties.validate();
+        }
+        final String accept = "application/json";
+        Response<LogAnalyticsQueryPackQueryListResult> res = service.searchSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, queryPackName, this.client.getApiVersion(), top,
+            includeBody, skipToken, querySearchProperties, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Search a list of Queries defined within a Log Analytics QueryPack according to given search properties.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param queryPackName The name of the Log Analytics QueryPack resource.
+     * @param querySearchProperties Properties by which to search queries in the given Log Analytics QueryPack.
+     * @param top Maximum items returned in page.
+     * @param includeBody Flag indicating whether or not to return the body of each applicable query. If false, only
+     * return the query information.
+     * @param skipToken Base64 encoded token used to fetch the next page of items. Default is null.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of Log Analytics QueryPack-Query resources as paginated response with
-     * {@link PagedFlux}.
+     * @return describes the list of Log Analytics QueryPack-Query resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LogAnalyticsQueryPackQueryInner> searchAsync(String resourceGroupName, String queryPackName,
-        LogAnalyticsQueryPackQuerySearchProperties querySearchProperties, Long top, Boolean includeBody,
-        String skipToken, Context context) {
-        return new PagedFlux<>(() -> searchSinglePageAsync(resourceGroupName, queryPackName, querySearchProperties, top,
-            includeBody, skipToken, context), nextLink -> searchNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<LogAnalyticsQueryPackQueryInner> searchSinglePage(String resourceGroupName,
+        String queryPackName, LogAnalyticsQueryPackQuerySearchProperties querySearchProperties, Long top,
+        Boolean includeBody, String skipToken, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (queryPackName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
+        }
+        if (querySearchProperties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter querySearchProperties is required and cannot be null."));
+        } else {
+            querySearchProperties.validate();
+        }
+        final String accept = "application/json";
+        Response<LogAnalyticsQueryPackQueryListResult> res = service.searchSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, queryPackName, this.client.getApiVersion(), top,
+            includeBody, skipToken, querySearchProperties, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -533,8 +663,8 @@ public final class QueriesClientImpl implements QueriesClient {
         final Long top = null;
         final Boolean includeBody = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            searchAsync(resourceGroupName, queryPackName, querySearchProperties, top, includeBody, skipToken));
+        return new PagedIterable<>(() -> searchSinglePage(resourceGroupName, queryPackName, querySearchProperties, top,
+            includeBody, skipToken), nextLink -> searchNextSinglePage(nextLink));
     }
 
     /**
@@ -558,8 +688,8 @@ public final class QueriesClientImpl implements QueriesClient {
     public PagedIterable<LogAnalyticsQueryPackQueryInner> search(String resourceGroupName, String queryPackName,
         LogAnalyticsQueryPackQuerySearchProperties querySearchProperties, Long top, Boolean includeBody,
         String skipToken, Context context) {
-        return new PagedIterable<>(
-            searchAsync(resourceGroupName, queryPackName, querySearchProperties, top, includeBody, skipToken, context));
+        return new PagedIterable<>(() -> searchSinglePage(resourceGroupName, queryPackName, querySearchProperties, top,
+            includeBody, skipToken, context), nextLink -> searchNextSinglePage(nextLink, context));
     }
 
     /**
@@ -595,53 +725,11 @@ public final class QueriesClientImpl implements QueriesClient {
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2019-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, queryPackName, id, apiVersion, accept, context))
+                resourceGroupName, queryPackName, id, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a specific Log Analytics Query defined within a Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param id The id of a specific query defined in the Log Analytics QueryPack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Log Analytics Query defined within a Log Analytics QueryPack along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogAnalyticsQueryPackQueryInner>> getWithResponseAsync(String resourceGroupName,
-        String queryPackName, String id, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (queryPackName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
-        }
-        if (id == null) {
-            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
-        }
-        final String apiVersion = "2019-09-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, queryPackName,
-            id, apiVersion, accept, context);
     }
 
     /**
@@ -677,7 +765,30 @@ public final class QueriesClientImpl implements QueriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogAnalyticsQueryPackQueryInner> getWithResponse(String resourceGroupName, String queryPackName,
         String id, Context context) {
-        return getWithResponseAsync(resourceGroupName, queryPackName, id, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (queryPackName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
+        }
+        if (id == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            queryPackName, id, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -736,60 +847,11 @@ public final class QueriesClientImpl implements QueriesClient {
         } else {
             queryPayload.validate();
         }
-        final String apiVersion = "2019-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.put(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, queryPackName, id, apiVersion, queryPayload, accept, context))
+                resourceGroupName, queryPackName, id, this.client.getApiVersion(), queryPayload, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Adds or Updates a specific Query within a Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param id The id of a specific query defined in the Log Analytics QueryPack.
-     * @param queryPayload Properties that need to be specified to create a new query and add it to a Log Analytics
-     * QueryPack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Log Analytics QueryPack-Query definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogAnalyticsQueryPackQueryInner>> putWithResponseAsync(String resourceGroupName,
-        String queryPackName, String id, LogAnalyticsQueryPackQueryInner queryPayload, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (queryPackName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
-        }
-        if (id == null) {
-            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
-        }
-        if (queryPayload == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queryPayload is required and cannot be null."));
-        } else {
-            queryPayload.validate();
-        }
-        final String apiVersion = "2019-09-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.put(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, queryPackName,
-            id, apiVersion, queryPayload, accept, context);
     }
 
     /**
@@ -829,7 +891,36 @@ public final class QueriesClientImpl implements QueriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogAnalyticsQueryPackQueryInner> putWithResponse(String resourceGroupName, String queryPackName,
         String id, LogAnalyticsQueryPackQueryInner queryPayload, Context context) {
-        return putWithResponseAsync(resourceGroupName, queryPackName, id, queryPayload, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (queryPackName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
+        }
+        if (id == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (queryPayload == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter queryPayload is required and cannot be null."));
+        } else {
+            queryPayload.validate();
+        }
+        final String accept = "application/json";
+        return service.putSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            queryPackName, id, this.client.getApiVersion(), queryPayload, accept, context);
     }
 
     /**
@@ -891,60 +982,11 @@ public final class QueriesClientImpl implements QueriesClient {
         } else {
             queryPayload.validate();
         }
-        final String apiVersion = "2019-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, queryPackName, id, apiVersion, queryPayload, accept, context))
+                resourceGroupName, queryPackName, id, this.client.getApiVersion(), queryPayload, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Adds or Updates a specific Query within a Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param id The id of a specific query defined in the Log Analytics QueryPack.
-     * @param queryPayload Properties that need to be specified to create a new query and add it to a Log Analytics
-     * QueryPack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Log Analytics QueryPack-Query definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogAnalyticsQueryPackQueryInner>> updateWithResponseAsync(String resourceGroupName,
-        String queryPackName, String id, LogAnalyticsQueryPackQueryInner queryPayload, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (queryPackName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
-        }
-        if (id == null) {
-            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
-        }
-        if (queryPayload == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queryPayload is required and cannot be null."));
-        } else {
-            queryPayload.validate();
-        }
-        final String apiVersion = "2019-09-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            queryPackName, id, apiVersion, queryPayload, accept, context);
     }
 
     /**
@@ -984,7 +1026,36 @@ public final class QueriesClientImpl implements QueriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogAnalyticsQueryPackQueryInner> updateWithResponse(String resourceGroupName, String queryPackName,
         String id, LogAnalyticsQueryPackQueryInner queryPayload, Context context) {
-        return updateWithResponseAsync(resourceGroupName, queryPackName, id, queryPayload, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (queryPackName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
+        }
+        if (id == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (queryPayload == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter queryPayload is required and cannot be null."));
+        } else {
+            queryPayload.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            queryPackName, id, this.client.getApiVersion(), queryPayload, accept, context);
     }
 
     /**
@@ -1037,52 +1108,11 @@ public final class QueriesClientImpl implements QueriesClient {
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2019-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, queryPackName, id, apiVersion, accept, context))
+                resourceGroupName, queryPackName, id, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Deletes a specific Query defined within an Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param id The id of a specific query defined in the Log Analytics QueryPack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String queryPackName, String id,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (queryPackName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
-        }
-        if (id == null) {
-            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
-        }
-        final String apiVersion = "2019-09-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            queryPackName, id, apiVersion, accept, context);
     }
 
     /**
@@ -1116,7 +1146,30 @@ public final class QueriesClientImpl implements QueriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String queryPackName, String id,
         Context context) {
-        return deleteWithResponseAsync(resourceGroupName, queryPackName, id, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (queryPackName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter queryPackName is required and cannot be null."));
+        }
+        if (id == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            queryPackName, id, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1141,8 +1194,8 @@ public final class QueriesClientImpl implements QueriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of Log Analytics QueryPack-Query resources along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of Queries defined within a Log Analytics QueryPack along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogAnalyticsQueryPackQueryInner>> listNextSinglePageAsync(String nextLink) {
@@ -1164,28 +1217,55 @@ public final class QueriesClientImpl implements QueriesClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Queries defined within a Log Analytics QueryPack along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<LogAnalyticsQueryPackQueryInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<LogAnalyticsQueryPackQueryListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of Log Analytics QueryPack-Query resources along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of Queries defined within a Log Analytics QueryPack along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LogAnalyticsQueryPackQueryInner>> listNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<LogAnalyticsQueryPackQueryInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<LogAnalyticsQueryPackQueryListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1218,27 +1298,56 @@ public final class QueriesClientImpl implements QueriesClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the list of Log Analytics QueryPack-Query resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<LogAnalyticsQueryPackQueryInner> searchNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<LogAnalyticsQueryPackQueryListResult> res
+            = service.searchNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of Log Analytics QueryPack-Query resources along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return describes the list of Log Analytics QueryPack-Query resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LogAnalyticsQueryPackQueryInner>> searchNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<LogAnalyticsQueryPackQueryInner> searchNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.searchNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<LogAnalyticsQueryPackQueryListResult> res
+            = service.searchNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QueriesClientImpl.class);
 }

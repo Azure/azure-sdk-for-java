@@ -9,14 +9,13 @@ import com.azure.spring.data.cosmos.domain.NestedEntity;
 import com.azure.spring.data.cosmos.domain.NestedPartitionKeyEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveNestedPartitionKeyRepository;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -27,7 +26,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveNestedPartitionKeyRepositoryIT {
 
@@ -37,7 +36,7 @@ public class ReactiveNestedPartitionKeyRepositoryIT {
     private static final NestedPartitionKeyEntity NESTED_ENTITY_2 =
         new NestedPartitionKeyEntity(null, new NestedEntity("partitionKey2"));
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -46,10 +45,10 @@ public class ReactiveNestedPartitionKeyRepositoryIT {
     @Autowired
     ReactiveNestedPartitionKeyRepository repository;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() { }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, NestedPartitionKeyEntity.class);
     }

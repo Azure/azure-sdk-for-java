@@ -1,6 +1,6 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
+## 2.57.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,46 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.56.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+## 2.56.0 (2026-01-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `GalleryRP api-version` to `2025-03-03`.
+
+## 2.55.1 (2025-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.55.0 (2025-11-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.54.1 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.54.0 (2025-09-30)
 

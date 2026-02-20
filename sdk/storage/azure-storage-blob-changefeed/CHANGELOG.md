@@ -1,14 +1,19 @@
 # Release History
 
-## 12.0.0-beta.33 (Unreleased)
+## 12.0.0-beta.35 (2026-02-19)
 
 ### Features Added
+- Added support for service version 2026-04-06.
 
-### Breaking Changes
+## 12.0.0-beta.34 (2026-01-15)
 
-### Bugs Fixed
+### Features Added
+- Added support for service version 2026-02-06.
 
-### Other Changes
+## 12.0.0-beta.33 (2025-12-03)
+
+### Features Added
+- Added support for service version 2026-02-06.
 
 ## 12.0.0-beta.32 (2025-10-21)
 

@@ -12,7 +12,8 @@ import com.azure.resourcemanager.appservice.models.CertificatePatchResource;
 public final class SiteCertificatesUpdateSlotSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/PatchSiteCertificateSlot.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/PatchSiteCertificateSlot.
+     * json
      */
     /**
      * Sample code: Patch Certificate for slot.

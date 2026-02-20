@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class SchemaVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_SchemaVersion.json
+     * x-ms-original-file: 2025-11-01-preview/Delete_SchemaVersion.json
      */
     /**
      * Sample code: Delete_SchemaVersion.

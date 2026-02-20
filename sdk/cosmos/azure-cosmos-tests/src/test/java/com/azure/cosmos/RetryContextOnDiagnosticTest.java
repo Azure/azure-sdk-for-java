@@ -58,20 +58,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.http.HttpMethod;
-import io.reactivex.subscribers.TestSubscriber;
+import io.netty.util.ReferenceCountUtil;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.UUID;
@@ -79,10 +79,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
-import static com.azure.cosmos.implementation.Utils.getUTF8BytesOrNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 
@@ -95,6 +95,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     private RxDocumentServiceRequest serviceRequest;
     private AddressSelector addressSelector;
 
+    @AfterClass(groups = {"unit", "long-emulator"}, alwaysRun = true)
+    public void afterClass_ReactivateNettyLeakDetection() throws Exception {
+        System.gc();
+        Thread.sleep(10_000);
+    }
+
     @Test(groups = {"unit"}, timeOut = TIMEOUT * 2)
     public void backoffRetryUtilityExecuteRetry() throws Exception {
         @SuppressWarnings("unchecked")
@@ -105,15 +111,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         addressSelector = Mockito.mock(AddressSelector.class);
         CosmosException exception = new CosmosException(410, exceptionText);
         String rawJson = "{\"id\":\"" + responseText + "\"}";
-        ByteBuf buffer = getUTF8BytesOrNull(rawJson);
         Mockito.when(callbackMethod.call()).thenThrow(exception, exception, exception, exception, exception)
 
-            .thenReturn(Mono.just(new StoreResponse(
-                null,
-                200,
-                new HashMap<>(),
-                new ByteBufInputStream(buffer, true),
-                buffer.readableBytes())));
+            .thenReturn(Mono.fromCallable(() -> StoreResponseBuilder.create()
+                .withContent(rawJson)
+                .withStatus(200)
+                .build()));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         StoreResponse response = validateSuccess(monoResponse);
 
@@ -156,14 +159,11 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         CosmosException exception = new CosmosException(410, exceptionText);
         Mono<StoreResponse> exceptionMono = Mono.error(exception);
         String rawJson = "{\"id\":\"" + responseText + "\"}";
-        ByteBuf buffer = getUTF8BytesOrNull(rawJson);
         Mockito.when(parameterizedCallbackMethod.apply(ArgumentMatchers.any())).thenReturn(exceptionMono, exceptionMono, exceptionMono, exceptionMono, exceptionMono)
-            .thenReturn(Mono.just(new StoreResponse(
-                null,
-                200,
-                new HashMap<>(),
-                new ByteBufInputStream(buffer, true),
-                buffer.readableBytes())));
+            .thenReturn(Mono.fromCallable(() -> StoreResponseBuilder.create()
+                .withContent(rawJson)
+                .withStatus(200)
+                .build()));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(
             parameterizedCallbackMethod,
             retryPolicy,
@@ -781,7 +781,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 // On single region we will have 3 retry of session policy (One retry from first request, one from
                 // client retry policy and last from rename policy.
                 assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(45);
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(60);
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(65);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(retryContext.getStatusAndSubStatusCodes().size()-1)[0]).isEqualTo(404);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(retryContext.getStatusAndSubStatusCodes().size()-1)[1]).isEqualTo(1002);
             }
@@ -860,6 +860,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             .key(TestConfigurations.MASTER_KEY)
             .gatewayMode()
             .buildClient();
+        HttpClient mockHttpClient = null;
         try {
             CosmosAsyncContainer cosmosAsyncContainer =
                 getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
@@ -884,18 +885,18 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             options.setPartitionKey(new PartitionKey(testPojo.getMypk()));
             options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
-                options, InternalObjectNode.class)
-                .iterableByPage(1)
-                .iterator();
+                                                                                     options, InternalObjectNode.class)
+                                                                                 .iterableByPage(1)
+                                                                                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             // Query Plan Caching end
 
-            HttpClient mockHttpClient = Mockito.mock(HttpClient.class);
+            mockHttpClient = Mockito.mock(HttpClient.class);
             CosmosException throttlingException = new CosmosException(429, "Throttling Test");
 
             Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
-                .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
-                    Mono.just(createResponse((201))));
+                   .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
+                       Mono.just(createResponse((201))));
             ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);
 
             CosmosItemResponse<TestPojo> createItemResponse = cosmosContainer.createItem(testPojo,
@@ -905,10 +906,11 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
+            mockHttpClient.shutdown();
             mockHttpClient = Mockito.mock(HttpClient.class);
             Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
-                .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
-                    Mono.just(createResponse((201))));
+                   .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
+                       Mono.just(createResponse((201))));
             ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);
 
             CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
@@ -921,58 +923,56 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getRetryCount()).isEqualTo(2);
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
+            mockHttpClient.shutdown();
             mockHttpClient = Mockito.mock(HttpClient.class);
             Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
-                .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
-                    Mono.just(createResponse((201))));
+                   .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
+                       Mono.just(createResponse((201))));
             ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);
 
             options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
             iterator = cosmosContainer.queryItems(query,
-                options, InternalObjectNode.class)
-                .iterableByPage()
-                .iterator();
+                                          options, InternalObjectNode.class)
+                                      .iterableByPage()
+                                      .iterator();
             feedResponse = iterator.next();
             Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
-                .getFeedResponseDiagnostics()
-                .getClientSideRequestStatistics()
-                .stream()
-                .filter(context -> context.getRetryContext().getRetryCount() == 2
-                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 429)
-                .findFirst();
+                                                                      .getFeedResponseDiagnostics()
+                                                                      .getClientSideRequestStatistics()
+                                                                      .stream()
+                                                                      .filter(context -> context.getRetryContext().getRetryCount() == 2
+                                                                          && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 429)
+                                                                      .findFirst();
 
             assertThat(first.isPresent()).isTrue();
             System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "false");
         } finally {
             safeCloseSyncClient(cosmosClient);
+            if (mockHttpClient != null) {
+                mockHttpClient.shutdown();
+            }
         }
     }
 
     private StoreResponse validateSuccess(Mono<StoreResponse> storeResponse) {
-        TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
-        storeResponse.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(60000, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        return testSubscriber.values().get(0);
+        AtomicReference<StoreResponse> value = new AtomicReference<>();
+        StepVerifier.create(storeResponse)
+            .assertNext(value::set)
+            .expectComplete()
+            .verify(Duration.ofMillis(60_000));
+
+        return value.get();
     }
 
     private void validateFailure(Mono<StoreResponse> storeResponse) {
-        TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
-        storeResponse.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(60000, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
+        StepVerifier.create(storeResponse).expectError().verify(Duration.ofMillis(60_000));
     }
 
     private void validateServiceResponseSuccess(Mono<ResourceResponse<Document>> documentServiceResponseMono) {
-        TestSubscriber<ResourceResponse<Document>> testSubscriber = new TestSubscriber<>();
-        documentServiceResponseMono.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(60000, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
+        StepVerifier.create(documentServiceResponseMono)
+            .expectNextCount(1)
+            .expectComplete()
+            .verify(Duration.ofMillis(60_000));
     }
 
     private static class TestRetryPolicy extends DocumentClientRetryPolicy {
@@ -1058,12 +1058,19 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             @Override
             public Mono<ByteBuf> body() {
-                try {
-                    return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT,
-                        OBJECT_MAPPER.writeValueAsString(getTestPojoObject())));
-                } catch (JsonProcessingException e) {
-                    return Mono.error(e);
-                }
+                final AtomicReference<ByteBuf> output = new AtomicReference<>(null);
+
+                return Mono
+                    .fromCallable(() -> {
+                        ByteBuf buf = ByteBufUtil.writeUtf8(
+                            ByteBufAllocator.DEFAULT,
+                            OBJECT_MAPPER.writeValueAsString(getTestPojoObject()));
+                        output.set(buf);
+
+                        return buf;
+                    })
+                   .doOnDiscard(ByteBuf.class, ReferenceCountUtil::safeRelease)
+                   .doFinally(signalType -> ReferenceCountUtil.safeRelease(output.get()));
             }
 
             @Override

@@ -165,11 +165,13 @@ public final class ThresholdRuleCondition extends RuleCondition {
      */
     @Override
     public void validate() {
-        super.validate();
         if (operator() == null) {
             throw LOGGER.atError()
                 .log(
                     new IllegalArgumentException("Missing required property operator in model ThresholdRuleCondition"));
+        }
+        if (dataSource() != null) {
+            dataSource().validate();
         }
     }
 

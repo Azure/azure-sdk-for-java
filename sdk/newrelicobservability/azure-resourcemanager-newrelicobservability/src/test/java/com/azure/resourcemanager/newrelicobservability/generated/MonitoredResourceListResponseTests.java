@@ -16,36 +16,36 @@ public final class MonitoredResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitoredResourceListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"gyncocpecfvmmc\",\"sendingMetrics\":\"Disabled\",\"reasonForMetricsStatus\":\"xlzevgbmqjqabcy\",\"sendingLogs\":\"Disabled\",\"reasonForLogsStatus\":\"kwlzuvccfwnfn\"},{\"id\":\"cfionl\",\"sendingMetrics\":\"Enabled\",\"reasonForMetricsStatus\":\"tqgtzxdpnqbqq\",\"sendingLogs\":\"Disabled\",\"reasonForLogsStatus\":\"feallnwsu\"}],\"nextLink\":\"snjampmng\"}")
+            "{\"value\":[{\"id\":\"typmrbpizcdrqjsd\",\"sendingMetrics\":\"Disabled\",\"reasonForMetricsStatus\":\"fyhxde\",\"sendingLogs\":\"Disabled\",\"reasonForLogsStatus\":\"icwifsjtt\"},{\"id\":\"fbishcbkha\",\"sendingMetrics\":\"Enabled\",\"reasonForMetricsStatus\":\"eamdp\",\"sendingLogs\":\"Enabled\",\"reasonForLogsStatus\":\"lpbuxwgipwhonowk\"}],\"nextLink\":\"hwankixzbinjepu\"}")
             .toObject(MonitoredResourceListResponse.class);
-        Assertions.assertEquals("gyncocpecfvmmc", model.value().get(0).id());
+        Assertions.assertEquals("typmrbpizcdrqjsd", model.value().get(0).id());
         Assertions.assertEquals(SendingMetricsStatus.DISABLED, model.value().get(0).sendingMetrics());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.value().get(0).reasonForMetricsStatus());
+        Assertions.assertEquals("fyhxde", model.value().get(0).reasonForMetricsStatus());
         Assertions.assertEquals(SendingLogsStatus.DISABLED, model.value().get(0).sendingLogs());
-        Assertions.assertEquals("kwlzuvccfwnfn", model.value().get(0).reasonForLogsStatus());
-        Assertions.assertEquals("snjampmng", model.nextLink());
+        Assertions.assertEquals("icwifsjtt", model.value().get(0).reasonForLogsStatus());
+        Assertions.assertEquals("hwankixzbinjepu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitoredResourceListResponse model = new MonitoredResourceListResponse().withValue(Arrays.asList(
-            new MonitoredResourceInner().withId("gyncocpecfvmmc")
+            new MonitoredResourceInner().withId("typmrbpizcdrqjsd")
                 .withSendingMetrics(SendingMetricsStatus.DISABLED)
-                .withReasonForMetricsStatus("xlzevgbmqjqabcy")
+                .withReasonForMetricsStatus("fyhxde")
                 .withSendingLogs(SendingLogsStatus.DISABLED)
-                .withReasonForLogsStatus("kwlzuvccfwnfn"),
-            new MonitoredResourceInner().withId("cfionl")
+                .withReasonForLogsStatus("icwifsjtt"),
+            new MonitoredResourceInner().withId("fbishcbkha")
                 .withSendingMetrics(SendingMetricsStatus.ENABLED)
-                .withReasonForMetricsStatus("tqgtzxdpnqbqq")
-                .withSendingLogs(SendingLogsStatus.DISABLED)
-                .withReasonForLogsStatus("feallnwsu")))
-            .withNextLink("snjampmng");
+                .withReasonForMetricsStatus("eamdp")
+                .withSendingLogs(SendingLogsStatus.ENABLED)
+                .withReasonForLogsStatus("lpbuxwgipwhonowk")))
+            .withNextLink("hwankixzbinjepu");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceListResponse.class);
-        Assertions.assertEquals("gyncocpecfvmmc", model.value().get(0).id());
+        Assertions.assertEquals("typmrbpizcdrqjsd", model.value().get(0).id());
         Assertions.assertEquals(SendingMetricsStatus.DISABLED, model.value().get(0).sendingMetrics());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.value().get(0).reasonForMetricsStatus());
+        Assertions.assertEquals("fyhxde", model.value().get(0).reasonForMetricsStatus());
         Assertions.assertEquals(SendingLogsStatus.DISABLED, model.value().get(0).sendingLogs());
-        Assertions.assertEquals("kwlzuvccfwnfn", model.value().get(0).reasonForLogsStatus());
-        Assertions.assertEquals("snjampmng", model.nextLink());
+        Assertions.assertEquals("icwifsjtt", model.value().get(0).reasonForLogsStatus());
+        Assertions.assertEquals("hwankixzbinjepu", model.nextLink());
     }
 }

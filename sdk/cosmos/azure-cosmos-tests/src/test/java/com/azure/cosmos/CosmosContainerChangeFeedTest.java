@@ -825,7 +825,9 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         CosmosChangeFeedRequestOptions changeFeedRequestOptions =
             CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
         if (disableSplitHandling) {
-            ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
+            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
+              .getCosmosChangeFeedRequestOptionsAccessor()
+              .disableSplitHandling(changeFeedRequestOptions);
         }
 
         try {

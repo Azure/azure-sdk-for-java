@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ActiveDirectoryAuthEnum;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ArmServerKeyType;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.AzureManagedDiskPerformanceTiers;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForUpdate;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfigForPatch;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.AzureManagedDiskPerformanceTier;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.BackupForPatch;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryptionType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.IdentityType;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PasswordAuthEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindowForPatch;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MicrosoftEntraAuth;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PasswordBasedAuth;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReadReplicaPromoteMode;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ReadReplicaPromoteOption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationPromoteOption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Server;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.SkuForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.SkuTier;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageAutoGrow;
@@ -34,223 +34,264 @@ import java.util.Map;
 public final class ServersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerUpdateWithDataEncryptionEnabled.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ServersPromoteReplicaAsForcedSwitchover.json
      */
     /**
-     * Sample code: ServerUpdateWithDataEncryptionEnabled.
+     * Sample code: Switch over a read replica to primary server with forced data synchronization. Meaning that it
+     * doesn't wait for data in the read replica to be synchronized with its source server before it initiates the
+     * switching of roles between the read replica and the primary server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverUpdateWithDataEncryptionEnabled(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void
+        switchOverAReadReplicaToPrimaryServerWithForcedDataSynchronizationMeaningThatItDoesnTWaitForDataInTheReadReplicaToBeSynchronizedWithItsSourceServerBeforeItInitiatesTheSwitchingOfRolesBetweenTheReadReplicaAndThePrimaryServer(
+            com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         Server resource = manager.servers()
-            .getByResourceGroupWithResponse("TestGroup", "pgtestsvc4", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withSku(new Sku().withName("Standard_D8s_v3").withTier(SkuTier.GENERAL_PURPOSE))
+            .withReplica(new Replica().withPromoteMode(ReadReplicaPromoteMode.SWITCHOVER)
+                .withPromoteOption(ReadReplicaPromoteOption.FORCED))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ServersPromoteReplicaAsPlannedSwitchover.json
+     */
+    /**
+     * Sample code: Switch over a read replica to primary server with planned data synchronization. Meaning that it
+     * waits for data in the read replica to be fully synchronized with its source server before it initiates the
+     * switching of roles between the read replica and the primary server.
+     * 
+     * @param manager Entry point to PostgreSqlManager.
+     */
+    public static void
+        switchOverAReadReplicaToPrimaryServerWithPlannedDataSynchronizationMeaningThatItWaitsForDataInTheReadReplicaToBeFullySynchronizedWithItsSourceServerBeforeItInitiatesTheSwitchingOfRolesBetweenTheReadReplicaAndThePrimaryServer(
+            com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withReplica(new Replica().withPromoteMode(ReadReplicaPromoteMode.SWITCHOVER)
+                .withPromoteOption(ReadReplicaPromoteOption.PLANNED))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ServersUpdateWithMicrosoftEntraEnabled.json
+     */
+    /**
+     * Sample code: Update an existing server with Microsoft Entra authentication enabled.
+     * 
+     * @param manager Entry point to PostgreSqlManager.
+     */
+    public static void updateAnExistingServerWithMicrosoftEntraAuthenticationEnabled(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withSku(new SkuForPatch().withName("Standard_D8s_v3").withTier(SkuTier.GENERAL_PURPOSE))
+            .withAdministratorLoginPassword("examplenewpassword")
+            .withStorage(new Storage().withStorageSizeGB(1024)
+                .withAutoGrow(StorageAutoGrow.DISABLED)
+                .withTier(AzureManagedDiskPerformanceTier.P30))
+            .withBackup(new BackupForPatch().withBackupRetentionDays(20))
+            .withAuthConfig(new AuthConfigForPatch().withActiveDirectoryAuth(MicrosoftEntraAuth.ENABLED)
+                .withPasswordAuth(PasswordBasedAuth.ENABLED)
+                .withTenantId("tttttt-tttt-tttt-tttt-tttttttttttt"))
+            .withCreateMode(CreateModeForPatch.UPDATE)
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ServersUpdateWithDataEncryptionEnabledAutoUpdate.json
+     */
+    /**
+     * Sample code: Update an existing server with data encryption based on customer managed key with automatic key
+     * version update.
+     * 
+     * @param manager Entry point to PostgreSqlManager.
+     */
+    public static void updateAnExistingServerWithDataEncryptionBasedOnCustomerManagedKeyWithAutomaticKeyVersionUpdate(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withSku(new SkuForPatch().withName("Standard_D8s_v3").withTier(SkuTier.GENERAL_PURPOSE))
             .withIdentity(new UserAssignedIdentity().withUserAssignedIdentities(mapOf(
-                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-usermanagedidentity",
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplegeoredundantidentity",
                 new UserIdentity(),
-                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity",
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity",
                 new UserIdentity())).withType(IdentityType.USER_ASSIGNED))
-            .withAdministratorLoginPassword("newpassword")
-            .withBackup(new Backup().withBackupRetentionDays(20))
+            .withAdministratorLoginPassword("examplenewpassword")
+            .withBackup(new BackupForPatch().withBackupRetentionDays(20))
             .withDataEncryption(new DataEncryption().withPrimaryKeyUri("fakeTokenPlaceholder")
                 .withPrimaryUserAssignedIdentityId(
-                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity")
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity")
                 .withGeoBackupKeyUri("fakeTokenPlaceholder")
                 .withGeoBackupUserAssignedIdentityId(
-                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-usermanagedidentity")
-                .withType(ArmServerKeyType.AZURE_KEY_VAULT))
-            .withCreateMode(CreateModeForUpdate.UPDATE)
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplegeoredundantidentity")
+                .withType(DataEncryptionType.AZURE_KEY_VAULT))
+            .withCreateMode(CreateModeForPatch.UPDATE)
             .apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * PromoteReplicaAsPlannedSwitchover.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ServersUpdateWithMajorVersionUpgrade.json
      */
     /**
-     * Sample code: SwitchOver a replica server as planned, i.e. it will wait for replication to complete before
-     * promoting replica as Primary and original primary as replica.
+     * Sample code: Update an existing server to upgrade the major version of PostgreSQL database engine.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void
-        switchOverAReplicaServerAsPlannedIEItWillWaitForReplicationToCompleteBeforePromotingReplicaAsPrimaryAndOriginalPrimaryAsReplica(
-            com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        Server resource = manager.servers()
-            .getByResourceGroupWithResponse("testResourceGroup", "pgtestsvc4-replica", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withReplica(new Replica().withPromoteMode(ReadReplicaPromoteMode.SWITCHOVER)
-                .withPromoteOption(ReplicationPromoteOption.PLANNED))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * PromoteReplicaAsForcedSwitchover.json
-     */
-    /**
-     * Sample code: SwitchOver a replica server as forced, i.e. it will replica as Primary and original primary as
-     * replica immediately without waiting for primary and replica to be in sync.
-     * 
-     * @param manager Entry point to PostgreSqlManager.
-     */
-    public static void
-        switchOverAReplicaServerAsForcedIEItWillReplicaAsPrimaryAndOriginalPrimaryAsReplicaImmediatelyWithoutWaitingForPrimaryAndReplicaToBeInSync(
-            com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        Server resource = manager.servers()
-            .getByResourceGroupWithResponse("testResourceGroup", "pgtestsvc4-replica", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withReplica(new Replica().withPromoteMode(ReadReplicaPromoteMode.SWITCHOVER)
-                .withPromoteOption(ReplicationPromoteOption.FORCED))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerUpdate.json
-     */
-    /**
-     * Sample code: ServerUpdate.
-     * 
-     * @param manager Entry point to PostgreSqlManager.
-     */
-    public static void serverUpdate(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        Server resource = manager.servers()
-            .getByResourceGroupWithResponse("TestGroup", "pgtestsvc4", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withSku(new Sku().withName("Standard_D8s_v3").withTier(SkuTier.GENERAL_PURPOSE))
-            .withAdministratorLoginPassword("newpassword")
-            .withStorage(new Storage().withStorageSizeGB(1024)
-                .withAutoGrow(StorageAutoGrow.ENABLED)
-                .withTier(AzureManagedDiskPerformanceTiers.P30))
-            .withBackup(new Backup().withBackupRetentionDays(20))
-            .withCreateMode(CreateModeForUpdate.UPDATE)
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerUpdateWithMajorVersionUpgrade.json
-     */
-    /**
-     * Sample code: ServerUpdateWithMajorVersionUpgrade.
-     * 
-     * @param manager Entry point to PostgreSqlManager.
-     */
-    public static void serverUpdateWithMajorVersionUpgrade(
+    public static void updateAnExistingServerToUpgradeTheMajorVersionOfPostgreSQLDatabaseEngine(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         Server resource = manager.servers()
-            .getByResourceGroupWithResponse("testrg", "pgtestsvc4", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withVersion(ServerVersion.ONE_SIX).withCreateMode(CreateModeForUpdate.UPDATE).apply();
+        resource.update().withVersion(PostgresMajorVersion.ONE_SEVEN).withCreateMode(CreateModeForPatch.UPDATE).apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerUpdateWithCustomerMaintenanceWindow.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ServersUpdateWithCustomMaintenanceWindow.json
      */
     /**
-     * Sample code: ServerUpdateWithCustomerMaintenanceWindow.
+     * Sample code: Update an existing server with custom maintenance window.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverUpdateWithCustomerMaintenanceWindow(
+    public static void updateAnExistingServerWithCustomMaintenanceWindow(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         Server resource = manager.servers()
-            .getByResourceGroupWithResponse("testrg", "pgtestsvc4", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withMaintenanceWindow(new MaintenanceWindow().withCustomWindow("Enabled")
+            .withMaintenanceWindow(new MaintenanceWindowForPatch().withCustomWindow("Enabled")
                 .withStartHour(8)
                 .withStartMinute(0)
                 .withDayOfWeek(0))
-            .withCreateMode(CreateModeForUpdate.UPDATE)
+            .withCreateMode(CreateModeForPatch.UPDATE)
             .apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerUpdateWithMicrosoftEntraEnabled.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ServersUpdateWithDataEncryptionEnabled.json
      */
     /**
-     * Sample code: ServerUpdateWithMicrosoftEntraEnabled.
+     * Sample code: Update an existing server with data encryption based on customer managed key.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverUpdateWithMicrosoftEntraEnabled(
+    public static void updateAnExistingServerWithDataEncryptionBasedOnCustomerManagedKey(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         Server resource = manager.servers()
-            .getByResourceGroupWithResponse("TestGroup", "pgtestsvc4", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withSku(new Sku().withName("Standard_D8s_v3").withTier(SkuTier.GENERAL_PURPOSE))
-            .withAdministratorLoginPassword("newpassword")
-            .withStorage(new Storage().withStorageSizeGB(1024)
-                .withAutoGrow(StorageAutoGrow.DISABLED)
-                .withTier(AzureManagedDiskPerformanceTiers.P30))
-            .withBackup(new Backup().withBackupRetentionDays(20))
-            .withAuthConfig(new AuthConfig().withActiveDirectoryAuth(ActiveDirectoryAuthEnum.ENABLED)
-                .withPasswordAuth(PasswordAuthEnum.ENABLED)
-                .withTenantId("tttttt-tttt-tttt-tttt-tttttttttttt"))
-            .withCreateMode(CreateModeForUpdate.UPDATE)
+            .withSku(new SkuForPatch().withName("Standard_D8s_v3").withTier(SkuTier.GENERAL_PURPOSE))
+            .withIdentity(new UserAssignedIdentity().withUserAssignedIdentities(mapOf(
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplegeoredundantidentity",
+                new UserIdentity(),
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity",
+                new UserIdentity())).withType(IdentityType.USER_ASSIGNED))
+            .withAdministratorLoginPassword("examplenewpassword")
+            .withBackup(new BackupForPatch().withBackupRetentionDays(20))
+            .withDataEncryption(new DataEncryption().withPrimaryKeyUri("fakeTokenPlaceholder")
+                .withPrimaryUserAssignedIdentityId(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity")
+                .withGeoBackupKeyUri("fakeTokenPlaceholder")
+                .withGeoBackupUserAssignedIdentityId(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplegeoredundantidentity")
+                .withType(DataEncryptionType.AZURE_KEY_VAULT))
+            .withCreateMode(CreateModeForPatch.UPDATE)
             .apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * PromoteReplicaAsForcedStandaloneServer.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/ServersUpdate.json
      */
     /**
-     * Sample code: Promote a replica server as a Standalone server as forced, i.e. it will promote a replica server
-     * immediately without waiting for primary and replica to be in sync.
+     * Sample code: Update an existing server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void
-        promoteAReplicaServerAsAStandaloneServerAsForcedIEItWillPromoteAReplicaServerImmediatelyWithoutWaitingForPrimaryAndReplicaToBeInSync(
-            com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        updateAnExistingServer(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         Server resource = manager.servers()
-            .getByResourceGroupWithResponse("testResourceGroup", "pgtestsvc4-replica", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withReplica(new Replica().withPromoteMode(ReadReplicaPromoteMode.STANDALONE)
-                .withPromoteOption(ReplicationPromoteOption.FORCED))
+            .withSku(new SkuForPatch().withName("Standard_D8s_v3").withTier(SkuTier.GENERAL_PURPOSE))
+            .withAdministratorLoginPassword("examplenewpassword")
+            .withStorage(new Storage().withStorageSizeGB(1024)
+                .withAutoGrow(StorageAutoGrow.ENABLED)
+                .withTier(AzureManagedDiskPerformanceTier.P30))
+            .withBackup(new BackupForPatch().withBackupRetentionDays(20))
+            .withCreateMode(CreateModeForPatch.UPDATE)
             .apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * PromoteReplicaAsPlannedStandaloneServer.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ServersPromoteReplicaAsForcedStandaloneServer.json
      */
     /**
-     * Sample code: Promote a replica server as a Standalone server as planned, i.e. it will wait for replication to
-     * complete.
+     * Sample code: Promote a read replica to a standalone server with forced data synchronization. Meaning that it
+     * doesn't wait for data in the read replica to be synchronized with its source server before it initiates the
+     * promotion to a standalone server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void promoteAReplicaServerAsAStandaloneServerAsPlannedIEItWillWaitForReplicationToComplete(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void
+        promoteAReadReplicaToAStandaloneServerWithForcedDataSynchronizationMeaningThatItDoesnTWaitForDataInTheReadReplicaToBeSynchronizedWithItsSourceServerBeforeItInitiatesThePromotionToAStandaloneServer(
+            com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         Server resource = manager.servers()
-            .getByResourceGroupWithResponse("testResourceGroup", "pgtestsvc4-replica", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withReplica(new Replica().withPromoteMode(ReadReplicaPromoteMode.STANDALONE)
-                .withPromoteOption(ReplicationPromoteOption.PLANNED))
+                .withPromoteOption(ReadReplicaPromoteOption.FORCED))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ServersPromoteReplicaAsPlannedStandaloneServer.json
+     */
+    /**
+     * Sample code: Promote a read replica to a standalone server with planned data synchronization. Meaning that it
+     * waits for data in the read replica to be fully synchronized with its source server before it initiates the
+     * promotion to a standalone server.
+     * 
+     * @param manager Entry point to PostgreSqlManager.
+     */
+    public static void
+        promoteAReadReplicaToAStandaloneServerWithPlannedDataSynchronizationMeaningThatItWaitsForDataInTheReadReplicaToBeFullySynchronizedWithItsSourceServerBeforeItInitiatesThePromotionToAStandaloneServer(
+            com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withReplica(new Replica().withPromoteMode(ReadReplicaPromoteMode.STANDALONE)
+                .withPromoteOption(ReadReplicaPromoteOption.PLANNED))
             .apply();
     }
 

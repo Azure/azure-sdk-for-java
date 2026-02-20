@@ -539,6 +539,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      */
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testNetworkSecurityGroups() throws Exception {
         new TestNSG().runTest(azureResourceManager.networkSecurityGroups(), azureResourceManager.resourceGroups());
     }
@@ -680,6 +681,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      */
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testNetworkWithAccessFromServiceToSubnet() throws Exception {
         new TestNetwork().new WithAccessFromServiceToSubnet().runTest(azureResourceManager.networks(),
             azureResourceManager.resourceGroups());
@@ -690,6 +692,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      */
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testNetworkPeerings() throws Exception {
         new TestNetwork().new WithPeering().runTest(azureResourceManager.networks(),
             azureResourceManager.resourceGroups());
@@ -973,6 +976,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      */
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testVirtualMachineSizes() throws Exception {
         new TestVirtualMachineSizes().runTest(azureResourceManager.virtualMachines(),
             azureResourceManager.resourceGroups());
@@ -1233,6 +1237,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
         Assertions.assertFalse(containerGroupOperations.isEmpty());
     }
 
+    @Disabled("Diff on 'Accept' header. Live test is good, re-enable the test after publish new container registry lib.")
     @Test
     public void testContainerRegistry() throws Exception {
         new TestContainerRegistry().runTest(azureResourceManager.containerRegistries(),

@@ -3,12 +3,12 @@
 
 package com.azure.resourcemanager.appservice;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Test;
 
 public class ServiceTests extends AppServiceTest {
 
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     @Test
     public void canAccess() {
         appServiceManager.webApps().list().stream().count();

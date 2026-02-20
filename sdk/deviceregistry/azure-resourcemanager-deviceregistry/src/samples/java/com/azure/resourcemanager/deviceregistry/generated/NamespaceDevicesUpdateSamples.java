@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class NamespaceDevicesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_NamespaceDevice.json
+     * x-ms-original-file: 2025-11-01-preview/Update_NamespaceDevice.json
      */
     /**
      * Sample code: Update_NamespaceDevices.

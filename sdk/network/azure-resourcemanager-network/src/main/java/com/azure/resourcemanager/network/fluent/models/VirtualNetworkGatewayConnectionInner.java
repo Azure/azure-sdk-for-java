@@ -11,6 +11,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.CertificateAuthentication;
+import com.azure.resourcemanager.network.models.ConnectionAuthenticationType;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -707,6 +709,56 @@ public final class VirtualNetworkGatewayConnectionInner extends Resource {
             this.innerProperties = new VirtualNetworkGatewayConnectionPropertiesFormatInner();
         }
         this.innerProperties().withEnablePrivateLinkFastPath(enablePrivateLinkFastPath);
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: Gateway connection authentication type.
+     * 
+     * @return the authenticationType value.
+     */
+    public ConnectionAuthenticationType authenticationType() {
+        return this.innerProperties() == null ? null : this.innerProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: Gateway connection authentication type.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner
+        withAuthenticationType(ConnectionAuthenticationType authenticationType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayConnectionPropertiesFormatInner();
+        }
+        this.innerProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the certificateAuthentication property: Certificate Authentication information for a certificate based
+     * authentication connection.
+     * 
+     * @return the certificateAuthentication value.
+     */
+    public CertificateAuthentication certificateAuthentication() {
+        return this.innerProperties() == null ? null : this.innerProperties().certificateAuthentication();
+    }
+
+    /**
+     * Set the certificateAuthentication property: Certificate Authentication information for a certificate based
+     * authentication connection.
+     * 
+     * @param certificateAuthentication the certificateAuthentication value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner
+        withCertificateAuthentication(CertificateAuthentication certificateAuthentication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayConnectionPropertiesFormatInner();
+        }
+        this.innerProperties().withCertificateAuthentication(certificateAuthentication);
         return this;
     }
 

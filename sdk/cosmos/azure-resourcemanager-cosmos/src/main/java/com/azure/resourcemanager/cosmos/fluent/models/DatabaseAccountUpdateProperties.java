@@ -18,6 +18,7 @@ import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
+import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
@@ -187,6 +188,16 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
      * Flag to indicate enabling/disabling of PerRegionPerPartitionAutoscale feature on the account
      */
     private Boolean enablePerRegionPerPartitionAutoscale;
+
+    /*
+     * Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
+     */
+    private Boolean enablePriorityBasedExecution;
+
+    /*
+     * Enum to indicate default Priority Level of request for Priority Based Execution.
+     */
+    private DefaultPriorityLevel defaultPriorityLevel;
 
     /**
      * Creates an instance of DatabaseAccountUpdateProperties class.
@@ -818,6 +829,50 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
     }
 
     /**
+     * Get the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     * 
+     * @return the enablePriorityBasedExecution value.
+     */
+    public Boolean enablePriorityBasedExecution() {
+        return this.enablePriorityBasedExecution;
+    }
+
+    /**
+     * Set the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     * 
+     * @param enablePriorityBasedExecution the enablePriorityBasedExecution value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withEnablePriorityBasedExecution(Boolean enablePriorityBasedExecution) {
+        this.enablePriorityBasedExecution = enablePriorityBasedExecution;
+        return this;
+    }
+
+    /**
+     * Get the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     * 
+     * @return the defaultPriorityLevel value.
+     */
+    public DefaultPriorityLevel defaultPriorityLevel() {
+        return this.defaultPriorityLevel;
+    }
+
+    /**
+     * Set the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     * 
+     * @param defaultPriorityLevel the defaultPriorityLevel value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withDefaultPriorityLevel(DefaultPriorityLevel defaultPriorityLevel) {
+        this.defaultPriorityLevel = defaultPriorityLevel;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -899,6 +954,9 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
         jsonWriter.writeBooleanField("enableBurstCapacity", this.enableBurstCapacity);
         jsonWriter.writeStringField("customerManagedKeyStatus", this.customerManagedKeyStatus);
         jsonWriter.writeBooleanField("enablePerRegionPerPartitionAutoscale", this.enablePerRegionPerPartitionAutoscale);
+        jsonWriter.writeBooleanField("enablePriorityBasedExecution", this.enablePriorityBasedExecution);
+        jsonWriter.writeStringField("defaultPriorityLevel",
+            this.defaultPriorityLevel == null ? null : this.defaultPriorityLevel.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -1003,6 +1061,12 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
                 } else if ("enablePerRegionPerPartitionAutoscale".equals(fieldName)) {
                     deserializedDatabaseAccountUpdateProperties.enablePerRegionPerPartitionAutoscale
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enablePriorityBasedExecution".equals(fieldName)) {
+                    deserializedDatabaseAccountUpdateProperties.enablePriorityBasedExecution
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultPriorityLevel".equals(fieldName)) {
+                    deserializedDatabaseAccountUpdateProperties.defaultPriorityLevel
+                        = DefaultPriorityLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

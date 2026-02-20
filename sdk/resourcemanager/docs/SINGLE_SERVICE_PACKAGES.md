@@ -1069,18 +1069,6 @@ service
 
 <br/>
 <details>
-<summary> hdinsight-containers </summary>
-
-* [package-preview-2024-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks#tag-package-preview-2024-05)
-    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight-containers/1.0.0-beta.3)
-* [package-preview-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks#tag-package-preview-2023-11)
-    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight-containers/1.0.0-beta.2)
-* [package-2023-06-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks#tag-package-2023-06-preview)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight-containers/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
 <summary> healthbot </summary>
 
 * [package-2025-05-25](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthbot/resource-manager#tag-package-2025-05-25)
@@ -1538,17 +1526,6 @@ service
 * [package-preview-2023-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites#tag-package-preview-2023-10)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-migrationdiscoverysap/1.0.0-beta.2)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-migrationdiscoverysap/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
-<summary> mixedreality </summary>
-
-* [package-2021-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mixedreality/resource-manager#tag-package-2021-01)
-    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mixedreality/1.0.0)
-    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mixedreality/1.0.0-beta.3)
-    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mixedreality/1.0.0-beta.2)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mixedreality/1.0.0-beta.1)
 </details>
 
 <br/>

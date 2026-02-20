@@ -11,7 +11,6 @@ import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingForm
 import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addModelIdJson;
 import static com.azure.ai.openai.implementation.OpenAIUtils.addAzureVersionToRequestOptions;
 import static com.azure.core.util.FluxUtil.monoError;
-
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;

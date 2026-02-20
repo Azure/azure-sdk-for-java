@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class HostsGetRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HostsGetRequest model = BinaryData.fromString("{\"vmIds\":[\"uhrzayvvt\"],\"userEmail\":\"gvdfgiotkftutq\"}")
+        HostsGetRequest model = BinaryData.fromString("{\"vmIds\":[\"vsovmyokac\"],\"userEmail\":\"pkwlhz\"}")
             .toObject(HostsGetRequest.class);
-        Assertions.assertEquals("uhrzayvvt", model.vmIds().get(0));
-        Assertions.assertEquals("gvdfgiotkftutq", model.userEmail());
+        Assertions.assertEquals("vsovmyokac", model.vmIds().get(0));
+        Assertions.assertEquals("pkwlhz", model.userEmail());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HostsGetRequest model
-            = new HostsGetRequest().withVmIds(Arrays.asList("uhrzayvvt")).withUserEmail("gvdfgiotkftutq");
+        HostsGetRequest model = new HostsGetRequest().withVmIds(Arrays.asList("vsovmyokac")).withUserEmail("pkwlhz");
         model = BinaryData.fromObject(model).toObject(HostsGetRequest.class);
-        Assertions.assertEquals("uhrzayvvt", model.vmIds().get(0));
-        Assertions.assertEquals("gvdfgiotkftutq", model.userEmail());
+        Assertions.assertEquals("vsovmyokac", model.vmIds().get(0));
+        Assertions.assertEquals("pkwlhz", model.userEmail());
     }
 }

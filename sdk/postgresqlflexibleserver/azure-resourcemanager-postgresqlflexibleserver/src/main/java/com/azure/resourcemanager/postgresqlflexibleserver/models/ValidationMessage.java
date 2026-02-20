@@ -17,12 +17,12 @@ import java.io.IOException;
 @Fluent
 public final class ValidationMessage implements JsonSerializable<ValidationMessage> {
     /*
-     * Severity of validation message
+     * Severity of validation message.
      */
     private ValidationState state;
 
     /*
-     * Validation message string
+     * Validation message string.
      */
     private String message;
 

@@ -14,27 +14,27 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Information describing the identities associated with this application.
+ * Identities associated with a server.
  */
 @Fluent
 public final class UserAssignedIdentity implements JsonSerializable<UserAssignedIdentity> {
     /*
-     * represents user assigned identities map.
+     * Map of user assigned managed identities.
      */
     private Map<String, UserIdentity> userAssignedIdentities;
 
     /*
-     * the identity principal Id of the server.
+     * Identifier of the object of the service principal associated to the user assigned managed identity.
      */
     private String principalId;
 
     /*
-     * the types of identities associated with this resource
+     * Types of identities associated with a server.
      */
     private IdentityType type;
 
     /*
-     * Tenant id of the server.
+     * Identifier of the tenant of a server.
      */
     private String tenantId;
 
@@ -45,7 +45,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Get the userAssignedIdentities property: represents user assigned identities map.
+     * Get the userAssignedIdentities property: Map of user assigned managed identities.
      * 
      * @return the userAssignedIdentities value.
      */
@@ -54,7 +54,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Set the userAssignedIdentities property: represents user assigned identities map.
+     * Set the userAssignedIdentities property: Map of user assigned managed identities.
      * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the UserAssignedIdentity object itself.
@@ -65,7 +65,8 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Get the principalId property: the identity principal Id of the server.
+     * Get the principalId property: Identifier of the object of the service principal associated to the user assigned
+     * managed identity.
      * 
      * @return the principalId value.
      */
@@ -74,7 +75,8 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Set the principalId property: the identity principal Id of the server.
+     * Set the principalId property: Identifier of the object of the service principal associated to the user assigned
+     * managed identity.
      * 
      * @param principalId the principalId value to set.
      * @return the UserAssignedIdentity object itself.
@@ -85,7 +87,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Get the type property: the types of identities associated with this resource.
+     * Get the type property: Types of identities associated with a server.
      * 
      * @return the type value.
      */
@@ -94,7 +96,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Set the type property: the types of identities associated with this resource.
+     * Set the type property: Types of identities associated with a server.
      * 
      * @param type the type value to set.
      * @return the UserAssignedIdentity object itself.
@@ -105,7 +107,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Get the tenantId property: Tenant id of the server.
+     * Get the tenantId property: Identifier of the tenant of a server.
      * 
      * @return the tenantId value.
      */

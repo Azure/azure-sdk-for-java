@@ -1,6 +1,6 @@
 ## Release History
 
-### 6.1.0-beta.1 (Unreleased)
+### 7.1.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -8,7 +8,35 @@
 
 #### Bugs Fixed
 
+* Fixing bug where count query defined in a Java text block in `@Query` causes a class cast exception - See [Bug #47910](https://github.com/Azure/azure-sdk-for-java/issues/47910).
+* Also fixed the same bug for sum query.
+
 #### Other Changes
+
+### 7.0.0 (2026-02-03)
+
+#### Other Changes
+* regular release
+
+### 7.0.0-beta.1 (2025-12-23)
+
+#### Other Changes
+* regular release
+
+### 6.1.0 (2025-12-16)
+
+#### Other Changes
+* regular release
+
+### 5.24.1 (2025-12-09)
+
+#### Other Changes
+* regular release
+
+### 5.24.0 (2025-12-04)
+
+#### Other Changes
+* regular release
 
 ### 6.0.0 (2025-09-22)
 

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * permissionClassificationType.
+ * Represents a permission classification type.
  */
 public final class MicrosoftGraphPermissionClassificationType
     extends ExpandableStringEnum<MicrosoftGraphPermissionClassificationType> {

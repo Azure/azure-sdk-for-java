@@ -43,6 +43,12 @@ public final class CredentialType extends ExpandableStringEnum<CredentialType> {
     public static final CredentialType NONE = fromString("None");
 
     /**
+     * Agentic identity credential.
+     */
+    @Generated
+    public static final CredentialType AGENTIC_IDENTITY = fromString("AgenticIdentityToken");
+
+    /**
      * Creates a new instance of CredentialType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

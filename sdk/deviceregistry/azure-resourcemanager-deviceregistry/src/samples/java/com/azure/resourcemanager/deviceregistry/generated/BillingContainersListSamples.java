@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class BillingContainersListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_BillingContainers_BySubscription.json
+     * x-ms-original-file: 2025-11-01-preview/List_BillingContainers_BySubscription.json
      */
     /**
      * Sample code: List_BillingContainers_BySubscription.

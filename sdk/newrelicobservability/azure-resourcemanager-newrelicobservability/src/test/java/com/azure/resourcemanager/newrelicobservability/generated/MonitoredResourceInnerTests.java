@@ -14,27 +14,27 @@ public final class MonitoredResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitoredResourceInner model = BinaryData.fromString(
-            "{\"id\":\"scxaq\",\"sendingMetrics\":\"Disabled\",\"reasonForMetricsStatus\":\"hcbonqvpkvlr\",\"sendingLogs\":\"Enabled\",\"reasonForLogsStatus\":\"ase\"}")
+            "{\"id\":\"mryw\",\"sendingMetrics\":\"Disabled\",\"reasonForMetricsStatus\":\"qftiy\",\"sendingLogs\":\"Disabled\",\"reasonForLogsStatus\":\"kcqvyxl\"}")
             .toObject(MonitoredResourceInner.class);
-        Assertions.assertEquals("scxaq", model.id());
+        Assertions.assertEquals("mryw", model.id());
         Assertions.assertEquals(SendingMetricsStatus.DISABLED, model.sendingMetrics());
-        Assertions.assertEquals("hcbonqvpkvlr", model.reasonForMetricsStatus());
-        Assertions.assertEquals(SendingLogsStatus.ENABLED, model.sendingLogs());
-        Assertions.assertEquals("ase", model.reasonForLogsStatus());
+        Assertions.assertEquals("qftiy", model.reasonForMetricsStatus());
+        Assertions.assertEquals(SendingLogsStatus.DISABLED, model.sendingLogs());
+        Assertions.assertEquals("kcqvyxl", model.reasonForLogsStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoredResourceInner model = new MonitoredResourceInner().withId("scxaq")
+        MonitoredResourceInner model = new MonitoredResourceInner().withId("mryw")
             .withSendingMetrics(SendingMetricsStatus.DISABLED)
-            .withReasonForMetricsStatus("hcbonqvpkvlr")
-            .withSendingLogs(SendingLogsStatus.ENABLED)
-            .withReasonForLogsStatus("ase");
+            .withReasonForMetricsStatus("qftiy")
+            .withSendingLogs(SendingLogsStatus.DISABLED)
+            .withReasonForLogsStatus("kcqvyxl");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceInner.class);
-        Assertions.assertEquals("scxaq", model.id());
+        Assertions.assertEquals("mryw", model.id());
         Assertions.assertEquals(SendingMetricsStatus.DISABLED, model.sendingMetrics());
-        Assertions.assertEquals("hcbonqvpkvlr", model.reasonForMetricsStatus());
-        Assertions.assertEquals(SendingLogsStatus.ENABLED, model.sendingLogs());
-        Assertions.assertEquals("ase", model.reasonForLogsStatus());
+        Assertions.assertEquals("qftiy", model.reasonForMetricsStatus());
+        Assertions.assertEquals(SendingLogsStatus.DISABLED, model.sendingLogs());
+        Assertions.assertEquals("kcqvyxl", model.reasonForLogsStatus());
     }
 }

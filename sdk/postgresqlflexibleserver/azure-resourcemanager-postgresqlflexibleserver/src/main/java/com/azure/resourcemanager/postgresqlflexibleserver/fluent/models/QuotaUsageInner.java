@@ -13,12 +13,12 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.NameProperty;
 import java.io.IOException;
 
 /**
- * Quota usage for flexible servers.
+ * Quota usage for servers.
  */
 @Fluent
 public final class QuotaUsageInner implements JsonSerializable<QuotaUsageInner> {
     /*
-     * Name of quota usage for flexible servers
+     * Name of quota usage for servers
      */
     private NameProperty name;
 
@@ -49,7 +49,7 @@ public final class QuotaUsageInner implements JsonSerializable<QuotaUsageInner> 
     }
 
     /**
-     * Get the name property: Name of quota usage for flexible servers.
+     * Get the name property: Name of quota usage for servers.
      * 
      * @return the name value.
      */
@@ -58,7 +58,7 @@ public final class QuotaUsageInner implements JsonSerializable<QuotaUsageInner> 
     }
 
     /**
-     * Set the name property: Name of quota usage for flexible servers.
+     * Set the name property: Name of quota usage for servers.
      * 
      * @param name the name value to set.
      * @return the QuotaUsageInner object itself.

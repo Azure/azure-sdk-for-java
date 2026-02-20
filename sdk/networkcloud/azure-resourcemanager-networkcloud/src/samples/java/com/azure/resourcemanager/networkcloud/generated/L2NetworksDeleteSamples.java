@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class L2NetworksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/L2Networks_Delete.
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/L2Networks_Delete.
      * json
      */
     /**

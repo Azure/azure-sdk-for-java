@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -32,6 +33,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ BlobCheckpointStore.class, EventHubClientBuilder.class})
+@ConditionalOnBean(AzureEventHubsProperties.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure.eventhubs.processor.checkpoint-store", name = { "container-name", "account-name" })
 class AzureBlobCheckpointStoreConfiguration {
 

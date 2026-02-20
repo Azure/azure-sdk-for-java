@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * userScopeTeamsAppInstallation.
+ * Represents an user scope teams app installation.
  */
 @Fluent
 public final class MicrosoftGraphUserScopeTeamsAppInstallation extends MicrosoftGraphTeamsAppInstallation {

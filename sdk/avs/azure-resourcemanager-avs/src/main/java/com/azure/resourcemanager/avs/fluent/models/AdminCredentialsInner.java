@@ -79,6 +79,14 @@ public final class AdminCredentialsInner implements JsonSerializable<AdminCreden
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

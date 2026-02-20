@@ -13,10 +13,12 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.MetricAlertAction;
 import com.azure.resourcemanager.monitor.models.MetricAlertCriteria;
+import com.azure.resourcemanager.monitor.models.ResolveConfiguration;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An alert rule.
@@ -24,7 +26,7 @@ import java.util.List;
 @Fluent
 public final class MetricAlertProperties implements JsonSerializable<MetricAlertProperties> {
     /*
-     * the description of the metric alert that will be included in the alert email.
+     * The description of the metric alert that will be included in the alert email.
      */
     private String description;
 
@@ -34,49 +36,55 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     private int severity;
 
     /*
-     * the flag that indicates whether the metric alert is enabled.
+     * The flag that indicates whether the metric alert is enabled.
      */
     private boolean enabled;
 
     /*
-     * the list of resource id's that this metric alert is scoped to.
+     * The list of resource id's that this metric alert is scoped to. You cannot change the scope of a metric rule based
+     * on logs.
      */
     private List<String> scopes;
 
     /*
-     * how often the metric alert is evaluated represented in ISO 8601 duration format.
+     * How often the metric alert is evaluated represented in ISO 8601 duration format.
      */
     private Duration evaluationFrequency;
 
     /*
-     * the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.
+     * The period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.
      */
     private Duration windowSize;
 
     /*
-     * the resource type of the target resource(s) on which the alert is created/updated. Mandatory if the scope
+     * The resource type of the target resource(s) on which the alert is created/updated. Mandatory if the scope
      * contains a subscription, resource group, or more than one resource.
      */
     private String targetResourceType;
 
     /*
-     * the region of the target resource(s) on which the alert is created/updated. Mandatory if the scope contains a
+     * The region of the target resource(s) on which the alert is created/updated. Mandatory if the scope contains a
      * subscription, resource group, or more than one resource.
      */
     private String targetResourceRegion;
 
     /*
-     * defines the specific alert criteria information.
+     * Defines the specific alert criteria information.
      */
     private MetricAlertCriteria criteria;
 
     /*
-     * the flag that indicates whether the alert should be auto resolved or not. The default is true.
+     * The flag that indicates whether the alert should be auto resolved or not. The default is true.
      */
     private Boolean autoMitigate;
 
     /*
-     * the array of actions that are performed when the alert rule becomes active, and when an alert condition is
+     * The configuration for how the alert is resolved. Applicable for PromQLCriteria.
+     */
+    private ResolveConfiguration resolveConfiguration;
+
+    /*
+     * The array of actions that are performed when the alert rule becomes active, and when an alert condition is
      * resolved.
      */
     private List<MetricAlertAction> actions;
@@ -87,9 +95,19 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     private OffsetDateTime lastUpdatedTime;
 
     /*
-     * the value indicating whether this alert rule is migrated.
+     * The value indicating whether this alert rule is migrated.
      */
     private Boolean isMigrated;
+
+    /*
+     * The properties of an alert payload.
+     */
+    private Map<String, String> customProperties;
+
+    /*
+     * The properties of an action properties.
+     */
+    private Map<String, String> actionProperties;
 
     /**
      * Creates an instance of MetricAlertProperties class.
@@ -98,7 +116,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Get the description property: the description of the metric alert that will be included in the alert email.
+     * Get the description property: The description of the metric alert that will be included in the alert email.
      * 
      * @return the description value.
      */
@@ -107,7 +125,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Set the description property: the description of the metric alert that will be included in the alert email.
+     * Set the description property: The description of the metric alert that will be included in the alert email.
      * 
      * @param description the description value to set.
      * @return the MetricAlertProperties object itself.
@@ -138,7 +156,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Get the enabled property: the flag that indicates whether the metric alert is enabled.
+     * Get the enabled property: The flag that indicates whether the metric alert is enabled.
      * 
      * @return the enabled value.
      */
@@ -147,7 +165,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Set the enabled property: the flag that indicates whether the metric alert is enabled.
+     * Set the enabled property: The flag that indicates whether the metric alert is enabled.
      * 
      * @param enabled the enabled value to set.
      * @return the MetricAlertProperties object itself.
@@ -158,7 +176,8 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Get the scopes property: the list of resource id's that this metric alert is scoped to.
+     * Get the scopes property: The list of resource id's that this metric alert is scoped to. You cannot change the
+     * scope of a metric rule based on logs.
      * 
      * @return the scopes value.
      */
@@ -167,7 +186,8 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Set the scopes property: the list of resource id's that this metric alert is scoped to.
+     * Set the scopes property: The list of resource id's that this metric alert is scoped to. You cannot change the
+     * scope of a metric rule based on logs.
      * 
      * @param scopes the scopes value to set.
      * @return the MetricAlertProperties object itself.
@@ -178,7 +198,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Get the evaluationFrequency property: how often the metric alert is evaluated represented in ISO 8601 duration
+     * Get the evaluationFrequency property: How often the metric alert is evaluated represented in ISO 8601 duration
      * format.
      * 
      * @return the evaluationFrequency value.
@@ -188,7 +208,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Set the evaluationFrequency property: how often the metric alert is evaluated represented in ISO 8601 duration
+     * Set the evaluationFrequency property: How often the metric alert is evaluated represented in ISO 8601 duration
      * format.
      * 
      * @param evaluationFrequency the evaluationFrequency value to set.
@@ -200,7 +220,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Get the windowSize property: the period of time (in ISO 8601 duration format) that is used to monitor alert
+     * Get the windowSize property: The period of time (in ISO 8601 duration format) that is used to monitor alert
      * activity based on the threshold.
      * 
      * @return the windowSize value.
@@ -210,7 +230,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Set the windowSize property: the period of time (in ISO 8601 duration format) that is used to monitor alert
+     * Set the windowSize property: The period of time (in ISO 8601 duration format) that is used to monitor alert
      * activity based on the threshold.
      * 
      * @param windowSize the windowSize value to set.
@@ -222,7 +242,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Get the targetResourceType property: the resource type of the target resource(s) on which the alert is
+     * Get the targetResourceType property: The resource type of the target resource(s) on which the alert is
      * created/updated. Mandatory if the scope contains a subscription, resource group, or more than one resource.
      * 
      * @return the targetResourceType value.
@@ -232,7 +252,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Set the targetResourceType property: the resource type of the target resource(s) on which the alert is
+     * Set the targetResourceType property: The resource type of the target resource(s) on which the alert is
      * created/updated. Mandatory if the scope contains a subscription, resource group, or more than one resource.
      * 
      * @param targetResourceType the targetResourceType value to set.
@@ -244,7 +264,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Get the targetResourceRegion property: the region of the target resource(s) on which the alert is
+     * Get the targetResourceRegion property: The region of the target resource(s) on which the alert is
      * created/updated. Mandatory if the scope contains a subscription, resource group, or more than one resource.
      * 
      * @return the targetResourceRegion value.
@@ -254,7 +274,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Set the targetResourceRegion property: the region of the target resource(s) on which the alert is
+     * Set the targetResourceRegion property: The region of the target resource(s) on which the alert is
      * created/updated. Mandatory if the scope contains a subscription, resource group, or more than one resource.
      * 
      * @param targetResourceRegion the targetResourceRegion value to set.
@@ -266,7 +286,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Get the criteria property: defines the specific alert criteria information.
+     * Get the criteria property: Defines the specific alert criteria information.
      * 
      * @return the criteria value.
      */
@@ -275,7 +295,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Set the criteria property: defines the specific alert criteria information.
+     * Set the criteria property: Defines the specific alert criteria information.
      * 
      * @param criteria the criteria value to set.
      * @return the MetricAlertProperties object itself.
@@ -286,7 +306,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Get the autoMitigate property: the flag that indicates whether the alert should be auto resolved or not. The
+     * Get the autoMitigate property: The flag that indicates whether the alert should be auto resolved or not. The
      * default is true.
      * 
      * @return the autoMitigate value.
@@ -296,7 +316,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Set the autoMitigate property: the flag that indicates whether the alert should be auto resolved or not. The
+     * Set the autoMitigate property: The flag that indicates whether the alert should be auto resolved or not. The
      * default is true.
      * 
      * @param autoMitigate the autoMitigate value to set.
@@ -308,7 +328,29 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
+     * Get the resolveConfiguration property: The configuration for how the alert is resolved. Applicable for
+     * PromQLCriteria.
+     * 
+     * @return the resolveConfiguration value.
+     */
+    public ResolveConfiguration resolveConfiguration() {
+        return this.resolveConfiguration;
+    }
+
+    /**
+     * Set the resolveConfiguration property: The configuration for how the alert is resolved. Applicable for
+     * PromQLCriteria.
+     * 
+     * @param resolveConfiguration the resolveConfiguration value to set.
+     * @return the MetricAlertProperties object itself.
+     */
+    public MetricAlertProperties withResolveConfiguration(ResolveConfiguration resolveConfiguration) {
+        this.resolveConfiguration = resolveConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the actions property: The array of actions that are performed when the alert rule becomes active, and when an
      * alert condition is resolved.
      * 
      * @return the actions value.
@@ -318,7 +360,7 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
+     * Set the actions property: The array of actions that are performed when the alert rule becomes active, and when an
      * alert condition is resolved.
      * 
      * @param actions the actions value to set.
@@ -339,12 +381,52 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
     }
 
     /**
-     * Get the isMigrated property: the value indicating whether this alert rule is migrated.
+     * Get the isMigrated property: The value indicating whether this alert rule is migrated.
      * 
      * @return the isMigrated value.
      */
     public Boolean isMigrated() {
         return this.isMigrated;
+    }
+
+    /**
+     * Get the customProperties property: The properties of an alert payload.
+     * 
+     * @return the customProperties value.
+     */
+    public Map<String, String> customProperties() {
+        return this.customProperties;
+    }
+
+    /**
+     * Set the customProperties property: The properties of an alert payload.
+     * 
+     * @param customProperties the customProperties value to set.
+     * @return the MetricAlertProperties object itself.
+     */
+    public MetricAlertProperties withCustomProperties(Map<String, String> customProperties) {
+        this.customProperties = customProperties;
+        return this;
+    }
+
+    /**
+     * Get the actionProperties property: The properties of an action properties.
+     * 
+     * @return the actionProperties value.
+     */
+    public Map<String, String> actionProperties() {
+        return this.actionProperties;
+    }
+
+    /**
+     * Set the actionProperties property: The properties of an action properties.
+     * 
+     * @param actionProperties the actionProperties value to set.
+     * @return the MetricAlertProperties object itself.
+     */
+    public MetricAlertProperties withActionProperties(Map<String, String> actionProperties) {
+        this.actionProperties = actionProperties;
+        return this;
     }
 
     /**
@@ -362,16 +444,14 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
                 .log(new IllegalArgumentException(
                     "Missing required property evaluationFrequency in model MetricAlertProperties"));
         }
-        if (windowSize() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property windowSize in model MetricAlertProperties"));
-        }
         if (criteria() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property criteria in model MetricAlertProperties"));
         } else {
             criteria().validate();
+        }
+        if (resolveConfiguration() != null) {
+            resolveConfiguration().validate();
         }
         if (actions() != null) {
             actions().forEach(e -> e.validate());
@@ -391,13 +471,18 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
         jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("evaluationFrequency",
             CoreUtils.durationToStringWithDays(this.evaluationFrequency));
-        jsonWriter.writeStringField("windowSize", CoreUtils.durationToStringWithDays(this.windowSize));
         jsonWriter.writeJsonField("criteria", this.criteria);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("windowSize", CoreUtils.durationToStringWithDays(this.windowSize));
         jsonWriter.writeStringField("targetResourceType", this.targetResourceType);
         jsonWriter.writeStringField("targetResourceRegion", this.targetResourceRegion);
         jsonWriter.writeBooleanField("autoMitigate", this.autoMitigate);
+        jsonWriter.writeJsonField("resolveConfiguration", this.resolveConfiguration);
         jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("customProperties", this.customProperties,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("actionProperties", this.actionProperties,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -427,19 +512,21 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
                 } else if ("evaluationFrequency".equals(fieldName)) {
                     deserializedMetricAlertProperties.evaluationFrequency
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
-                } else if ("windowSize".equals(fieldName)) {
-                    deserializedMetricAlertProperties.windowSize
-                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("criteria".equals(fieldName)) {
                     deserializedMetricAlertProperties.criteria = MetricAlertCriteria.fromJson(reader);
                 } else if ("description".equals(fieldName)) {
                     deserializedMetricAlertProperties.description = reader.getString();
+                } else if ("windowSize".equals(fieldName)) {
+                    deserializedMetricAlertProperties.windowSize
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("targetResourceType".equals(fieldName)) {
                     deserializedMetricAlertProperties.targetResourceType = reader.getString();
                 } else if ("targetResourceRegion".equals(fieldName)) {
                     deserializedMetricAlertProperties.targetResourceRegion = reader.getString();
                 } else if ("autoMitigate".equals(fieldName)) {
                     deserializedMetricAlertProperties.autoMitigate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resolveConfiguration".equals(fieldName)) {
+                    deserializedMetricAlertProperties.resolveConfiguration = ResolveConfiguration.fromJson(reader);
                 } else if ("actions".equals(fieldName)) {
                     List<MetricAlertAction> actions = reader.readArray(reader1 -> MetricAlertAction.fromJson(reader1));
                     deserializedMetricAlertProperties.actions = actions;
@@ -448,6 +535,12 @@ public final class MetricAlertProperties implements JsonSerializable<MetricAlert
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("isMigrated".equals(fieldName)) {
                     deserializedMetricAlertProperties.isMigrated = reader.getNullable(JsonReader::getBoolean);
+                } else if ("customProperties".equals(fieldName)) {
+                    Map<String, String> customProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMetricAlertProperties.customProperties = customProperties;
+                } else if ("actionProperties".equals(fieldName)) {
+                    Map<String, String> actionProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMetricAlertProperties.actionProperties = actionProperties;
                 } else {
                     reader.skipChildren();
                 }

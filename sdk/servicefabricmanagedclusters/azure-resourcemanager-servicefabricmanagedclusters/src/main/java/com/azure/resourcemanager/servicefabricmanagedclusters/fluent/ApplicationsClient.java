@@ -12,8 +12,11 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ApplicationResourceInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationFetchHealthRequest;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationUpdateParameters;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.RestartDeployedCodePackageRequest;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.RuntimeResumeApplicationUpgradeParameters;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.RuntimeUpdateApplicationUpgradeParameters;
 
 /**
  * An instance of this class provides access to all the operations defined in ApplicationsClient.
@@ -121,7 +124,23 @@ public interface ApplicationsClient {
         ApplicationResourceInner parameters, Context context);
 
     /**
-     * Updates the tags of an application resource of a given managed cluster.
+     * Updates an application resource of a given managed cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The application resource updated tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the application resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ApplicationResourceInner>, ApplicationResourceInner> beginUpdate(String resourceGroupName,
+        String clusterName, String applicationName, ApplicationUpdateParameters parameters);
+
+    /**
+     * Updates an application resource of a given managed cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -131,14 +150,14 @@ public interface ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application resource along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of the application resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationResourceInner> updateWithResponse(String resourceGroupName, String clusterName,
-        String applicationName, ApplicationUpdateParameters parameters, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ApplicationResourceInner>, ApplicationResourceInner> beginUpdate(String resourceGroupName,
+        String clusterName, String applicationName, ApplicationUpdateParameters parameters, Context context);
 
     /**
-     * Updates the tags of an application resource of a given managed cluster.
+     * Updates an application resource of a given managed cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -152,6 +171,23 @@ public interface ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ApplicationResourceInner update(String resourceGroupName, String clusterName, String applicationName,
         ApplicationUpdateParameters parameters);
+
+    /**
+     * Updates an application resource of a given managed cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The application resource updated tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the application resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApplicationResourceInner update(String resourceGroupName, String clusterName, String applicationName,
+        ApplicationUpdateParameters parameters, Context context);
 
     /**
      * Delete a Service Fabric managed application resource with the specified name.
@@ -433,4 +469,204 @@ public interface ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void startRollback(String resourceGroupName, String clusterName, String applicationName, Context context);
+
+    /**
+     * Send a request to update the current application upgrade.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for updating an application upgrade.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUpdateUpgrade(String resourceGroupName, String clusterName,
+        String applicationName, RuntimeUpdateApplicationUpgradeParameters parameters);
+
+    /**
+     * Send a request to update the current application upgrade.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for updating an application upgrade.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUpdateUpgrade(String resourceGroupName, String clusterName,
+        String applicationName, RuntimeUpdateApplicationUpgradeParameters parameters, Context context);
+
+    /**
+     * Send a request to update the current application upgrade.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for updating an application upgrade.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateUpgrade(String resourceGroupName, String clusterName, String applicationName,
+        RuntimeUpdateApplicationUpgradeParameters parameters);
+
+    /**
+     * Send a request to update the current application upgrade.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for updating an application upgrade.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateUpgrade(String resourceGroupName, String clusterName, String applicationName,
+        RuntimeUpdateApplicationUpgradeParameters parameters, Context context);
+
+    /**
+     * Get the status of the deployed application health. It will query the cluster to find the health of the deployed
+     * application.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for fetching the health of a deployed application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the status of the deployed application health.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginFetchHealth(String resourceGroupName, String clusterName,
+        String applicationName, ApplicationFetchHealthRequest parameters);
+
+    /**
+     * Get the status of the deployed application health. It will query the cluster to find the health of the deployed
+     * application.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for fetching the health of a deployed application.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the status of the deployed application health.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginFetchHealth(String resourceGroupName, String clusterName,
+        String applicationName, ApplicationFetchHealthRequest parameters, Context context);
+
+    /**
+     * Get the status of the deployed application health. It will query the cluster to find the health of the deployed
+     * application.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for fetching the health of a deployed application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void fetchHealth(String resourceGroupName, String clusterName, String applicationName,
+        ApplicationFetchHealthRequest parameters);
+
+    /**
+     * Get the status of the deployed application health. It will query the cluster to find the health of the deployed
+     * application.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for fetching the health of a deployed application.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void fetchHealth(String resourceGroupName, String clusterName, String applicationName,
+        ApplicationFetchHealthRequest parameters, Context context);
+
+    /**
+     * Restart a code package instance of a service replica or instance. This is a potentially destabilizing operation
+     * that should be used with immense care.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for restarting a deployed code package.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRestartDeployedCodePackage(String resourceGroupName, String clusterName,
+        String applicationName, RestartDeployedCodePackageRequest parameters);
+
+    /**
+     * Restart a code package instance of a service replica or instance. This is a potentially destabilizing operation
+     * that should be used with immense care.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for restarting a deployed code package.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRestartDeployedCodePackage(String resourceGroupName, String clusterName,
+        String applicationName, RestartDeployedCodePackageRequest parameters, Context context);
+
+    /**
+     * Restart a code package instance of a service replica or instance. This is a potentially destabilizing operation
+     * that should be used with immense care.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for restarting a deployed code package.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restartDeployedCodePackage(String resourceGroupName, String clusterName, String applicationName,
+        RestartDeployedCodePackageRequest parameters);
+
+    /**
+     * Restart a code package instance of a service replica or instance. This is a potentially destabilizing operation
+     * that should be used with immense care.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for restarting a deployed code package.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restartDeployedCodePackage(String resourceGroupName, String clusterName, String applicationName,
+        RestartDeployedCodePackageRequest parameters, Context context);
 }

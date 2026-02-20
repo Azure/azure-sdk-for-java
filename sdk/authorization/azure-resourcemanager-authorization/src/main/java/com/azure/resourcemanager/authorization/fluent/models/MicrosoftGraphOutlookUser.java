@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * outlookUser.
+ * Represents an outlook user.
  */
 @Fluent
 public final class MicrosoftGraphOutlookUser extends MicrosoftGraphEntity {

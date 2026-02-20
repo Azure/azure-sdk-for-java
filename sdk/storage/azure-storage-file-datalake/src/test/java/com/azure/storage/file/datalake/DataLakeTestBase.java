@@ -20,6 +20,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
@@ -51,6 +52,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -762,6 +764,28 @@ public class DataLakeTestBase extends TestProxyTestBase {
         }
     }
 
+    protected void liveTestScenarioWithRetry(Runnable runnable) {
+        if (!interceptorManager.isLiveMode()) {
+            runnable.run();
+            return;
+        }
+
+        int retry = 0;
+
+        // Try up to 5 times (4 retries + 1 final attempt)
+        while (retry < 4) {
+            try {
+                runnable.run();
+                return; // success
+            } catch (Exception ex) {
+                retry++;
+                sleepIfRunningAgainstService(5000);
+            }
+        }
+        // Final attempt (5th try)
+        runnable.run();
+    }
+
     protected static void validatePropsSet(DataLakeServiceProperties sent, DataLakeServiceProperties received) {
         validatePropsSet(sent, received, true);
     }
@@ -810,5 +834,27 @@ public class DataLakeTestBase extends TestProxyTestBase {
             assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
                 received.getStaticWebsite().getErrorDocument404Path());
         }
+    }
+
+    public static HttpPipelinePolicy getAddHeadersAndQueryPolicy(Map<String, String> requestHeaders,
+        Map<String, String> requestQueryParams) {
+        // Create policy to add headers and query params to request
+        return (context, next) -> {
+            // Add request headers
+            for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
+                context.getHttpRequest().setHeader(HttpHeaderName.fromString(entry.getKey()), entry.getValue());
+            }
+
+            // Add query parameters
+            String extraQuery = requestQueryParams.entrySet()
+                .stream()
+                .map(e -> Utility.urlEncode(e.getKey()) + "=" + Utility.urlEncode(e.getValue()))
+                .collect(Collectors.joining("&"));
+
+            String currentUrl = context.getHttpRequest().getUrl().toString();
+            context.getHttpRequest().setUrl(currentUrl + "&" + extraQuery);
+
+            return next.process();
+        };
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
+## 2.59.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,62 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.58.0 (2026-02-14)
+
+### Breaking Changes
+
+- Removed `ADVANCED`, `BASIC`, and `STANDARD` from `FirewallPolicyIntrusionDetectionProfileType` to align with the service model.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
+
+## 2.57.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+## 2.57.0 (2025-11-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-03-01`.
+
+## 2.56.0 (2025-11-12)
+
+### Features Added
+
+- Added `STANDARD_V2` to `PublicIPSkuType`.
+
+### Bugs Fixed
+
+- Fixed the bug that `list()` in `LocalNetworkGateways`, `VirtualNetworkGateways`, `VirtualNetworkGatewayConnections` only return resources from 1 resource group.
+- Improved `VirtualNetworkGateway` to create Public IP Address with Standard SKU (unless the gateway is Basic SKU).
+- Improved `PublicIpAddress` to set the public IP allocation method to Static (unless the Public IP Address is Basic SKU).
+
+## 2.55.0 (2025-11-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-01-01`.
+
+## 2.54.1 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.54.0 (2025-10-13)
 

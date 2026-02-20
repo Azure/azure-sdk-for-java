@@ -10,8 +10,8 @@ package com.azure.resourcemanager.appservice.generated;
 public final class CertificateRegistrationProviderListOperationsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/ListOperations.
-     * json
+     * specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/
+     * stable/2024-11-01/examples/ListOperations.json
      */
     /**
      * Sample code: List operations.

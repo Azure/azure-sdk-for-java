@@ -28,7 +28,7 @@ public final class FleetUpdateStrategiesDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.fleetUpdateStrategies()
-            .delete("pjorwkqnyhg", "ij", "jivfxzsjabib", "ystawfsdjpvkvp", com.azure.core.util.Context.NONE);
+            .delete("ygdxpgpqchis", "epn", "bjcrxgibbdaxco", "fozauorsuk", com.azure.core.util.Context.NONE);
 
     }
 }

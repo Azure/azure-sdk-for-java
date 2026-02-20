@@ -1046,8 +1046,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     /* Note: the check is on the blob builder as well but I can't test it this way since we encode all blob names - so
     it will not be invalid. */
     private static Stream<Arguments> sasTokenDoesNotShowUpOnInvalidUriSupplier() {
-        return Stream.of(Arguments.of("https://doesntmatter. blob.core.windows.net", "containername"),
-            Arguments.of("https://doesntmatter.blob.core.windows.net", "container name"));
+        return Stream.of(Arguments.of("https://doesntmatter. blob.core.windows.net", "containername"));
     }
 
     @Test

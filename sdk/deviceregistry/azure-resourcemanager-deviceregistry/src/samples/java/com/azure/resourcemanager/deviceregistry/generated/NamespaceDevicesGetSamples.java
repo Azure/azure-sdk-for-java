@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class NamespaceDevicesGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_NamespaceDeviceWithEndpointErrorStatus.json
+     * x-ms-original-file: 2025-11-01-preview/Get_NamespaceDeviceWithEndpointErrorStatus.json
      */
     /**
      * Sample code: Get NamespaceDevice with Endpoint Error Status.
@@ -23,7 +23,7 @@ public final class NamespaceDevicesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Get_NamespaceDevice.json
+     * x-ms-original-file: 2025-11-01-preview/Get_NamespaceDevice.json
      */
     /**
      * Sample code: Get_NamespaceDevice.

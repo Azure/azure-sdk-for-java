@@ -69,7 +69,7 @@ public final class AutoscaleSettingsClientImpl implements InnerSupportsGet<Autos
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientAutosca")
+    @ServiceInterface(name = "MonitorClientAutoscaleSettings")
     public interface AutoscaleSettingsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/autoscalesettings")

@@ -8,18 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Sets the promote mode for a replica server. This is a write only property.
+ * Type of operation to apply on the read replica. This property is write only. Standalone means that the read replica
+ * will be promoted to a standalone server, and will become a completely independent entity from the replication set.
+ * Switchover means that the read replica will roles with the primary server.
  */
 public final class ReadReplicaPromoteMode extends ExpandableStringEnum<ReadReplicaPromoteMode> {
     /**
-     * Static value standalone for ReadReplicaPromoteMode.
+     * Static value Standalone for ReadReplicaPromoteMode.
      */
-    public static final ReadReplicaPromoteMode STANDALONE = fromString("standalone");
+    public static final ReadReplicaPromoteMode STANDALONE = fromString("Standalone");
 
     /**
-     * Static value switchover for ReadReplicaPromoteMode.
+     * Static value Switchover for ReadReplicaPromoteMode.
      */
-    public static final ReadReplicaPromoteMode SWITCHOVER = fromString("switchover");
+    public static final ReadReplicaPromoteMode SWITCHOVER = fromString("Switchover");
 
     /**
      * Creates a new instance of ReadReplicaPromoteMode value.

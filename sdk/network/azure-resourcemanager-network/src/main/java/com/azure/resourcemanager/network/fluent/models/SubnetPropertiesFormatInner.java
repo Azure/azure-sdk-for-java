@@ -130,8 +130,7 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
     private SharingScope sharingScope;
 
     /*
-     * Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can
-     * only be set at the time of subnet creation and cannot be updated for an existing subnet.
+     * Set this property to false to disable default outbound connectivity for all VMs in the subnet.
      */
     private Boolean defaultOutboundAccess;
 
@@ -139,6 +138,11 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
      * A list of IPAM Pools for allocating IP address prefixes.
      */
     private List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations;
+
+    /*
+     * Reference to an existing service gateway.
+     */
+    private SubResource serviceGateway;
 
     /**
      * Creates an instance of SubnetPropertiesFormatInner class.
@@ -487,8 +491,7 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
 
     /**
      * Get the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
-     * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
-     * existing subnet.
+     * all VMs in the subnet.
      * 
      * @return the defaultOutboundAccess value.
      */
@@ -498,8 +501,7 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
 
     /**
      * Set the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
-     * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
-     * existing subnet.
+     * all VMs in the subnet.
      * 
      * @param defaultOutboundAccess the defaultOutboundAccess value to set.
      * @return the SubnetPropertiesFormatInner object itself.
@@ -527,6 +529,26 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
     public SubnetPropertiesFormatInner
         withIpamPoolPrefixAllocations(List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations) {
         this.ipamPoolPrefixAllocations = ipamPoolPrefixAllocations;
+        return this;
+    }
+
+    /**
+     * Get the serviceGateway property: Reference to an existing service gateway.
+     * 
+     * @return the serviceGateway value.
+     */
+    public SubResource serviceGateway() {
+        return this.serviceGateway;
+    }
+
+    /**
+     * Set the serviceGateway property: Reference to an existing service gateway.
+     * 
+     * @param serviceGateway the serviceGateway value to set.
+     * @return the SubnetPropertiesFormatInner object itself.
+     */
+    public SubnetPropertiesFormatInner withServiceGateway(SubResource serviceGateway) {
+        this.serviceGateway = serviceGateway;
         return this;
     }
 
@@ -602,6 +624,7 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
         jsonWriter.writeBooleanField("defaultOutboundAccess", this.defaultOutboundAccess);
         jsonWriter.writeArrayField("ipamPoolPrefixAllocations", this.ipamPoolPrefixAllocations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("serviceGateway", this.serviceGateway);
         return jsonWriter.writeEndObject();
     }
 
@@ -691,6 +714,8 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
                     List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations
                         = reader.readArray(reader1 -> IpamPoolPrefixAllocation.fromJson(reader1));
                     deserializedSubnetPropertiesFormatInner.ipamPoolPrefixAllocations = ipamPoolPrefixAllocations;
+                } else if ("serviceGateway".equals(fieldName)) {
+                    deserializedSubnetPropertiesFormatInner.serviceGateway = SubResource.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

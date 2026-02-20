@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * deviceManagementExchangeAccessState.
+ * Represents a device management exchange access state.
  */
 public final class MicrosoftGraphDeviceManagementExchangeAccessState
     extends ExpandableStringEnum<MicrosoftGraphDeviceManagementExchangeAccessState> {

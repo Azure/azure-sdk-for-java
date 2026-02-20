@@ -11,7 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointResource;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoint;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -23,7 +23,7 @@ public final class VirtualEndpointsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"qm\",\"name\":\"zgwldoychillcec\",\"type\":\"huwaoaguhic\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"ac\"],\"virtualEndpoints\":[\"hrweftkw\",\"ejpmvssehaepwa\",\"cxtczhupeukn\",\"jduyyespydjfb\"]}}]}";
+            = "{\"value\":[{\"id\":\"nxwbjsidbirkfp\",\"name\":\"okdgoge\",\"type\":\"jymrhbg\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"wnf\"],\"virtualEndpoints\":[\"hhqosmffjku\",\"ycyarnroohg\"]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class VirtualEndpointsListByServerMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<VirtualEndpointResource> response
-            = manager.virtualEndpoints().listByServer("zqccydrtce", "kdqkkyihzt", com.azure.core.util.Context.NONE);
+        PagedIterable<VirtualEndpoint> response
+            = manager.virtualEndpoints().listByServer("wfekaumrrqmb", "mqkra", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, response.iterator().next().endpointType());
-        Assertions.assertEquals("ac", response.iterator().next().members().get(0));
+        Assertions.assertEquals("wnf", response.iterator().next().members().get(0));
     }
 }

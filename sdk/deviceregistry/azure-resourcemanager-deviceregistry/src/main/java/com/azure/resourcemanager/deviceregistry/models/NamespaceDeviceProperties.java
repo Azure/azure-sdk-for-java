@@ -91,6 +91,11 @@ public final class NamespaceDeviceProperties implements JsonSerializable<Namespa
      */
     private ProvisioningState provisioningState;
 
+    /*
+     * Policy used to issue device certificates.
+     */
+    private DeviceCredentialPolicy policy;
+
     /**
      * Creates an instance of NamespaceDeviceProperties class.
      */
@@ -325,6 +330,26 @@ public final class NamespaceDeviceProperties implements JsonSerializable<Namespa
     }
 
     /**
+     * Get the policy property: Policy used to issue device certificates.
+     * 
+     * @return the policy value.
+     */
+    public DeviceCredentialPolicy policy() {
+        return this.policy;
+    }
+
+    /**
+     * Set the policy property: Policy used to issue device certificates.
+     * 
+     * @param policy the policy value to set.
+     * @return the NamespaceDeviceProperties object itself.
+     */
+    public NamespaceDeviceProperties withPolicy(DeviceCredentialPolicy policy) {
+        this.policy = policy;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -338,8 +363,14 @@ public final class NamespaceDeviceProperties implements JsonSerializable<Namespa
         jsonWriter.writeStringField("operatingSystem", this.operatingSystem);
         jsonWriter.writeStringField("operatingSystemVersion", this.operatingSystemVersion);
         jsonWriter.writeJsonField("endpoints", this.endpoints);
-        jsonWriter.writeMapField("attributes", this.attributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeJsonField("policy", this.policy);
         return jsonWriter.writeEndObject();
     }
 
@@ -390,6 +421,8 @@ public final class NamespaceDeviceProperties implements JsonSerializable<Namespa
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedNamespaceDeviceProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("policy".equals(fieldName)) {
+                    deserializedNamespaceDeviceProperties.policy = DeviceCredentialPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

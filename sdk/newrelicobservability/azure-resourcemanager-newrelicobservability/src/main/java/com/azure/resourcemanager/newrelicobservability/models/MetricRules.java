@@ -26,7 +26,7 @@ public interface MetricRules {
     List<FilteringTag> filteringTags();
 
     /**
-     * Gets the userEmail property: User Email.
+     * Gets the userEmail property: Reusable representation of an email address.
      * 
      * @return the userEmail value.
      */
