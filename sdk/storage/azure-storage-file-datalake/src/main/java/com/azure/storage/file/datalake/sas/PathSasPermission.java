@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake.sas;
 
+import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.common.implementation.Constants;
 
 import java.util.Locale;
@@ -24,6 +25,7 @@ public final class PathSasPermission {
     private boolean executePermission;
     private boolean manageOwnershipPermission;
     private boolean manageAccessControlPermission;
+    private boolean tagsPermission;
 
     /**
      * Initializes a {@code PathSasPermission} object with all fields set to false.
@@ -38,7 +40,7 @@ public final class PathSasPermission {
      * @param permissionString A {@code String} which represents the {@code PathSasPermission}.
      * @return A {@code PathSasPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permissionString} contains a character other than r, a, c, w, d, l, m, e,
-     * o, or p.
+     * o, t, or p.
      */
     public static PathSasPermission parse(String permissionString) {
         PathSasPermission permissions = new PathSasPermission();
@@ -84,6 +86,10 @@ public final class PathSasPermission {
 
                 case 'p':
                     permissions.manageAccessControlPermission = true;
+                    break;
+
+                case 't':
+                    permissions.tagsPermission = true;
                     break;
 
                 default:
@@ -295,6 +301,26 @@ public final class PathSasPermission {
     }
 
     /**
+     * Gets the tags permission status.
+     *
+     * @return the tags permission status.
+     */
+    public boolean hasTagsPermission() {
+        return tagsPermission;
+    }
+
+    /**
+     * Sets the tags permission status.
+     *
+     * @param tagsPermission Permission status to set
+     * @return the updated PathSasPermission object.
+     */
+    public PathSasPermission setTagsPermission(boolean tagsPermission) {
+        this.tagsPermission = tagsPermission;
+        return this;
+    }
+
+    /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -345,6 +371,10 @@ public final class PathSasPermission {
 
         if (this.manageAccessControlPermission) {
             builder.append('p');
+        }
+
+        if (this.tagsPermission) {
+            builder.append('t');
         }
 
         return builder.toString();
