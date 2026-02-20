@@ -132,6 +132,13 @@ public class ExcludeRegionTests extends TestSuiteBase {
         while (retryCount < maxRetries && !itemReplicated) {
             try {
                 Thread.sleep(500); // Shorter incremental waits
+            } catch (InterruptedException ie) {
+                // Restore the interrupt status and fail fast
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Interrupted while waiting for replication", ie);
+            }
+            
+            try {
                 CosmosDiagnosticsContext diagnostics = this.performDocumentOperation(
                     cosmosAsyncContainer, 
                     OperationType.Read,  // Use read to verify replication
@@ -144,6 +151,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
                 if (retryCount >= maxRetries) {
                     throw e;
                 }
+                // Continue retrying on transient failures
             }
         }
 
@@ -356,7 +364,8 @@ public class ExcludeRegionTests extends TestSuiteBase {
                         }
                         // Continue retrying
                     } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException("Interrupted while waiting for item creation to propagate", e);
                     }
                 }
 

@@ -635,6 +635,8 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
+                    // Restore the interrupt status before propagating as a RuntimeException
+                    Thread.currentThread().interrupt();
                     throw new RuntimeException(e);
                 }
 
