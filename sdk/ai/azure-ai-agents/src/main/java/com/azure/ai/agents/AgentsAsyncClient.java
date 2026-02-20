@@ -512,8 +512,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAgentWithResponse(BinaryData createAgentRequest1,
-        RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> createAgentWithResponse(BinaryData createAgentRequest1, RequestOptions requestOptions) {
         return this.serviceClient.createAgentWithResponseAsync(createAgentRequest1, requestOptions);
     }
 
@@ -589,7 +588,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAgentWithResponse(String agentName, BinaryData updateAgentRequest1,
+    Mono<Response<BinaryData>> updateAgentWithResponse(String agentName, BinaryData updateAgentRequest1,
         RequestOptions requestOptions) {
         return this.serviceClient.updateAgentWithResponseAsync(agentName, updateAgentRequest1, requestOptions);
     }
@@ -597,7 +596,7 @@ public final class AgentsAsyncClient {
     /**
      * Creates the agent.
      *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
@@ -612,10 +611,10 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> createAgent(String name, AgentDefinition definition) {
+    Mono<AgentDetails> createAgent(String agentName, AgentDefinition definition) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateAgentRequest1 createAgentRequest1Obj = new CreateAgentRequest1(name, definition);
+        CreateAgentRequest1 createAgentRequest1Obj = new CreateAgentRequest1(agentName, definition);
         BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
         return createAgentWithResponse(createAgentRequest1, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
@@ -637,7 +636,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition) {
+    Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition) {
         // Generated convenience method for updateAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateAgentRequest1 updateAgentRequest1Obj = new UpdateAgentRequest1(definition);
@@ -717,7 +716,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAgentFromManifestWithResponse(BinaryData createAgentFromManifestRequest1,
+    Mono<Response<BinaryData>> createAgentFromManifestWithResponse(BinaryData createAgentFromManifestRequest1,
         RequestOptions requestOptions) {
         return this.serviceClient.createAgentFromManifestWithResponseAsync(createAgentFromManifestRequest1,
             requestOptions);
@@ -785,7 +784,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAgentFromManifestWithResponse(String agentName,
+    Mono<Response<BinaryData>> updateAgentFromManifestWithResponse(String agentName,
         BinaryData updateAgentFromManifestRequest1, RequestOptions requestOptions) {
         return this.serviceClient.updateAgentFromManifestWithResponseAsync(agentName, updateAgentFromManifestRequest1,
             requestOptions);
@@ -857,7 +856,7 @@ public final class AgentsAsyncClient {
     /**
      * Creates an agent from a manifest.
      *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
@@ -873,12 +872,12 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> createAgentFromManifest(String name, String manifestId,
+    Mono<AgentDetails> createAgentFromManifest(String agentName, String manifestId,
         Map<String, BinaryData> parameterValues) {
         // Generated convenience method for createAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentFromManifestRequest1 createAgentFromManifestRequest1Obj
-            = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues);
+            = new CreateAgentFromManifestRequest1(agentName, manifestId, parameterValues);
         BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
         return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions)
             .flatMap(FluxUtil::toMono)
@@ -902,7 +901,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgentFromManifest(String agentName, String manifestId,
+    Mono<AgentDetails> updateAgentFromManifest(String agentName, String manifestId,
         Map<String, BinaryData> parameterValues) {
         // Generated convenience method for updateAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -970,7 +969,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgentFromManifest(String agentName, String manifestId,
+    Mono<AgentDetails> updateAgentFromManifest(String agentName, String manifestId,
         Map<String, BinaryData> parameterValues, Map<String, String> metadata, String description) {
         // Generated convenience method for updateAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1272,7 +1271,7 @@ public final class AgentsAsyncClient {
     /**
      * Creates an agent from a manifest.
      *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
@@ -1295,12 +1294,12 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> createAgentFromManifest(String name, String manifestId,
+    Mono<AgentDetails> createAgentFromManifest(String agentName, String manifestId,
         Map<String, BinaryData> parameterValues, Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentFromManifestRequest1 createAgentFromManifestRequest1Obj
-            = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues).setMetadata(metadata)
+            = new CreateAgentFromManifestRequest1(agentName, manifestId, parameterValues).setMetadata(metadata)
                 .setDescription(description);
         BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
         return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions)
@@ -1311,7 +1310,7 @@ public final class AgentsAsyncClient {
     /**
      * Creates the agent.
      *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
@@ -1335,12 +1334,12 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> createAgent(String name, AgentDefinition definition, BinaryData foundryFeatures,
+    Mono<AgentDetails> createAgent(String agentName, AgentDefinition definition, BinaryData foundryFeatures,
         Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentRequest1 createAgentRequest1Obj
-            = new CreateAgentRequest1(name, definition).setMetadata(metadata).setDescription(description);
+            = new CreateAgentRequest1(agentName, definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), String.valueOf(foundryFeatures));
@@ -1374,7 +1373,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition, BinaryData foundryFeatures,
+    Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition, BinaryData foundryFeatures,
         Map<String, String> metadata, String description) {
         // Generated convenience method for updateAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();

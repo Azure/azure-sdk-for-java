@@ -20,15 +20,6 @@ import java.util.Map;
 public final class CreateAgentFromManifestRequest1 implements JsonSerializable<CreateAgentFromManifestRequest1> {
 
     /*
-     * The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     */
-    @Generated
-    private final String name;
-
-    /*
      * Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
@@ -60,29 +51,16 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
     /**
      * Creates an instance of CreateAgentFromManifestRequest1 class.
      *
-     * @param name the name value to set.
+     * @param agentName the agentName value to set.
      * @param manifestId the manifestId value to set.
      * @param parameterValues the parameterValues value to set.
      */
     @Generated
-    public CreateAgentFromManifestRequest1(String name, String manifestId, Map<String, BinaryData> parameterValues) {
-        this.name = name;
+    public CreateAgentFromManifestRequest1(String agentName, String manifestId,
+        Map<String, BinaryData> parameterValues) {
+        this.agentName = agentName;
         this.manifestId = manifestId;
         this.parameterValues = parameterValues;
-    }
-
-    /**
-     * Get the name property: The unique name that identifies the agent. Name can be used to retrieve/update/delete the
-     * agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
     }
 
     /**
@@ -166,7 +144,7 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("name", this.agentName);
         jsonWriter.writeStringField("manifest_id", this.manifestId);
         jsonWriter.writeMapField("parameter_values", this.parameterValues, (writer, element) -> {
             if (element == null) {
@@ -192,7 +170,7 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
     @Generated
     public static CreateAgentFromManifestRequest1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String name = null;
+            String agentName = null;
             String manifestId = null;
             Map<String, BinaryData> parameterValues = null;
             Map<String, String> metadata = null;
@@ -201,7 +179,7 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    agentName = reader.getString();
                 } else if ("manifest_id".equals(fieldName)) {
                     manifestId = reader.getString();
                 } else if ("parameter_values".equals(fieldName)) {
@@ -216,10 +194,33 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
                 }
             }
             CreateAgentFromManifestRequest1 deserializedCreateAgentFromManifestRequest1
-                = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues);
+                = new CreateAgentFromManifestRequest1(agentName, manifestId, parameterValues);
             deserializedCreateAgentFromManifestRequest1.metadata = metadata;
             deserializedCreateAgentFromManifestRequest1.description = description;
             return deserializedCreateAgentFromManifestRequest1;
         });
+    }
+
+    /*
+     * The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     */
+    @Generated
+    private final String agentName;
+
+    /**
+     * Get the agentName property: The unique name that identifies the agent. Name can be used to retrieve/update/delete
+     * the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     *
+     * @return the agentName value.
+     */
+    @Generated
+    public String getAgentName() {
+        return this.agentName;
     }
 }
