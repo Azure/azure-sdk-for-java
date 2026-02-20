@@ -3809,7 +3809,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     @ParameterizedTest
-    public void getSetTagsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+    public void setTagsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         Map<String, String> t = getTags();
 
@@ -3822,9 +3822,23 @@ public class DirectoryApiTests extends DataLakeTestBase {
         assertEquals(204,
             dc.setTagsWithResponse(new DataLakeSetTagsOptions(t).setRequestConditions(dac), null, Context.NONE)
                 .getStatusCode());
-        assertEquals(200,
-            dc.getTagsWithResponse(new DataLakeGetTagsOptions().setRequestConditions(dac), null, Context.NONE)
-                .getStatusCode());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
+    @ParameterizedTest
+    public void getTagsAC() {
+        Map<String, String> t = getTags();
+        dc.setTags(t);
+
+        String leaseID = setupPathLeaseCondition(dc, RECEIVED_LEASE_ID);
+        DataLakeRequestConditions dac = new DataLakeRequestConditions().setLeaseId(leaseID);
+
+        Response<Map<String, String>> response
+            = dc.getTagsWithResponse(new DataLakeGetTagsOptions().setRequestConditions(dac), null, Context.NONE);
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals(t, response.getValue());
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
