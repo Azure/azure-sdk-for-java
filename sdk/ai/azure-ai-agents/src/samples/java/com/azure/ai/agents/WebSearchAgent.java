@@ -56,22 +56,21 @@ public class WebSearchAgent {
             // Process and display the response
             System.out.println("\n=== Agent Response ===");
             for (ResponseOutputItem outputItem : response.output()) {
-                // Handle message output
-                // if (outputItem.message().isPresent()) {
-                //     ResponseOutputMessage message = outputItem.message().get();
-                //     message.content().forEach(content -> {
-                //         content.outputText().ifPresent(text -> {
-                //             System.out.println("Assistant: " + text.text());
-                //         });
-                //     });
-                // }
-                System.out.println(outputItem);
+                Handle message output
+                if (outputItem.message().isPresent()) {
+                    ResponseOutputMessage message = outputItem.message().get();
+                    message.content().forEach(content -> {
+                        content.outputText().ifPresent(text -> {
+                            System.out.println("Assistant: " + text.text());
+                        });
+                    });
+                }
             }
 
             System.out.println("\nResponse ID: " + response.id());
             System.out.println("Model Used: " + response.model());
         } finally {
-            //Cleanup agent
+            // Cleanup agent
             if (agent != null) {
                 agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
                 System.out.println("Agent deleted successfully.");
