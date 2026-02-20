@@ -16,6 +16,7 @@ public class CreateAgent {
         AgentsClient agentsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
+                .serviceVersion(AgentsServiceVersion.valueOf("V2025-11-15-preview"))
                 .buildAgentsClient();
 
         PromptAgentDefinition request = new PromptAgentDefinition(model);

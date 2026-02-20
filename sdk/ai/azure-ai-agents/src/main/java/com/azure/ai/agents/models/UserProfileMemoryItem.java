@@ -35,7 +35,7 @@ public final class UserProfileMemoryItem extends MemoryItem {
      * @param content the content value to set.
      */
     @Generated
-    public UserProfileMemoryItem(String memoryId, OffsetDateTime updatedAt, String scope, String content) {
+    private UserProfileMemoryItem(String memoryId, OffsetDateTime updatedAt, String scope, String content) {
         super(memoryId, updatedAt, scope, content);
     }
 

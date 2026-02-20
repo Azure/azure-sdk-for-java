@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Local shell exec action
+ *
  * Execute a shell command on the server.
  */
 @Fluent
@@ -32,7 +34,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
     private final List<String> command;
 
     /*
-     * Optional working directory to run the command in.
+     * The working_directory property.
      */
     @Generated
     private String workingDirectory;
@@ -44,7 +46,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
     private final Map<String, String> env;
 
     /*
-     * Optional user to run the command as.
+     * The user property.
      */
     @Generated
     private String user;
@@ -82,7 +84,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
     }
 
     /**
-     * Get the workingDirectory property: Optional working directory to run the command in.
+     * Get the workingDirectory property: The working_directory property.
      *
      * @return the workingDirectory value.
      */
@@ -92,7 +94,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
     }
 
     /**
-     * Set the workingDirectory property: Optional working directory to run the command in.
+     * Set the workingDirectory property: The working_directory property.
      *
      * @param workingDirectory the workingDirectory value to set.
      * @return the LocalShellExecAction object itself.
@@ -114,7 +116,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
     }
 
     /**
-     * Get the user property: Optional user to run the command as.
+     * Get the user property: The user property.
      *
      * @return the user value.
      */
@@ -124,7 +126,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
     }
 
     /**
-     * Set the user property: Optional user to run the command as.
+     * Set the user property: The user property.
      *
      * @param user the user value to set.
      * @return the LocalShellExecAction object itself.
@@ -165,7 +167,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
         return jsonReader.readObject(reader -> {
             List<String> command = null;
             Map<String, String> env = null;
-            Integer duration = null;
+            Long duration = null;
             String workingDirectory = null;
             String user = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -176,7 +178,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
                 } else if ("env".equals(fieldName)) {
                     env = reader.readMap(reader1 -> reader1.getString());
                 } else if ("timeout_ms".equals(fieldName)) {
-                    duration = reader.getNullable(JsonReader::getInt);
+                    duration = reader.getNullable(JsonReader::getLong);
                 } else if ("working_directory".equals(fieldName)) {
                     workingDirectory = reader.getString();
                 } else if ("user".equals(fieldName)) {
@@ -194,29 +196,29 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
     }
 
     /*
-     * Optional timeout in milliseconds for the command.
+     * The timeout_ms property.
      */
     @Generated
-    private Integer duration;
+    private Long duration;
 
     /**
-     * Get the duration property: Optional timeout in milliseconds for the command.
+     * Get the duration property: The timeout_ms property.
      *
      * @return the duration value.
      */
     @Generated
-    public Integer getDuration() {
+    public Long getDuration() {
         return this.duration;
     }
 
     /**
-     * Set the duration property: Optional timeout in milliseconds for the command.
+     * Set the duration property: The timeout_ms property.
      *
      * @param duration the duration value to set.
      * @return the LocalShellExecAction object itself.
      */
     @Generated
-    public LocalShellExecAction setDuration(Integer duration) {
+    public LocalShellExecAction setDuration(Long duration) {
         this.duration = duration;
         return this;
     }

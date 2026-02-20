@@ -5,9 +5,11 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.responses.ResponseCreateParams;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +74,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * Configuration options for a text response from the model. Can be plain text or structured JSON data.
      */
     @Generated
-    private PromptAgentDefinitionText text;
+    private PromptAgentDefinitionTextOptions text;
 
     /*
      * Set of structured inputs that can participate in prompt template substitution or tool argument bindings.
@@ -244,21 +246,8 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * @return the text value.
      */
     @Generated
-    public PromptAgentDefinitionText getText() {
+    public PromptAgentDefinitionTextOptions getText() {
         return this.text;
-    }
-
-    /**
-     * Set the text property: Configuration options for a text response from the model. Can be plain text or structured
-     * JSON data.
-     *
-     * @param text the text value to set.
-     * @return the PromptAgentDefinition object itself.
-     */
-    @Generated
-    public PromptAgentDefinition setText(PromptAgentDefinitionText text) {
-        this.text = text;
-        return this;
     }
 
     /**
@@ -298,7 +287,6 @@ public final class PromptAgentDefinition extends AgentDefinition {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -310,6 +298,10 @@ public final class PromptAgentDefinition extends AgentDefinition {
         jsonWriter.writeNumberField("top_p", this.topP);
         jsonWriter.writeJsonField("reasoning", this.reasoning);
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        if (this.toolChoice != null) {
+            jsonWriter.writeFieldName("tool_choice");
+            this.toolChoice.writeTo(jsonWriter);
+        }
         jsonWriter.writeJsonField("text", this.text);
         jsonWriter.writeMapField("structured_inputs", this.structuredInputs,
             (writer, element) -> writer.writeJson(element));
@@ -325,7 +317,6 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PromptAgentDefinition.
      */
-    @Generated
     public static PromptAgentDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RaiConfig raiConfig = null;
@@ -336,7 +327,8 @@ public final class PromptAgentDefinition extends AgentDefinition {
             Double topP = null;
             Reasoning reasoning = null;
             List<Tool> tools = null;
-            PromptAgentDefinitionText text = null;
+            BinaryData toolChoice = null;
+            PromptAgentDefinitionTextOptions text = null;
             Map<String, StructuredInputDefinition> structuredInputs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -357,8 +349,11 @@ public final class PromptAgentDefinition extends AgentDefinition {
                     reasoning = Reasoning.fromJson(reader);
                 } else if ("tools".equals(fieldName)) {
                     tools = reader.readArray(reader1 -> Tool.fromJson(reader1));
+                } else if ("tool_choice".equals(fieldName)) {
+                    toolChoice
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("text".equals(fieldName)) {
-                    text = PromptAgentDefinitionText.fromJson(reader);
+                    text = PromptAgentDefinitionTextOptions.fromJson(reader);
                 } else if ("structured_inputs".equals(fieldName)) {
                     structuredInputs = reader.readMap(reader1 -> StructuredInputDefinition.fromJson(reader1));
                 } else {
@@ -373,9 +368,89 @@ public final class PromptAgentDefinition extends AgentDefinition {
             deserializedPromptAgentDefinition.topP = topP;
             deserializedPromptAgentDefinition.reasoning = reasoning;
             deserializedPromptAgentDefinition.tools = tools;
+            deserializedPromptAgentDefinition.toolChoice = toolChoice;
             deserializedPromptAgentDefinition.text = text;
             deserializedPromptAgentDefinition.structuredInputs = structuredInputs;
             return deserializedPromptAgentDefinition;
         });
+    }
+
+    /*
+     * How the model should select which tool (or tools) to use when generating a response.
+     * See the `tools` parameter to see how to specify which tools the model can call.
+     */
+    private BinaryData toolChoice;
+
+    /**
+     * Get the toolChoice property: How the model should select which tool (or tools) to use when generating a response.
+     * See the `tools` parameter to see how to specify which tools the model can call.
+     *
+     * @return the toolChoice value.
+     */
+    private BinaryData getToolChoiceInternal() {
+        return this.toolChoice;
+    }
+
+    /**
+     * Set the text property: Configuration options for a text response from the model. Can be plain text or structured
+     * JSON data.
+     *
+     * @param text the text value to set.
+     * @return the PromptAgentDefinition object itself.
+     */
+    @Generated
+    public PromptAgentDefinition setText(PromptAgentDefinitionTextOptions text) {
+        this.text = text;
+        return this;
+    }
+
+    /**
+     * Set the toolChoice property: How the model should select which tool (or tools) to use when generating a response.
+     * See the `tools` parameter to see how to specify which tools the model can call.
+     *
+     * @param toolChoice the toolChoice value to set.
+     * @return the PromptAgentDefinition object itself.
+     */
+    public PromptAgentDefinition setToolChoice(String toolChoice) {
+        this.toolChoice = BinaryData.fromString(toolChoice);
+        return this;
+    }
+
+    /**
+     * Set the toolChoice property: How the model should select which tool (or tools) to use when generating a response.
+     * See the `tools` parameter to see how to specify which tools the model can call.
+     *
+     * @param toolChoice the toolChoice value to set.
+     * @return the PromptAgentDefinition object itself.
+     */
+    public PromptAgentDefinition setToolChoice(ResponseCreateParams.ToolChoice toolChoice) {
+        this.toolChoice = BinaryData.fromObject(toolChoice);
+        return this;
+    }
+
+    /**
+     * Get the toolChoice property as a String: How the model should select which tool (or tools) to use when generating
+     * a response. See the `tools` parameter to see how to specify which tools the model can call.
+     *
+     * @return the toolChoice value.
+     */
+    public String getToolChoiceAsString() {
+        if (this.toolChoice == null) {
+            return null;
+        }
+        return this.toolChoice.toString();
+    }
+
+    /**
+     * Get the toolChoice property as a ToolChoice: How the model should select which tool (or tools) to use when
+     * generating a response. See the `tools` parameter to see how to specify which tools the model can call.
+     *
+     * @return the toolChoice value.
+     */
+    public ResponseCreateParams.ToolChoice getToolChoice() {
+        if (this.toolChoice == null) {
+            return null;
+        }
+        return this.toolChoice.toObject(ResponseCreateParams.ToolChoice.class);
     }
 }

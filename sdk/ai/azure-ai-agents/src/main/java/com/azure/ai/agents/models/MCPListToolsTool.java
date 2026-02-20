@@ -5,7 +5,6 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,6 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
+ * MCP list tools tool
+ *
  * A tool available on an MCP server.
  */
 @Fluent
@@ -25,7 +26,7 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
     private final String name;
 
     /*
-     * The description of the tool.
+     * The description property.
      */
     @Generated
     private String description;
@@ -34,25 +35,13 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
      * The JSON schema describing the tool's input.
      */
     @Generated
-    private final BinaryData inputSchema;
+    private final MCPListToolsToolInputSchema inputSchema;
 
     /*
-     * Additional annotations about the tool.
+     * The annotations property.
      */
     @Generated
-    private BinaryData annotations;
-
-    /**
-     * Creates an instance of MCPListToolsTool class.
-     *
-     * @param name the name value to set.
-     * @param inputSchema the inputSchema value to set.
-     */
-    @Generated
-    public MCPListToolsTool(String name, BinaryData inputSchema) {
-        this.name = name;
-        this.inputSchema = inputSchema;
-    }
+    private MCPListToolsToolAnnotations annotations;
 
     /**
      * Get the name property: The name of the tool.
@@ -65,7 +54,7 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
     }
 
     /**
-     * Get the description property: The description of the tool.
+     * Get the description property: The description property.
      *
      * @return the description value.
      */
@@ -75,7 +64,7 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
     }
 
     /**
-     * Set the description property: The description of the tool.
+     * Set the description property: The description property.
      *
      * @param description the description value to set.
      * @return the MCPListToolsTool object itself.
@@ -92,30 +81,18 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
      * @return the inputSchema value.
      */
     @Generated
-    public BinaryData getInputSchema() {
+    public MCPListToolsToolInputSchema getInputSchema() {
         return this.inputSchema;
     }
 
     /**
-     * Get the annotations property: Additional annotations about the tool.
+     * Get the annotations property: The annotations property.
      *
      * @return the annotations value.
      */
     @Generated
-    public BinaryData getAnnotations() {
+    public MCPListToolsToolAnnotations getAnnotations() {
         return this.annotations;
-    }
-
-    /**
-     * Set the annotations property: Additional annotations about the tool.
-     *
-     * @param annotations the annotations value to set.
-     * @return the MCPListToolsTool object itself.
-     */
-    @Generated
-    public MCPListToolsTool setAnnotations(BinaryData annotations) {
-        this.annotations = annotations;
-        return this;
     }
 
     /**
@@ -126,13 +103,9 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeFieldName("input_schema");
-        this.inputSchema.writeTo(jsonWriter);
+        jsonWriter.writeJsonField("input_schema", this.inputSchema);
         jsonWriter.writeStringField("description", this.description);
-        if (this.annotations != null) {
-            jsonWriter.writeFieldName("annotations");
-            this.annotations.writeTo(jsonWriter);
-        }
+        jsonWriter.writeJsonField("annotations", this.annotations);
         return jsonWriter.writeEndObject();
     }
 
@@ -149,22 +122,20 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
     public static MCPListToolsTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            BinaryData inputSchema = null;
+            MCPListToolsToolInputSchema inputSchema = null;
             String description = null;
-            BinaryData annotations = null;
+            MCPListToolsToolAnnotations annotations = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("input_schema".equals(fieldName)) {
-                    inputSchema
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    inputSchema = MCPListToolsToolInputSchema.fromJson(reader);
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("annotations".equals(fieldName)) {
-                    annotations
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    annotations = MCPListToolsToolAnnotations.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -174,5 +145,29 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
             deserializedMCPListToolsTool.annotations = annotations;
             return deserializedMCPListToolsTool;
         });
+    }
+
+    /**
+     * Creates an instance of MCPListToolsTool class.
+     *
+     * @param name the name value to set.
+     * @param inputSchema the inputSchema value to set.
+     */
+    @Generated
+    public MCPListToolsTool(String name, MCPListToolsToolInputSchema inputSchema) {
+        this.name = name;
+        this.inputSchema = inputSchema;
+    }
+
+    /**
+     * Set the annotations property: The annotations property.
+     *
+     * @param annotations the annotations value to set.
+     * @return the MCPListToolsTool object itself.
+     */
+    @Generated
+    public MCPListToolsTool setAnnotations(MCPListToolsToolAnnotations annotations) {
+        this.annotations = annotations;
+        return this;
     }
 }

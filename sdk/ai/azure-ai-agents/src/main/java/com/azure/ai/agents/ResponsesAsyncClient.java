@@ -23,7 +23,7 @@ import java.util.Objects;
  */
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 public final class ResponsesAsyncClient {
-    private final ResponseServiceAsync openAIResponsesClientAsync;
+    private final ResponseServiceAsync responseServiceAsync;
 
     /**
      * Initializes an instance of ResponsesAsyncClient class using the official OpenAI client library.
@@ -31,7 +31,7 @@ public final class ResponsesAsyncClient {
      * @param openAIClientAsync the OpenAI async client.
      */
     ResponsesAsyncClient(OpenAIClientAsync openAIClientAsync) {
-        this.openAIResponsesClientAsync = openAIClientAsync.responses();
+        this.responseServiceAsync = openAIClientAsync.responses();
     }
 
     /**
@@ -40,7 +40,18 @@ public final class ResponsesAsyncClient {
      * @return the OpenAI response service client.
      */
     public ResponseServiceAsync getResponseServiceAsync() {
-        return this.openAIResponsesClientAsync;
+        return this.responseServiceAsync;
+    }
+
+    /**
+     * Creates a response with an agent conversation.
+     *
+     * @param agentReference The agent reference.
+     * @param conversationId The conversation ID.
+     * @return The created Response.
+     */
+    public Mono<Response> createWithAgentConversation(AgentReference agentReference, String conversationId) {
+        return createWithAgentConversation(agentReference, conversationId, new ResponseCreateParams.Builder());
     }
 
     /**
@@ -64,6 +75,36 @@ public final class ResponsesAsyncClient {
         additionalBodyProperties.put("agent", agentRefJsonValue);
 
         params.additionalBodyProperties(additionalBodyProperties);
-        return Mono.fromFuture(this.openAIResponsesClientAsync.create(params.build()));
+        return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
+    }
+
+    /**
+     * Creates a response with an agent conversation.
+     *
+     * @param agentReference The agent reference.
+     * @param params The parameters to create the response.
+     * @return The created Response.
+     */
+    public Mono<Response> createWithAgent(AgentReference agentReference, ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(agentReference, "agentReference cannot be null");
+        Objects.requireNonNull(params, "params cannot be null");
+
+        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
+
+        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
+        additionalBodyProperties.put("agent", agentRefJsonValue);
+
+        params.additionalBodyProperties(additionalBodyProperties);
+        return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
+    }
+
+    /**
+     * Creates a response with an agent conversation.
+     *
+     * @param agentReference The agent reference.
+     * @return The created Response.
+     */
+    public Mono<Response> createWithAgent(AgentReference agentReference) {
+        return createWithAgent(agentReference, new ResponseCreateParams.Builder());
     }
 }

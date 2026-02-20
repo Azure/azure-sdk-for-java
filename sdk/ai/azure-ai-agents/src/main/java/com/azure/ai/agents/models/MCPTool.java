@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
+ * MCP tool
+ *
  * Give the model access to additional tools via remote Model Context Protocol
  * (MCP) servers. [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
  */
@@ -32,26 +34,26 @@ public final class MCPTool extends Tool {
     private final String serverLabel;
 
     /*
-     * The URL for the MCP server.
+     * The URL for the MCP server. One of `server_url` or `connector_id` must be
+     * provided.
      */
     @Generated
-    private final String serverUrl;
+    private String serverUrl;
 
     /*
-     * Optional HTTP headers to send to the MCP server. Use for authentication
-     * or other purposes.
+     * The headers property.
      */
     @Generated
     private Map<String, String> headers;
 
     /*
-     * List of allowed tool names or a filter object.
+     * The allowed_tools property.
      */
     @Generated
     private BinaryData allowedTools;
 
     /*
-     * Specify which of the MCP server's tools require approval.
+     * The require_approval property.
      */
     @Generated
     private BinaryData requireApproval;
@@ -62,18 +64,6 @@ public final class MCPTool extends Tool {
      */
     @Generated
     private String projectConnectionId;
-
-    /**
-     * Creates an instance of MCPTool class.
-     *
-     * @param serverLabel the serverLabel value to set.
-     * @param serverUrl the serverUrl value to set.
-     */
-    @Generated
-    public MCPTool(String serverLabel, String serverUrl) {
-        this.serverLabel = serverLabel;
-        this.serverUrl = serverUrl;
-    }
 
     /**
      * Get the type property: The type property.
@@ -97,7 +87,8 @@ public final class MCPTool extends Tool {
     }
 
     /**
-     * Get the serverUrl property: The URL for the MCP server.
+     * Get the serverUrl property: The URL for the MCP server. One of `server_url` or `connector_id` must be
+     * provided.
      *
      * @return the serverUrl value.
      */
@@ -107,8 +98,7 @@ public final class MCPTool extends Tool {
     }
 
     /**
-     * Get the headers property: Optional HTTP headers to send to the MCP server. Use for authentication
-     * or other purposes.
+     * Get the headers property: The headers property.
      *
      * @return the headers value.
      */
@@ -118,8 +108,7 @@ public final class MCPTool extends Tool {
     }
 
     /**
-     * Set the headers property: Optional HTTP headers to send to the MCP server. Use for authentication
-     * or other purposes.
+     * Set the headers property: The headers property.
      *
      * @param headers the headers value to set.
      * @return the MCPTool object itself.
@@ -131,7 +120,7 @@ public final class MCPTool extends Tool {
     }
 
     /**
-     * Get the allowedTools property: List of allowed tool names or a filter object.
+     * Get the allowedTools property: The allowed_tools property.
      *
      * @return the allowedTools value.
      */
@@ -141,7 +130,7 @@ public final class MCPTool extends Tool {
     }
 
     /**
-     * Set the allowedTools property: List of allowed tool names or a filter object.
+     * Set the allowedTools property: The allowed_tools property.
      *
      * @param allowedTools the allowedTools value to set.
      * @return the MCPTool object itself.
@@ -153,7 +142,7 @@ public final class MCPTool extends Tool {
     }
 
     /**
-     * Get the requireApproval property: Specify which of the MCP server's tools require approval.
+     * Get the requireApproval property: The require_approval property.
      *
      * @return the requireApproval value.
      */
@@ -163,7 +152,7 @@ public final class MCPTool extends Tool {
     }
 
     /**
-     * Set the requireApproval property: Specify which of the MCP server's tools require approval.
+     * Set the requireApproval property: The require_approval property.
      *
      * @param requireApproval the requireApproval value to set.
      * @return the MCPTool object itself.
@@ -206,8 +195,11 @@ public final class MCPTool extends Tool {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("server_label", this.serverLabel);
-        jsonWriter.writeStringField("server_url", this.serverUrl);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("server_url", this.serverUrl);
+        jsonWriter.writeStringField("connector_id", this.connectorId == null ? null : this.connectorId.toString());
+        jsonWriter.writeStringField("authorization", this.authorization);
+        jsonWriter.writeStringField("server_description", this.serverDescription);
         jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeString(element));
         if (this.allowedTools != null) {
             jsonWriter.writeFieldName("allowed_tools");
@@ -234,8 +226,11 @@ public final class MCPTool extends Tool {
     public static MCPTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String serverLabel = null;
-            String serverUrl = null;
             ToolType type = ToolType.MCP;
+            String serverUrl = null;
+            MCPToolConnectorId connectorId = null;
+            String authorization = null;
+            String serverDescription = null;
             Map<String, String> headers = null;
             BinaryData allowedTools = null;
             BinaryData requireApproval = null;
@@ -245,10 +240,16 @@ public final class MCPTool extends Tool {
                 reader.nextToken();
                 if ("server_label".equals(fieldName)) {
                     serverLabel = reader.getString();
-                } else if ("server_url".equals(fieldName)) {
-                    serverUrl = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
+                } else if ("server_url".equals(fieldName)) {
+                    serverUrl = reader.getString();
+                } else if ("connector_id".equals(fieldName)) {
+                    connectorId = MCPToolConnectorId.fromString(reader.getString());
+                } else if ("authorization".equals(fieldName)) {
+                    authorization = reader.getString();
+                } else if ("server_description".equals(fieldName)) {
+                    serverDescription = reader.getString();
                 } else if ("headers".equals(fieldName)) {
                     headers = reader.readMap(reader1 -> reader1.getString());
                 } else if ("allowed_tools".equals(fieldName)) {
@@ -263,13 +264,163 @@ public final class MCPTool extends Tool {
                     reader.skipChildren();
                 }
             }
-            MCPTool deserializedMCPTool = new MCPTool(serverLabel, serverUrl);
+            MCPTool deserializedMCPTool = new MCPTool(serverLabel);
             deserializedMCPTool.type = type;
+            deserializedMCPTool.serverUrl = serverUrl;
+            deserializedMCPTool.connectorId = connectorId;
+            deserializedMCPTool.authorization = authorization;
+            deserializedMCPTool.serverDescription = serverDescription;
             deserializedMCPTool.headers = headers;
             deserializedMCPTool.allowedTools = allowedTools;
             deserializedMCPTool.requireApproval = requireApproval;
             deserializedMCPTool.projectConnectionId = projectConnectionId;
             return deserializedMCPTool;
         });
+    }
+
+    /*
+     * Identifier for service connectors, like those available in ChatGPT. One of
+     * `server_url` or `connector_id` must be provided. Learn more about service
+     * connectors [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+     * Currently supported `connector_id` values are:
+     * - Dropbox: `connector_dropbox`
+     * - Gmail: `connector_gmail`
+     * - Google Calendar: `connector_googlecalendar`
+     * - Google Drive: `connector_googledrive`
+     * - Microsoft Teams: `connector_microsoftteams`
+     * - Outlook Calendar: `connector_outlookcalendar`
+     * - Outlook Email: `connector_outlookemail`
+     * - SharePoint: `connector_sharepoint`
+     */
+    @Generated
+    private MCPToolConnectorId connectorId;
+
+    /*
+     * An OAuth access token that can be used with a remote MCP server, either
+     * with a custom MCP server URL or a service connector. Your application
+     * must handle the OAuth authorization flow and provide the token here.
+     */
+    @Generated
+    private String authorization;
+
+    /*
+     * Optional description of the MCP server, used to provide more context.
+     */
+    @Generated
+    private String serverDescription;
+
+    /**
+     * Creates an instance of MCPTool class.
+     *
+     * @param serverLabel the serverLabel value to set.
+     */
+    @Generated
+    public MCPTool(String serverLabel) {
+        this.serverLabel = serverLabel;
+    }
+
+    /**
+     * Set the serverUrl property: The URL for the MCP server. One of `server_url` or `connector_id` must be
+     * provided.
+     *
+     * @param serverUrl the serverUrl value to set.
+     * @return the MCPTool object itself.
+     */
+    @Generated
+    public MCPTool setServerUrl(String serverUrl) {
+        this.serverUrl = serverUrl;
+        return this;
+    }
+
+    /**
+     * Get the connectorId property: Identifier for service connectors, like those available in ChatGPT. One of
+     * `server_url` or `connector_id` must be provided. Learn more about service
+     * connectors [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+     * Currently supported `connector_id` values are:
+     * - Dropbox: `connector_dropbox`
+     * - Gmail: `connector_gmail`
+     * - Google Calendar: `connector_googlecalendar`
+     * - Google Drive: `connector_googledrive`
+     * - Microsoft Teams: `connector_microsoftteams`
+     * - Outlook Calendar: `connector_outlookcalendar`
+     * - Outlook Email: `connector_outlookemail`
+     * - SharePoint: `connector_sharepoint`.
+     *
+     * @return the connectorId value.
+     */
+    @Generated
+    public MCPToolConnectorId getConnectorId() {
+        return this.connectorId;
+    }
+
+    /**
+     * Set the connectorId property: Identifier for service connectors, like those available in ChatGPT. One of
+     * `server_url` or `connector_id` must be provided. Learn more about service
+     * connectors [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+     * Currently supported `connector_id` values are:
+     * - Dropbox: `connector_dropbox`
+     * - Gmail: `connector_gmail`
+     * - Google Calendar: `connector_googlecalendar`
+     * - Google Drive: `connector_googledrive`
+     * - Microsoft Teams: `connector_microsoftteams`
+     * - Outlook Calendar: `connector_outlookcalendar`
+     * - Outlook Email: `connector_outlookemail`
+     * - SharePoint: `connector_sharepoint`.
+     *
+     * @param connectorId the connectorId value to set.
+     * @return the MCPTool object itself.
+     */
+    @Generated
+    public MCPTool setConnectorId(MCPToolConnectorId connectorId) {
+        this.connectorId = connectorId;
+        return this;
+    }
+
+    /**
+     * Get the authorization property: An OAuth access token that can be used with a remote MCP server, either
+     * with a custom MCP server URL or a service connector. Your application
+     * must handle the OAuth authorization flow and provide the token here.
+     *
+     * @return the authorization value.
+     */
+    @Generated
+    public String getAuthorization() {
+        return this.authorization;
+    }
+
+    /**
+     * Set the authorization property: An OAuth access token that can be used with a remote MCP server, either
+     * with a custom MCP server URL or a service connector. Your application
+     * must handle the OAuth authorization flow and provide the token here.
+     *
+     * @param authorization the authorization value to set.
+     * @return the MCPTool object itself.
+     */
+    @Generated
+    public MCPTool setAuthorization(String authorization) {
+        this.authorization = authorization;
+        return this;
+    }
+
+    /**
+     * Get the serverDescription property: Optional description of the MCP server, used to provide more context.
+     *
+     * @return the serverDescription value.
+     */
+    @Generated
+    public String getServerDescription() {
+        return this.serverDescription;
+    }
+
+    /**
+     * Set the serverDescription property: Optional description of the MCP server, used to provide more context.
+     *
+     * @param serverDescription the serverDescription value to set.
+     * @return the MCPTool object itself.
+     */
+    @Generated
+    public MCPTool setServerDescription(String serverDescription) {
+        this.serverDescription = serverDescription;
+        return this;
     }
 }
