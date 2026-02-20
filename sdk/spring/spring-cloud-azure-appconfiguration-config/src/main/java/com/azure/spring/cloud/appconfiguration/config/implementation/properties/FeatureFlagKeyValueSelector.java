@@ -13,42 +13,56 @@ import java.util.stream.Collectors;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.azure.spring.cloud.appconfiguration.config.implementation.ValidationUtil;
+
 import jakarta.annotation.PostConstruct;
 
 /**
- * Properties on what Selects are checked before loading configurations.
+ * Selector properties that control which feature flags are loaded from an
+ * Azure App Configuration store.
  */
 public final class FeatureFlagKeyValueSelector {
 
     /**
-     * Label for requesting all configurations with (No Label)
+     * Sentinel array representing the empty (no label) value.
      */
     private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
 
     /**
-     * Key filter to use when loading feature flags. The provided key filter is
-     * appended after the feature flag prefix, ".appconfig.featureflag/". By
-     * default, all feature flags are loaded.
+     * Filters feature flags by key suffix, appended after the
+     * {@code .appconfig.featureflag/} prefix. When empty, all feature flags
+     * are loaded.
      */
     private String keyFilter = "";
 
     /**
-     * Label filter to use when loading feature flags. By default, all feature flags
-     * with no label are loaded. The label filter must be a non-null string that
-     * does not contain an asterisk.
+     * Filters feature flags by label. When unset, only feature flags with no
+     * label are loaded. Multiple labels can be specified as a comma-separated
+     * string. Must not contain asterisks ({@code *}).
      */
     private String labelFilter;
 
     /**
-     * @return the keyFilter
+     * Filters feature flags by tags. Each entry is interpreted as a tag-based filter,
+     * typically in the {@code tagName=tagValue} format. When multiple entries are
+     * provided, they are combined using AND logic.
+     */
+    private List<String> tagsFilter;
+
+    /**
+     * Returns the key filter for feature flags.
+     *
+     * @return the key filter string
      */
     public String getKeyFilter() {
         return keyFilter;
     }
 
     /**
-     * @param keyFilter the keyFilter to set
-     * @return AppConfigurationStoreSelects
+     * Sets the key filter for feature flags.
+     *
+     * @param keyFilter the key suffix to filter by
+     * @return this {@link FeatureFlagKeyValueSelector} for chaining
      */
     public FeatureFlagKeyValueSelector setKeyFilter(String keyFilter) {
         this.keyFilter = keyFilter;
@@ -56,8 +70,21 @@ public final class FeatureFlagKeyValueSelector {
     }
 
     /**
-     * @param profiles List of current Spring profiles to default to using is null label is set.
-     * @return List of reversed label values, which are split by the separator, the latter label has higher priority
+     * Returns the raw label filter string, or {@code null} if not set.
+     *
+     * @return the label filter
+     */
+    public String getLabelFilter() {
+        return labelFilter;
+    }
+
+    /**
+     * Resolves the label filter into an array of labels. When no label filter is
+     * set, falls back to the active Spring profiles (in reverse priority order).
+     * If neither is available, returns the empty-label sentinel.
+     *
+     * @param profiles the active Spring profiles to use as a fallback
+     * @return an array of resolved labels, ordered from lowest to highest priority
      */
     public String[] getLabelFilter(List<String> profiles) {
         if (labelFilter == null && profiles.size() > 0) {
@@ -83,18 +110,20 @@ public final class FeatureFlagKeyValueSelector {
     }
 
     /**
-     * Get all labels as a single String
-     * 
-     * @param profiles current user profiles
-     * @return comma separated list of labels
+     * Returns resolved labels as a single comma-separated string.
+     *
+     * @param profiles the active Spring profiles to use as a fallback
+     * @return comma-separated label string
      */
     public String getLabelFilterText(List<String> profiles) {
         return String.join(",", getLabelFilter(profiles));
     }
 
     /**
-     * @param labelFilter the labelFilter to set
-     * @return AppConfigurationStoreSelects
+     * Sets the label filter for feature flags.
+     *
+     * @param labelFilter a comma-separated string of labels to filter by
+     * @return this {@link FeatureFlagKeyValueSelector} for chaining
      */
     public FeatureFlagKeyValueSelector setLabelFilter(String labelFilter) {
         this.labelFilter = labelFilter;
@@ -102,13 +131,37 @@ public final class FeatureFlagKeyValueSelector {
     }
 
     /**
-     * Validates key-filter and label-filter are valid.
+     * Returns the list of tag filters, or {@code null} if not set.
+     *
+     * @return the tag filter list
+     */
+    public List<String> getTagsFilter() {
+        return tagsFilter;
+    }
+
+    /**
+     * Sets the tag filters used to select feature flags by tags. Each entry is
+     * interpreted as a tag-based filter, typically in the {@code tagName=tagValue}
+     * format. When multiple entries are provided, they are combined using AND logic.
+     *
+     * @param tagsFilter list of tag expressions, typically in {@code tagName=tagValue} format
+     * @return this {@link FeatureFlagKeyValueSelector} for chaining
+     */
+    public FeatureFlagKeyValueSelector setTagsFilter(List<String> tagsFilter) {
+        this.tagsFilter = tagsFilter;
+        return this;
+    }
+
+    /**
+     * Validates that the label filter does not contain asterisks and that tag filters
+     * follow the expected {@code tagName=tagValue} format.
      */
     @PostConstruct
     void validateAndInit() {
         if (labelFilter != null) {
             Assert.isTrue(!labelFilter.contains("*"), "LabelFilter must not contain asterisk(*)");
         }
+        ValidationUtil.validateTagsFilter(tagsFilter);
     }
 
     private String mapLabel(String label) {

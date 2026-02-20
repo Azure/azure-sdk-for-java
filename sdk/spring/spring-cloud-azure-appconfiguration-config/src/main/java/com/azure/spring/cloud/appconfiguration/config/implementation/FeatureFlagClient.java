@@ -79,7 +79,7 @@ class FeatureFlagClient {
      *
      */
     List<WatchedConfigurationSettings> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
-        String[] labelFilter, Context context) {
+        String[] labelFilter, List<String> tagsFilter, Context context) {
         List<WatchedConfigurationSettings> loadedFeatureFlags = new ArrayList<>();
 
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
@@ -93,6 +93,11 @@ class FeatureFlagClient {
 
         for (String label : labels) {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
+
+            if (tagsFilter != null && !tagsFilter.isEmpty()) {
+                settingSelector.setTagsFilter(tagsFilter);
+            }
+
             context.addData("FeatureFlagTracing", tracing);
 
             WatchedConfigurationSettings features = replicaClient.listFeatureFlags(settingSelector, context);
