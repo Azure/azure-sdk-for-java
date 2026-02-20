@@ -10,7 +10,10 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.mockito.ArgumentCaptor;
@@ -23,6 +26,7 @@ import reactor.test.StepVerifier;
 import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -304,6 +308,72 @@ public class RxGatewayStoreModelTest {
         StepVerifier.create(observable)
             .expectErrorSatisfies(validator::validate)
             .verify(Duration.ofMillis(timeout));
+    }
+
+    @Test(groups = "unit")
+    public void cancelledRequestReleasesRetainedByteBuf() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("https://localhost"));
+        Mockito.doReturn(regionalRoutingContext)
+               .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        // Create a tracked ByteBuf to verify it gets released
+        ByteBuf trackedBuf = Unpooled.wrappedBuffer("{\"id\":\"test\"}".getBytes());
+        assertThat(trackedBuf.refCnt()).isEqualTo(1);
+
+        AtomicReference<ByteBuf> capturedBuf = new AtomicReference<>(trackedBuf);
+
+        HttpResponse mockResponse = Mockito.mock(HttpResponse.class);
+        Mockito.doReturn(200).when(mockResponse).statusCode();
+        Mockito.doReturn(new HttpHeaders()).when(mockResponse).headers();
+        // Return the tracked ByteBuf - the body() Mono will emit this buffer
+        Mockito.doReturn(Mono.just(trackedBuf)).when(mockResponse).body();
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        // Delay the response to allow cancellation to race with processing
+        Mockito.doAnswer(invocation -> {
+            HttpRequest req = invocation.getArgument(0);
+            return Mono.just(mockResponse.withRequest(req))
+                       .delayElement(Duration.ofMillis(50));
+        }).when(httpClient).send(any(HttpRequest.class), any(Duration.class));
+
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader
+            = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(ConsistencyLevel.SESSION)
+               .when(gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null);
+        storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+        dsr.requestContext = new DocumentServiceRequestContext();
+        dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
+
+        // Subscribe and immediately cancel to trigger the race condition
+        // between publishOn's async delivery and cancellation
+        Mono<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
+        StepVerifier.create(resp)
+                    .thenAwait(Duration.ofMillis(10))
+                    .thenCancel()
+                    .verify(Duration.ofSeconds(5));
+
+        // Allow time for doFinally safety net to execute
+        Thread.sleep(200);
+
+        // Verify the ByteBuf was properly released (refCnt should be 0)
+        // The doFinally safety net should have released it even if doOnDiscard didn't fire
+        assertThat(trackedBuf.refCnt()).isEqualTo(0);
     }
 
     enum SessionTokenType {
