@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added support for throughput bucket. - See [PR 48009](https://github.com/Azure/azure-sdk-for-java/pull/48009)
+* Added `startFrom` point-in-time support for Change Feed source connector in All Versions and Deletes Mode. - See [PR 47684](https://github.com/Azure/azure-sdk-for-java/pull/47684)
 
 #### Breaking Changes
 

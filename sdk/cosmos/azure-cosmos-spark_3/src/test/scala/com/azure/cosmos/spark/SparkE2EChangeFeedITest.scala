@@ -243,6 +243,39 @@ class SparkE2EChangeFeedITest
       ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled) shouldEqual true
   }
 
+  // TODO: Enable this test once emulator supports startFromPointInTime with AllVersionsAndDeletes change feed
+  "spark change feed query (all versions and deletes)" can "use point in time start" ignore {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    for (state <- Array(true, false)) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("type", "cat")
+      objectNode.put("age", 20)
+      objectNode.put("isAlive", state)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+    val cfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.changeFeed.mode" -> "AllVersionsAndDeletes",
+      "spark.cosmos.read.maxItemCount" -> "1",
+      "spark.cosmos.changeFeed.startFrom" -> "2020-01-01T00:00:00Z"
+    )
+
+    val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
+    val rowsArray = df.collect()
+    rowsArray.length should be >= 0
+    df.schema.equals(
+      ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled) shouldEqual true
+  }
+
   "spark change feed micro batch (incremental)" can "use default schema" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
