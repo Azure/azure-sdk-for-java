@@ -19,6 +19,12 @@ public final class TestRunStatus extends ExpandableStringEnum<TestRunStatus> {
     public static final TestRunStatus ACCEPTED = fromString("ACCEPTED");
 
     /**
+     * Test run is not yet started.
+     */
+    @Generated
+    public static final TestRunStatus NOT_STARTED = fromString("NOTSTARTED");
+
+    /**
      * Test run is provisioning.
      */
     @Generated
@@ -132,10 +138,4 @@ public final class TestRunStatus extends ExpandableStringEnum<TestRunStatus> {
     public static Collection<TestRunStatus> values() {
         return values(TestRunStatus.class);
     }
-
-    /**
-     * Test run is not yet started.
-     */
-    @Generated
-    public static final TestRunStatus NOT_STARTED = fromString("NOTSTARTED");
 }

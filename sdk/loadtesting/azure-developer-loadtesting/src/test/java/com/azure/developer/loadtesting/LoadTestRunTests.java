@@ -239,7 +239,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     public void listTestRuns() {
 
         PagedIterable<LoadTestRun> loadTestRuns = getLoadTestRunClient().listTestRuns("executedDateTime desc", null,
-            existingTestId, null, null, null, null);
+            existingTestId, null, null, null, null, null);
         boolean found = loadTestRuns.stream().anyMatch(testRun -> {
             return testRun.getTestRunId().equals(newTestRunId);
 

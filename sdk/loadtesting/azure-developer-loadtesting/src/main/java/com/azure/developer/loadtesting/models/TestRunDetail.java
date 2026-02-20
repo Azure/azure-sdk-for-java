@@ -37,6 +37,20 @@ public final class TestRunDetail implements JsonSerializable<TestRunDetail> {
     private final Map<String, String> properties;
 
     /**
+     * Creates an instance of TestRunDetail class.
+     *
+     * @param status the status value to set.
+     * @param configurationId the configurationId value to set.
+     * @param properties the properties value to set.
+     */
+    @Generated
+    private TestRunDetail(TestRunStatus status, String configurationId, Map<String, String> properties) {
+        this.status = status;
+        this.configurationId = configurationId;
+        this.properties = properties;
+    }
+
+    /**
      * Get the status property: Status of the test run.
      *
      * @return the status value.
@@ -109,19 +123,5 @@ public final class TestRunDetail implements JsonSerializable<TestRunDetail> {
             }
             return new TestRunDetail(status, configurationId, properties);
         });
-    }
-
-    /**
-     * Creates an instance of TestRunDetail class.
-     *
-     * @param status the status value to set.
-     * @param configurationId the configurationId value to set.
-     * @param properties the properties value to set.
-     */
-    @Generated
-    private TestRunDetail(TestRunStatus status, String configurationId, Map<String, String> properties) {
-        this.status = status;
-        this.configurationId = configurationId;
-        this.properties = properties;
     }
 }

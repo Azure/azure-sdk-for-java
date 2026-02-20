@@ -38,6 +38,12 @@ public final class TestRunFileInfo implements JsonSerializable<TestRunFileInfo> 
     private LoadTestingFileType fileType;
 
     /*
+     * Expiry time of the file (RFC 3339 literal format)
+     */
+    @Generated
+    private OffsetDateTime expiresOn;
+
+    /*
      * Validation status of the file
      */
     @Generated
@@ -84,6 +90,16 @@ public final class TestRunFileInfo implements JsonSerializable<TestRunFileInfo> 
     @Generated
     public LoadTestingFileType getFileType() {
         return this.fileType;
+    }
+
+    /**
+     * Get the expiresOn property: Expiry time of the file (RFC 3339 literal format).
+     *
+     * @return the expiresOn value.
+     */
+    @Generated
+    public OffsetDateTime getExpiresOn() {
+        return this.expiresOn;
     }
 
     /**
@@ -151,21 +167,5 @@ public final class TestRunFileInfo implements JsonSerializable<TestRunFileInfo> 
             }
             return deserializedTestRunFileInfo;
         });
-    }
-
-    /*
-     * Expiry time of the file (RFC 3339 literal format)
-     */
-    @Generated
-    private OffsetDateTime expiresOn;
-
-    /**
-     * Get the expiresOn property: Expiry time of the file (RFC 3339 literal format).
-     *
-     * @return the expiresOn value.
-     */
-    @Generated
-    public OffsetDateTime getExpiresOn() {
-        return this.expiresOn;
     }
 }

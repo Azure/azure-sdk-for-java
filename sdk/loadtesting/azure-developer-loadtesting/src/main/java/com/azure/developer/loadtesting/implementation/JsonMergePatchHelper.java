@@ -10,21 +10,33 @@ import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.developer.loadtesting.models.LoadTestConfiguration;
 import com.azure.developer.loadtesting.models.LoadTestRun;
 import com.azure.developer.loadtesting.models.LoadTestingAppComponent;
+import com.azure.developer.loadtesting.models.NotificationRule;
 import com.azure.developer.loadtesting.models.OptionalLoadTestConfiguration;
 import com.azure.developer.loadtesting.models.PassFailCriteria;
 import com.azure.developer.loadtesting.models.PassFailMetric;
 import com.azure.developer.loadtesting.models.PassFailServerMetric;
+import com.azure.developer.loadtesting.models.Recurrence;
+import com.azure.developer.loadtesting.models.RecurrenceEnd;
 import com.azure.developer.loadtesting.models.RegionalConfiguration;
 import com.azure.developer.loadtesting.models.ResourceMetric;
+import com.azure.developer.loadtesting.models.StateDetails;
 import com.azure.developer.loadtesting.models.TargetResourceConfigurations;
 import com.azure.developer.loadtesting.models.TestAppComponents;
 import com.azure.developer.loadtesting.models.TestCertificate;
+import com.azure.developer.loadtesting.models.TestPreferences;
 import com.azure.developer.loadtesting.models.TestProfile;
 import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
+import com.azure.developer.loadtesting.models.TestRunEndedEventCondition;
+import com.azure.developer.loadtesting.models.TestRunInsights;
 import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
 import com.azure.developer.loadtesting.models.TestSecret;
 import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
+import com.azure.developer.loadtesting.models.TestsNotificationEventFilter;
+import com.azure.developer.loadtesting.models.Trigger;
+import com.azure.developer.loadtesting.models.TriggerState;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * This is the Helper class to enable json merge patch serialization for a model.
@@ -196,6 +208,22 @@ public class JsonMergePatchHelper {
         return regionalConfigurationAccessor;
     }
 
+    private static TestPreferencesAccessor testPreferencesAccessor;
+
+    public interface TestPreferencesAccessor {
+        TestPreferences prepareModelForJsonMergePatch(TestPreferences testPreferences, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(TestPreferences testPreferences);
+    }
+
+    public static void setTestPreferencesAccessor(TestPreferencesAccessor accessor) {
+        testPreferencesAccessor = accessor;
+    }
+
+    public static TestPreferencesAccessor getTestPreferencesAccessor() {
+        return testPreferencesAccessor;
+    }
+
     private static TestAppComponentsAccessor testAppComponentsAccessor;
 
     public interface TestAppComponentsAccessor {
@@ -317,6 +345,139 @@ public class JsonMergePatchHelper {
         return functionFlexConsumptionResourceConfigurationAccessor;
     }
 
+    private static TriggerAccessor triggerAccessor;
+
+    public interface TriggerAccessor {
+        Trigger prepareModelForJsonMergePatch(Trigger trigger, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(Trigger trigger);
+
+        void setTriggerId(Trigger trigger, String triggerId);
+
+        void setDisplayName(Trigger trigger, String displayName);
+
+        void setDescription(Trigger trigger, String description);
+
+        void setState(Trigger trigger, TriggerState state);
+
+        void setStateDetails(Trigger trigger, StateDetails stateDetails);
+
+        void setCreatedDateTime(Trigger trigger, OffsetDateTime createdDateTime);
+
+        void setCreatedBy(Trigger trigger, String createdBy);
+
+        void setLastModifiedDateTime(Trigger trigger, OffsetDateTime lastModifiedDateTime);
+
+        void setLastModifiedBy(Trigger trigger, String lastModifiedBy);
+    }
+
+    public static void setTriggerAccessor(TriggerAccessor accessor) {
+        triggerAccessor = accessor;
+    }
+
+    public static TriggerAccessor getTriggerAccessor() {
+        return triggerAccessor;
+    }
+
+    private static RecurrenceAccessor recurrenceAccessor;
+
+    public interface RecurrenceAccessor {
+        Recurrence prepareModelForJsonMergePatch(Recurrence recurrence, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(Recurrence recurrence);
+
+        void setRecurrenceEnd(Recurrence recurrence, RecurrenceEnd recurrenceEnd);
+    }
+
+    public static void setRecurrenceAccessor(RecurrenceAccessor accessor) {
+        recurrenceAccessor = accessor;
+    }
+
+    public static RecurrenceAccessor getRecurrenceAccessor() {
+        return recurrenceAccessor;
+    }
+
+    private static RecurrenceEndAccessor recurrenceEndAccessor;
+
+    public interface RecurrenceEndAccessor {
+        RecurrenceEnd prepareModelForJsonMergePatch(RecurrenceEnd recurrenceEnd, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(RecurrenceEnd recurrenceEnd);
+    }
+
+    public static void setRecurrenceEndAccessor(RecurrenceEndAccessor accessor) {
+        recurrenceEndAccessor = accessor;
+    }
+
+    public static RecurrenceEndAccessor getRecurrenceEndAccessor() {
+        return recurrenceEndAccessor;
+    }
+
+    private static NotificationRuleAccessor notificationRuleAccessor;
+
+    public interface NotificationRuleAccessor {
+        NotificationRule prepareModelForJsonMergePatch(NotificationRule notificationRule,
+            boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(NotificationRule notificationRule);
+
+        void setNotificationRuleId(NotificationRule notificationRule, String notificationRuleId);
+
+        void setDisplayName(NotificationRule notificationRule, String displayName);
+
+        void setActionGroupIds(NotificationRule notificationRule, List<String> actionGroupIds);
+
+        void setCreatedDateTime(NotificationRule notificationRule, OffsetDateTime createdDateTime);
+
+        void setCreatedBy(NotificationRule notificationRule, String createdBy);
+
+        void setLastModifiedDateTime(NotificationRule notificationRule, OffsetDateTime lastModifiedDateTime);
+
+        void setLastModifiedBy(NotificationRule notificationRule, String lastModifiedBy);
+    }
+
+    public static void setNotificationRuleAccessor(NotificationRuleAccessor accessor) {
+        notificationRuleAccessor = accessor;
+    }
+
+    public static NotificationRuleAccessor getNotificationRuleAccessor() {
+        return notificationRuleAccessor;
+    }
+
+    private static TestsNotificationEventFilterAccessor testsNotificationEventFilterAccessor;
+
+    public interface TestsNotificationEventFilterAccessor {
+        TestsNotificationEventFilter prepareModelForJsonMergePatch(
+            TestsNotificationEventFilter testsNotificationEventFilter, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(TestsNotificationEventFilter testsNotificationEventFilter);
+    }
+
+    public static void setTestsNotificationEventFilterAccessor(TestsNotificationEventFilterAccessor accessor) {
+        testsNotificationEventFilterAccessor = accessor;
+    }
+
+    public static TestsNotificationEventFilterAccessor getTestsNotificationEventFilterAccessor() {
+        return testsNotificationEventFilterAccessor;
+    }
+
+    private static TestRunEndedEventConditionAccessor testRunEndedEventConditionAccessor;
+
+    public interface TestRunEndedEventConditionAccessor {
+        TestRunEndedEventCondition prepareModelForJsonMergePatch(TestRunEndedEventCondition testRunEndedEventCondition,
+            boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(TestRunEndedEventCondition testRunEndedEventCondition);
+    }
+
+    public static void setTestRunEndedEventConditionAccessor(TestRunEndedEventConditionAccessor accessor) {
+        testRunEndedEventConditionAccessor = accessor;
+    }
+
+    public static TestRunEndedEventConditionAccessor getTestRunEndedEventConditionAccessor() {
+        return testRunEndedEventConditionAccessor;
+    }
+
     private static LoadTestRunAccessor loadTestRunAccessor;
 
     public interface LoadTestRunAccessor {
@@ -382,5 +543,21 @@ public class JsonMergePatchHelper {
 
     public static TestProfileRunAccessor getTestProfileRunAccessor() {
         return testProfileRunAccessor;
+    }
+
+    private static TestRunInsightsAccessor testRunInsightsAccessor;
+
+    public interface TestRunInsightsAccessor {
+        TestRunInsights prepareModelForJsonMergePatch(TestRunInsights testRunInsights, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(TestRunInsights testRunInsights);
+    }
+
+    public static void setTestRunInsightsAccessor(TestRunInsightsAccessor accessor) {
+        testRunInsightsAccessor = accessor;
+    }
+
+    public static TestRunInsightsAccessor getTestRunInsightsAccessor() {
+        return testRunInsightsAccessor;
     }
 }

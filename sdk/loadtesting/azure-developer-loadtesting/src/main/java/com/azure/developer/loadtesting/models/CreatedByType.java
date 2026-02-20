@@ -25,6 +25,18 @@ public final class CreatedByType extends ExpandableStringEnum<CreatedByType> {
     public static final CreatedByType SCHEDULED_TRIGGER = fromString("ScheduledTrigger");
 
     /**
+     * Entity was created by Azure DevOps pipelines.
+     */
+    @Generated
+    public static final CreatedByType AZURE_PIPELINES = fromString("AzurePipelines");
+
+    /**
+     * Entity was created by GitHub Workflows.
+     */
+    @Generated
+    public static final CreatedByType GIT_HUB_WORKFLOWS = fromString("GitHubWorkflows");
+
+    /**
      * Creates a new instance of CreatedByType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

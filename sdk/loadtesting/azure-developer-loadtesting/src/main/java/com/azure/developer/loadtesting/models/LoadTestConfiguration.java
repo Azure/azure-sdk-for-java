@@ -29,11 +29,32 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
     private Integer engineInstances;
 
     /*
+     * If false, Azure Load Testing copies and processes your input files unmodified
+     * across all test engine instances. If true, Azure Load Testing splits the CSV
+     * input data evenly across all engine instances. If you provide multiple CSV
+     * files, each file will be split evenly.
+     */
+    @Generated
+    private Boolean splitAllCsvs;
+
+    /*
      * If true, optionalLoadTestConfig is required and JMX script for the load test is
      * not required to upload.
      */
     @Generated
     private Boolean quickStartTest;
+
+    /*
+     * Configuration for quick load test
+     */
+    @Generated
+    private OptionalLoadTestConfiguration optionalLoadTestConfiguration;
+
+    /*
+     * Region distribution configuration for the load test.
+     */
+    @Generated
+    private List<RegionalConfiguration> regionalLoadTestConfiguration;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -99,6 +120,35 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
     }
 
     /**
+     * Get the splitAllCsvs property: If false, Azure Load Testing copies and processes your input files unmodified
+     * across all test engine instances. If true, Azure Load Testing splits the CSV
+     * input data evenly across all engine instances. If you provide multiple CSV
+     * files, each file will be split evenly.
+     *
+     * @return the splitAllCsvs value.
+     */
+    @Generated
+    public Boolean isSplitAllCsvs() {
+        return this.splitAllCsvs;
+    }
+
+    /**
+     * Set the splitAllCsvs property: If false, Azure Load Testing copies and processes your input files unmodified
+     * across all test engine instances. If true, Azure Load Testing splits the CSV
+     * input data evenly across all engine instances. If you provide multiple CSV
+     * files, each file will be split evenly.
+     *
+     * @param splitAllCsvs the splitAllCsvs value to set.
+     * @return the LoadTestConfiguration object itself.
+     */
+    @Generated
+    public LoadTestConfiguration setSplitAllCsvs(Boolean splitAllCsvs) {
+        this.splitAllCsvs = splitAllCsvs;
+        this.updatedProperties.add("splitAllCsvs");
+        return this;
+    }
+
+    /**
      * Get the quickStartTest property: If true, optionalLoadTestConfig is required and JMX script for the load test is
      * not required to upload.
      *
@@ -120,6 +170,54 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
     public LoadTestConfiguration setQuickStartTest(Boolean quickStartTest) {
         this.quickStartTest = quickStartTest;
         this.updatedProperties.add("quickStartTest");
+        return this;
+    }
+
+    /**
+     * Get the optionalLoadTestConfiguration property: Configuration for quick load test.
+     *
+     * @return the optionalLoadTestConfiguration value.
+     */
+    @Generated
+    public OptionalLoadTestConfiguration getOptionalLoadTestConfiguration() {
+        return this.optionalLoadTestConfiguration;
+    }
+
+    /**
+     * Set the optionalLoadTestConfiguration property: Configuration for quick load test.
+     *
+     * @param optionalLoadTestConfiguration the optionalLoadTestConfiguration value to set.
+     * @return the LoadTestConfiguration object itself.
+     */
+    @Generated
+    public LoadTestConfiguration
+        setOptionalLoadTestConfiguration(OptionalLoadTestConfiguration optionalLoadTestConfiguration) {
+        this.optionalLoadTestConfiguration = optionalLoadTestConfiguration;
+        this.updatedProperties.add("optionalLoadTestConfiguration");
+        return this;
+    }
+
+    /**
+     * Get the regionalLoadTestConfiguration property: Region distribution configuration for the load test.
+     *
+     * @return the regionalLoadTestConfiguration value.
+     */
+    @Generated
+    public List<RegionalConfiguration> getRegionalLoadTestConfiguration() {
+        return this.regionalLoadTestConfiguration;
+    }
+
+    /**
+     * Set the regionalLoadTestConfiguration property: Region distribution configuration for the load test.
+     *
+     * @param regionalLoadTestConfiguration the regionalLoadTestConfiguration value to set.
+     * @return the LoadTestConfiguration object itself.
+     */
+    @Generated
+    public LoadTestConfiguration
+        setRegionalLoadTestConfiguration(List<RegionalConfiguration> regionalLoadTestConfiguration) {
+        this.regionalLoadTestConfiguration = regionalLoadTestConfiguration;
+        this.updatedProperties.add("regionalLoadTestConfiguration");
         return this;
     }
 
@@ -223,103 +321,5 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
             }
             return deserializedLoadTestConfiguration;
         });
-    }
-
-    /*
-     * If false, Azure Load Testing copies and processes your input files unmodified
-     * across all test engine instances. If true, Azure Load Testing splits the CSV
-     * input data evenly across all engine instances. If you provide multiple CSV
-     * files, each file will be split evenly.
-     */
-    @Generated
-    private Boolean splitAllCsvs;
-
-    /**
-     * Get the splitAllCsvs property: If false, Azure Load Testing copies and processes your input files unmodified
-     * across all test engine instances. If true, Azure Load Testing splits the CSV
-     * input data evenly across all engine instances. If you provide multiple CSV
-     * files, each file will be split evenly.
-     *
-     * @return the splitAllCsvs value.
-     */
-    @Generated
-    public Boolean isSplitAllCsvs() {
-        return this.splitAllCsvs;
-    }
-
-    /**
-     * Set the splitAllCsvs property: If false, Azure Load Testing copies and processes your input files unmodified
-     * across all test engine instances. If true, Azure Load Testing splits the CSV
-     * input data evenly across all engine instances. If you provide multiple CSV
-     * files, each file will be split evenly.
-     *
-     * @param splitAllCsvs the splitAllCsvs value to set.
-     * @return the LoadTestConfiguration object itself.
-     */
-    @Generated
-    public LoadTestConfiguration setSplitAllCsvs(Boolean splitAllCsvs) {
-        this.splitAllCsvs = splitAllCsvs;
-        this.updatedProperties.add("splitAllCsvs");
-        return this;
-    }
-
-    /*
-     * Configuration for quick load test
-     */
-    @Generated
-    private OptionalLoadTestConfiguration optionalLoadTestConfiguration;
-
-    /*
-     * Region distribution configuration for the load test.
-     */
-    @Generated
-    private List<RegionalConfiguration> regionalLoadTestConfiguration;
-
-    /**
-     * Get the optionalLoadTestConfiguration property: Configuration for quick load test.
-     *
-     * @return the optionalLoadTestConfiguration value.
-     */
-    @Generated
-    public OptionalLoadTestConfiguration getOptionalLoadTestConfiguration() {
-        return this.optionalLoadTestConfiguration;
-    }
-
-    /**
-     * Set the optionalLoadTestConfiguration property: Configuration for quick load test.
-     *
-     * @param optionalLoadTestConfiguration the optionalLoadTestConfiguration value to set.
-     * @return the LoadTestConfiguration object itself.
-     */
-    @Generated
-    public LoadTestConfiguration
-        setOptionalLoadTestConfiguration(OptionalLoadTestConfiguration optionalLoadTestConfiguration) {
-        this.optionalLoadTestConfiguration = optionalLoadTestConfiguration;
-        this.updatedProperties.add("optionalLoadTestConfiguration");
-        return this;
-    }
-
-    /**
-     * Get the regionalLoadTestConfiguration property: Region distribution configuration for the load test.
-     *
-     * @return the regionalLoadTestConfiguration value.
-     */
-    @Generated
-    public List<RegionalConfiguration> getRegionalLoadTestConfiguration() {
-        return this.regionalLoadTestConfiguration;
-    }
-
-    /**
-     * Set the regionalLoadTestConfiguration property: Region distribution configuration for the load test.
-     *
-     * @param regionalLoadTestConfiguration the regionalLoadTestConfiguration value to set.
-     * @return the LoadTestConfiguration object itself.
-     */
-    @Generated
-    public LoadTestConfiguration
-        setRegionalLoadTestConfiguration(List<RegionalConfiguration> regionalLoadTestConfiguration) {
-        this.regionalLoadTestConfiguration = regionalLoadTestConfiguration;
-        this.updatedProperties.add("regionalLoadTestConfiguration");
-        return this;
     }
 }

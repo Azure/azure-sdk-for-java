@@ -38,7 +38,17 @@ public enum LoadTestingServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-12-01-preview.
      */
-    V2024_12_01_PREVIEW("2024-12-01-preview");
+    V2024_12_01_PREVIEW("2024-12-01-preview"),
+
+    /**
+     * Enum value 2025-03-01-preview.
+     */
+    V2025_03_01_PREVIEW("2025-03-01-preview"),
+
+    /**
+     * Enum value 2025-11-01-preview.
+     */
+    V2025_11_01_PREVIEW("2025-11-01-preview");
 
     private final String version;
 
@@ -60,6 +70,6 @@ public enum LoadTestingServiceVersion implements ServiceVersion {
      * @return The latest {@link LoadTestingServiceVersion}.
      */
     public static LoadTestingServiceVersion getLatest() {
-        return V2024_12_01_PREVIEW;
+        return V2025_11_01_PREVIEW;
     }
 }

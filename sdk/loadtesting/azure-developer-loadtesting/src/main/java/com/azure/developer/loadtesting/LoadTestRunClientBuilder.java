@@ -57,6 +57,10 @@ public final class LoadTestRunClientBuilder
     private static final String[] DEFAULT_SCOPES = new String[] { "https://cnt-prod.loadtesting.azure.com/.default" };
 
     @Generated
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-developer-loadtesting.properties");
+
+    @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
@@ -65,6 +69,22 @@ public final class LoadTestRunClientBuilder
     @Generated
     public LoadTestRunClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
+    }
+
+    /*
+     * The HTTP client used to send the request.
+     */
+    @Generated
+    private HttpClient httpClient;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public LoadTestRunClientBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
     }
 
     /*
@@ -83,22 +103,6 @@ public final class LoadTestRunClientBuilder
             LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
-     * The HTTP client used to send the request.
-     */
-    @Generated
-    private HttpClient httpClient;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public LoadTestRunClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
         return this;
     }
 
@@ -262,6 +266,13 @@ public final class LoadTestRunClientBuilder
     }
 
     @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
+
+    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -319,16 +330,5 @@ public final class LoadTestRunClientBuilder
         return new LoadTestRunClient(buildInnerClient());
     }
 
-    @Generated
-    private static final Map<String, String> PROPERTIES
-        = CoreUtils.getProperties("azure-developer-loadtesting.properties");
-
     private static final ClientLogger LOGGER = new ClientLogger(LoadTestRunClientBuilder.class);
-
-    @Generated
-    private void validateClient() {
-        // This method is invoked from 'buildInnerClient'/'buildClient' method.
-        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-    }
 }
