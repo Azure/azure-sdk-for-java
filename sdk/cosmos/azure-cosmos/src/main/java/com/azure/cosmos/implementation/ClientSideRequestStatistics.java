@@ -278,7 +278,10 @@ public class ClientSideRequestStatistics {
                         }
                     }
                 }
+
+                gatewayStatistics.httpResponseTimeout = rxDocumentServiceRequest.getResponseTimeout();
             }
+
             gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
             gatewayStatistics.subStatusCode = storeResponseDiagnostics.getSubStatusCode();
             gatewayStatistics.sessionToken = storeResponseDiagnostics.getSessionTokenAsString();
@@ -293,6 +296,9 @@ public class ClientSideRequestStatistics {
             gatewayStatistics.endpoint = storeResponseDiagnostics.getEndpoint();
             gatewayStatistics.requestThroughputControlGroupName = storeResponseDiagnostics.getRequestThroughputControlGroupName();
             gatewayStatistics.requestThroughputControlGroupConfig = storeResponseDiagnostics.getRequestThroughputControlGroupConfig();
+            gatewayStatistics.channelId = storeResponseDiagnostics.getChannelId();
+            gatewayStatistics.parentChannelId = storeResponseDiagnostics.getParentChannelId();
+            gatewayStatistics.http2 = storeResponseDiagnostics.isHttp2();
 
             this.activityId = storeResponseDiagnostics.getActivityId() != null ? storeResponseDiagnostics.getActivityId() :
                 rxDocumentServiceRequest.getActivityId().toString();
@@ -947,6 +953,10 @@ public class ClientSideRequestStatistics {
         private String requestThroughputControlGroupName;
         private String requestThroughputControlGroupConfig;
         private String isHubRegionProcessingOnly;
+        private Duration httpResponseTimeout;
+        private String channelId;
+        private String parentChannelId;
+        private boolean http2;
 
         public String getSessionToken() {
             return sessionToken;
@@ -1024,6 +1034,27 @@ public class ClientSideRequestStatistics {
             return this.requestThroughputControlGroupConfig;
         }
 
+        public String getChannelId() {
+            return this.channelId;
+        }
+
+        public String getParentChannelId() {
+            return this.parentChannelId;
+        }
+
+        public boolean isHttp2() {
+            return this.http2;
+        }
+
+        private String getHttpNetworkResponseTimeout() {
+
+            if (this.httpResponseTimeout != null) {
+                return this.httpResponseTimeout.toString();
+            }
+
+            return "n/a";
+        }
+
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
             private static final long serialVersionUID = 1L;
 
@@ -1045,6 +1076,7 @@ public class ClientSideRequestStatistics {
                 jsonGenerator.writeObjectField("requestTimeline", gatewayStatistics.getRequestTimeline());
                 jsonGenerator.writeStringField("partitionKeyRangeId", gatewayStatistics.getPartitionKeyRangeId());
                 jsonGenerator.writeNumberField("responsePayloadSizeInBytes", gatewayStatistics.getResponsePayloadSizeInBytes());
+                jsonGenerator.writeStringField("httpNwResponseTimeout", gatewayStatistics.getHttpNetworkResponseTimeout());
                 this.writeNonNullStringField(jsonGenerator, "exceptionMessage", gatewayStatistics.getExceptionMessage());
                 this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", gatewayStatistics.getExceptionResponseHeaders());
                 this.writeNonNullStringField(jsonGenerator, "faultInjectionRuleId", gatewayStatistics.getFaultInjectionRuleId());
@@ -1064,6 +1096,11 @@ public class ClientSideRequestStatistics {
 
                 this.writeNonNullStringField(jsonGenerator, "requestTCG", gatewayStatistics.getRequestThroughputControlGroupName());
                 this.writeNonNullStringField(jsonGenerator, "requestTCGConfig", gatewayStatistics.getRequestThroughputControlGroupConfig());
+                this.writeNonNullStringField(jsonGenerator, "channelId", gatewayStatistics.getChannelId());
+                this.writeNonNullStringField(jsonGenerator, "parentChannelId", gatewayStatistics.getParentChannelId());
+                if (gatewayStatistics.isHttp2()) {
+                    jsonGenerator.writeBooleanField("isHttp2", true);
+                }
                 jsonGenerator.writeEndObject();
             }
 

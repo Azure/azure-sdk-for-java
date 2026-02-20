@@ -34,8 +34,31 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"unit"})
-    public void shouldRetryOnTimeoutForReadOperations() throws Exception {
+    @DataProvider(name = "readOperationTypeProvider")
+    public static Object[][] readOperationTypeProvider() {
+        return new Object[][]{
+            // OperationType, useThinClientMode, expectedTimeout1, expectedTimeout2, expectedTimeout3, backoff1, backoff2
+
+            // Regular Gateway mode - Read (uses HttpTimeoutPolicyDefault)
+            { OperationType.Read, false, Duration.ofSeconds(60), Duration.ofSeconds(60), Duration.ofSeconds(60), Duration.ZERO, Duration.ofSeconds(1) },
+
+            // Thin Client mode - Point Read (uses HttpTimeoutPolicyForGatewayV2.INSTANCE_FOR_POINT_READ)
+            { OperationType.Read, true, Duration.ofSeconds(6), Duration.ofSeconds(6), Duration.ofSeconds(10), Duration.ZERO, Duration.ZERO },
+
+            // Thin Client mode - Query (uses HttpTimeoutPolicyForGatewayV2.INSTANCE_FOR_QUERY_AND_CHANGE_FEED)
+            { OperationType.Query, true, Duration.ofSeconds(6), Duration.ofSeconds(6), Duration.ofSeconds(10), Duration.ZERO, Duration.ZERO }
+        };
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "readOperationTypeProvider")
+    public void shouldRetryOnTimeoutForReadOperations(
+            OperationType operationType,
+            boolean useThinClientMode,
+            Duration expectedTimeout1,
+            Duration expectedTimeout2,
+            Duration expectedTimeout3,
+            Duration backoff1,
+            Duration backoff2) throws Exception {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
 
         RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("http://localhost:"));
@@ -52,36 +75,36 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         RxDocumentServiceRequest dsr;
         Mono<ShouldRetryResult> shouldRetry;
 
-        //Default HttpTimeout Policy
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
-            OperationType.Read, "/dbs/db/colls/col/docs/doc", ResourceType.Document);
+            operationType, "/dbs/db/colls/col/docs/doc", ResourceType.Document);
+        dsr.useThinClientMode = useThinClientMode;
         dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
+        assertThat(dsr.getResponseTimeout()).isEqualTo(expectedTimeout1);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
-            backOffTime(Duration.ofSeconds(0)).
+            backOffTime(backoff1).
             build());
 
         // 2nd Attempt
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
+        assertThat(dsr.getResponseTimeout()).isEqualTo(expectedTimeout2);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
-            backOffTime(Duration.ofSeconds(1)).
+            backOffTime(backoff2).
             build());
 
         // 3rd Attempt
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
+        assertThat(dsr.getResponseTimeout()).isEqualTo(expectedTimeout3);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
@@ -238,6 +261,21 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         //Metadata Write - Should not Retry
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Create, "/dbs/db", ResourceType.DatabaseAccount);
+        dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
+
+        webExceptionRetryPolicy = new WebExceptionRetryPolicy(new RetryContext());
+        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
+
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(false)
+            .build());
+
+        //Data Plane Write with Thin Client Mode - Should still not retry
+        dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Create, "/dbs/db/colls/col/docs/doc", ResourceType.Document);
+        dsr.useThinClientMode = true;
         dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
 
         webExceptionRetryPolicy = new WebExceptionRetryPolicy(new RetryContext());

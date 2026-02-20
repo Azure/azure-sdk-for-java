@@ -10,8 +10,9 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -23,6 +24,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -48,6 +50,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -85,7 +88,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
     @BeforeClass(groups = {"fi-thinclient-multi-master"}, timeOut = TIMEOUT)
     public void beforeClass() {
         //Uncomment below line to enable thin client if running tests locally
-        //System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
         this.client = getClientBuilder().buildAsyncClient();
 
@@ -108,7 +111,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
 
     @AfterClass(groups = {"fi-thinclient-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        //System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         safeClose(this.client);
     }
 
@@ -145,6 +148,16 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
     public static Object[] preferredRegionsConfigProvider() {
         // shouldInjectPreferredRegionsOnClient
         return new Object[] {true, false};
+    }
+
+    @DataProvider(name = "responseDelayOperationTypeProvider")
+    public static Object[][] responseDelayOperationTypeProvider() {
+        return new Object[][]{
+            // operationType, faultInjectionOperationType
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM }
+        };
     }
 
     @Test(groups = {"fi-thinclient-multi-master"}, dataProvider = "faultInjectionServerErrorResponseProvider", timeOut = TIMEOUT)
@@ -481,8 +494,11 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
 
     }
 
-    @Test(groups = {"fi-thinclient-multi-master"}, timeOut = 4 * TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_ServerResponseDelay() throws JsonProcessingException {
+    @Test(groups = {"fi-thinclient-multi-master"}, dataProvider = "responseDelayOperationTypeProvider", timeOut = 4 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void faultInjectionServerErrorRuleTests_ServerResponseDelay(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType) throws JsonProcessingException {
+
         // define another rule which can simulate timeout
         String timeoutRuleId = "serverErrorRule-responseDelay-" + UUID.randomUUID();
         FaultInjectionRule timeoutRule =
@@ -490,43 +506,53 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .connectionType(FaultInjectionConnectionType.GATEWAY)
-                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .operationType(faultInjectionOperationType)
                         .build()
                 )
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
                         .times(1)
-                        .delay(Duration.ofSeconds(61)) // the default time out is 60s
+                        .delay(Duration.ofSeconds(61)) // the default time out is 60s, but Gateway V2 uses 6s
                         .build()
                 )
                 .duration(Duration.ofMinutes(5))
                 .build();
         try {
-            DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
-            directConnectionConfig.setConnectTimeout(Duration.ofSeconds(1));
-
-            // create a new item to be used by read operations
-            TestItem createdItem = TestItem.createNewItem();
+            // create a new item to be used by operations
+            TestObject createdItem = TestObject.create();
             this.cosmosAsyncContainer.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(timeoutRule)).block();
-            CosmosItemResponse<TestItem> itemResponse =
-                this.cosmosAsyncContainer.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
+
+            // With HttpTimeoutPolicyForGatewayV2, the first attempt times out at 6s,
+            // but since delay is only injected once (times=1), the retry succeeds
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(
+                this.cosmosAsyncContainer,
+                operationType,
+                createdItem,
+                false);
 
             AssertionsForClassTypes.assertThat(timeoutRule.getHitCount()).isEqualTo(1);
-            this.validateHitCount(timeoutRule, 1, OperationType.Read, ResourceType.Document);
+            this.validateHitCount(timeoutRule, 1, operationType, ResourceType.Document);
 
             this.validateFaultInjectionRuleApplied(
-                itemResponse.getDiagnostics(),
-                OperationType.Read,
+                cosmosDiagnostics,
+                operationType,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
                 timeoutRuleId,
                 true
             );
 
-            assertThinClientEndpointUsed(itemResponse.getDiagnostics());
+            assertThinClientEndpointUsed(cosmosDiagnostics);
+
+            // Validate end-to-end latency and final status code from CosmosDiagnosticsContext
+            CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+            AssertionsForClassTypes.assertThat(diagnosticsContext).isNotNull();
+            AssertionsForClassTypes.assertThat(diagnosticsContext.getDuration()).isNotNull();
+            AssertionsForClassTypes.assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(8));
+            AssertionsForClassTypes.assertThat(diagnosticsContext.getStatusCode()).isBetween(HttpConstants.StatusCodes.OK, HttpConstants.StatusCodes.NOT_MODIFIED);
 
         } finally {
             timeoutRule.disable();
@@ -572,6 +598,178 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
         } finally {
             serverConnectionDelayRule.disable();
         }
+    }
+
+    // ==========================================
+    // Connection lifecycle tests (SDK fault injection)
+    //
+    // These tests verify that the ConnectionProvider pool survives ReadTimeoutException.
+    // The fault injection framework creates SYNTHETIC ReadTimeoutExceptions (not from the real
+    // netty ReadTimeoutHandler pipeline). For real netty-level proof that responseTimeout only
+    // closes the H2 stream (not the parent connection), see the reactor-netty source review:
+    // HttpClientOperations.onOutboundComplete() adds ReadTimeoutHandler to channel().pipeline()
+    // where channel() is Http2StreamChannel for HTTP/2.
+    //
+    // To test with REAL netty-level timeouts, use an external network tool:
+    // - Clumsy (Windows): adds TCP-level latency causing real ReadTimeoutHandler to fire
+    // - toxiproxy: TCP proxy with configurable latency
+    // - tc/netem (Linux): kernel-level network shaping
+    // ==========================================
+
+    /**
+     * Extracts parentChannelId from the first gateway statistics entry in diagnostics.
+     */
+    private String extractParentChannelId(CosmosDiagnostics diagnostics) throws JsonProcessingException {
+        ObjectNode node = (ObjectNode) Utils.getSimpleObjectMapper().readTree(diagnostics.toString());
+        JsonNode gwStats = node.get("gatewayStatisticsList");
+        if (gwStats != null && gwStats.isArray() && gwStats.size() > 0) {
+            JsonNode first = gwStats.get(0);
+            return first.has("parentChannelId") ? first.get("parentChannelId").asText() : null;
+        }
+        return null;
+    }
+
+    @Test(groups = {"fi-thinclient-multi-master"}, timeOut = 4 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void faultInjectionServerErrorRuleTests_ConnectionReuseOnResponseTimeout() throws JsonProcessingException {
+        // Test: After a ReadTimeoutException, the pool should reuse the same H2 connection.
+
+        TestObject createdItem = TestObject.create();
+        this.cosmosAsyncContainer.createItem(createdItem).block();
+
+            // Warm-up: establish H2 connection, capture parentChannelId
+            CosmosDiagnostics warmupDiag = this.performDocumentOperation(
+                this.cosmosAsyncContainer, OperationType.Read, createdItem, false);
+            assertThinClientEndpointUsed(warmupDiag);
+            String warmupId = extractParentChannelId(warmupDiag);
+            AssertionsForClassTypes.assertThat(warmupId).as("Warm-up must have parentChannelId").isNotNull().isNotEmpty();
+
+            // Inject SDK-level timeout (synthetic ReadTimeoutException)
+            String ruleId = "serverErrorRule-connReuse-" + UUID.randomUUID();
+            FaultInjectionRule rule = new FaultInjectionRuleBuilder(ruleId)
+                .condition(new FaultInjectionConditionBuilder()
+                    .connectionType(FaultInjectionConnectionType.GATEWAY)
+                    .operationType(FaultInjectionOperationType.READ_ITEM).build())
+                .result(FaultInjectionResultBuilders
+                    .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                    .times(1).delay(Duration.ofSeconds(8)).build())
+                .duration(Duration.ofMinutes(5)).build();
+
+            try {
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(rule)).block();
+                this.performDocumentOperation(this.cosmosAsyncContainer, OperationType.Read, createdItem, false);
+                rule.disable();
+
+                CosmosDiagnostics postDiag = this.performDocumentOperation(
+                    this.cosmosAsyncContainer, OperationType.Read, createdItem, false);
+                assertThinClientEndpointUsed(postDiag);
+                String postId = extractParentChannelId(postDiag);
+                AssertionsForClassTypes.assertThat(postId).as("Post-timeout must have parentChannelId").isNotNull().isNotEmpty();
+
+                logger.info("Connection reuse test - warmup={}, post-timeout={}", warmupId, postId);
+                AssertionsForClassTypes.assertThat(postId)
+                    .as("Pool should reuse same H2 connection after ReadTimeoutException")
+                    .isEqualTo(warmupId);
+            } finally {
+                rule.disable();
+            }
+    }
+
+    @Test(groups = {"fi-thinclient-multi-master"}, timeOut = 4 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void faultInjectionServerErrorRuleTests_ConnectionSurvivesTimeoutForNextRequest() throws JsonProcessingException {
+        // Test: After timeout + retry, the next request should reuse the same connection.
+
+        TestObject createdItem = TestObject.create();
+        this.cosmosAsyncContainer.createItem(createdItem).block();
+
+            CosmosDiagnostics warmupDiag = this.performDocumentOperation(
+                this.cosmosAsyncContainer, OperationType.Read, createdItem, false);
+            assertThinClientEndpointUsed(warmupDiag);
+            String warmupId = extractParentChannelId(warmupDiag);
+            AssertionsForClassTypes.assertThat(warmupId).as("Warm-up must have parentChannelId").isNotNull().isNotEmpty();
+
+            String ruleId = "serverErrorRule-connSurvives-" + UUID.randomUUID();
+            FaultInjectionRule rule = new FaultInjectionRuleBuilder(ruleId)
+                .condition(new FaultInjectionConditionBuilder()
+                    .connectionType(FaultInjectionConnectionType.GATEWAY)
+                    .operationType(FaultInjectionOperationType.READ_ITEM).build())
+                .result(FaultInjectionResultBuilders
+                    .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                    .times(1).delay(Duration.ofSeconds(8)).build())
+                .duration(Duration.ofMinutes(5)).build();
+
+            try {
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(rule)).block();
+                this.performDocumentOperation(this.cosmosAsyncContainer, OperationType.Read, createdItem, false);
+                rule.disable();
+
+                CosmosDiagnostics postDiag = this.performDocumentOperation(
+                    this.cosmosAsyncContainer, OperationType.Read, createdItem, false);
+                assertThinClientEndpointUsed(postDiag);
+                String postId = extractParentChannelId(postDiag);
+                AssertionsForClassTypes.assertThat(postId).as("Post-timeout must have parentChannelId").isNotNull().isNotEmpty();
+
+                logger.info("Connection survives test - warmup={}, post-timeout={}", warmupId, postId);
+                AssertionsForClassTypes.assertThat(postId)
+                    .as("Pool should reuse same H2 connection for next request")
+                    .isEqualTo(warmupId);
+            } finally {
+                rule.disable();
+            }
+    }
+
+    @Test(groups = {"fi-thinclient-multi-master"}, timeOut = 4 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void faultInjectionServerErrorRuleTests_ConnectionSurvivesE2ETimeout() throws JsonProcessingException {
+        // Test: After e2e timeout, the connection should survive for the next request.
+
+        TestObject createdItem = TestObject.create();
+            this.cosmosAsyncContainer.createItem(createdItem).block();
+
+            CosmosDiagnostics warmupDiag = this.performDocumentOperation(
+                this.cosmosAsyncContainer, OperationType.Read, createdItem, false);
+            assertThinClientEndpointUsed(warmupDiag);
+            String warmupId = extractParentChannelId(warmupDiag);
+            AssertionsForClassTypes.assertThat(warmupId).as("Warm-up must have parentChannelId").isNotNull().isNotEmpty();
+
+            String ruleId = "serverErrorRule-e2eTimeout-" + UUID.randomUUID();
+            FaultInjectionRule rule = new FaultInjectionRuleBuilder(ruleId)
+                .condition(new FaultInjectionConditionBuilder()
+                    .connectionType(FaultInjectionConnectionType.GATEWAY)
+                    .operationType(FaultInjectionOperationType.READ_ITEM).build())
+                .result(FaultInjectionResultBuilders
+                    .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                    .times(2).delay(Duration.ofSeconds(8)).build())
+                .duration(Duration.ofMinutes(5)).build();
+
+            CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy =
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(7)).enable(true).build();
+            CosmosItemRequestOptions opts = new CosmosItemRequestOptions();
+            opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+
+            try {
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(rule)).block();
+
+                try {
+                    this.cosmosAsyncContainer.readItem(
+                        createdItem.getId(), new PartitionKey(createdItem.getMypk()), opts, TestObject.class).block();
+                } catch (CosmosException e) {
+                    logger.info("E2E timeout test - statusCode={}, subStatusCode={}", e.getStatusCode(), e.getSubStatusCode());
+                }
+
+                rule.disable();
+
+                CosmosDiagnostics postDiag = this.performDocumentOperation(
+                    this.cosmosAsyncContainer, OperationType.Read, createdItem, false);
+                assertThinClientEndpointUsed(postDiag);
+                String postId = extractParentChannelId(postDiag);
+                AssertionsForClassTypes.assertThat(postId).as("Post-timeout must have parentChannelId").isNotNull().isNotEmpty();
+
+                logger.info("E2E timeout test - warmup={}, post-timeout={}", warmupId, postId);
+                AssertionsForClassTypes.assertThat(postId)
+                    .as("Pool should reuse same H2 connection after e2e timeout")
+                    .isEqualTo(warmupId);
+            } finally {
+                rule.disable();
+            }
     }
 
     private void validateHitCount(

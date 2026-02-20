@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
+import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -517,8 +518,22 @@ public final class BridgeInternal {
                                              RxDocumentServiceRequest rxDocumentServiceRequest,
                                              CosmosException cosmosException,
                                              GlobalEndpointManager globalEndpointManager) {
+        recordGatewayResponse(cosmosDiagnostics, rxDocumentServiceRequest, cosmosException, globalEndpointManager, null);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void recordGatewayResponse(CosmosDiagnostics cosmosDiagnostics,
+                                             RxDocumentServiceRequest rxDocumentServiceRequest,
+                                             CosmosException cosmosException,
+                                             GlobalEndpointManager globalEndpointManager,
+                                             ReactorNettyRequestRecord requestRecord) {
         StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics
             .createStoreResponseDiagnostics(cosmosException, rxDocumentServiceRequest);
+        if (requestRecord != null) {
+            storeResponseDiagnostics.setChannelId(requestRecord.getChannelId());
+            storeResponseDiagnostics.setParentChannelId(requestRecord.getParentChannelId());
+            storeResponseDiagnostics.setHttp2(requestRecord.isHttp2());
+        }
         cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponseDiagnostics, globalEndpointManager);
         cosmosException.setDiagnostics(cosmosDiagnostics);
     }
