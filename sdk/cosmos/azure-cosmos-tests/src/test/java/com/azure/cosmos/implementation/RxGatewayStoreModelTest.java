@@ -13,7 +13,7 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.mockito.ArgumentCaptor;
@@ -21,12 +21,13 @@ import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
 import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -310,8 +311,34 @@ public class RxGatewayStoreModelTest {
             .verify(Duration.ofMillis(timeout));
     }
 
+    /**
+     * Verifies that when a request is cancelled while the retained ByteBuf is queued in
+     * publishOn's async boundary, the doFinally safety net properly releases the buffer.
+     *
+     * Uses a Sinks.One to control body emission timing and a concrete HttpResponse subclass
+     * to avoid Mockito final-method interception issues with withRequest().
+     *
+     * The body's doFinally simulates ByteBufFlux.aggregate()'s auto-release behavior
+     * (one release for the aggregate's reference), while the production code's retain()
+     * adds a second reference that must be released by our safety net on cancellation.
+     */
     @Test(groups = "unit")
     public void cancelledRequestReleasesRetainedByteBuf() throws Exception {
+        int leakCount = 0;
+        int iterations = 20;
+
+        for (int i = 0; i < iterations; i++) {
+            if (runCancelAfterRetainIteration()) {
+                leakCount++;
+            }
+        }
+
+        assertThat(leakCount)
+            .as("ByteBuf should not leak on cancellation (leaked in %d of %d iterations)", leakCount, iterations)
+            .isEqualTo(0);
+    }
+
+    private boolean runCancelAfterRetainIteration() throws Exception {
         DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
@@ -320,24 +347,36 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(regionalRoutingContext)
                .when(globalEndpointManager).resolveServiceEndpoint(any());
 
-        // Create a tracked ByteBuf to verify it gets released
-        ByteBuf trackedBuf = Unpooled.wrappedBuffer("{\"id\":\"test\"}".getBytes());
-        assertThat(trackedBuf.refCnt()).isEqualTo(1);
+        // Use pooled buffer to detect leaks in production-like conditions
+        ByteBuf trackedBuf = PooledByteBufAllocator.DEFAULT.buffer(64);
+        trackedBuf.writeBytes("{\"id\":\"test\"}".getBytes());
 
-        AtomicReference<ByteBuf> capturedBuf = new AtomicReference<>(trackedBuf);
+        Sinks.One<ByteBuf> bodySink = Sinks.one();
+        AtomicBoolean aggregateReleased = new AtomicBoolean(false);
 
-        HttpResponse mockResponse = Mockito.mock(HttpResponse.class);
-        Mockito.doReturn(200).when(mockResponse).statusCode();
-        Mockito.doReturn(new HttpHeaders()).when(mockResponse).headers();
-        // Return the tracked ByteBuf - the body() Mono will emit this buffer
-        Mockito.doReturn(Mono.just(trackedBuf)).when(mockResponse).body();
+        // Simulate ByteBufFlux.aggregate() behavior: emit via Sink, auto-release in doFinally
+        Mono<ByteBuf> bodyMono = bodySink.asMono()
+            .doFinally(signal -> {
+                if (!aggregateReleased.getAndSet(true) && trackedBuf.refCnt() > 0) {
+                    trackedBuf.release();
+                }
+            });
+
+        // Use a concrete HttpResponse to avoid Mockito intercepting final withRequest() method
+        HttpResponse httpResponse = new HttpResponse() {
+            @Override public int statusCode() { return 200; }
+            @Override public String headerValue(String name) { return null; }
+            @Override public HttpHeaders headers() { return new HttpHeaders(); }
+            @Override public Mono<ByteBuf> body() { return bodyMono; }
+            @Override public Mono<String> bodyAsString() { return Mono.just(""); }
+            @Override public void close() {}
+        };
 
         HttpClient httpClient = Mockito.mock(HttpClient.class);
-        // Delay the response to allow cancellation to race with processing
         Mockito.doAnswer(invocation -> {
             HttpRequest req = invocation.getArgument(0);
-            return Mono.just(mockResponse.withRequest(req))
-                       .delayElement(Duration.ofMillis(50));
+            httpResponse.withRequest(req);
+            return Mono.just(httpResponse);
         }).when(httpClient).send(any(HttpRequest.class), any(Duration.class));
 
         GatewayServiceConfigurationReader gatewayServiceConfigurationReader
@@ -360,20 +399,33 @@ public class RxGatewayStoreModelTest {
         dsr.requestContext = new DocumentServiceRequestContext();
         dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
 
-        // Subscribe and immediately cancel to trigger the race condition
-        // between publishOn's async delivery and cancellation
-        Mono<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
-        StepVerifier.create(resp)
-                    .thenAwait(Duration.ofMillis(10))
-                    .thenCancel()
-                    .verify(Duration.ofSeconds(5));
+        // Subscribe to processMessage
+        reactor.core.Disposable disposable = storeModel.processMessage(dsr)
+            .subscribe(r -> {}, e -> {}, () -> {});
 
-        // Allow time for doFinally safety net to execute
-        Thread.sleep(200);
+        // Wait for the subscription chain to establish (flatMap subscribes to body())
+        Thread.sleep(50);
 
-        // Verify the ByteBuf was properly released (refCnt should be 0)
-        // The doFinally safety net should have released it even if doOnDiscard didn't fire
-        assertThat(trackedBuf.refCnt()).isEqualTo(0);
+        // Emit the body buffer. This triggers retain() synchronously in the map operator
+        // (refCnt goes from 1 to 2). The retained buffer then enters publishOn's async queue.
+        bodySink.tryEmitValue(trackedBuf);
+
+        // Cancel immediately - the element is likely in publishOn's queue, creating the race
+        // condition where doOnDiscard may not fire
+        disposable.dispose();
+
+        // Allow time for doFinally safety net and aggregate cleanup to execute
+        Thread.sleep(500);
+
+        int finalRefCnt = trackedBuf.refCnt();
+        if (finalRefCnt > 0) {
+            // Clean up to avoid poisoning the allocator
+            while (trackedBuf.refCnt() > 0) {
+                trackedBuf.release();
+            }
+            return true; // leaked
+        }
+        return false;
     }
 
     enum SessionTokenType {
