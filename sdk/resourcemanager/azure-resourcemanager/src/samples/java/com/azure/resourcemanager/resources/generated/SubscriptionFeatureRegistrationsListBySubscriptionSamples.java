@@ -10,8 +10,8 @@ package com.azure.resourcemanager.resources.generated;
 public final class SubscriptionFeatureRegistrationsListBySubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/FeatureRegistration/
-     * SubscriptionFeatureRegistrationLIST.json
+     * specification/resources/resource-manager/Microsoft.Features/features/stable/2021-07-01/examples/
+     * FeatureRegistration/SubscriptionFeatureRegistrationLIST.json
      */
     /**
      * Sample code: Gets a list of feature registrations.

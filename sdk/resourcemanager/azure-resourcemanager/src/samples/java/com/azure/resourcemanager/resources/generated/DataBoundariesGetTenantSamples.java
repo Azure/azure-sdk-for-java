@@ -12,8 +12,8 @@ import com.azure.resourcemanager.resources.models.DefaultName;
 public final class DataBoundariesGetTenantSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-08-01/examples/GetTenantDataBoundary.
-     * json
+     * specification/resources/resource-manager/Microsoft.Resources/databoundaries/stable/2024-08-01/examples/
+     * GetTenantDataBoundary.json
      */
     /**
      * Sample code: Get data boundary for tenant.

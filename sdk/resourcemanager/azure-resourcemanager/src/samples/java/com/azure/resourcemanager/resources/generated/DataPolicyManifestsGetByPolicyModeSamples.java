@@ -10,8 +10,8 @@ package com.azure.resourcemanager.resources.generated;
 public final class DataPolicyManifestsGetByPolicyModeSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/getDataPolicyManifest
-     * .json
+     * specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2020-09-01/examples/
+     * getDataPolicyManifest.json
      */
     /**
      * Sample code: Retrieve a data policy manifest by policy mode.

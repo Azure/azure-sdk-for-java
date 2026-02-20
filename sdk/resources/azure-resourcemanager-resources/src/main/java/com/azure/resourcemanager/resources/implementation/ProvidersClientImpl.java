@@ -64,7 +64,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ResourceManagementCl")
+    @ServiceInterface(name = "ResourceManagementClientProviders")
     public interface ProvidersService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister")
@@ -1102,7 +1102,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource providers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all resource providers for a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInner>> listNextSinglePageAsync(String nextLink) {
@@ -1128,7 +1129,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource providers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all resource providers for a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1153,7 +1155,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource providers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all resource providers for the tenant along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInner>> listAtTenantScopeNextSinglePageAsync(String nextLink) {
@@ -1180,7 +1183,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource providers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all resource providers for the tenant along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInner>> listAtTenantScopeNextSinglePageAsync(String nextLink, Context context) {

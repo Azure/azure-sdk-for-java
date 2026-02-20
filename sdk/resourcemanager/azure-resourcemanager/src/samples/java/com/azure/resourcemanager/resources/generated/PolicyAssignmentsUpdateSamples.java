@@ -22,8 +22,9 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * updatePolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/updatePolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Update a policy assignment with resource selectors.
@@ -45,8 +46,9 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * updatePolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/updatePolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Update a policy assignment with a user assigned identity.
@@ -69,8 +71,9 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * updatePolicyAssignmentWithOverrides.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/updatePolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Update a policy assignment with overrides.
@@ -92,8 +95,9 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * updatePolicyAssignmentWithIdentity.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/updatePolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Update a policy assignment with a system assigned identity.

@@ -13,7 +13,8 @@ import java.util.Arrays;
  */
 public final class ResourceGroupsExportTemplateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
      * ExportResourceGroupAsBicep.json
      */
     /**
@@ -35,7 +36,8 @@ public final class ResourceGroupsExportTemplateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/ExportResourceGroup.json
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
+     * ExportResourceGroup.json
      */
     /**
      * Sample code: Export a resource group.
@@ -52,7 +54,8 @@ public final class ResourceGroupsExportTemplateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
      * ExportResourceGroupWithFiltering.json
      */
     /**

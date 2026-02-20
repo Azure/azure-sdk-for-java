@@ -12,8 +12,8 @@ import com.azure.resourcemanager.resources.models.DefaultName;
 public final class DataBoundariesGetScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-08-01/examples/GetScopedDataBoundary.
-     * json
+     * specification/resources/resource-manager/Microsoft.Resources/databoundaries/stable/2024-08-01/examples/
+     * GetScopedDataBoundary.json
      */
     /**
      * Sample code: Get data boundary at scope.

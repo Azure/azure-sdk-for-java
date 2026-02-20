@@ -55,7 +55,7 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ResourceManagementCl")
+    @ServiceInterface(name = "ResourceManagementClientProviderResourceTypes")
     public interface ProviderResourceTypesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/resourceTypes")

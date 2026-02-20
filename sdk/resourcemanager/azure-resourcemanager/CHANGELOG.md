@@ -14,6 +14,10 @@
 
 ### Other Changes
 
+### azure-resourcemanager-resources
+
+- Updated `api-version` of policy to `2025-03-01`.
+
 ## 2.59.0 (2026-01-30)
 
 ### azure-resourcemanager-redis

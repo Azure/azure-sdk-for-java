@@ -10,7 +10,8 @@ package com.azure.resourcemanager.resources.generated;
 public final class TenantsListSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetTenants.json
+     * specification/resources/resource-manager/Microsoft.Resources/subscriptions/stable/2022-12-01/examples/GetTenants.
+     * json
      */
     /**
      * Sample code: GetAllTenants.

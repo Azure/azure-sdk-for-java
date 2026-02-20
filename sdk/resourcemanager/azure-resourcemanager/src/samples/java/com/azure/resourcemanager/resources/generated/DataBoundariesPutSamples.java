@@ -15,7 +15,8 @@ import com.azure.resourcemanager.resources.models.DefaultName;
 public final class DataBoundariesPutSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-08-01/examples/PutDataBoundary.json
+     * specification/resources/resource-manager/Microsoft.Resources/databoundaries/stable/2024-08-01/examples/
+     * PutDataBoundary.json
      */
     /**
      * Sample code: Opt-in to data boundary.

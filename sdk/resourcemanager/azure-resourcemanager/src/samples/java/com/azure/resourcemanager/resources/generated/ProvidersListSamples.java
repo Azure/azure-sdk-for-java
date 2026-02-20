@@ -10,7 +10,8 @@ package com.azure.resourcemanager.resources.generated;
 public final class ProvidersListSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/GetProviders.json
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/GetProviders.
+     * json
      */
     /**
      * Sample code: Get providers.

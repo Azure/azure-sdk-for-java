@@ -1068,15 +1068,13 @@ public interface PolicyAssignmentsClient
      * 
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format
      * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId, String expand);
+    Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId);
 
     /**
      * Retrieves the policy assignment with the given ID.
@@ -1110,8 +1108,6 @@ public interface PolicyAssignmentsClient
      * 
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format
      * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1119,7 +1115,7 @@ public interface PolicyAssignmentsClient
      * @return the policy assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyAssignmentInner> getByIdWithResponse(String policyAssignmentId, String expand, Context context);
+    Response<PolicyAssignmentInner> getByIdWithResponse(String policyAssignmentId, Context context);
 
     /**
      * Retrieves the policy assignment with the given ID.

@@ -10,8 +10,8 @@ package com.azure.resourcemanager.resources.generated;
 public final class SubscriptionFeatureRegistrationsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/FeatureRegistration/
-     * SubscriptionFeatureRegistrationDELETE.json
+     * specification/resources/resource-manager/Microsoft.Features/features/stable/2021-07-01/examples/
+     * FeatureRegistration/SubscriptionFeatureRegistrationDELETE.json
      */
     /**
      * Sample code: Deletes a feature registration.

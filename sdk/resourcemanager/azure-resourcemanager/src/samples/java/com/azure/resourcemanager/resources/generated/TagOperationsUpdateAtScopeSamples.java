@@ -16,7 +16,8 @@ import java.util.Map;
 public final class TagOperationsUpdateAtScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/PatchTagsResource.json
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
+     * PatchTagsResource.json
      */
     /**
      * Sample code: Update tags on a resource.
@@ -38,8 +39,8 @@ public final class TagOperationsUpdateAtScopeSamples {
 
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/PatchTagsSubscription.
-     * json
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
+     * PatchTagsSubscription.json
      */
     /**
      * Sample code: Update tags on a subscription.

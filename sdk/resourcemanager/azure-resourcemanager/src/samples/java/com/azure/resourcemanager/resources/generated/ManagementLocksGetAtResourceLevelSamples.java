@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class ManagementLocksGetAtResourceLevelSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Authorization/locks/stable/2017-04-01/examples/
      * ManagementLocks_GetAtResourceLevel.json
      */
     /**
