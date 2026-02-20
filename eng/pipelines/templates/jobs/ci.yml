@@ -115,6 +115,9 @@ jobs:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           ExcludePaths: ${{parameters.ExcludePaths}}
 
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
       - task: UsePythonVersion@0
         displayName: 'Use Python $(PythonVersion)'
         inputs:
@@ -418,6 +421,9 @@ jobs:
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
             -RegenerationType 'All'
+
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
