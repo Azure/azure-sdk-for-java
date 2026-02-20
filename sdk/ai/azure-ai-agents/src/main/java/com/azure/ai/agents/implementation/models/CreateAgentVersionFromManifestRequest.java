@@ -14,10 +14,11 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * The UpdateAgentFromManifestRequest1 model.
+ * The CreateAgentVersionFromManifestRequest model.
  */
 @Fluent
-public final class UpdateAgentFromManifestRequest1 implements JsonSerializable<UpdateAgentFromManifestRequest1> {
+public final class CreateAgentVersionFromManifestRequest
+    implements JsonSerializable<CreateAgentVersionFromManifestRequest> {
 
     /*
      * Set of 16 key-value pairs that can be attached to an object. This can be
@@ -49,13 +50,13 @@ public final class UpdateAgentFromManifestRequest1 implements JsonSerializable<U
     private final Map<String, BinaryData> parameterValues;
 
     /**
-     * Creates an instance of UpdateAgentFromManifestRequest1 class.
+     * Creates an instance of CreateAgentVersionFromManifestRequest class.
      *
      * @param manifestId the manifestId value to set.
      * @param parameterValues the parameterValues value to set.
      */
     @Generated
-    public UpdateAgentFromManifestRequest1(String manifestId, Map<String, BinaryData> parameterValues) {
+    public CreateAgentVersionFromManifestRequest(String manifestId, Map<String, BinaryData> parameterValues) {
         this.manifestId = manifestId;
         this.parameterValues = parameterValues;
     }
@@ -84,10 +85,10 @@ public final class UpdateAgentFromManifestRequest1 implements JsonSerializable<U
      * with a maximum length of 512 characters.
      *
      * @param metadata the metadata value to set.
-     * @return the UpdateAgentFromManifestRequest1 object itself.
+     * @return the CreateAgentVersionFromManifestRequest object itself.
      */
     @Generated
-    public UpdateAgentFromManifestRequest1 setMetadata(Map<String, String> metadata) {
+    public CreateAgentVersionFromManifestRequest setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -106,10 +107,10 @@ public final class UpdateAgentFromManifestRequest1 implements JsonSerializable<U
      * Set the description property: A human-readable description of the agent.
      *
      * @param description the description value to set.
-     * @return the UpdateAgentFromManifestRequest1 object itself.
+     * @return the CreateAgentVersionFromManifestRequest object itself.
      */
     @Generated
-    public UpdateAgentFromManifestRequest1 setDescription(String description) {
+    public CreateAgentVersionFromManifestRequest setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -155,16 +156,16 @@ public final class UpdateAgentFromManifestRequest1 implements JsonSerializable<U
     }
 
     /**
-     * Reads an instance of UpdateAgentFromManifestRequest1 from the JsonReader.
+     * Reads an instance of CreateAgentVersionFromManifestRequest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of UpdateAgentFromManifestRequest1 if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of CreateAgentVersionFromManifestRequest if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the UpdateAgentFromManifestRequest1.
+     * @throws IOException If an error occurs while reading the CreateAgentVersionFromManifestRequest.
      */
     @Generated
-    public static UpdateAgentFromManifestRequest1 fromJson(JsonReader jsonReader) throws IOException {
+    public static CreateAgentVersionFromManifestRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String manifestId = null;
             Map<String, BinaryData> parameterValues = null;
@@ -186,11 +187,11 @@ public final class UpdateAgentFromManifestRequest1 implements JsonSerializable<U
                     reader.skipChildren();
                 }
             }
-            UpdateAgentFromManifestRequest1 deserializedUpdateAgentFromManifestRequest1
-                = new UpdateAgentFromManifestRequest1(manifestId, parameterValues);
-            deserializedUpdateAgentFromManifestRequest1.metadata = metadata;
-            deserializedUpdateAgentFromManifestRequest1.description = description;
-            return deserializedUpdateAgentFromManifestRequest1;
+            CreateAgentVersionFromManifestRequest deserializedCreateAgentVersionFromManifestRequest
+                = new CreateAgentVersionFromManifestRequest(manifestId, parameterValues);
+            deserializedCreateAgentVersionFromManifestRequest.metadata = metadata;
+            deserializedCreateAgentVersionFromManifestRequest.description = description;
+            return deserializedCreateAgentVersionFromManifestRequest;
         });
     }
 }

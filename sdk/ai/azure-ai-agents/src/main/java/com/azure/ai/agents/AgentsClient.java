@@ -4,12 +4,12 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsImpl;
-import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest1;
-import com.azure.ai.agents.implementation.models.CreateAgentRequest1;
-import com.azure.ai.agents.implementation.models.CreateAgentVersionFromManifestRequest1;
-import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest1;
-import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest1;
-import com.azure.ai.agents.implementation.models.UpdateAgentRequest1;
+import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest;
+import com.azure.ai.agents.implementation.models.CreateAgentRequest;
+import com.azure.ai.agents.implementation.models.CreateAgentVersionFromManifestRequest;
+import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
+import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
+import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
 import com.azure.ai.agents.models.AgentDefinition;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
@@ -173,7 +173,7 @@ public final class AgentsClient {
      * - Must start and end with alphanumeric characters,
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
-     * @param createAgentVersionRequest1 The createAgentVersionRequest1 parameter.
+     * @param createAgentVersionRequest The createAgentVersionRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -183,9 +183,9 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAgentVersionWithResponse(String agentName, BinaryData createAgentVersionRequest1,
+    public Response<BinaryData> createAgentVersionWithResponse(String agentName, BinaryData createAgentVersionRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions);
+        return this.serviceClient.createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions);
     }
 
     /**
@@ -402,9 +402,9 @@ public final class AgentsClient {
     public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest1 createAgentVersionRequest1Obj = new CreateAgentVersionRequest1(definition);
-        BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions).getValue()
+        CreateAgentVersionRequest createAgentVersionRequestObj = new CreateAgentVersionRequest(definition);
+        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
+        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
             .toObject(AgentVersionDetails.class);
     }
 
@@ -469,7 +469,7 @@ public final class AgentsClient {
      * }
      * </pre>
      *
-     * @param createAgentRequest1 The createAgentRequest1 parameter.
+     * @param createAgentRequest The createAgentRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -479,8 +479,8 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createAgentWithResponse(BinaryData createAgentRequest1, RequestOptions requestOptions) {
-        return this.serviceClient.createAgentWithResponse(createAgentRequest1, requestOptions);
+    Response<BinaryData> createAgentWithResponse(BinaryData createAgentRequest, RequestOptions requestOptions) {
+        return this.serviceClient.createAgentWithResponse(createAgentRequest, requestOptions);
     }
 
     /**
@@ -545,7 +545,7 @@ public final class AgentsClient {
      * </pre>
      *
      * @param agentName The name of the agent to retrieve.
-     * @param updateAgentRequest1 The updateAgentRequest1 parameter.
+     * @param updateAgentRequest The updateAgentRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -555,9 +555,9 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> updateAgentWithResponse(String agentName, BinaryData updateAgentRequest1,
+    Response<BinaryData> updateAgentWithResponse(String agentName, BinaryData updateAgentRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions);
+        return this.serviceClient.updateAgentWithResponse(agentName, updateAgentRequest, requestOptions);
     }
 
     /**
@@ -581,9 +581,9 @@ public final class AgentsClient {
     AgentDetails createAgent(String agentName, AgentDefinition definition) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateAgentRequest1 createAgentRequest1Obj = new CreateAgentRequest1(agentName, definition);
-        BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
-        return createAgentWithResponse(createAgentRequest1, requestOptions).getValue().toObject(AgentDetails.class);
+        CreateAgentRequest createAgentRequestObj = new CreateAgentRequest(agentName, definition);
+        BinaryData createAgentRequest = BinaryData.fromObject(createAgentRequestObj);
+        return createAgentWithResponse(createAgentRequest, requestOptions).getValue().toObject(AgentDetails.class);
     }
 
     /**
@@ -605,9 +605,9 @@ public final class AgentsClient {
     AgentDetails updateAgent(String agentName, AgentDefinition definition) {
         // Generated convenience method for updateAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentRequest1 updateAgentRequest1Obj = new UpdateAgentRequest1(definition);
-        BinaryData updateAgentRequest1 = BinaryData.fromObject(updateAgentRequest1Obj);
-        return updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions).getValue()
+        UpdateAgentRequest updateAgentRequestObj = new UpdateAgentRequest(definition);
+        BinaryData updateAgentRequest = BinaryData.fromObject(updateAgentRequestObj);
+        return updateAgentWithResponse(agentName, updateAgentRequest, requestOptions).getValue()
             .toObject(AgentDetails.class);
     }
 
@@ -672,7 +672,7 @@ public final class AgentsClient {
      * }
      * </pre>
      *
-     * @param createAgentFromManifestRequest1 The createAgentFromManifestRequest1 parameter.
+     * @param createAgentFromManifestRequest The createAgentFromManifestRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -682,9 +682,9 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createAgentFromManifestWithResponse(BinaryData createAgentFromManifestRequest1,
+    Response<BinaryData> createAgentFromManifestWithResponse(BinaryData createAgentFromManifestRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions);
+        return this.serviceClient.createAgentFromManifestWithResponse(createAgentFromManifestRequest, requestOptions);
     }
 
     /**
@@ -739,7 +739,7 @@ public final class AgentsClient {
      * </pre>
      *
      * @param agentName The name of the agent to update.
-     * @param updateAgentFromManifestRequest1 The updateAgentFromManifestRequest1 parameter.
+     * @param updateAgentFromManifestRequest The updateAgentFromManifestRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -750,8 +750,8 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> updateAgentFromManifestWithResponse(String agentName,
-        BinaryData updateAgentFromManifestRequest1, RequestOptions requestOptions) {
-        return this.serviceClient.updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest1,
+        BinaryData updateAgentFromManifestRequest, RequestOptions requestOptions) {
+        return this.serviceClient.updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest,
             requestOptions);
     }
 
@@ -802,7 +802,7 @@ public final class AgentsClient {
      * - Must start and end with alphanumeric characters,
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
-     * @param createAgentVersionFromManifestRequest1 The createAgentVersionFromManifestRequest1 parameter.
+     * @param createAgentVersionFromManifestRequest The createAgentVersionFromManifestRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -813,9 +813,9 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createAgentVersionFromManifestWithResponse(String agentName,
-        BinaryData createAgentVersionFromManifestRequest1, RequestOptions requestOptions) {
+        BinaryData createAgentVersionFromManifestRequest, RequestOptions requestOptions) {
         return this.serviceClient.createAgentVersionFromManifestWithResponse(agentName,
-            createAgentVersionFromManifestRequest1, requestOptions);
+            createAgentVersionFromManifestRequest, requestOptions);
     }
 
     /**
@@ -840,10 +840,10 @@ public final class AgentsClient {
     AgentDetails createAgentFromManifest(String agentName, String manifestId, Map<String, BinaryData> parameterValues) {
         // Generated convenience method for createAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateAgentFromManifestRequest1 createAgentFromManifestRequest1Obj
-            = new CreateAgentFromManifestRequest1(agentName, manifestId, parameterValues);
-        BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
-        return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions).getValue()
+        CreateAgentFromManifestRequest createAgentFromManifestRequestObj
+            = new CreateAgentFromManifestRequest(agentName, manifestId, parameterValues);
+        BinaryData createAgentFromManifestRequest = BinaryData.fromObject(createAgentFromManifestRequestObj);
+        return createAgentFromManifestWithResponse(createAgentFromManifestRequest, requestOptions).getValue()
             .toObject(AgentDetails.class);
     }
 
@@ -867,11 +867,10 @@ public final class AgentsClient {
     AgentDetails updateAgentFromManifest(String agentName, String manifestId, Map<String, BinaryData> parameterValues) {
         // Generated convenience method for updateAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentFromManifestRequest1 updateAgentFromManifestRequest1Obj
-            = new UpdateAgentFromManifestRequest1(manifestId, parameterValues);
-        BinaryData updateAgentFromManifestRequest1 = BinaryData.fromObject(updateAgentFromManifestRequest1Obj);
-        return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest1, requestOptions)
-            .getValue()
+        UpdateAgentFromManifestRequest updateAgentFromManifestRequestObj
+            = new UpdateAgentFromManifestRequest(manifestId, parameterValues);
+        BinaryData updateAgentFromManifestRequest = BinaryData.fromObject(updateAgentFromManifestRequestObj);
+        return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest, requestOptions).getValue()
             .toObject(AgentDetails.class);
     }
 
@@ -898,11 +897,11 @@ public final class AgentsClient {
         Map<String, BinaryData> parameterValues) {
         // Generated convenience method for createAgentVersionFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionFromManifestRequest1 createAgentVersionFromManifestRequest1Obj
-            = new CreateAgentVersionFromManifestRequest1(manifestId, parameterValues);
-        BinaryData createAgentVersionFromManifestRequest1
-            = BinaryData.fromObject(createAgentVersionFromManifestRequest1Obj);
-        return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest1,
+        CreateAgentVersionFromManifestRequest createAgentVersionFromManifestRequestObj
+            = new CreateAgentVersionFromManifestRequest(manifestId, parameterValues);
+        BinaryData createAgentVersionFromManifestRequest
+            = BinaryData.fromObject(createAgentVersionFromManifestRequestObj);
+        return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest,
             requestOptions).getValue().toObject(AgentVersionDetails.class);
     }
 
@@ -934,12 +933,11 @@ public final class AgentsClient {
         Map<String, String> metadata, String description) {
         // Generated convenience method for updateAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentFromManifestRequest1 updateAgentFromManifestRequest1Obj
-            = new UpdateAgentFromManifestRequest1(manifestId, parameterValues).setMetadata(metadata)
+        UpdateAgentFromManifestRequest updateAgentFromManifestRequestObj
+            = new UpdateAgentFromManifestRequest(manifestId, parameterValues).setMetadata(metadata)
                 .setDescription(description);
-        BinaryData updateAgentFromManifestRequest1 = BinaryData.fromObject(updateAgentFromManifestRequest1Obj);
-        return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest1, requestOptions)
-            .getValue()
+        BinaryData updateAgentFromManifestRequest = BinaryData.fromObject(updateAgentFromManifestRequestObj);
+        return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest, requestOptions).getValue()
             .toObject(AgentDetails.class);
     }
 
@@ -973,12 +971,12 @@ public final class AgentsClient {
         Map<String, BinaryData> parameterValues, Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentVersionFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionFromManifestRequest1 createAgentVersionFromManifestRequest1Obj
-            = new CreateAgentVersionFromManifestRequest1(manifestId, parameterValues).setMetadata(metadata)
+        CreateAgentVersionFromManifestRequest createAgentVersionFromManifestRequestObj
+            = new CreateAgentVersionFromManifestRequest(manifestId, parameterValues).setMetadata(metadata)
                 .setDescription(description);
-        BinaryData createAgentVersionFromManifestRequest1
-            = BinaryData.fromObject(createAgentVersionFromManifestRequest1Obj);
-        return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest1,
+        BinaryData createAgentVersionFromManifestRequest
+            = BinaryData.fromObject(createAgentVersionFromManifestRequestObj);
+        return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest,
             requestOptions).getValue().toObject(AgentVersionDetails.class);
     }
 
@@ -1235,11 +1233,11 @@ public final class AgentsClient {
         Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateAgentFromManifestRequest1 createAgentFromManifestRequest1Obj
-            = new CreateAgentFromManifestRequest1(agentName, manifestId, parameterValues).setMetadata(metadata)
+        CreateAgentFromManifestRequest createAgentFromManifestRequestObj
+            = new CreateAgentFromManifestRequest(agentName, manifestId, parameterValues).setMetadata(metadata)
                 .setDescription(description);
-        BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
-        return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions).getValue()
+        BinaryData createAgentFromManifestRequest = BinaryData.fromObject(createAgentFromManifestRequestObj);
+        return createAgentFromManifestWithResponse(createAgentFromManifestRequest, requestOptions).getValue()
             .toObject(AgentDetails.class);
     }
 
@@ -1274,13 +1272,13 @@ public final class AgentsClient {
         Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateAgentRequest1 createAgentRequest1Obj
-            = new CreateAgentRequest1(agentName, definition).setMetadata(metadata).setDescription(description);
-        BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
+        CreateAgentRequest createAgentRequestObj
+            = new CreateAgentRequest(agentName, definition).setMetadata(metadata).setDescription(description);
+        BinaryData createAgentRequest = BinaryData.fromObject(createAgentRequestObj);
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), String.valueOf(foundryFeatures));
         }
-        return createAgentWithResponse(createAgentRequest1, requestOptions).getValue().toObject(AgentDetails.class);
+        return createAgentWithResponse(createAgentRequest, requestOptions).getValue().toObject(AgentDetails.class);
     }
 
     /**
@@ -1312,13 +1310,13 @@ public final class AgentsClient {
         Map<String, String> metadata, String description) {
         // Generated convenience method for updateAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentRequest1 updateAgentRequest1Obj
-            = new UpdateAgentRequest1(definition).setMetadata(metadata).setDescription(description);
-        BinaryData updateAgentRequest1 = BinaryData.fromObject(updateAgentRequest1Obj);
+        UpdateAgentRequest updateAgentRequestObj
+            = new UpdateAgentRequest(definition).setMetadata(metadata).setDescription(description);
+        BinaryData updateAgentRequest = BinaryData.fromObject(updateAgentRequestObj);
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), String.valueOf(foundryFeatures));
         }
-        return updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions).getValue()
+        return updateAgentWithResponse(agentName, updateAgentRequest, requestOptions).getValue()
             .toObject(AgentDetails.class);
     }
 
@@ -1353,13 +1351,13 @@ public final class AgentsClient {
         BinaryData foundryFeatures, Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest1 createAgentVersionRequest1Obj
-            = new CreateAgentVersionRequest1(definition).setMetadata(metadata).setDescription(description);
-        BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
+        CreateAgentVersionRequest createAgentVersionRequestObj
+            = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
+        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), String.valueOf(foundryFeatures));
         }
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions).getValue()
+        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
             .toObject(AgentVersionDetails.class);
     }
 }

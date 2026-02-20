@@ -14,10 +14,10 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * The UpdateAgentRequest1 model.
+ * The CreateAgentVersionRequest model.
  */
 @Fluent
-public final class UpdateAgentRequest1 implements JsonSerializable<UpdateAgentRequest1> {
+public final class CreateAgentVersionRequest implements JsonSerializable<CreateAgentVersionRequest> {
 
     /*
      * Set of 16 key-value pairs that can be attached to an object. This can be
@@ -43,12 +43,12 @@ public final class UpdateAgentRequest1 implements JsonSerializable<UpdateAgentRe
     private final AgentDefinition definition;
 
     /**
-     * Creates an instance of UpdateAgentRequest1 class.
+     * Creates an instance of CreateAgentVersionRequest class.
      *
      * @param definition the definition value to set.
      */
     @Generated
-    public UpdateAgentRequest1(AgentDefinition definition) {
+    public CreateAgentVersionRequest(AgentDefinition definition) {
         this.definition = definition;
     }
 
@@ -76,10 +76,10 @@ public final class UpdateAgentRequest1 implements JsonSerializable<UpdateAgentRe
      * with a maximum length of 512 characters.
      *
      * @param metadata the metadata value to set.
-     * @return the UpdateAgentRequest1 object itself.
+     * @return the CreateAgentVersionRequest object itself.
      */
     @Generated
-    public UpdateAgentRequest1 setMetadata(Map<String, String> metadata) {
+    public CreateAgentVersionRequest setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -98,10 +98,10 @@ public final class UpdateAgentRequest1 implements JsonSerializable<UpdateAgentRe
      * Set the description property: A human-readable description of the agent.
      *
      * @param description the description value to set.
-     * @return the UpdateAgentRequest1 object itself.
+     * @return the CreateAgentVersionRequest object itself.
      */
     @Generated
-    public UpdateAgentRequest1 setDescription(String description) {
+    public CreateAgentVersionRequest setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -131,16 +131,16 @@ public final class UpdateAgentRequest1 implements JsonSerializable<UpdateAgentRe
     }
 
     /**
-     * Reads an instance of UpdateAgentRequest1 from the JsonReader.
+     * Reads an instance of CreateAgentVersionRequest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of UpdateAgentRequest1 if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of CreateAgentVersionRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the UpdateAgentRequest1.
+     * @throws IOException If an error occurs while reading the CreateAgentVersionRequest.
      */
     @Generated
-    public static UpdateAgentRequest1 fromJson(JsonReader jsonReader) throws IOException {
+    public static CreateAgentVersionRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AgentDefinition definition = null;
             Map<String, String> metadata = null;
@@ -158,10 +158,10 @@ public final class UpdateAgentRequest1 implements JsonSerializable<UpdateAgentRe
                     reader.skipChildren();
                 }
             }
-            UpdateAgentRequest1 deserializedUpdateAgentRequest1 = new UpdateAgentRequest1(definition);
-            deserializedUpdateAgentRequest1.metadata = metadata;
-            deserializedUpdateAgentRequest1.description = description;
-            return deserializedUpdateAgentRequest1;
+            CreateAgentVersionRequest deserializedCreateAgentVersionRequest = new CreateAgentVersionRequest(definition);
+            deserializedCreateAgentVersionRequest.metadata = metadata;
+            deserializedCreateAgentVersionRequest.description = description;
+            return deserializedCreateAgentVersionRequest;
         });
     }
 }

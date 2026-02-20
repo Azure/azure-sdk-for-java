@@ -14,10 +14,19 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * The CreateAgentFromManifestRequest1 model.
+ * The CreateAgentFromManifestRequest model.
  */
 @Fluent
-public final class CreateAgentFromManifestRequest1 implements JsonSerializable<CreateAgentFromManifestRequest1> {
+public final class CreateAgentFromManifestRequest implements JsonSerializable<CreateAgentFromManifestRequest> {
+
+    /*
+     * The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     */
+    @Generated
+    private final String agentName;
 
     /*
      * Set of 16 key-value pairs that can be attached to an object. This can be
@@ -49,18 +58,32 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
     private final Map<String, BinaryData> parameterValues;
 
     /**
-     * Creates an instance of CreateAgentFromManifestRequest1 class.
+     * Creates an instance of CreateAgentFromManifestRequest class.
      *
      * @param agentName the agentName value to set.
      * @param manifestId the manifestId value to set.
      * @param parameterValues the parameterValues value to set.
      */
     @Generated
-    public CreateAgentFromManifestRequest1(String agentName, String manifestId,
+    public CreateAgentFromManifestRequest(String agentName, String manifestId,
         Map<String, BinaryData> parameterValues) {
         this.agentName = agentName;
         this.manifestId = manifestId;
         this.parameterValues = parameterValues;
+    }
+
+    /**
+     * Get the agentName property: The unique name that identifies the agent. Name can be used to retrieve/update/delete
+     * the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     *
+     * @return the agentName value.
+     */
+    @Generated
+    public String getAgentName() {
+        return this.agentName;
     }
 
     /**
@@ -87,10 +110,10 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
      * with a maximum length of 512 characters.
      *
      * @param metadata the metadata value to set.
-     * @return the CreateAgentFromManifestRequest1 object itself.
+     * @return the CreateAgentFromManifestRequest object itself.
      */
     @Generated
-    public CreateAgentFromManifestRequest1 setMetadata(Map<String, String> metadata) {
+    public CreateAgentFromManifestRequest setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -109,10 +132,10 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
      * Set the description property: A human-readable description of the agent.
      *
      * @param description the description value to set.
-     * @return the CreateAgentFromManifestRequest1 object itself.
+     * @return the CreateAgentFromManifestRequest object itself.
      */
     @Generated
-    public CreateAgentFromManifestRequest1 setDescription(String description) {
+    public CreateAgentFromManifestRequest setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -159,16 +182,16 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
     }
 
     /**
-     * Reads an instance of CreateAgentFromManifestRequest1 from the JsonReader.
+     * Reads an instance of CreateAgentFromManifestRequest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CreateAgentFromManifestRequest1 if the JsonReader was pointing to an instance of it, or
+     * @return An instance of CreateAgentFromManifestRequest if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CreateAgentFromManifestRequest1.
+     * @throws IOException If an error occurs while reading the CreateAgentFromManifestRequest.
      */
     @Generated
-    public static CreateAgentFromManifestRequest1 fromJson(JsonReader jsonReader) throws IOException {
+    public static CreateAgentFromManifestRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String agentName = null;
             String manifestId = null;
@@ -193,34 +216,11 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
                     reader.skipChildren();
                 }
             }
-            CreateAgentFromManifestRequest1 deserializedCreateAgentFromManifestRequest1
-                = new CreateAgentFromManifestRequest1(agentName, manifestId, parameterValues);
-            deserializedCreateAgentFromManifestRequest1.metadata = metadata;
-            deserializedCreateAgentFromManifestRequest1.description = description;
-            return deserializedCreateAgentFromManifestRequest1;
+            CreateAgentFromManifestRequest deserializedCreateAgentFromManifestRequest
+                = new CreateAgentFromManifestRequest(agentName, manifestId, parameterValues);
+            deserializedCreateAgentFromManifestRequest.metadata = metadata;
+            deserializedCreateAgentFromManifestRequest.description = description;
+            return deserializedCreateAgentFromManifestRequest;
         });
-    }
-
-    /*
-     * The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     */
-    @Generated
-    private final String agentName;
-
-    /**
-     * Get the agentName property: The unique name that identifies the agent. Name can be used to retrieve/update/delete
-     * the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     *
-     * @return the agentName value.
-     */
-    @Generated
-    public String getAgentName() {
-        return this.agentName;
     }
 }

@@ -14,10 +14,19 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * The CreateAgentVersionRequest1 model.
+ * The CreateAgentRequest model.
  */
 @Fluent
-public final class CreateAgentVersionRequest1 implements JsonSerializable<CreateAgentVersionRequest1> {
+public final class CreateAgentRequest implements JsonSerializable<CreateAgentRequest> {
+
+    /*
+     * The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     */
+    @Generated
+    private final String agentName;
 
     /*
      * Set of 16 key-value pairs that can be attached to an object. This can be
@@ -43,13 +52,29 @@ public final class CreateAgentVersionRequest1 implements JsonSerializable<Create
     private final AgentDefinition definition;
 
     /**
-     * Creates an instance of CreateAgentVersionRequest1 class.
+     * Creates an instance of CreateAgentRequest class.
      *
+     * @param agentName the agentName value to set.
      * @param definition the definition value to set.
      */
     @Generated
-    public CreateAgentVersionRequest1(AgentDefinition definition) {
+    public CreateAgentRequest(String agentName, AgentDefinition definition) {
+        this.agentName = agentName;
         this.definition = definition;
+    }
+
+    /**
+     * Get the agentName property: The unique name that identifies the agent. Name can be used to retrieve/update/delete
+     * the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     *
+     * @return the agentName value.
+     */
+    @Generated
+    public String getAgentName() {
+        return this.agentName;
     }
 
     /**
@@ -76,10 +101,10 @@ public final class CreateAgentVersionRequest1 implements JsonSerializable<Create
      * with a maximum length of 512 characters.
      *
      * @param metadata the metadata value to set.
-     * @return the CreateAgentVersionRequest1 object itself.
+     * @return the CreateAgentRequest object itself.
      */
     @Generated
-    public CreateAgentVersionRequest1 setMetadata(Map<String, String> metadata) {
+    public CreateAgentRequest setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -98,10 +123,10 @@ public final class CreateAgentVersionRequest1 implements JsonSerializable<Create
      * Set the description property: A human-readable description of the agent.
      *
      * @param description the description value to set.
-     * @return the CreateAgentVersionRequest1 object itself.
+     * @return the CreateAgentRequest object itself.
      */
     @Generated
-    public CreateAgentVersionRequest1 setDescription(String description) {
+    public CreateAgentRequest setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -124,6 +149,7 @@ public final class CreateAgentVersionRequest1 implements JsonSerializable<Create
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.agentName);
         jsonWriter.writeJsonField("definition", this.definition);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("description", this.description);
@@ -131,24 +157,27 @@ public final class CreateAgentVersionRequest1 implements JsonSerializable<Create
     }
 
     /**
-     * Reads an instance of CreateAgentVersionRequest1 from the JsonReader.
+     * Reads an instance of CreateAgentRequest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CreateAgentVersionRequest1 if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of CreateAgentRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CreateAgentVersionRequest1.
+     * @throws IOException If an error occurs while reading the CreateAgentRequest.
      */
     @Generated
-    public static CreateAgentVersionRequest1 fromJson(JsonReader jsonReader) throws IOException {
+    public static CreateAgentRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String agentName = null;
             AgentDefinition definition = null;
             Map<String, String> metadata = null;
             String description = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("definition".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
+                    agentName = reader.getString();
+                } else if ("definition".equals(fieldName)) {
                     definition = AgentDefinition.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
@@ -158,11 +187,10 @@ public final class CreateAgentVersionRequest1 implements JsonSerializable<Create
                     reader.skipChildren();
                 }
             }
-            CreateAgentVersionRequest1 deserializedCreateAgentVersionRequest1
-                = new CreateAgentVersionRequest1(definition);
-            deserializedCreateAgentVersionRequest1.metadata = metadata;
-            deserializedCreateAgentVersionRequest1.description = description;
-            return deserializedCreateAgentVersionRequest1;
+            CreateAgentRequest deserializedCreateAgentRequest = new CreateAgentRequest(agentName, definition);
+            deserializedCreateAgentRequest.metadata = metadata;
+            deserializedCreateAgentRequest.description = description;
+            return deserializedCreateAgentRequest;
         });
     }
 }
