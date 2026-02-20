@@ -457,7 +457,9 @@
         "reimaged",
         "isdirectory",
         "SSDLRS",
-        "VMGUEST"
+        "VMGUEST",
+        "imds",
+        "confidentialvm"
       ]
     },
     {

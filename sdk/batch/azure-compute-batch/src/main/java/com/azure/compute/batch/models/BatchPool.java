@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A Pool in the Azure Batch service.
@@ -32,8 +31,7 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private String id;
 
     /*
-     * The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a
-     * maximum length of 1024.
+     * The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
      */
     @Generated
     private String displayName;
@@ -92,9 +90,8 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /*
      * The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information about
-     * available VM sizes, see Sizes for Virtual Machines in Azure
-     * (https://learn.microsoft.com/azure/virtual-machines/sizes/overview). Batch supports all Azure VM sizes except
-     * STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
+     * available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
+     * (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
     @Generated
     private String vmSize;
@@ -120,26 +117,17 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private List<ResizeError> resizeErrors;
 
     /*
-     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch
-     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
-     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
-     * 'UserSubscription'.
-     */
-    @Generated
-    private Map<String, String> resourceTags;
-
-    /*
      * The number of dedicated Compute Nodes currently in the Pool.
      */
     @Generated
-    private Integer currentDedicatedNodes;
+    private int currentDedicatedNodes;
 
     /*
      * The number of Spot/Low-priority Compute Nodes currently in the Pool. Spot/Low-priority Compute Nodes which have
      * been preempted are included in this count.
      */
     @Generated
-    private Integer currentLowPriorityNodes;
+    private int currentLowPriorityNodes;
 
     /*
      * The desired number of dedicated Compute Nodes in the Pool.
@@ -183,9 +171,9 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private AutoScaleRun autoScaleRun;
 
     /*
-     * Whether the Pool permits direct communication between Compute Nodes. This imposes restrictions on which Compute
-     * Nodes can be assigned to the Pool. Specifying this value can reduce the chance of the requested number of Compute
-     * Nodes to be allocated in the Pool.
+     * Whether the Pool permits direct communication between Compute Nodes. Enabling inter-node communication limits the
+     * maximum size of the Pool due to deployment restrictions on the Compute Nodes of the Pool. This may result in the
+     * Pool not reaching its desired size. The default value is false.
      */
     @Generated
     private Boolean enableInterNodeCommunication;
@@ -201,18 +189,6 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
      */
     @Generated
     private BatchStartTask startTask;
-
-    /*
-     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
-     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     */
-    @Generated
-    private List<BatchCertificateReference> certificateReferences;
 
     /*
      * The list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all
@@ -249,7 +225,8 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private List<BatchMetadataItem> metadata;
 
     /*
-     * A list of file systems to mount on each node in the pool. This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
+     * Mount storage using specified file system for the entire lifetime of the pool. Mount the storage using Azure
+     * fileshare, NFS, CIFS or Blobfuse based file system.
      */
     @Generated
     private List<MountConfiguration> mountConfiguration;
@@ -262,18 +239,6 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
      */
     @Generated
     private BatchPoolIdentity identity;
-
-    /*
-     * The desired node communication mode for the pool. If omitted, the default value is Default.
-     */
-    @Generated
-    private BatchNodeCommunicationMode targetNodeCommunicationMode;
-
-    /*
-     * The current state of the pool communication mode.
-     */
-    @Generated
-    private BatchNodeCommunicationMode currentNodeCommunicationMode;
 
     /*
      * The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual, or rolling.
@@ -302,8 +267,8 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     }
 
     /**
-     * Get the displayName property: The display name for the Pool. The display name need not be unique and can contain
-     * any Unicode characters up to a maximum length of 1024.
+     * Get the displayName property: The display name need not be unique and can contain any Unicode characters up to a
+     * maximum length of 1024.
      *
      * @return the displayName value.
      */
@@ -398,9 +363,8 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /**
      * Get the vmSize property: The size of virtual machines in the Pool. All virtual machines in a Pool are the same
-     * size. For information about available VM sizes, see Sizes for Virtual Machines in Azure
-     * (https://learn.microsoft.com/azure/virtual-machines/sizes/overview). Batch supports all Azure VM sizes except
-     * STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
+     * size. For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes
+     * in an Azure Batch Pool (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).
      *
      * @return the vmSize value.
      */
@@ -445,25 +409,12 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     }
 
     /**
-     * Get the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
-     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
-     * associated with the pool. This property can only be specified when the Batch account was created with the
-     * poolAllocationMode property set to 'UserSubscription'.
-     *
-     * @return the resourceTags value.
-     */
-    @Generated
-    public Map<String, String> getResourceTags() {
-        return this.resourceTags;
-    }
-
-    /**
      * Get the currentDedicatedNodes property: The number of dedicated Compute Nodes currently in the Pool.
      *
      * @return the currentDedicatedNodes value.
      */
     @Generated
-    public Integer getCurrentDedicatedNodes() {
+    public int getCurrentDedicatedNodes() {
         return this.currentDedicatedNodes;
     }
 
@@ -474,7 +425,7 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
      * @return the currentLowPriorityNodes value.
      */
     @Generated
-    public Integer getCurrentLowPriorityNodes() {
+    public int getCurrentLowPriorityNodes() {
         return this.currentLowPriorityNodes;
     }
 
@@ -546,8 +497,9 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /**
      * Get the enableInterNodeCommunication property: Whether the Pool permits direct communication between Compute
-     * Nodes. This imposes restrictions on which Compute Nodes can be assigned to the Pool. Specifying this value can
-     * reduce the chance of the requested number of Compute Nodes to be allocated in the Pool.
+     * Nodes. Enabling inter-node communication limits the maximum size of the Pool due to deployment restrictions on
+     * the Compute Nodes of the Pool. This may result in the Pool not reaching its desired size. The default value is
+     * false.
      *
      * @return the enableInterNodeCommunication value.
      */
@@ -574,23 +526,6 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     @Generated
     public BatchStartTask getStartTask() {
         return this.startTask;
-    }
-
-    /**
-     * Get the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
-     * specified Certificate store and location.
-     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
-     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
-     * @return the certificateReferences value.
-     */
-    @Generated
-    public List<BatchCertificateReference> getCertificateReferences() {
-        return this.certificateReferences;
     }
 
     /**
@@ -650,8 +585,8 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     }
 
     /**
-     * Get the mountConfiguration property: A list of file systems to mount on each node in the pool. This supports
-     * Azure Files, NFS, CIFS/SMB, and Blobfuse.
+     * Get the mountConfiguration property: Mount storage using specified file system for the entire lifetime of the
+     * pool. Mount the storage using Azure fileshare, NFS, CIFS or Blobfuse based file system.
      *
      * @return the mountConfiguration value.
      */
@@ -673,27 +608,6 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     }
 
     /**
-     * Get the targetNodeCommunicationMode property: The desired node communication mode for the pool. If omitted, the
-     * default value is Default.
-     *
-     * @return the targetNodeCommunicationMode value.
-     */
-    @Generated
-    public BatchNodeCommunicationMode getTargetNodeCommunicationMode() {
-        return this.targetNodeCommunicationMode;
-    }
-
-    /**
-     * Get the currentNodeCommunicationMode property: The current state of the pool communication mode.
-     *
-     * @return the currentNodeCommunicationMode value.
-     */
-    @Generated
-    public BatchNodeCommunicationMode getCurrentNodeCommunicationMode() {
-        return this.currentNodeCommunicationMode;
-    }
-
-    /**
      * Get the upgradePolicy property: The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual,
      * or rolling.
      *
@@ -712,8 +626,6 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("startTask", this.startTask);
-        jsonWriter.writeStringField("targetNodeCommunicationMode",
-            this.targetNodeCommunicationMode == null ? null : this.targetNodeCommunicationMode.toString());
         jsonWriter.writeJsonField("upgradePolicy", this.upgradePolicy);
         return jsonWriter.writeEndObject();
     }
@@ -724,6 +636,7 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of BatchPool if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchPool.
      */
     @Generated
@@ -735,8 +648,6 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     deserializedBatchPool.id = reader.getString();
-                } else if ("displayName".equals(fieldName)) {
-                    deserializedBatchPool.displayName = reader.getString();
                 } else if ("url".equals(fieldName)) {
                     deserializedBatchPool.url = reader.getString();
                 } else if ("eTag".equals(fieldName)) {
@@ -752,13 +663,19 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
                 } else if ("stateTransitionTime".equals(fieldName)) {
                     deserializedBatchPool.stateTransitionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedBatchPool.vmSize = reader.getString();
+                } else if ("currentDedicatedNodes".equals(fieldName)) {
+                    deserializedBatchPool.currentDedicatedNodes = reader.getInt();
+                } else if ("currentLowPriorityNodes".equals(fieldName)) {
+                    deserializedBatchPool.currentLowPriorityNodes = reader.getInt();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedBatchPool.displayName = reader.getString();
                 } else if ("allocationState".equals(fieldName)) {
                     deserializedBatchPool.allocationState = AllocationState.fromString(reader.getString());
                 } else if ("allocationStateTransitionTime".equals(fieldName)) {
                     deserializedBatchPool.allocationStateTransitionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("vmSize".equals(fieldName)) {
-                    deserializedBatchPool.vmSize = reader.getString();
                 } else if ("virtualMachineConfiguration".equals(fieldName)) {
                     deserializedBatchPool.virtualMachineConfiguration = VirtualMachineConfiguration.fromJson(reader);
                 } else if ("resizeTimeout".equals(fieldName)) {
@@ -767,13 +684,6 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
                 } else if ("resizeErrors".equals(fieldName)) {
                     List<ResizeError> resizeErrors = reader.readArray(reader1 -> ResizeError.fromJson(reader1));
                     deserializedBatchPool.resizeErrors = resizeErrors;
-                } else if ("resourceTags".equals(fieldName)) {
-                    Map<String, String> resourceTags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedBatchPool.resourceTags = resourceTags;
-                } else if ("currentDedicatedNodes".equals(fieldName)) {
-                    deserializedBatchPool.currentDedicatedNodes = reader.getNullable(JsonReader::getInt);
-                } else if ("currentLowPriorityNodes".equals(fieldName)) {
-                    deserializedBatchPool.currentLowPriorityNodes = reader.getNullable(JsonReader::getInt);
                 } else if ("targetDedicatedNodes".equals(fieldName)) {
                     deserializedBatchPool.targetDedicatedNodes = reader.getNullable(JsonReader::getInt);
                 } else if ("targetLowPriorityNodes".equals(fieldName)) {
@@ -793,10 +703,6 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
                     deserializedBatchPool.networkConfiguration = NetworkConfiguration.fromJson(reader);
                 } else if ("startTask".equals(fieldName)) {
                     deserializedBatchPool.startTask = BatchStartTask.fromJson(reader);
-                } else if ("certificateReferences".equals(fieldName)) {
-                    List<BatchCertificateReference> certificateReferences
-                        = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
-                    deserializedBatchPool.certificateReferences = certificateReferences;
                 } else if ("applicationPackageReferences".equals(fieldName)) {
                     List<BatchApplicationPackageReference> applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
@@ -819,12 +725,6 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
                     deserializedBatchPool.mountConfiguration = mountConfiguration;
                 } else if ("identity".equals(fieldName)) {
                     deserializedBatchPool.identity = BatchPoolIdentity.fromJson(reader);
-                } else if ("targetNodeCommunicationMode".equals(fieldName)) {
-                    deserializedBatchPool.targetNodeCommunicationMode
-                        = BatchNodeCommunicationMode.fromString(reader.getString());
-                } else if ("currentNodeCommunicationMode".equals(fieldName)) {
-                    deserializedBatchPool.currentNodeCommunicationMode
-                        = BatchNodeCommunicationMode.fromString(reader.getString());
                 } else if ("upgradePolicy".equals(fieldName)) {
                     deserializedBatchPool.upgradePolicy = UpgradePolicy.fromJson(reader);
                 } else {
