@@ -41,7 +41,7 @@ public final class ReactorNettyRequestRecord {
     private volatile Instant timeCompleted;
     private volatile String channelId;
     private volatile String parentChannelId;
-    private volatile boolean isHttp2;
+    private volatile boolean http2;
     private final long transportRequestId;
 
     public ReactorNettyRequestRecord() {
@@ -249,7 +249,7 @@ public final class ReactorNettyRequestRecord {
      * @return true if HTTP/2, false if HTTP/1.1
      */
     public boolean isHttp2() {
-        return this.isHttp2;
+        return this.http2;
     }
 
     /**
@@ -257,6 +257,6 @@ public final class ReactorNettyRequestRecord {
      * @param isHttp2 true if HTTP/2
      */
     public void setHttp2(boolean isHttp2) {
-        this.isHttp2 = isHttp2;
+        this.http2 = isHttp2;
     }
 }

@@ -56,7 +56,7 @@ public class StoreResponseDiagnostics {
     private final String requestThroughputControlGroupConfig;
     private volatile String channelId;
     private volatile String parentChannelId;
-    private volatile boolean isHttp2;
+    private volatile boolean http2;
 
     public static StoreResponseDiagnostics createStoreResponseDiagnostics(
         StoreResponse storeResponse,
@@ -101,7 +101,7 @@ public class StoreResponseDiagnostics {
             rxDocumentServiceRequest.requestContext.throughputControlRequestContext != null ? rxDocumentServiceRequest.requestContext.throughputControlRequestContext.getConfigString() : null;
         this.channelId = storeResponse.getChannelId();
         this.parentChannelId = storeResponse.getParentChannelId();
-        this.isHttp2 = storeResponse.isHttp2();
+        this.http2 = storeResponse.isHttp2();
     }
 
     private StoreResponseDiagnostics(CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest) {
@@ -245,10 +245,10 @@ public class StoreResponseDiagnostics {
     }
 
     public boolean isHttp2() {
-        return this.isHttp2;
+        return this.http2;
     }
 
     public void setHttp2(boolean isHttp2) {
-        this.isHttp2 = isHttp2;
+        this.http2 = isHttp2;
     }
 }

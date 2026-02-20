@@ -298,7 +298,7 @@ public class ClientSideRequestStatistics {
             gatewayStatistics.requestThroughputControlGroupConfig = storeResponseDiagnostics.getRequestThroughputControlGroupConfig();
             gatewayStatistics.channelId = storeResponseDiagnostics.getChannelId();
             gatewayStatistics.parentChannelId = storeResponseDiagnostics.getParentChannelId();
-            gatewayStatistics.isHttp2 = storeResponseDiagnostics.isHttp2();
+            gatewayStatistics.http2 = storeResponseDiagnostics.isHttp2();
 
             this.activityId = storeResponseDiagnostics.getActivityId() != null ? storeResponseDiagnostics.getActivityId() :
                 rxDocumentServiceRequest.getActivityId().toString();
@@ -956,7 +956,7 @@ public class ClientSideRequestStatistics {
         private Duration httpResponseTimeout;
         private String channelId;
         private String parentChannelId;
-        private boolean isHttp2;
+        private boolean http2;
 
         public String getSessionToken() {
             return sessionToken;
@@ -1043,7 +1043,7 @@ public class ClientSideRequestStatistics {
         }
 
         public boolean isHttp2() {
-            return this.isHttp2;
+            return this.http2;
         }
 
         private String getHttpNetworkResponseTimeout() {

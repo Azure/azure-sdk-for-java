@@ -44,7 +44,7 @@ public class StoreResponse {
     private List<String> faultInjectionRuleEvaluationResults;
     private String channelId;
     private String parentChannelId;
-    private boolean isHttp2;
+    private boolean http2;
 
     private final JsonNodeStorePayload responsePayload;
     private final String endpoint;
@@ -340,10 +340,10 @@ public class StoreResponse {
     }
 
     public boolean isHttp2() {
-        return this.isHttp2;
+        return this.http2;
     }
 
     public void setHttp2(boolean isHttp2) {
-        this.isHttp2 = isHttp2;
+        this.http2 = isHttp2;
     }
 }
