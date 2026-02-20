@@ -850,6 +850,24 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.maxItemCountPerTrigger.get shouldEqual 54
   }
 
+  it should "parse change feed config for all versions and deletes with PIT start mode" in {
+    val changeFeedConfig = Map(
+      "spark.cosmos.changeFeed.mode" -> "AllVersionsAndDeletes",
+      "spark.cosmos.changeFeed.STARTfrom" -> "2019-12-31T10:45:10Z",
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "54"
+    )
+
+    val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
+
+    config.changeFeedMode shouldEqual ChangeFeedModes.AllVersionsAndDeletes
+    config.startFrom shouldEqual ChangeFeedStartFromModes.PointInTime
+    Instant.from(config.startFromPointInTime.get) shouldEqual
+      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
+        .parse("2019-12-31T10:45:10Z")
+        .toInstant
+    config.maxItemCountPerTrigger.get shouldEqual 54
+  }
+
   it should "parse change feed config (incremental) with PIT start mode" in {
     val changeFeedConfig = Map(
       "spark.cosmos.changeFeed.mode" -> "incremental",

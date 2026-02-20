@@ -443,6 +443,75 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
+    // TODO: Enable this test once emulator supports startFromPointInTime with AllVersionsAndDeletes change feed
+    @Test(groups = { "kafka-emulator" }, timeOut = TIMEOUT, enabled = false)
+    public void pollWithAllVersionsAndDeletesFromPointInTime() throws InterruptedException {
+        Map<String, String> sourceConfigMap = new HashMap<>();
+        sourceConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
+        List<String> containersIncludedList = Arrays.asList(singlePartitionContainerName);
+        sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
+        sourceConfigMap.put("azure.cosmos.source.changeFeed.mode", CosmosChangeFeedMode.ALL_VERSION_AND_DELETES.getName());
+        sourceConfigMap.put("azure.cosmos.source.changeFeed.startFrom", "2020-01-01T00:00:00Z");
+        sourceConfigMap.put("azure.cosmos.source.task.id", UUID.randomUUID().toString());
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
+        CosmosClientCacheItem clientCacheItem =
+            CosmosClientCache.getCosmosClient(
+                sourceConfig.getAccountConfig(),
+                "pollWithAllVersionsAndDeletesFromPointInTime");
+
+        CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(clientCacheItem.getClient());
+        try {
+            Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
+
+            // define feedRanges task
+            FeedRangeTaskUnit feedRangeTaskUnit = new FeedRangeTaskUnit(
+                databaseName,
+                singlePartitionContainer.getId(),
+                singlePartitionContainer.getResourceId(),
+                FeedRange.forFullRange(),
+                null,
+                singlePartitionContainer.getId());
+            taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
+
+            CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.start(taskConfigMap);
+            sourceTask.poll();
+
+            CosmosAsyncContainer container =
+                clientCacheItem
+                    .getClient()
+                    .getDatabase(databaseName)
+                    .getContainer(singlePartitionContainerName);
+
+            // create item
+            TestItem testItem = TestItem.createNewItem();
+            container.createItem(testItem).block();
+            // update item
+            testItem.setProp(UUID.randomUUID().toString());
+            container.upsertItem(testItem).block();
+            // delete item
+            container.deleteItem(testItem, new CosmosItemRequestOptions()).block();
+
+            Thread.sleep(500);
+            List<SourceRecord> sourceRecords = new ArrayList<>();
+            for (int i = 0; i < 10; i++) { // poll few times
+                sourceRecords.addAll(sourceTask.poll());
+            }
+
+            assertThat(sourceRecords.size()).isEqualTo(3);
+        } finally {
+            if (clientCacheItem != null) {
+                // clean up containers
+                cleanUpContainer(clientCacheItem.getClient(), databaseName, singlePartitionContainer.getId());
+                CosmosClientCache.releaseCosmosClient(clientCacheItem.getClientConfig());
+                clientCacheItem.getClient().close();
+            }
+        }
+    }
+
     private void validateMetadataRecords(
         List<SourceRecord> sourceRecords,
         MetadataTaskUnit metadataTaskUnit) {

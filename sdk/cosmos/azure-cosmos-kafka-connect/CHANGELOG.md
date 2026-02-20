@@ -3,6 +3,7 @@
 ### 2.7.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `startFrom` point-in-time support for Change Feed source connector in All Versions and Deletes Mode. - See [PR 47684](https://github.com/Azure/azure-sdk-for-java/pull/47684)
 
 #### Breaking Changes
 
