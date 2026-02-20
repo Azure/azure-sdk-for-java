@@ -90,6 +90,9 @@ jobs:
 
       - ${{ parameters.PreTestSteps }}
 
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
       - ${{ each versionOverride in parameters.VersionOverrides }}:
         - template: /eng/pipelines/templates/steps/build-and-test.yml
           parameters:
