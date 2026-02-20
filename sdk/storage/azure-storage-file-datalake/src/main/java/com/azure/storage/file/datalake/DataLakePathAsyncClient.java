@@ -1974,16 +1974,16 @@ public class DataLakePathAsyncClient {
      * @return The path's tags.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Map<String, String>>>  getTagsWithResponse(DataLakeGetTagsOptions options) {
+    public Mono<Response<Map<String, String>>> getTagsWithResponse(DataLakeGetTagsOptions options) {
         options = (options == null) ? new DataLakeGetTagsOptions() : options;
         DataLakeRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new DataLakeRequestConditions()
             : options.getRequestConditions();
-        BlobGetTagsOptions blobGetTagsOptions = new BlobGetTagsOptions()
-            .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
+        BlobGetTagsOptions blobGetTagsOptions
+            = new BlobGetTagsOptions().setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
 
-        return this.blockBlobAsyncClient
-            .getTagsWithResponse(blobGetTagsOptions).onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+        return this.blockBlobAsyncClient.getTagsWithResponse(blobGetTagsOptions)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -2013,7 +2013,7 @@ public class DataLakePathAsyncClient {
         BlobSetTagsOptions blobSetTagsOptions = new BlobSetTagsOptions(options.getTags())
             .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
 
-        return this.blockBlobAsyncClient
-            .setTagsWithResponse(blobSetTagsOptions).onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+        return this.blockBlobAsyncClient.setTagsWithResponse(blobSetTagsOptions)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 }

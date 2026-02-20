@@ -25,7 +25,8 @@ public class DataLakeServiceSasModelsTests {
     @ParameterizedTest
     @MethodSource("sasPermissionsToStringSupplier")
     public void pathSasPermissionsToString(boolean read, boolean write, boolean delete, boolean create, boolean add,
-        boolean list, boolean move, boolean execute, boolean owner, boolean permission, boolean tag, String expectedString) {
+        boolean list, boolean move, boolean execute, boolean owner, boolean permission, boolean tag,
+        String expectedString) {
         PathSasPermission perms = new PathSasPermission().setReadPermission(read)
             .setWritePermission(write)
             .setDeletePermission(delete)
