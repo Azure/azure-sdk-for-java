@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake.sas;
 
-import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.common.implementation.Constants;
 
 import java.util.Locale;

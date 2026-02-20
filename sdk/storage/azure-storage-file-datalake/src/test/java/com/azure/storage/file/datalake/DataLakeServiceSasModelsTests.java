@@ -91,7 +91,7 @@ public class DataLakeServiceSasModelsTests {
             Arguments.of("e", false, false, false, false, false, false, false, true, false, false, false),
             Arguments.of("o", false, false, false, false, false, false, false, false, true, false, false),
             Arguments.of("p", false, false, false, false, false, false, false, false, false, true, false),
-            Arguments.of("p", false, false, false, false, false, false, false, false, false, false, true),
+            Arguments.of("t", false, false, false, false, false, false, false, false, false, false, true),
             Arguments.of("racwdlmeopt", true, true, true, true, true, true, true, true, true, true, true),
             Arguments.of("malwdcrepot", true, true, true, true, true, true, true, true, true, true, true));
     }
