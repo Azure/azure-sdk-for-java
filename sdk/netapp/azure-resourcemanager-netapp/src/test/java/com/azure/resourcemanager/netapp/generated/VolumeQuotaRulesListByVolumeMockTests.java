@@ -11,7 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
-import com.azure.resourcemanager.netapp.models.Type;
+import com.azure.resourcemanager.netapp.models.QuotaType;
 import com.azure.resourcemanager.netapp.models.VolumeQuotaRule;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -23,7 +23,7 @@ public final class VolumeQuotaRulesListByVolumeMockTests {
     @Test
     public void testListByVolume() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":3645768848659109810,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"ydidwhepfwwtjf\"},\"location\":\"esxxhmwcdbckyoi\",\"tags\":{\"gknjzr\":\"xhn\",\"me\":\"h\",\"gsnbagnchjh\":\"lvukaobrlb\"},\"id\":\"emuowakyw\",\"name\":\"lhjym\",\"type\":\"cgqtag\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":6094624010388997656,\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"uzlwvsgmw\"},\"location\":\"qf\",\"tags\":{\"mk\":\"vux\",\"wpztekovmribia\":\"svth\"},\"id\":\"tgplucfota\",\"name\":\"gcfh\",\"type\":\"ykzcugswvxwl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,13 @@ public final class VolumeQuotaRulesListByVolumeMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VolumeQuotaRule> response = manager.volumeQuotaRules()
-            .listByVolume("z", "vxhmtfhocnxzcmj", "ngxno", "rxtd", com.azure.core.util.Context.NONE);
+            .listByVolume("ljfp", "picrmnzhrgmqgjsx", "pqcbfrmbodthsq", "gvriibakclac",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("esxxhmwcdbckyoi", response.iterator().next().location());
-        Assertions.assertEquals("xhn", response.iterator().next().tags().get("gknjzr"));
-        Assertions.assertEquals(3645768848659109810L, response.iterator().next().quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, response.iterator().next().quotaType());
-        Assertions.assertEquals("ydidwhepfwwtjf", response.iterator().next().quotaTarget());
+        Assertions.assertEquals("qf", response.iterator().next().location());
+        Assertions.assertEquals("vux", response.iterator().next().tags().get("mk"));
+        Assertions.assertEquals(6094624010388997656L, response.iterator().next().quotaSizeInKiBs());
+        Assertions.assertEquals(QuotaType.INDIVIDUAL_GROUP_QUOTA, response.iterator().next().quotaType());
+        Assertions.assertEquals("uzlwvsgmw", response.iterator().next().quotaTarget());
     }
 }

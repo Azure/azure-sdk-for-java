@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesListQuotaReportSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Volumes_ListQuotaReport.json
+     * x-ms-original-file: 2025-12-01/Volumes_ListQuotaReport.json
      */
     /**
      * Sample code: ListQuotaReport.
@@ -17,6 +17,7 @@ public final class VolumesListQuotaReportSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void listQuotaReport(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().listQuotaReport("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
+        manager.volumes()
+            .listQuotaReport("myRG", "account1", "pool1", "volume1", null, com.azure.core.util.Context.NONE);
     }
 }

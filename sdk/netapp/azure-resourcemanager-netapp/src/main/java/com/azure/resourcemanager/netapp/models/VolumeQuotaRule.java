@@ -75,7 +75,7 @@ public interface VolumeQuotaRule {
      * 
      * @return the quotaType value.
      */
-    Type quotaType();
+    QuotaType quotaType();
 
     /**
      * Gets the quotaTarget property: UserID/GroupID/SID based on the quota target type. UserID and groupID can be found
@@ -227,7 +227,7 @@ public interface VolumeQuotaRule {
              * @param quotaType Type of quota.
              * @return the next definition stage.
              */
-            WithCreate withQuotaType(Type quotaType);
+            WithCreate withQuotaType(QuotaType quotaType);
         }
 
         /**
