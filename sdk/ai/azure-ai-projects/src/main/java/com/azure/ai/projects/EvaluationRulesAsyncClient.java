@@ -48,16 +48,6 @@ public final class EvaluationRulesAsyncClient {
 
     /**
      * Get an evaluation rule.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
-     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview", "Evaluations=V1Preview", "Schedules=V1Preview",
-     * "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -97,16 +87,6 @@ public final class EvaluationRulesAsyncClient {
 
     /**
      * Delete an evaluation rule.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
-     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview", "Evaluations=V1Preview", "Schedules=V1Preview",
-     * "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param id Unique identifier for the evaluation rule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -208,16 +188,6 @@ public final class EvaluationRulesAsyncClient {
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
-     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview", "Evaluations=V1Preview", "Schedules=V1Preview",
-     * "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -258,32 +228,6 @@ public final class EvaluationRulesAsyncClient {
      * Get an evaluation rule.
      *
      * @param id Unique identifier for the evaluation rule.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an evaluation rule on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluationRule> getEvaluationRule(String id, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getEvaluationRuleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getEvaluationRuleWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(EvaluationRule.class));
-    }
-
-    /**
-     * Get an evaluation rule.
-     *
-     * @param id Unique identifier for the evaluation rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -299,31 +243,6 @@ public final class EvaluationRulesAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getEvaluationRuleWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluationRule.class));
-    }
-
-    /**
-     * Delete an evaluation rule.
-     *
-     * @param id Unique identifier for the evaluation rule.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteEvaluationRule(String id, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for deleteEvaluationRuleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return deleteEvaluationRuleWithResponse(id, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -401,12 +320,6 @@ public final class EvaluationRulesAsyncClient {
     /**
      * List all evaluation rules.
      *
-     * @param actionType Filter by the type of evaluation rule.
-     * @param agentName Filter by the agent name.
-     * @param enabled Filter by the enabled status.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -416,22 +329,9 @@ public final class EvaluationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluationRule> listEvaluationRules(EvaluationRuleActionType actionType, String agentName,
-        Boolean enabled, FoundryFeaturesOptInKeys foundryFeatures) {
+    public PagedFlux<EvaluationRule> listEvaluationRules() {
         // Generated convenience method for listEvaluationRules
         RequestOptions requestOptions = new RequestOptions();
-        if (actionType != null) {
-            requestOptions.addQueryParam("actionType", actionType.toString(), false);
-        }
-        if (agentName != null) {
-            requestOptions.addQueryParam("agentName", agentName, false);
-        }
-        if (enabled != null) {
-            requestOptions.addQueryParam("enabled", String.valueOf(enabled), false);
-        }
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         PagedFlux<BinaryData> pagedFluxResponse = listEvaluationRules(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
@@ -450,6 +350,10 @@ public final class EvaluationRulesAsyncClient {
     /**
      * List all evaluation rules.
      *
+     * @param actionType Filter by the type of evaluation rule.
+     * @param agentName Filter by the agent name.
+     * @param enabled Filter by the enabled status.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -459,9 +363,19 @@ public final class EvaluationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluationRule> listEvaluationRules() {
+    public PagedFlux<EvaluationRule> listEvaluationRules(EvaluationRuleActionType actionType, String agentName,
+        Boolean enabled) {
         // Generated convenience method for listEvaluationRules
         RequestOptions requestOptions = new RequestOptions();
+        if (actionType != null) {
+            requestOptions.addQueryParam("actionType", actionType.toString(), false);
+        }
+        if (agentName != null) {
+            requestOptions.addQueryParam("agentName", agentName, false);
+        }
+        if (enabled != null) {
+            requestOptions.addQueryParam("enabled", String.valueOf(enabled), false);
+        }
         PagedFlux<BinaryData> pagedFluxResponse = listEvaluationRules(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
