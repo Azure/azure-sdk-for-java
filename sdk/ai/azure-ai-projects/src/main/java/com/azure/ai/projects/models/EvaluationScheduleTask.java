@@ -36,18 +36,6 @@ public final class EvaluationScheduleTask extends ScheduleTask {
     private final EvaluationScheduleTaskEvalRun evalRun;
 
     /**
-     * Creates an instance of EvaluationScheduleTask class.
-     *
-     * @param evalId the evalId value to set.
-     * @param evalRun the evalRun value to set.
-     */
-    @Generated
-    public EvaluationScheduleTask(String evalId, EvaluationScheduleTaskEvalRun evalRun) {
-        this.evalId = evalId;
-        this.evalRun = evalRun;
-    }
-
-    /**
      * Get the type property: Type of the task.
      *
      * @return the type value.
@@ -138,5 +126,17 @@ public final class EvaluationScheduleTask extends ScheduleTask {
             deserializedEvaluationScheduleTask.type = type;
             return deserializedEvaluationScheduleTask;
         });
+    }
+
+    /**
+     * Creates an instance of EvaluationScheduleTask class.
+     *
+     * @param evalId the evalId value to set.
+     * @param evalRun the evalRun value to set.
+     */
+    @Generated
+    public EvaluationScheduleTask(String evalId, EvaluationScheduleTaskEvalRun evalRun) {
+        this.evalId = evalId;
+        this.evalRun = evalRun;
     }
 }

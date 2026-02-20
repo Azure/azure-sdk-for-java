@@ -54,18 +54,6 @@ public final class Insight implements JsonSerializable<Insight> {
     private InsightResult result;
 
     /**
-     * Creates an instance of Insight class.
-     *
-     * @param displayName the displayName value to set.
-     * @param request the request value to set.
-     */
-    @Generated
-    public Insight(String displayName, InsightRequest request) {
-        this.displayName = displayName;
-        this.request = request;
-    }
-
-    /**
      * Get the id property: The unique identifier for the insights report.
      *
      * @return the id value.
@@ -181,5 +169,17 @@ public final class Insight implements JsonSerializable<Insight> {
             deserializedInsight.result = result;
             return deserializedInsight;
         });
+    }
+
+    /**
+     * Creates an instance of Insight class.
+     *
+     * @param displayName the displayName value to set.
+     * @param request the request value to set.
+     */
+    @Generated
+    public Insight(String displayName, InsightRequest request) {
+        this.displayName = displayName;
+        this.request = request;
     }
 }

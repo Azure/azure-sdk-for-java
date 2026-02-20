@@ -30,16 +30,6 @@ public final class InsightScheduleTask extends ScheduleTask {
     private final Insight insight;
 
     /**
-     * Creates an instance of InsightScheduleTask class.
-     *
-     * @param insight the insight value to set.
-     */
-    @Generated
-    public InsightScheduleTask(Insight insight) {
-        this.insight = insight;
-    }
-
-    /**
      * Get the type property: Type of the task.
      *
      * @return the type value.
@@ -116,5 +106,15 @@ public final class InsightScheduleTask extends ScheduleTask {
             deserializedInsightScheduleTask.type = type;
             return deserializedInsightScheduleTask;
         });
+    }
+
+    /**
+     * Creates an instance of InsightScheduleTask class.
+     *
+     * @param insight the insight value to set.
+     */
+    @Generated
+    public InsightScheduleTask(Insight insight) {
+        this.insight = insight;
     }
 }

@@ -36,8 +36,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.openai.azure.AzureOpenAIServiceVersion;
-import com.openai.azure.AzureUrlPathMode;
+import com.openai.client.OpenAIClient;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
@@ -559,15 +559,33 @@ public final class AIProjectClientBuilder
                 .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
+    /**
+     * Builds an instance of OpenAIClient class with a default setup for OpenAI
+     *
+     * @return an instance of OpenAIClient
+     */
+    public OpenAIClient buildOpenAIClient() {
+        return getOpenAIClientBuilder().build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+    }
+
+    /**
+     * Builds an instance of OpenAIAsyncClient class with a default setup for OpenAI
+     *
+     * @return an instance of OpenAIAsyncClient
+     */
+    public OpenAIClientAsync buildOpenAIAsyncClient() {
+        return getOpenAIAsyncClientBuilder().build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+    }
+
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder() {
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder()
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
-        builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"));
-        if (this.serviceVersion != null) {
-            builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
-            builder.azureUrlPathMode(AzureUrlPathMode.UNIFIED);
-        }
+        builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai/v1" : "/openai/v1"));
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;
@@ -577,11 +595,7 @@ public final class AIProjectClientBuilder
         OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder()
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
-        builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"));
-        if (this.serviceVersion != null) {
-            builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
-            builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
-        }
+        builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai/v1" : "/openai/v1"));
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;

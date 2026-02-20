@@ -6,6 +6,7 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.implementation.EvaluationRulesImpl;
 import com.azure.ai.projects.models.EvaluationRule;
 import com.azure.ai.projects.models.EvaluationRuleActionType;
+import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -14,6 +15,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -49,7 +51,7 @@ public final class EvaluationRulesClient {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -73,8 +75,8 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(id, requestOptions);
+    public Response<BinaryData> getEvaluationRuleWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.getEvaluationRuleWithResponse(id, requestOptions);
     }
 
     /**
@@ -90,12 +92,22 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponse(id, requestOptions);
+    public Response<Void> deleteEvaluationRuleWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.deleteEvaluationRuleWithResponse(id, requestOptions);
     }
 
     /**
      * Create or update an evaluation rule.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
+     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview", "Evaluations=V1Preview", "Schedules=V1Preview",
+     * "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -105,7 +117,7 @@ public final class EvaluationRulesClient {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -128,7 +140,7 @@ public final class EvaluationRulesClient {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -153,9 +165,9 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String id, BinaryData evaluationRule,
+    public Response<BinaryData> createOrUpdateEvaluationRuleWithResponse(String id, BinaryData evaluationRule,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponse(id, evaluationRule, requestOptions);
+        return this.serviceClient.createOrUpdateEvaluationRuleWithResponse(id, evaluationRule, requestOptions);
     }
 
     /**
@@ -165,7 +177,7 @@ public final class EvaluationRulesClient {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluation".</td></tr>
+     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -179,7 +191,7 @@ public final class EvaluationRulesClient {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -202,8 +214,8 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
+    public PagedIterable<BinaryData> listEvaluationRules(RequestOptions requestOptions) {
+        return this.serviceClient.listEvaluationRules(requestOptions);
     }
 
     /**
@@ -220,10 +232,10 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationRule get(String id) {
-        // Generated convenience method for getWithResponse
+    public EvaluationRule getEvaluationRule(String id) {
+        // Generated convenience method for getEvaluationRuleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(id, requestOptions).getValue().toObject(EvaluationRule.class);
+        return getEvaluationRuleWithResponse(id, requestOptions).getValue().toObject(EvaluationRule.class);
     }
 
     /**
@@ -239,10 +251,39 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String id) {
-        // Generated convenience method for deleteWithResponse
+    public void deleteEvaluationRule(String id) {
+        // Generated convenience method for deleteEvaluationRuleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteWithResponse(id, requestOptions).getValue();
+        deleteEvaluationRuleWithResponse(id, requestOptions).getValue();
+    }
+
+    /**
+     * Create or update an evaluation rule.
+     *
+     * @param id Unique identifier for the evaluation rule.
+     * @param evaluationRule Evaluation rule resource.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return evaluation rule model.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EvaluationRule createOrUpdateEvaluationRule(String id, EvaluationRule evaluationRule,
+        FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for createOrUpdateEvaluationRuleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return createOrUpdateEvaluationRuleWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions)
+            .getValue()
+            .toObject(EvaluationRule.class);
     }
 
     /**
@@ -260,11 +301,31 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationRule createOrUpdate(String id, EvaluationRule evaluationRule) {
-        // Generated convenience method for createOrUpdateWithResponse
+    public EvaluationRule createOrUpdateEvaluationRule(String id, EvaluationRule evaluationRule) {
+        // Generated convenience method for createOrUpdateEvaluationRuleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrUpdateWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions).getValue()
+        return createOrUpdateEvaluationRuleWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions)
+            .getValue()
             .toObject(EvaluationRule.class);
+    }
+
+    /**
+     * List all evaluation rules.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of EvaluationRule items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EvaluationRule> listEvaluationRules() {
+        // Generated convenience method for listEvaluationRules
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listEvaluationRules(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluationRule.class));
     }
 
     /**
@@ -283,8 +344,9 @@ public final class EvaluationRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluationRule> list(EvaluationRuleActionType actionType, String agentName, Boolean enabled) {
-        // Generated convenience method for list
+    public PagedIterable<EvaluationRule> listEvaluationRules(EvaluationRuleActionType actionType, String agentName,
+        Boolean enabled) {
+        // Generated convenience method for listEvaluationRules
         RequestOptions requestOptions = new RequestOptions();
         if (actionType != null) {
             requestOptions.addQueryParam("actionType", actionType.toString(), false);
@@ -295,26 +357,7 @@ public final class EvaluationRulesClient {
         if (enabled != null) {
             requestOptions.addQueryParam("enabled", String.valueOf(enabled), false);
         }
-        return serviceClient.list(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluationRule.class));
-    }
-
-    /**
-     * List all evaluation rules.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of EvaluationRule items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluationRule> list() {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(requestOptions)
+        return serviceClient.listEvaluationRules(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluationRule.class));
     }
 }

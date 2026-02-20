@@ -78,11 +78,11 @@ public class InsightRequest implements JsonSerializable<InsightRequest> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("EvaluationRunClusterInsight".equals(discriminatorValue)) {
-                    return EvaluationRunClusterInsightsRequest.fromJson(readerToUse.reset());
+                    return EvaluationRunClusterInsightRequest.fromJson(readerToUse.reset());
                 } else if ("AgentClusterInsight".equals(discriminatorValue)) {
-                    return AgentClusterInsightsRequest.fromJson(readerToUse.reset());
+                    return AgentClusterInsightRequest.fromJson(readerToUse.reset());
                 } else if ("EvaluationComparison".equals(discriminatorValue)) {
-                    return EvaluationComparisonRequest.fromJson(readerToUse.reset());
+                    return EvaluationComparisonInsightRequest.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

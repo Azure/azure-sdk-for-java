@@ -9,49 +9,30 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
- * Insights on set of Evaluation Results.
+ * Insights on set of Agent Evaluation Results.
  */
 @Fluent
-public final class EvaluationRunClusterInsightsRequest extends InsightRequest {
+public final class AgentClusterInsightRequest extends InsightRequest {
 
     /*
      * The type of request.
      */
     @Generated
-    private InsightType type = InsightType.EVALUATION_RUN_CLUSTER_INSIGHT;
+    private InsightType type = InsightType.AGENT_CLUSTER_INSIGHT;
 
     /*
-     * Evaluation Id for the insights.
+     * Identifier for the agent.
      */
     @Generated
-    private final String evalId;
-
-    /*
-     * List of evaluation run IDs for the insights.
-     */
-    @Generated
-    private final List<String> runIds;
+    private final String agentName;
 
     /*
      * Configuration of the model used in the insight generation.
      */
     @Generated
     private InsightModelConfiguration modelConfiguration;
-
-    /**
-     * Creates an instance of EvaluationRunClusterInsightsRequest class.
-     *
-     * @param evalId the evalId value to set.
-     * @param runIds the runIds value to set.
-     */
-    @Generated
-    public EvaluationRunClusterInsightsRequest(String evalId, List<String> runIds) {
-        this.evalId = evalId;
-        this.runIds = runIds;
-    }
 
     /**
      * Get the type property: The type of request.
@@ -65,23 +46,13 @@ public final class EvaluationRunClusterInsightsRequest extends InsightRequest {
     }
 
     /**
-     * Get the evalId property: Evaluation Id for the insights.
+     * Get the agentName property: Identifier for the agent.
      *
-     * @return the evalId value.
+     * @return the agentName value.
      */
     @Generated
-    public String getEvalId() {
-        return this.evalId;
-    }
-
-    /**
-     * Get the runIds property: List of evaluation run IDs for the insights.
-     *
-     * @return the runIds value.
-     */
-    @Generated
-    public List<String> getRunIds() {
-        return this.runIds;
+    public String getAgentName() {
+        return this.agentName;
     }
 
     /**
@@ -98,10 +69,10 @@ public final class EvaluationRunClusterInsightsRequest extends InsightRequest {
      * Set the modelConfiguration property: Configuration of the model used in the insight generation.
      *
      * @param modelConfiguration the modelConfiguration value to set.
-     * @return the EvaluationRunClusterInsightsRequest object itself.
+     * @return the AgentClusterInsightRequest object itself.
      */
     @Generated
-    public EvaluationRunClusterInsightsRequest setModelConfiguration(InsightModelConfiguration modelConfiguration) {
+    public AgentClusterInsightRequest setModelConfiguration(InsightModelConfiguration modelConfiguration) {
         this.modelConfiguration = modelConfiguration;
         return this;
     }
@@ -113,36 +84,32 @@ public final class EvaluationRunClusterInsightsRequest extends InsightRequest {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("evalId", this.evalId);
-        jsonWriter.writeArrayField("runIds", this.runIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("agentName", this.agentName);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("modelConfiguration", this.modelConfiguration);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of EvaluationRunClusterInsightsRequest from the JsonReader.
+     * Reads an instance of AgentClusterInsightRequest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EvaluationRunClusterInsightsRequest if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     * @return An instance of AgentClusterInsightRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EvaluationRunClusterInsightsRequest.
+     * @throws IOException If an error occurs while reading the AgentClusterInsightRequest.
      */
     @Generated
-    public static EvaluationRunClusterInsightsRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentClusterInsightRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String evalId = null;
-            List<String> runIds = null;
-            InsightType type = InsightType.EVALUATION_RUN_CLUSTER_INSIGHT;
+            String agentName = null;
+            InsightType type = InsightType.AGENT_CLUSTER_INSIGHT;
             InsightModelConfiguration modelConfiguration = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("evalId".equals(fieldName)) {
-                    evalId = reader.getString();
-                } else if ("runIds".equals(fieldName)) {
-                    runIds = reader.readArray(reader1 -> reader1.getString());
+                if ("agentName".equals(fieldName)) {
+                    agentName = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = InsightType.fromString(reader.getString());
                 } else if ("modelConfiguration".equals(fieldName)) {
@@ -151,11 +118,21 @@ public final class EvaluationRunClusterInsightsRequest extends InsightRequest {
                     reader.skipChildren();
                 }
             }
-            EvaluationRunClusterInsightsRequest deserializedEvaluationRunClusterInsightsRequest
-                = new EvaluationRunClusterInsightsRequest(evalId, runIds);
-            deserializedEvaluationRunClusterInsightsRequest.type = type;
-            deserializedEvaluationRunClusterInsightsRequest.modelConfiguration = modelConfiguration;
-            return deserializedEvaluationRunClusterInsightsRequest;
+            AgentClusterInsightRequest deserializedAgentClusterInsightRequest
+                = new AgentClusterInsightRequest(agentName);
+            deserializedAgentClusterInsightRequest.type = type;
+            deserializedAgentClusterInsightRequest.modelConfiguration = modelConfiguration;
+            return deserializedAgentClusterInsightRequest;
         });
+    }
+
+    /**
+     * Creates an instance of AgentClusterInsightRequest class.
+     *
+     * @param agentName the agentName value to set.
+     */
+    @Generated
+    public AgentClusterInsightRequest(String agentName) {
+        this.agentName = agentName;
     }
 }

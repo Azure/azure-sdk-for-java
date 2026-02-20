@@ -85,8 +85,8 @@ public final class RedTeamsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> getRedTeamWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getRedTeamWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -130,8 +130,8 @@ public final class RedTeamsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> listRedTeams(RequestOptions requestOptions) {
+        return this.serviceClient.listRedTeamsAsync(requestOptions);
     }
 
     /**
@@ -206,8 +206,8 @@ public final class RedTeamsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponse(BinaryData redTeam, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponseAsync(redTeam, requestOptions);
+    public Mono<Response<BinaryData>> createRedTeamRunWithResponse(BinaryData redTeam, RequestOptions requestOptions) {
+        return this.serviceClient.createRedTeamRunWithResponseAsync(redTeam, requestOptions);
     }
 
     /**
@@ -224,10 +224,10 @@ public final class RedTeamsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedTeam> get(String name) {
-        // Generated convenience method for getWithResponse
+    public Mono<RedTeam> getRedTeam(String name) {
+        // Generated convenience method for getRedTeamWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getRedTeamWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(RedTeam.class));
     }
 
@@ -243,10 +243,10 @@ public final class RedTeamsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RedTeam> list() {
-        // Generated convenience method for list
+    public PagedFlux<RedTeam> listRedTeams() {
+        // Generated convenience method for listRedTeams
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listRedTeams(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -275,10 +275,10 @@ public final class RedTeamsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedTeam> create(RedTeam redTeam) {
-        // Generated convenience method for createWithResponse
+    public Mono<RedTeam> createRedTeamRun(RedTeam redTeam) {
+        // Generated convenience method for createRedTeamRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(BinaryData.fromObject(redTeam), requestOptions).flatMap(FluxUtil::toMono)
+        return createRedTeamRunWithResponse(BinaryData.fromObject(redTeam), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(RedTeam.class));
     }
 }

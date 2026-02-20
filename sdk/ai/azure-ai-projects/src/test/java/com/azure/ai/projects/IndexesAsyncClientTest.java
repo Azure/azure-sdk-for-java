@@ -106,8 +106,8 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         AzureAISearchIndex searchIndex
             = new AzureAISearchIndex().setConnectionName(aiSearchConnectionName).setIndexName(aiSearchIndexName);
 
-        StepVerifier
-            .create(indexesAsyncClient.createOrUpdate(indexName, indexVersion, searchIndex).doOnNext(createdIndex -> {
+        StepVerifier.create(
+            indexesAsyncClient.createOrUpdateVersion(indexName, indexVersion, searchIndex).doOnNext(createdIndex -> {
                 // Verify the created/updated index
                 assertValidIndex(createdIndex, indexName, indexVersion);
 
@@ -119,10 +119,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
 
                 System.out.println("Index created/updated successfully: " + createdIndex.getName() + " (version "
                     + createdIndex.getVersion() + ")");
-            }))
-            .expectNextCount(1)
-            .expectComplete()
-            .verify(Duration.ofMinutes(1));
+            })).expectNextCount(1).expectComplete().verify(Duration.ofMinutes(1));
     }
 
     @Disabled

@@ -81,7 +81,7 @@ public class DatasetsClientTest extends ClientTestBase {
         DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
 
         // Verify that listing datasets returns results
-        Iterable<DatasetVersion> datasets = datasetsClient.listLatest();
+        Iterable<DatasetVersion> datasets = datasetsClient.listLatestVersion();
         Assertions.assertNotNull(datasets);
 
         // Verify that at least one dataset can be retrieved
@@ -170,7 +170,7 @@ public class DatasetsClientTest extends ClientTestBase {
         Assertions.assertNotNull(response);
         Assertions.assertNotNull(response.getPendingUploadId());
         Assertions.assertNotNull(response.getBlobReference());
-        Assertions.assertNotNull(response.getBlobReference().getBlobUri());
+        Assertions.assertNotNull(response.getBlobReference().getBlobUrl());
         Assertions.assertNotNull(response.getBlobReference().getCredential());
     }
 

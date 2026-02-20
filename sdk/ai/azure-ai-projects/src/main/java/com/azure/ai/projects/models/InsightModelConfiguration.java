@@ -25,16 +25,6 @@ public final class InsightModelConfiguration implements JsonSerializable<Insight
     private final String modelDeploymentName;
 
     /**
-     * Creates an instance of InsightModelConfiguration class.
-     *
-     * @param modelDeploymentName the modelDeploymentName value to set.
-     */
-    @Generated
-    public InsightModelConfiguration(String modelDeploymentName) {
-        this.modelDeploymentName = modelDeploymentName;
-    }
-
-    /**
      * Get the modelDeploymentName property: The model deployment to be evaluated. Accepts either the deployment name
      * alone or with the connection name as '{connectionName}/&lt;modelDeploymentName&gt;'.
      *
@@ -80,5 +70,15 @@ public final class InsightModelConfiguration implements JsonSerializable<Insight
             }
             return new InsightModelConfiguration(modelDeploymentName);
         });
+    }
+
+    /**
+     * Creates an instance of InsightModelConfiguration class.
+     *
+     * @param modelDeploymentName the modelDeploymentName value to set.
+     */
+    @Generated
+    public InsightModelConfiguration(String modelDeploymentName) {
+        this.modelDeploymentName = modelDeploymentName;
     }
 }

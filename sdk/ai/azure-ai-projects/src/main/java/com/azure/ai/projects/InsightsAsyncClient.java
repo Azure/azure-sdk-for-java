@@ -110,8 +110,8 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> generateWithResponse(BinaryData insight, RequestOptions requestOptions) {
-        return this.serviceClient.generateWithResponseAsync(insight, requestOptions);
+    public Mono<Response<BinaryData>> generateInsightWithResponse(BinaryData insight, RequestOptions requestOptions) {
+        return this.serviceClient.generateInsightWithResponseAsync(insight, requestOptions);
     }
 
     /**
@@ -156,8 +156,8 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(id, requestOptions);
+    public Mono<Response<BinaryData>> getInsightWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.getInsightWithResponseAsync(id, requestOptions);
     }
 
     /**
@@ -206,8 +206,8 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> listInsights(RequestOptions requestOptions) {
+        return this.serviceClient.listInsightsAsync(requestOptions);
     }
 
     /**
@@ -224,10 +224,10 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Insight> generate(Insight insight) {
-        // Generated convenience method for generateWithResponse
+    public Mono<Insight> generateInsight(Insight insight) {
+        // Generated convenience method for generateInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return generateWithResponse(BinaryData.fromObject(insight), requestOptions).flatMap(FluxUtil::toMono)
+        return generateInsightWithResponse(BinaryData.fromObject(insight), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Insight.class));
     }
 
@@ -246,13 +246,13 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Insight> get(String id, Boolean includeCoordinates) {
-        // Generated convenience method for getWithResponse
+    public Mono<Insight> getInsight(String id, Boolean includeCoordinates) {
+        // Generated convenience method for getInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeCoordinates != null) {
             requestOptions.addQueryParam("includeCoordinates", String.valueOf(includeCoordinates), false);
         }
-        return getWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
+        return getInsightWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Insight.class));
     }
 
@@ -270,10 +270,10 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Insight> get(String id) {
-        // Generated convenience method for getWithResponse
+    public Mono<Insight> getInsight(String id) {
+        // Generated convenience method for getInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
+        return getInsightWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Insight.class));
     }
 
@@ -295,9 +295,9 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Insight> list(InsightType type, String evalId, String runId, String agentName,
+    public PagedFlux<Insight> listInsights(InsightType type, String evalId, String runId, String agentName,
         Boolean includeCoordinates) {
-        // Generated convenience method for list
+        // Generated convenience method for listInsights
         RequestOptions requestOptions = new RequestOptions();
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
@@ -314,7 +314,7 @@ public final class InsightsAsyncClient {
         if (includeCoordinates != null) {
             requestOptions.addQueryParam("includeCoordinates", String.valueOf(includeCoordinates), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listInsights(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -341,10 +341,10 @@ public final class InsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Insight> list() {
-        // Generated convenience method for list
+    public PagedFlux<Insight> listInsights() {
+        // Generated convenience method for listInsights
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listInsights(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)

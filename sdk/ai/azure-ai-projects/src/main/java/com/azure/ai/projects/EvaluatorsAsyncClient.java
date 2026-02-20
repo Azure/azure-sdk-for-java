@@ -71,8 +71,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -84,8 +88,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -138,8 +142,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -151,8 +159,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -195,8 +203,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -208,8 +220,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -274,8 +286,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -287,8 +303,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -315,8 +331,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -328,8 +348,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -342,7 +362,7 @@ public final class EvaluatorsAsyncClient {
      * </pre>
      *
      * @param name The name of the resource.
-     * @param evaluatorVersion Evaluator resource.
+     * @param evaluatorVersion The evaluatorVersion parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -374,8 +394,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -387,8 +411,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -415,8 +439,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -428,8 +456,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -650,7 +678,7 @@ public final class EvaluatorsAsyncClient {
      * Create a new EvaluatorVersion with auto incremented version id.
      *
      * @param name The name of the resource.
-     * @param evaluatorVersion Evaluator resource.
+     * @param evaluatorVersion The evaluatorVersion parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

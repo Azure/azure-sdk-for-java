@@ -5,11 +5,14 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
@@ -34,7 +37,7 @@ public final class ScheduleRun implements JsonSerializable<ScheduleRun> {
      * Trigger time of the schedule run.
      */
     @Generated
-    private String triggerTime;
+    private OffsetDateTime triggerTime;
 
     /*
      * Error information for the schedule run.
@@ -84,7 +87,7 @@ public final class ScheduleRun implements JsonSerializable<ScheduleRun> {
      * @return the triggerTime value.
      */
     @Generated
-    public String getTriggerTime() {
+    public OffsetDateTime getTriggerTime() {
         return this.triggerTime;
     }
 
@@ -116,7 +119,8 @@ public final class ScheduleRun implements JsonSerializable<ScheduleRun> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("scheduleId", this.scheduleId);
-        jsonWriter.writeStringField("triggerTime", this.triggerTime);
+        jsonWriter.writeStringField("triggerTime",
+            this.triggerTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.triggerTime));
         return jsonWriter.writeEndObject();
     }
 
@@ -136,7 +140,7 @@ public final class ScheduleRun implements JsonSerializable<ScheduleRun> {
             String scheduleId = null;
             boolean success = false;
             Map<String, String> properties = null;
-            String triggerTime = null;
+            OffsetDateTime triggerTime = null;
             String error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -150,7 +154,8 @@ public final class ScheduleRun implements JsonSerializable<ScheduleRun> {
                 } else if ("properties".equals(fieldName)) {
                     properties = reader.readMap(reader1 -> reader1.getString());
                 } else if ("triggerTime".equals(fieldName)) {
-                    triggerTime = reader.getString();
+                    triggerTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("error".equals(fieldName)) {
                     error = reader.getString();
                 } else {
