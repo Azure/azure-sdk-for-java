@@ -632,8 +632,9 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
 
                 // Add delay to ensure bulk operations are fully indexed before querying
                 // This prevents race conditions in CI where indexing may lag behind write completion
+                // Increased from 500ms to 1000ms as 500ms was still insufficient in some CI runs
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     // Restore the interrupt status before propagating as a RuntimeException
                     Thread.currentThread().interrupt();
