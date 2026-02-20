@@ -52,7 +52,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>7.0.3</version> <!-- {x-version-update;springboot4_org.springframework:spring-tx;external_dependency} -->
+      <version>7.0.5</version> <!-- {x-version-update;springboot4_org.springframework:spring-tx;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -64,7 +64,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
-      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
+      <version>4.0.3</version> <!-- {x-version-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -76,7 +76,7 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.16.2</version> <!-- {x-version-update;springboot4_io.micrometer:micrometer-core;external_dependency} -->
+      <version>1.16.3</version> <!-- {x-version-update;springboot4_io.micrometer:micrometer-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>6.0.2</version> <!-- {x-version-update;springboot4_org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>6.0.3</version> <!-- {x-version-update;springboot4_org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -159,10 +159,10 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.micrometer:micrometer-core:[1.16.2]</include> <!-- {x-include-update;springboot4_io.micrometer:micrometer-core;external_dependency} -->
-                <include>org.springframework:spring-tx:[7.0.3]</include> <!-- {x-include-update;springboot4_org.springframework:spring-tx;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.16.3]</include> <!-- {x-include-update;springboot4_io.micrometer:micrometer-core;external_dependency} -->
+                <include>org.springframework:spring-tx:[7.0.5]</include> <!-- {x-include-update;springboot4_org.springframework:spring-tx;external_dependency} -->
                 <include>org.springframework.retry:spring-retry:[2.0.12]</include> <!-- {x-include-update;springboot4_org.springframework.retry:spring-retry;external_dependency} -->
-                <include>org.springframework.data:spring-data-commons:[4.0.2]</include> <!-- {x-include-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[4.0.3]</include> <!-- {x-include-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

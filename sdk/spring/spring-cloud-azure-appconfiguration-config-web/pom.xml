@@ -26,12 +26,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webmvc</artifactId>
-      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-webmvc;external_dependency} -->
+      <version>4.0.3</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-webmvc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
-      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+      <version>4.0.3</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>4.0.3</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -118,8 +118,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-actuator:[4.0.2]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-webmvc:[4.0.2]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter-webmvc;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[4.0.3]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-webmvc:[4.0.3]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter-webmvc;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-bus:[5.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
               </includes>
             </bannedDependencies>
