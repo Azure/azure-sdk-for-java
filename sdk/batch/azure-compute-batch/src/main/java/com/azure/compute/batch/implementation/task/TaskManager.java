@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.azure.compute.batch.BatchClient;
@@ -44,18 +45,16 @@ public class TaskManager {
         private final Queue<BatchTaskCreateParameters> pendingList;
         private final List<BatchTaskCreateResult> failures;
         private volatile Exception exception;
-        private final Object lock;
-        private final AtomicInteger activeThreadCounter;
+        private final Semaphore taskSemaphore;
 
         WorkingThread(TaskSubmitter taskSubmitter, String jobId, Queue<BatchTaskCreateParameters> pendingList,
-            List<BatchTaskCreateResult> failures, Object lock, AtomicInteger activeThreadCounter) {
+            List<BatchTaskCreateResult> failures, Semaphore taskSemaphore) {
             this.taskSubmitter = taskSubmitter;
             this.jobId = jobId;
             this.pendingList = pendingList;
             this.failures = failures;
             this.exception = null;
-            this.lock = lock;
-            this.activeThreadCounter = activeThreadCounter;
+            this.taskSemaphore = taskSemaphore;
         }
 
         /**
@@ -168,10 +167,7 @@ public class TaskManager {
                     submitChunk(taskList);
                 }
             } finally {
-                activeThreadCounter.decrementAndGet();
-                synchronized (lock) {
-                    lock.notifyAll();
-                }
+                taskSemaphore.release();
             }
         }
     }
@@ -197,106 +193,66 @@ public class TaskManager {
             threadNumber = taskCreateOptions.getMaxConcurrency();
         }
 
-        final Object lock = new Object();
+        Semaphore taskSemaphore = new Semaphore(threadNumber);
         ConcurrentLinkedQueue<BatchTaskCreateParameters> pendingList = new ConcurrentLinkedQueue<>(taskList);
         CopyOnWriteArrayList<BatchTaskCreateResult> failures = new CopyOnWriteArrayList<>();
-        Map<Thread, WorkingThread> threads = new HashMap<>();
+        List<WorkingThread> semaphoreThreads = new ArrayList<>();
         Exception innerException = null;
 
-        // Tracks the number of active threads currently running. Prevents the coordinator from waiting indefinitely if no threads are alive.
-        AtomicInteger activeThreadCounter = new AtomicInteger(0);
-
-        synchronized (lock) {
-            // Continue looping while there are still tasks left to submit OR while any active threads are still processing tasks.
-            while (!pendingList.isEmpty() || activeThreadCounter.get() > 0) {
-
-                if (threads.size() < threadNumber && !pendingList.isEmpty()) {
-                    // Kick as many as possible add tasks requests by max allowed threads
-                    WorkingThread worker
-                        = new WorkingThread(taskSubmitter, jobId, pendingList, failures, lock, activeThreadCounter);
-                    Thread thread = new Thread(worker);
-                    activeThreadCounter.incrementAndGet(); // Increment before starting the thread to ensure activeThreadCounter accurately reflects the number of active threads
-                    thread.start();
-                    threads.put(thread, worker);
-                } else {
-
-                    // Only wait if there are active threads that can notify us
-                    if (activeThreadCounter.get() > 0) {
-                        try {
-                            lock.wait();
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                            throw logger.logExceptionAsError(new RuntimeException(e));
-                        }
-
-                        // Clean up any finished threads after waiting
-                        List<Thread> finishedThreads = new ArrayList<>();
-                        for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
-                            if (entry.getKey().getState() == Thread.State.TERMINATED) {
-                                finishedThreads.add(entry.getKey());
-                                // If any exception is encountered, then stop immediately without waiting for
-                                // remaining active threads.
-                                innerException = entry.getValue().getException();
-                                if (innerException != null) {
-                                    break;
-                                }
-                            }
-                        }
-
-                        // Free the thread pool so we can start more threads to send the remaining add
-                        // tasks requests.
-                        threads.keySet().removeAll(finishedThreads);
-
-                        // Any errors happened, we stop.
-                        if (innerException != null || !failures.isEmpty()) {
-                            break;
-                        }
+        // Continue looping while there are still tasks left to submit OR while any active threads are still processing tasks.
+        while (!pendingList.isEmpty() || taskSemaphore.availablePermits() < threadNumber) {
+            try {
+                if (taskSemaphore.tryAcquire()) {
+                    if (!pendingList.isEmpty()) {
+                        WorkingThread taskThread
+                            = new WorkingThread(taskSubmitter, jobId, pendingList, failures, taskSemaphore);
+                        Thread thread = new Thread(taskThread);
+                        thread.start();
+                        semaphoreThreads.add(taskThread);
                     } else {
-                        // No active threads: nothing to wait for.
-                        // Clean up any finished threads before continuing
-                        List<Thread> finishedThreads = new ArrayList<>();
-                        for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
-                            if (entry.getKey().getState() == Thread.State.TERMINATED) {
-                                finishedThreads.add(entry.getKey());
-                                // If any exception is encountered, then stop immediately without waiting for
-                                // remaining active threads.
-                                innerException = entry.getValue().getException();
-                                if (innerException != null) {
-                                    break;
-                                }
-                            }
-                        }
-
-                        // Free the thread pool so we can start more threads to send the remaining add
-                        // tasks requests.
-                        threads.keySet().removeAll(finishedThreads);
-
-                        // Any errors happened, we stop.
-                        if (innerException != null || !failures.isEmpty()) {
-                            break;
-                        }
-
-                        // Loop will exit if the queue is empty, or retry starting threads otherwise.
-                        continue;
+                        taskSemaphore.release();
+                        // break;
                     }
-
+                } else {
+                    // No permits available, wait for workers to complete
+                    try {
+                        Thread.sleep(50); // TODO: More time? Less time?
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        throw logger.logExceptionAsError(new RuntimeException(e));
+                    }
                 }
+
+                // Check for thread errors
+                for (WorkingThread taskThread : semaphoreThreads) {
+                    Exception ex = taskThread.getException();
+                    if (ex != null) {
+                        innerException = ex;
+                        break;
+                    }
+                }
+                // TODO: How to tell apart retries vs errors?
+                if (innerException != null) {
+                    break;
+                }
+            } catch (Exception e) {
+                innerException = e;
+                break;
             }
         }
 
-        for (Thread t : threads.keySet()) {
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw logger.logExceptionAsError(new RuntimeException(e));
-            }
+        try {
+            taskSemaphore.acquire(threadNumber);
+            taskSemaphore.release(threadNumber);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw logger
+                .logExceptionAsError(new RuntimeException("Interrupt when checking for all threads to be done", e));
         }
 
         if (innerException == null) {
-            // Check for errors in any of the threads.
-            for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
-                innerException = entry.getValue().getException();
+            for (WorkingThread taskThread : semaphoreThreads) {
+                innerException = taskThread.getException();
                 if (innerException != null) {
                     break;
                 }
