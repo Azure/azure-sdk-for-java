@@ -310,7 +310,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     // This prevents race conditions where metrics snapshot is taken before all writes are recorded
     // Use eventually block to poll until the expected count is reached
     eventually(timeout(10.seconds), interval(100.milliseconds)) {
-      metricsPublisher.getRecordsWrittenSnapshot() should be >= (2 * items.size)
+      metricsPublisher.getRecordsWrittenSnapshot() should be >= (2 * items.size).toLong
     }
 
     metricsPublisher.getRecordsWrittenSnapshot() shouldEqual 2 * items.size
