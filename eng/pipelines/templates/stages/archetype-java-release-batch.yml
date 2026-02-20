@@ -241,7 +241,7 @@ stages:
           timeoutInMinutes: 120
           ${{ if eq(parameters.PublicFeedUrl, 'maven.org') }}:
             dependsOn: PublishESRPPackage
-          ${{ if ne(parameters.PublicFeedUrl, 'maven.org') }}:
+          ${{ else }}:
             dependsOn: TagRepository
           pool:
             name: $(WINDOWSPOOL)
