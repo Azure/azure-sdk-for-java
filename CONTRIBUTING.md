@@ -129,7 +129,7 @@ For detailed instructions, refer to the [Maven Credential Provider documentation
 
 If you encounter a `401 Unauthorized` error when running Maven commands:
 
-1. **Request access to Azure SDK DevOps**: If you haven't already, [request access to the Azure SDK organization](https://eng.ms/docs/products/azure-developer-experience/onboard/access).
+1. **Request access to Azure SDK Partners**: If you haven't already, [request access to the Azure SDK organization](https://aka.ms/azsdk/access).
 
 2. **Verify Azure CLI login**: Run `az account show` to ensure you're logged in with the correct account that has access to the Azure SDK organization.
 
