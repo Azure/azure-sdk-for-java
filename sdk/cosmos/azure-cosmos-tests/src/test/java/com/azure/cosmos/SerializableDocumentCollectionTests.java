@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.caches.SafeObjectInputStream;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -60,5 +61,28 @@ public class SerializableDocumentCollectionTests {
             .isEqualTo(collection.getAltLink())
             .isEqualTo(altLink);
         assertThat(deserializedDocumentCollection.getWrappedItem().toJson()).isEqualTo(collection.toJson());
+    }
+
+    @Test(groups = { "unit" })
+    public void deserializeWithInvalidClassType_shouldFail() throws Exception {
+        // Serialize an unauthorized class (ArrayList) - this will trigger resolveClass()
+        // unlike String which uses a special TC_STRING type code and bypasses resolveClass()
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(baos);
+        objectOutputStream.writeObject(new ArrayList<>());
+        objectOutputStream.flush();
+        objectOutputStream.close();
+
+        // Try to deserialize with SafeObjectInputStream that only allows SerializableDocumentCollection
+        byte[] bytes = baos.toByteArray();
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        try (SafeObjectInputStream sois = new SafeObjectInputStream(bais,
+                SerializableDocumentCollection.class.getName())) {
+            sois.readObject();
+            org.testng.Assert.fail("Expected InvalidClassException to be thrown");
+        } catch (java.io.InvalidClassException e) {
+            // Expected - the unauthorized class type was rejected by SafeObjectInputStream
+            assertThat(e.getMessage()).contains("Unauthorized deserialization attempt");
+        }
     }
 }
