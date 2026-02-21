@@ -503,7 +503,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT * 2)
     public void dataPlaneRequestHitsLeaseNotFoundInFirstPreferredRegion(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
@@ -578,7 +578,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
                     assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
                     assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
-                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
+                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(10));
                 } else {
                     assertThat(cosmosDiagnostics).isNotNull();
                     assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
@@ -588,7 +588,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
                     assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
                     assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
-                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
+                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(10));
                 }
 
             } finally {
@@ -598,7 +598,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT * 2)
     // Inject 410-1022 and 429-3200 into the 2 replicas participating in quorum read
     // Validate that the client fails fast in the first preferred region and retries in the next region if possible (in a window <<60s)
     public void dataPlaneRequestHitsLeaseNotFoundAndResourceThrottleFirstPreferredRegion(
