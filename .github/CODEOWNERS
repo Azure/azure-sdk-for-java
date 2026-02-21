@@ -116,7 +116,7 @@
 # ServiceLabel: %Attestation
 # ServiceOwners:                                                   @anilba06 @gkostal
 
-# PRLabel: %Azure Quantum
+# PRLabel: %Quantum
 /sdk/quantum/                                                      @Azure/azure-java-sdk @vxfield
 
 # PRLabel: %Azure SDK Tools
@@ -364,10 +364,7 @@
 /sdk/loadtesting/                                                  @Azure/azure-java-sdk @Harshan01 @mitsha-microsoft @ninallam @prativen
 
 # ServiceLabel: %Load Testing
-# ServiceOwners:                                                   @Harshan01 @mitsha-microsoft @ninallam @prativen
-
-# PRLabel: %Mixed Reality Authentication
-/sdk/mixedreality/azure-mixedreality-authentication/               @Azure/azure-java-sdk @RamonArguelles
+# AzureSdkOwners:                                                   @Harshan01 @mitsha-microsoft @ninallam @prativen
 
 # PRLabel: %Models Repository
 /sdk/modelsrepository/                                             @abhipsaMisra @andyk-ms @Azure/azure-java-sdk @brycewang-microsoft @digimaun @timtay-microsoft
@@ -692,9 +689,6 @@
 # ServiceLabel: %Dev Spaces
 # ServiceOwners:                                                   @greenie-msft @johnsta @yuzorMa
 
-# ServiceLabel: %Device Provisioning Service
-# ServiceOwners:                                                   @nberdy
-
 # ServiceLabel: %DevOps
 # ServiceOwners:                                                   @ashishonce @narula0781 @romil07
 
@@ -829,9 +823,6 @@
 
 # ServiceLabel: %Notification Hub
 # ServiceOwners:                                                   @tjsomasundaram
-
-# ServiceLabel: %Operational Insights
-# ServiceOwners:                                                   @AzmonLogA
 
 # ServiceLabel: %Policy
 # ServiceOwners:                                                   @aperezcloud @kenieva

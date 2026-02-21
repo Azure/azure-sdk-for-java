@@ -1642,7 +1642,9 @@ public class BlobAsyncClientBase {
             .deleteNoCustomHeadersWithResponseAsync(containerName, blobName, snapshot, versionId, null,
                 requestConditions.getLeaseId(), deleteBlobSnapshotOptions, requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, null, context);
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, null,
+                requestConditions.getAccessTierIfModifiedSince(), requestConditions.getAccessTierIfUnmodifiedSince(),
+                context);
     }
 
     /**
