@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -423,7 +424,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
 
     @AfterMethod(groups = { "direct" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterMethod() {
-        deleteCollectionIfExists(client, SHARED_DATABASE.getId(), createdCollection.getId());
+        deleteCollectionIfExists(client, SHARED_DATABASE_INTERNAL.getId(), createdCollection.getId());
         safeClose(client);
     }
 
@@ -431,8 +432,8 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
     public void beforeMethod(Method method) {
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(40100);
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = createCollection(createdDatabase.getId(), getCollectionDefinition(), options);
+        createdDatabase = SHARED_DATABASE_INTERNAL;
+        createdCollection = createCollection(createdDatabase.getId(), getInternalCollectionDefinition(), options);
         client = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder());
     }
 

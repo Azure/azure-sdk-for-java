@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -42,7 +43,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdMultiPartitionCollection.getId());
     }
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public DocumentQuerySpyWireContentTest(Builder clientBuilder) {
         super(clientBuilder);
     }
@@ -154,12 +155,12 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         client = new SpyClientBuilder(this.clientBuilder()).build();
 
-        createdDatabase = SHARED_DATABASE;
-        createdSinglePartitionCollection = SHARED_SINGLE_PARTITION_COLLECTION;
-        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION);
+        createdDatabase = SHARED_DATABASE_INTERNAL;
+        createdSinglePartitionCollection = SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL;
+        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL);
 
-        createdMultiPartitionCollection = SHARED_MULTI_PARTITION_COLLECTION;
-        truncateCollection(SHARED_MULTI_PARTITION_COLLECTION);
+        createdMultiPartitionCollection = SHARED_MULTI_PARTITION_COLLECTION_INTERNAL;
+        truncateCollection(SHARED_MULTI_PARTITION_COLLECTION_INTERNAL);
 
         for(int i = 0; i < 3; i++) {
             createdDocumentsInSinglePartitionCollection.add(createDocument(client, getCollectionLink(createdSinglePartitionCollection), i));

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
