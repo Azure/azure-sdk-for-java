@@ -277,6 +277,11 @@ public class ClientSideRequestStatistics {
                             gatewayStatistics.isHubRegionProcessingOnly = "true";
                         }
                     }
+
+                    if (rxDocumentServiceRequest.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
+                        gatewayStatistics.e2ePolicyCfg =
+                            rxDocumentServiceRequest.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
+                    }
                 }
 
                 gatewayStatistics.httpResponseTimeout = rxDocumentServiceRequest.getResponseTimeout();
@@ -957,6 +962,7 @@ public class ClientSideRequestStatistics {
         private String channelId;
         private String parentChannelId;
         private boolean http2;
+        private String e2ePolicyCfg;
 
         public String getSessionToken() {
             return sessionToken;
@@ -1046,6 +1052,10 @@ public class ClientSideRequestStatistics {
             return this.http2;
         }
 
+        public String getE2ePolicyCfg() {
+            return this.e2ePolicyCfg;
+        }
+
         private String getHttpNetworkResponseTimeout() {
 
             if (this.httpResponseTimeout != null) {
@@ -1101,6 +1111,7 @@ public class ClientSideRequestStatistics {
                 if (gatewayStatistics.isHttp2()) {
                     jsonGenerator.writeBooleanField("isHttp2", true);
                 }
+                this.writeNonNullStringField(jsonGenerator, "e2ePolicyCfg", gatewayStatistics.getE2ePolicyCfg());
                 jsonGenerator.writeEndObject();
             }
 
