@@ -209,11 +209,13 @@ public class PartitionControllerImplTests {
         // This is a race condition in CI. Wait longer to ensure async operations complete.
         Thread.sleep(2000);
 
-        // In merge scenarios with lease reuse, acquire can be called 1-2 times depending on timing
+        // In merge scenarios with lease reuse, acquire and create can be called 1-2 times depending on timing
+        // The second addOrUpdateLease call may create a new supervisor if the worker task has stopped
         ArgumentCaptor<ServiceItemLeaseV1> acquireCaptor = ArgumentCaptor.forClass(ServiceItemLeaseV1.class);
         verify(leaseManager, atLeast(1)).acquire(acquireCaptor.capture());
         verify(leaseManager, atMost(2)).acquire(any(ServiceItemLeaseV1.class));
-        verify(partitionSupervisorFactory, times(1)).create(lease);
+        verify(partitionSupervisorFactory, atLeast(1)).create(lease);
+        verify(partitionSupervisorFactory, atMost(2)).create(lease);
         verify(leaseManager, times(1)).release(lease);
         verify(feedRangeGoneHandler, times(1)).handlePartitionGone();
 
