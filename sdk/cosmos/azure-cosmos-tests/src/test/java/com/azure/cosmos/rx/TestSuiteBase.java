@@ -96,6 +96,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.util.retry.Retry;
 
 import java.io.ByteArrayOutputStream;
 import java.time.Duration;
@@ -133,6 +134,14 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
 
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
+
+    private static boolean isTransientCreateFailure(Throwable t) {
+        if (t instanceof CosmosException) {
+            int statusCode = ((CosmosException) t).getStatusCode();
+            return statusCode == 408 || statusCode == 429 || statusCode == 503;
+        }
+        return false;
+    }
 
     protected final static ConsistencyLevel accountConsistency;
     protected static final ImmutableList<String> preferredLocations;
@@ -506,7 +515,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options, int throughput) {
-        database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options).block();
+        database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(TestSuiteBase::isTransientCreateFailure))
+            .block();
 
         // Creating a container is async - especially on multi-partition or multi-region accounts
         CosmosAsyncClient client = ImplementationBridgeHelpers
@@ -530,7 +542,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options) {
-        database.createContainer(cosmosContainerProperties, options).block();
+        database.createContainer(cosmosContainerProperties, options)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(TestSuiteBase::isTransientCreateFailure))
+            .block();
         return database.getContainer(cosmosContainerProperties.getId());
     }
 
@@ -649,7 +664,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncClient client, String dbId, CosmosContainerProperties collectionDefinition) {
         CosmosAsyncDatabase database = client.getDatabase(dbId);
-        database.createContainer(collectionDefinition).block();
+        database.createContainer(collectionDefinition)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(TestSuiteBase::isTransientCreateFailure))
+            .block();
         return database.getContainer(collectionDefinition.getId());
     }
 
@@ -950,13 +968,19 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     static private CosmosAsyncDatabase safeCreateDatabase(CosmosAsyncClient client, CosmosDatabaseProperties databaseSettings) {
         safeDeleteDatabase(client.getDatabase(databaseSettings.getId()));
-        client.createDatabase(databaseSettings).block();
+        client.createDatabase(databaseSettings)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(TestSuiteBase::isTransientCreateFailure))
+            .block();
         return client.getDatabase(databaseSettings.getId());
     }
 
     static protected CosmosAsyncDatabase createDatabase(CosmosAsyncClient client, String databaseId) {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
-        client.createDatabase(databaseSettings).block();
+        client.createDatabase(databaseSettings)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(TestSuiteBase::isTransientCreateFailure))
+            .block();
         return client.getDatabase(databaseSettings.getId());
     }
 
@@ -981,7 +1005,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             return database;
         } else {
             CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
-            client.createDatabase(databaseSettings).block();
+            client.createDatabase(databaseSettings)
+                .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                    .filter(TestSuiteBase::isTransientCreateFailure))
+                .block();
             return client.getDatabase(databaseSettings.getId());
         }
     }
