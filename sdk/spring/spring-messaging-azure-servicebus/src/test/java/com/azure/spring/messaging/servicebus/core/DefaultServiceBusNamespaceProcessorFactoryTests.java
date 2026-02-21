@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 public class DefaultServiceBusNamespaceProcessorFactoryTests {
     private ServiceBusProcessorFactory processorFactory;
@@ -70,11 +71,31 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
 
     @Test
     void testCreateServiceBusProcessorClientTopicTwice() {
+        // The first processor is created but never started (isRunning() == false).
+        // The factory treats a non-running cached processor as stale: it evicts it and
+        // creates a fresh one on the next createProcessor call for the same key.
         ServiceBusProcessorClient client = processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
         assertNotNull(client);
 
         processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
+        assertEquals(2, topicProcessorAddedTimes);
+    }
+
+    @Test
+    void testStaleProcessorReplacedAfterClose() {
+        // Simulate a processor being closed by the SDK due to a non-transient error.
+        ServiceBusProcessorClient first = processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
+        assertNotNull(first);
         assertEquals(1, topicProcessorAddedTimes);
+
+        // Close the processor to simulate SDK-internal disposal.
+        first.close();
+
+        // factory must detect the closed (non-running) processor and return a brand-new one.
+        ServiceBusProcessorClient second = processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
+        assertNotNull(second);
+        assertNotSame(first, second);
+        assertEquals(2, topicProcessorAddedTimes);
     }
 
     @Test

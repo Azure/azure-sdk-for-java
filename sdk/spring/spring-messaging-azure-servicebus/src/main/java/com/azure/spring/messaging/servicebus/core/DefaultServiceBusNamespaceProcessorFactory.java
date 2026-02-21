@@ -163,6 +163,24 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                                                         @Nullable ProcessorProperties properties) {
         ConsumerIdentifier key = new ConsumerIdentifier(name, subscription);
 
+        // If a cached processor is no longer running (e.g., closed due to a non-transient error,
+        // or stopped), evict it atomically so a fresh one is created below. The atomic
+        // remove(key, value) ensures that if another thread already replaced the stale entry,
+        // we do not accidentally remove the new processor.
+        ServiceBusProcessorClient stale = processorMap.get(key);
+        if (stale != null && !stale.isRunning()) {
+            if (processorMap.remove(key, stale)) {
+                LOGGER.debug("Removing stale (non-running) processor for '{}'.", buildProcessorName(key));
+                try {
+                    listeners.forEach(l -> l.processorRemoved(buildProcessorName(key), stale));
+                    stale.close();
+                } catch (Exception ex) {
+                    LOGGER.warn("Failed to close stale Service Bus processor client for '{}'.",
+                        buildProcessorName(key), ex);
+                }
+            }
+        }
+
         return processorMap.computeIfAbsent(key, k -> {
             ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
             ProcessorProperties processorProperties = propertiesMerger.merge(properties, this.namespaceProperties);
