@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/contentunderstanding/ci.yml
+      - sdk/contentunderstanding/azure-ai-contentunderstanding/
+    exclude:
+      - sdk/contentunderstanding/pom.xml
+      - sdk/contentunderstanding/azure-ai-contentunderstanding/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/contentunderstanding/ci.yml
+      - sdk/contentunderstanding/azure-ai-contentunderstanding/
+    exclude:
+      - sdk/contentunderstanding/pom.xml
+      - sdk/contentunderstanding/azure-ai-contentunderstanding/pom.xml
+
+parameters:
+  - name: release_azureaicontentunderstanding
+    displayName: azure-ai-contentunderstanding
+    type: boolean
+    default: true
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: contentunderstanding
+    Artifacts:
+      - name: azure-ai-contentunderstanding
+        groupId: com.azure
+        safeName: azureaicontentunderstanding
+        releaseInBatch: ${{ parameters.release_azureaicontentunderstanding }}
