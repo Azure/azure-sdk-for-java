@@ -48,6 +48,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.util.retry.Retry;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -676,7 +677,16 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         String containerName = "roundTripsContainer-" + UUID.randomUUID();
         createdDatabase.createContainer(containerName,
             "/mypk",
-            ThroughputProperties.createManualThroughput(10100)).block();
+            ThroughputProperties.createManualThroughput(10100))
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(throwable -> {
+                    if (throwable instanceof CosmosException) {
+                        int statusCode = ((CosmosException) throwable).getStatusCode();
+                        return statusCode == 408 || statusCode == 429 || statusCode == 503;
+                    }
+                    return false;
+                }))
+            .block();
         roundTripsContainer = createdDatabase.getContainer(containerName);
         setupRoundTripContainer();
 

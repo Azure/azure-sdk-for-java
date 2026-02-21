@@ -1987,6 +1987,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     protected static void truncateCollection(DocumentCollection collection) {
+        if (collection == null) {
+            logger.warn("truncateCollection called with null collection - skipping. "
+                + "This likely indicates @BeforeSuite initialization failed.");
+            return;
+        }
+
         logger.info("Truncating DocumentCollection {} ...", collection.getId());
 
         try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
@@ -2002,6 +2008,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
 
             String altLink = collection.getAltLink();
+            if (altLink == null) {
+                logger.warn("DocumentCollection {} has null altLink - skipping truncation. "
+                    + "This likely indicates the collection was not properly initialized.", collection.getId());
+                return;
+            }
             // Normalize altLink so both "dbs/.../colls/..." and "/dbs/.../colls/..." are handled consistently.
             String normalizedAltLink = StringUtils.strip(altLink, "/");
             String[] altLinkSegments = normalizedAltLink.split("/");

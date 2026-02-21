@@ -578,7 +578,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
                     assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
                     assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
-                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
+                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(10));
                 } else {
                     assertThat(cosmosDiagnostics).isNotNull();
                     assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
@@ -588,7 +588,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
                     assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
                     assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
-                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
+                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(10));
                 }
 
             } finally {

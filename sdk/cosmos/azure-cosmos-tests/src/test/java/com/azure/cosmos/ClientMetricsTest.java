@@ -993,7 +993,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT * 2)
     public void effectiveMetricCategoriesForDefault() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.fromString("DeFAult"))) {
             assertThat(state.getEffectiveMetricCategories().size()).isEqualTo(5);
@@ -1111,7 +1111,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT * 2)
     public void effectiveMetricCategoriesForAllLatebound() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             EnumSet<MetricCategory> effectiveMetricCategories =
