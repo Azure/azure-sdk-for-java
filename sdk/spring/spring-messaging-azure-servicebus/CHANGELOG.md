@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed `DefaultServiceBusNamespaceProcessorFactory` not removing closed/disposed `ServiceBusProcessorClient` instances from its internal cache, causing subsequent `createProcessor()` calls to return stale, non-functional processors. ([#48030](https://github.com/Azure/azure-sdk-for-java/issues/48030))
+
 ### Other Changes
 
 ## 7.0.0 (2026-02-03)
