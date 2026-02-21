@@ -1,0 +1,459 @@
+# Azure Content Understanding client library for Java
+
+Azure AI Content Understanding is a multimodal AI service that extracts semantic content from documents, video, audio, and image files. It transforms unstructured content into structured, machine-readable data optimized for retrieval-augmented generation (RAG) and automated workflows.
+
+Use the client library for Azure AI Content Understanding to:
+
+* **Extract document content** - Extract text, tables, figures, layout information, and structured markdown from documents (PDF, images with text or hand-written text, Office documents and more)
+* **Transcribe and analyze audio** - Convert audio content into searchable transcripts with speaker diarization and timing information
+* **Analyze video content** - Extract visual frames, transcribe audio tracks, and generate structured summaries from video files
+* **Leverage prebuilt analyzers** - Use production-ready prebuilt analyzers across industries including finance and tax (invoices, receipts, tax forms), identity verification (passports, driver's licenses), mortgage and lending (loan applications, appraisals), procurement and contracts (purchase orders, agreements), and utilities (billing statements)
+* **Create custom analyzers** - Build domain-specific analyzers for specialized content extraction needs across all four modalities (documents, video, audio, and images)
+* **Classify documents and video** - Automatically categorize and extract information from documents and video by type
+
+[Source code][source_code] | [Package (Maven)][package_maven] | [API reference documentation][api_reference_docs] | [Product documentation][product_docs]
+
+## Getting started
+
+### Prerequisites
+
+- [Java Development Kit (JDK)][jdk] with version 8 or above
+- [Azure subscription][azure_subscription]
+- A **Microsoft Foundry resource** to use this package
+
+### Configuring Microsoft Foundry resource
+
+Before using the Content Understanding SDK, you need to set up a Microsoft Foundry resource and deploy the required large language models. Content Understanding currently uses OpenAI GPT models (such as gpt-4.1, gpt-4.1-mini, and text-embedding-3-large).
+
+#### Step 1: Create Microsoft Foundry resource
+
+> **Important:** You must create your Microsoft Foundry resource in a region that supports Content Understanding. For a list of available regions, see [Azure Content Understanding region and language support][cu_region_support].
+
+1. Follow the steps in the [Azure Content Understanding quickstart][cu_quickstart] to create a Microsoft Foundry resource in the Azure portal
+2. Get your Foundry resource's endpoint URL from Azure Portal:
+   - Go to [Azure Portal][azure_portal]
+   - Navigate to your Microsoft Foundry resource
+   - Go to **Resource Management** > **Keys and Endpoint**
+   - Copy the **Endpoint** URL (typically `https://<your-resource-name>.services.ai.azure.com/`)
+
+**Important: Grant Required Permissions**
+
+After creating your Microsoft Foundry resource, you must grant yourself the **Cognitive Services User** role to enable API calls for setting default model deployments:
+
+1. Go to [Azure Portal][azure_portal]
+2. Navigate to your Microsoft Foundry resource
+3. Go to **Access Control (IAM)** in the left menu
+4. Click **Add** > **Add role assignment**
+5. Select the **Cognitive Services User** role
+6. Assign it to yourself (or the user/service principal that will run the application)
+
+> **Note:** This role assignment is required even if you are the owner of the resource. Without this role, you will not be able to call the Content Understanding API to configure model deployments for prebuilt analyzers and custom analyzers.
+
+#### Step 2: Deploy required models
+
+**Important:** Many prebuilt and custom analyzers require large language model (LLM) and embedding deployments. You must deploy at least these models before using those analyzers:
+- `prebuilt-documentSearch`, `prebuilt-imageSearch`, `prebuilt-audioSearch`, `prebuilt-videoSearch` require **gpt-4.1-mini** and **text-embedding-3-large**
+- Other prebuilt analyzers like `prebuilt-invoice`, `prebuilt-receipt` require **gpt-4.1** and **text-embedding-3-large**
+
+**No LLM or embeddings required:** The analyzers **prebuilt-read** and **prebuilt-layout** do not use LLMs or embedding models. You can use them without deploying or configuring any models.
+
+To deploy a model:
+
+1. In Microsoft Foundry, go to **Deployments** > **Deploy model** > **Deploy base model**
+2. Search for and select the model you want to deploy. Currently, prebuilt analyzers require models such as `gpt-4.1`, `gpt-4.1-mini`, and `text-embedding-3-large`
+3. Complete the deployment with your preferred settings
+4. Note the deployment name you chose (by convention, use the model name as the deployment name, e.g., `gpt-4.1` for the `gpt-4.1` model). You can use any deployment name you prefer, but you'll need to note it for use in Step 3 when configuring model deployments.
+
+Repeat this process for each model required by your prebuilt analyzers.
+
+For more information on deploying models, see [Create model deployments in Microsoft Foundry portal][deploy_models_docs].
+
+#### Step 3: Configure model deployments (required for prebuilt analyzers)
+
+> **IMPORTANT:** This is a **one-time setup per Microsoft Foundry resource** that maps your deployed models to those required by the prebuilt analyzers and custom models. If you have multiple Microsoft Foundry resources, you need to configure each one separately.
+
+You need to configure the default model mappings in your Microsoft Foundry resource. This can be done programmatically using the SDK. The configuration maps your deployed models (e.g., `gpt-4.1`, `gpt-4.1-mini`, `text-embedding-3-large`) to the large language models required by prebuilt analyzers.
+
+To configure model deployments using code, see [Sample00_UpdateDefaults][sample00_update_defaults] for a complete example. The sample shows how to:
+- Map your deployed models to the models required by prebuilt analyzers
+- Retrieve the current default model deployment configuration
+- Update the configuration with your model deployment mappings
+- Verify the updated configuration
+
+The following shows how to set up the environment to run this sample successfully:
+
+**3-1. Set environment variables**
+
+The environment variables define your Microsoft Foundry resource endpoint and the deployment names for the models you deployed in Step 2. **Important:** The deployment name values (e.g., `gpt-4.1`, `gpt-4.1-mini`, `text-embedding-3-large`) must exactly match the deployment names you chose when deploying models in Step 2.
+
+**On Linux/macOS (bash):**
+```bash
+export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
+export CONTENTUNDERSTANDING_KEY="<your-api-key>"  # Optional if using DefaultAzureCredential
+export GPT_4_1_DEPLOYMENT="gpt-4.1"
+export GPT_4_1_MINI_DEPLOYMENT="gpt-4.1-mini"
+export TEXT_EMBEDDING_3_LARGE_DEPLOYMENT="text-embedding-3-large"
+```
+
+**On Windows (PowerShell):**
+```powershell
+$env:CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
+$env:CONTENTUNDERSTANDING_KEY="<your-api-key>"  # Optional if using DefaultAzureCredential
+$env:GPT_4_1_DEPLOYMENT="gpt-4.1"
+$env:GPT_4_1_MINI_DEPLOYMENT="gpt-4.1-mini"
+$env:TEXT_EMBEDDING_3_LARGE_DEPLOYMENT="text-embedding-3-large"
+```
+
+**On Windows (Command Prompt):**
+```bat
+set CONTENTUNDERSTANDING_ENDPOINT=https://<your-resource-name>.services.ai.azure.com/
+set CONTENTUNDERSTANDING_KEY=<your-api-key>  # Optional if using DefaultAzureCredential
+set GPT_4_1_DEPLOYMENT=gpt-4.1
+set GPT_4_1_MINI_DEPLOYMENT=gpt-4.1-mini
+set TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=text-embedding-3-large
+```
+
+**Notes:**
+- If `CONTENTUNDERSTANDING_KEY` is not set, the SDK will fall back to `DefaultAzureCredential`. Ensure you have authenticated (e.g., `az login`).
+- The deployment names must exactly match what you created in Microsoft Foundry in Step 2.
+
+**3-2. Run the configuration sample**
+
+To run the configuration sample, you'll need to add the SDK to your project and copy the sample code:
+
+**Step 1:** Add the SDK dependency to your project's `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-ai-contentunderstanding</artifactId>
+    <version>1.0.0-beta.1</version>
+</dependency>
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.18.2</version>
+</dependency>
+```
+
+**Step 2:** Download or copy [Sample00_UpdateDefaults.java][sample00_update_defaults] to your project.
+
+**Step 3:** Run the sample:
+
+```bash
+# Compile and run (from your project directory)
+mvn compile
+mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample00_UpdateDefaults"
+```
+
+Or run it directly from your IDE by executing the `main` method in `Sample00_UpdateDefaults.java`.
+
+**Verification**
+
+After the script runs successfully, you can use prebuilt analyzers like `prebuilt-invoice` or `prebuilt-documentSearch`. For more examples and sample code, see the [Examples](#examples) section.
+
+If you encounter errors:
+- **Access Denied**: Ensure you have the **Cognitive Services User** role assignment.
+- **Deployment Not Found**: Check that deployment names in environment variables match exactly what you created in Foundry.
+### Adding the package to your product
+
+[//]: # ({x-version-update-start;com.azure:azure-ai-contentunderstanding;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-ai-contentunderstanding</artifactId>
+    <version>1.0.0-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+### Authenticate the client
+
+In order to interact with the Content Understanding service, you'll need to create an instance of the `ContentUnderstandingClient` class. To authenticate the client, you need your Microsoft Foundry resource endpoint and credentials. You can use either an API key or Microsoft Entra ID authentication.
+
+#### Using DefaultAzureCredential
+
+The simplest way to authenticate is using `DefaultAzureCredential`, which supports multiple authentication methods and works well in both local development and production environments:
+
+```java
+// Example: https://your-foundry.services.ai.azure.com/
+String endpoint = "<endpoint>";
+ContentUnderstandingClient client = new ContentUnderstandingClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+```
+
+#### Using API key
+
+You can also authenticate using an API key from your Microsoft Foundry resource:
+
+```java
+// Example: https://your-foundry.services.ai.azure.com/
+String endpoint = "<endpoint>";
+String apiKey = "<apiKey>";
+ContentUnderstandingClient client = new ContentUnderstandingClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
+    .buildClient();
+```
+
+> **⚠️ Security Warning**: API key authentication is less secure and is only recommended for testing purposes with test resources. For production, use `DefaultAzureCredential` or other secure authentication methods.
+
+To get your API key:
+1. Go to [Azure Portal][azure_portal]
+2. Navigate to your Microsoft Foundry resource
+3. Go to **Resource Management** > **Keys and Endpoint**
+4. Copy one of the **Keys** (Key1 or Key2)
+
+For more information on authentication, see [Azure Identity client library for Java][azure_identity].
+
+
+
+## Key concepts
+
+### Prebuilt analyzers
+
+Content Understanding provides a rich set of prebuilt analyzers that are ready to use without any configuration. These analyzers are powered by knowledge bases of thousands of real-world document examples, enabling them to understand document structure and adapt to variations in format and content.
+
+Prebuilt analyzers are organized into several categories:
+
+* **RAG analyzers** - Optimized for retrieval-augmented generation scenarios with semantic analysis and markdown extraction. These analyzers return markdown and a one-paragraph `Summary` for each content item:
+  * **`prebuilt-documentSearch`** - Extracts content from documents (PDF, images, Office documents) with layout preservation, table detection, figure analysis, and structured markdown output. Optimized for RAG scenarios.
+  * **`prebuilt-imageSearch`** - Analyzes standalone images and returns a one-paragraph description of the image content. Optimized for image understanding and search scenarios. For images that contain text (including hand-written text), use `prebuilt-documentSearch`.
+  * **`prebuilt-audioSearch`** - Transcribes audio content with speaker diarization, timing information, and conversation summaries. Supports multilingual transcription.
+  * **`prebuilt-videoSearch`** - Analyzes video content with visual frame extraction, audio transcription, and structured summaries. Provides temporal alignment of visual and audio content and can return multiple segments per video.
+* **Content extraction analyzers** - Focus on OCR and layout analysis (e.g., `prebuilt-read`, `prebuilt-layout`)
+* **Base analyzers** - Fundamental content processing capabilities used as parent analyzers for custom analyzers (e.g., `prebuilt-document`, `prebuilt-image`, `prebuilt-audio`, `prebuilt-video`)
+* **Domain-specific analyzers** - Preconfigured analyzers for common document categories including financial documents (invoices, receipts, bank statements), identity documents (passports, driver's licenses), tax forms, mortgage documents, and contracts
+* **Utility analyzers** - Specialized tools for schema generation and field extraction (e.g., `prebuilt-documentFieldSchema`, `prebuilt-documentFields`)
+
+For a complete list of available prebuilt analyzers and their capabilities, see the [Prebuilt analyzers documentation][prebuilt_analyzers_docs].
+
+### Content types
+
+The API returns different content types based on the input:
+
+* **`DocumentContent`** - For document files (PDF, HTML, images, Office documents such as Word, Excel, PowerPoint, and more). Provides basic information such as page count and MIME type. Retrieve detailed information including pages, tables, figures, paragraphs, and many others.
+* **`AudioVisualContent`** - For audio and video files. Provides basic information such as timing information (start/end times) and frame dimensions (for video). Retrieve detailed information including transcript phrases, timing information, and for video, key frame references and more.
+
+### Asynchronous operations
+
+Content Understanding operations are asynchronous long-running operations. The workflow is:
+
+1. **Begin Analysis** - Start the analysis operation (returns immediately with an operation location)
+2. **Poll for Results** - Poll the operation location until the analysis completes
+3. **Process Results** - Extract and display the structured results
+
+The SDK provides `SyncPoller<T, U>` and `PollerFlux<T, U>` types that handle polling automatically. For analysis operations, the SDK returns pollers that provide access to the final `AnalyzeResult`.
+
+### Main classes
+
+* **`ContentUnderstandingClient`** - The synchronous client for analyzing content, as well as creating, managing, and configuring analyzers
+* **`ContentUnderstandingAsyncClient`** - The asynchronous client with the same capabilities
+* **`AnalyzeResult`** - Contains the structured results of an analysis operation, including content elements, markdown, and metadata
+
+### Thread safety
+
+We guarantee that all client instance methods are thread-safe and independent of each other. This ensures that the recommendation of reusing client instances is always safe, even across threads.
+
+### Additional concepts
+
+The following concepts are common across all Azure SDK client libraries:
+
+[Client options][azure_core_http_client] |
+[Accessing the response][azure_core_response] |
+[Long-running operations][azure_core_lro] |
+[Handling failures][azure_core_exceptions] |
+[Logging][logging]
+
+## Examples
+
+You can familiarize yourself with different APIs using [Samples][samples_directory].
+
+The samples demonstrate:
+
+* **Configuration** - Configure model deployment defaults for prebuilt analyzers and custom analyzers
+* **Document Content Extraction** - Extract structured markdown content from PDFs and images using `prebuilt-documentSearch`, optimized for RAG (Retrieval-Augmented Generation) applications
+* **Multi-Modal Content Analysis** - Analyze content from URLs across all modalities: extract markdown and summaries from documents, images, audio, and video using `prebuilt-documentSearch`, `prebuilt-imageSearch`, `prebuilt-audioSearch`, and `prebuilt-videoSearch`
+* **Domain-Specific Analysis** - Extract structured fields from invoices using `prebuilt-invoice`
+* **Advanced Document Features** - Extract charts, hyperlinks, formulas, and annotations from documents
+* **Custom Analyzers** - Create custom analyzers with field schemas for specialized extraction needs
+* **Document Classification** - Create and use classifiers to categorize documents
+* **Analyzer Management** - Get, list, update, copy, and delete analyzers
+* **Result Management** - Retrieve result files from video analysis and delete analysis results
+
+See the [samples directory][samples_directory] for complete examples.
+
+### Running samples
+
+All samples can be run using Maven's `exec:java` plugin. Before running samples, ensure you have set the required environment variables (see [Step 3: Configure model deployments](#step-3-configure-model-deployments-required-for-prebuilt-analyzers)).
+
+**Important:** The samples support both API key and `DefaultAzureCredential` authentication. If you set `CONTENTUNDERSTANDING_KEY`, the sample will use API key authentication. If `CONTENTUNDERSTANDING_KEY` is not set, the sample will fall back to `DefaultAzureCredential` (which requires `azure-identity` dependency).
+
+### Option 1: Run samples in your own project (Recommended)
+
+The simplest way to run samples is to copy them into your own Maven project:
+
+1. Add the SDK dependency to your `pom.xml` (see [Adding the package to your product](#adding-the-package-to-your-product))
+2. Add `azure-identity` if using `DefaultAzureCredential`:
+   ```xml
+   <dependency>
+       <groupId>com.azure</groupId>
+       <artifactId>azure-identity</artifactId>
+       <version>1.18.2</version>
+   </dependency>
+   ```
+3. Copy any sample file from the [samples directory][samples_directory] to your project
+4. Run it like any other Java class (e.g., `mvn compile exec:java -Dexec.mainClass="YourSampleClass"` or run from your IDE)
+
+### Option 2: Run samples from the SDK source repository
+
+If you want to run samples directly from the SDK source code:
+
+**Step 1: Clone and compile**
+
+```bash
+# Clone the repository
+git clone https://github.com/Azure/azure-sdk-for-java.git
+cd azure-sdk-for-java/sdk/contentunderstanding/azure-ai-contentunderstanding
+
+# Compile the library
+mvn compile -DskipTests
+
+# Compile sample files (samples in src/samples/java are not compiled by default)
+mvn dependency:build-classpath -Dmdep.outputFile=target/classpath.txt -q
+javac -cp "$(cat target/classpath.txt):target/classes" --release 8 -d target/classes src/samples/java/com/azure/ai/contentunderstanding/samples/*.java
+```
+
+**Step 2: Run samples**
+
+Choose one of the following authentication methods:
+
+**Option A: API key authentication**
+
+If you have set `CONTENTUNDERSTANDING_KEY`, you can run samples without the test classpath scope:
+
+```bash
+# Set environment variables
+export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
+export CONTENTUNDERSTANDING_KEY="<your-api-key>"
+
+# Run a sample (API key authentication - no test scope needed)
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
+  -Dexec.cleanupDaemonThreads=false
+```
+
+**Option B: DefaultAzureCredential authentication**
+
+If you don't set `CONTENTUNDERSTANDING_KEY`, the sample will use `DefaultAzureCredential`. Ensure you're authenticated (e.g. `az login`).
+
+```bash
+# Set environment variables (no CONTENTUNDERSTANDING_KEY set)
+export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
+
+# Run a sample (DefaultAzureCredential)
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
+  -Dexec.cleanupDaemonThreads=false
+```
+
+**Common sample commands:**
+
+```bash
+# Analyze document from URL
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
+  -Dexec.cleanupDaemonThreads=false
+
+# Analyze document from binary file
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample01_AnalyzeBinary" \
+  -Dexec.cleanupDaemonThreads=false
+
+# Analyze invoice
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample03_AnalyzeInvoice" \
+  -Dexec.cleanupDaemonThreads=false
+
+# Create a custom analyzer
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample04_CreateAnalyzer" \
+  -Dexec.cleanupDaemonThreads=false
+```
+
+## Troubleshooting
+
+### Common issues
+
+**Error: "Access denied due to invalid subscription key or wrong API endpoint"**
+- Verify your `endpoint URL` is correct
+- Ensure your `API key` is valid or that your Microsoft Entra ID credentials have the correct permissions
+- Make sure you have the **Cognitive Services User** role assigned to your account
+
+**Error: "Model deployment not found" or "Default model deployment not configured"**
+- Ensure you have deployed the required models (gpt-4.1, gpt-4.1-mini, text-embedding-3-large) in Microsoft Foundry
+- Verify you have configured the default model deployments (see [Configure Model Deployments](#step-3-configure-model-deployments-required-for-prebuilt-analyzers))
+- Check that your deployment names match what you configured in the defaults
+
+**Error: "Operation failed" or timeout**
+- Content Understanding operations are asynchronous and may take time to complete
+- Ensure you are properly polling for results using `SyncPoller.waitForCompletion()` or `getFinalResult()`
+- Check the operation status for more details about the failure
+
+### Enable logging
+
+To enable logging for debugging, configure the HTTP client with logging options:
+
+```java
+ContentUnderstandingClient client = new ContentUnderstandingClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+    .buildClient();
+```
+
+For more information, see [Azure SDK for Java logging][logging].
+
+## Next steps
+
+* Explore the [samples directory][samples_directory] for complete code examples
+* Read the [Azure AI Content Understanding documentation][product_docs] for detailed service information
+
+## Contributing
+
+For details on contributing to this repository, see the [contributing guide][contributing].
+
+1. Fork it
+1. Create your feature branch (`git checkout -b my-new-feature`)
+1. Commit your changes (`git commit -am 'Add some feature'`)
+1. Push to the branch (`git push origin my-new-feature`)
+1. Create new Pull Request
+
+This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information see the [Code of Conduct FAQ][code_of_conduct_faq] or contact [opencode@microsoft.com][opencode_email] with any additional questions or comments.
+
+<!-- LINKS -->
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding
+[package_maven]: https://central.sonatype.com/artifact/com.azure/azure-ai-contentunderstanding
+[api_reference_docs]: https://azure.github.io/azure-sdk-for-java/
+[product_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/
+[jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
+[azure_subscription]: https://azure.microsoft.com/free/
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md
+[azure_portal]: https://portal.azure.com/
+[cu_quickstart]: https://learn.microsoft.com/azure/ai-services/content-understanding/quickstart/use-rest-api?tabs=portal%2Cdocument
+[cu_region_support]: https://learn.microsoft.com/azure/ai-services/content-understanding/language-region-support
+[deploy_models_docs]: https://learn.microsoft.com/azure/ai-studio/how-to/deploy-models-openai
+[prebuilt_analyzers_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/prebuilt-analyzers
+[samples_directory]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples
+[sample00_update_defaults]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaults.java
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[azure_core_http_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#configuring-service-clients
+[azure_core_response]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#accessing-http-response-details-using-responset
+[azure_core_lro]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#long-running-operations-with-pollerfluxt
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#exception-hierarchy-with-azureexception
+[contributing]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
+[code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
+[code_of_conduct_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[opencode_email]: mailto:opencode@microsoft.com
