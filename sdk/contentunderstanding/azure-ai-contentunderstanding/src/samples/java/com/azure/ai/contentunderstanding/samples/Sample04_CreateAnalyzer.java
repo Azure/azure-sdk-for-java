@@ -171,7 +171,7 @@ public class Sample04_CreateAnalyzer {
                 = content.getFields() != null ? content.getFields().get("company_name") : null;
             if (companyNameField instanceof StringField) {
                 StringField sf = (StringField) companyNameField;
-                String companyName = sf.getValueString();
+                String companyName = sf.getValue();
                 System.out
                     .println("Company Name (extract): " + (companyName != null ? companyName : "(not found)"));
                 System.out.println("  Confidence: " + (companyNameField.getConfidence() != null
@@ -192,7 +192,7 @@ public class Sample04_CreateAnalyzer {
                 = content.getFields() != null ? content.getFields().get("total_amount") : null;
             if (totalAmountField instanceof NumberField) {
                 NumberField nf = (NumberField) totalAmountField;
-                Double totalAmount = nf.getValueNumber();
+                Double totalAmount = nf.getValue();
                 System.out.println("Total Amount (extract): "
                     + (totalAmount != null ? String.format("%.2f", totalAmount) : "(not found)"));
                 System.out.println("  Confidence: " + (totalAmountField.getConfidence() != null
@@ -213,7 +213,7 @@ public class Sample04_CreateAnalyzer {
                 = content.getFields() != null ? content.getFields().get("document_summary") : null;
             if (summaryField instanceof StringField) {
                 StringField sf = (StringField) summaryField;
-                String summary = sf.getValueString();
+                String summary = sf.getValue();
                 System.out.println("Document Summary (generate): " + (summary != null ? summary : "(not found)"));
                 System.out.println("  Confidence: " + (summaryField.getConfidence() != null
                     ? String.format("%.2f", summaryField.getConfidence())
@@ -229,7 +229,7 @@ public class Sample04_CreateAnalyzer {
                 = content.getFields() != null ? content.getFields().get("document_type") : null;
             if (documentTypeField instanceof StringField) {
                 StringField sf = (StringField) documentTypeField;
-                String documentType = sf.getValueString();
+                String documentType = sf.getValue();
                 System.out
                     .println("Document Type (classify): " + (documentType != null ? documentType : "(not found)"));
                 System.out.println("  Confidence: " + (documentTypeField.getConfidence() != null

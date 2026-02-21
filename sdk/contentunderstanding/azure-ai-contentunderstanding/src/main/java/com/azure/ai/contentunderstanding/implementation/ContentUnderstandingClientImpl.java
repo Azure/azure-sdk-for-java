@@ -535,8 +535,8 @@ public final class ContentUnderstandingClientImpl {
      * <pre>
      * {@code
      * {
-     *     inputs (Optional): [
-     *          (Optional){
+     *     inputs (Required): [
+     *          (Required){
      *             url: String (Optional)
      *             data: byte[] (Optional)
      *             name: String (Optional)
@@ -655,8 +655,8 @@ public final class ContentUnderstandingClientImpl {
      * <pre>
      * {@code
      * {
-     *     inputs (Optional): [
-     *          (Optional){
+     *     inputs (Required): [
+     *          (Required){
      *             url: String (Optional)
      *             data: byte[] (Optional)
      *             name: String (Optional)
@@ -773,8 +773,8 @@ public final class ContentUnderstandingClientImpl {
      * <pre>
      * {@code
      * {
-     *     inputs (Optional): [
-     *          (Optional){
+     *     inputs (Required): [
+     *          (Required){
      *             url: String (Optional)
      *             data: byte[] (Optional)
      *             name: String (Optional)
@@ -899,8 +899,8 @@ public final class ContentUnderstandingClientImpl {
      * <pre>
      * {@code
      * {
-     *     inputs (Optional): [
-     *          (Optional){
+     *     inputs (Required): [
+     *          (Required){
      *             url: String (Optional)
      *             data: byte[] (Optional)
      *             name: String (Optional)
@@ -1025,8 +1025,8 @@ public final class ContentUnderstandingClientImpl {
      * <pre>
      * {@code
      * {
-     *     inputs (Optional): [
-     *          (Optional){
+     *     inputs (Required): [
+     *          (Required){
      *             url: String (Optional)
      *             data: byte[] (Optional)
      *             name: String (Optional)
@@ -1150,8 +1150,8 @@ public final class ContentUnderstandingClientImpl {
      * <pre>
      * {@code
      * {
-     *     inputs (Optional): [
-     *          (Optional){
+     *     inputs (Required): [
+     *          (Required){
      *             url: String (Optional)
      *             data: byte[] (Optional)
      *             name: String (Optional)

@@ -175,6 +175,9 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // Add beginAnalyze convenience overloads (no stringEncoding)
         addBeginAnalyzeConvenienceOverloads(customization, logger);
+
+        // Add typed getValue() to each ContentField subclass and hide verbose getters
+        customizeFieldValueAccessors(customization, logger);
     }
 
     /**
@@ -432,16 +435,20 @@ public class ContentUnderstandingCustomizations extends Customization {
                     .setType("Object")
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
                         "Gets the value of the field, regardless of its type.\n"
-                        + "Returns the appropriate typed value for each field type:\n"
-                        + "- StringField: returns String (from getValueString())\n"
-                        + "- NumberField: returns Double (from getValueNumber())\n"
-                        + "- IntegerField: returns Long (from getValueInteger())\n"
-                        + "- DateField: returns LocalDate (from getValueDate())\n"
-                        + "- TimeField: returns String (from getValueTime())\n"
-                        + "- BooleanField: returns Boolean (from isValueBoolean())\n"
-                        + "- ObjectField: returns Map (from getValueObject())\n"
-                        + "- ArrayField: returns List (from getValueArray())\n"
-                        + "- JsonField: returns String (from getValueJson())"))
+                        + "This base method returns {@code Object}. Each subclass also overrides this method\n"
+                        + "with a covariant return type for compile-time type safety:\n"
+                        + "- {@link StringField#getValue()} returns {@code String}\n"
+                        + "- {@link NumberField#getValue()} returns {@code Double}\n"
+                        + "- {@link IntegerField#getValue()} returns {@code Long}\n"
+                        + "- {@link DateField#getValue()} returns {@code LocalDate}\n"
+                        + "- {@link TimeField#getValue()} returns {@code String}\n"
+                        + "- {@link BooleanField#getValue()} returns {@code Boolean}\n"
+                        + "- {@link ObjectField#getValue()} returns {@code Map<String, ContentField>}\n"
+                        + "- {@link ArrayField#getValue()} returns {@code List<ContentField>}\n"
+                        + "- {@link JsonField#getValue()} returns {@code BinaryData}\n\n"
+                        + "When you have a reference to the specific subclass, use its typed {@code getValue()}\n"
+                        + "to avoid casting. When you only have a {@code ContentField} reference, this method\n"
+                        + "returns the value as {@code Object}."))
                         .addBlockTag("return", "the field value, or null if not available."))
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "if (this instanceof StringField) { return ((StringField) this).getValueString(); }"
@@ -927,7 +934,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "RequestOptions requestOptions = new RequestOptions();"
                         + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
                         + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                        + "AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1().setInputs(inputs).setModelDeployments(modelDeployments);"
+                        + "AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);"
                         + "BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);"
                         + "return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest1, requestOptions); }"));
             });
@@ -976,10 +983,79 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "RequestOptions requestOptions = new RequestOptions();"
                         + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
                         + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                        + "AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1().setInputs(inputs).setModelDeployments(modelDeployments);"
+                        + "AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);"
                         + "BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);"
                         + "return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions); }"));
             });
         });
+    }
+
+    /**
+     * Add typed getValue() override to each ContentField subclass and hide the verbose getters
+     * (e.g., getValueString, getValueNumber) by removing their PUBLIC modifier.
+     *
+     * Each subclass's getValue() returns the covariant return type (e.g., String for StringField)
+     * and delegates to the now-package-private verbose getter.
+     */
+    private void customizeFieldValueAccessors(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding typed getValue() to ContentField subclasses and hiding verbose getters");
+
+        // StringField: getValue() -> String, hide getValueString()
+        addTypedGetValueAndHideVerbose(customization, "StringField", "String", "getValueString",
+            "getValueString()", logger);
+
+        // NumberField: getValue() -> Double, hide getValueNumber()
+        addTypedGetValueAndHideVerbose(customization, "NumberField", "Double", "getValueNumber",
+            "getValueNumber()", logger);
+
+        // IntegerField: getValue() -> Long, hide getValueInteger()
+        addTypedGetValueAndHideVerbose(customization, "IntegerField", "Long", "getValueInteger",
+            "getValueInteger()", logger);
+
+        // DateField: getValue() -> LocalDate, hide getValueDate()
+        addTypedGetValueAndHideVerbose(customization, "DateField", "LocalDate", "getValueDate",
+            "getValueDate()", logger);
+
+        // TimeField: getValue() -> String, hide getValueTime()
+        addTypedGetValueAndHideVerbose(customization, "TimeField", "String", "getValueTime",
+            "getValueTime()", logger);
+
+        // BooleanField: getValue() -> Boolean, hide isValueBoolean()
+        addTypedGetValueAndHideVerbose(customization, "BooleanField", "Boolean", "isValueBoolean",
+            "isValueBoolean()", logger);
+
+        // ObjectField: getValue() -> Map<String, ContentField>, hide getValueObject()
+        addTypedGetValueAndHideVerbose(customization, "ObjectField", "Map<String, ContentField>", "getValueObject",
+            "getValueObject()", logger);
+
+        // ArrayField: getValue() -> List<ContentField>, hide getValueArray()
+        addTypedGetValueAndHideVerbose(customization, "ArrayField", "List<ContentField>", "getValueArray",
+            "getValueArray()", logger);
+
+        // JsonField: getValue() -> BinaryData, hide getValueJson()
+        addTypedGetValueAndHideVerbose(customization, "JsonField", "BinaryData", "getValueJson",
+            "getValueJson()", logger);
+    }
+
+    /**
+     * Helper: adds a typed getValue() override to a ContentField subclass and hides the verbose getter.
+     */
+    private void addTypedGetValueAndHideVerbose(LibraryCustomization customization, String className,
+            String returnType, String verboseMethodName, String delegateCall, Logger logger) {
+        customization.getClass(MODELS_PACKAGE, className).customizeAst(ast ->
+            ast.getClassByName(className).ifPresent(clazz -> {
+                // Hide the verbose getter by removing PUBLIC modifier
+                clazz.getMethodsByName(verboseMethodName).forEach(method ->
+                    method.removeModifier(Modifier.Keyword.PUBLIC));
+
+                // Add typed getValue() override
+                clazz.addMethod("getValue", Modifier.Keyword.PUBLIC)
+                    .setType(returnType)
+                    .addMarkerAnnotation(Override.class)
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Gets the strongly-typed value of this field."))
+                        .addBlockTag("return", "the field value, or null if not available."))
+                    .setBody(StaticJavaParser.parseBlock("{ return " + delegateCall + "; }"));
+            }));
     }
 }

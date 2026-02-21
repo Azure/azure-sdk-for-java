@@ -75,8 +75,8 @@ public final class ContentUnderstandingAsyncClient {
      * <pre>
      * {@code
      * {
-     *     inputs (Optional): [
-     *          (Optional){
+     *     inputs (Required): [
+     *          (Required){
      *             url: String (Optional)
      *             data: byte[] (Optional)
      *             name: String (Optional)
@@ -1532,9 +1532,9 @@ public final class ContentUnderstandingAsyncClient {
      * Extract content and fields from input.
      *
      * @param analyzerId The unique identifier of the analyzer.
+     * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
      * @param stringEncoding The string encoding format for content spans in the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
-     * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
      * @param modelDeployments Override the resource-level default mapping of supported large language model (LLM) names
      * to model deployment names in Microsoft Foundry. Dictionary of string to string
      * (LLM model name -&gt; model deployment name in Microsoft Foundry). Keys must be supported model names for the
@@ -1554,12 +1554,11 @@ public final class ContentUnderstandingAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyze(String analyzerId,
-        String stringEncoding, List<AnalyzeInput> inputs, Map<String, String> modelDeployments,
+        List<AnalyzeInput> inputs, String stringEncoding, Map<String, String> modelDeployments,
         ProcessingLocation processingLocation) {
         // Generated convenience method for beginAnalyzeWithModel
         RequestOptions requestOptions = new RequestOptions();
-        AnalyzeRequest1 analyzeRequest1Obj
-            = new AnalyzeRequest1().setInputs(inputs).setModelDeployments(modelDeployments);
+        AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);
         BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);
         requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
         if (processingLocation != null) {
@@ -1572,6 +1571,7 @@ public final class ContentUnderstandingAsyncClient {
      * Extract content and fields from input.
      *
      * @param analyzerId The unique identifier of the analyzer.
+     * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
      * @param stringEncoding The string encoding format for content spans in the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1585,10 +1585,10 @@ public final class ContentUnderstandingAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyze(String analyzerId,
-        String stringEncoding) {
+        List<AnalyzeInput> inputs, String stringEncoding) {
         // Generated convenience method for beginAnalyzeWithModel
         RequestOptions requestOptions = new RequestOptions();
-        AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1();
+        AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs);
         BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);
         requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
         return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions);
@@ -1601,9 +1601,9 @@ public final class ContentUnderstandingAsyncClient {
      * @param binaryInput The binary content of the document to analyze.
      * @param stringEncoding The string encoding format for content spans in the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
+     * @param contentType Request content type.
      * @param inputRange Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page numbers,
      * while audio visual content uses integer milliseconds.
-     * @param contentType Request content type.
      * @param processingLocation The location where the data may be processed. Defaults to global.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1616,7 +1616,7 @@ public final class ContentUnderstandingAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
-        BinaryData binaryInput, String stringEncoding, String inputRange, String contentType,
+        BinaryData binaryInput, String stringEncoding, String contentType, String inputRange,
         ProcessingLocation processingLocation) {
         // Generated convenience method for beginAnalyzeBinaryWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -1627,6 +1627,32 @@ public final class ContentUnderstandingAsyncClient {
         if (processingLocation != null) {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
         }
+        return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions);
+    }
+
+    /**
+     * Extract content and fields from input.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param binaryInput The binary content of the document to analyze.
+     * @param stringEncoding The string encoding format for content spans in the response.
+     * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
+     * @param contentType Request content type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
+        BinaryData binaryInput, String stringEncoding, String contentType) {
+        // Generated convenience method for beginAnalyzeBinaryWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
         return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions);
     }
 
@@ -2107,8 +2133,7 @@ public final class ContentUnderstandingAsyncClient {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
         }
         requestOptions.addQueryParam("stringEncoding", "utf16", false);
-        AnalyzeRequest1 analyzeRequest1Obj
-            = new AnalyzeRequest1().setInputs(inputs).setModelDeployments(modelDeployments);
+        AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);
         BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);
         return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions);
     }

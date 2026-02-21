@@ -54,7 +54,7 @@ public final class ArrayField extends ContentField {
      * @return the valueArray value.
      */
     @Generated
-    public List<ContentField> getValueArray() {
+    List<ContentField> getValueArray() {
         return this.valueArray;
     }
 
@@ -132,5 +132,15 @@ public final class ArrayField extends ContentField {
                 "Index " + index + " is out of range. Array has " + size() + " elements."));
         }
         return getValueArray().get(index);
+    }
+
+    /**
+     * Gets the strongly-typed value of this field.
+     *
+     * @return the field value, or null if not available.
+     */
+    @Override
+    public List<ContentField> getValue() {
+        return getValueArray();
     }
 }

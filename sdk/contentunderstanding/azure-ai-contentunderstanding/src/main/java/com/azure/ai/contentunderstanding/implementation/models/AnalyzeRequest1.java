@@ -24,7 +24,7 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
      * Inputs to analyze. Currently, only pro mode supports multiple inputs.
      */
     @Generated
-    private List<AnalyzeInput> inputs;
+    private final List<AnalyzeInput> inputs;
 
     /*
      * Override the resource-level default mapping of supported large language model (LLM) names to model deployment
@@ -40,9 +40,12 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
 
     /**
      * Creates an instance of AnalyzeRequest1 class.
+     * 
+     * @param inputs the inputs value to set.
      */
     @Generated
-    public AnalyzeRequest1() {
+    public AnalyzeRequest1(List<AnalyzeInput> inputs) {
+        this.inputs = inputs;
     }
 
     /**
@@ -53,18 +56,6 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
     @Generated
     public List<AnalyzeInput> getInputs() {
         return this.inputs;
-    }
-
-    /**
-     * Set the inputs property: Inputs to analyze. Currently, only pro mode supports multiple inputs.
-     * 
-     * @param inputs the inputs value to set.
-     * @return the AnalyzeRequest1 object itself.
-     */
-    @Generated
-    public AnalyzeRequest1 setInputs(List<AnalyzeInput> inputs) {
-        this.inputs = inputs;
-        return this;
     }
 
     /**
@@ -120,26 +111,28 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AnalyzeRequest1 if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeRequest1.
      */
     @Generated
     public static AnalyzeRequest1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AnalyzeRequest1 deserializedAnalyzeRequest1 = new AnalyzeRequest1();
+            List<AnalyzeInput> inputs = null;
+            Map<String, String> modelDeployments = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("inputs".equals(fieldName)) {
-                    List<AnalyzeInput> inputs = reader.readArray(reader1 -> AnalyzeInput.fromJson(reader1));
-                    deserializedAnalyzeRequest1.inputs = inputs;
+                    inputs = reader.readArray(reader1 -> AnalyzeInput.fromJson(reader1));
                 } else if ("modelDeployments".equals(fieldName)) {
-                    Map<String, String> modelDeployments = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAnalyzeRequest1.modelDeployments = modelDeployments;
+                    modelDeployments = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
+            AnalyzeRequest1 deserializedAnalyzeRequest1 = new AnalyzeRequest1(inputs);
+            deserializedAnalyzeRequest1.modelDeployments = modelDeployments;
 
             return deserializedAnalyzeRequest1;
         });

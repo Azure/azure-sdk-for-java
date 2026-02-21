@@ -56,7 +56,7 @@ public final class ObjectField extends ContentField {
      * @return the valueObject value.
      */
     @Generated
-    public Map<String, ContentField> getValueObject() {
+    Map<String, ContentField> getValueObject() {
         return this.valueObject;
     }
 
@@ -142,5 +142,15 @@ public final class ObjectField extends ContentField {
             return null;
         }
         return getValueObject().get(fieldName);
+    }
+
+    /**
+     * Gets the strongly-typed value of this field.
+     *
+     * @return the field value, or null if not available.
+     */
+    @Override
+    public Map<String, ContentField> getValue() {
+        return getValueObject();
     }
 }

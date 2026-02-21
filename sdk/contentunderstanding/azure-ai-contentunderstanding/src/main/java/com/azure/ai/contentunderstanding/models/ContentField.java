@@ -216,16 +216,21 @@ public class ContentField implements JsonSerializable<ContentField> {
 
     /**
      * Gets the value of the field, regardless of its type.
-     * Returns the appropriate typed value for each field type:
-     * - StringField: returns String (from getValueString())
-     * - NumberField: returns Double (from getValueNumber())
-     * - IntegerField: returns Long (from getValueInteger())
-     * - DateField: returns LocalDate (from getValueDate())
-     * - TimeField: returns String (from getValueTime())
-     * - BooleanField: returns Boolean (from isValueBoolean())
-     * - ObjectField: returns Map (from getValueObject())
-     * - ArrayField: returns List (from getValueArray())
-     * - JsonField: returns String (from getValueJson())
+     * This base method returns {@code Object}. Each subclass also overrides this method
+     * with a covariant return type for compile-time type safety:
+     * - {@link StringField#getValue()} returns {@code String}
+     * - {@link NumberField#getValue()} returns {@code Double}
+     * - {@link IntegerField#getValue()} returns {@code Long}
+     * - {@link DateField#getValue()} returns {@code LocalDate}
+     * - {@link TimeField#getValue()} returns {@code String}
+     * - {@link BooleanField#getValue()} returns {@code Boolean}
+     * - {@link ObjectField#getValue()} returns {@code Map<String, ContentField>}
+     * - {@link ArrayField#getValue()} returns {@code List<ContentField>}
+     * - {@link JsonField#getValue()} returns {@code BinaryData}
+     *
+     * When you have a reference to the specific subclass, use its typed {@code getValue()}
+     * to avoid casting. When you only have a {@code ContentField} reference, this method
+     * returns the value as {@code Object}.
      *
      * @return the field value, or null if not available.
      */
