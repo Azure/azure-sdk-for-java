@@ -3703,7 +3703,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeServiceSasSignatureValues sasValues
             = new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusHours(1), permissions);
         String sas = dc.generateSas(sasValues);
-        DataLakeDirectoryClient sasClient = getDirectoryClient(sas, dc.getDirectoryUrl(), generatePathName());
+        DataLakeDirectoryClient sasClient = getDirectoryClient(sas, dc.getDirectoryUrl(), dc.getDirectoryPath());
         Map<String, String> tags = getTags();
 
         sasClient.setTags(tags);
