@@ -211,12 +211,14 @@ public class PartitionControllerImplTests {
 
         // In merge scenarios with lease reuse, acquire and create can be called 1-2 times depending on timing
         // The second addOrUpdateLease call may create a new supervisor if the worker task has stopped
+        // Similarly, release can be called 1-2 times if both workers hit FeedRangeGoneException before completion
         ArgumentCaptor<ServiceItemLeaseV1> acquireCaptor = ArgumentCaptor.forClass(ServiceItemLeaseV1.class);
         verify(leaseManager, atLeast(1)).acquire(acquireCaptor.capture());
         verify(leaseManager, atMost(2)).acquire(any(ServiceItemLeaseV1.class));
         verify(partitionSupervisorFactory, atLeast(1)).create(lease);
         verify(partitionSupervisorFactory, atMost(2)).create(lease);
-        verify(leaseManager, times(1)).release(lease);
+        verify(leaseManager, atLeast(1)).release(lease);
+        verify(leaseManager, atMost(2)).release(lease);
         verify(feedRangeGoneHandler, times(1)).handlePartitionGone();
 
         verify(leaseManager, Mockito.never()).delete(lease);
