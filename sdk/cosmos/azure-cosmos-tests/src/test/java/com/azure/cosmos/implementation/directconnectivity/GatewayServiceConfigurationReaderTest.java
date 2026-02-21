@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.cosmos.implementation.directconnectivity;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -18,7 +19,6 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -43,7 +43,7 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
     private String databaseAccountJson;
     private DatabaseAccount expectedDatabaseAccount;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public GatewayServiceConfigurationReaderTest(Builder clientBuilder) {
         super(clientBuilder);
     }

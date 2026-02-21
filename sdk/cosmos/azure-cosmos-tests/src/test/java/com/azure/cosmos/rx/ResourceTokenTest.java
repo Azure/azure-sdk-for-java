@@ -23,7 +23,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.TestSuiteBase;
+// Uses rx.TestSuiteBase (local package)
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -96,7 +96,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     private static final String PERMISSION_FOR_DOC = "PermissionForDoc";
     private static final String PERMISSION_FOR_DOC_WITH_NAME = "PermissionForDocWithName";
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public ResourceTokenTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
     }
@@ -422,7 +422,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(documentUrl, options);
             FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
-            validateFailure(readObservable, validator);
+            validateResourceResponseFailure(readObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
         }
@@ -454,7 +454,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(createdDocumentWithPartitionKey.getSelfLink(), options);
             FailureValidator validator = new FailureValidator.Builder().resourceTokenNotFound().build();
-            validateFailure(readObservable, validator);
+            validateResourceResponseFailure(readObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
         }
