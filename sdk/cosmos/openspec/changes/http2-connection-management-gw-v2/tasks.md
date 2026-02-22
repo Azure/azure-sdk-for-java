@@ -14,16 +14,19 @@
 - [x] Test: `retryUsesConsistentParentChannelId` — captures parentChannelId from ALL retry attempts (6s/6s/10s) via `extractAllParentChannelIds()`, verifies channels survive post-delay
 - [ ] Extract full CosmosDiagnostics → evidence MD file in Obsidian
 
-## Part 2: Connect/Acquire Timeout Differentiation
+## Part 2: Connect/Acquire Timeout Bifurcation
+
+> **Bifurcation**: Metadata requests → GW V1 (port 443, 45s/60s timeout, unchanged). Data plane requests → GW V2 (port 10250, 1s connect/acquire timeout).
 
 ### Phase 2a: Implementation
-- [x] Add system property `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS` in `Configs.java` (default 3s)
+- [x] Add system property `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS` in `Configs.java` (default **1s**)
+- [x] Add `Configs.GATEWAY_V2_DATA_PLANE_PORT = 10250` constant
 - [x] Add `Configs.getThinClientConnectionTimeoutInSeconds()` with system property + env variable support
-- [x] Add `ReactorNettyClient.resolveConnectTimeoutMs()` — per-request `.option(CONNECT_TIMEOUT_MILLIS)` keyed on port (non-443=3s, 443=45s)
+- [x] Add `ReactorNettyClient.resolveConnectTimeoutMs()` — per-request `.option(CONNECT_TIMEOUT_MILLIS)` keyed on port (`port == 10250` → 1s, all other ports → 45s)
 
 ### Phase 2b: Testing
-- [x] Test: `connectTimeoutDifferentiation_DocumentRequest` — `CONNECTION_DELAY` 5s > 3s thin client timeout, validates SERVICE_UNAVAILABLE
-- [x] Test: `connectTimeoutDifferentiation_MetadataRequest` — `CONNECTION_DELAY` 5s < 45s gateway timeout, validates success
+- [x] Test: `dataPlaneRequest_GwV2_ConnectTimeoutApplied` — `CONNECTION_DELAY` 2s > 1s GW V2 timeout on READ_ITEM, validates rule applied + GW V2 port 10250 in diagnostics
+- [x] Test: `metadataRequest_GwV1_TimeoutUnchanged` — `CONNECTION_DELAY` 2s on CREATE_ITEM, retry recovers after hit limit, validates 201 success
 - [ ] Extract full CosmosDiagnostics → evidence MD files in Obsidian
 
 ## Part 3: H2 Parent Channel Health Checker
