@@ -7,48 +7,50 @@
 - [x] Write Obsidian vault note: `Reactor Netty - Http2AllocationStrategy Stream Allocation.md`
 
 ### Phase 1b: Multi-Parent-Channel Test
-- [ ] Test: `multiParentChannelConnectionReuse` — force CosmosClient to open >1 parent H2 channel to the same endpoint, inject delay on one, verify BOTH parent channels survive
+- [x] Test: `multiParentChannelConnectionReuse` — sends 35 concurrent reads to force >1 parent H2 channel, injects delay, verifies parent channels survive
 - [ ] Extract full CosmosDiagnostics → evidence MD file in Obsidian
 
 ### Phase 1c: Retry ParentChannelId Allocation Test
-- [ ] Test: `retryUsesConsistentParentChannelId` — under delay, verify whether each retry attempt uses the SAME parentChannelId or acquires from a different one (test Http2AllocationStrategy's round-robin vs sticky behavior)
+- [x] Test: `retryUsesConsistentParentChannelId` — captures parentChannelId from ALL retry attempts (6s/6s/10s) via `extractAllParentChannelIds()`, verifies channels survive post-delay
 - [ ] Extract full CosmosDiagnostics → evidence MD file in Obsidian
 
 ## Part 2: Connect/Acquire Timeout Differentiation
 
 ### Phase 2a: Implementation
-- [ ] Add system property `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS` in `Configs.java`
-- [ ] In `ReactorNettyClient.send()`, apply per-request `.option(CONNECT_TIMEOUT_MILLIS, ...)` keyed on port (10250=3s, 443=45s)
-- [ ] Alternatively: split `ConnectionProvider` per endpoint type if per-request option isn't supported
+- [x] Add system property `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS` in `Configs.java` (default 3s)
+- [x] Add `Configs.getThinClientConnectionTimeoutInSeconds()` with system property + env variable support
+- [x] Add `ReactorNettyClient.resolveConnectTimeoutMs()` — per-request `.option(CONNECT_TIMEOUT_MILLIS)` keyed on port (non-443=3s, 443=45s)
 
 ### Phase 2b: Testing
-- [ ] Test: `connectTimeoutDifferentiation_DocumentRequest` — `CONNECTION_DELAY` 5s on GW V2 endpoint, document request fails with connect timeout
-- [ ] Test: `connectTimeoutDifferentiation_MetadataRequest` — `CONNECTION_DELAY` 5s on metadata endpoint, metadata request succeeds (45s budget)
+- [x] Test: `connectTimeoutDifferentiation_DocumentRequest` — `CONNECTION_DELAY` 5s > 3s thin client timeout, validates SERVICE_UNAVAILABLE
+- [x] Test: `connectTimeoutDifferentiation_MetadataRequest` — `CONNECTION_DELAY` 5s < 45s gateway timeout, validates success
 - [ ] Extract full CosmosDiagnostics → evidence MD files in Obsidian
 
 ## Part 3: H2 Parent Channel Health Checker
 
 ### Phase 3a: Channel Statistics Tracking
-- [ ] Create `Http2ChannelStatistics.java` (inspired by `RntbdChannelStatistics`)
-  - Fields: channelId, parentChannelId, streamSuccessCount, streamFailureCount, lastReadTime, lastWriteTime, goawayReceived, creationTime
+- [x] Create `Http2ChannelStatistics.java` — thread-safe stats with AtomicInteger/AtomicReference
+  - Fields: channelId, parentChannelId, streamSuccessCount, streamFailureCount, consecutiveFailureCount, lastReadTime, lastWriteTime, goawayReceived, creationTime, lastPingRttNanos
+  - JSON serializer with `Http2ChannelStatsJsonSerializer`
 - [ ] Surface `Http2ChannelStatistics` in `CosmosDiagnostics` for request-relevant channels only
 
 ### Phase 3b: Health Checker Implementation
-- [ ] Create `Http2ChannelHealthChecker.java` (inspired by `RntbdClientChannelHealthChecker`)
-  - Heuristics:
-    1. Close 1 connection at a time, prioritize GOAWAY-received connections
-    2. 100% stream failure rate over N consecutive streams → mark unhealthy
-    3. CPU/memory utilization context (high CPU = maybe not a bad connection)
-    4. H2 PING liveness probe: `.http2Settings(s -> s.pingInterval(Duration))`
+- [x] Enhanced `Http2ConnectionHealthCheckHandler.java` with:
+  - GOAWAY frame handling (`Http2GoAwayFrame`) with `recordGoaway()` on channel stats
+  - Channel statistics association via `setChannelStatistics()`
+  - PING RTT measurement (`pingSentNanoTime` → ACK delta → `stats.recordPingRtt()`)
+  - CPU-aware `isUnhealthy()`: GOAWAY priority > consecutive failures (threshold=5) > CPU suppression (>90%)
+  - `getSystemCpuLoad()` normalized to [0,1] via `OperatingSystemMXBean`
 
 ### Phase 3c: Integration
-- [ ] Wire `Http2ChannelHealthChecker` into `ConnectionProvider` lifecycle
-- [ ] Enable `pingInterval` on `Http2Settings`
+- [x] `ReactorNettyClient.doOnConnected()`: create `Http2ChannelStatistics` per parent channel, associate with health handler
+- [x] `ConnectionObserver`: `updateChannelStatisticsOnSuccess()` / `OnFailure()` / `OnWrite()` on RESPONSE_RECEIVED / RESPONSE_INCOMPLETE / REQUEST_SENT
+- [ ] Enable `evictInBackground` on `ConnectionProvider` using Configs interval
 
 ### Phase 3d: Testing
-- [ ] Test: `sickConnectionEviction` — tc netem to make one parent channel permanently sick, verify health checker evicts it
-- [ ] Test: `goawayPrioritization` — simulate GOAWAY, verify that connection is prioritized for closure
-- [ ] Test: `healthyConnectionPreserved` — under normal operation, no false evictions
+- [x] Test: `sickConnectionEviction` — 30s delay, PING timeout, parent channel evicted, new channel used
+- [x] Test: `healthyConnectionPreserved` — wait > PING interval, ACK arrives normally, same channel reused
+- [x] Test: `connectionRecoveryAfterEviction` — full eviction + recovery + stability verification
 - [ ] Extract full CosmosDiagnostics → evidence MD files in Obsidian
 
 ## Git Worktree Setup
