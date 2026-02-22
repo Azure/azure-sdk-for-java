@@ -206,14 +206,13 @@ public class PartitionControllerImplTests {
         // 2. Worker encounters FeedRangeGoneException -> handleFeedRangeGone
         // 3. handlePartitionGone returns same lease -> addOrUpdateLease(lease) called again
         // The second addOrUpdateLease may call acquire() again (if worker stopped) or updateProperties() (if still running).
-        // This is a race condition in CI. Wait longer to ensure async operations complete.
-        Thread.sleep(2000);
+        // This is a race condition in CI. Use Mockito timeout to wait for async operations to complete.
 
         // In merge scenarios with lease reuse, acquire and create can be called 1-2 times depending on timing
         // The second addOrUpdateLease call may create a new supervisor if the worker task has stopped
         // Similarly, release can be called 1-2 times if both workers hit FeedRangeGoneException before completion
         ArgumentCaptor<ServiceItemLeaseV1> acquireCaptor = ArgumentCaptor.forClass(ServiceItemLeaseV1.class);
-        verify(leaseManager, atLeast(1)).acquire(acquireCaptor.capture());
+        verify(leaseManager, timeout(2000).atLeast(1)).acquire(acquireCaptor.capture());
         verify(leaseManager, atMost(2)).acquire(any(ServiceItemLeaseV1.class));
         verify(partitionSupervisorFactory, atLeast(1)).create(lease);
         verify(partitionSupervisorFactory, atMost(2)).create(lease);
