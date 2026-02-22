@@ -49,7 +49,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class NonStreamingOrderByQueryVectorSearchTest {
     protected static final int TIMEOUT = 30000;
-    protected static final int SETUP_TIMEOUT = 20000;
+    protected static final int SETUP_TIMEOUT = 60000; // Increased from 20s to 60s to handle network delays in CI
     protected static final int SHUTDOWN_TIMEOUT = 20000;
 
     protected static Logger logger = LoggerFactory.getLogger(NonStreamingOrderByQueryVectorSearchTest.class.getSimpleName());

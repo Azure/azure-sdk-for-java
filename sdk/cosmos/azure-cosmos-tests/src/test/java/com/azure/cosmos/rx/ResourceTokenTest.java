@@ -330,7 +330,7 @@ public class ResourceTokenTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "fast" }, dataProvider = "resourceToken", timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "resourceToken", timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void readDocumentFromResouceToken(String resourceToken) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {

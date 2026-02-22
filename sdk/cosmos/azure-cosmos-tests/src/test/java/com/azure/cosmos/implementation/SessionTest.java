@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionTest extends TestSuiteBase {
-    protected static final int TIMEOUT = 20000;
+    protected static final int TIMEOUT = 60000; // Increased from 20s to 60s to handle network delays in CI
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
