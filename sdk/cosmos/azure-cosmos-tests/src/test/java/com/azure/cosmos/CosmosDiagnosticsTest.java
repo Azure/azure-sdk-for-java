@@ -1071,6 +1071,12 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         CosmosItemResponse<InternalObjectNode> createResponse = null;
         try {
             createResponse = containerDirect.createItem(internalObjectNode);
+            
+            // Add a small delay to ensure item creation is fully propagated
+            // This helps avoid transient failures in CI environments where
+            // the immediate read might race with replication completion
+            Thread.sleep(100);
+            
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<InternalObjectNode> readResponse =

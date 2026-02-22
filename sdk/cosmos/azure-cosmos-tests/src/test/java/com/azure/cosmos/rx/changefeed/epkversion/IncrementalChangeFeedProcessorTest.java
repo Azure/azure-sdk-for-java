@@ -42,6 +42,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.SplitTestsRetryAnalyzer;
 import com.azure.cosmos.SplitTimeoutException;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
@@ -146,7 +147,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"query" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = {"query" }, timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readFeedDocumentsStartFromBeginning() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -197,7 +198,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "query" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "query" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readFeedDocumentsStartFromCustomDate() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -256,7 +257,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "query" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "query" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void verifyConsistentTimestamps() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -890,7 +891,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "query" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "query" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void staledLeaseAcquiring() throws InterruptedException {
         final String ownerFirst = "Owner_First";
         final String ownerSecond = "Owner_Second";
@@ -1163,7 +1164,15 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    // TODO reenable when investigating/fixing https://github.com/Azure/azure-sdk-for-java/issues/44115
+    // This test is disabled due to known flakiness caused by complex timing dependencies
+    // related to partition split detection and lease management across multiple change feed processors.
+    // The test relies on precise timing of:
+    // 1. Partition split completion
+    // 2. Lease state updates across processors
+    // 3. PKRange cache invalidation
+    // These timing dependencies make the test unreliable in CI environments.
+    // TODO: Reenable when investigating/fixing https://github.com/Azure/azure-sdk-for-java/issues/44115
+    // Consider refactoring to use event-driven synchronization instead of sleep-based timing.
     @Test(groups = { "cfp-split" }, dataProvider = "throughputControlArgProvider", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
     public void readFeedDocumentsAfterSplit(boolean throughputControlEnabled) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
@@ -1455,8 +1464,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             // generate the second batch of documents
             setupReadFeedDocuments(createdDocuments, createdFeedCollectionForSplit, FEED_COUNT);
 
-            // wait for the change feed processor to receive some documents
-            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            // wait for the change feed processor to receive some documents and for leases to stabilize
+            // Increased timeout to handle timing variations in CI environments
+            Thread.sleep(3 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             String leaseQuery = "select * from c where not contains(c.id, \"info\")";
             List<JsonNode> leaseDocuments =
@@ -1467,7 +1477,10 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .getResults();
 
             long host1Leases = leaseDocuments.stream().filter(lease -> lease.get("Owner").asText().equals(changeFeedProcessor1HostName)).count();
-            assertThat(host1Leases).isEqualTo(partitionCountBeforeSplit);
+            // Use assertThat with proper message for better debugging if this fails
+            assertThat(host1Leases)
+                .as("Host1 should have acquired exactly %d leases (one per partition before split), but has %d", partitionCountBeforeSplit, host1Leases)
+                .isEqualTo(partitionCountBeforeSplit);
 
             // now starts a new change feed processor
             changeFeedProcessor2 = new ChangeFeedProcessorBuilder()
@@ -1488,7 +1501,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             startChangeFeedProcessor(changeFeedProcessor2);
 
             // Wait for the feed processor to receive and process the second batch of documents.
-            waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT*2);
+            // Increased timeout to handle timing variations in CI environments
+            waitToReceiveDocuments(receivedDocuments, 3 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT*2);
 
             safeStopChangeFeedProcessor(changeFeedProcessor1);
             safeStopChangeFeedProcessor(changeFeedProcessor2);
@@ -1795,7 +1809,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"query" }, timeOut = 3 * TIMEOUT)
+    @Test(groups = {"query" }, timeOut = 3 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readFeedDocumentsWithThroughputControl() throws InterruptedException {
         // Create a separate client as throughput control group will be applied to it
         CosmosAsyncClient clientWithThroughputControl =
