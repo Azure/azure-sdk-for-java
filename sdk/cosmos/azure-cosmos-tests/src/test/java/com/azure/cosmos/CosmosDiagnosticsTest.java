@@ -1072,10 +1072,21 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         try {
             createResponse = containerDirect.createItem(internalObjectNode);
             
-            // Add a small delay to ensure item creation is fully propagated
-            // This helps avoid transient failures in CI environments where
-            // the immediate read might race with replication completion
-            Thread.sleep(100);
+            // Verify item creation is fully propagated before testing with wrong partition key
+            // Use retry-based polling instead of fixed sleep for CI resilience
+            String itemId = BridgeInternal.getProperties(createResponse).getId();
+            int maxRetries = 5;
+            int retryCount = 0;
+            boolean itemReadable = false;
+            while (retryCount < maxRetries && !itemReadable) {
+                try {
+                    containerDirect.readItem(itemId, new PartitionKey(itemId), InternalObjectNode.class);
+                    itemReadable = true;
+                } catch (CosmosException e) {
+                    retryCount++;
+                    Thread.sleep(200);
+                }
+            }
             
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));

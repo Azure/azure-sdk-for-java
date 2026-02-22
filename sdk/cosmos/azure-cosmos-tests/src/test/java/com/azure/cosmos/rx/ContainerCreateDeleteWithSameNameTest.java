@@ -630,18 +630,28 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
 
                 container.executeBulkOperations(Flux.fromIterable(itemOperations)).blockLast();
 
-                // Add delay to ensure bulk operations are fully indexed before querying
-                // This prevents race conditions in CI where indexing may lag behind write completion
-                // Increased from 500ms to 1000ms as 500ms was still insufficient in some CI runs
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    // Restore the interrupt status before propagating as a RuntimeException
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException(e);
+                // Poll until bulk operations are fully indexed instead of using a fixed sleep
+                // This is more resilient to timing variations across CI environments
+                String query = "select * from c";
+                int maxRetries = 10;
+                int retryCount = 0;
+                boolean indexingComplete = false;
+                while (retryCount < maxRetries && !indexingComplete) {
+                    CosmosPagedFlux<TestObject> pollFlux = container.queryItems(query, TestObject.class);
+                    long count = pollFlux.byPage().flatMap(page -> Flux.fromIterable(page.getResults())).count().block();
+                    if (count >= createdItems.size()) {
+                        indexingComplete = true;
+                    } else {
+                        retryCount++;
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
 
-                String query = "select * from c";
                 CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, TestObject.class);
                 FeedResponseListValidator<TestObject> queryValidator = new FeedResponseListValidator.Builder<TestObject>()
                     .totalSize(createdItems.size())
