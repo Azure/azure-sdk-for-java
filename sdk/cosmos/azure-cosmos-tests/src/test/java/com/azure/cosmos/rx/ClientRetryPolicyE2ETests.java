@@ -787,10 +787,11 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                         false))
                 .doOnNext(diagnostics -> {
                     // since we have only injected connection delay error in one region, so we should eventually see
-                    // at least 2 regions being contacted (may be more during failover/retry)
-                    // Using >= instead of == to handle timing variations in CI environments
-                    assertThat(diagnostics.getContactedRegionNames().size()).isGreaterThanOrEqualTo(2);
-                    
+                    // 2-3 regions being contacted (at least 2, but not an excessive number during failover/retry)
+                    // Using a range instead of strict equality to handle timing variations in CI environments
+                    assertThat(diagnostics.getContactedRegionNames().size())
+                        .isGreaterThanOrEqualTo(2)
+                        .isLessThanOrEqualTo(3);
                     // Validate that the first 2 preferred regions are contacted.
                     // If fewer than 2 preferred regions are configured, skip the test to avoid hiding misconfiguration.
                     if (this.preferredRegions == null || this.preferredRegions.size() < 2) {
