@@ -36,6 +36,8 @@ import org.slf4j.Logger;
  *       disabled these; we re-enable and add them).</li>
  *   <li>Add {@code beginAnalyze} and {@code beginAnalyzeBinary} convenience overloads without a
  *       {@code stringEncoding} parameter (default utf16).</li>
+ *   <li>Add {@code beginAnalyzeBinary} overload accepting {@link com.azure.ai.contentunderstanding.models.ContentRange ContentRange}
+ *       and {@code setInputRange(ContentRange)} on {@code AnalyzeInput} for a self-documenting range API.</li>
  * </ul>
  *
  * <p><b>Scenarios and before/after</b></p>
@@ -172,6 +174,10 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // Add beginAnalyzeBinary convenience overloads (no stringEncoding)
         addBeginAnalyzeBinaryConvenienceOverloads(customization, logger);
+
+        // Add ContentRange overloads for beginAnalyzeBinary and setInputRange on AnalyzeInput
+        addContentRangeOverloads(customization, logger);
+        addContentRangeSetterToAnalyzeInput(customization, logger);
 
         // Add beginAnalyze convenience overloads (no stringEncoding)
         addBeginAnalyzeConvenienceOverloads(customization, logger);
@@ -805,7 +811,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyzeBinary(analyzerId, binaryInput, null, \"application/octet-stream\", null); }"));
+                        + "return beginAnalyzeBinary(analyzerId, binaryInput, (String) null, \"application/octet-stream\", null); }"));
 
                 // 5-param: analyzerId, binaryInput, inputRange, contentType, processingLocation
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
@@ -853,7 +859,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyzeBinary(analyzerId, binaryInput, null, \"application/octet-stream\", null); }"));
+                        + "return beginAnalyzeBinary(analyzerId, binaryInput, (String) null, \"application/octet-stream\", null); }"));
 
                 // 5-param: analyzerId, binaryInput, inputRange, contentType, processingLocation
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
@@ -880,6 +886,103 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
                         + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
                         + "return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions); }"));
+            });
+        });
+    }
+
+    /**
+     * Add beginAnalyzeBinary overload accepting ContentRange for a self-documenting range API.
+     * Adds to both sync and async clients.
+     */
+    private void addContentRangeOverloads(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding ContentRange overloads for beginAnalyzeBinary");
+
+        // Sync client
+        customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
+            ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
+            ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
+                clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
+                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .addParameter("String", "analyzerId")
+                    .addParameter("BinaryData", "binaryInput")
+                    .addParameter("ContentRange", "inputRange")
+                    .addParameter("String", "contentType")
+                    .addParameter("ProcessingLocation", "processingLocation")
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Extract content and fields from binary input. Uses default string encoding (utf16).\n\n"
+                        + "Use factory methods such as {@link ContentRange#pages(int, int)}, "
+                        + "{@link ContentRange#timeRange(long, long)}, or "
+                        + "{@link ContentRange#combine(ContentRange...)} to build the range."))
+                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                        .addBlockTag("param", "binaryInput The binary content of the document to analyze.")
+                        .addBlockTag("param", "inputRange Range of the input to analyze. Use ContentRange factory methods to build the range.")
+                        .addBlockTag("param", "contentType Request content type.")
+                        .addBlockTag("param", "processingLocation The location where the data may be processed. Set to null for service default.")
+                        .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
+                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "return beginAnalyzeBinary(analyzerId, binaryInput, "
+                        + "inputRange != null ? inputRange.toString() : null, contentType, processingLocation); }"));
+            });
+        });
+
+        // Async client
+        customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
+            ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
+            ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
+                clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
+                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .addParameter("String", "analyzerId")
+                    .addParameter("BinaryData", "binaryInput")
+                    .addParameter("ContentRange", "inputRange")
+                    .addParameter("String", "contentType")
+                    .addParameter("ProcessingLocation", "processingLocation")
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Extract content and fields from binary input. Uses default string encoding (utf16).\n\n"
+                        + "Use factory methods such as {@link ContentRange#pages(int, int)}, "
+                        + "{@link ContentRange#timeRange(long, long)}, or "
+                        + "{@link ContentRange#combine(ContentRange...)} to build the range."))
+                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                        .addBlockTag("param", "binaryInput The binary content of the document to analyze.")
+                        .addBlockTag("param", "inputRange Range of the input to analyze. Use ContentRange factory methods to build the range.")
+                        .addBlockTag("param", "contentType Request content type.")
+                        .addBlockTag("param", "processingLocation The location where the data may be processed. Set to null for service default.")
+                        .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
+                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "return beginAnalyzeBinary(analyzerId, binaryInput, "
+                        + "inputRange != null ? inputRange.toString() : null, contentType, processingLocation); }"));
+            });
+        });
+    }
+
+    /**
+     * Add setInputRange(ContentRange) overload to AnalyzeInput model class.
+     * This allows users to pass a ContentRange directly instead of a raw String.
+     */
+    private void addContentRangeSetterToAnalyzeInput(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding setInputRange(ContentRange) overload to AnalyzeInput");
+
+        customization.getClass(MODELS_PACKAGE, "AnalyzeInput").customizeAst(ast -> {
+            ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
+            ast.getClassByName("AnalyzeInput").ifPresent(clazz -> {
+                clazz.addMethod("setInputRange", Modifier.Keyword.PUBLIC)
+                    .setType("AnalyzeInput")
+                    .addParameter("ContentRange", "inputRange")
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Set the inputRange property using a {@link ContentRange} for a self-documenting API.\n\n"
+                        + "Use factory methods such as {@link ContentRange#pages(int, int)}, "
+                        + "{@link ContentRange#timeRange(long, long)}, or "
+                        + "{@link ContentRange#combine(ContentRange...)} to build the range."))
+                        .addBlockTag("param", "inputRange the range value to set, or null to clear.")
+                        .addBlockTag("return", "the AnalyzeInput object itself."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "this.inputRange = inputRange != null ? inputRange.toString() : null;"
+                        + "return this; }"));
             });
         });
     }
