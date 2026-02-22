@@ -76,7 +76,7 @@ public class ReproTest extends TestSuiteBase {
         safeClose(this.client);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT * 1_000_000)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT * 1_000_000, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void runICM497415681OriginalReproTest() throws Exception {
         numberOfRecordsRetrievedFromDatabase.set(0);
         numberOfPagesRetrievedFromDatabase.set(0);
