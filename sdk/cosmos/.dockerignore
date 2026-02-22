@@ -1,0 +1,8 @@
+**/target/
+**/.git/
+**/.dev-tracker/
+**/.vscode/
+**/*.class
+**/*.jar
+**/*.war
+**/node_modules/
