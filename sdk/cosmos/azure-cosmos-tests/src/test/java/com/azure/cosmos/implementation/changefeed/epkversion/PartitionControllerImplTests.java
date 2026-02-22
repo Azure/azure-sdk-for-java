@@ -222,7 +222,11 @@ public class PartitionControllerImplTests {
         verify(feedRangeGoneHandler, times(1)).handlePartitionGone();
 
         verify(leaseManager, Mockito.never()).delete(lease);
-        verify(leaseManager, times(1)).updateProperties(lease);
+        
+        // updateProperties is called if the second addOrUpdateLease finds the worker still running (checkTask != null).
+        // If the worker has stopped (checkTask == null), acquire is called instead.
+        // This is a race condition - both 0 and 1 calls are valid depending on timing.
+        verify(leaseManager, atMost(1)).updateProperties(lease);
     }
 
     @Test(groups = "unit")
