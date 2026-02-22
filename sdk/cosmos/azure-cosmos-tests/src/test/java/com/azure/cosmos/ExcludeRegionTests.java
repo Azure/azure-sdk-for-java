@@ -140,10 +140,10 @@ public class ExcludeRegionTests extends TestSuiteBase {
             
             try {
                 CosmosDiagnosticsContext diagnostics = this.performDocumentOperation(
-                    cosmosAsyncContainer, 
-                    OperationType.Read,  // Use read to verify replication
-                    createdItem, 
-                    null, 
+                    cosmosAsyncContainer,
+                    OperationType.Head,  // Use HEAD to verify replication with minimal payload
+                    createdItem,
+                    null,
                     INF_E2E_TIMEOUT);
                 itemReplicated = true;
             } catch (Exception e) {
