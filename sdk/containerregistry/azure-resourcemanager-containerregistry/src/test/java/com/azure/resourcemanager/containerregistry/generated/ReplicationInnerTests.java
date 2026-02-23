@@ -15,24 +15,24 @@ public final class ReplicationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":{\"displayStatus\":\"qik\",\"message\":\"bovpl\",\"timestamp\":\"2021-08-16T02:09:31Z\"},\"regionEndpointEnabled\":false,\"zoneRedundancy\":\"Disabled\"},\"location\":\"gu\",\"tags\":{\"sxnkjzkdeslpvlo\":\"mkfssxqukkfplgm\",\"baiuebbaumny\":\"wiyighxpkdw\",\"txp\":\"upedeojnabckhs\"},\"id\":\"ie\",\"name\":\"tfhvpesapskrdqmh\",\"type\":\"jdhtldwkyzxu\"}")
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"status\":{\"displayStatus\":\"hjkbegibtnmxieb\",\"message\":\"aloayqcgwrtzju\",\"timestamp\":\"2021-08-18T20:27:18Z\"},\"regionEndpointEnabled\":false,\"zoneRedundancy\":\"Disabled\"},\"location\":\"xongmtsavjcbpwxq\",\"tags\":{\"rwmdyvxqtay\":\"knftguvriuh\",\"ibycno\":\"iwwroyqbexrmc\",\"nmefqsgzvahapj\":\"v\",\"zlmwlxkvugfhz\":\"zhpvgqzcjrvxd\"},\"id\":\"vawjvzunlu\",\"name\":\"hnnpr\",\"type\":\"xipeilpjzuaejx\"}")
             .toObject(ReplicationInner.class);
-        Assertions.assertEquals("gu", model.location());
-        Assertions.assertEquals("mkfssxqukkfplgm", model.tags().get("sxnkjzkdeslpvlo"));
+        Assertions.assertEquals("xongmtsavjcbpwxq", model.location());
+        Assertions.assertEquals("knftguvriuh", model.tags().get("rwmdyvxqtay"));
         Assertions.assertFalse(model.regionEndpointEnabled());
         Assertions.assertEquals(ZoneRedundancy.DISABLED, model.zoneRedundancy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationInner model = new ReplicationInner().withLocation("gu")
-            .withTags(
-                mapOf("sxnkjzkdeslpvlo", "mkfssxqukkfplgm", "baiuebbaumny", "wiyighxpkdw", "txp", "upedeojnabckhs"))
+        ReplicationInner model = new ReplicationInner().withLocation("xongmtsavjcbpwxq")
+            .withTags(mapOf("rwmdyvxqtay", "knftguvriuh", "ibycno", "iwwroyqbexrmc", "nmefqsgzvahapj", "v",
+                "zlmwlxkvugfhz", "zhpvgqzcjrvxd"))
             .withRegionEndpointEnabled(false)
             .withZoneRedundancy(ZoneRedundancy.DISABLED);
         model = BinaryData.fromObject(model).toObject(ReplicationInner.class);
-        Assertions.assertEquals("gu", model.location());
-        Assertions.assertEquals("mkfssxqukkfplgm", model.tags().get("sxnkjzkdeslpvlo"));
+        Assertions.assertEquals("xongmtsavjcbpwxq", model.location());
+        Assertions.assertEquals("knftguvriuh", model.tags().get("rwmdyvxqtay"));
         Assertions.assertFalse(model.regionEndpointEnabled());
         Assertions.assertEquals(ZoneRedundancy.DISABLED, model.zoneRedundancy());
     }

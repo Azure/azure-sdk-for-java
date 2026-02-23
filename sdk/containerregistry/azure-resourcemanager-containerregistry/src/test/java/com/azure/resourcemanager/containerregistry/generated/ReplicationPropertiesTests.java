@@ -13,7 +13,7 @@ public final class ReplicationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"status\":{\"displayStatus\":\"ws\",\"message\":\"svlxotogtwrup\",\"timestamp\":\"2021-08-21T23:24:20Z\"},\"regionEndpointEnabled\":false,\"zoneRedundancy\":\"Enabled\"}")
+            "{\"provisioningState\":\"Failed\",\"status\":{\"displayStatus\":\"kzbbtd\",\"message\":\"mv\",\"timestamp\":\"2021-02-24T15:47:12Z\"},\"regionEndpointEnabled\":false,\"zoneRedundancy\":\"Enabled\"}")
             .toObject(ReplicationProperties.class);
         Assertions.assertFalse(model.regionEndpointEnabled());
         Assertions.assertEquals(ZoneRedundancy.ENABLED, model.zoneRedundancy());

@@ -14,13 +14,13 @@ public final class WebhookListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebhookListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"status\":\"enabled\",\"scope\":\"uyfta\",\"actions\":[\"quarantine\",\"quarantine\"],\"provisioningState\":\"Failed\"},\"location\":\"zvqtmnubexkp\",\"tags\":{\"mquxvypo\":\"mond\",\"smocmbq\":\"gkopkwhojvpajqgx\"},\"id\":\"qvmkcxo\",\"name\":\"apvhelxprgly\",\"type\":\"tddckcb\"},{\"properties\":{\"status\":\"disabled\",\"scope\":\"jxgciqibrh\",\"actions\":[\"delete\",\"delete\",\"push\",\"quarantine\"],\"provisioningState\":\"Canceled\"},\"location\":\"o\",\"tags\":{\"szdtmhrkwof\":\"bmrqyibahwfl\"},\"id\":\"yvoqa\",\"name\":\"piexpbtgiw\",\"type\":\"wo\"},{\"properties\":{\"status\":\"enabled\",\"scope\":\"hrtdtk\",\"actions\":[\"chart_push\",\"delete\"],\"provisioningState\":\"Deleting\"},\"location\":\"okulpiujwa\",\"tags\":{\"pqlpq\":\"pqiiobyuqe\",\"fbtkuwhhmhyk\":\"cciuqgbdbutau\",\"hkoymkcdyhbp\":\"joxafnndlpi\",\"reqnovvqfov\":\"kpw\"},\"id\":\"jxywsuws\",\"name\":\"rsndsytgadgvra\",\"type\":\"aeneqnzarrwl\"},{\"properties\":{\"status\":\"disabled\",\"scope\":\"fqka\",\"actions\":[\"chart_delete\"],\"provisioningState\":\"Deleting\"},\"location\":\"fpubjibwwi\",\"tags\":{\"ynfs\":\"hqkvpuvksgplsak\",\"jphuopxodlqi\":\"n\",\"slyzrpzbchckqq\":\"ntorzihleosjswsr\",\"suiizynkedyat\":\"qioxi\"},\"id\":\"wyhqmibzyhwits\",\"name\":\"ypyynpcdpumnzg\",\"type\":\"wznm\"}],\"nextLink\":\"iknsorgjh\"}")
+            "{\"value\":[{\"properties\":{\"status\":\"enabled\",\"scope\":\"gdknnqv\",\"actions\":[\"chart_push\",\"chart_push\",\"chart_push\"],\"provisioningState\":\"Updating\"},\"location\":\"rudsg\",\"tags\":{\"wjue\":\"mkycgra\"},\"id\":\"aeburuvdmo\",\"name\":\"s\",\"type\":\"zlxwabmqoefkifr\"},{\"properties\":{\"status\":\"enabled\",\"scope\":\"ujmqlgkfbtndoa\",\"actions\":[\"push\"],\"provisioningState\":\"Canceled\"},\"location\":\"ntuji\",\"tags\":{\"twwaezkojvdcpzf\":\"ed\"},\"id\":\"qouicybxarzgsz\",\"name\":\"foxciq\",\"type\":\"p\"},{\"properties\":{\"status\":\"enabled\",\"scope\":\"ciodhkhaz\",\"actions\":[\"delete\",\"delete\",\"quarantine\"],\"provisioningState\":\"Succeeded\"},\"location\":\"lwntoego\",\"tags\":{\"szzcmrvexztv\":\"bwh\"},\"id\":\"t\",\"name\":\"gsfraoyzkoow\",\"type\":\"lmnguxaw\"},{\"properties\":{\"status\":\"disabled\",\"scope\":\"yuuximerqfobwyzn\",\"actions\":[\"delete\",\"push\"],\"provisioningState\":\"Deleting\"},\"location\":\"pfhpagmhrskdsnfd\",\"tags\":{\"wpusdsttwvogv\":\"akgtdlmkkzevdlh\",\"qqmoaku\":\"bejdcn\",\"zr\":\"gm\",\"enuuzkopbm\":\"rdgrtw\"},\"id\":\"nrfdw\",\"name\":\"yuhhziu\",\"type\":\"efozbhdms\"}],\"nextLink\":\"mzqhoftrmaequi\"}")
             .toObject(WebhookListResult.class);
-        Assertions.assertEquals("zvqtmnubexkp", model.value().get(0).location());
-        Assertions.assertEquals("mond", model.value().get(0).tags().get("mquxvypo"));
+        Assertions.assertEquals("rudsg", model.value().get(0).location());
+        Assertions.assertEquals("mkycgra", model.value().get(0).tags().get("wjue"));
         Assertions.assertEquals(WebhookStatus.ENABLED, model.value().get(0).status());
-        Assertions.assertEquals("uyfta", model.value().get(0).scope());
-        Assertions.assertEquals(WebhookAction.QUARANTINE, model.value().get(0).actions().get(0));
-        Assertions.assertEquals("iknsorgjh", model.nextLink());
+        Assertions.assertEquals("gdknnqv", model.value().get(0).scope());
+        Assertions.assertEquals(WebhookAction.CHART_PUSH, model.value().get(0).actions().get(0));
+        Assertions.assertEquals("mzqhoftrmaequi", model.nextLink());
     }
 }

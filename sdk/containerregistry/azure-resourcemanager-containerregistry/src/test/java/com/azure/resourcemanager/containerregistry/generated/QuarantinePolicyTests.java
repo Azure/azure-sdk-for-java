@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class QuarantinePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuarantinePolicy model = BinaryData.fromString("{\"status\":\"enabled\"}").toObject(QuarantinePolicy.class);
-        Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
+        QuarantinePolicy model = BinaryData.fromString("{\"status\":\"disabled\"}").toObject(QuarantinePolicy.class);
+        Assertions.assertEquals(PolicyStatus.DISABLED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuarantinePolicy model = new QuarantinePolicy().withStatus(PolicyStatus.ENABLED);
+        QuarantinePolicy model = new QuarantinePolicy().withStatus(PolicyStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(QuarantinePolicy.class);
-        Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
+        Assertions.assertEquals(PolicyStatus.DISABLED, model.status());
     }
 }
