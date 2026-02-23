@@ -531,7 +531,7 @@ public class BlobAsyncClientBase {
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), false));
                 } else {
-                    return Mono.error(e);
+                    return monoError(LOGGER, e);
                 }
             });
     }
@@ -724,8 +724,7 @@ public class BlobAsyncClientBase {
             }
         }, (pollingContext, firstResponse) -> {
             if (firstResponse == null || firstResponse.getValue() == null) {
-                return Mono.error(LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                return monoError(LOGGER, new IllegalArgumentException("Cannot cancel a poll response that never started."));
             }
             final String copyIdentifier = firstResponse.getValue().getCopyId();
 
@@ -1185,13 +1184,11 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobDownloadStreamOptions options) {
         try {
-            return withContext(context -> {
-                if (options == null) {
-                    return downloadStreamWithResponse(null, null, null, false, context);
-                }
-                return downloadStreamWithResponse(options.getRange(), options.getDownloadRetryOptions(),
-                    options.getRequestConditions(), options.isRetrieveContentRangeMd5(), context);
-            });
+            if (options == null) {
+                return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
+            }
+            return withContext(context -> downloadStreamWithResponse(options.getRange(), options.getDownloadRetryOptions(),
+                    options.getRequestConditions(), options.isRetrieveContentRangeMd5(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1247,19 +1244,14 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(BlobDownloadContentOptions options) {
         try {
-            return withContext(context -> {
-                if (options == null) {
-                    return downloadStreamWithResponse(null, null, null, false, context)
-                        .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                            .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
-                                r.getHeaders(), data, r.getDeserializedHeaders())));
-                }
-                return downloadStreamWithResponse(options.getRange(), options.getDownloadRetryOptions(),
+            if (options == null) {
+                return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
+            }
+            return withContext(context -> downloadStreamWithResponse(options.getRange(), options.getDownloadRetryOptions(),
                     options.getRequestConditions(), options.isRetrieveContentRangeMd5(), context)
                         .flatMap(r -> BinaryData.fromFlux(r.getValue())
                             .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
-                                r.getHeaders(), data, r.getDeserializedHeaders())));
-            });
+                                r.getHeaders(), data, r.getDeserializedHeaders()))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

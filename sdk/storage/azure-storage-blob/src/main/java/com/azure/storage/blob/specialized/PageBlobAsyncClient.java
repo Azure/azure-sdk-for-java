@@ -59,6 +59,7 @@ import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -500,7 +501,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         try {
             return withContext(
-                context -> uploadPagesWithResponse(pageRange, body, contentMd5, pageBlobRequestConditions, context));
+                context -> uploadPagesWithResponse(pageRange, body, contentMd5, pageBlobRequestConditions, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -514,19 +515,22 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageBlobUploadPagesOptions options) {
-        if (options == null || options.getBodyFlux() == null) {
-            return Mono.error(new NullPointerException("'options' and 'options.getBodyFlux()' cannot be null."));
+        if (options == null) {
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
+        }
+        if (options.getBodyFlux() == null) {
+            return monoError(LOGGER, new IllegalArgumentException("'options.getBodyFlux()' cannot be null."));
         }
         try {
             return withContext(context -> uploadPagesWithResponse(options.getPageRange(), options.getBodyFlux(),
-                options.getContentMd5(), options.getRequestConditions(), context));
+                options.getContentMd5(), options.getRequestConditions(), options.getRequestChecksumAlgorithm(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body, byte[] contentMd5,
-        PageBlobRequestConditions pageBlobRequestConditions, Context context) {
+        PageBlobRequestConditions pageBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm, Context context) {
         pageBlobRequestConditions
             = pageBlobRequestConditions == null ? new PageBlobRequestConditions() : pageBlobRequestConditions;
 

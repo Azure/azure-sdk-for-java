@@ -473,10 +473,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(AppendBlobAppendBlockOptions options) {
         try {
             if (options == null) {
-                return Mono.error(new NullPointerException("'options' cannot be null."));
+                return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
             }
             if (options.getBodyFlux() == null) {
-                return Mono.error(new IllegalArgumentException(
+                return monoError(LOGGER, new IllegalArgumentException(
                     "AppendBlobAppendBlockOptions must be constructed with Flux for async client."));
             }
             return withContext(context -> appendBlockWithResponse(options.getBodyFlux(), options.getLength(), options.getContentMd5(),
@@ -490,7 +490,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         AppendBlobRequestConditions appendBlobRequestConditions, Context context) {
 
         if (data == null) {
-            return Mono.error(new NullPointerException("'data' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
 
         appendBlobRequestConditions

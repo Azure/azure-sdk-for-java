@@ -552,12 +552,12 @@ public final class PageBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context) {
-        Objects.requireNonNull(body, "'body' cannot be null.");
+        StorageImplUtils.assertNotNull("body", body);
         final long length = pageRange.getEnd() - pageRange.getStart() + 1;
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES, true);
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange, fbb, contentMd5,
-            pageBlobRequestConditions, context);
+            pageBlobRequestConditions, null, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -572,20 +572,8 @@ public final class PageBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> uploadPagesWithResponse(PageBlobUploadPagesOptions options, Duration timeout,
         Context context) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        Flux<ByteBuffer> bodyFlux = options.getBodyFlux();
-        if (bodyFlux == null && options.getBodyStream() != null) {
-            final long length = options.getPageRange().getEnd() - options.getPageRange().getStart() + 1;
-            bodyFlux = Utility.convertStreamToByteBuffer(options.getBodyStream(), length, PAGE_BYTES, true);
+        // wip isbr
         }
-        if (bodyFlux == null) {
-            throw LOGGER
-                .logExceptionAsError(new NullPointerException("'options' must have body (Flux or InputStream)."));
-        }
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(options.getPageRange(),
-            bodyFlux, options.getContentMd5(), options.getRequestConditions(), context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
-    }
 
     /**
      * Writes one or more pages from the source page blob to this page blob. The write size must be a multiple of 512.
