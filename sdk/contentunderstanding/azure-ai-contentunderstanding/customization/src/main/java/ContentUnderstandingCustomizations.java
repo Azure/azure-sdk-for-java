@@ -787,14 +787,15 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Add beginAnalyzeBinary convenience overloads without stringEncoding.
-     * Adds 2-param and 5-param overloads that default utf16.
+     * Add beginAnalyzeBinary 2-param convenience overloads without stringEncoding.
+     * 2-param overloads delegate to the ContentRange overload (added by addContentRangeOverloads).
      */
     private void addBeginAnalyzeBinaryConvenienceOverloads(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding beginAnalyzeBinary convenience overloads (2/5 param)");
+        logger.info("Adding beginAnalyzeBinary convenience overloads (2 param)");
 
         // Sync client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
+            ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
                 // 2-param: analyzerId, binaryInput
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
@@ -811,38 +812,13 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyzeBinary(analyzerId, binaryInput, (String) null, \"application/octet-stream\", null); }"));
-
-                // 5-param: analyzerId, binaryInput, contentRange, contentType, processingLocation
-                clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
-                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
-                    .addParameter("String", "analyzerId")
-                    .addParameter("BinaryData", "binaryInput")
-                    .addParameter("String", "contentRange")
-                    .addParameter("String", "contentType")
-                    .addParameter("ProcessingLocation", "processingLocation")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Extract content and fields from binary input. Uses default string encoding (utf16)."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "binaryInput The binary content of the document to analyze.")
-                        .addBlockTag("param", "contentRange Range of the input to analyze (ex. 1-3,5,9-). Document content uses 1-based page numbers; audio visual uses milliseconds.")
-                        .addBlockTag("param", "contentType Request content type.")
-                        .addBlockTag("param", "processingLocation The location where the data may be processed. Set to null for service default.")
-                        .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "RequestOptions requestOptions = new RequestOptions();"
-                        + "if (contentRange != null) { requestOptions.addQueryParam(\"range\", contentRange, false); }"
-                        + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
-                        + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                        + "return serviceClient.beginAnalyzeBinaryWithModel(analyzerId, contentType, binaryInput, requestOptions); }"));
+                        + "return beginAnalyzeBinary(analyzerId, binaryInput, (ContentRange) null, \"application/octet-stream\", null); }"));
             });
         });
 
         // Async client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
+            ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
             ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
                 // 2-param: analyzerId, binaryInput
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
@@ -859,39 +835,14 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyzeBinary(analyzerId, binaryInput, (String) null, \"application/octet-stream\", null); }"));
-
-                // 5-param: analyzerId, binaryInput, contentRange, contentType, processingLocation
-                clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
-                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
-                    .addParameter("String", "analyzerId")
-                    .addParameter("BinaryData", "binaryInput")
-                    .addParameter("String", "contentRange")
-                    .addParameter("String", "contentType")
-                    .addParameter("ProcessingLocation", "processingLocation")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Extract content and fields from binary input. Uses default string encoding (utf16)."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "binaryInput The binary content of the document to analyze.")
-                        .addBlockTag("param", "contentRange Range of the input to analyze (ex. 1-3,5,9-). Document content uses 1-based page numbers; audio visual uses milliseconds.")
-                        .addBlockTag("param", "contentType Request content type.")
-                        .addBlockTag("param", "processingLocation The location where the data may be processed. Set to null for service default.")
-                        .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "RequestOptions requestOptions = new RequestOptions();"
-                        + "if (contentRange != null) { requestOptions.addQueryParam(\"range\", contentRange, false); }"
-                        + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
-                        + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                        + "return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions); }"));
+                        + "return beginAnalyzeBinary(analyzerId, binaryInput, (ContentRange) null, \"application/octet-stream\", null); }"));
             });
         });
     }
 
     /**
      * Add beginAnalyzeBinary overload accepting ContentRange for a self-documenting range API.
+     * This is the primary convenience overload — the 2-param overload delegates here.
      * Adds to both sync and async clients.
      */
     private void addContentRangeOverloads(LibraryCustomization customization, Logger logger) {
@@ -916,15 +867,18 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "{@link ContentRange#combine(ContentRange...)} to build the range."))
                         .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
                         .addBlockTag("param", "binaryInput The binary content of the document to analyze.")
-                        .addBlockTag("param", "contentRange Range of the input to analyze. Use ContentRange factory methods to build the range.")
+                        .addBlockTag("param", "contentRange Range of the input to analyze. Use ContentRange factory methods to build the range, or null to skip.")
                         .addBlockTag("param", "contentType Request content type.")
                         .addBlockTag("param", "processingLocation The location where the data may be processed. Set to null for service default.")
                         .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyzeBinary(analyzerId, binaryInput, "
-                        + "contentRange != null ? contentRange.toString() : null, contentType, processingLocation); }"));
+                        + "RequestOptions requestOptions = new RequestOptions();"
+                        + "if (contentRange != null) { requestOptions.addQueryParam(\"range\", contentRange.toString(), false); }"
+                        + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
+                        + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
+                        + "return serviceClient.beginAnalyzeBinaryWithModel(analyzerId, contentType, binaryInput, requestOptions); }"));
             });
         });
 
@@ -947,15 +901,18 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "{@link ContentRange#combine(ContentRange...)} to build the range."))
                         .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
                         .addBlockTag("param", "binaryInput The binary content of the document to analyze.")
-                        .addBlockTag("param", "contentRange Range of the input to analyze. Use ContentRange factory methods to build the range.")
+                        .addBlockTag("param", "contentRange Range of the input to analyze. Use ContentRange factory methods to build the range, or null to skip.")
                         .addBlockTag("param", "contentType Request content type.")
                         .addBlockTag("param", "processingLocation The location where the data may be processed. Set to null for service default.")
                         .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyzeBinary(analyzerId, binaryInput, "
-                        + "contentRange != null ? contentRange.toString() : null, contentType, processingLocation); }"));
+                        + "RequestOptions requestOptions = new RequestOptions();"
+                        + "if (contentRange != null) { requestOptions.addQueryParam(\"range\", contentRange.toString(), false); }"
+                        + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
+                        + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
+                        + "return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions); }"));
             });
         });
     }

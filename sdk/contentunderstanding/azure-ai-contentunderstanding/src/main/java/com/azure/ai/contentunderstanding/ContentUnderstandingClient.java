@@ -2037,34 +2037,7 @@ public final class ContentUnderstandingClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput) {
-        return beginAnalyzeBinary(analyzerId, binaryInput, (String) null, "application/octet-stream", null);
-    }
-
-    /**
-     * Extract content and fields from binary input. Uses default string encoding (utf16).
-     *
-     * @param analyzerId The unique identifier of the analyzer.
-     * @param binaryInput The binary content of the document to analyze.
-     * @param contentRange Range of the input to analyze (ex. 1-3,5,9-). Document content uses 1-based page numbers;
-     * audio visual uses milliseconds.
-     * @param contentType Request content type.
-     * @param processingLocation The location where the data may be processed. Set to null for service default.
-     * @return the {@link SyncPoller} for polling of the analyze operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
-        BinaryData binaryInput, String contentRange, String contentType, ProcessingLocation processingLocation) {
-        RequestOptions requestOptions = new RequestOptions();
-        if (contentRange != null) {
-            requestOptions.addQueryParam("range", contentRange, false);
-        }
-        if (processingLocation != null) {
-            requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
-        }
-        requestOptions.addQueryParam("stringEncoding", "utf16", false);
-        return serviceClient.beginAnalyzeBinaryWithModel(analyzerId, contentType, binaryInput, requestOptions);
+        return beginAnalyzeBinary(analyzerId, binaryInput, (ContentRange) null, "application/octet-stream", null);
     }
 
     /**
@@ -2075,7 +2048,8 @@ public final class ContentUnderstandingClient {
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param binaryInput The binary content of the document to analyze.
-     * @param contentRange Range of the input to analyze. Use ContentRange factory methods to build the range.
+     * @param contentRange Range of the input to analyze. Use ContentRange factory methods to build the range, or null
+     * to skip.
      * @param contentType Request content type.
      * @param processingLocation The location where the data may be processed. Set to null for service default.
      * @return the {@link SyncPoller} for polling of the analyze operation.
@@ -2085,8 +2059,15 @@ public final class ContentUnderstandingClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput, ContentRange contentRange, String contentType, ProcessingLocation processingLocation) {
-        return beginAnalyzeBinary(analyzerId, binaryInput, contentRange != null ? contentRange.toString() : null,
-            contentType, processingLocation);
+        RequestOptions requestOptions = new RequestOptions();
+        if (contentRange != null) {
+            requestOptions.addQueryParam("range", contentRange.toString(), false);
+        }
+        if (processingLocation != null) {
+            requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
+        }
+        requestOptions.addQueryParam("stringEncoding", "utf16", false);
+        return serviceClient.beginAnalyzeBinaryWithModel(analyzerId, contentType, binaryInput, requestOptions);
     }
 
     /**
