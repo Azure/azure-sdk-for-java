@@ -136,8 +136,9 @@ If you prefer using the [OpenAI official Java client library][openai_java_sdk] i
 
 ```java com.azure.ai.agents.openai_official_library
 OpenAIClient client = OpenAIOkHttpClient.builder()
+    .baseUrl(endpoint.endsWith("/") ? endpoint + "openai/v1" : endpoint + "/openai/v1")
     .credential(BearerTokenCredential.create(AuthenticationUtil.getBearerTokenSupplier(
-            new DefaultAzureCredentialBuilder().build(), "https://ai.azure.com/.default")))
+        new DefaultAzureCredentialBuilder().build(), "https://ai.azure.com/.default")))
     .build();
 
 ResponseCreateParams responseRequest = new ResponseCreateParams.Builder()
@@ -147,6 +148,8 @@ ResponseCreateParams responseRequest = new ResponseCreateParams.Builder()
 
 Response result = client.responses().create(responseRequest);
 ```
+
+Remember to adjust your base URL so that your AI Foundry project `endpoint`'s path ends with `openai/v1` like it's shown in the above code snippet.
 
 ## Examples
 
