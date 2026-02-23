@@ -17,8 +17,8 @@
   <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-ai-contentunderstanding;current} -->
   <packaging>jar</packaging>
 
-  <name>Azure Content Understanding client library for Java</name>
-  <description>This package contains the Azure Content Understanding in Foundry Tools client library.</description>
+  <name>Microsoft Azure client library for Azure Content Understanding in Foundry Tools</name>
+  <description>This package contains the Microsoft Azure Content Understanding in Foundry Tools client library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
