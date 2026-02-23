@@ -3,16 +3,11 @@
 
 package com.azure.ai.projects.implementation;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.util.Context;
+import com.azure.core.credential.TokenRequestContext;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 /**
@@ -28,15 +23,18 @@ public final class TokenUtils {
      * @return token supplier callback
      */
     public static Supplier<String> getBearerTokenSupplier(TokenCredential tokenCredential, String... scopes) {
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new BearerTokenAuthenticationPolicy(tokenCredential, scopes)).build();
+        // Return a lazy supplier that fetches a fresh token on each invocation.
+        // The Stainless OpenAI client calls this supplier to populate its Authorization header.
         return () -> {
-            // This request will never need to go anywhere; it is simply to cause the policy to interact with
-            // the user's credential
-            HttpRequest req = new HttpRequest(HttpMethod.GET, "https://www.example.com");
-            try (HttpResponse res = pipeline.sendSync(req, Context.NONE)) {
-                return res.getRequest().getHeaders().get(HttpHeaderName.AUTHORIZATION).getValue().split(" ")[1];
-            }
+            // Build a request context with the required scopes (e.g. "https://cognitiveservices.azure.com/.default")
+            TokenRequestContext tokenRequestContext = new TokenRequestContext();
+            tokenRequestContext.setScopes(Arrays.asList(scopes));
+
+            // Obtain the token synchronously from the Azure credential (DefaultAzureCredential, etc.).
+            // This delegates all caching and refresh logic to the credential implementation itself,
+            // avoiding the need to construct an HttpPipeline or issue a dummy HTTP request.
+            AccessToken accessToken = tokenCredential.getTokenSync(tokenRequestContext);
+            return accessToken.getToken();
         };
     }
 }

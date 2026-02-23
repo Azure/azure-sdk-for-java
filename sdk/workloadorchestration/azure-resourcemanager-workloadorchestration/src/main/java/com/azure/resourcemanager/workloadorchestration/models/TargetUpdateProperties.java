@@ -234,8 +234,13 @@ public final class TargetUpdateProperties implements JsonSerializable<TargetUpda
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("contextId", this.contextId);
-        jsonWriter.writeMapField("targetSpecification", this.targetSpecification,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("targetSpecification", this.targetSpecification, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("hierarchyLevel", this.hierarchyLevel);
         jsonWriter.writeStringField("solutionScope", this.solutionScope);
