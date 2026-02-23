@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.memory_stores;
+package com.azure.ai.agents.memory;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.MemoryStoresClient;
