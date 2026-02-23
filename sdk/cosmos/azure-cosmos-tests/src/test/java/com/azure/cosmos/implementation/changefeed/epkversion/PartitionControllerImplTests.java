@@ -217,9 +217,9 @@ public class PartitionControllerImplTests {
         verify(leaseManager, atMost(2)).acquire(any(ServiceItemLeaseV1.class));
         verify(partitionSupervisorFactory, atLeast(1)).create(lease);
         verify(partitionSupervisorFactory, atMost(2)).create(lease);
-        verify(leaseManager, atLeast(1)).release(lease);
+        verify(leaseManager, timeout(2000).atLeast(1)).release(lease);
         verify(leaseManager, atMost(2)).release(lease);
-        verify(feedRangeGoneHandler, times(1)).handlePartitionGone();
+        verify(feedRangeGoneHandler, timeout(2000).times(1)).handlePartitionGone();
 
         verify(leaseManager, Mockito.never()).delete(lease);
         
