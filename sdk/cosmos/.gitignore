@@ -2,27 +2,3 @@
 
 metastore_db/*
 spark-warehouse/*
-
-# Personal dev workflow (not committed)
-.vscode/
-.dev-tracker/
-.github/copilot-instructions.md
-openspec/
-
-# Scratch notes (personal, not committed)
-THIN_CLIENT_VECTOR_SEARCH_SETUP.md
-THREAD_SAFE_INTERCEPTOR.md
-barrierForGlobalStrong-sequence.md
-
-# Credentials / local config
-cosmos-v4.properties
-.env
-
-# Docker network fault testing infra (manual, not committed)
-.dockerignore
-azure-cosmos-tests/Dockerfile.netem
-azure-cosmos-tests/run-netem-tests.sh
-azure-cosmos-tests/setup-dummy-buildtools.sh
-azure-cosmos-tests/src/test/resources/netem-only-testng.xml
-azure-cosmos-tests/src/test/resources/manual-thinclient-network-delay-testng.xml
-azure-cosmos-tests/src/test/java/com/azure/cosmos/faultinjection/ManualNetworkDelayConnectionLifecycleTests.java
