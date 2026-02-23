@@ -5,10 +5,13 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Cron based trigger.
@@ -38,23 +41,13 @@ public final class CronTrigger extends Trigger {
      * Start time for the cron schedule in ISO 8601 format.
      */
     @Generated
-    private String startTime;
+    private OffsetDateTime startTime;
 
     /*
      * End time for the cron schedule in ISO 8601 format.
      */
     @Generated
-    private String endTime;
-
-    /**
-     * Creates an instance of CronTrigger class.
-     *
-     * @param expression the expression value to set.
-     */
-    @Generated
-    public CronTrigger(String expression) {
-        this.expression = expression;
-    }
+    private OffsetDateTime endTime;
 
     /**
      * Get the type property: Type of the trigger.
@@ -105,20 +98,8 @@ public final class CronTrigger extends Trigger {
      * @return the startTime value.
      */
     @Generated
-    public String getStartTime() {
+    public OffsetDateTime getStartTime() {
         return this.startTime;
-    }
-
-    /**
-     * Set the startTime property: Start time for the cron schedule in ISO 8601 format.
-     *
-     * @param startTime the startTime value to set.
-     * @return the CronTrigger object itself.
-     */
-    @Generated
-    public CronTrigger setStartTime(String startTime) {
-        this.startTime = startTime;
-        return this;
     }
 
     /**
@@ -127,20 +108,8 @@ public final class CronTrigger extends Trigger {
      * @return the endTime value.
      */
     @Generated
-    public String getEndTime() {
+    public OffsetDateTime getEndTime() {
         return this.endTime;
-    }
-
-    /**
-     * Set the endTime property: End time for the cron schedule in ISO 8601 format.
-     *
-     * @param endTime the endTime value to set.
-     * @return the CronTrigger object itself.
-     */
-    @Generated
-    public CronTrigger setEndTime(String endTime) {
-        this.endTime = endTime;
-        return this;
     }
 
     /**
@@ -153,8 +122,10 @@ public final class CronTrigger extends Trigger {
         jsonWriter.writeStringField("expression", this.expression);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("timeZone", this.timeZone);
-        jsonWriter.writeStringField("startTime", this.startTime);
-        jsonWriter.writeStringField("endTime", this.endTime);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
         return jsonWriter.writeEndObject();
     }
 
@@ -173,8 +144,8 @@ public final class CronTrigger extends Trigger {
             String expression = null;
             TriggerType type = TriggerType.CRON;
             String timeZone = null;
-            String startTime = null;
-            String endTime = null;
+            OffsetDateTime startTime = null;
+            OffsetDateTime endTime = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -185,9 +156,11 @@ public final class CronTrigger extends Trigger {
                 } else if ("timeZone".equals(fieldName)) {
                     timeZone = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    startTime = reader.getString();
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    endTime = reader.getString();
+                    endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
@@ -199,5 +172,39 @@ public final class CronTrigger extends Trigger {
             deserializedCronTrigger.endTime = endTime;
             return deserializedCronTrigger;
         });
+    }
+
+    /**
+     * Creates an instance of CronTrigger class.
+     *
+     * @param expression the expression value to set.
+     */
+    @Generated
+    public CronTrigger(String expression) {
+        this.expression = expression;
+    }
+
+    /**
+     * Set the startTime property: Start time for the cron schedule in ISO 8601 format.
+     *
+     * @param startTime the startTime value to set.
+     * @return the CronTrigger object itself.
+     */
+    @Generated
+    public CronTrigger setStartTime(OffsetDateTime startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    /**
+     * Set the endTime property: End time for the cron schedule in ISO 8601 format.
+     *
+     * @param endTime the endTime value to set.
+     * @return the CronTrigger object itself.
+     */
+    @Generated
+    public CronTrigger setEndTime(OffsetDateTime endTime) {
+        this.endTime = endTime;
+        return this;
     }
 }

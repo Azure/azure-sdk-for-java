@@ -99,8 +99,8 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> getEvaluationTaxonomyWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getEvaluationTaxonomyWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -166,8 +166,8 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> listEvaluationTaxonomies(RequestOptions requestOptions) {
+        return this.serviceClient.listEvaluationTaxonomiesAsync(requestOptions);
     }
 
     /**
@@ -183,8 +183,8 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(name, requestOptions);
+    public Mono<Response<Void>> deleteEvaluationTaxonomyWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.deleteEvaluationTaxonomyWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -288,8 +288,9 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponse(String name, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponseAsync(name, body, requestOptions);
+    public Mono<Response<BinaryData>> createEvaluationTaxonomyWithResponse(String name, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createEvaluationTaxonomyWithResponseAsync(name, body, requestOptions);
     }
 
     /**
@@ -393,8 +394,9 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWithResponse(String name, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponseAsync(name, body, requestOptions);
+    public Mono<Response<BinaryData>> updateEvaluationTaxonomyWithResponse(String name, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateEvaluationTaxonomyWithResponseAsync(name, body, requestOptions);
     }
 
     /**
@@ -411,10 +413,10 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluationTaxonomy> get(String name) {
-        // Generated convenience method for getWithResponse
+    public Mono<EvaluationTaxonomy> getEvaluationTaxonomy(String name) {
+        // Generated convenience method for getEvaluationTaxonomyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getEvaluationTaxonomyWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluationTaxonomy.class));
     }
 
@@ -433,8 +435,8 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluationTaxonomy> list(String inputName, String inputType) {
-        // Generated convenience method for list
+    public PagedFlux<EvaluationTaxonomy> listEvaluationTaxonomies(String inputName, String inputType) {
+        // Generated convenience method for listEvaluationTaxonomies
         RequestOptions requestOptions = new RequestOptions();
         if (inputName != null) {
             requestOptions.addQueryParam("inputName", inputName, false);
@@ -442,7 +444,7 @@ public final class EvaluationTaxonomiesAsyncClient {
         if (inputType != null) {
             requestOptions.addQueryParam("inputType", inputType, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listEvaluationTaxonomies(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -469,10 +471,10 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluationTaxonomy> list() {
-        // Generated convenience method for list
+    public PagedFlux<EvaluationTaxonomy> listEvaluationTaxonomies() {
+        // Generated convenience method for listEvaluationTaxonomies
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listEvaluationTaxonomies(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -501,10 +503,10 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(String name) {
-        // Generated convenience method for deleteWithResponse
+    public Mono<Void> deleteEvaluationTaxonomy(String name) {
+        // Generated convenience method for deleteEvaluationTaxonomyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteEvaluationTaxonomyWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -522,10 +524,11 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluationTaxonomy> create(String name, EvaluationTaxonomy body) {
-        // Generated convenience method for createWithResponse
+    public Mono<EvaluationTaxonomy> createEvaluationTaxonomy(String name, EvaluationTaxonomy body) {
+        // Generated convenience method for createEvaluationTaxonomyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(name, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+        return createEvaluationTaxonomyWithResponse(name, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluationTaxonomy.class));
     }
 
@@ -544,10 +547,11 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluationTaxonomy> update(String name, EvaluationTaxonomy body) {
-        // Generated convenience method for updateWithResponse
+    public Mono<EvaluationTaxonomy> updateEvaluationTaxonomy(String name, EvaluationTaxonomy body) {
+        // Generated convenience method for updateEvaluationTaxonomyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateWithResponse(name, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+        return updateEvaluationTaxonomyWithResponse(name, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluationTaxonomy.class));
     }
 }
