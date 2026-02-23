@@ -84,6 +84,22 @@ OpenAIClient openAIClient = builder.buildOpenAIClient();
 OpenAIClientAsync openAIClientAsync = builder.buildOpenAIAsyncClient();
 ```
 
+### Preview operation groups and opt-in flags
+
+Several operation groups in the AI Projects client library are in **preview** and require the `Foundry-Features` HTTP header for opt-in. The SDK automatically sets this header on every request for the following sub-clients:
+
+| Sub-client | Opt-in flag |
+|---|---|
+| `EvaluatorsClient` | `Evaluations=V1Preview` |
+| `EvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
+| `InsightsClient` | `Insights=V1Preview` |
+| `RedTeamsClient` | `RedTeams=V1Preview` |
+| `SchedulesClient` | `Schedules=V1Preview` |
+
+The `EvaluationRulesClient` also supports the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling `createOrUpdateEvaluationRule()`.
+
+The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `CONTAINER_AGENTS_V1_PREVIEW`, `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
+
 ## Examples
 
 ### Connections operations
