@@ -39,6 +39,7 @@ import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -46,7 +47,6 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
@@ -475,36 +475,15 @@ public final class AppendBlobClient extends BlobClientBase {
     }
 
     /**
-     * Commits a new block of data to the end of the existing append blob with options.
-     *
-     * @param options {@link AppendBlobAppendBlockOptions} containing the block data.
-     * @param timeout An optional timeout value.
-     * @param context Additional context.
-     * @return The information of the append blob operation.
-     * @throws NullPointerException If {@code options} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppendBlobItem> appendBlockWithResponse(AppendBlobAppendBlockOptions options, Duration timeout,
-        Context context) {
-        StorageImplUtils.assertNotNull("options", options);
-        if (options.getBodyStream() == null) {
-            throw new IllegalArgumentException(
-                "AppendBlobAppendBlockOptions must be constructed with InputStream for sync client.");
-        }
-        return appendBlockWithResponse(options.getBodyStream(), options.getLength(), options.getContentMd5(),
-            options.getRequestConditions(), options.getRequestChecksumAlgorithm(), timeout, context);
-    }
-
-    /**
      * Commits a new block of data to the end of the existing append blob.
-      * <p>Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * <p>Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.</p>
      *
      * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
      * size is 4 MB. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
      *
-      * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-byte-AppendBlobRequestConditions-Duration-Context -->
      * <pre>
@@ -542,16 +521,31 @@ public final class AppendBlobClient extends BlobClientBase {
         return appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, null, timeout, context);
     }
 
+    /**
+     * Commits a new block of data to the end of the existing append blob with options.
+     *
+     * @param options {@link AppendBlobAppendBlockOptions} containing the block data.
+     * @param timeout An optional timeout value.
+     * @param context Additional context.
+     * @return The information of the append blob operation.
+     * @throws NullPointerException If {@code options} is null.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
-        AppendBlobRequestConditions appendBlobRequestConditions,
-        com.azure.storage.common.StorageChecksumAlgorithm requestChecksumAlgorithm, Duration timeout, Context context) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
-        Flux<ByteBuffer> fbb;
+    public Response<AppendBlobItem> appendBlockWithResponse(AppendBlobAppendBlockOptions options, Duration timeout,
+        Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        if (options.getBodyStream() == null) {
+            throw new IllegalArgumentException(
+                "AppendBlobAppendBlockOptions must be constructed with InputStream for sync client.");
+        }
+        return appendBlockWithResponse(options.getBodyStream(), options.getLength(), options.getContentMd5(),
+            options.getRequestConditions(), options.getRequestChecksumAlgorithm(), timeout, context);
+    }
 
-        // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service versions
-        // support up to 4MB
-        fbb = Utility.convertStreamToByteBuffer(data, length, getMaxAppendBlockBytes(), true);
+    private Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
+        AppendBlobRequestConditions appendBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm, Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("data", data);
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, getMaxAppendBlockBytes(), true);
 
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb, length, contentMd5,
             appendBlobRequestConditions, requestChecksumAlgorithm, context);

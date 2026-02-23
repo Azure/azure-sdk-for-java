@@ -1184,11 +1184,9 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobDownloadStreamOptions options) {
         try {
-            if (options == null) {
-                return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
-            }
-            return withContext(context -> downloadStreamWithResponse(options.getRange(), options.getDownloadRetryOptions(),
-                    options.getRequestConditions(), options.isRetrieveContentRangeMd5(), context));
+            BlobDownloadStreamOptions finalOptions = options == null ? new BlobDownloadStreamOptions() : options;
+            return withContext(context -> downloadStreamWithResponse(finalOptions.getRange(), finalOptions.getDownloadRetryOptions(),
+                    finalOptions.getRequestConditions(), finalOptions.isRetrieveContentRangeMd5(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1244,14 +1242,12 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(BlobDownloadContentOptions options) {
         try {
-            if (options == null) {
-                return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
-            }
-            return withContext(context -> downloadStreamWithResponse(options.getRange(), options.getDownloadRetryOptions(),
-                    options.getRequestConditions(), options.isRetrieveContentRangeMd5(), context)
-                        .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                            .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
-                                r.getHeaders(), data, r.getDeserializedHeaders()))));
+            BlobDownloadContentOptions finalOptions = options == null ? new BlobDownloadContentOptions() : options;
+            return withContext(context -> downloadStreamWithResponse(finalOptions.getRange(), finalOptions.getDownloadRetryOptions(),
+                finalOptions.getRequestConditions(), finalOptions.isRetrieveContentRangeMd5(), context)
+                    .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                        .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
+                            r.getHeaders(), data, r.getDeserializedHeaders()))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

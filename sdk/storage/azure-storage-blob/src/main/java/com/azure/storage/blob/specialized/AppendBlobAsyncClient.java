@@ -39,6 +39,7 @@ import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -487,9 +488,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
-        AppendBlobRequestConditions appendBlobRequestConditions,
-        com.azure.storage.common.StorageChecksumAlgorithm requestChecksumAlgorithm, Context context) {
-
+        AppendBlobRequestConditions appendBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm, Context context) {
         if (data == null) {
             return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
@@ -497,10 +496,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         appendBlobRequestConditions
             = appendBlobRequestConditions == null ? new AppendBlobRequestConditions() : appendBlobRequestConditions;
         context = context == null ? Context.NONE : context;
-        if (requestChecksumAlgorithm != null) {
-            context = context.addData(com.azure.storage.common.implementation.Constants.REQUEST_CHECKSUM_ALGORITHM,
-                requestChecksumAlgorithm);
-        }
 
         return this.azureBlobStorage.getAppendBlobs()
             .appendBlockWithResponseAsync(containerName, blobName, length, data, null, contentMd5, null,
