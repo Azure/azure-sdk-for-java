@@ -15,10 +15,20 @@ import com.azure.developer.loadtesting.models.FunctionFlexConsumptionTargetResou
 import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.developer.loadtesting.models.LoadTestConfiguration;
 import com.azure.developer.loadtesting.models.LoadTestingFileType;
+import com.azure.developer.loadtesting.models.NotificationRule;
+import com.azure.developer.loadtesting.models.OperationStatus;
+import com.azure.developer.loadtesting.models.PassFailTestResult;
+import com.azure.developer.loadtesting.models.ScheduleTestsTrigger;
 import com.azure.developer.loadtesting.models.TestAppComponents;
 import com.azure.developer.loadtesting.models.TestFileInfo;
 import com.azure.developer.loadtesting.models.TestProfile;
+import com.azure.developer.loadtesting.models.TestRunEndedEventCondition;
+import com.azure.developer.loadtesting.models.TestRunEndedNotificationEventFilter;
+import com.azure.developer.loadtesting.models.TestRunStatus;
 import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
+import com.azure.developer.loadtesting.models.TestsNotificationEventFilter;
+import com.azure.developer.loadtesting.models.TestsNotificationRule;
+import com.azure.developer.loadtesting.models.Trigger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import org.junit.jupiter.api.MethodOrderer;
@@ -29,6 +39,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +51,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public final class LoadTestAdministrationTests extends LoadTestingClientTestBase {
+
+    private static final String TRIGGER_ID = "sample-trigger-id";
+    private static final String NOTIFICATION_RULE_ID = "sample-notification-rule-id";
 
     // Helpers
     private BinaryData getFileBodyFromResource(String fileName) {
@@ -122,29 +136,6 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         assertNotNull(response);
     }
 
-    @Test
-    @Order(6)
-    public void createOrUpdateTestProfile() {
-
-        Map<String, FunctionFlexConsumptionResourceConfiguration> configurations = new HashMap<>();
-        configurations.put("config1",
-            new FunctionFlexConsumptionResourceConfiguration().setInstanceMemoryMB(2048).setHttpConcurrency(100L));
-        configurations.put("config2",
-            new FunctionFlexConsumptionResourceConfiguration().setInstanceMemoryMB(4096).setHttpConcurrency(100L));
-
-        LoadTestAdministrationClient adminClient = getLoadTestAdministrationClient();
-        TestProfile testProfile = new TestProfile().setTestId(newTestId)
-            .setDisplayName("Java SDK Sample Test Profile")
-            .setDescription("Sample Test Profile")
-            .setTargetResourceId(targetResourceId)
-            .setTargetResourceConfigurations(
-                new FunctionFlexConsumptionTargetResourceConfigurations().setConfigurations(configurations));
-
-        TestProfile response = adminClient.createOrUpdateTestProfile(newTestProfileId, testProfile);
-        assertNotNull(response);
-        assertEquals(newTestProfileId, response.getTestProfileId());
-    }
-
     // Gets
 
     @Test
@@ -170,15 +161,6 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
 
         assertNotNull(response);
         assertEquals(newTestId, response.getTestId());
-    }
-
-    @Test
-    @Order(9)
-    public void getTestProfile() {
-        TestProfile response = getLoadTestAdministrationClient().getTestProfile(newTestProfileId);
-
-        assertNotNull(response);
-        assertEquals(newTestProfileId, response.getTestProfileId());
     }
 
     @Test
@@ -226,21 +208,128 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         assertTrue(found);
     }
 
+    // Trigger CRUD tests
+
     @Test
     @Order(14)
-    public void listTestProfiles() {
-        PagedIterable<TestProfile> response = getLoadTestAdministrationClient().listTestProfiles();
-        boolean found = response.stream().anyMatch((testProfile) -> {
-            return testProfile.getTestProfileId().equals(newTestProfileId);
-        });
+    public void createOrUpdateTrigger() {
+        ScheduleTestsTrigger trigger
+            = new ScheduleTestsTrigger().setDisplayName("sample-trigger").setDescription("Sample trigger for testing");
 
+        Trigger response = getLoadTestAdministrationClient().createOrUpdateTrigger(TRIGGER_ID, trigger);
+
+        assertNotNull(response);
+        assertNotNull(response.getTriggerId());
+        assertEquals(TRIGGER_ID, response.getTriggerId());
+        assertEquals("sample-trigger", response.getDisplayName());
+    }
+
+    @Test
+    @Order(15)
+    public void getTrigger() {
+        Trigger response = getLoadTestAdministrationClient().getTrigger(TRIGGER_ID);
+
+        assertNotNull(response);
+        assertEquals(TRIGGER_ID, response.getTriggerId());
+        assertEquals("sample-trigger", response.getDisplayName());
+    }
+
+    @Test
+    @Order(16)
+    public void listTriggers() {
+        PagedIterable<Trigger> response = getLoadTestAdministrationClient().listTriggers(null, null, null, null);
+
+        boolean found = response.stream().anyMatch(trigger -> TRIGGER_ID.equals(trigger.getTriggerId()));
         assertTrue(found);
+    }
+
+    @Test
+    @Order(17)
+    public void deleteTrigger() {
+        assertDoesNotThrow(() -> {
+            getLoadTestAdministrationClient().deleteTrigger(TRIGGER_ID);
+        });
+    }
+
+    // Notification Rule CRUD tests
+
+    @Test
+    @Order(18)
+    public void createOrUpdateNotificationRule() {
+        // Build the event filter condition
+        TestRunEndedEventCondition condition = new TestRunEndedEventCondition()
+            .setTestRunStatuses(Arrays.asList(TestRunStatus.DONE, TestRunStatus.FAILED))
+            .setTestRunResults(Arrays.asList(PassFailTestResult.PASSED, PassFailTestResult.FAILED));
+
+        // Build the event filter
+        TestRunEndedNotificationEventFilter eventFilter
+            = new TestRunEndedNotificationEventFilter().setCondition(condition);
+
+        // Build the event filters map
+        Map<String, TestsNotificationEventFilter> eventFilters = new HashMap<>();
+        eventFilters.put("testRunEnded", eventFilter);
+
+        // Build the notification rule using the strongly-typed TestsNotificationRule subclass.
+        TestsNotificationRule rule = new TestsNotificationRule().setDisplayName("Test Notification Rule")
+            .setTestIds(Arrays.asList(newTestId))
+            .setActionGroupIds(Arrays.asList(
+                "/subscriptions/7c71b563-0dc0-4bc0-bcf6-06f8f0516c7a/resourcegroups/nikita-canary-rg/providers/microsoft.insights/actiongroups/nikita-canary"))
+            .setEventFilters(eventFilters);
+
+        NotificationRule response
+            = getLoadTestAdministrationClient().createOrUpdateNotificationRule(NOTIFICATION_RULE_ID, rule);
+
+        assertNotNull(response);
+        assertNotNull(response.getNotificationRuleId());
+        assertEquals(NOTIFICATION_RULE_ID, response.getNotificationRuleId());
+        assertEquals("Test Notification Rule", response.getDisplayName());
+    }
+
+    @Test
+    @Order(19)
+    public void getNotificationRule() {
+        NotificationRule response = getLoadTestAdministrationClient().getNotificationRule(NOTIFICATION_RULE_ID);
+
+        assertNotNull(response);
+        assertEquals(NOTIFICATION_RULE_ID, response.getNotificationRuleId());
+        assertEquals("Test Notification Rule", response.getDisplayName());
+    }
+
+    @Test
+    @Order(20)
+    public void listNotificationRules() {
+        PagedIterable<NotificationRule> response
+            = getLoadTestAdministrationClient().listNotificationRules(null, null, null, null);
+
+        boolean found = response.stream().anyMatch(rule -> NOTIFICATION_RULE_ID.equals(rule.getNotificationRuleId()));
+        assertTrue(found);
+    }
+
+    @Test
+    @Order(21)
+    public void deleteNotificationRule() {
+        assertDoesNotThrow(() -> {
+            getLoadTestAdministrationClient().deleteNotificationRule(NOTIFICATION_RULE_ID);
+        });
+    }
+
+    @Test
+    @Order(22)
+    public void beginGenerateTestPlanRecommendations() {
+        SyncPoller<OperationStatus, LoadTest> poller
+            = getLoadTestAdministrationClient().beginGenerateTestPlanRecommendations(recordingTestId);
+        poller = setPlaybackSyncPollerPollInterval(poller);
+
+        PollResponse<OperationStatus> response = poller.waitForCompletion();
+
+        assertNotNull(response);
+        assertTrue(response.getStatus().isComplete());
     }
 
     // Deletes
 
     @Test
-    @Order(15)
+    @Order(23)
     public void deleteTestFile() {
         assertDoesNotThrow(() -> {
             getLoadTestAdministrationClient().deleteTestFileWithResponse(newTestId, uploadCsvFileName, null);
@@ -251,15 +340,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     }
 
     @Test
-    @Order(16)
-    public void deleteTestProfile() {
-        assertDoesNotThrow(() -> {
-            getLoadTestAdministrationClient().deleteTestProfileWithResponse(newTestProfileId, null);
-        });
-    }
-
-    @Test
-    @Order(17)
+    @Order(24)
     public void deleteTest() {
         assertDoesNotThrow(() -> {
             getLoadTestAdministrationClient().deleteTestWithResponse(newTestId, null);
