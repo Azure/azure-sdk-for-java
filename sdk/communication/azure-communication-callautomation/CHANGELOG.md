@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.7.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0 (2026-01-27)
+
+### Features Added
+
+- Support for MicrosoftTeamsAppIdentifier CommunicationIdentifier
 
 ## 1.5.2 (2025-10-27)
 

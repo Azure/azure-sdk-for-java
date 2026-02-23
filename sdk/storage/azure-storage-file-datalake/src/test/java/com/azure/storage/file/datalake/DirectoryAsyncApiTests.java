@@ -3990,7 +3990,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         ListPathsOptions options = new ListPathsOptions().setRecursive(true).setStartFrom("foo");
 
         Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
-            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(options, null)));
+            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(options)));
 
         StepVerifier.create(response.collectList()).assertNext(paths -> assertEquals(3, paths.size())).verifyComplete();
     }

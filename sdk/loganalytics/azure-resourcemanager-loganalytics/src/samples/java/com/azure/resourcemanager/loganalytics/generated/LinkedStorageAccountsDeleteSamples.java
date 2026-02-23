@@ -12,8 +12,8 @@ import com.azure.resourcemanager.loganalytics.models.DataSourceType;
 public final class LinkedStorageAccountsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * LinkedStorageAccountsDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/LinkedStorageAccountsDelete.json
      */
     /**
      * Sample code: LinkedStorageAccountsDelete.

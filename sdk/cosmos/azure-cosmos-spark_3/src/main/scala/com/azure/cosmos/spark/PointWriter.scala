@@ -145,7 +145,7 @@ private class PointWriter(container: CosmosAsyncContainer,
     executeAsync(() => createWithRetry(partitionKeyValue, objectNode, createOperation))
       .onComplete {
         case Success(_) =>
-          promise.success(Unit)
+          promise.success(())
           pendingPointWrites.remove(promise.future)
           log.logItemWriteCompletion(createOperation)
         case Failure(e) =>
@@ -167,7 +167,7 @@ private class PointWriter(container: CosmosAsyncContainer,
     executeAsync(() => upsertWithRetry(partitionKeyValue, objectNode, upsertOperation))
       .onComplete {
         case Success(_) =>
-          promise.success(Unit)
+          promise.success(())
           pendingPointWrites.remove(promise.future)
           log.logItemWriteCompletion(upsertOperation)
         case Failure(e) =>
@@ -191,7 +191,7 @@ private class PointWriter(container: CosmosAsyncContainer,
     executeAsync(() => deleteWithRetry(partitionKeyValue, objectNode, onlyIfNotModified, deleteOperation))
       .onComplete {
         case Success(_) =>
-          promise.success(Unit)
+          promise.success(())
           pendingPointWrites.remove(promise.future)
           log.logItemWriteCompletion(deleteOperation)
         case Failure(e) =>
@@ -214,7 +214,7 @@ private class PointWriter(container: CosmosAsyncContainer,
     executeAsync(() => patchWithRetry(partitionKeyValue, objectNode, patchOperation, ignoreNotFound))
      .onComplete {
        case Success(_) =>
-         promise.success(Unit)
+         promise.success(())
          pendingPointWrites.remove(promise.future)
          log.logItemWriteCompletion(patchOperation)
        case Failure(e) =>
@@ -241,7 +241,7 @@ private class PointWriter(container: CosmosAsyncContainer,
     executeAsync(() => replaceIfNotModifiedWithRetry(partitionKeyValue, objectNode, etag, replaceOperation))
       .onComplete {
         case Success(_) =>
-          promise.success(Unit)
+          promise.success(())
           pendingPointWrites.remove(promise.future)
           log.logItemWriteCompletion(replaceOperation)
         case Failure(e) =>
@@ -648,7 +648,7 @@ private class PointWriter(container: CosmosAsyncContainer,
       override def call(): Unit = {
         try {
           work()
-          future.complete(Unit)
+          future.complete(())
         } catch {
           case e: Exception =>
             future.completeExceptionally(e)

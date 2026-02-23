@@ -10,9 +10,9 @@ import com.openai.services.async.EvalServiceAsync;
  * Initializes a new instance of the asynchronous EvaluationsClientAsync type.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
-public class EvaluationsAsyncClient {
+public final class EvaluationsAsyncClient {
 
-    private final EvalServiceAsync openaiEvalClientAsync;
+    private final EvalServiceAsync evalServiceAsync;
 
     /**
      * Initializes an instance of EvaluationsClientAsync class.
@@ -20,7 +20,7 @@ public class EvaluationsAsyncClient {
      * @param openAIClientAsync the service client implementation.
      */
     EvaluationsAsyncClient(OpenAIClientAsync openAIClientAsync) {
-        this.openaiEvalClientAsync = openAIClientAsync.evals();
+        this.evalServiceAsync = openAIClientAsync.evals();
     }
 
     /**
@@ -28,7 +28,7 @@ public class EvaluationsAsyncClient {
      *
      * @return the OpenAI evals service client.
      */
-    public EvalServiceAsync getOpenAIClient() {
-        return this.openaiEvalClientAsync;
+    public EvalServiceAsync getEvalServiceAsync() {
+        return this.evalServiceAsync;
     }
 }

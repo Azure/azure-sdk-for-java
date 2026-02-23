@@ -77,6 +77,11 @@ public final class AccessTokenUtil {
 
     private static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
     private static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
+    private static final String PROPERTY_AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
+    private static final String PROPERTY_AZURE_CLIENT_ID = "AZURE_CLIENT_ID";
+    private static final String PROPERTY_AZURE_TENANT_ID = "AZURE_TENANT_ID";
+    private static final String PROPERTY_AZURE_AUTHORITY_HOST = "AZURE_AUTHORITY_HOST";
+    private static final String DEFAULT_AUTHORITY_HOST = "https://login.microsoftonline.com/";
 
     /**
      * Get an access token for a managed identity.
@@ -166,6 +171,144 @@ public final class AccessTokenUtil {
         LOGGER.exiting("AccessTokenUtil", "getAccessToken", result);
 
         return result;
+    }
+
+    /**
+     * Check if Azure Workload Identity environment is available.
+     *
+     * @return true if Workload Identity environment variables are present, false otherwise.
+     */
+    public static boolean isWorkloadIdentityAvailable(String clientId, String tenantId) {
+        String effectiveClientId = useDefaultIfBlank(clientId, () -> System.getenv(PROPERTY_AZURE_CLIENT_ID));
+        String effectiveTenantId = useDefaultIfBlank(tenantId, () -> System.getenv(PROPERTY_AZURE_TENANT_ID));
+
+        return !isNullOrEmpty(System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE))
+            && !isNullOrEmpty(effectiveClientId)
+            && !isNullOrEmpty(effectiveTenantId);
+    }
+
+    /**
+     * Get an access token via
+     * <a href="https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow#third-case-access-token-request-with-a-federated-credential">
+     * client credentials grant flow</a> using
+     * <a href="https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview">
+     * Microsoft Entra Workload ID with AKS</a>.
+     * Uses the federated token in file located at the provided path and the given clientId and tenantId
+     * to issue an access token HTTP request.
+     *
+     * @param resource The resource scope (will be appended with /.default if not already present).
+     * @param tenantId Tenant ID to use. If blank, fallback to environment variable AZURE_TENANT_ID.
+     * @param clientId Client ID of the managed identity to use. If blank, fallback to environment variable AZURE_CLIENT_ID.
+     * @param tokenFilePath Path to the federated token file. If blank, fallback to environment variable AZURE_FEDERATED_TOKEN_FILE.
+     * @return An access token, or null if the operation fails.
+     */
+    public static AccessToken getAccessTokenWithWorkloadIdentity(String resource, String tenantId, String clientId) {
+        LOGGER.info("Getting access token using federated Workload Identity token");
+
+        // Use environment variables as fallback
+        String effectiveTokenFilePath = System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE);
+        String effectiveTenantId = useDefaultIfBlank(tenantId, () -> System.getenv(PROPERTY_AZURE_TENANT_ID));
+        String effectiveClientId = useDefaultIfBlank(clientId, () -> System.getenv(PROPERTY_AZURE_CLIENT_ID));
+
+        LOGGER.log(INFO, "Using federated token file: {0}", effectiveTokenFilePath);
+        LOGGER.log(INFO, "Using clientId {0} in tenantId {1}", new Object[] { effectiveClientId, effectiveTenantId });
+
+        // Ensure scope ends with /.default
+        String scope = buildScope(resource);
+
+        // Allow override of authority host via environment variable
+        String authorityHost
+            = useDefaultIfBlank(System.getenv(PROPERTY_AZURE_AUTHORITY_HOST), () -> DEFAULT_AUTHORITY_HOST);
+
+        String federatedToken = readFile(effectiveTokenFilePath);
+        if (isNullOrEmpty(federatedToken)) {
+            LOGGER.log(WARNING, "Failed to read federated token from file: {0}", effectiveTokenFilePath);
+            LOGGER.exiting("AccessTokenUtil", "getAccessTokenWithWorkloadIdentity", null);
+            return null;
+        }
+
+        String requestUrl = buildTokenRequestUrl(authorityHost, effectiveTenantId);
+        String requestBody = buildTokenRequestBody(effectiveClientId, federatedToken, scope);
+
+        String response = HttpUtil.post(requestUrl, requestBody, "application/x-www-form-urlencoded");
+        AccessToken result = parseAccessTokenResponse(response);
+
+        LOGGER.exiting("AccessTokenUtil", "getAccessTokenWithWorkloadIdentity", result);
+        return result;
+    }
+
+    /**
+     * Builds the OAuth2 scope from the resource, ensuring it ends with /.default.
+     *
+     * @param resource The resource scope.
+     * @return The formatted scope.
+     */
+    private static String buildScope(String resource) {
+        if (resource.endsWith("/.default")) {
+            return resource;
+        }
+        return addTrailingSlashIfRequired(resource) + ".default";
+    }
+
+    /**
+     * Builds the token request URL for OAuth2.
+     *
+     * @param authorityHost The authority host.
+     * @param tenantId The tenant ID.
+     * @return The complete token request URL.
+     */
+    private static String buildTokenRequestUrl(String authorityHost, String tenantId) {
+        return addTrailingSlashIfRequired(authorityHost) + tenantId + "/oauth2/v2.0/token";
+    }
+
+    /**
+     * Builds the token request body for workload identity authentication.
+     *
+     * @param clientId The client ID.
+     * @param federatedToken The federated token.
+     * @param scope The OAuth2 scope.
+     * @return The URL-encoded request body.
+     */
+    private static String buildTokenRequestBody(String clientId, String federatedToken, String scope) {
+        return "grant_type=client_credentials" + "&client_id=" + urlEncode(clientId) + "&client_assertion_type="
+            + urlEncode("urn:ietf:params:oauth:client-assertion-type:jwt-bearer") + "&client_assertion="
+            + urlEncode(federatedToken) + "&scope=" + urlEncode(scope);
+    }
+
+    /**
+     * Parse an access token from the HTTP response body.
+     *
+     * @param response The HTTP response body.
+     * @return The parsed AccessToken, or null if parsing fails.
+     */
+    private static AccessToken parseAccessTokenResponse(String response) {
+        if (response == null) {
+            return null;
+        }
+
+        try {
+            return JsonConverterUtil.fromJson(AccessToken::fromJson, response);
+        } catch (IOException e) {
+            LOGGER.log(WARNING, "Failed to parse access token from response.", e);
+            return null;
+        }
+    }
+
+    /**
+     * Read file contents from the specified path.
+     * Package-private for testing.
+     *
+     * @param filePath The path to the file.
+     * @return The file content as a trimmed string, or null if reading fails.
+     */
+    static String readFile(String filePath) {
+        try {
+            java.nio.file.Path path = java.nio.file.Paths.get(filePath);
+            return new String(java.nio.file.Files.readAllBytes(path), java.nio.charset.StandardCharsets.UTF_8).trim();
+        } catch (IOException e) {
+            LOGGER.log(WARNING, "Failed to read file.", e);
+            return null;
+        }
     }
 
     /**
@@ -429,5 +572,48 @@ public final class AccessTokenUtil {
 
         // Returns false if the host specified in the scope does not match the requested domain.
         return isValid;
+    }
+
+    /**
+     * Checks if a string is null or empty.
+     *
+     * @param value The string to check.
+     * @return true if the string is null or empty, false otherwise.
+     */
+    private static boolean isNullOrEmpty(String value) {
+        return value == null || value.trim().isEmpty();
+    }
+
+    /**
+     * URL-encodes the given text using UTF-8 encoding.
+     *
+     * @param text The text to encode.
+     * @return The URL-encoded text, or null if encoding fails.
+     */
+    private static String urlEncode(String text) {
+        if (text == null) {
+            return null;
+        }
+
+        try {
+            return URLEncoder.encode(text, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.log(WARNING, "Failed to encode text.", e);
+            return null;
+        }
+    }
+
+    /**
+     * Returns the value if not null or blank, otherwise returns the default value from the supplier.
+     *
+     * @param value The value to check.
+     * @param defaultValueSupplier The supplier for the default value.
+     * @return The value if not null or blank, otherwise the default value.
+     */
+    private static String useDefaultIfBlank(String value, java.util.function.Supplier<String> defaultValueSupplier) {
+        if (isNullOrEmpty(value)) {
+            return defaultValueSupplier.get();
+        }
+        return value;
     }
 }

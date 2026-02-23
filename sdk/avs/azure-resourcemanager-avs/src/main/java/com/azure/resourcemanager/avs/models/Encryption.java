@@ -73,6 +73,17 @@ public final class Encryption implements JsonSerializable<Encryption> {
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (keyVaultProperties() != null) {
+            keyVaultProperties().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

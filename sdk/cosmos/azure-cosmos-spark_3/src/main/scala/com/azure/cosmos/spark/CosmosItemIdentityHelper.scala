@@ -6,6 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, Utils}
 import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 import java.util
 
@@ -13,7 +14,7 @@ import java.util
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private[spark] object CosmosItemIdentityHelper {
+private[spark] object CosmosItemIdentityHelper extends BasicLoggingTrait {
   // pattern will be recognized
   // 1. id(idValue).pk(partitionKeyValue)
   //

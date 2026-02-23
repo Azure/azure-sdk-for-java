@@ -220,8 +220,13 @@ public class AkriConnectorTemplateManagedConfigurationSettings
         jsonWriter.writeMapField("additionalConfiguration", this.additionalConfiguration,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("persistentVolumeClaimTemplates", this.persistentVolumeClaimTemplates,
-            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1
-                .writeUntyped(element1 == null ? null : element1.toObject(Object.class))));
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> {
+                if (element1 == null) {
+                    writer1.writeNull();
+                } else {
+                    element1.writeTo(writer1);
+                }
+            }));
         jsonWriter.writeArrayField("secrets", this.secrets, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("trustSettings", this.trustSettings);
         return jsonWriter.writeEndObject();

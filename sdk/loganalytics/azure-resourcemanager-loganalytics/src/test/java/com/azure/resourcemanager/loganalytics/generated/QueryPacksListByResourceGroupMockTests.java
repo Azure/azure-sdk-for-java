@@ -7,8 +7,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPack;
@@ -22,19 +22,19 @@ public final class QueryPacksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"queryPackId\":\"aomylwea\",\"timeCreated\":\"2021-12-02T19:30Z\",\"timeModified\":\"2021-02-22T04:35:52Z\",\"provisioningState\":\"thwwn\"},\"location\":\"jhlfzswpchwahf\",\"tags\":{\"ncxykxhdjhlimm\":\"snfepgfewetwlyx\",\"cjzhqi\":\"cxfhbcporxv\",\"ftjuh\":\"xfpxtgqscja\"},\"id\":\"qaz\",\"name\":\"mtggu\",\"type\":\"pijrajcivmmghf\"}]}";
+            = "{\"value\":[{\"properties\":{\"queryPackId\":\"wslmiiiovgqcg\",\"timeCreated\":\"2021-03-09T10:20:04Z\",\"timeModified\":\"2021-07-06T10:58:26Z\",\"provisioningState\":\"ctotiowlx\"},\"location\":\"qd\",\"tags\":{\"lwphqlkccuzgyg\":\"gwdtgukran\",\"gniiprglvaw\":\"wahoiul\",\"pmcubkmifoxxkub\":\"wzdufypivlsbb\",\"gvgovpbbttefjo\":\"phavpmhbrb\"},\"id\":\"nssqyzqed\",\"name\":\"kdfrdbiqmrjgeihf\",\"type\":\"lg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<LogAnalyticsQueryPack> response
-            = manager.queryPacks().listByResourceGroup("oaimlnw", com.azure.core.util.Context.NONE);
+            = manager.queryPacks().listByResourceGroup("kkflrmymyincqlhr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jhlfzswpchwahf", response.iterator().next().location());
-        Assertions.assertEquals("snfepgfewetwlyx", response.iterator().next().tags().get("ncxykxhdjhlimm"));
+        Assertions.assertEquals("qd", response.iterator().next().location());
+        Assertions.assertEquals("gwdtgukran", response.iterator().next().tags().get("lwphqlkccuzgyg"));
     }
 }

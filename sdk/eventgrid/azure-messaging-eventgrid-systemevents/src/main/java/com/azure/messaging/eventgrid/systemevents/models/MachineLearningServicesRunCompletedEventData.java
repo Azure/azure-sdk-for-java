@@ -144,10 +144,20 @@ public final class MachineLearningServicesRunCompletedEventData
         jsonWriter.writeStringField("experimentName", this.experimentName);
         jsonWriter.writeStringField("runId", this.runId);
         jsonWriter.writeStringField("runType", this.runType);
-        jsonWriter.writeMapField("runTags", this.runTags,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("runProperties", this.runProperties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("runTags", this.runTags, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeMapField("runProperties", this.runProperties, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 

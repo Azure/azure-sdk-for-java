@@ -689,11 +689,10 @@ public interface BareMetalMachine {
         interface WithMachineDetails {
             /**
              * Specifies the machineDetails property: The details provided by the customer during the creation of rack
-             * manifests
-             * that allows for custom data to be associated with this machine..
+             * manifests that allows for custom data to be associated with this machine..
              * 
-             * @param machineDetails The details provided by the customer during the creation of rack manifests
-             * that allows for custom data to be associated with this machine.
+             * @param machineDetails The details provided by the customer during the creation of rack manifests that
+             * allows for custom data to be associated with this machine.
              * @return the next definition stage.
              */
             Update withMachineDetails(String machineDetails);

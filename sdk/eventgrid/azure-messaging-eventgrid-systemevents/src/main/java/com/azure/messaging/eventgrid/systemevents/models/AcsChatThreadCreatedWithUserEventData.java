@@ -153,8 +153,13 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
         jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeNumberField("version", getVersion());
         jsonWriter.writeJsonField("createdByCommunicationIdentifier", this.createdByCommunicationIdentifier);
-        jsonWriter.writeMapField("properties", this.properties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 

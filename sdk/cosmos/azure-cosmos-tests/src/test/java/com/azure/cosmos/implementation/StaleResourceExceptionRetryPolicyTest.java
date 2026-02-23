@@ -38,7 +38,7 @@ public class StaleResourceExceptionRetryPolicyTest {
 
         RxCollectionCache rxCollectionCache = Mockito.mock(RxCollectionCache.class);
         Mockito
-            .when(rxCollectionCache.resolveByNameAsync(Mockito.any(), Mockito.any(), Mockito.isNull()))
+            .when(rxCollectionCache.resolveByNameAsync(Mockito.any(), Mockito.any(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull()))
             .thenReturn(Mono.just(documentCollection));
         doNothing().when(rxCollectionCache).refresh(Mockito.any(), Mockito.any(), Mockito.isNull());
 
@@ -51,7 +51,8 @@ public class StaleResourceExceptionRetryPolicyTest {
             null,
             null,
             sessionContainer,
-            TestUtils.mockDiagnosticsClientContext()
+            TestUtils.mockDiagnosticsClientContext(),
+            null
         );
 
         CosmosException exception = BridgeInternal.createCosmosException(statusCode);
@@ -72,7 +73,7 @@ public class StaleResourceExceptionRetryPolicyTest {
 
         RxCollectionCache rxCollectionCache = Mockito.mock(RxCollectionCache.class);
         Mockito
-            .when(rxCollectionCache.resolveByNameAsync(Mockito.any(), Mockito.any(), Mockito.isNull()))
+            .when(rxCollectionCache.resolveByNameAsync(Mockito.any(), Mockito.any(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull()))
             .thenReturn(Mono.just(documentCollection));
         doNothing().when(rxCollectionCache).refresh(Mockito.any(), Mockito.any(), Mockito.isNull());
 
@@ -88,7 +89,8 @@ public class StaleResourceExceptionRetryPolicyTest {
             null,
             customHeaders,
             sessionContainer,
-            TestUtils.mockDiagnosticsClientContext()
+            TestUtils.mockDiagnosticsClientContext(),
+            null
         );
 
         InvalidPartitionException invalidPartitionException = new InvalidPartitionException();
@@ -109,7 +111,7 @@ public class StaleResourceExceptionRetryPolicyTest {
 
         RxCollectionCache rxCollectionCache = Mockito.mock(RxCollectionCache.class);
         Mockito
-            .when(rxCollectionCache.resolveByNameAsync(Mockito.any(), Mockito.any(), Mockito.isNull()))
+            .when(rxCollectionCache.resolveByNameAsync(Mockito.any(), Mockito.any(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull()))
             .thenReturn(Mono.just(documentCollection))
             .thenReturn(Mono.just(documentCollectionAfterRefresh));
 
@@ -125,7 +127,8 @@ public class StaleResourceExceptionRetryPolicyTest {
             null,
             null,
             sessionContainer,
-            TestUtils.mockDiagnosticsClientContext()
+            TestUtils.mockDiagnosticsClientContext(),
+            null
         );
 
         InvalidPartitionException invalidPartitionException = new InvalidPartitionException();

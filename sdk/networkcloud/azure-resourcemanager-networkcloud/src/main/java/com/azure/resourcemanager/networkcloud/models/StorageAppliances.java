@@ -107,8 +107,8 @@ public interface StorageAppliances {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -122,8 +122,8 @@ public interface StorageAppliances {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -265,8 +265,8 @@ public interface StorageAppliances {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,8 +279,8 @@ public interface StorageAppliances {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param id the resource ID.
      * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify

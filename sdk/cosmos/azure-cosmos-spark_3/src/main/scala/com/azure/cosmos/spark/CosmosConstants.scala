@@ -58,6 +58,10 @@ private[cosmos] object CosmosConstants {
     val BadRequest: Int = HttpConstants.StatusCodes.BADREQUEST
   }
 
+  object SubstatusCodes {
+    val PartitionKeyRangeGone: Int = HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
+  }
+
   object SystemProperties {
     val LineSeparator: String = System.getProperty("line.separator")
   }

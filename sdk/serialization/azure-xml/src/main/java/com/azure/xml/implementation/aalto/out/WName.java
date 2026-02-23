@@ -166,6 +166,6 @@ public abstract class WName {
                 return false;
             }
         }
-        return _localName.equals(localName);
+        return false;
     }
 }

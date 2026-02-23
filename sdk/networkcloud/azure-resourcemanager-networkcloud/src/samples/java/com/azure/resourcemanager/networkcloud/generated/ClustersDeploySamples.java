@@ -13,8 +13,8 @@ import java.util.Arrays;
 public final class ClustersDeploySamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
-     * Clusters_Deploy.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/Clusters_Deploy.
+     * json
      */
     /**
      * Sample code: Deploy cluster.
@@ -29,7 +29,7 @@ public final class ClustersDeploySamples {
 
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/
      * Clusters_Deploy_SkipValidation.json
      */
     /**

@@ -23,19 +23,19 @@ import java.io.IOException;
 @Fluent
 public final class TableProperties implements JsonSerializable<TableProperties> {
     /*
-     * The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace
-     * retention.
+     * In Analytics table: the tables analytics retention in days, between 4 and 730. Setting this property to -1 will
+     * default to the workspace retention. In Basic and Auxiliary table: read only property.
      */
     private Integer retentionInDays;
 
     /*
-     * The table total retention in days, between 4 and 4383. Setting this property to -1 will default to table
-     * retention.
+     * The table total retention in days, between 4 and 4383. Setting this property to -1 will default to
+     * retentionInDays.
      */
     private Integer totalRetentionInDays;
 
     /*
-     * The table data archive retention in days. Calculated as (totalRetentionInDays-retentionInDays)
+     * The tables long-term retention in days. Calculated as (totalRetentionInDays-retentionInDays).
      */
     private Integer archiveRetentionInDays;
 
@@ -92,8 +92,9 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
     }
 
     /**
-     * Get the retentionInDays property: The table retention in days, between 4 and 730. Setting this property to -1
-     * will default to the workspace retention.
+     * Get the retentionInDays property: In Analytics table: the tables analytics retention in days, between 4 and 730.
+     * Setting this property to -1 will default to the workspace retention. In Basic and Auxiliary table: read only
+     * property.
      * 
      * @return the retentionInDays value.
      */
@@ -102,8 +103,9 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
     }
 
     /**
-     * Set the retentionInDays property: The table retention in days, between 4 and 730. Setting this property to -1
-     * will default to the workspace retention.
+     * Set the retentionInDays property: In Analytics table: the tables analytics retention in days, between 4 and 730.
+     * Setting this property to -1 will default to the workspace retention. In Basic and Auxiliary table: read only
+     * property.
      * 
      * @param retentionInDays the retentionInDays value to set.
      * @return the TableProperties object itself.
@@ -115,7 +117,7 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
 
     /**
      * Get the totalRetentionInDays property: The table total retention in days, between 4 and 4383. Setting this
-     * property to -1 will default to table retention.
+     * property to -1 will default to retentionInDays.
      * 
      * @return the totalRetentionInDays value.
      */
@@ -125,7 +127,7 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
 
     /**
      * Set the totalRetentionInDays property: The table total retention in days, between 4 and 4383. Setting this
-     * property to -1 will default to table retention.
+     * property to -1 will default to retentionInDays.
      * 
      * @param totalRetentionInDays the totalRetentionInDays value to set.
      * @return the TableProperties object itself.
@@ -136,7 +138,7 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
     }
 
     /**
-     * Get the archiveRetentionInDays property: The table data archive retention in days. Calculated as
+     * Get the archiveRetentionInDays property: The tables long-term retention in days. Calculated as
      * (totalRetentionInDays-retentionInDays).
      * 
      * @return the archiveRetentionInDays value.

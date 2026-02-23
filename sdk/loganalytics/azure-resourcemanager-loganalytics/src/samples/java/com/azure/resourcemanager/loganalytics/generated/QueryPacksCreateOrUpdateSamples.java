@@ -13,8 +13,8 @@ import java.util.Map;
 public final class QueryPacksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPacksCreate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPacksCreate.json
      */
     /**
      * Sample code: QueryPackCreate.
@@ -31,8 +31,8 @@ public final class QueryPacksCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPacksUpdate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPacksUpdate.json
      */
     /**
      * Sample code: QueryPackUpdate.

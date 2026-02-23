@@ -29,8 +29,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.communication.fluent.DomainsClient;
@@ -71,13 +73,23 @@ public final class DomainsClientImpl implements DomainsClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CommunicationService")
+    @ServiceInterface(name = "CommunicationServiceManagementClientDomains")
     public interface DomainsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DomainResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DomainResourceInner> getSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
@@ -95,10 +107,31 @@ public final class DomainsClientImpl implements DomainsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
+            @BodyParam("application/json") DomainResourceInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
@@ -116,6 +149,17 @@ public final class DomainsClientImpl implements DomainsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
+            @BodyParam("application/json") UpdateDomainRequestParameters parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -126,10 +170,31 @@ public final class DomainsClientImpl implements DomainsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DomainResourceList> listByEmailServiceResourceSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("emailServiceName") String emailServiceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/initiateVerification")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> initiateVerification(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
+            @BodyParam("application/json") VerificationParameter parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/initiateVerification")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> initiateVerificationSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
@@ -148,10 +213,29 @@ public final class DomainsClientImpl implements DomainsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/cancelVerification")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> cancelVerificationSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
+            @BodyParam("application/json") VerificationParameter parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DomainResourceList>> listByEmailServiceResourceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DomainResourceList> listByEmailServiceResourceNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -207,49 +291,6 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Domains resource and its properties along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DomainResourceInner>> getWithResponseAsync(String resourceGroupName, String emailServiceName,
-        String domainName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (emailServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, emailServiceName, domainName, accept, context);
-    }
-
-    /**
-     * Get
-     * 
-     * Get the Domains resource and its properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -278,7 +319,31 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DomainResourceInner> getWithResponse(String resourceGroupName, String emailServiceName,
         String domainName, Context context) {
-        return getWithResponseAsync(resourceGroupName, emailServiceName, domainName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, emailServiceName, domainName, accept, context);
     }
 
     /**
@@ -358,43 +423,96 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param parameters Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a Domains resource along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a class representing a Domains resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String emailServiceName, String domainName, DomainResourceInner parameters, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String emailServiceName,
+        String domainName, DomainResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (emailServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
         }
         if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, parameters, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Create Or Update
+     * 
+     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param emailServiceName The name of the EmailService resource.
+     * @param domainName The name of the Domains resource.
+     * @param parameters Parameters for the create or update operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a class representing a Domains resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String emailServiceName,
+        String domainName, DomainResourceInner parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, parameters, accept,
             context);
     }
@@ -431,32 +549,6 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param parameters Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a class representing a Domains resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DomainResourceInner>, DomainResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String emailServiceName, String domainName, DomainResourceInner parameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, emailServiceName, domainName, parameters, context);
-        return this.client.<DomainResourceInner, DomainResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DomainResourceInner.class, DomainResourceInner.class, context);
-    }
-
-    /**
-     * Create Or Update
-     * 
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
-     * @param parameters Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -465,8 +557,10 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String emailServiceName, String domainName, DomainResourceInner parameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, emailServiceName, domainName, parameters);
+        return this.client.<DomainResourceInner, DomainResourceInner>getLroResult(response, DomainResourceInner.class,
+            DomainResourceInner.class, Context.NONE);
     }
 
     /**
@@ -488,8 +582,10 @@ public final class DomainsClientImpl implements DomainsClient {
     public SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String emailServiceName, String domainName, DomainResourceInner parameters,
         Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, emailServiceName, domainName, parameters, context);
+        return this.client.<DomainResourceInner, DomainResourceInner>getLroResult(response, DomainResourceInner.class,
+            DomainResourceInner.class, context);
     }
 
     /**
@@ -522,28 +618,6 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param parameters Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a Domains resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DomainResourceInner> createOrUpdateAsync(String resourceGroupName, String emailServiceName,
-        String domainName, DomainResourceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create Or Update
-     * 
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
-     * @param parameters Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -552,7 +626,7 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DomainResourceInner createOrUpdate(String resourceGroupName, String emailServiceName, String domainName,
         DomainResourceInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters).block();
+        return beginCreateOrUpdate(resourceGroupName, emailServiceName, domainName, parameters).getFinalResult();
     }
 
     /**
@@ -573,7 +647,8 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DomainResourceInner createOrUpdate(String resourceGroupName, String emailServiceName, String domainName,
         DomainResourceInner parameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters, context).block();
+        return beginCreateOrUpdate(resourceGroupName, emailServiceName, domainName, parameters, context)
+            .getFinalResult();
     }
 
     /**
@@ -626,38 +701,83 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String emailServiceName,
+        String domainName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, accept, Context.NONE);
+    }
+
+    /**
+     * Delete
+     * 
+     * Operation to delete a Domains resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param emailServiceName The name of the EmailService resource.
+     * @param domainName The name of the Domains resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String emailServiceName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String emailServiceName,
         String domainName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (emailServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
         }
         if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, emailServiceName, domainName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, accept, context);
     }
 
     /**
@@ -690,30 +810,6 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String emailServiceName,
-        String domainName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, emailServiceName, domainName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete
-     * 
-     * Operation to delete a Domains resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -722,7 +818,8 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String emailServiceName,
         String domainName) {
-        return this.beginDeleteAsync(resourceGroupName, emailServiceName, domainName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, emailServiceName, domainName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -742,7 +839,8 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String emailServiceName,
         String domainName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, emailServiceName, domainName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, emailServiceName, domainName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -772,34 +870,13 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String emailServiceName, String domainName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, emailServiceName, domainName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete
-     * 
-     * Operation to delete a Domains resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String emailServiceName, String domainName) {
-        deleteAsync(resourceGroupName, emailServiceName, domainName).block();
+        beginDelete(resourceGroupName, emailServiceName, domainName).getFinalResult();
     }
 
     /**
@@ -817,7 +894,7 @@ public final class DomainsClientImpl implements DomainsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String emailServiceName, String domainName, Context context) {
-        deleteAsync(resourceGroupName, emailServiceName, domainName, context).block();
+        beginDelete(resourceGroupName, emailServiceName, domainName, context).getFinalResult();
     }
 
     /**
@@ -879,44 +956,98 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param parameters Parameters for the update operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a Domains resource along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a class representing a Domains resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String emailServiceName,
-        String domainName, UpdateDomainRequestParameters parameters, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String emailServiceName,
+        String domainName, UpdateDomainRequestParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (emailServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
         }
         if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, emailServiceName, domainName, parameters, accept, context);
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, parameters, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Update
+     * 
+     * Operation to update an existing Domains resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param emailServiceName The name of the EmailService resource.
+     * @param domainName The name of the Domains resource.
+     * @param parameters Parameters for the update operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a class representing a Domains resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String emailServiceName,
+        String domainName, UpdateDomainRequestParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, parameters, accept,
+            context);
     }
 
     /**
@@ -951,31 +1082,6 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param parameters Parameters for the update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a class representing a Domains resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DomainResourceInner>, DomainResourceInner> beginUpdateAsync(String resourceGroupName,
-        String emailServiceName, String domainName, UpdateDomainRequestParameters parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, emailServiceName, domainName, parameters, context);
-        return this.client.<DomainResourceInner, DomainResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DomainResourceInner.class, DomainResourceInner.class, context);
-    }
-
-    /**
-     * Update
-     * 
-     * Operation to update an existing Domains resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
-     * @param parameters Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -984,7 +1090,9 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginUpdate(String resourceGroupName,
         String emailServiceName, String domainName, UpdateDomainRequestParameters parameters) {
-        return this.beginUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, emailServiceName, domainName, parameters);
+        return this.client.<DomainResourceInner, DomainResourceInner>getLroResult(response, DomainResourceInner.class,
+            DomainResourceInner.class, Context.NONE);
     }
 
     /**
@@ -1005,8 +1113,10 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginUpdate(String resourceGroupName,
         String emailServiceName, String domainName, UpdateDomainRequestParameters parameters, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, emailServiceName, domainName, parameters, context);
+        return this.client.<DomainResourceInner, DomainResourceInner>getLroResult(response, DomainResourceInner.class,
+            DomainResourceInner.class, context);
     }
 
     /**
@@ -1039,28 +1149,6 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param parameters Parameters for the update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a Domains resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DomainResourceInner> updateAsync(String resourceGroupName, String emailServiceName, String domainName,
-        UpdateDomainRequestParameters parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update
-     * 
-     * Operation to update an existing Domains resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
-     * @param parameters Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1069,7 +1157,7 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DomainResourceInner update(String resourceGroupName, String emailServiceName, String domainName,
         UpdateDomainRequestParameters parameters) {
-        return updateAsync(resourceGroupName, emailServiceName, domainName, parameters).block();
+        return beginUpdate(resourceGroupName, emailServiceName, domainName, parameters).getFinalResult();
     }
 
     /**
@@ -1090,7 +1178,7 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DomainResourceInner update(String resourceGroupName, String emailServiceName, String domainName,
         UpdateDomainRequestParameters parameters, Context context) {
-        return updateAsync(resourceGroupName, emailServiceName, domainName, parameters, context).block();
+        return beginUpdate(resourceGroupName, emailServiceName, domainName, parameters, context).getFinalResult();
     }
 
     /**
@@ -1142,48 +1230,6 @@ public final class DomainsClientImpl implements DomainsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Domains resource and a possible link for next set along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DomainResourceInner>> listByEmailServiceResourceSinglePageAsync(String resourceGroupName,
-        String emailServiceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (emailServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByEmailServiceResource(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, emailServiceName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List by EmailService
-     * 
-     * Handles requests to list all Domains resources under the parent EmailServices resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1204,19 +1250,82 @@ public final class DomainsClientImpl implements DomainsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes an array of Domains resource and a possible link for next set along with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DomainResourceInner> listByEmailServiceResourceSinglePage(String resourceGroupName,
+        String emailServiceName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DomainResourceList> res
+            = service.listByEmailServiceResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, emailServiceName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List by EmailService
+     * 
+     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param emailServiceName The name of the EmailService resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Domains resource and a possible link for next set as paginated response
-     * with {@link PagedFlux}.
+     * @return object that includes an array of Domains resource and a possible link for next set along with
+     * {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DomainResourceInner> listByEmailServiceResourceAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DomainResourceInner> listByEmailServiceResourceSinglePage(String resourceGroupName,
         String emailServiceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByEmailServiceResourceSinglePageAsync(resourceGroupName, emailServiceName, context),
-            nextLink -> listByEmailServiceResourceNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DomainResourceList> res
+            = service.listByEmailServiceResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, emailServiceName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1235,7 +1344,8 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DomainResourceInner> listByEmailServiceResource(String resourceGroupName,
         String emailServiceName) {
-        return new PagedIterable<>(listByEmailServiceResourceAsync(resourceGroupName, emailServiceName));
+        return new PagedIterable<>(() -> listByEmailServiceResourceSinglePage(resourceGroupName, emailServiceName),
+            nextLink -> listByEmailServiceResourceNextSinglePage(nextLink));
     }
 
     /**
@@ -1255,7 +1365,9 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DomainResourceInner> listByEmailServiceResource(String resourceGroupName,
         String emailServiceName, Context context) {
-        return new PagedIterable<>(listByEmailServiceResourceAsync(resourceGroupName, emailServiceName, context));
+        return new PagedIterable<>(
+            () -> listByEmailServiceResourceSinglePage(resourceGroupName, emailServiceName, context),
+            nextLink -> listByEmailServiceResourceNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1316,42 +1428,96 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param parameters Type of verification to be initiated.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> initiateVerificationWithResponseAsync(String resourceGroupName,
-        String emailServiceName, String domainName, VerificationParameter parameters, Context context) {
+    private Response<BinaryData> initiateVerificationWithResponse(String resourceGroupName, String emailServiceName,
+        String domainName, VerificationParameter parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (emailServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
         }
         if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.initiateVerification(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.initiateVerificationSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, parameters, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Initiate Verification
+     * 
+     * Initiate verification of DNS record.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param emailServiceName The name of the EmailService resource.
+     * @param domainName The name of the Domains resource.
+     * @param parameters Type of verification to be initiated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> initiateVerificationWithResponse(String resourceGroupName, String emailServiceName,
+        String domainName, VerificationParameter parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.initiateVerificationSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, parameters, accept,
             context);
     }
@@ -1388,31 +1554,6 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param parameters Type of verification to be initiated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginInitiateVerificationAsync(String resourceGroupName,
-        String emailServiceName, String domainName, VerificationParameter parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = initiateVerificationWithResponseAsync(resourceGroupName,
-            emailServiceName, domainName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Initiate Verification
-     * 
-     * Initiate verification of DNS record.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
-     * @param parameters Type of verification to be initiated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1421,8 +1562,9 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginInitiateVerification(String resourceGroupName,
         String emailServiceName, String domainName, VerificationParameter parameters) {
-        return this.beginInitiateVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = initiateVerificationWithResponse(resourceGroupName, emailServiceName, domainName, parameters);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1443,8 +1585,9 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginInitiateVerification(String resourceGroupName,
         String emailServiceName, String domainName, VerificationParameter parameters, Context context) {
-        return this.beginInitiateVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = initiateVerificationWithResponse(resourceGroupName, emailServiceName, domainName, parameters, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1477,29 +1620,6 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param parameters Type of verification to be initiated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> initiateVerificationAsync(String resourceGroupName, String emailServiceName, String domainName,
-        VerificationParameter parameters, Context context) {
-        return beginInitiateVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Initiate Verification
-     * 
-     * Initiate verification of DNS record.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
-     * @param parameters Type of verification to be initiated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1507,7 +1627,7 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void initiateVerification(String resourceGroupName, String emailServiceName, String domainName,
         VerificationParameter parameters) {
-        initiateVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters).block();
+        beginInitiateVerification(resourceGroupName, emailServiceName, domainName, parameters).getFinalResult();
     }
 
     /**
@@ -1527,7 +1647,8 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void initiateVerification(String resourceGroupName, String emailServiceName, String domainName,
         VerificationParameter parameters, Context context) {
-        initiateVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters, context).block();
+        beginInitiateVerification(resourceGroupName, emailServiceName, domainName, parameters, context)
+            .getFinalResult();
     }
 
     /**
@@ -1588,42 +1709,96 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param parameters Type of verification to be canceled.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> cancelVerificationWithResponseAsync(String resourceGroupName,
-        String emailServiceName, String domainName, VerificationParameter parameters, Context context) {
+    private Response<BinaryData> cancelVerificationWithResponse(String resourceGroupName, String emailServiceName,
+        String domainName, VerificationParameter parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (emailServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
         }
         if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.cancelVerification(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.cancelVerificationSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, parameters, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Cancel Verification
+     * 
+     * Cancel verification of DNS record.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param emailServiceName The name of the EmailService resource.
+     * @param domainName The name of the Domains resource.
+     * @param parameters Type of verification to be canceled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> cancelVerificationWithResponse(String resourceGroupName, String emailServiceName,
+        String domainName, VerificationParameter parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.cancelVerificationSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, parameters, accept,
             context);
     }
@@ -1660,31 +1835,6 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param parameters Type of verification to be canceled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCancelVerificationAsync(String resourceGroupName,
-        String emailServiceName, String domainName, VerificationParameter parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = cancelVerificationWithResponseAsync(resourceGroupName, emailServiceName, domainName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Cancel Verification
-     * 
-     * Cancel verification of DNS record.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
-     * @param parameters Type of verification to be canceled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1693,8 +1843,9 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancelVerification(String resourceGroupName, String emailServiceName,
         String domainName, VerificationParameter parameters) {
-        return this.beginCancelVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = cancelVerificationWithResponse(resourceGroupName, emailServiceName, domainName, parameters);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1715,8 +1866,9 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancelVerification(String resourceGroupName, String emailServiceName,
         String domainName, VerificationParameter parameters, Context context) {
-        return this.beginCancelVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = cancelVerificationWithResponse(resourceGroupName, emailServiceName, domainName, parameters, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1749,28 +1901,6 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param parameters Type of verification to be canceled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelVerificationAsync(String resourceGroupName, String emailServiceName, String domainName,
-        VerificationParameter parameters, Context context) {
-        return beginCancelVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Cancel Verification
-     * 
-     * Cancel verification of DNS record.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
-     * @param parameters Type of verification to be canceled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1778,7 +1908,7 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelVerification(String resourceGroupName, String emailServiceName, String domainName,
         VerificationParameter parameters) {
-        cancelVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters).block();
+        beginCancelVerification(resourceGroupName, emailServiceName, domainName, parameters).getFinalResult();
     }
 
     /**
@@ -1798,10 +1928,12 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelVerification(String resourceGroupName, String emailServiceName, String domainName,
         VerificationParameter parameters, Context context) {
-        cancelVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters, context).block();
+        beginCancelVerification(resourceGroupName, emailServiceName, domainName, parameters, context).getFinalResult();
     }
 
     /**
+     * List by EmailService
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1830,6 +1962,38 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
+     * List by EmailService
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes an array of Domains resource and a possible link for next set along with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DomainResourceInner> listByEmailServiceResourceNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DomainResourceList> res
+            = service.listByEmailServiceResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List by EmailService
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1838,22 +2002,26 @@ public final class DomainsClientImpl implements DomainsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Domains resource and a possible link for next set along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DomainResourceInner>> listByEmailServiceResourceNextSinglePageAsync(String nextLink,
+    private PagedResponse<DomainResourceInner> listByEmailServiceResourceNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByEmailServiceResourceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DomainResourceList> res
+            = service.listByEmailServiceResourceNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DomainsClientImpl.class);
 }

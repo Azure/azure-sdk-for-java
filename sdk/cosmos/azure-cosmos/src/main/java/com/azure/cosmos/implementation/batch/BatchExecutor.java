@@ -24,12 +24,14 @@ public final class BatchExecutor {
     private final RequestOptions options;
     private final CosmosBatch cosmosBatch;
     private final CosmosItemSerializer effectiveItemSerializer;
+    private final boolean disableRetryForThrottledBatchRequest;
 
 
     public BatchExecutor(
         final CosmosAsyncContainer container,
         final CosmosBatch cosmosBatch,
-        final RequestOptions options) {
+        final RequestOptions options,
+        final boolean disableRetryForThrottledBatchRequest) {
 
         this.container = container;
         this.cosmosBatch = cosmosBatch;
@@ -38,6 +40,7 @@ public final class BatchExecutor {
         this.effectiveItemSerializer = docClientWrapper.getEffectiveItemSerializer(
             this.options != null ? this.options.getEffectiveItemSerializer() : null
         );
+        this.disableRetryForThrottledBatchRequest = disableRetryForThrottledBatchRequest;
     }
 
     /**
@@ -63,6 +66,7 @@ public final class BatchExecutor {
                 request,
                 options,
                 false,
-                false);
+                false,
+                this.disableRetryForThrottledBatchRequest);
     }
 }

@@ -84,12 +84,6 @@ public final class AttackStrategy extends ExpandableStringEnum<AttackStrategy> {
     public static final AttackStrategy JAILBREAK = fromString("jailbreak");
 
     /**
-     * Utilizes ANSI escape sequences to manipulate text appearance and behavior.
-     */
-    @Generated
-    public static final AttackStrategy ANSII_ATTACK = fromString("ansii_attack");
-
-    /**
      * Swaps characters within text to create variations or obfuscate the original content.
      */
     @Generated
@@ -215,4 +209,10 @@ public final class AttackStrategy extends ExpandableStringEnum<AttackStrategy> {
     public static Collection<AttackStrategy> values() {
         return values(AttackStrategy.class);
     }
+
+    /**
+     * Utilizes ANSI escape sequences to manipulate text appearance and behavior.
+     */
+    @Generated
+    public static final AttackStrategy ANSI_ATTACK = fromString("ansi_attack");
 }

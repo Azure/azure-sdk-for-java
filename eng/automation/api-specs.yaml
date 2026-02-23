@@ -110,6 +110,8 @@ offazurespringboot:
   service: springappdiscovery
 operationalinsights:
   service: loganalytics
+operationalinsights/Microsoft.OperationalInsights/OperationalInsights:
+  service: loganalytics
 oracle:
   service: oracledatabase
 paloaltonetworks:

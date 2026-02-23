@@ -8,9 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The indicator of whether this is the default gateway.
- * Only one of the attached networks (including the CloudServicesNetwork attachment) for a single machine may be
- * specified as True.
+ * The indicator of whether this is the default gateway. Only one of the attached networks (including the
+ * CloudServicesNetwork attachment) for a single machine may be specified as True.
  */
 public final class DefaultGateway extends ExpandableStringEnum<DefaultGateway> {
     /**

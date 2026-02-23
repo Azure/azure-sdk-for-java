@@ -24,8 +24,12 @@ stages:
       DatabricksToken: $(spark-databricks-token-with-msi)
       SparkVersion: 'azure-cosmos-spark_3-3_2-12'
       ClusterName: 'oltp-ci-spark33-2workers-ds3v2'
+      JavaVersion: '1.11'
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
+      JarReadOnlySasUriIndex: 0
+      JarStorageAccountName: 'oltpsparkcijarstore1225'
+      JarName: 'azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar'
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
@@ -42,8 +46,12 @@ stages:
       DatabricksToken: $(spark-databricks-token-with-msi)
       SparkVersion: 'azure-cosmos-spark_3-4_2-12'
       ClusterName: 'oltp-ci-spark34-2workers-ds3v2'
+      JavaVersion: '1.11'
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
+      JarReadOnlySasUriIndex: 0
+      JarStorageAccountName: 'oltpsparkcijarstore1225'
+      JarName: 'azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar'
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
@@ -61,8 +69,12 @@ stages:
       SparkVersion: 'azure-cosmos-spark_3-5_2-12'
       ClusterName: 'oltp-ci-spark35-2workers-ds3v2'
       AvoidDBFS: false
+      JavaVersion: '1.11'
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
+      JarReadOnlySasUriIndex: 0
+      JarStorageAccountName: 'oltpsparkcijarstore1225'
+      JarName: 'azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar'
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
@@ -80,6 +92,55 @@ stages:
       SparkVersion: 'azure-cosmos-spark_3-5_2-12'
       ClusterName: 'oltp-ci-spark35-2workers-ds3v2-16.4'
       AvoidDBFS: true
+      JavaVersion: '1.11'
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
-
+      JarReadOnlySasUriIndex: 0
+      JarStorageAccountName: 'oltpsparkcijarstore1225'
+      JarName: 'azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar'
+  - template: /sdk/cosmos/spark.databricks.yml
+    parameters:
+      CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
+      CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
+      CosmosKey: $(spark-databricks-cosmos-key)
+      DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
+      SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
+      TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
+      ResourceGroupName: 'oltp-spark-ci'
+      ClientId: $(spark-databricks-cosmos-spn-clientId)
+      ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      CosmosContainerName: 'sampleContainer7'
+      CosmosDatabaseName: 'sampleDB7'
+      DatabricksToken: $(spark-databricks-token-with-msi)
+      SparkVersion: 'azure-cosmos-spark_3-5_2-13'
+      ClusterName: 'oltp-ci-spark35-2workers-ds3v2-16.4-scala_2.13'
+      AvoidDBFS: true
+      JavaVersion: '1.11'
+      JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
+      JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
+      JarReadOnlySasUriIndex: 1
+      JarStorageAccountName: 'oltpsparkcijarstore1225'
+      JarName: 'azure-cosmos-spark_3-5_2-13-latest-ci-candidate.jar'
+  - template: /sdk/cosmos/spark.databricks.yml
+    parameters:
+      CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
+      CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
+      CosmosKey: $(spark-databricks-cosmos-key)
+      DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
+      SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
+      TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
+      ResourceGroupName: 'oltp-spark-ci'
+      ClientId: $(spark-databricks-cosmos-spn-clientId)
+      ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      CosmosContainerName: 'sampleContainer8'
+      CosmosDatabaseName: 'sampleDB8'
+      DatabricksToken: $(spark-databricks-token-with-msi)
+      SparkVersion: 'azure-cosmos-spark_4-0_2-13'
+      ClusterName: 'oltp-ci-spark40-2workers-ds3v2-17.3'
+      AvoidDBFS: true
+      JavaVersion: '1.21'
+      JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
+      JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
+      JarReadOnlySasUriIndex: 2
+      JarStorageAccountName: 'oltpsparkcijarstore1225'
+      JarName: 'azure-cosmos-spark_4-0_2-13-latest-ci-candidate.jar'

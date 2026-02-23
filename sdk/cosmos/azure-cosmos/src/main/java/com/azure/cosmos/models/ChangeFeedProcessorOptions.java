@@ -50,6 +50,13 @@ public final class ChangeFeedProcessorOptions {
     private boolean startFromBeginning;
     private int minScaleCount;
     private int maxScaleCount;
+    /**
+     * Maximum number of leases the instance will try to acquire in a single load balancing cycle.
+     * <p>
+     * A value of {@code 0} keeps the legacy behavior (which is intentionally conservative when multiple workers exist and
+     * typically attempts to acquire at most one lease per cycle).
+     */
+    private int maxLeasesToAcquirePerCycle;
 
     private boolean leaseVerificationOnRestartEnabled;
 
@@ -67,6 +74,8 @@ public final class ChangeFeedProcessorOptions {
         this.leaseExpirationInterval = DEFAULT_EXPIRATION_INTERVAL;
         this.feedPollDelay = DEFAULT_FEED_POLL_DELAY;
         this.maxScaleCount = 0; // unlimited
+        // 0 -> legacy behavior (typically acquires at most one lease per balancing cycle when multiple CFP instances exist).
+        this.maxLeasesToAcquirePerCycle = 0;
 
         this.scheduler = Schedulers.boundedElastic();
         this.feedPollThroughputControlGroupConfig = null;
@@ -113,6 +122,37 @@ public final class ChangeFeedProcessorOptions {
      */
     public ChangeFeedProcessorOptions setLeaseAcquireInterval(Duration leaseAcquireInterval) {
         this.leaseAcquireInterval = leaseAcquireInterval;
+        return this;
+    }
+
+    /**
+     * Gets the maximum number of leases the instance will try to acquire in a single load balancing cycle.
+     * <p>
+     * A value of {@code 0} keeps the legacy behavior.
+     *
+     * @return maximum leases to acquire per cycle, or {@code 0} for legacy behavior.
+     */
+    public int getMaxLeasesToAcquirePerCycle() {
+        return this.maxLeasesToAcquirePerCycle;
+    }
+
+    /**
+     * Sets the maximum number of leases the instance will try to acquire in a single load balancing cycle.
+     * <p>
+     * Use this to speed up acquisition of unused/expired leases after scale-out or rolling deployments when using
+     * ephemeral host names.
+     * A value of {@code 0} keeps the legacy behavior.
+     * Higher values may increase RU consumption in the lease container and can increase lease acquisition conflicts
+     * when many instances are starting at the same time.
+     *
+     * @param maxLeasesToAcquirePerCycle max leases to acquire per cycle, or {@code 0} for legacy behavior.
+     * @return the current ChangeFeedProcessorOptions instance.
+     */
+    public ChangeFeedProcessorOptions setMaxLeasesToAcquirePerCycle(int maxLeasesToAcquirePerCycle) {
+        if (maxLeasesToAcquirePerCycle < 0) {
+            throw new IllegalArgumentException("maxLeasesToAcquirePerCycle cannot be negative");
+        }
+        this.maxLeasesToAcquirePerCycle = maxLeasesToAcquirePerCycle;
         return this;
     }
 

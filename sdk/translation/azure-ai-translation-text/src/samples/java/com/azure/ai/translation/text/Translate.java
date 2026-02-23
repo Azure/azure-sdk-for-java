@@ -3,8 +3,11 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.models.TranslateOptions;
+import java.util.Arrays;
+
+import com.azure.ai.translation.text.models.TranslateInputItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
+import com.azure.ai.translation.text.models.TranslationTarget;
 import com.azure.ai.translation.text.models.TranslationText;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -29,14 +32,15 @@ public class Translate {
                 .buildClient();
 
         // BEGIN: getTextTranslationMultiple
-        TranslateOptions translateOptions = new TranslateOptions()
-            .setSourceLanguage("en")
-            .addTargetLanguage("es");
+        TranslateInputItem input = new TranslateInputItem(
+            "This is a test.", 
+            Arrays.asList(new TranslationTarget("es"), new TranslationTarget("fr")));
+        input.setLanguage("en");
 
-        TranslatedTextItem translation = client.translate("This is a test.", translateOptions);
+        TranslatedTextItem translation = client.translate(Arrays.asList(input)).get(0);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
-            System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Text was translated to: '" + textTranslation.getLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
         // END: getTextTranslationMultiple
     }

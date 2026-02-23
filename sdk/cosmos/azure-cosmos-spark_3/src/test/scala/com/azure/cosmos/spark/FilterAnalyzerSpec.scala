@@ -53,7 +53,7 @@ class FilterAnalyzerSpec extends UnitSpec {
       EqualTo("physicist", "Schrodinger"), In("isCatAlive", Array(true, false)))
     val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
-    analyzedQuery.filtersToBePushedDownToCosmos.toIterable should contain theSameElementsAs filters.toList
+    analyzedQuery.filtersToBePushedDownToCosmos.toArray should contain theSameElementsAs filters.toList
 
     val query = analyzedQuery.cosmosParametrizedQuery
     query.queryText shouldEqual "SELECT * FROM r WHERE r['physicist']=@param0 AND r['isCatAlive'] IN (@param1,@param2)"
@@ -223,7 +223,7 @@ class FilterAnalyzerSpec extends UnitSpec {
       EqualTo("physicist", "Schrodinger"), In("isCatAlive", Array(true, false)))
     val analyzedQuery = filterProcessorWithCustomQuery.analyze(filters)
     analyzedQuery.filtersToBePushedDownToCosmos shouldBe empty
-    analyzedQuery.filtersNotSupportedByCosmos.toIterable should contain theSameElementsAs filters.toList
+    analyzedQuery.filtersNotSupportedByCosmos.toArray should contain theSameElementsAs filters.toList
 
     val query = analyzedQuery.cosmosParametrizedQuery
     query.queryText shouldEqual queryText
@@ -238,7 +238,7 @@ class FilterAnalyzerSpec extends UnitSpec {
 
     val analyzedFilters = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedFilters.filtersToBePushedDownToCosmos shouldBe empty
-    analyzedFilters.filtersNotSupportedByCosmos.toIterable should contain theSameElementsAs filters.toList
+    analyzedFilters.filtersNotSupportedByCosmos.toArray should contain theSameElementsAs filters.toList
     analyzedFilters.cosmosParametrizedQuery.queryText shouldEqual QueryFilterAnalyzer.rootParameterizedQuery.queryText
     analyzedFilters.readManyFiltersOpt.isDefined shouldBe false
   }

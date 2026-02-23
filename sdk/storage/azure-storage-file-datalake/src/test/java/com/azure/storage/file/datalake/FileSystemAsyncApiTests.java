@@ -2592,7 +2592,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(dir.create()
             .then(setupDirectoryForListing(dir)) // properly chained
-            .thenMany(dir.listPaths(new ListPathsOptions().setRecursive(true).setStartFrom("foo"), null))
+            .thenMany(dir.listPaths(new ListPathsOptions().setRecursive(true).setStartFrom("foo")))
             .collectList()).assertNext(pathsNames -> assertEquals(3, pathsNames.size())).verifyComplete();
     }
 

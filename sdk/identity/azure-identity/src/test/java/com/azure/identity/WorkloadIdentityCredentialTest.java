@@ -236,7 +236,7 @@ public class WorkloadIdentityCredentialTest {
                 .clientId(CLIENT_ID)
                 .tokenFilePath(tokenFile.toString())
                 .configuration(configuration)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .build();
 
             StepVerifier.create(credential.getToken(request1))
@@ -270,7 +270,7 @@ public class WorkloadIdentityCredentialTest {
                 .clientId(CLIENT_ID)
                 .tokenFilePath(tokenFile.toString())
                 .configuration(configuration)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .build();
 
             StepVerifier.create(credential.getToken(request1))
@@ -297,7 +297,7 @@ public class WorkloadIdentityCredentialTest {
                 .clientId(CLIENT_ID)
                 .tokenFilePath(tokenFile.toString())
                 .configuration(configuration)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .build();
         });
     }
@@ -317,7 +317,7 @@ public class WorkloadIdentityCredentialTest {
                 .clientId(CLIENT_ID)
                 .tokenFilePath(tokenFile.toString())
                 .configuration(configuration)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .build();
         });
     }
@@ -337,7 +337,7 @@ public class WorkloadIdentityCredentialTest {
                 .clientId(CLIENT_ID)
                 .tokenFilePath(tokenFile.toString())
                 .configuration(configuration)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .build();
         });
     }
@@ -357,7 +357,7 @@ public class WorkloadIdentityCredentialTest {
                 .clientId(CLIENT_ID)
                 .tokenFilePath(tokenFile.toString())
                 .configuration(configuration)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .build();
         });
     }
@@ -385,7 +385,7 @@ public class WorkloadIdentityCredentialTest {
                 .clientId(CLIENT_ID)
                 .tokenFilePath(tokenFile.toString())
                 .configuration(configuration)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .build();
         });
     }
@@ -417,7 +417,7 @@ public class WorkloadIdentityCredentialTest {
                 .clientId(CLIENT_ID)
                 .tokenFilePath(tokenFile.toString())
                 .configuration(configuration)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .build();
 
             AccessToken token = credential.getTokenSync(request1);
@@ -453,7 +453,7 @@ public class WorkloadIdentityCredentialTest {
                 .clientId(CLIENT_ID)
                 .tokenFilePath(tokenFile.toString())
                 .configuration(configuration)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .build();
 
             StepVerifier.create(cred.getToken(request1))
@@ -493,7 +493,7 @@ public class WorkloadIdentityCredentialTest {
                 .clientId(CLIENT_ID)
                 .tokenFilePath(tokenFile.toString())
                 .configuration(configuration)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .build();
 
             StepVerifier.create(cred.getToken(request1))
@@ -533,7 +533,7 @@ public class WorkloadIdentityCredentialTest {
                 .clientId(CLIENT_ID)
                 .tokenFilePath(tokenFile.toString())
                 .configuration(configuration)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .build();
 
             StepVerifier.create(credential.getToken(request1))

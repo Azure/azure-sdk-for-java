@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.communication.models.CommunicationServiceResourceUpdate;
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.communication.models.PublicNetworkAccess;
 import com.azure.resourcemanager.communication.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,24 +19,29 @@ public final class CommunicationServiceResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommunicationServiceResourceUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"linkedDomains\":[\"jvtbvpyss\",\"dnrujqguhmuouqfp\"]},\"identity\":{\"principalId\":\"76132980-1063-43ff-bc0c-9260b007c498\",\"tenantId\":\"7e6159fe-57d6-4910-bb8e-dd94f62aee64\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"tnwu\":{\"principalId\":\"9bfeb7b2-a122-42dd-b678-bd51d8543049\",\"clientId\":\"2d7f9a1c-417b-4e60-9d90-8b3f3dd55193\"}}},\"tags\":{\"x\":\"a\",\"hr\":\"fizuckyf\"}}")
+            "{\"properties\":{\"linkedDomains\":[\"nwbxgjvtbvpyssz\",\"nruj\",\"guhmuouqfpr\",\"zw\"],\"publicNetworkAccess\":\"SecuredByPerimeter\",\"disableLocalAuth\":true},\"identity\":{\"principalId\":\"333a619c-80f4-43be-a82b-7410d66ba4d6\",\"tenantId\":\"016b4517-a58d-4f0d-9a71-ded9e2bf5ef4\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"zxufiz\":{\"principalId\":\"765810ea-f84c-454d-968e-fda2b610e46d\",\"clientId\":\"920aa78d-c692-4392-9cc1-d5064a1f8dbe\"}}},\"tags\":{\"i\":\"y\"}}")
             .toObject(CommunicationServiceResourceUpdate.class);
-        Assertions.assertEquals("a", model.tags().get("x"));
+        Assertions.assertEquals("y", model.tags().get("i"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("jvtbvpyss", model.linkedDomains().get(0));
+        Assertions.assertEquals("nwbxgjvtbvpyssz", model.linkedDomains().get(0));
+        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.publicNetworkAccess());
+        Assertions.assertTrue(model.disableLocalAuth());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommunicationServiceResourceUpdate model
-            = new CommunicationServiceResourceUpdate().withTags(mapOf("x", "a", "hr", "fizuckyf"))
-                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("tnwu", new UserAssignedIdentity())))
-                .withLinkedDomains(Arrays.asList("jvtbvpyss", "dnrujqguhmuouqfp"));
+        CommunicationServiceResourceUpdate model = new CommunicationServiceResourceUpdate().withTags(mapOf("i", "y"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("zxufiz", new UserAssignedIdentity())))
+            .withLinkedDomains(Arrays.asList("nwbxgjvtbvpyssz", "nruj", "guhmuouqfpr", "zw"))
+            .withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
+            .withDisableLocalAuth(true);
         model = BinaryData.fromObject(model).toObject(CommunicationServiceResourceUpdate.class);
-        Assertions.assertEquals("a", model.tags().get("x"));
+        Assertions.assertEquals("y", model.tags().get("i"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("jvtbvpyss", model.linkedDomains().get(0));
+        Assertions.assertEquals("nwbxgjvtbvpyssz", model.linkedDomains().get(0));
+        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.publicNetworkAccess());
+        Assertions.assertTrue(model.disableLocalAuth());
     }
 
     // Use "Map.of" if available

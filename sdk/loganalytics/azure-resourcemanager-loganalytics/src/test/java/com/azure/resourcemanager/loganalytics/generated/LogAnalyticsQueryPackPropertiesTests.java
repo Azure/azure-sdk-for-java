@@ -11,7 +11,7 @@ public final class LogAnalyticsQueryPackPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogAnalyticsQueryPackProperties model = BinaryData.fromString(
-            "{\"queryPackId\":\"tfwvukxgaudc\",\"timeCreated\":\"2021-06-07T10:34:36Z\",\"timeModified\":\"2021-03-15T16:07:05Z\",\"provisioningState\":\"cnyejhkryhtnapcz\"}")
+            "{\"queryPackId\":\"hpvgqz\",\"timeCreated\":\"2021-01-17T14:10:43Z\",\"timeModified\":\"2021-03-29T21:57:57Z\",\"provisioningState\":\"jzlmw\"}")
             .toObject(LogAnalyticsQueryPackProperties.class);
     }
 

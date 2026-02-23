@@ -98,7 +98,7 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     private List<NetworkAttachment> networkAttachments;
 
     /*
-     * Deprecated: The Base64 encoded cloud-init network data. The networkDataContent property will be used in
+     * Field Deprecated: The Base64 encoded cloud-init network data. The networkDataContent property will be used in
      * preference to this property.
      */
     private String networkData;
@@ -135,8 +135,8 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     private StorageProfile storageProfile;
 
     /*
-     * Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will be used in preference to
-     * this property.
+     * Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will be used in
+     * preference to this property.
      */
     private String userData;
 
@@ -391,8 +391,8 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     }
 
     /**
-     * Get the networkData property: Deprecated: The Base64 encoded cloud-init network data. The networkDataContent
-     * property will be used in preference to this property.
+     * Get the networkData property: Field Deprecated: The Base64 encoded cloud-init network data. The
+     * networkDataContent property will be used in preference to this property.
      * 
      * @return the networkData value.
      */
@@ -401,8 +401,8 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     }
 
     /**
-     * Set the networkData property: Deprecated: The Base64 encoded cloud-init network data. The networkDataContent
-     * property will be used in preference to this property.
+     * Set the networkData property: Field Deprecated: The Base64 encoded cloud-init network data. The
+     * networkDataContent property will be used in preference to this property.
      * 
      * @param networkData the networkData value to set.
      * @return the VirtualMachineProperties object itself.
@@ -515,8 +515,8 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     }
 
     /**
-     * Get the userData property: Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will
-     * be used in preference to this property.
+     * Get the userData property: Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent
+     * property will be used in preference to this property.
      * 
      * @return the userData value.
      */
@@ -525,8 +525,8 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     }
 
     /**
-     * Set the userData property: Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will
-     * be used in preference to this property.
+     * Set the userData property: Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent
+     * property will be used in preference to this property.
      * 
      * @param userData the userData value to set.
      * @return the VirtualMachineProperties object itself.

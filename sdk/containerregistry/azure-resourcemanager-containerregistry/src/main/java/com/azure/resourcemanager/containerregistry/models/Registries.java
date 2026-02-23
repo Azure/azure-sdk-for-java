@@ -110,7 +110,9 @@ public interface Registries extends SupportsCreating<Registry.DefinitionStages.B
      * @param rgName the name of the resource group.
      * @param acrName the name of the container.
      * @return the URL of the build source upload.
+     * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
      */
+    @Deprecated
     SourceUploadDefinition getBuildSourceUploadUrl(String rgName, String acrName);
 
     /**
@@ -119,7 +121,9 @@ public interface Registries extends SupportsCreating<Registry.DefinitionStages.B
      * @param rgName the name of the resource group.
      * @param acrName the name of the container.
      * @return the URL of the build source upload.
+     * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
      */
+    @Deprecated
     Mono<SourceUploadDefinition> getBuildSourceUploadUrlAsync(String rgName, String acrName);
 
     /**

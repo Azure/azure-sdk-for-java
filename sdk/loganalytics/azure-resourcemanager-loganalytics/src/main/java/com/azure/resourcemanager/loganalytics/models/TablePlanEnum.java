@@ -22,6 +22,11 @@ public final class TablePlanEnum extends ExpandableStringEnum<TablePlanEnum> {
     public static final TablePlanEnum ANALYTICS = fromString("Analytics");
 
     /**
+     * Static value Auxiliary for TablePlanEnum.
+     */
+    public static final TablePlanEnum AUXILIARY = fromString("Auxiliary");
+
+    /**
      * Creates a new instance of TablePlanEnum value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

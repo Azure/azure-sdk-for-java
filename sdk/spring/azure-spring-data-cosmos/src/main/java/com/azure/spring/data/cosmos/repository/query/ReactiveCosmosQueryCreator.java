@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * Class for reactive cosmos query creators that create criteria based queries from a {@link PartTree}.
  */
+@SuppressWarnings("deprecation")
 public class ReactiveCosmosQueryCreator extends AbstractQueryCreator<CosmosQuery, Criteria> {
 
     private final MappingContext<?, CosmosPersistentProperty> mappingContext;

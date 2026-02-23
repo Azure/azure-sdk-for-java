@@ -10,6 +10,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspaceProperties;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -242,7 +243,7 @@ public final class WorkspacePatch extends AzureEntityResource {
      * 
      * @return the createdDate value.
      */
-    public String createdDate() {
+    public OffsetDateTime createdDate() {
         return this.innerProperties() == null ? null : this.innerProperties().createdDate();
     }
 
@@ -251,7 +252,7 @@ public final class WorkspacePatch extends AzureEntityResource {
      * 
      * @return the modifiedDate value.
      */
-    public String modifiedDate() {
+    public OffsetDateTime modifiedDate() {
         return this.innerProperties() == null ? null : this.innerProperties().modifiedDate();
     }
 
@@ -380,6 +381,52 @@ public final class WorkspacePatch extends AzureEntityResource {
             this.innerProperties = new WorkspaceProperties();
         }
         this.innerProperties().withDefaultDataCollectionRuleResourceId(defaultDataCollectionRuleResourceId);
+        return this;
+    }
+
+    /**
+     * Get the replication property: workspace replication properties.
+     * 
+     * @return the replication value.
+     */
+    public WorkspaceReplicationProperties replication() {
+        return this.innerProperties() == null ? null : this.innerProperties().replication();
+    }
+
+    /**
+     * Set the replication property: workspace replication properties.
+     * 
+     * @param replication the replication value to set.
+     * @return the WorkspacePatch object itself.
+     */
+    public WorkspacePatch withReplication(WorkspaceReplicationProperties replication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withReplication(replication);
+        return this;
+    }
+
+    /**
+     * Get the failover property: workspace failover properties.
+     * 
+     * @return the failover value.
+     */
+    public WorkspaceFailoverProperties failover() {
+        return this.innerProperties() == null ? null : this.innerProperties().failover();
+    }
+
+    /**
+     * Set the failover property: workspace failover properties.
+     * 
+     * @param failover the failover value to set.
+     * @return the WorkspacePatch object itself.
+     */
+    public WorkspacePatch withFailover(WorkspaceFailoverProperties failover) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withFailover(failover);
         return this;
     }
 

@@ -11,7 +11,7 @@ public final class ResultStatisticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResultStatistics model
-            = BinaryData.fromString("{\"progress\":40.47698,\"ingestedRecords\":1226403170,\"scannedGb\":23.974842}")
+            = BinaryData.fromString("{\"progress\":68.59587,\"ingestedRecords\":823307226,\"scannedGb\":19.583012}")
                 .toObject(ResultStatistics.class);
     }
 

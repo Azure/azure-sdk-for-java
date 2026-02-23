@@ -79,8 +79,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachinePublicIpAddressDns
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.WindowsConfiguration;
 import com.azure.resourcemanager.compute.models.WindowsPatchAssessmentMode;
-import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
-import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchMode;
 import com.azure.resourcemanager.compute.models.ZonePlacementPolicyType;
 import java.util.Arrays;
@@ -1306,54 +1304,6 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
      * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
-     * virtualMachineExamples/
-     * VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
-     */
-    /**
-     * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByPlatform and enableHotpatching set
-     * to true.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndEnableHotpatchingSetToTrue(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachines()
-            .createOrUpdate("myResourceGroup", "myVM",
-                new VirtualMachineInner().withLocation("westus")
-                    .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                    .withStorageProfile(
-                        new StorageProfile()
-                            .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                                .withOffer("WindowsServer")
-                                .withSku("2016-Datacenter")
-                                .withVersion("latest"))
-                            .withOsDisk(new OSDisk().withName("myVMosdisk")
-                                .withCaching(CachingTypes.READ_WRITE)
-                                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
-                                .withManagedDisk(new ManagedDiskParameters()
-                                    .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
-                    .withOsProfile(
-                        new OSProfile().withComputerName("myVM")
-                            .withAdminUsername("{your-username}")
-                            .withAdminPassword("fakeTokenPlaceholder")
-                            .withWindowsConfiguration(new WindowsConfiguration().withProvisionVMAgent(true)
-                                .withEnableAutomaticUpdates(true)
-                                .withPatchSettings(new PatchSettings()
-                                    .withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
-                                    .withEnableHotpatching(true))))
-                    .withNetworkProfile(
-                        new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                            .withPrimary(true)))),
-                null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
      */
     /**
@@ -2310,56 +2260,6 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         .withComputerName("myVM")
                         .withAdminUsername("{your-username}")
                         .withAdminPassword("fakeTokenPlaceholder"))
-                    .withNetworkProfile(
-                        new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                            .withPrimary(true)))),
-                null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
-     */
-    /**
-     * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByPlatform and
-     * AutomaticByPlatformSettings.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachines()
-            .createOrUpdate("myResourceGroup", "myVM",
-                new VirtualMachineInner().withLocation("westus")
-                    .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                    .withStorageProfile(
-                        new StorageProfile()
-                            .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                                .withOffer("WindowsServer")
-                                .withSku("2016-Datacenter")
-                                .withVersion("latest"))
-                            .withOsDisk(new OSDisk().withName("myVMosdisk")
-                                .withCaching(CachingTypes.READ_WRITE)
-                                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
-                                .withManagedDisk(new ManagedDiskParameters()
-                                    .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
-                    .withOsProfile(new OSProfile().withComputerName("myVM")
-                        .withAdminUsername("{your-username}")
-                        .withAdminPassword("fakeTokenPlaceholder")
-                        .withWindowsConfiguration(new WindowsConfiguration().withProvisionVMAgent(true)
-                            .withEnableAutomaticUpdates(true)
-                            .withPatchSettings(new PatchSettings()
-                                .withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
-                                .withAssessmentMode(WindowsPatchAssessmentMode.AUTOMATIC_BY_PLATFORM)
-                                .withAutomaticByPlatformSettings(
-                                    new WindowsVMGuestPatchAutomaticByPlatformSettings()
-                                        .withRebootSetting(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.NEVER)
-                                        .withBypassPlatformSafetyChecksOnUserSchedule(false)))))
                     .withNetworkProfile(
                         new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
                             "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")

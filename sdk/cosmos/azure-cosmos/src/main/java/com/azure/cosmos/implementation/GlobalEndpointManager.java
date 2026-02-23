@@ -437,4 +437,16 @@ public class GlobalEndpointManager implements AutoCloseable {
     public void setPerPartitionAutomaticFailoverConfigModifier(Consumer<DatabaseAccount> perPartitionAutomaticFailoverConfigModifier) {
         this.perPartitionAutomaticFailoverConfigModifier = perPartitionAutomaticFailoverConfigModifier;
     }
+
+    public Boolean getNRegionSynchronousCommitEnabled() {
+        this.databaseAccountReadLock.lock();
+        try {
+            if (this.latestDatabaseAccount == null) {
+                return null;
+            }
+            return this.latestDatabaseAccount.isNRegionSynchronousCommitEnabled();
+        } finally {
+            this.databaseAccountReadLock.unlock();
+        }
+    }
 }

@@ -173,8 +173,8 @@ public interface VirtualMachine {
     List<NetworkAttachment> networkAttachments();
 
     /**
-     * Gets the networkData property: Deprecated: The Base64 encoded cloud-init network data. The networkDataContent
-     * property will be used in preference to this property.
+     * Gets the networkData property: Field Deprecated: The Base64 encoded cloud-init network data. The
+     * networkDataContent property will be used in preference to this property.
      * 
      * @return the networkData value.
      */
@@ -225,8 +225,8 @@ public interface VirtualMachine {
     StorageProfile storageProfile();
 
     /**
-     * Gets the userData property: Deprecated: The Base64 encoded cloud-init user data. The userDataContent property
-     * will be used in preference to this property.
+     * Gets the userData property: Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent
+     * property will be used in preference to this property.
      * 
      * @return the userData value.
      */
@@ -575,10 +575,10 @@ public interface VirtualMachine {
          */
         interface WithNetworkData {
             /**
-             * Specifies the networkData property: Deprecated: The Base64 encoded cloud-init network data. The
+             * Specifies the networkData property: Field Deprecated: The Base64 encoded cloud-init network data. The
              * networkDataContent property will be used in preference to this property..
              * 
-             * @param networkData Deprecated: The Base64 encoded cloud-init network data. The networkDataContent
+             * @param networkData Field Deprecated: The Base64 encoded cloud-init network data. The networkDataContent
              * property will be used in preference to this property.
              * @return the next definition stage.
              */
@@ -631,11 +631,11 @@ public interface VirtualMachine {
          */
         interface WithUserData {
             /**
-             * Specifies the userData property: Deprecated: The Base64 encoded cloud-init user data. The userDataContent
-             * property will be used in preference to this property..
+             * Specifies the userData property: Field Deprecated: The Base64 encoded cloud-init user data. The
+             * userDataContent property will be used in preference to this property..
              * 
-             * @param userData Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will be
-             * used in preference to this property.
+             * @param userData Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent property
+             * will be used in preference to this property.
              * @return the next definition stage.
              */
             WithCreate withUserData(String userData);

@@ -6,15 +6,17 @@ package com.azure.ai.voicelive.models;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for {@link MaxOutputTokens}.
@@ -104,12 +106,12 @@ class MaxOutputTokensTest {
         assertNotEquals(tokens3, infinite1);
 
         // Test with null
-        assertNotEquals(tokens1, null);
-        assertNotEquals(infinite1, null);
+        assertNotNull(tokens1);
+        assertNotNull(infinite1);
 
         // Test with different type
-        assertNotEquals(tokens1, "100");
-        assertNotEquals(infinite1, "inf");
+        assertNotEquals("100", tokens1);
+        assertNotEquals("inf", infinite1);
     }
 
     @Test
@@ -124,15 +126,11 @@ class MaxOutputTokensTest {
     void testJsonSerializationWithInteger() throws IOException {
         // Arrange
         MaxOutputTokens tokens = MaxOutputTokens.of(100);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         // Act
-        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            tokens.toJson(writer);
-        }
+        String json = tokens.toJsonString();
 
         // Assert
-        String json = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
         assertEquals("100", json);
     }
 
@@ -140,15 +138,11 @@ class MaxOutputTokensTest {
     void testJsonSerializationWithInfinite() throws IOException {
         // Arrange
         MaxOutputTokens tokens = MaxOutputTokens.infinite();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         // Act
-        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            tokens.toJson(writer);
-        }
+        String json = tokens.toJsonString();
 
         // Assert
-        String json = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
         assertEquals("\"inf\"", json);
     }
 
@@ -156,11 +150,10 @@ class MaxOutputTokensTest {
     void testJsonDeserializationWithInteger() throws IOException {
         // Arrange
         String json = "100";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
         // Act
         MaxOutputTokens tokens;
-        try (JsonReader reader = JsonProviders.createReader(inputStream)) {
+        try (JsonReader reader = JsonProviders.createReader(json)) {
             tokens = MaxOutputTokens.fromJson(reader);
         }
 
@@ -174,11 +167,10 @@ class MaxOutputTokensTest {
     void testJsonDeserializationWithInfinite() throws IOException {
         // Arrange
         String json = "\"inf\"";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
         // Act
         MaxOutputTokens tokens;
-        try (JsonReader reader = JsonProviders.createReader(inputStream)) {
+        try (JsonReader reader = JsonProviders.createReader(json)) {
             tokens = MaxOutputTokens.fromJson(reader);
         }
 
@@ -192,11 +184,10 @@ class MaxOutputTokensTest {
     void testJsonDeserializationWithNull() throws IOException {
         // Arrange
         String json = "null";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
         // Act
         MaxOutputTokens tokens;
-        try (JsonReader reader = JsonProviders.createReader(inputStream)) {
+        try (JsonReader reader = JsonProviders.createReader(json)) {
             tokens = MaxOutputTokens.fromJson(reader);
         }
 
@@ -208,10 +199,9 @@ class MaxOutputTokensTest {
     void testJsonDeserializationWithInvalidString() throws IOException {
         // Arrange
         String json = "\"invalid\"";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
         // Act & Assert
-        try (JsonReader reader = JsonProviders.createReader(inputStream)) {
+        try (JsonReader reader = JsonProviders.createReader(json)) {
             assertThrows(IllegalArgumentException.class, () -> MaxOutputTokens.fromJson(reader));
         }
     }
@@ -220,10 +210,9 @@ class MaxOutputTokensTest {
     void testJsonDeserializationWithInvalidType() throws IOException {
         // Arrange
         String json = "true";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
         // Act & Assert
-        try (JsonReader reader = JsonProviders.createReader(inputStream)) {
+        try (JsonReader reader = JsonProviders.createReader(json)) {
             assertThrows(IllegalArgumentException.class, () -> MaxOutputTokens.fromJson(reader));
         }
     }
@@ -234,16 +223,11 @@ class MaxOutputTokensTest {
         MaxOutputTokens original = MaxOutputTokens.of(2048);
 
         // Act - Serialize
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            original.toJson(writer);
-        }
+        String json = original.toJsonString();
 
         // Act - Deserialize
-        String json = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
         MaxOutputTokens deserialized;
-        try (JsonReader reader = JsonProviders.createReader(inputStream)) {
+        try (JsonReader reader = JsonProviders.createReader(json)) {
             deserialized = MaxOutputTokens.fromJson(reader);
         }
 
@@ -259,16 +243,11 @@ class MaxOutputTokensTest {
         MaxOutputTokens original = MaxOutputTokens.infinite();
 
         // Act - Serialize
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            original.toJson(writer);
-        }
+        String json = original.toJsonString();
 
         // Act - Deserialize
-        String json = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
         MaxOutputTokens deserialized;
-        try (JsonReader reader = JsonProviders.createReader(inputStream)) {
+        try (JsonReader reader = JsonProviders.createReader(json)) {
             deserialized = MaxOutputTokens.fromJson(reader);
         }
 
@@ -285,13 +264,9 @@ class MaxOutputTokensTest {
         params.setMaxOutputTokens(BinaryData.fromObject(MaxOutputTokens.of(1000)));
 
         // Act - Serialize
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            params.toJson(writer);
-        }
+        String json = params.toJsonString();
 
         // Assert - Check that maxOutputTokens is serialized as integer
-        String json = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
         assertTrue(json.contains("\"max_output_tokens\":1000") || json.contains("\"max_output_tokens\": 1000"));
     }
 
@@ -302,13 +277,9 @@ class MaxOutputTokensTest {
         params.setMaxOutputTokens(BinaryData.fromObject(MaxOutputTokens.infinite()));
 
         // Act - Serialize
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            params.toJson(writer);
-        }
+        String json = params.toJsonString();
 
         // Assert - Check that maxOutputTokens is serialized as string "inf"
-        String json = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
         assertTrue(json.contains("\"max_output_tokens\":\"inf\"") || json.contains("\"max_output_tokens\": \"inf\""));
     }
 
@@ -319,13 +290,9 @@ class MaxOutputTokensTest {
         params.setMaxOutputTokens(null);
 
         // Act - Serialize
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            params.toJson(writer);
-        }
+        String json = params.toJsonString();
 
         // Assert - Check that maxOutputTokens is not included when null
-        String json = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
         // The field should not be present or should be null in the JSON
         // Depending on the JsonWriter implementation, it might omit null fields
         assertNotNull(json);
@@ -335,11 +302,10 @@ class MaxOutputTokensTest {
     void testDeserializeResponseCreateParamsWithInteger() throws IOException {
         // Arrange
         String json = "{\"max_output_tokens\":500}";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
         // Act
         ResponseCreateParams params;
-        try (JsonReader reader = JsonProviders.createReader(inputStream)) {
+        try (JsonReader reader = JsonProviders.createReader(json)) {
             params = ResponseCreateParams.fromJson(reader);
         }
 
@@ -355,11 +321,10 @@ class MaxOutputTokensTest {
     void testDeserializeResponseCreateParamsWithInfinite() throws IOException {
         // Arrange
         String json = "{\"max_output_tokens\":\"inf\"}";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
         // Act
         ResponseCreateParams params;
-        try (JsonReader reader = JsonProviders.createReader(inputStream)) {
+        try (JsonReader reader = JsonProviders.createReader(json)) {
             params = ResponseCreateParams.fromJson(reader);
         }
 
