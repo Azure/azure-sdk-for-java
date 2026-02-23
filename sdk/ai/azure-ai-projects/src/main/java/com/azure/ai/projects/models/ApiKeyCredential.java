@@ -14,7 +14,7 @@ import java.io.IOException;
  * API Key Credential definition.
  */
 @Immutable
-public final class ApiKeyCredentials extends BaseCredentials {
+public final class ApiKeyCredential extends BaseCredential {
 
     /*
      * The type of credential used by the connection
@@ -29,10 +29,10 @@ public final class ApiKeyCredentials extends BaseCredentials {
     private String apiKey;
 
     /**
-     * Creates an instance of ApiKeyCredentials class.
+     * Creates an instance of ApiKeyCredential class.
      */
     @Generated
-    private ApiKeyCredentials() {
+    private ApiKeyCredential() {
     }
 
     /**
@@ -68,29 +68,29 @@ public final class ApiKeyCredentials extends BaseCredentials {
     }
 
     /**
-     * Reads an instance of ApiKeyCredentials from the JsonReader.
+     * Reads an instance of ApiKeyCredential from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ApiKeyCredentials if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ApiKeyCredential if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ApiKeyCredentials.
+     * @throws IOException If an error occurs while reading the ApiKeyCredential.
      */
     @Generated
-    public static ApiKeyCredentials fromJson(JsonReader jsonReader) throws IOException {
+    public static ApiKeyCredential fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ApiKeyCredentials deserializedApiKeyCredentials = new ApiKeyCredentials();
+            ApiKeyCredential deserializedApiKeyCredential = new ApiKeyCredential();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedApiKeyCredentials.type = CredentialType.fromString(reader.getString());
+                    deserializedApiKeyCredential.type = CredentialType.fromString(reader.getString());
                 } else if ("key".equals(fieldName)) {
-                    deserializedApiKeyCredentials.apiKey = reader.getString();
+                    deserializedApiKeyCredential.apiKey = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedApiKeyCredentials;
+            return deserializedApiKeyCredential;
         });
     }
 }

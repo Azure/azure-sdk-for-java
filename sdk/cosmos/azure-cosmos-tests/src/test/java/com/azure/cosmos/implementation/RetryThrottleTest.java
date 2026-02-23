@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
@@ -88,7 +89,7 @@ public class RetryThrottleTest extends TestSuiteBase {
 
     @Test(groups = { "long" }, timeOut = TIMEOUT, enabled = false)
     public void retryDocumentCreate() throws Exception {
-        client = SpyClientUnderTestFactory.createClientWithGatewaySpy(createGatewayRxDocumentClient());
+        client = SpyClientUnderTestFactory.createClientWithGatewaySpy(createInternalGatewayRxDocumentClient());
 
         // create a document to ensure collection is cached
         client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false).block();
@@ -126,8 +127,8 @@ public class RetryThrottleTest extends TestSuiteBase {
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT, enabled = false)
     public void before_RetryThrottleTest() {
         // set up the client
-        database = SHARED_DATABASE;
-        collection = SHARED_SINGLE_PARTITION_COLLECTION;
+        database = SHARED_DATABASE_INTERNAL;
+        collection = SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL;
     }
 
     private Document getDocumentDefinition() {

@@ -14,13 +14,13 @@ import java.io.IOException;
  * Evaluation rule action for human evaluation.
  */
 @Immutable
-public final class HumanEvaluationRuleAction extends EvaluationRuleAction {
+public final class HumanEvaluationPreviewRuleAction extends EvaluationRuleAction {
 
     /*
      * Type of the evaluation action.
      */
     @Generated
-    private EvaluationRuleActionType type = EvaluationRuleActionType.HUMAN_EVALUATION;
+    private EvaluationRuleActionType type = EvaluationRuleActionType.HUMAN_EVALUATION_PREVIEW;
 
     /*
      * Human evaluation template Id.
@@ -29,12 +29,12 @@ public final class HumanEvaluationRuleAction extends EvaluationRuleAction {
     private final String templateId;
 
     /**
-     * Creates an instance of HumanEvaluationRuleAction class.
+     * Creates an instance of HumanEvaluationPreviewRuleAction class.
      *
      * @param templateId the templateId value to set.
      */
     @Generated
-    public HumanEvaluationRuleAction(String templateId) {
+    public HumanEvaluationPreviewRuleAction(String templateId) {
         this.templateId = templateId;
     }
 
@@ -72,19 +72,19 @@ public final class HumanEvaluationRuleAction extends EvaluationRuleAction {
     }
 
     /**
-     * Reads an instance of HumanEvaluationRuleAction from the JsonReader.
+     * Reads an instance of HumanEvaluationPreviewRuleAction from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of HumanEvaluationRuleAction if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of HumanEvaluationPreviewRuleAction if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the HumanEvaluationRuleAction.
+     * @throws IOException If an error occurs while reading the HumanEvaluationPreviewRuleAction.
      */
     @Generated
-    public static HumanEvaluationRuleAction fromJson(JsonReader jsonReader) throws IOException {
+    public static HumanEvaluationPreviewRuleAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String templateId = null;
-            EvaluationRuleActionType type = EvaluationRuleActionType.HUMAN_EVALUATION;
+            EvaluationRuleActionType type = EvaluationRuleActionType.HUMAN_EVALUATION_PREVIEW;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -96,9 +96,10 @@ public final class HumanEvaluationRuleAction extends EvaluationRuleAction {
                     reader.skipChildren();
                 }
             }
-            HumanEvaluationRuleAction deserializedHumanEvaluationRuleAction = new HumanEvaluationRuleAction(templateId);
-            deserializedHumanEvaluationRuleAction.type = type;
-            return deserializedHumanEvaluationRuleAction;
+            HumanEvaluationPreviewRuleAction deserializedHumanEvaluationPreviewRuleAction
+                = new HumanEvaluationPreviewRuleAction(templateId);
+            deserializedHumanEvaluationPreviewRuleAction.type = type;
+            return deserializedHumanEvaluationPreviewRuleAction;
         });
     }
 }

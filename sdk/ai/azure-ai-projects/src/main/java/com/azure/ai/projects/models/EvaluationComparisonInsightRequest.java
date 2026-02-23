@@ -15,7 +15,7 @@ import java.util.List;
  * Evaluation Comparison Request.
  */
 @Immutable
-public final class EvaluationComparisonRequest extends InsightRequest {
+public final class EvaluationComparisonInsightRequest extends InsightRequest {
 
     /*
      * The type of request.
@@ -40,20 +40,6 @@ public final class EvaluationComparisonRequest extends InsightRequest {
      */
     @Generated
     private final List<String> treatmentRunIds;
-
-    /**
-     * Creates an instance of EvaluationComparisonRequest class.
-     *
-     * @param evalId the evalId value to set.
-     * @param baselineRunId the baselineRunId value to set.
-     * @param treatmentRunIds the treatmentRunIds value to set.
-     */
-    @Generated
-    public EvaluationComparisonRequest(String evalId, String baselineRunId, List<String> treatmentRunIds) {
-        this.evalId = evalId;
-        this.baselineRunId = baselineRunId;
-        this.treatmentRunIds = treatmentRunIds;
-    }
 
     /**
      * Get the type property: The type of request.
@@ -112,16 +98,16 @@ public final class EvaluationComparisonRequest extends InsightRequest {
     }
 
     /**
-     * Reads an instance of EvaluationComparisonRequest from the JsonReader.
+     * Reads an instance of EvaluationComparisonInsightRequest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EvaluationComparisonRequest if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of EvaluationComparisonInsightRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EvaluationComparisonRequest.
+     * @throws IOException If an error occurs while reading the EvaluationComparisonInsightRequest.
      */
     @Generated
-    public static EvaluationComparisonRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static EvaluationComparisonInsightRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String evalId = null;
             String baselineRunId = null;
@@ -142,10 +128,24 @@ public final class EvaluationComparisonRequest extends InsightRequest {
                     reader.skipChildren();
                 }
             }
-            EvaluationComparisonRequest deserializedEvaluationComparisonRequest
-                = new EvaluationComparisonRequest(evalId, baselineRunId, treatmentRunIds);
-            deserializedEvaluationComparisonRequest.type = type;
-            return deserializedEvaluationComparisonRequest;
+            EvaluationComparisonInsightRequest deserializedEvaluationComparisonInsightRequest
+                = new EvaluationComparisonInsightRequest(evalId, baselineRunId, treatmentRunIds);
+            deserializedEvaluationComparisonInsightRequest.type = type;
+            return deserializedEvaluationComparisonInsightRequest;
         });
+    }
+
+    /**
+     * Creates an instance of EvaluationComparisonInsightRequest class.
+     *
+     * @param evalId the evalId value to set.
+     * @param baselineRunId the baselineRunId value to set.
+     * @param treatmentRunIds the treatmentRunIds value to set.
+     */
+    @Generated
+    public EvaluationComparisonInsightRequest(String evalId, String baselineRunId, List<String> treatmentRunIds) {
+        this.evalId = evalId;
+        this.baselineRunId = baselineRunId;
+        this.treatmentRunIds = treatmentRunIds;
     }
 }
