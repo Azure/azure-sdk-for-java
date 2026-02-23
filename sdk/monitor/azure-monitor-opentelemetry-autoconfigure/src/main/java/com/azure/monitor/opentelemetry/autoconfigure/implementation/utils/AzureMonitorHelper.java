@@ -10,6 +10,8 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.Diag
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipelineListener;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomerSdkStats;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomerSdkStatsTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatTelemetryPipelineListener;
 
@@ -18,13 +20,17 @@ import java.io.File;
 public final class AzureMonitorHelper {
 
     public static TelemetryItemExporter createTelemetryItemExporter(HttpPipeline httpPipeline,
-        StatsbeatModule statsbeatModule, File tempDir, LocalStorageStats localStorageStats) {
+        StatsbeatModule statsbeatModule, File tempDir, LocalStorageStats localStorageStats,
+        CustomerSdkStats customerSdkStats) {
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline, statsbeatModule::shutdown);
 
         TelemetryPipelineListener telemetryPipelineListener;
+        CustomerSdkStatsTelemetryPipelineListener customerSdkStatsListener
+            = new CustomerSdkStatsTelemetryPipelineListener(customerSdkStats);
         if (tempDir == null) {
-            telemetryPipelineListener = new DiagnosticTelemetryPipelineListener(
-                "Sending telemetry to the ingestion service", true, " (telemetry will be lost)");
+            telemetryPipelineListener = TelemetryPipelineListener
+                .composite(new DiagnosticTelemetryPipelineListener("Sending telemetry to the ingestion service", true,
+                    " (telemetry will be lost)"), customerSdkStatsListener);
         } else {
             telemetryPipelineListener = TelemetryPipelineListener.composite(
                 // suppress warnings on retryable failures, in order to reduce sporadic/annoying
@@ -32,7 +38,8 @@ public final class AzureMonitorHelper {
                 // will log if that retry from disk fails
                 new DiagnosticTelemetryPipelineListener("Sending telemetry to the ingestion service", false, ""),
                 new LocalStorageTelemetryPipelineListener(50, // default to 50MB
-                    TempDirs.getSubDir(tempDir, "telemetry"), telemetryPipeline, localStorageStats, false));
+                    TempDirs.getSubDir(tempDir, "telemetry"), telemetryPipeline, localStorageStats, false),
+                customerSdkStatsListener);
         }
 
         return new TelemetryItemExporter(telemetryPipeline, telemetryPipelineListener);

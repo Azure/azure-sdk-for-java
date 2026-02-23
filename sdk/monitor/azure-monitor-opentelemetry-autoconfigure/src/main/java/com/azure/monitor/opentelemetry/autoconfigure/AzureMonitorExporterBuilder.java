@@ -24,14 +24,17 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.Abs
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.StatsbeatConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat.HeartbeatExporter;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulse;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomerSdkStats;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.Feature;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorHelper;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.PropertyHelper;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ResourceParser;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TempDirs;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ThreadPoolUtils;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.VersionGenerator;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
@@ -47,6 +50,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
 import static java.util.concurrent.TimeUnit.DAYS;
@@ -60,6 +66,10 @@ class AzureMonitorExporterBuilder {
         = "STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME";
     private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME
         = "STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME";
+
+    private static final String SDKSTATS_DISABLED_ENV_VAR = "APPLICATIONINSIGHTS_SDKSTATS_DISABLED";
+    private static final String SDKSTATS_EXPORT_INTERVAL_ENV_VAR = "APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL";
+    private static final long SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS = 900; // 15 minutes
 
     private static final Map<String, String> PROPERTIES
         = CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
@@ -93,13 +103,16 @@ class AzureMonitorExporterBuilder {
         this.spanDataMapper = createSpanDataMapper();
         File tempDir = TempDirs.getApplicationInsightsTempDir(LOGGER,
             "Telemetry will not be stored to disk and retried on sporadic network failures");
+        // Create customer-facing SDKStats accumulator
+        CustomerSdkStats customerSdkStats = createCustomerSdkStats();
         // TODO (heya) change LocalStorageStats.noop() to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
         this.builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule,
-            tempDir, LocalStorageStats.noop());
+            tempDir, LocalStorageStats.noop(), customerSdkStats);
         if (LiveMetrics.isEnabled(configProperties)) {
             this.quickPulse = createQuickPulse(resource);
         }
         startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
+        startCustomerSdkStats(customerSdkStats, resource);
     }
 
     private QuickPulse createQuickPulse(Resource resource) {
@@ -238,6 +251,57 @@ class AzureMonitorExporterBuilder {
             configProperties.getLong(STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME, MINUTES.toSeconds(15)), // Statsbeat short interval
             configProperties.getLong(STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME, DAYS.toSeconds(1)), // Statsbeat long interval
             false, initStatsbeatFeatures());
+    }
+
+    private CustomerSdkStats createCustomerSdkStats() {
+        // Use the raw SDK version (without prefixes) for the customer-facing stats
+        String version = VersionGenerator.getSdkVersion();
+        return CustomerSdkStats.create(version);
+    }
+
+    private void startCustomerSdkStats(CustomerSdkStats customerSdkStats, Resource resource) {
+        // Check if customer SDKStats is disabled via env var
+        String disabledEnvVar = System.getenv(SDKSTATS_DISABLED_ENV_VAR);
+        if ("true".equalsIgnoreCase(disabledEnvVar)) {
+            LOGGER.verbose("Customer SDKStats is disabled via environment variable {}.", SDKSTATS_DISABLED_ENV_VAR);
+            return;
+        }
+
+        // Get export interval from env var or use default
+        long exportIntervalSeconds = SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS;
+        String intervalEnvVar = System.getenv(SDKSTATS_EXPORT_INTERVAL_ENV_VAR);
+        if (intervalEnvVar != null && !intervalEnvVar.isEmpty()) {
+            try {
+                exportIntervalSeconds = Long.parseLong(intervalEnvVar);
+            } catch (NumberFormatException e) {
+                LOGGER.warning("Invalid value for {}: {}. Using default {} seconds.", SDKSTATS_EXPORT_INTERVAL_ENV_VAR,
+                    intervalEnvVar, SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS);
+            }
+        }
+
+        ConnectionString connectionString = getConnectionString();
+        String sdkVersion = VersionGenerator.getSdkVersion();
+        String cloudRole = resource.getAttribute(AttributeKey.stringKey("service.name"));
+        String cloudRoleInstance = resource.getAttribute(AttributeKey.stringKey("service.instance.id"));
+
+        ScheduledExecutorService customerSdkStatsExecutor = Executors
+            .newSingleThreadScheduledExecutor(ThreadPoolUtils.createDaemonThreadFactory(CustomerSdkStats.class));
+
+        LOGGER.info("Customer SDKStats scheduler starting with interval {} seconds.", exportIntervalSeconds);
+        customerSdkStatsExecutor.scheduleWithFixedDelay(() -> {
+            try {
+                List<TelemetryItem> items
+                    = customerSdkStats.collectAndReset(connectionString, sdkVersion, cloudRole, cloudRoleInstance);
+                if (!items.isEmpty()) {
+                    LOGGER.info("Customer SDKStats: exporting {} metric items.", items.size());
+                    builtTelemetryItemExporter.sendWithoutTracking(items);
+                } else {
+                    LOGGER.info("Customer SDKStats: no items to export (counters were zero).");
+                }
+            } catch (RuntimeException e) {
+                LOGGER.warning("Error sending customer SDKStats", e);
+            }
+        }, exportIntervalSeconds, exportIntervalSeconds, TimeUnit.SECONDS);
     }
 
     private HttpPipeline createStatsbeatHttpPipeline() {

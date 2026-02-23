@@ -10,7 +10,9 @@ import reactor.core.publisher.Flux;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class TelemetryPipelineRequest {
 
@@ -20,13 +22,28 @@ public class TelemetryPipelineRequest {
     private final List<ByteBuffer> byteBuffers;
     private final int contentLength;
 
+    // Customer-facing SDKStats metadata: item counts by telemetry type
+    private final Map<String, Long> itemCountsByType;
+    private final Map<String, Long> successItemCountsByType;
+    private final Map<String, Long> failureItemCountsByType;
+
     TelemetryPipelineRequest(URL url, String connectionString, String instrumentationKey,
         List<ByteBuffer> byteBuffers) {
+        this(url, connectionString, instrumentationKey, byteBuffers, Collections.emptyMap(), Collections.emptyMap(),
+            Collections.emptyMap());
+    }
+
+    public TelemetryPipelineRequest(URL url, String connectionString, String instrumentationKey,
+        List<ByteBuffer> byteBuffers, Map<String, Long> itemCountsByType, Map<String, Long> successItemCountsByType,
+        Map<String, Long> failureItemCountsByType) {
         this.url = url;
         this.connectionString = connectionString;
         this.instrumentationKey = instrumentationKey;
         this.byteBuffers = byteBuffers;
         contentLength = byteBuffers.stream().mapToInt(ByteBuffer::limit).sum();
+        this.itemCountsByType = itemCountsByType;
+        this.successItemCountsByType = successItemCountsByType;
+        this.failureItemCountsByType = failureItemCountsByType;
     }
 
     public URL getUrl() {
@@ -48,6 +65,28 @@ public class TelemetryPipelineRequest {
     // used by statsbeat
     public String getInstrumentationKey() {
         return instrumentationKey;
+    }
+
+    /**
+     * Returns item counts by telemetry type (e.g. "REQUEST" -> 200, "DEPENDENCY" -> 300).
+     * Empty map for batches where item counting is not applicable (e.g. statsbeat, disk retries).
+     */
+    public Map<String, Long> getItemCountsByType() {
+        return itemCountsByType;
+    }
+
+    /**
+     * Returns counts of successful REQUEST/DEPENDENCY items (where isSuccess() == true).
+     */
+    public Map<String, Long> getSuccessItemCountsByType() {
+        return successItemCountsByType;
+    }
+
+    /**
+     * Returns counts of failed REQUEST/DEPENDENCY items (where isSuccess() == false).
+     */
+    public Map<String, Long> getFailureItemCountsByType() {
+        return failureItemCountsByType;
     }
 
     HttpRequest createHttpRequest() {

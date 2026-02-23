@@ -21,7 +21,7 @@ public class TelemetryPipelineResponse {
     private final int statusCode;
     private final String body;
 
-    TelemetryPipelineResponse(int statusCode, String body) {
+    public TelemetryPipelineResponse(int statusCode, String body) {
         this.statusCode = statusCode;
         this.body = body;
     }

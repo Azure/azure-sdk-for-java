@@ -10,7 +10,11 @@ import com.azure.json.JsonWriter;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomerSdkStatsTelemetryType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AksResourceAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker;
 import io.opentelemetry.api.common.AttributeKey;
@@ -70,6 +74,29 @@ public class TelemetryItemExporter {
         return CompletableResultCode.ofAll(resultCodeList);
     }
 
+    /**
+     * Sends telemetry items without computing customer-facing SDKStats metadata.
+     * Used for sending customer SDKStats metrics themselves to prevent recursive counting.
+     * Items sent via this method will NOT trigger CustomerSdkStatsTelemetryPipelineListener
+     * since the TelemetryPipelineRequest will have empty item count maps.
+     */
+    public CompletableResultCode sendWithoutTracking(List<TelemetryItem> telemetryItems) {
+        Map<TelemetryItemBatchKey, List<TelemetryItem>> batches = splitIntoBatches(telemetryItems);
+        List<CompletableResultCode> resultCodeList = new ArrayList<>();
+        for (Map.Entry<TelemetryItemBatchKey, List<TelemetryItem>> batch : batches.entrySet()) {
+            try {
+                List<ByteBuffer> byteBuffers = serialize(batch.getValue());
+                encodeBatchOperationLogger.recordSuccess();
+                resultCodeList.add(telemetryPipeline.send(byteBuffers, batch.getKey().connectionString, listener));
+            } catch (Throwable t) {
+                encodeBatchOperationLogger.recordFailure(t.getMessage(), t);
+                resultCodeList.add(CompletableResultCode.ofFailure());
+            }
+        }
+        maybeAddToActiveExportResults(resultCodeList);
+        return CompletableResultCode.ofAll(resultCodeList);
+    }
+
     // visible for tests
     Map<TelemetryItemBatchKey, List<TelemetryItem>> splitIntoBatches(List<TelemetryItem> telemetryItems) {
 
@@ -118,6 +145,13 @@ public class TelemetryItemExporter {
             && AksResourceAttributes.isAks(telemetryItemBatchKey.resource)) {
             telemetryItems.add(0, createOtelResourceMetric(telemetryItemBatchKey));
         }
+
+        // Compute per-type item counts before serialization for customer-facing SDKStats
+        Map<String, Long> itemCountsByType = new HashMap<>();
+        Map<String, Long> successItemCountsByType = new HashMap<>();
+        Map<String, Long> failureItemCountsByType = new HashMap<>();
+        computeItemCountMetadata(telemetryItems, itemCountsByType, successItemCountsByType, failureItemCountsByType);
+
         try {
             byteBuffers = serialize(telemetryItems);
             encodeBatchOperationLogger.recordSuccess();
@@ -125,7 +159,40 @@ public class TelemetryItemExporter {
             encodeBatchOperationLogger.recordFailure(t.getMessage(), t);
             return CompletableResultCode.ofFailure();
         }
-        return telemetryPipeline.send(byteBuffers, telemetryItemBatchKey.connectionString, listener);
+        return telemetryPipeline.send(byteBuffers, telemetryItemBatchKey.connectionString, listener, itemCountsByType,
+            successItemCountsByType, failureItemCountsByType);
+    }
+
+    static void computeItemCountMetadata(List<TelemetryItem> telemetryItems, Map<String, Long> itemCountsByType,
+        Map<String, Long> successItemCountsByType, Map<String, Long> failureItemCountsByType) {
+        for (TelemetryItem item : telemetryItems) {
+            String telemetryType = CustomerSdkStatsTelemetryType.fromTelemetryItemName(item.getName());
+            if (telemetryType == null) {
+                // Skip internal items (e.g. Statsbeat)
+                continue;
+            }
+
+            itemCountsByType.merge(telemetryType, 1L, Long::sum);
+
+            // Track success/failure for Request and Dependency types
+            if ("REQUEST".equals(telemetryType) || "DEPENDENCY".equals(telemetryType)) {
+                MonitorDomain baseData = item.getData() != null ? item.getData().getBaseData() : null;
+                if (baseData instanceof RequestData) {
+                    if (((RequestData) baseData).isSuccess()) {
+                        successItemCountsByType.merge(telemetryType, 1L, Long::sum);
+                    } else {
+                        failureItemCountsByType.merge(telemetryType, 1L, Long::sum);
+                    }
+                } else if (baseData instanceof RemoteDependencyData) {
+                    Boolean success = ((RemoteDependencyData) baseData).isSuccess();
+                    if (success != null && success) {
+                        successItemCountsByType.merge(telemetryType, 1L, Long::sum);
+                    } else {
+                        failureItemCountsByType.merge(telemetryType, 1L, Long::sum);
+                    }
+                }
+            }
+        }
     }
 
     // serialize an array of TelemetryItems to an array of byte buffers

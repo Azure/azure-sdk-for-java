@@ -45,14 +45,22 @@ public class TelemetryPipeline {
 
     public CompletableResultCode send(List<ByteBuffer> telemetry, String connectionString,
         TelemetryPipelineListener listener) {
+        return send(telemetry, connectionString, listener, Collections.emptyMap(), Collections.emptyMap(),
+            Collections.emptyMap());
+    }
+
+    public CompletableResultCode send(List<ByteBuffer> telemetry, String connectionString,
+        TelemetryPipelineListener listener, Map<String, Long> itemCountsByType,
+        Map<String, Long> successItemCountsByType, Map<String, Long> failureItemCountsByType) {
 
         ConnectionString connectionStringObj = ConnectionString.parse(connectionString);
 
         URL url = redirectCache.computeIfAbsent(connectionString,
             k -> getFullIngestionUrl(connectionStringObj.getIngestionEndpoint()));
 
-        TelemetryPipelineRequest request = new TelemetryPipelineRequest(url, connectionString,
-            connectionStringObj.getInstrumentationKey(), telemetry);
+        TelemetryPipelineRequest request
+            = new TelemetryPipelineRequest(url, connectionString, connectionStringObj.getInstrumentationKey(),
+                telemetry, itemCountsByType, successItemCountsByType, failureItemCountsByType);
 
         try {
             CompletableResultCode result = new CompletableResultCode();
