@@ -13,6 +13,7 @@ import com.azure.ai.contentunderstanding.models.AnalyzeResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults;
 import com.azure.ai.contentunderstanding.models.CopyAuthorization;
 import com.azure.ai.contentunderstanding.models.ProcessingLocation;
@@ -2068,7 +2069,7 @@ public final class ContentUnderstandingAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput) {
-        return beginAnalyzeBinary(analyzerId, binaryInput, null, "application/octet-stream", null);
+        return beginAnalyzeBinary(analyzerId, binaryInput, (String) null, "application/octet-stream", null);
     }
 
     /**
@@ -2096,6 +2097,28 @@ public final class ContentUnderstandingAsyncClient {
         }
         requestOptions.addQueryParam("stringEncoding", "utf16", false);
         return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions);
+    }
+
+    /**
+     * Extract content and fields from binary input. Uses default string encoding (utf16).
+     *
+     * Use factory methods such as {@link ContentRange#pages(int, int)}, {@link ContentRange#timeRange(long, long)}, or
+     * {@link ContentRange#combine(ContentRange...)} to build the range.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param binaryInput The binary content of the document to analyze.
+     * @param inputRange Range of the input to analyze. Use ContentRange factory methods to build the range.
+     * @param contentType Request content type.
+     * @param processingLocation The location where the data may be processed. Set to null for service default.
+     * @return the {@link PollerFlux} for polling of the analyze operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
+        BinaryData binaryInput, ContentRange inputRange, String contentType, ProcessingLocation processingLocation) {
+        return beginAnalyzeBinary(analyzerId, binaryInput, inputRange != null ? inputRange.toString() : null,
+            contentType, processingLocation);
     }
 
     /**
