@@ -54,9 +54,9 @@ public class StoreResponseDiagnostics {
     private final String endpoint;
     private final String requestThroughputControlGroupName;
     private final String requestThroughputControlGroupConfig;
-    private volatile String channelId;
-    private volatile String parentChannelId;
-    private volatile boolean http2;
+    private String channelId;
+    private String parentChannelId;
+    private boolean http2;
 
     public static StoreResponseDiagnostics createStoreResponseDiagnostics(
         StoreResponse storeResponse,

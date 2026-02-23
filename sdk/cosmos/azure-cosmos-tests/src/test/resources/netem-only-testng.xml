@@ -1,8 +1,0 @@
-<!DOCTYPE suite SYSTEM https://testng.org/testng-1.0.dtd>
-<suite name=netem-only parallel=false thread-count=1>
-  <test name=netem-only>
-    <classes>
-      <class name=com.azure.cosmos.faultinjection.ManualNetworkDelayConnectionLifecycleTests/>
-    </classes>
-  </test>
-</suite>

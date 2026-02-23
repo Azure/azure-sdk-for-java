@@ -273,17 +273,7 @@ public class ReactorNettyClient implements HttpClient {
                     }
                     requestRecord.setTimeAcquired(time);
                     requestRecord.setHttp2(true);
-
-                    // Capture channel IDs from the stream channel
-                    Channel streamChannel = conn.channel();
-                    if (streamChannel != null) {
-                        ChannelId streamId = streamChannel.id();
-                        requestRecord.setChannelId(streamId.asShortText());
-                        Channel streamParent = streamChannel.parent();
-                        if (streamParent != null) {
-                            requestRecord.setParentChannelId(streamParent.id().asShortText());
-                        }
-                    }
+                    captureChannelIds(conn.channel(), requestRecord, true);
                 }
             } else if (state.equals(HttpClientState.CONFIGURED) || state.equals(HttpClientState.REQUEST_PREPARED)) {
                 if (conn instanceof HttpClientRequest) {
