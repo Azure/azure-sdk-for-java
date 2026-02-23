@@ -54,6 +54,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -436,6 +437,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 HttpHeaders httpResponseHeaders = httpResponse.headers();
                 int httpResponseStatus = httpResponse.statusCode();
 
+                // Track the retained ByteBuf so we can release it as a safety net in doFinally
+                // if cancellation races with publishOn's async delivery and doOnDiscard doesn't fire.
+                final AtomicReference<ByteBuf> retainedBufRef = new AtomicReference<>();
+
                 Mono<ByteBuf> contentObservable = httpResponse
                     .body()
                     .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER))
@@ -450,14 +455,17 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                             bodyByteBuf.retain();
                         }
 
+                        retainedBufRef.set(bodyByteBuf);
+
                         if (leakDetectionDebuggingEnabled) {
                             bodyByteBuf.touch("RxGatewayStoreModel - touch retained buffer  - refCnt: " + bodyByteBuf.refCnt());
-                            logger.debug("RxGatewayStoreModel - touch retained buffer  - refCnt: {]", bodyByteBuf.refCnt());
+                            logger.debug("RxGatewayStoreModel - touch retained buffer  - refCnt: {}", bodyByteBuf.refCnt());
                         }
 
                         return bodyByteBuf;
                     })
                     .doOnDiscard(ByteBuf.class, buf -> {
+                        retainedBufRef.compareAndSet(buf, null);
                         if (buf.refCnt() > 0) {
                             if (leakDetectionDebuggingEnabled) {
                                 buf.touch("RxGatewayStoreModel - doOnDiscard - begin - refCnt: " + buf.refCnt());
@@ -473,6 +481,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                 return contentObservable
                     .map(content -> {
+                        // Mark as consumed - downstream StoreResponse creation will release the ByteBuf
+                        retainedBufRef.compareAndSet(content, null);
+
                         if (leakDetectionDebuggingEnabled) {
                             content.touch("RxGatewayStoreModel - before capturing transport timeline - refCnt: " + content.refCnt());
                             logger.debug("RxGatewayStoreModel - before capturing transport timeline - refCnt: {}", content.refCnt());
@@ -532,10 +543,24 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     .doOnDiscard(ByteBuf.class, buf -> {
                         // This handles the case where the retained buffer is discarded after the map operation
                         // but before unwrapToStoreResponse takes ownership (e.g., during cancellation)
+                        retainedBufRef.compareAndSet(buf, null);
                         if (buf.refCnt() > 0) {
                             if (leakDetectionDebuggingEnabled) {
                                 buf.touch("RxGatewayStoreModel - doOnDiscard after map - refCnt: " + buf.refCnt());
                                 logger.debug("RxGatewayStoreModel - doOnDiscard after map - refCnt: {}", buf.refCnt());
+                            }
+                            ReferenceCountUtil.safeRelease(buf);
+                        }
+                    })
+                    .doFinally(signal -> {
+                        // Safety net: release any retained ByteBuf that wasn't consumed or discarded.
+                        // This handles edge cases where cancellation racing with publishOn's async
+                        // delivery prevents the doOnDiscard handler from firing.
+                        ByteBuf buf = retainedBufRef.getAndSet(null);
+                        if (buf != null && buf != Unpooled.EMPTY_BUFFER && buf.refCnt() > 0) {
+                            if (leakDetectionDebuggingEnabled) {
+                                buf.touch("RxGatewayStoreModel - doFinally safety net - signal: " + signal + " - refCnt: " + buf.refCnt());
+                                logger.debug("RxGatewayStoreModel - doFinally safety net releasing ByteBuf - signal: {}, refCnt: {}", signal, buf.refCnt());
                             }
                             ReferenceCountUtil.safeRelease(buf);
                         }

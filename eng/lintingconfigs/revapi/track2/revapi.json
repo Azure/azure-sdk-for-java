@@ -803,6 +803,24 @@
           "justification": "Remove NonSensitivity for DDoS ruleset."
         },
         {
+          "ignore": true,
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionProfileType.ADVANCED",
+          "justification": "Service no longer defines this intrusion detection profile type; enum values were removed during TypeSpec/Swagger alignment and are not supported by the backend."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionProfileType.BASIC",
+          "justification": "Service no longer defines this intrusion detection profile type; enum values were removed during TypeSpec/Swagger alignment and are not supported by the backend."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionProfileType.STANDARD",
+          "justification": "Service no longer defines this intrusion detection profile type; enum values were removed during TypeSpec/Swagger alignment and are not supported by the backend."
+        },
+        {
           "code": "java.method.removed",
           "old": "method com.azure.resourcemanager.compute.models.ExecutedValidation com.azure.resourcemanager.compute.models.ExecutedValidation::withStatus(com.azure.resourcemanager.compute.models.ValidationStatus)",
           "justification": "ExecutedValidation is output-only; fluent setter removed as part of immutable model cleanup."

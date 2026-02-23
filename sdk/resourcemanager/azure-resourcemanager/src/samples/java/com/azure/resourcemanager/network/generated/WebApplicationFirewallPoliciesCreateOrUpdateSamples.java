@@ -40,6 +40,7 @@ import com.azure.resourcemanager.network.models.WebApplicationFirewallOperator;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallRuleType;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallScrubbingRules;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallScrubbingState;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallState;
 import java.util.Arrays;
 
 /**
@@ -48,7 +49,7 @@ import java.util.Arrays;
 public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/WafPolicyCreateOrUpdate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/WafPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates a WAF policy within a resource group.
@@ -82,7 +83,8 @@ public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
                                                     .withSelectorMatchOperator(
                                                         ScrubbingRuleEntryMatchOperator.EQUALS_ANY)
                                                     .withState(ScrubbingRuleEntryState.ENABLED))))
-                            .withJsChallengeCookieExpirationInMins(100))
+                            .withJsChallengeCookieExpirationInMins(100)
+                            .withCaptchaCookieExpirationInMins(100))
                     .withCustomRules(
                         Arrays
                             .asList(
@@ -149,7 +151,28 @@ public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
                                                     .withSelector("UserAgent")))
                                                 .withOperator(WebApplicationFirewallOperator.CONTAINS)
                                                 .withMatchValues(Arrays.asList("Bot"))))
-                                    .withAction(WebApplicationFirewallAction.JSCHALLENGE)))
+                                    .withAction(WebApplicationFirewallAction.JSCHALLENGE),
+                                new WebApplicationFirewallCustomRule().withName("Rule5")
+                                    .withPriority(5)
+                                    .withState(WebApplicationFirewallState.ENABLED)
+                                    .withRuleType(WebApplicationFirewallRuleType.MATCH_RULE)
+                                    .withMatchConditions(
+                                        Arrays.asList(
+                                            new MatchCondition()
+                                                .withMatchVariables(Arrays.asList(new MatchVariable()
+                                                    .withVariableName(WebApplicationFirewallMatchVariable.REMOTE_ADDR)))
+                                                .withOperator(WebApplicationFirewallOperator.IPMATCH)
+                                                .withNegationConditon(false)
+                                                .withMatchValues(Arrays.asList("192.168.2.0/24")),
+                                            new MatchCondition()
+                                                .withMatchVariables(Arrays.asList(new MatchVariable()
+                                                    .withVariableName(
+                                                        WebApplicationFirewallMatchVariable.REQUEST_HEADERS)
+                                                    .withSelector("UserAgent")))
+                                                .withOperator(WebApplicationFirewallOperator.CONTAINS)
+                                                .withNegationConditon(false)
+                                                .withMatchValues(Arrays.asList("Bot"))))
+                                    .withAction(WebApplicationFirewallAction.CAPTCHA)))
                     .withManagedRules(new ManagedRulesDefinition()
                         .withExceptions(Arrays.asList(
                             new ExceptionEntry().withMatchVariable(ExceptionEntryMatchVariable.REQUEST_URI)
@@ -231,9 +254,13 @@ public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
                                 .withRuleSetVersion("1.0")
                                 .withRuleGroupOverrides(
                                     Arrays.asList(new ManagedRuleGroupOverride().withRuleGroupName("UnknownBots")
-                                        .withRules(Arrays.asList(new ManagedRuleOverride().withRuleId("300700")
-                                            .withState(ManagedRuleEnabledState.ENABLED)
-                                            .withAction(ActionType.JSCHALLENGE))))),
+                                        .withRules(Arrays.asList(
+                                            new ManagedRuleOverride().withRuleId("300700")
+                                                .withState(ManagedRuleEnabledState.ENABLED)
+                                                .withAction(ActionType.JSCHALLENGE),
+                                            new ManagedRuleOverride().withRuleId("300600")
+                                                .withState(ManagedRuleEnabledState.ENABLED)
+                                                .withAction(ActionType.CAPTCHA))))),
                             new ManagedRuleSet().withRuleSetType("Microsoft_HTTPDDoSRuleSet")
                                 .withRuleSetVersion("1.0")
                                 .withRuleGroupOverrides(

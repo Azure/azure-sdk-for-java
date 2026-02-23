@@ -5,11 +5,13 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -59,13 +61,13 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
      * Creation date/time of the evaluator
      */
     @Generated
-    private long createdAt;
+    private OffsetDateTime createdAt;
 
     /*
      * Last modified date/time of the evaluator
      */
     @Generated
-    private long modifiedAt;
+    private OffsetDateTime modifiedAt;
 
     /*
      * Asset ID, a unique identifier for the asset
@@ -204,7 +206,7 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
      * @return the createdAt value.
      */
     @Generated
-    public long getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return this.createdAt;
     }
 
@@ -214,7 +216,7 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
      * @return the modifiedAt value.
      */
     @Generated
-    public long getModifiedAt() {
+    public OffsetDateTime getModifiedAt() {
         return this.modifiedAt;
     }
 
@@ -327,8 +329,8 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
             List<EvaluatorCategory> categories = null;
             EvaluatorDefinition definition = null;
             String createdBy = null;
-            long createdAt = 0L;
-            long modifiedAt = 0L;
+            OffsetDateTime createdAt = null;
+            OffsetDateTime modifiedAt = null;
             String name = null;
             String version = null;
             String displayName = null;
@@ -348,9 +350,11 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
                 } else if ("created_by".equals(fieldName)) {
                     createdBy = reader.getString();
                 } else if ("created_at".equals(fieldName)) {
-                    createdAt = reader.getLong();
+                    createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("modified_at".equals(fieldName)) {
-                    modifiedAt = reader.getLong();
+                    modifiedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("version".equals(fieldName)) {

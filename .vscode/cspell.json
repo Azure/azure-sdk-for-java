@@ -231,7 +231,9 @@
     "backoff",
     "boringssl",
     "BYOD",
+    "Dartifact",
     "Dgpg",
+    "Dremote",
     "Dskip",
     "mvnw",
     "TBLPROPERTIES",
@@ -883,6 +885,7 @@
         "FILLER",
         "foundry",
         "FOUNDRY",
+        "Unpooled",
         "viseme",
         "VISEME",
         "webrtc",
@@ -986,6 +989,7 @@
         "clientime",
         "ctxt",
         "etags",
+        "GZRS",
         "HTBB",
         "IPMISMATCH",
         "myaccountname",
@@ -1002,6 +1006,7 @@
         "myjavacontainerbuffereduploadlength",
         "myjavacontainerparallelupload",
         "RAGRS",
+        "RAGZRS",
         "saoid"
       ]
     },
