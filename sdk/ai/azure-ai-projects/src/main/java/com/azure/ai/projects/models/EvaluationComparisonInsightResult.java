@@ -15,7 +15,7 @@ import java.util.List;
  * Insights from the evaluation comparison.
  */
 @Immutable
-public final class EvaluationCompareReport extends InsightResult {
+public final class EvaluationComparisonInsightResult extends InsightResult {
 
     /*
      * The type of insights result.
@@ -36,13 +36,13 @@ public final class EvaluationCompareReport extends InsightResult {
     private final String method;
 
     /**
-     * Creates an instance of EvaluationCompareReport class.
+     * Creates an instance of EvaluationComparisonInsightResult class.
      *
      * @param comparisons the comparisons value to set.
      * @param method the method value to set.
      */
     @Generated
-    private EvaluationCompareReport(List<EvaluationRunResultComparison> comparisons, String method) {
+    private EvaluationComparisonInsightResult(List<EvaluationRunResultComparison> comparisons, String method) {
         this.comparisons = comparisons;
         this.method = method;
     }
@@ -92,16 +92,16 @@ public final class EvaluationCompareReport extends InsightResult {
     }
 
     /**
-     * Reads an instance of EvaluationCompareReport from the JsonReader.
+     * Reads an instance of EvaluationComparisonInsightResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EvaluationCompareReport if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of EvaluationComparisonInsightResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EvaluationCompareReport.
+     * @throws IOException If an error occurs while reading the EvaluationComparisonInsightResult.
      */
     @Generated
-    public static EvaluationCompareReport fromJson(JsonReader jsonReader) throws IOException {
+    public static EvaluationComparisonInsightResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<EvaluationRunResultComparison> comparisons = null;
             String method = null;
@@ -119,10 +119,10 @@ public final class EvaluationCompareReport extends InsightResult {
                     reader.skipChildren();
                 }
             }
-            EvaluationCompareReport deserializedEvaluationCompareReport
-                = new EvaluationCompareReport(comparisons, method);
-            deserializedEvaluationCompareReport.type = type;
-            return deserializedEvaluationCompareReport;
+            EvaluationComparisonInsightResult deserializedEvaluationComparisonInsightResult
+                = new EvaluationComparisonInsightResult(comparisons, method);
+            deserializedEvaluationComparisonInsightResult.type = type;
+            return deserializedEvaluationComparisonInsightResult;
         });
     }
 }
