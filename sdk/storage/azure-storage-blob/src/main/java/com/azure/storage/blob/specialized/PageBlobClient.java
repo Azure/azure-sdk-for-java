@@ -564,17 +564,6 @@ public final class PageBlobClient extends BlobClientBase {
     /**
      * Writes one or more pages to the page blob with options.
      *
-     * @param options {@link PageBlobUploadPagesOptions} (constructed with {@link Flux} or {@link InputStream} body).
-     * @return The information of the uploaded pages.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PageBlobItem> uploadPagesWithResponse(PageBlobUploadPagesOptions options) {
-        return uploadPagesWithResponse(options, null, Context.NONE);
-    }
-
-    /**
-     * Writes one or more pages to the page blob with options.
-     *
      * @param options {@link PageBlobUploadPagesOptions}
      * @param timeout An optional timeout value.
      * @param context Additional context.

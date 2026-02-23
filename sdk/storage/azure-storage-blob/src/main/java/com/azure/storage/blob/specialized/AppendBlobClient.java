@@ -228,10 +228,7 @@ public final class AppendBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream(AppendBlobOutputStreamOptions options) {
-        if (options == null) {
-            return getBlobOutputStream((AppendBlobRequestConditions) null);
-        }
-        return getBlobOutputStream(options.getRequestConditions());
+        return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, options);
     }
 
     /**
@@ -475,19 +472,6 @@ public final class AppendBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppendBlobItem appendBlock(InputStream data, long length) {
         return appendBlockWithResponse(data, length, null, null, null, Context.NONE).getValue();
-    }
-
-    /**
-     * Commits a new block of data to the end of the existing append blob with options.
-     *
-     * @param options {@link AppendBlobAppendBlockOptions} containing the block data (e.g. constructed with
-     * {@link AppendBlobAppendBlockOptions#AppendBlobAppendBlockOptions(InputStream, long)}).
-     * @return The information of the append blob operation.
-     * @throws NullPointerException If {@code options} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppendBlobItem> appendBlockWithResponse(AppendBlobAppendBlockOptions options) {
-        return appendBlockWithResponse(options, null, Context.NONE);
     }
 
     /**

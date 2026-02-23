@@ -16,10 +16,13 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
+import com.azure.storage.blob.options.AppendBlobOutputStreamOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -47,7 +50,22 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
     static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client,
         final AppendBlobRequestConditions appendBlobRequestConditions) {
-        return new AppendBlobOutputStream(client, appendBlobRequestConditions);
+        return new AppendBlobOutputStream(client, appendBlobRequestConditions, null);
+    }
+
+    /**
+     * Creates an append blob output stream from an AppendBlobAsyncClient and options.
+     *
+     * @param client The append blob async client.
+     * @param options {@link AppendBlobOutputStreamOptions}; may be null.
+     * @return {@link BlobOutputStream} for the append blob.
+     */
+    static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client,
+        final AppendBlobOutputStreamOptions options) {
+        if (options == null) {
+            return new AppendBlobOutputStream(client, null, null);
+        }
+        return new AppendBlobOutputStream(client, options.getRequestConditions(), options.getRequestChecksumAlgorithm());
     }
 
     /**
@@ -157,9 +175,11 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private final AppendBlobRequestConditions appendBlobRequestConditions;
         private final AppendBlobAsyncClient client;
+        private final StorageChecksumAlgorithm requestChecksumAlgorithm;
 
         private AppendBlobOutputStream(final AppendBlobAsyncClient client,
-            final AppendBlobRequestConditions appendBlobRequestConditions) {
+            final AppendBlobRequestConditions appendBlobRequestConditions,
+            final StorageChecksumAlgorithm requestChecksumAlgorithm) {
             // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service
             // versions support up to 4MB
             super(client.getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()
@@ -170,6 +190,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             this.appendBlobRequestConditions = (appendBlobRequestConditions == null)
                 ? new AppendBlobRequestConditions()
                 : appendBlobRequestConditions;
+            this.requestChecksumAlgorithm = requestChecksumAlgorithm;
 
             if (this.appendBlobRequestConditions.getAppendPosition() == null) {
                 this.appendBlobRequestConditions.setAppendPosition(client.getProperties().block().getBlobSize());
@@ -178,7 +199,10 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private Mono<Void> appendBlock(Flux<ByteBuffer> blockData, long writeLength) {
             long newAppendOffset = appendBlobRequestConditions.getAppendPosition() + writeLength;
-            return client.appendBlockWithResponse(blockData, writeLength, null, appendBlobRequestConditions)
+            AppendBlobAppendBlockOptions opts = new AppendBlobAppendBlockOptions(blockData, writeLength)
+                .setRequestConditions(appendBlobRequestConditions)
+                .setRequestChecksumAlgorithm(requestChecksumAlgorithm);
+            return client.appendBlockWithResponse(opts)
                 .doOnNext(ignored -> appendBlobRequestConditions.setAppendPosition(newAppendOffset))
                 .then()
                 .onErrorResume(t -> t instanceof IOException || t instanceof BlobStorageException, e -> {

@@ -472,22 +472,18 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(AppendBlobAppendBlockOptions options) {
         try {
-            return withContext(context -> appendBlockWithResponse(options, context));
+            if (options == null) {
+                return Mono.error(new NullPointerException("'options' cannot be null."));
+            }
+            if (options.getBodyFlux() == null) {
+                return Mono.error(new IllegalArgumentException(
+                    "AppendBlobAppendBlockOptions must be constructed with Flux for async client."));
+            }
+            return withContext(context -> appendBlockWithResponse(options.getBodyFlux(), options.getLength(), options.getContentMd5(),
+                options.getRequestConditions(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
-    }
-
-    Mono<Response<AppendBlobItem>> appendBlockWithResponse(AppendBlobAppendBlockOptions options, Context context) {
-        if (options == null) {
-            return Mono.error(new NullPointerException("'options' cannot be null."));
-        }
-        if (options.getBodyFlux() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "AppendBlobAppendBlockOptions must be constructed with Flux for async client."));
-        }
-        return appendBlockWithResponse(options.getBodyFlux(), options.getLength(), options.getContentMd5(),
-            options.getRequestConditions(), context);
     }
 
     Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
