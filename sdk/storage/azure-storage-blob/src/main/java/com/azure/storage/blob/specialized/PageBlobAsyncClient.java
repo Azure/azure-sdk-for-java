@@ -500,8 +500,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             return Mono.error(new NullPointerException("'body' cannot be null."));
         }
         try {
-            return withContext(
-                context -> uploadPagesWithResponse(pageRange, body, contentMd5, pageBlobRequestConditions, null, context));
+            return withContext(context -> uploadPagesWithResponse(pageRange, body, contentMd5,
+                pageBlobRequestConditions, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -523,14 +523,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         try {
             return withContext(context -> uploadPagesWithResponse(options.getPageRange(), options.getBodyFlux(),
-                options.getContentMd5(), options.getRequestConditions(), options.getRequestChecksumAlgorithm(), context));
+                options.getContentMd5(), options.getRequestConditions(), options.getRequestChecksumAlgorithm(),
+                context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body, byte[] contentMd5,
-        PageBlobRequestConditions pageBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm, Context context) {
+        PageBlobRequestConditions pageBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm,
+        Context context) {
         pageBlobRequestConditions
             = pageBlobRequestConditions == null ? new PageBlobRequestConditions() : pageBlobRequestConditions;
 

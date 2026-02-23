@@ -543,7 +543,8 @@ public final class AppendBlobClient extends BlobClientBase {
     }
 
     private Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
-        AppendBlobRequestConditions appendBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm, Duration timeout, Context context) {
+        AppendBlobRequestConditions appendBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm,
+        Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, getMaxAppendBlockBytes(), true);
 

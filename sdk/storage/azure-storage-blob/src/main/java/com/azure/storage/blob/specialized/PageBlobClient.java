@@ -222,7 +222,8 @@ public final class PageBlobClient extends BlobClientBase {
         if (options == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'options' cannot be null."));
         }
-        return getBlobOutputStream(options.getPageRange(), options.getRequestConditions());
+        return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, options.getPageRange(),
+            options.getRequestConditions(), options.getRequestChecksumAlgorithm());
     }
 
     /**
@@ -577,7 +578,8 @@ public final class PageBlobClient extends BlobClientBase {
     }
 
     Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, byte[] contentMd5,
-        PageBlobRequestConditions pageBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm, Duration timeout, Context context) {
+        PageBlobRequestConditions pageBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm,
+        Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("body", body);
         final long length = pageRange.getEnd() - pageRange.getStart() + 1;
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES, true);

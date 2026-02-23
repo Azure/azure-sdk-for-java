@@ -85,6 +85,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -1168,8 +1169,8 @@ public class BlobAsyncClientBase {
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         try {
-            return withContext(
-                context -> downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context));
+            return withContext(context -> downloadStreamWithResponse(range, options, requestConditions,
+                getRangeContentMd5, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1185,8 +1186,9 @@ public class BlobAsyncClientBase {
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobDownloadStreamOptions options) {
         try {
             BlobDownloadStreamOptions finalOptions = options == null ? new BlobDownloadStreamOptions() : options;
-            return withContext(context -> downloadStreamWithResponse(finalOptions.getRange(), finalOptions.getDownloadRetryOptions(),
-                    finalOptions.getRequestConditions(), finalOptions.isRetrieveContentRangeMd5(), context));
+            return withContext(context -> downloadStreamWithResponse(finalOptions.getRange(),
+                finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
+                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getResponseChecksumAlgorithm(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1224,10 +1226,11 @@ public class BlobAsyncClientBase {
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> downloadStreamWithResponse(null, options, requestConditions, false, context)
-                .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        data, r.getDeserializedHeaders()))));
+            return withContext(
+                context -> downloadStreamWithResponse(null, options, requestConditions, false, null, context)
+                    .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                        .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
+                            r.getHeaders(), data, r.getDeserializedHeaders()))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1243,8 +1246,9 @@ public class BlobAsyncClientBase {
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(BlobDownloadContentOptions options) {
         try {
             BlobDownloadContentOptions finalOptions = options == null ? new BlobDownloadContentOptions() : options;
-            return withContext(context -> downloadStreamWithResponse(finalOptions.getRange(), finalOptions.getDownloadRetryOptions(),
-                finalOptions.getRequestConditions(), finalOptions.isRetrieveContentRangeMd5(), context)
+            return withContext(context -> downloadStreamWithResponse(finalOptions.getRange(),
+                finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
+                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getResponseChecksumAlgorithm(), context)
                     .flatMap(r -> BinaryData.fromFlux(r.getValue())
                         .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
                             r.getHeaders(), data, r.getDeserializedHeaders()))));
@@ -1254,7 +1258,8 @@ public class BlobAsyncClientBase {
     }
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5,
+        StorageChecksumAlgorithm responseChecksumAlgorithm, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
         BlobRequestConditions finalRequestConditions
@@ -1542,7 +1547,8 @@ public class BlobAsyncClientBase {
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
-                options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(), context))
+                options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(),
+                options.getResponseChecksumAlgorithm(), context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
@@ -1557,7 +1563,7 @@ public class BlobAsyncClientBase {
     private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange finalRange,
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
-        Context context) {
+        StorageChecksumAlgorithm responseChecksumAlgorithm, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
         ProgressReporter progressReporter
@@ -1568,7 +1574,7 @@ public class BlobAsyncClientBase {
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
             = (range, conditions) -> this.downloadStreamWithResponse(range, downloadRetryOptions, conditions,
-                rangeGetContentMd5, context);
+                rangeGetContentMd5, responseChecksumAlgorithm, context);
 
         return ChunkedDownloadUtils
             .downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions, downloadFunc, true,

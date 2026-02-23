@@ -454,8 +454,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions) {
         try {
-            return withContext(
-                context -> appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, null, context));
+            return withContext(context -> appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions,
+                null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -480,15 +480,17 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                 return monoError(LOGGER, new IllegalArgumentException(
                     "AppendBlobAppendBlockOptions must be constructed with Flux for async client."));
             }
-            return withContext(context -> appendBlockWithResponse(options.getBodyFlux(), options.getLength(), options.getContentMd5(),
-                options.getRequestConditions(), options.getRequestChecksumAlgorithm(), context));
+            return withContext(
+                context -> appendBlockWithResponse(options.getBodyFlux(), options.getLength(), options.getContentMd5(),
+                    options.getRequestConditions(), options.getRequestChecksumAlgorithm(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
-        AppendBlobRequestConditions appendBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm, Context context) {
+        AppendBlobRequestConditions appendBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm,
+        Context context) {
         if (data == null) {
             return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
