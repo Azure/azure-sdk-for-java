@@ -34,6 +34,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
+import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
@@ -457,6 +458,36 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    /**
+     * Commits a new block of data to the end of the existing append blob with options.
+     *
+     * @param options {@link AppendBlobAppendBlockOptions} containing the block data (e.g. constructed with
+     * {@link AppendBlobAppendBlockOptions#AppendBlobAppendBlockOptions(reactor.core.publisher.Flux, long)}).
+     * @return A {@link Mono} containing {@link Response} whose value contains the append blob operation.
+     * @throws NullPointerException If {@code options} is null.
+     * @throws IllegalArgumentException If options were not constructed with Flux (async client).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AppendBlobItem>> appendBlockWithResponse(AppendBlobAppendBlockOptions options) {
+        try {
+            return withContext(context -> appendBlockWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<AppendBlobItem>> appendBlockWithResponse(AppendBlobAppendBlockOptions options, Context context) {
+        if (options == null) {
+            return Mono.error(new NullPointerException("'options' cannot be null."));
+        }
+        if (options.getBodyFlux() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "AppendBlobAppendBlockOptions must be constructed with Flux for async client."));
+        }
+        return appendBlockWithResponse(options.getBodyFlux(), options.getLength(), options.getContentMd5(),
+            options.getRequestConditions(), context);
     }
 
     Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,

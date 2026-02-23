@@ -76,6 +76,8 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobDownloadContentOptions;
+import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
@@ -1277,6 +1279,37 @@ public class BlobClientBase {
     }
 
     /**
+     * Downloads a range of bytes from a blob into an output stream with options.
+     *
+     * @param stream The output stream where the downloaded data will be written.
+     * @param options {@link BlobDownloadStreamOptions}
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobDownloadStreamOptions options) {
+        return downloadStreamWithResponse(stream, options, null, Context.NONE);
+    }
+
+    /**
+     * Downloads a range of bytes from a blob into an output stream with options.
+     *
+     * @param stream The output stream where the downloaded data will be written.
+     * @param options {@link BlobDownloadStreamOptions}
+     * @param timeout An optional timeout value.
+     * @param context Additional context.
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobDownloadStreamOptions options,
+        Duration timeout, Context context) {
+        if (options == null) {
+            return downloadStreamWithResponse(stream, null, null, null, false, timeout, context);
+        }
+        return downloadStreamWithResponse(stream, options.getRange(), options.getDownloadRetryOptions(),
+            options.getRequestConditions(), options.isRetrieveContentRangeMd5(), timeout, context);
+    }
+
+    /**
      * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the {@link
      * BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
@@ -1366,6 +1399,35 @@ public class BlobClientBase {
                 .map(BlobDownloadContentResponse::new);
 
         return blockWithOptionalTimeout(download, timeout);
+    }
+
+    /**
+     * Downloads blob content (full blob or range) with options.
+     *
+     * @param options {@link BlobDownloadContentOptions}
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadContentResponse downloadContentWithResponse(BlobDownloadContentOptions options) {
+        return downloadContentWithResponse(options, null, Context.NONE);
+    }
+
+    /**
+     * Downloads blob content (full blob or range) with options.
+     *
+     * @param options {@link BlobDownloadContentOptions}
+     * @param timeout An optional timeout value.
+     * @param context Additional context.
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadContentResponse downloadContentWithResponse(BlobDownloadContentOptions options, Duration timeout,
+        Context context) {
+        if (options == null) {
+            return downloadContentWithResponse(null, null, timeout, context);
+        }
+        return downloadContentWithResponse(options.getDownloadRetryOptions(), options.getRequestConditions(),
+            options.getRange(), options.isRetrieveContentRangeMd5(), timeout, context);
     }
 
     /**

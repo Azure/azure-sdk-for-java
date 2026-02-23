@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 
@@ -32,6 +33,7 @@ public class BlockBlobSimpleUploadOptions {
     private BlobRequestConditions requestConditions;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
+    private StorageChecksumAlgorithm requestChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link BlockBlobSimpleUploadOptions}.
@@ -291,6 +293,28 @@ public class BlockBlobSimpleUploadOptions {
      */
     public BlockBlobSimpleUploadOptions setLegalHold(Boolean legalHold) {
         this.legalHold = legalHold;
+        return this;
+    }
+
+    /**
+     * Gets the algorithm to use for request content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     *
+     * @return The request checksum algorithm.
+     */
+    public StorageChecksumAlgorithm getRequestChecksumAlgorithm() {
+        return requestChecksumAlgorithm;
+    }
+
+    /**
+     * Sets the algorithm to use for request content validation. When set to {@link StorageChecksumAlgorithm#AUTO} or
+     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will compute and send checksums for upload validation.
+     * Default is {@link StorageChecksumAlgorithm#NONE}.
+     *
+     * @param requestChecksumAlgorithm The request checksum algorithm.
+     * @return The updated options.
+     */
+    public BlockBlobSimpleUploadOptions setRequestChecksumAlgorithm(StorageChecksumAlgorithm requestChecksumAlgorithm) {
+        this.requestChecksumAlgorithm = requestChecksumAlgorithm;
         return this;
     }
 }

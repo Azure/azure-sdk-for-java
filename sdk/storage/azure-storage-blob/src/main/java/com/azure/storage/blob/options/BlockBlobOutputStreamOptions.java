@@ -7,6 +7,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public class BlockBlobOutputStreamOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
+    private StorageChecksumAlgorithm requestChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link BlockBlobOutputStreamOptions}.
@@ -144,6 +146,28 @@ public class BlockBlobOutputStreamOptions {
      */
     public BlockBlobOutputStreamOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * Gets the algorithm to use for request content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     *
+     * @return The request checksum algorithm.
+     */
+    public StorageChecksumAlgorithm getRequestChecksumAlgorithm() {
+        return requestChecksumAlgorithm;
+    }
+
+    /**
+     * Sets the algorithm to use for request content validation. When set to {@link StorageChecksumAlgorithm#AUTO} or
+     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will compute and send checksums for upload validation.
+     * Default is {@link StorageChecksumAlgorithm#NONE}.
+     *
+     * @param requestChecksumAlgorithm The request checksum algorithm.
+     * @return The updated options.
+     */
+    public BlockBlobOutputStreamOptions setRequestChecksumAlgorithm(StorageChecksumAlgorithm requestChecksumAlgorithm) {
+        this.requestChecksumAlgorithm = requestChecksumAlgorithm;
         return this;
     }
 }

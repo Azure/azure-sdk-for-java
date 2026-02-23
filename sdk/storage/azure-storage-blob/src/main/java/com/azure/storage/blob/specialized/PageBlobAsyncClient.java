@@ -56,6 +56,7 @@ import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -500,6 +501,25 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(
                 context -> uploadPagesWithResponse(pageRange, body, contentMd5, pageBlobRequestConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Writes one or more pages to the page blob with options.
+     *
+     * @param options {@link PageBlobUploadPagesOptions} (must be constructed with {@link Flux} body for async).
+     * @return A reactive response containing the information of the uploaded pages.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageBlobUploadPagesOptions options) {
+        if (options == null || options.getBodyFlux() == null) {
+            return Mono.error(new NullPointerException("'options' and 'options.getBodyFlux()' cannot be null."));
+        }
+        try {
+            return withContext(context -> uploadPagesWithResponse(options.getPageRange(), options.getBodyFlux(),
+                options.getContentMd5(), options.getRequestConditions(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

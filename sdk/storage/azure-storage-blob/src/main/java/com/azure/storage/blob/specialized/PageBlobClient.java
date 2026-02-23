@@ -53,7 +53,9 @@ import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
+import com.azure.storage.blob.options.PageBlobOutputStreamOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -205,6 +207,21 @@ public final class PageBlobClient extends BlobClientBase {
      */
     public BlobOutputStream getBlobOutputStream(PageRange pageRange, BlobRequestConditions requestConditions) {
         return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, pageRange, requestConditions);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the page blob.
+     *
+     * @param options {@link PageBlobOutputStreamOptions}
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobOutputStream getBlobOutputStream(PageBlobOutputStreamOptions options) {
+        if (options == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'options' cannot be null."));
+        }
+        return getBlobOutputStream(options.getPageRange(), options.getRequestConditions());
     }
 
     /**
@@ -541,6 +558,43 @@ public final class PageBlobClient extends BlobClientBase {
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange, fbb, contentMd5,
             pageBlobRequestConditions, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Writes one or more pages to the page blob with options.
+     *
+     * @param options {@link PageBlobUploadPagesOptions} (constructed with {@link Flux} or {@link InputStream} body).
+     * @return The information of the uploaded pages.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PageBlobItem> uploadPagesWithResponse(PageBlobUploadPagesOptions options) {
+        return uploadPagesWithResponse(options, null, Context.NONE);
+    }
+
+    /**
+     * Writes one or more pages to the page blob with options.
+     *
+     * @param options {@link PageBlobUploadPagesOptions}
+     * @param timeout An optional timeout value.
+     * @param context Additional context.
+     * @return The information of the uploaded pages.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PageBlobItem> uploadPagesWithResponse(PageBlobUploadPagesOptions options, Duration timeout,
+        Context context) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        Flux<ByteBuffer> bodyFlux = options.getBodyFlux();
+        if (bodyFlux == null && options.getBodyStream() != null) {
+            final long length = options.getPageRange().getEnd() - options.getPageRange().getStart() + 1;
+            bodyFlux = Utility.convertStreamToByteBuffer(options.getBodyStream(), length, PAGE_BYTES, true);
+        }
+        if (bodyFlux == null) {
+            throw LOGGER
+                .logExceptionAsError(new NullPointerException("'options' must have body (Flux or InputStream)."));
+        }
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(options.getPageRange(),
+            bodyFlux, options.getContentMd5(), options.getRequestConditions(), context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

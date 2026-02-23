@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 
 /**
  * Extended options that may be passed when opening a blob input stream.
@@ -17,6 +18,7 @@ public class BlobInputStreamOptions {
     private BlobRequestConditions requestConditions;
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
+    private StorageChecksumAlgorithm responseChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link BlobInputStreamOptions}.
@@ -109,6 +111,28 @@ public class BlobInputStreamOptions {
      */
     public BlobInputStreamOptions setConsistentReadControl(ConsistentReadControl consistentReadControl) {
         this.consistentReadControl = consistentReadControl;
+        return this;
+    }
+
+    /**
+     * Gets the algorithm to use for response content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     *
+     * @return The response checksum algorithm.
+     */
+    public StorageChecksumAlgorithm getResponseChecksumAlgorithm() {
+        return responseChecksumAlgorithm;
+    }
+
+    /**
+     * Sets the algorithm to use for response content validation. When set to {@link StorageChecksumAlgorithm#AUTO} or
+     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will validate response payload checksums during read.
+     * Default is {@link StorageChecksumAlgorithm#NONE}.
+     *
+     * @param responseChecksumAlgorithm The response checksum algorithm.
+     * @return The updated options.
+     */
+    public BlobInputStreamOptions setResponseChecksumAlgorithm(StorageChecksumAlgorithm responseChecksumAlgorithm) {
+        this.responseChecksumAlgorithm = responseChecksumAlgorithm;
         return this;
     }
 }

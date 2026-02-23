@@ -73,6 +73,8 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobDownloadContentOptions;
+import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
@@ -1175,6 +1177,27 @@ public class BlobAsyncClientBase {
     }
 
     /**
+     * Reads a range of bytes from a blob with options.
+     *
+     * @param options {@link BlobDownloadStreamOptions}
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobDownloadStreamOptions options) {
+        try {
+            return withContext(context -> {
+                if (options == null) {
+                    return downloadStreamWithResponse(null, null, null, false, context);
+                }
+                return downloadStreamWithResponse(options.getRange(), options.getDownloadRetryOptions(),
+                    options.getRequestConditions(), options.isRetrieveContentRangeMd5(), context);
+            });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link
      * PageBlobClient}, or {@link AppendBlobClient}.
      *
@@ -1210,6 +1233,33 @@ public class BlobAsyncClientBase {
                 .flatMap(r -> BinaryData.fromFlux(r.getValue())
                     .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
                         data, r.getDeserializedHeaders()))));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Reads blob content (full blob or range) with options.
+     *
+     * @param options {@link BlobDownloadContentOptions}
+     * @return A reactive response containing the blob content.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(BlobDownloadContentOptions options) {
+        try {
+            return withContext(context -> {
+                if (options == null) {
+                    return downloadStreamWithResponse(null, null, null, false, context)
+                        .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                            .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
+                                r.getHeaders(), data, r.getDeserializedHeaders())));
+                }
+                return downloadStreamWithResponse(options.getRange(), options.getDownloadRetryOptions(),
+                    options.getRequestConditions(), options.isRetrieveContentRangeMd5(), context)
+                        .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                            .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
+                                r.getHeaders(), data, r.getDeserializedHeaders())));
+            });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
