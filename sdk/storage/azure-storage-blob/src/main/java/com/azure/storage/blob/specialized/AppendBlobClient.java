@@ -492,7 +492,7 @@ public final class AppendBlobClient extends BlobClientBase {
                 "AppendBlobAppendBlockOptions must be constructed with InputStream for sync client.");
         }
         return appendBlockWithResponse(options.getBodyStream(), options.getLength(), options.getContentMd5(),
-            options.getRequestConditions(), timeout, context);
+            options.getRequestConditions(), options.getRequestChecksumAlgorithm(), timeout, context);
     }
 
     /**
@@ -539,6 +539,13 @@ public final class AppendBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
+        return appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, null, timeout, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
+        AppendBlobRequestConditions appendBlobRequestConditions,
+        com.azure.storage.common.StorageChecksumAlgorithm requestChecksumAlgorithm, Duration timeout, Context context) {
         Objects.requireNonNull(data, "'data' cannot be null.");
         Flux<ByteBuffer> fbb;
 
@@ -547,7 +554,7 @@ public final class AppendBlobClient extends BlobClientBase {
         fbb = Utility.convertStreamToByteBuffer(data, length, getMaxAppendBlockBytes(), true);
 
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb, length, contentMd5,
-            appendBlobRequestConditions, context);
+            appendBlobRequestConditions, requestChecksumAlgorithm, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

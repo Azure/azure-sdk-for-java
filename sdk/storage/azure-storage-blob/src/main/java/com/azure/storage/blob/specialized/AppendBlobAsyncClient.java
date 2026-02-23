@@ -454,7 +454,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         AppendBlobRequestConditions appendBlobRequestConditions) {
         try {
             return withContext(
-                context -> appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, context));
+                context -> appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -480,14 +480,15 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                     "AppendBlobAppendBlockOptions must be constructed with Flux for async client."));
             }
             return withContext(context -> appendBlockWithResponse(options.getBodyFlux(), options.getLength(), options.getContentMd5(),
-                options.getRequestConditions(), context));
+                options.getRequestConditions(), options.getRequestChecksumAlgorithm(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
-        AppendBlobRequestConditions appendBlobRequestConditions, Context context) {
+        AppendBlobRequestConditions appendBlobRequestConditions,
+        com.azure.storage.common.StorageChecksumAlgorithm requestChecksumAlgorithm, Context context) {
 
         if (data == null) {
             return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
@@ -496,6 +497,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         appendBlobRequestConditions
             = appendBlobRequestConditions == null ? new AppendBlobRequestConditions() : appendBlobRequestConditions;
         context = context == null ? Context.NONE : context;
+        if (requestChecksumAlgorithm != null) {
+            context = context.addData(com.azure.storage.common.implementation.Constants.REQUEST_CHECKSUM_ALGORITHM,
+                requestChecksumAlgorithm);
+        }
 
         return this.azureBlobStorage.getAppendBlobs()
             .appendBlockWithResponseAsync(containerName, blobName, length, data, null, contentMd5, null,
