@@ -725,7 +725,8 @@ public class BlobAsyncClientBase {
             }
         }, (pollingContext, firstResponse) -> {
             if (firstResponse == null || firstResponse.getValue() == null) {
-                return monoError(LOGGER, new IllegalArgumentException("Cannot cancel a poll response that never started."));
+                return monoError(LOGGER,
+                    new IllegalArgumentException("Cannot cancel a poll response that never started."));
             }
             final String copyIdentifier = firstResponse.getValue().getCopyId();
 

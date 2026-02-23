@@ -503,8 +503,7 @@ public class BlobClientBase {
     public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
         Context contextFinal = context == null ? Context.NONE : context;
         options = options == null ? new BlobInputStreamOptions() : options;
-        final StorageChecksumAlgorithm responseChecksumAlgorithm
-            = options.getResponseChecksumAlgorithm();
+        final StorageChecksumAlgorithm responseChecksumAlgorithm = options.getResponseChecksumAlgorithm();
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG
             : options.getConsistentReadControl();
@@ -1274,8 +1273,7 @@ public class BlobClientBase {
 
     BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5,
-        StorageChecksumAlgorithm responseChecksumAlgorithm, Duration timeout,
-        Context context) {
+        StorageChecksumAlgorithm responseChecksumAlgorithm, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
             .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5,

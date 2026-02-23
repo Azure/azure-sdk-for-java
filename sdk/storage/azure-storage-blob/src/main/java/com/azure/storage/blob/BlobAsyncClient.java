@@ -696,8 +696,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 ? new BlobImmutabilityPolicy()
                 : options.getImmutabilityPolicy();
             final Boolean legalHold = options.isLegalHold();
-            final StorageChecksumAlgorithm requestChecksumAlgorithm
-                = options.getRequestChecksumAlgorithm();
+            final StorageChecksumAlgorithm requestChecksumAlgorithm = options.getRequestChecksumAlgorithm();
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
 
