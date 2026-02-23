@@ -527,14 +527,15 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param context Additional context.
      * @return The information of the append blob operation.
      * @throws NullPointerException If {@code options} is null.
+     * @throws IllegalArgumentException If {@code options} is not constructed with {@link InputStream}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> appendBlockWithResponse(AppendBlobAppendBlockOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
         if (options.getBodyStream() == null) {
-            throw new IllegalArgumentException(
-                "AppendBlobAppendBlockOptions must be constructed with InputStream for sync client.");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "AppendBlobAppendBlockOptions must be constructed with InputStream for sync client."));
         }
         return appendBlockWithResponse(options.getBodyStream(), options.getLength(), options.getContentMd5(),
             options.getRequestConditions(), options.getRequestChecksumAlgorithm(), timeout, context);
