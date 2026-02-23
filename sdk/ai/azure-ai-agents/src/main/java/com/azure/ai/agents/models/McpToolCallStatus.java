@@ -5,9 +5,9 @@
 package com.azure.ai.agents.models;
 
 /**
- * Defines values for MCPToolCallStatus.
+ * Defines values for McpToolCallStatus.
  */
-public enum MCPToolCallStatus {
+public enum McpToolCallStatus {
     /**
      * Enum value in_progress.
      */
@@ -34,26 +34,26 @@ public enum MCPToolCallStatus {
     FAILED("failed");
 
     /**
-     * The actual serialized value for a MCPToolCallStatus instance.
+     * The actual serialized value for a McpToolCallStatus instance.
      */
     private final String value;
 
-    MCPToolCallStatus(String value) {
+    McpToolCallStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a MCPToolCallStatus instance.
+     * Parses a serialized value to a McpToolCallStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed MCPToolCallStatus object, or null if unable to parse.
+     * @return the parsed McpToolCallStatus object, or null if unable to parse.
      */
-    public static MCPToolCallStatus fromString(String value) {
+    public static McpToolCallStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        MCPToolCallStatus[] items = MCPToolCallStatus.values();
-        for (MCPToolCallStatus item : items) {
+        McpToolCallStatus[] items = McpToolCallStatus.values();
+        for (McpToolCallStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

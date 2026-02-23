@@ -64,7 +64,7 @@ public final class InputItemMcpToolCall extends InputItem {
      * The status of the tool call. One of `in_progress`, `completed`, `incomplete`, `calling`, or `failed`.
      */
     @Generated
-    private MCPToolCallStatus status;
+    private McpToolCallStatus status;
 
     /*
      * The approval_request_id property.
@@ -190,21 +190,8 @@ public final class InputItemMcpToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public MCPToolCallStatus getStatus() {
+    public McpToolCallStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Set the status property: The status of the tool call. One of `in_progress`, `completed`, `incomplete`, `calling`,
-     * or `failed`.
-     *
-     * @param status the status value to set.
-     * @return the InputItemMcpToolCall object itself.
-     */
-    @Generated
-    public InputItemMcpToolCall setStatus(MCPToolCallStatus status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -267,7 +254,7 @@ public final class InputItemMcpToolCall extends InputItem {
             InputItemType type = InputItemType.MCP_CALL;
             String output = null;
             String error = null;
-            MCPToolCallStatus status = null;
+            McpToolCallStatus status = null;
             String approvalRequestId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -287,7 +274,7 @@ public final class InputItemMcpToolCall extends InputItem {
                 } else if ("error".equals(fieldName)) {
                     error = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = MCPToolCallStatus.fromString(reader.getString());
+                    status = McpToolCallStatus.fromString(reader.getString());
                 } else if ("approval_request_id".equals(fieldName)) {
                     approvalRequestId = reader.getString();
                 } else {
@@ -303,5 +290,18 @@ public final class InputItemMcpToolCall extends InputItem {
             deserializedInputItemMcpToolCall.approvalRequestId = approvalRequestId;
             return deserializedInputItemMcpToolCall;
         });
+    }
+
+    /**
+     * Set the status property: The status of the tool call. One of `in_progress`, `completed`, `incomplete`, `calling`,
+     * or `failed`.
+     *
+     * @param status the status value to set.
+     * @return the InputItemMcpToolCall object itself.
+     */
+    @Generated
+    public InputItemMcpToolCall setStatus(McpToolCallStatus status) {
+        this.status = status;
+        return this;
     }
 }

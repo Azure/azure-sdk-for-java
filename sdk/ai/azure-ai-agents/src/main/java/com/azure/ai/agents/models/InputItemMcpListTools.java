@@ -41,7 +41,7 @@ public final class InputItemMcpListTools extends InputItem {
      * The tools available on the server.
      */
     @Generated
-    private final List<MCPListToolsTool> tools;
+    private final List<McpListToolsTool> tools;
 
     /*
      * The error property.
@@ -57,7 +57,7 @@ public final class InputItemMcpListTools extends InputItem {
      * @param tools the tools value to set.
      */
     @Generated
-    public InputItemMcpListTools(String id, String serverLabel, List<MCPListToolsTool> tools) {
+    public InputItemMcpListTools(String id, String serverLabel, List<McpListToolsTool> tools) {
         this.id = id;
         this.serverLabel = serverLabel;
         this.tools = tools;
@@ -100,7 +100,7 @@ public final class InputItemMcpListTools extends InputItem {
      * @return the tools value.
      */
     @Generated
-    public List<MCPListToolsTool> getTools() {
+    public List<McpListToolsTool> getTools() {
         return this.tools;
     }
 
@@ -155,7 +155,7 @@ public final class InputItemMcpListTools extends InputItem {
         return jsonReader.readObject(reader -> {
             String id = null;
             String serverLabel = null;
-            List<MCPListToolsTool> tools = null;
+            List<McpListToolsTool> tools = null;
             InputItemType type = InputItemType.MCP_LIST_TOOLS;
             String error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -166,7 +166,7 @@ public final class InputItemMcpListTools extends InputItem {
                 } else if ("server_label".equals(fieldName)) {
                     serverLabel = reader.getString();
                 } else if ("tools".equals(fieldName)) {
-                    tools = reader.readArray(reader1 -> MCPListToolsTool.fromJson(reader1));
+                    tools = reader.readArray(reader1 -> McpListToolsTool.fromJson(reader1));
                 } else if ("type".equals(fieldName)) {
                     type = InputItemType.fromString(reader.getString());
                 } else if ("error".equals(fieldName)) {

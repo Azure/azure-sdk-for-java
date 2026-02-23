@@ -110,7 +110,7 @@ public class Tool implements JsonSerializable<Tool> {
                 } else if ("web_search".equals(discriminatorValue)) {
                     return WebSearchTool.fromJson(readerToUse.reset());
                 } else if ("mcp".equals(discriminatorValue)) {
-                    return MCPTool.fromJson(readerToUse.reset());
+                    return McpTool.fromJson(readerToUse.reset());
                 } else if ("image_generation".equals(discriminatorValue)) {
                     return ImageGenTool.fromJson(readerToUse.reset());
                 } else if ("local_shell".equals(discriminatorValue)) {
