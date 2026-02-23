@@ -47,7 +47,7 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
      * content uses integer milliseconds.
      */
     @Generated
-    private String inputRange;
+    private String contentRange;
 
     /**
      * Creates an instance of AnalyzeInput class.
@@ -147,26 +147,26 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
     }
 
     /**
-     * Get the inputRange property: Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page
+     * Get the contentRange property: Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page
      * numbers, while audio visual content uses integer milliseconds.
      *
-     * @return the inputRange value.
+     * @return the contentRange value.
      */
     @Generated
-    public String getInputRange() {
-        return this.inputRange;
+    public String getContentRange() {
+        return this.contentRange;
     }
 
     /**
-     * Set the inputRange property: Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page
+     * Set the contentRange property: Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page
      * numbers, while audio visual content uses integer milliseconds.
      *
-     * @param inputRange the inputRange value to set.
+     * @param contentRange the contentRange value to set.
      * @return the AnalyzeInput object itself.
      */
     @Generated
-    public AnalyzeInput setInputRange(String inputRange) {
-        this.inputRange = inputRange;
+    public AnalyzeInput setContentRange(String contentRange) {
+        this.contentRange = contentRange;
         return this;
     }
 
@@ -181,7 +181,7 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
         jsonWriter.writeBinaryField("data", this.data);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("mimeType", this.mimeType);
-        jsonWriter.writeStringField("range", this.inputRange);
+        jsonWriter.writeStringField("range", this.contentRange);
         return jsonWriter.writeEndObject();
     }
 
@@ -209,7 +209,7 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
                 } else if ("mimeType".equals(fieldName)) {
                     deserializedAnalyzeInput.mimeType = reader.getString();
                 } else if ("range".equals(fieldName)) {
-                    deserializedAnalyzeInput.inputRange = reader.getString();
+                    deserializedAnalyzeInput.contentRange = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -219,16 +219,16 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
     }
 
     /**
-     * Set the inputRange property using a {@link ContentRange} for a self-documenting API.
+     * Set the contentRange property using a {@link ContentRange} for a self-documenting API.
      *
      * Use factory methods such as {@link ContentRange#pages(int, int)}, {@link ContentRange#timeRange(long, long)}, or
      * {@link ContentRange#combine(ContentRange...)} to build the range.
      *
-     * @param inputRange the range value to set, or null to clear.
+     * @param contentRange the range value to set, or null to clear.
      * @return the AnalyzeInput object itself.
      */
-    public AnalyzeInput setInputRange(ContentRange inputRange) {
-        this.inputRange = inputRange != null ? inputRange.toString() : null;
+    public AnalyzeInput setContentRange(ContentRange contentRange) {
+        this.contentRange = contentRange != null ? contentRange.toString() : null;
         return this;
     }
 }

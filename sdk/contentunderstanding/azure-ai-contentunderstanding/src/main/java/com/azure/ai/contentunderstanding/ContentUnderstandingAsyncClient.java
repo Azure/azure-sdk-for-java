@@ -1603,7 +1603,7 @@ public final class ContentUnderstandingAsyncClient {
      * @param stringEncoding The string encoding format for content spans in the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * @param contentType Request content type.
-     * @param inputRange Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page numbers,
+     * @param contentRange Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page numbers,
      * while audio visual content uses integer milliseconds.
      * @param processingLocation The location where the data may be processed. Defaults to global.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1617,13 +1617,13 @@ public final class ContentUnderstandingAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
-        BinaryData binaryInput, String stringEncoding, String contentType, String inputRange,
+        BinaryData binaryInput, String stringEncoding, String contentType, String contentRange,
         ProcessingLocation processingLocation) {
         // Generated convenience method for beginAnalyzeBinaryWithModel
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
-        if (inputRange != null) {
-            requestOptions.addQueryParam("range", inputRange, false);
+        if (contentRange != null) {
+            requestOptions.addQueryParam("range", contentRange, false);
         }
         if (processingLocation != null) {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
@@ -2077,8 +2077,8 @@ public final class ContentUnderstandingAsyncClient {
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param binaryInput The binary content of the document to analyze.
-     * @param inputRange Range of the input to analyze (ex. 1-3,5,9-). Document content uses 1-based page numbers; audio
-     * visual uses milliseconds.
+     * @param contentRange Range of the input to analyze (ex. 1-3,5,9-). Document content uses 1-based page numbers;
+     * audio visual uses milliseconds.
      * @param contentType Request content type.
      * @param processingLocation The location where the data may be processed. Set to null for service default.
      * @return the {@link PollerFlux} for polling of the analyze operation.
@@ -2087,10 +2087,10 @@ public final class ContentUnderstandingAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
-        BinaryData binaryInput, String inputRange, String contentType, ProcessingLocation processingLocation) {
+        BinaryData binaryInput, String contentRange, String contentType, ProcessingLocation processingLocation) {
         RequestOptions requestOptions = new RequestOptions();
-        if (inputRange != null) {
-            requestOptions.addQueryParam("range", inputRange, false);
+        if (contentRange != null) {
+            requestOptions.addQueryParam("range", contentRange, false);
         }
         if (processingLocation != null) {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
@@ -2107,7 +2107,7 @@ public final class ContentUnderstandingAsyncClient {
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param binaryInput The binary content of the document to analyze.
-     * @param inputRange Range of the input to analyze. Use ContentRange factory methods to build the range.
+     * @param contentRange Range of the input to analyze. Use ContentRange factory methods to build the range.
      * @param contentType Request content type.
      * @param processingLocation The location where the data may be processed. Set to null for service default.
      * @return the {@link PollerFlux} for polling of the analyze operation.
@@ -2116,8 +2116,8 @@ public final class ContentUnderstandingAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
-        BinaryData binaryInput, ContentRange inputRange, String contentType, ProcessingLocation processingLocation) {
-        return beginAnalyzeBinary(analyzerId, binaryInput, inputRange != null ? inputRange.toString() : null,
+        BinaryData binaryInput, ContentRange contentRange, String contentType, ProcessingLocation processingLocation) {
+        return beginAnalyzeBinary(analyzerId, binaryInput, contentRange != null ? contentRange.toString() : null,
             contentType, processingLocation);
     }
 
