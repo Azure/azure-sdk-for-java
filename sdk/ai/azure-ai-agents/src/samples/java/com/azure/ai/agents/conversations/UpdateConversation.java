@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents;
+package com.azure.ai.agents.conversations;
 
+import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.ConversationsClient;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.core.JsonValue;
