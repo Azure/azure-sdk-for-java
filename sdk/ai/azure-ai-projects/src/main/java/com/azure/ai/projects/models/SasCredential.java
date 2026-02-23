@@ -11,22 +11,28 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Credentials that do not require authentication.
+ * Shared Access Signature (SAS) credential definition.
  */
 @Immutable
-public final class NoAuthenticationCredentials extends BaseCredentials {
+public final class SasCredential extends BaseCredential {
 
     /*
      * The type of credential used by the connection
      */
     @Generated
-    private CredentialType type = CredentialType.NONE;
+    private CredentialType type = CredentialType.SAS;
 
-    /**
-     * Creates an instance of NoAuthenticationCredentials class.
+    /*
+     * SAS token
      */
     @Generated
-    private NoAuthenticationCredentials() {
+    private String sasToken;
+
+    /**
+     * Creates an instance of SasCredential class.
+     */
+    @Generated
+    private SasCredential() {
     }
 
     /**
@@ -41,6 +47,16 @@ public final class NoAuthenticationCredentials extends BaseCredentials {
     }
 
     /**
+     * Get the sasToken property: SAS token.
+     *
+     * @return the sasToken value.
+     */
+    @Generated
+    public String getSasToken() {
+        return this.sasToken;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -52,27 +68,29 @@ public final class NoAuthenticationCredentials extends BaseCredentials {
     }
 
     /**
-     * Reads an instance of NoAuthenticationCredentials from the JsonReader.
+     * Reads an instance of SasCredential from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of NoAuthenticationCredentials if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the NoAuthenticationCredentials.
+     * @return An instance of SasCredential if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SasCredential.
      */
     @Generated
-    public static NoAuthenticationCredentials fromJson(JsonReader jsonReader) throws IOException {
+    public static SasCredential fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            NoAuthenticationCredentials deserializedNoAuthenticationCredentials = new NoAuthenticationCredentials();
+            SasCredential deserializedSasCredential = new SasCredential();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedNoAuthenticationCredentials.type = CredentialType.fromString(reader.getString());
+                    deserializedSasCredential.type = CredentialType.fromString(reader.getString());
+                } else if ("SAS".equals(fieldName)) {
+                    deserializedSasCredential.sasToken = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedNoAuthenticationCredentials;
+            return deserializedSasCredential;
         });
     }
 }

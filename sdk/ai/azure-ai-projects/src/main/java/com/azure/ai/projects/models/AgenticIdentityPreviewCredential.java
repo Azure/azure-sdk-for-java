@@ -14,19 +14,19 @@ import java.io.IOException;
  * Agentic identity credential definition.
  */
 @Immutable
-public final class AgenticIdentityCredentials extends BaseCredentials {
+public final class AgenticIdentityPreviewCredential extends BaseCredential {
 
     /*
      * The type of credential used by the connection
      */
     @Generated
-    private CredentialType type = CredentialType.AGENTIC_IDENTITY;
+    private CredentialType type = CredentialType.AGENTIC_IDENTITY_PREVIEW;
 
     /**
-     * Creates an instance of AgenticIdentityCredentials class.
+     * Creates an instance of AgenticIdentityPreviewCredential class.
      */
     @Generated
-    private AgenticIdentityCredentials() {
+    private AgenticIdentityPreviewCredential() {
     }
 
     /**
@@ -52,27 +52,28 @@ public final class AgenticIdentityCredentials extends BaseCredentials {
     }
 
     /**
-     * Reads an instance of AgenticIdentityCredentials from the JsonReader.
+     * Reads an instance of AgenticIdentityPreviewCredential from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AgenticIdentityCredentials if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AgenticIdentityCredentials.
+     * @return An instance of AgenticIdentityPreviewCredential if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgenticIdentityPreviewCredential.
      */
     @Generated
-    public static AgenticIdentityCredentials fromJson(JsonReader jsonReader) throws IOException {
+    public static AgenticIdentityPreviewCredential fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AgenticIdentityCredentials deserializedAgenticIdentityCredentials = new AgenticIdentityCredentials();
+            AgenticIdentityPreviewCredential deserializedAgenticIdentityPreviewCredential
+                = new AgenticIdentityPreviewCredential();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedAgenticIdentityCredentials.type = CredentialType.fromString(reader.getString());
+                    deserializedAgenticIdentityPreviewCredential.type = CredentialType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedAgenticIdentityCredentials;
+            return deserializedAgenticIdentityPreviewCredential;
         });
     }
 }
