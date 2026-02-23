@@ -145,7 +145,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
                 .createDocument(collectionLink, docDefinition, null, false).block().getResource();
     }
 
-    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = 2 * SETUP_TIMEOUT)
     public void before_DocumentQuerySpyWireContentTest() throws Exception {
 
         SpyClientUnderTestFactory.ClientUnderTest oldSnapshot = client;

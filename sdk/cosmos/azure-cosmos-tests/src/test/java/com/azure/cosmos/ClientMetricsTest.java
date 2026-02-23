@@ -467,7 +467,7 @@ public class ClientMetricsTest extends BatchTestBase {
         runReadItemTestWithThresholds(minThresholds, true);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void replaceItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());

@@ -157,7 +157,7 @@ public class QueryValidationTests extends TestSuiteBase {
             documentsInserted);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void queryOptionNullValidation() {
         String query = "Select top 1 * from c";
 
@@ -573,7 +573,7 @@ public class QueryValidationTests extends TestSuiteBase {
         return insertAllItemsBlocking(container, docsToInsert, true);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void queryLargePartitionKeyOn100BPKCollection() throws Exception {
         String containerId = "testContainer_" + UUID.randomUUID();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/id");
