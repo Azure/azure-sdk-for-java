@@ -219,6 +219,56 @@ public class SerializableAsyncCacheTest {
             assertThat(foundInvalidClassException).as("Expected InvalidClassException in cause chain").isTrue();
         }
     }
+
+    @Test(groups = { "unit" }, dataProvider = "numberOfCollections")
+    public void serialize_Deserialize_AsyncCache_PreservesCollectionRidComparer(int cnt) throws Exception {
+        // This test verifies that the CollectionRidComparer is preserved across
+        // serialization/deserialization through CosmosClientMetadataCachesSnapshot.
+        // After deserialization, the cache should compare DocumentCollections by resourceId
+        // (not by Object.equals), matching the behavior of the original RxCollectionCache.
+        AsyncCache<String, DocumentCollection> cache = new AsyncCache<>(
+            new com.azure.cosmos.implementation.caches.RxCollectionCache.CollectionRidComparer());
+
+        List<String> keys = new ArrayList<>();
+        for (int i = 0; i < cnt; i++) {
+            DocumentCollection collectionDef = generateDocumentCollectionDefinition();
+            collectionDef.setResourceId("rid-" + i);
+            String collectionLink = "db/mydb/colls/" + collectionDef.getId();
+            keys.add(collectionLink);
+            cache.getAsync(collectionLink, null, () -> Mono.just(collectionDef)).block();
+        }
+
+        // Serialize through CosmosClientMetadataCachesSnapshot
+        CosmosClientMetadataCachesSnapshot snapshot = new CosmosClientMetadataCachesSnapshot();
+        snapshot.serializeCollectionInfoByNameCache(cache);
+
+        // Deserialize — comparer should be restored as CollectionRidComparer
+        AsyncCache<String, DocumentCollection> newCache = snapshot.getCollectionInfoByNameCache();
+
+        // Verify the comparer works correctly: two DocumentCollections with the same
+        // resourceId should be treated as equal by CollectionRidComparer, triggering refresh
+        if (cnt > 0) {
+            String firstKey = keys.get(0);
+            DocumentCollection fromNewCache = newCache.getAsync(firstKey, null,
+                () -> Mono.error(new RuntimeException("not expected"))).block();
+
+            // Create a "different" collection with the same resourceId
+            DocumentCollection sameRid = new DocumentCollection();
+            sameRid.setResourceId(fromNewCache.getResourceId());
+            sameRid.setId("completely-different-id");
+
+            // With CollectionRidComparer: sameRid.resourceId == cached.resourceId → areEqual=true → refresh triggered
+            DocumentCollection refreshed = generateDocumentCollectionDefinition();
+            refreshed.setResourceId("new-rid");
+            final boolean[] initCalled = { false };
+            DocumentCollection result = newCache.getAsync(firstKey, sameRid, () -> {
+                initCalled[0] = true;
+                return Mono.just(refreshed);
+            }).block();
+
+            assertThat(initCalled[0])
+                .as("CollectionRidComparer should treat same-resourceId as equal, triggering refresh")
+                .isTrue();
+        }
+    }
 }
-
-

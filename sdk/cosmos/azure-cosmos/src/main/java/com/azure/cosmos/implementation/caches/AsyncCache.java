@@ -154,9 +154,20 @@ public class AsyncCache<TKey, TValue> {
 
         protected SerializableAsyncCache() {}
 
+        /**
+         * Returns the default equality comparer for this cache type.
+         * Used as a fallback when the serialized comparer cannot be deserialized safely.
+         */
+        protected abstract IEqualityComparer<TValue> getDefaultEqualityComparer();
+
         public static class SerializableAsyncCollectionCache extends SerializableAsyncCache<String, DocumentCollection> {
             private static final long serialVersionUID = 2l;
             private SerializableAsyncCollectionCache() {}
+
+            @Override
+            protected IEqualityComparer<DocumentCollection> getDefaultEqualityComparer() {
+                return new RxCollectionCache.CollectionRidComparer();
+            }
 
             @Override
             protected void serializeKey(ObjectOutputStream oos, String s) throws IOException {
@@ -246,34 +257,27 @@ public class AsyncCache<TKey, TValue> {
                 pairs.put(key, new AsyncLazy<>(value));
             }
 
-            // Security fix: Don't deserialize the IEqualityComparer as it could be a malicious object
-            // (e.g., a crafted lambda that executes arbitrary code).
-            // Instead, skip it and use the default equality comparer.
-            // This is safe because:
-            // 1. Most production code uses the default equality comparer (via no-arg AsyncCache constructor).
-            //    RxCollectionCache uses CollectionRidComparer, but we restore the correct comparer by
-            //    always using the default on deserialization. This is acceptable because the comparer
-            //    only affects cache staleness checks, not correctness.
-            // 2. The serialization format remains unchanged (we still write the comparer for backward compatibility)
-            // 3. Future format changes should increment the serialVersionUID to handle compatibility explicitly
+            // Attempt to use the deserialized IEqualityComparer if it is a known safe type
+            // (i.e., it passed the SafeObjectInputStream allowlist). Fall back to the
+            // subclass-provided default comparer if deserialization fails.
+            IEqualityComparer<TValue> equalityComparer;
             try {
-                ois.readObject(); // Read and discard the serialized comparer to maintain format compatibility
-            } catch (InvalidClassException e) {
-                // The comparer's class may not be in SafeObjectInputStream's allowlist
-                // (e.g., SerializedLambda when a lambda comparer was serialized). Since we
-                // discard the comparer anyway and this is the last item in the stream, this is safe.
-                logger.debug("Skipped deserializing equality comparer: {}", e.getMessage());
+                Object comparerObj = ois.readObject();
+                if (comparerObj instanceof IEqualityComparer) {
+                    @SuppressWarnings("unchecked")
+                    IEqualityComparer<TValue> deserializedComparer = (IEqualityComparer<TValue>) comparerObj;
+                    equalityComparer = deserializedComparer;
+                } else {
+                    logger.warn("Deserialized comparer is not an IEqualityComparer (was {}), using default",
+                        comparerObj == null ? "null" : comparerObj.getClass().getName());
+                    equalityComparer = getDefaultEqualityComparer();
+                }
+            } catch (ClassNotFoundException | IOException e) {
+                // The comparer's class is not in SafeObjectInputStream's allowlist
+                // or could not be deserialized. Fall back to the subclass-provided default.
+                logger.debug("Comparer class not in allowlist, using default: {}", e.getMessage());
+                equalityComparer = getDefaultEqualityComparer();
             }
-            
-            // Use the default equality comparer (same as AsyncCache constructor)
-            @SuppressWarnings("unchecked")
-            IEqualityComparer<TValue> equalityComparer = (value1, value2) -> {
-                if (value1 == value2)
-                    return true;
-                if (value1 == null || value2 == null)
-                    return false;
-                return value1.equals(value2);
-            };
             this.cache = new AsyncCache<>(equalityComparer, pairs);
         }
     }
