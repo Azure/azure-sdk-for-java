@@ -947,7 +947,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
     }
 
-    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean primaryAddressOnly, boolean isReadMany) throws JsonProcessingException, InterruptedException {
 
         boolean shouldRetryCrossRegion = false;

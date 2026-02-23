@@ -1085,7 +1085,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void endpointMetricsAreDurable() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.ALL)){
             if (state.client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {

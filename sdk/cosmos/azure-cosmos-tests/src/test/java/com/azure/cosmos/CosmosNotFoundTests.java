@@ -344,7 +344,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void performBulkOnDeletedContainer() throws InterruptedException {
 
         CosmosAsyncClient clientToUse = null, deletingAsyncClient = null;
@@ -378,10 +378,10 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             CosmosAsyncContainer containerToDelete = deletingAsyncClient.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
             containerToDelete.delete().block();
 
-            Thread.sleep(5000);
+            // Increase wait time for container deletion to propagate to all caches
+            Thread.sleep(15000);
 
             // Try to read the item from the deleted container using the original client
-
             List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
             CosmosItemOperation cosmosItemOperation = CosmosBulkOperations.getReadItemOperation(

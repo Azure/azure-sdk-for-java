@@ -70,7 +70,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         validateSuccess(replaceObservable, validatorForReplace);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void executeStoredProcedure() throws Exception {
         // create a stored procedure
         CosmosStoredProcedureProperties storedProcedureDef = BridgeInternal

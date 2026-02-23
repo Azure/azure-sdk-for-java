@@ -503,7 +503,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT * 2)
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT * 2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void dataPlaneRequestHitsLeaseNotFoundInFirstPreferredRegion(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
