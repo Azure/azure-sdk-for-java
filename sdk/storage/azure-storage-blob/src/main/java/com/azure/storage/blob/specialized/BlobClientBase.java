@@ -88,6 +88,7 @@ import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.SasImplUtils;
@@ -502,7 +503,7 @@ public class BlobClientBase {
     public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
         Context contextFinal = context == null ? Context.NONE : context;
         options = options == null ? new BlobInputStreamOptions() : options;
-        final com.azure.storage.common.StorageChecksumAlgorithm responseChecksumAlgorithm
+        final StorageChecksumAlgorithm responseChecksumAlgorithm
             = options.getResponseChecksumAlgorithm();
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG
@@ -1273,7 +1274,7 @@ public class BlobClientBase {
 
     BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5,
-        com.azure.storage.common.StorageChecksumAlgorithm responseChecksumAlgorithm, Duration timeout,
+        StorageChecksumAlgorithm responseChecksumAlgorithm, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client

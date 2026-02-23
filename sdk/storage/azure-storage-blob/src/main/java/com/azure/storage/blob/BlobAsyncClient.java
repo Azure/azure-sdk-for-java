@@ -725,7 +725,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> data, long length, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
-        Boolean legalHold, com.azure.storage.common.StorageChecksumAlgorithm requestChecksumAlgorithm) {
+        Boolean legalHold, StorageChecksumAlgorithm requestChecksumAlgorithm) {
 
         /*
          * Note that there is no need to buffer here as the flux returned by the size gate in this case is created
@@ -757,7 +757,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
-        Boolean legalHold, com.azure.storage.common.StorageChecksumAlgorithm requestChecksumAlgorithm) {
+        Boolean legalHold, StorageChecksumAlgorithm requestChecksumAlgorithm) {
         // TODO: Sample/api reference
 
         ProgressListener progressListener = parallelTransferOptions.getProgressListener();
