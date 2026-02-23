@@ -86,11 +86,11 @@ public class AddressRepositoryIT {
 
     @Test
     public void testFindById() {
-        // test findById (ID id) cross partition
-        final Address result = repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode()).get();
+        // test findById (ID id) cross partition using a postal code that is unique across all test addresses
+        final Address result = repository.findById(TEST_ADDRESS1_PARTITION2.getPostalCode()).get();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics().toString().contains("\"requestOperationType\":\"Query\"")).isTrue();
-        assertThat(result).isEqualTo(TEST_ADDRESS1_PARTITION1);
+        assertThat(result).isEqualTo(TEST_ADDRESS1_PARTITION2);
     }
 
     @Test
@@ -150,7 +150,7 @@ public class AddressRepositoryIT {
         final List<Address> result = TestUtils.toList(repository.findByPostalCodeInAndCity(postalCodes, city));
 
         assertThat(result.size()).isEqualTo(2);
-        assertThat(result).isEqualTo(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS2_PARTITION1));
+        assertThat(result).containsExactlyInAnyOrder(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS2_PARTITION1);
     }
 
     @Test
@@ -371,8 +371,8 @@ public class AddressRepositoryIT {
             TestConstants.POSTAL_CODE, null, TestConstants.CITY);
         final List<Address> result = TestUtils.toList(repository.findAllByStreetNotNull());
         assertThat(result.size()).isEqualTo(4);
-        assertThat(result).isEqualTo(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2,
-            TEST_ADDRESS2_PARTITION1, TEST_ADDRESS4_PARTITION3));
+        assertThat(result).containsExactlyInAnyOrder(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2,
+            TEST_ADDRESS2_PARTITION1, TEST_ADDRESS4_PARTITION3);
 
     }
 
