@@ -4,83 +4,90 @@
 
 package com.azure.ai.projects.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for FoundryFeaturesOptInKeys.
  */
-public enum FoundryFeaturesOptInKeys {
+public final class FoundryFeaturesOptInKeys extends ExpandableStringEnum<FoundryFeaturesOptInKeys> {
     /**
-     * Enum value ContainerAgents=V1Preview.
+     * Static value ContainerAgents=V1Preview for FoundryFeaturesOptInKeys.
      */
-    CONTAINER_AGENTS_V1_PREVIEW("ContainerAgents=V1Preview"),
+    @Generated
+    public static final FoundryFeaturesOptInKeys CONTAINER_AGENTS_V1_PREVIEW = fromString("ContainerAgents=V1Preview");
 
     /**
-     * Enum value HostedAgents=V1Preview.
+     * Static value HostedAgents=V1Preview for FoundryFeaturesOptInKeys.
      */
-    HOSTED_AGENTS_V1_PREVIEW("HostedAgents=V1Preview"),
+    @Generated
+    public static final FoundryFeaturesOptInKeys HOSTED_AGENTS_V1_PREVIEW = fromString("HostedAgents=V1Preview");
 
     /**
-     * Enum value WorkflowAgents=V1Preview.
+     * Static value WorkflowAgents=V1Preview for FoundryFeaturesOptInKeys.
      */
-    WORKFLOW_AGENTS_V1_PREVIEW("WorkflowAgents=V1Preview"),
+    @Generated
+    public static final FoundryFeaturesOptInKeys WORKFLOW_AGENTS_V1_PREVIEW = fromString("WorkflowAgents=V1Preview");
 
     /**
-     * Enum value Evaluations=V1Preview.
+     * Static value Evaluations=V1Preview for FoundryFeaturesOptInKeys.
      */
-    EVALUATIONS_V1_PREVIEW("Evaluations=V1Preview"),
+    @Generated
+    public static final FoundryFeaturesOptInKeys EVALUATIONS_V1_PREVIEW = fromString("Evaluations=V1Preview");
 
     /**
-     * Enum value Schedules=V1Preview.
+     * Static value Schedules=V1Preview for FoundryFeaturesOptInKeys.
      */
-    SCHEDULES_V1_PREVIEW("Schedules=V1Preview"),
+    @Generated
+    public static final FoundryFeaturesOptInKeys SCHEDULES_V1_PREVIEW = fromString("Schedules=V1Preview");
 
     /**
-     * Enum value RedTeams=V1Preview.
+     * Static value RedTeams=V1Preview for FoundryFeaturesOptInKeys.
      */
-    RED_TEAMS_V1_PREVIEW("RedTeams=V1Preview"),
+    @Generated
+    public static final FoundryFeaturesOptInKeys RED_TEAMS_V1_PREVIEW = fromString("RedTeams=V1Preview");
 
     /**
-     * Enum value Insights=V1Preview.
+     * Static value Insights=V1Preview for FoundryFeaturesOptInKeys.
      */
-    INSIGHTS_V1_PREVIEW("Insights=V1Preview"),
+    @Generated
+    public static final FoundryFeaturesOptInKeys INSIGHTS_V1_PREVIEW = fromString("Insights=V1Preview");
 
     /**
-     * Enum value MemoryStores=V1Preview.
+     * Static value MemoryStores=V1Preview for FoundryFeaturesOptInKeys.
      */
-    MEMORY_STORES_V1_PREVIEW("MemoryStores=V1Preview");
+    @Generated
+    public static final FoundryFeaturesOptInKeys MEMORY_STORES_V1_PREVIEW = fromString("MemoryStores=V1Preview");
 
     /**
-     * The actual serialized value for a FoundryFeaturesOptInKeys instance.
-     */
-    private final String value;
-
-    FoundryFeaturesOptInKeys(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a FoundryFeaturesOptInKeys instance.
+     * Creates a new instance of FoundryFeaturesOptInKeys value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed FoundryFeaturesOptInKeys object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static FoundryFeaturesOptInKeys fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        FoundryFeaturesOptInKeys[] items = FoundryFeaturesOptInKeys.values();
-        for (FoundryFeaturesOptInKeys item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public FoundryFeaturesOptInKeys() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a FoundryFeaturesOptInKeys from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding FoundryFeaturesOptInKeys.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static FoundryFeaturesOptInKeys fromString(String name) {
+        return fromString(name, FoundryFeaturesOptInKeys.class);
+    }
+
+    /**
+     * Gets known FoundryFeaturesOptInKeys values.
+     * 
+     * @return known FoundryFeaturesOptInKeys values.
+     */
+    @Generated
+    public static Collection<FoundryFeaturesOptInKeys> values() {
+        return values(FoundryFeaturesOptInKeys.class);
     }
 }
