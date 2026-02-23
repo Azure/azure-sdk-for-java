@@ -102,6 +102,7 @@
     "com.azure.ai.agents.models.A2APreviewTool": "Azure.AI.Projects.A2APreviewTool",
     "com.azure.ai.agents.models.AISearchIndexResource": "Azure.AI.Projects.AISearchIndexResource",
     "com.azure.ai.agents.models.AgentDefinition": "Azure.AI.Projects.AgentDefinition",
+    "com.azure.ai.agents.models.AgentDefinitionFeatureKeys": "Azure.AI.Projects.AgentDefinitionFeatureKeys",
     "com.azure.ai.agents.models.AgentDetails": "Azure.AI.Projects.AgentObject",
     "com.azure.ai.agents.models.AgentKind": "Azure.AI.Projects.AgentKind",
     "com.azure.ai.agents.models.AgentObjectType": "Azure.AI.Projects.AgentObjectType",

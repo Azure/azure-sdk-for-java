@@ -11,6 +11,7 @@ import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
 import com.azure.ai.agents.models.AgentDefinition;
+import com.azure.ai.agents.models.AgentDefinitionFeatureKeys;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -128,8 +129,9 @@ public final class AgentsAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources.</td></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
+     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -447,8 +449,9 @@ public final class AgentsAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources.</td></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
+     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -523,8 +526,9 @@ public final class AgentsAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources.</td></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
+     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -1334,15 +1338,15 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AgentDetails> createAgent(String agentName, AgentDefinition definition, BinaryData foundryFeatures,
-        Map<String, String> metadata, String description) {
+    Mono<AgentDetails> createAgent(String agentName, AgentDefinition definition,
+        AgentDefinitionFeatureKeys foundryFeatures, Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentRequest createAgentRequestObj
             = new CreateAgentRequest(agentName, definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentRequest = BinaryData.fromObject(createAgentRequestObj);
         if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), String.valueOf(foundryFeatures));
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
         return createAgentWithResponse(createAgentRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
@@ -1373,15 +1377,15 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition, BinaryData foundryFeatures,
-        Map<String, String> metadata, String description) {
+    Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition,
+        AgentDefinitionFeatureKeys foundryFeatures, Map<String, String> metadata, String description) {
         // Generated convenience method for updateAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateAgentRequest updateAgentRequestObj
             = new UpdateAgentRequest(definition).setMetadata(metadata).setDescription(description);
         BinaryData updateAgentRequest = BinaryData.fromObject(updateAgentRequestObj);
         if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), String.valueOf(foundryFeatures));
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
         return updateAgentWithResponse(agentName, updateAgentRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
@@ -1415,14 +1419,14 @@ public final class AgentsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition,
-        BinaryData foundryFeatures, Map<String, String> metadata, String description) {
+        AgentDefinitionFeatureKeys foundryFeatures, Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj
             = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
         if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), String.valueOf(foundryFeatures));
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
         return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
