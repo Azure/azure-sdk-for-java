@@ -3,19 +3,8 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.DeleteMemoryStoreResponse;
-import com.azure.ai.agents.models.MemoryOperation;
-import com.azure.ai.agents.models.MemorySearchItem;
-import com.azure.ai.agents.models.MemorySearchOptions;
-import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
-import com.azure.ai.agents.models.MemoryStoreDefaultOptions;
-import com.azure.ai.agents.models.MemoryStoreDefinition;
-import com.azure.ai.agents.models.MemoryStoreDetails;
-import com.azure.ai.agents.models.MemoryStoreSearchResponse;
-import com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;
-import com.azure.ai.agents.models.MemoryStoreUpdateResponse;
-import com.azure.ai.agents.models.MemoryStoreUpdateStatus;
-import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.agents.models.*;
+import com.azure.ai.agents.models.DeleteMemoryStoreResult;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -90,7 +79,7 @@ public class MemoryStoresTests extends ClientTestBase {
         assertTrue(found, "Created memory store not found in list.");
 
         // Delete Memory Store
-        DeleteMemoryStoreResponse deleteResponse = memoryStoreClient.deleteMemoryStore(updatedStore.getName());
+        DeleteMemoryStoreResult deleteResponse = memoryStoreClient.deleteMemoryStore(updatedStore.getName());
         assertNotNull(deleteResponse);
         assertTrue(deleteResponse.isDeleted());
 
@@ -177,7 +166,7 @@ public class MemoryStoresTests extends ClientTestBase {
         System.out.println("Deleted memories for scope '" + scope + "'");
 
         // Delete memory store
-        DeleteMemoryStoreResponse deleteResponse = memoryStoreClient.deleteMemoryStore(memoryStoreName);
+        DeleteMemoryStoreResult deleteResponse = memoryStoreClient.deleteMemoryStore(memoryStoreName);
         assertNotNull(deleteResponse);
         assertTrue(deleteResponse.isDeleted());
         System.out.println("Deleted memory store `" + memoryStoreName + "`");
@@ -307,7 +296,7 @@ public class MemoryStoresTests extends ClientTestBase {
         System.out.println("Deleted memories for scope '" + scope + "'");
 
         // Delete memory store
-        DeleteMemoryStoreResponse deleteResponse = memoryStoreClient.deleteMemoryStore(memoryStoreName);
+        DeleteMemoryStoreResult deleteResponse = memoryStoreClient.deleteMemoryStore(memoryStoreName);
         assertNotNull(deleteResponse);
         assertTrue(deleteResponse.isDeleted());
         System.out.println("Deleted memory store `" + memoryStoreName + "`");
@@ -316,7 +305,7 @@ public class MemoryStoresTests extends ClientTestBase {
     private static void cleanupBeforeTest(MemoryStoresClient memoryStoreClient, String memoryStoreName) {
         // Ensure clean state: delete if it already exists
         try {
-            DeleteMemoryStoreResponse deleteExisting = memoryStoreClient.deleteMemoryStore(memoryStoreName);
+            DeleteMemoryStoreResult deleteExisting = memoryStoreClient.deleteMemoryStore(memoryStoreName);
             assertNotNull(deleteExisting);
         } catch (ResourceNotFoundException ex) {
             // ok if it does not exist

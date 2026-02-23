@@ -63,7 +63,7 @@ public class MemorySearchAgent {
             System.out.printf("Created memory store: %s (%s)\n", memoryStore.getName(), memoryStore.getId());
 
             MemorySearchPreviewTool tool = new MemorySearchPreviewTool(memoryStore.getName(), scope)
-                    .setUpdateDelay(1); // Wait 1 second of inactivity before extracting memories
+                    .setUpdateDelaySeconds(1); // Wait 1 second of inactivity before extracting memories
 
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(agentModel)
                     .setInstructions("You are a helpful assistant that answers general questions.")
