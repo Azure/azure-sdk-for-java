@@ -41,7 +41,7 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
      * The annotations property.
      */
     @Generated
-    private MCPListToolsToolAnnotations annotations;
+    private McpListToolsToolAnnotations annotations;
 
     /**
      * Get the name property: The name of the tool.
@@ -91,7 +91,7 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
      * @return the annotations value.
      */
     @Generated
-    public MCPListToolsToolAnnotations getAnnotations() {
+    public McpListToolsToolAnnotations getAnnotations() {
         return this.annotations;
     }
 
@@ -124,7 +124,7 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
             String name = null;
             MCPListToolsToolInputSchema inputSchema = null;
             String description = null;
-            MCPListToolsToolAnnotations annotations = null;
+            McpListToolsToolAnnotations annotations = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -135,7 +135,7 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("annotations".equals(fieldName)) {
-                    annotations = MCPListToolsToolAnnotations.fromJson(reader);
+                    annotations = McpListToolsToolAnnotations.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -166,7 +166,7 @@ public final class MCPListToolsTool implements JsonSerializable<MCPListToolsTool
      * @return the MCPListToolsTool object itself.
      */
     @Generated
-    public MCPListToolsTool setAnnotations(MCPListToolsToolAnnotations annotations) {
+    public MCPListToolsTool setAnnotations(McpListToolsToolAnnotations annotations) {
         this.annotations = annotations;
         return this;
     }

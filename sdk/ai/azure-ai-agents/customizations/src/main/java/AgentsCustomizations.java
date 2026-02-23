@@ -11,28 +11,23 @@ public class AgentsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        renameContainerMemoryLimitVariants(libraryCustomization, logger);
+        renameImageGenToolSize(libraryCustomization, logger);
     }
 
-    private void renameContainerMemoryLimitVariants(LibraryCustomization customization, Logger logger) {
-        customization.getClass("com.azure.ai.agents.models", "ContainerMemoryLimit").customizeAst(ast -> ast.getEnumByName("ContainerMemoryLimit")
+    private void renameImageGenToolSize(LibraryCustomization customization, Logger logger) {
+        customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize").customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
             .ifPresent(clazz -> clazz.getEntries().stream()
-                .filter(entry -> "ONEG".equals(entry.getName().getIdentifier()))
-                .forEach(entry -> entry.setName("ONE_G"))));
+                .filter(entry -> "ONE_ZERO_TWO_FOURX_ONE_ZERO_TWO_FOUR".equals(entry.getName().getIdentifier()))
+                .forEach(entry -> entry.setName("RESOLUTION_1024_X_1024"))));
 
-        customization.getClass("com.azure.ai.agents.models", "ContainerMemoryLimit").customizeAst(ast -> ast.getEnumByName("ContainerMemoryLimit")
+        customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize").customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
             .ifPresent(clazz -> clazz.getEntries().stream()
-                .filter(entry -> "FOURG".equals(entry.getName().getIdentifier()))
-                .forEach(entry -> entry.setName("FOUR_G"))));
+                .filter(entry -> "ONE_ZERO_TWO_FOURX_ONE_FIVE_THREE_SIX".equals(entry.getName().getIdentifier()))
+                .forEach(entry -> entry.setName("RESOLUTION_1024_X_1536"))));
 
-        customization.getClass("com.azure.ai.agents.models", "ContainerMemoryLimit").customizeAst(ast -> ast.getEnumByName("ContainerMemoryLimit")
+        customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize").customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
             .ifPresent(clazz -> clazz.getEntries().stream()
-                .filter(entry -> "ONE_SIXG".equals(entry.getName().getIdentifier()))
-                .forEach(entry -> entry.setName("SIXTEEN_G"))));
-
-        customization.getClass("com.azure.ai.agents.models", "ContainerMemoryLimit").customizeAst(ast -> ast.getEnumByName("ContainerMemoryLimit")
-            .ifPresent(clazz -> clazz.getEntries().stream()
-                .filter(entry -> "SIX_FOURG".equals(entry.getName().getIdentifier()))
-                .forEach(entry -> entry.setName("SIXTY_FOUR_G"))));
+                .filter(entry -> "ONE_FIVE_THREE_SIXX_ONE_ZERO_TWO_FOUR".equals(entry.getName().getIdentifier()))
+                .forEach(entry -> entry.setName("RESOLUTION_1536_X_1024"))));
     }
 }

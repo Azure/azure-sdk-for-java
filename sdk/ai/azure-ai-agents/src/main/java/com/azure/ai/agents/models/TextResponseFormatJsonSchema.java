@@ -43,25 +43,13 @@ public final class TextResponseFormatJsonSchema extends TextResponseFormatConfig
      * The schema property.
      */
     @Generated
-    private final ResponseFormatJsonSchemaSchema schema;
+    private final ResponseFormatJsonSchemaInner schema;
 
     /*
      * The strict property.
      */
     @Generated
     private Boolean strict;
-
-    /**
-     * Creates an instance of TextResponseFormatJsonSchema class.
-     *
-     * @param name the name value to set.
-     * @param schema the schema value to set.
-     */
-    @Generated
-    public TextResponseFormatJsonSchema(String name, ResponseFormatJsonSchemaSchema schema) {
-        this.name = name;
-        this.schema = schema;
-    }
 
     /**
      * Get the type property: The type property.
@@ -115,7 +103,7 @@ public final class TextResponseFormatJsonSchema extends TextResponseFormatConfig
      * @return the schema value.
      */
     @Generated
-    public ResponseFormatJsonSchemaSchema getSchema() {
+    public ResponseFormatJsonSchemaInner getSchema() {
         return this.schema;
     }
 
@@ -169,7 +157,7 @@ public final class TextResponseFormatJsonSchema extends TextResponseFormatConfig
     public static TextResponseFormatJsonSchema fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            ResponseFormatJsonSchemaSchema schema = null;
+            ResponseFormatJsonSchemaInner schema = null;
             TextResponseFormatConfigurationType type = TextResponseFormatConfigurationType.JSON_SCHEMA;
             String description = null;
             Boolean strict = null;
@@ -179,7 +167,7 @@ public final class TextResponseFormatJsonSchema extends TextResponseFormatConfig
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("schema".equals(fieldName)) {
-                    schema = ResponseFormatJsonSchemaSchema.fromJson(reader);
+                    schema = ResponseFormatJsonSchemaInner.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = TextResponseFormatConfigurationType.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
@@ -197,5 +185,17 @@ public final class TextResponseFormatJsonSchema extends TextResponseFormatConfig
             deserializedTextResponseFormatJsonSchema.strict = strict;
             return deserializedTextResponseFormatJsonSchema;
         });
+    }
+
+    /**
+     * Creates an instance of TextResponseFormatJsonSchema class.
+     *
+     * @param name the name value to set.
+     * @param schema the schema value to set.
+     */
+    @Generated
+    public TextResponseFormatJsonSchema(String name, ResponseFormatJsonSchemaInner schema) {
+        this.name = name;
+        this.schema = schema;
     }
 }

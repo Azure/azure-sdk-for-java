@@ -17,30 +17,14 @@ import java.io.IOException;
 @Immutable
 public final class ResponseUsageInputTokensDetails implements JsonSerializable<ResponseUsageInputTokensDetails> {
 
-    /*
-     * The cached_tokens property.
-     */
-    @Generated
-    private final long cachedTokens;
-
     /**
      * Creates an instance of ResponseUsageInputTokensDetails class.
      *
-     * @param cachedTokens the cachedTokens value to set.
+     * @param cachedTokensCount the cachedTokensCount value to set.
      */
     @Generated
-    private ResponseUsageInputTokensDetails(long cachedTokens) {
-        this.cachedTokens = cachedTokens;
-    }
-
-    /**
-     * Get the cachedTokens property: The cached_tokens property.
-     *
-     * @return the cachedTokens value.
-     */
-    @Generated
-    public long getCachedTokens() {
-        return this.cachedTokens;
+    private ResponseUsageInputTokensDetails(long cachedTokensCount) {
+        this.cachedTokensCount = cachedTokensCount;
     }
 
     /**
@@ -50,7 +34,7 @@ public final class ResponseUsageInputTokensDetails implements JsonSerializable<R
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeLongField("cached_tokens", this.cachedTokens);
+        jsonWriter.writeLongField("cached_tokens", this.cachedTokensCount);
         return jsonWriter.writeEndObject();
     }
 
@@ -66,17 +50,33 @@ public final class ResponseUsageInputTokensDetails implements JsonSerializable<R
     @Generated
     public static ResponseUsageInputTokensDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            long cachedTokens = 0L;
+            long cachedTokensCount = 0L;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("cached_tokens".equals(fieldName)) {
-                    cachedTokens = reader.getLong();
+                    cachedTokensCount = reader.getLong();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ResponseUsageInputTokensDetails(cachedTokens);
+            return new ResponseUsageInputTokensDetails(cachedTokensCount);
         });
+    }
+
+    /*
+     * The cached_tokens property.
+     */
+    @Generated
+    private final long cachedTokensCount;
+
+    /**
+     * Get the cachedTokensCount property: The cached_tokens property.
+     *
+     * @return the cachedTokensCount value.
+     */
+    @Generated
+    public long getCachedTokensCount() {
+        return this.cachedTokensCount;
     }
 }

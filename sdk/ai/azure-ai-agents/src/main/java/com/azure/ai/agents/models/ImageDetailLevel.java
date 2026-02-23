@@ -5,9 +5,9 @@
 package com.azure.ai.agents.models;
 
 /**
- * Defines values for DetailEnum.
+ * Defines values for ImageDetailLevel.
  */
-public enum DetailEnum {
+public enum ImageDetailLevel {
     /**
      * Enum value low.
      */
@@ -24,26 +24,26 @@ public enum DetailEnum {
     AUTO("auto");
 
     /**
-     * The actual serialized value for a DetailEnum instance.
+     * The actual serialized value for a ImageDetailLevel instance.
      */
     private final String value;
 
-    DetailEnum(String value) {
+    ImageDetailLevel(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a DetailEnum instance.
+     * Parses a serialized value to a ImageDetailLevel instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed DetailEnum object, or null if unable to parse.
+     * @return the parsed ImageDetailLevel object, or null if unable to parse.
      */
-    public static DetailEnum fromString(String value) {
+    public static ImageDetailLevel fromString(String value) {
         if (value == null) {
             return null;
         }
-        DetailEnum[] items = DetailEnum.values();
-        for (DetailEnum item : items) {
+        ImageDetailLevel[] items = ImageDetailLevel.values();
+        for (ImageDetailLevel item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

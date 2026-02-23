@@ -42,12 +42,6 @@ public final class MemorySearchPreviewTool extends Tool {
     @Generated
     private MemorySearchOptions searchOptions;
 
-    /*
-     * Time to wait before updating memories after inactivity (seconds). Default 300.
-     */
-    @Generated
-    private Integer updateDelay;
-
     /**
      * Creates an instance of MemorySearchPreviewTool class.
      *
@@ -116,28 +110,6 @@ public final class MemorySearchPreviewTool extends Tool {
     }
 
     /**
-     * Get the updateDelay property: Time to wait before updating memories after inactivity (seconds). Default 300.
-     *
-     * @return the updateDelay value.
-     */
-    @Generated
-    public Integer getUpdateDelay() {
-        return this.updateDelay;
-    }
-
-    /**
-     * Set the updateDelay property: Time to wait before updating memories after inactivity (seconds). Default 300.
-     *
-     * @param updateDelay the updateDelay value to set.
-     * @return the MemorySearchPreviewTool object itself.
-     */
-    @Generated
-    public MemorySearchPreviewTool setUpdateDelay(Integer updateDelay) {
-        this.updateDelay = updateDelay;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -148,7 +120,7 @@ public final class MemorySearchPreviewTool extends Tool {
         jsonWriter.writeStringField("scope", this.scope);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("search_options", this.searchOptions);
-        jsonWriter.writeNumberField("update_delay", this.updateDelay);
+        jsonWriter.writeNumberField("update_delay", this.updateDelaySeconds);
         return jsonWriter.writeEndObject();
     }
 
@@ -168,7 +140,7 @@ public final class MemorySearchPreviewTool extends Tool {
             String scope = null;
             ToolType type = ToolType.MEMORY_SEARCH_PREVIEW;
             MemorySearchOptions searchOptions = null;
-            Integer updateDelay = null;
+            Integer updateDelaySeconds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -181,7 +153,7 @@ public final class MemorySearchPreviewTool extends Tool {
                 } else if ("search_options".equals(fieldName)) {
                     searchOptions = MemorySearchOptions.fromJson(reader);
                 } else if ("update_delay".equals(fieldName)) {
-                    updateDelay = reader.getNullable(JsonReader::getInt);
+                    updateDelaySeconds = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
@@ -190,8 +162,38 @@ public final class MemorySearchPreviewTool extends Tool {
                 = new MemorySearchPreviewTool(memoryStoreName, scope);
             deserializedMemorySearchPreviewTool.type = type;
             deserializedMemorySearchPreviewTool.searchOptions = searchOptions;
-            deserializedMemorySearchPreviewTool.updateDelay = updateDelay;
+            deserializedMemorySearchPreviewTool.updateDelaySeconds = updateDelaySeconds;
             return deserializedMemorySearchPreviewTool;
         });
+    }
+
+    /*
+     * Time to wait before updating memories after inactivity (seconds). Default 300.
+     */
+    @Generated
+    private Integer updateDelaySeconds;
+
+    /**
+     * Get the updateDelaySeconds property: Time to wait before updating memories after inactivity (seconds). Default
+     * 300.
+     *
+     * @return the updateDelaySeconds value.
+     */
+    @Generated
+    public Integer getUpdateDelaySeconds() {
+        return this.updateDelaySeconds;
+    }
+
+    /**
+     * Set the updateDelaySeconds property: Time to wait before updating memories after inactivity (seconds). Default
+     * 300.
+     *
+     * @param updateDelaySeconds the updateDelaySeconds value to set.
+     * @return the MemorySearchPreviewTool object itself.
+     */
+    @Generated
+    public MemorySearchPreviewTool setUpdateDelaySeconds(Integer updateDelaySeconds) {
+        this.updateDelaySeconds = updateDelaySeconds;
+        return this;
     }
 }

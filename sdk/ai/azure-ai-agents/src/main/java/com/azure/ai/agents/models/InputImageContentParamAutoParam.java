@@ -41,7 +41,7 @@ public final class InputImageContentParamAutoParam implements JsonSerializable<I
      * The detail property.
      */
     @Generated
-    private DetailEnum detail;
+    private ImageDetailLevel detail;
 
     /**
      * Creates an instance of InputImageContentParamAutoParam class.
@@ -110,20 +110,8 @@ public final class InputImageContentParamAutoParam implements JsonSerializable<I
      * @return the detail value.
      */
     @Generated
-    public DetailEnum getDetail() {
+    public ImageDetailLevel getDetail() {
         return this.detail;
-    }
-
-    /**
-     * Set the detail property: The detail property.
-     *
-     * @param detail the detail value to set.
-     * @return the InputImageContentParamAutoParam object itself.
-     */
-    @Generated
-    public InputImageContentParamAutoParam setDetail(DetailEnum detail) {
-        this.detail = detail;
-        return this;
     }
 
     /**
@@ -162,12 +150,25 @@ public final class InputImageContentParamAutoParam implements JsonSerializable<I
                 } else if ("file_id".equals(fieldName)) {
                     deserializedInputImageContentParamAutoParam.fileId = reader.getString();
                 } else if ("detail".equals(fieldName)) {
-                    deserializedInputImageContentParamAutoParam.detail = DetailEnum.fromString(reader.getString());
+                    deserializedInputImageContentParamAutoParam.detail
+                        = ImageDetailLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedInputImageContentParamAutoParam;
         });
+    }
+
+    /**
+     * Set the detail property: The detail property.
+     *
+     * @param detail the detail value to set.
+     * @return the InputImageContentParamAutoParam object itself.
+     */
+    @Generated
+    public InputImageContentParamAutoParam setDetail(ImageDetailLevel detail) {
+        this.detail = detail;
+        return this;
     }
 }

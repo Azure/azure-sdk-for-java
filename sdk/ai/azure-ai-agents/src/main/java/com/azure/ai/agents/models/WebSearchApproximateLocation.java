@@ -23,7 +23,7 @@ public final class WebSearchApproximateLocation implements JsonSerializable<WebS
      * The type of location approximation. Always `approximate`.
      */
     @Generated
-    private WebSearchApproximateLocationType type;
+    private final String type = "approximate";
 
     /*
      * The country property.
@@ -62,20 +62,8 @@ public final class WebSearchApproximateLocation implements JsonSerializable<WebS
      * @return the type value.
      */
     @Generated
-    public WebSearchApproximateLocationType getType() {
+    public String getType() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The type of location approximation. Always `approximate`.
-     *
-     * @param type the type value to set.
-     * @return the WebSearchApproximateLocation object itself.
-     */
-    @Generated
-    public WebSearchApproximateLocation setType(WebSearchApproximateLocationType type) {
-        this.type = type;
-        return this;
     }
 
     /**
@@ -173,7 +161,7 @@ public final class WebSearchApproximateLocation implements JsonSerializable<WebS
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("country", this.country);
         jsonWriter.writeStringField("region", this.region);
         jsonWriter.writeStringField("city", this.city);
@@ -187,6 +175,7 @@ public final class WebSearchApproximateLocation implements JsonSerializable<WebS
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebSearchApproximateLocation if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebSearchApproximateLocation.
      */
     @Generated
@@ -196,10 +185,7 @@ public final class WebSearchApproximateLocation implements JsonSerializable<WebS
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedWebSearchApproximateLocation.type
-                        = WebSearchApproximateLocationType.fromString(reader.getString());
-                } else if ("country".equals(fieldName)) {
+                if ("country".equals(fieldName)) {
                     deserializedWebSearchApproximateLocation.country = reader.getString();
                 } else if ("region".equals(fieldName)) {
                     deserializedWebSearchApproximateLocation.region = reader.getString();

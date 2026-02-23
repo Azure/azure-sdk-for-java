@@ -10,7 +10,7 @@ import com.azure.ai.agents.implementation.models.DeleteScopeRequest;
 import com.azure.ai.agents.implementation.models.SearchMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoryStoreRequest;
-import com.azure.ai.agents.models.DeleteMemoryStoreResponse;
+import com.azure.ai.agents.models.DeleteMemoryStoreResult;
 import com.azure.ai.agents.models.InputItem;
 import com.azure.ai.agents.models.MemorySearchOptions;
 import com.azure.ai.agents.models.MemoryStoreDefinition;
@@ -618,10 +618,10 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteMemoryStoreResponse deleteMemoryStore(String name) {
+    public DeleteMemoryStoreResult deleteMemoryStore(String name) {
         // Generated convenience method for deleteMemoryStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteMemoryStoreWithResponse(name, requestOptions).getValue().toObject(DeleteMemoryStoreResponse.class);
+        return deleteMemoryStoreWithResponse(name, requestOptions).getValue().toObject(DeleteMemoryStoreResult.class);
     }
 
     /**
