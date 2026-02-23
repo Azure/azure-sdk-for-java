@@ -277,9 +277,15 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     }
 
     pointWriter.flushAndClose()
-    val allItems = readAllItems()
 
-    allItems should have size items.size
+    // Poll until all items are indexed and visible via query
+    // readAllItems() uses a query which depends on indexing completion
+    var allItems = readAllItems()
+    eventually(timeout(10.seconds), interval(500.milliseconds)) {
+      allItems = readAllItems()
+      allItems should have size items.size
+    }
+
     metricsPublisher.getRecordsWrittenSnapshot() shouldEqual items.size
     metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
     metricsPublisher.getTotalRequestChargeSnapshot() > 5 * items.size shouldEqual true
