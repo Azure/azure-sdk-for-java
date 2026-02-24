@@ -36,6 +36,8 @@ Various documentation is available to help you get started
 ```
 [//]: # ({x-version-update-end})
 
+This service has a single supported service version `v1` of the AI Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects/ga-rest-api-reference)
+
 ### Authentication
 
 [Azure Identity][azure_identity] package provides the default implementation for authenticating the client.
