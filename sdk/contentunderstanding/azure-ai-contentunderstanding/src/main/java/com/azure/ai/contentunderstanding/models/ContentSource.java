@@ -17,7 +17,6 @@ import java.util.Objects;
  * <ul>
  * <li>{@link DocumentSource} &mdash; {@code D(page,x1,y1,x2,y2,x3,y3,x4,y4)}</li>
  * <li>{@link AudioVisualSource} &mdash; {@code AV(time[,x,y,w,h])}</li>
- * <li>{@link TrackletSource} &mdash; {@code AV(...)-AV(...)}</li>
  * </ul>
  *
  * <p>Use {@link #parse(String)} to parse a single segment, or {@link #parseAll(String)} to parse
@@ -52,9 +51,6 @@ public abstract class ContentSource {
     /**
      * Parses a single source segment, automatically detecting the source type.
      *
-     * <p>Tracklet pairs ({@code AV(...)-AV(...)}) are automatically detected and returned
-     * as {@link TrackletSource} instances.</p>
-     *
      * @param source The source string to parse.
      * @return A {@link ContentSource} subclass instance.
      * @throws NullPointerException if {@code source} is null.
@@ -69,9 +65,6 @@ public abstract class ContentSource {
             return DocumentSource.parse(source);
         }
         if (source.startsWith("AV(")) {
-            if (source.indexOf(")-AV(") >= 0) {
-                return TrackletSource.parse(source);
-            }
             return AudioVisualSource.parse(source);
         }
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unrecognized source format: '" + source + "'."));
@@ -80,8 +73,7 @@ public abstract class ContentSource {
     /**
      * Parses a semicolon-delimited string containing one or more source segments.
      *
-     * <p>Each segment is parsed individually using {@link #parse(String)}.
-     * Tracklet pairs within segments are automatically detected.</p>
+     * <p>Each segment is parsed individually using {@link #parse(String)}.</p>
      *
      * @param source The source string (may contain {@code ;} delimiters).
      * @return An array of {@link ContentSource} instances.
@@ -102,6 +94,26 @@ public abstract class ContentSource {
             }
         }
         return results.toArray(new ContentSource[0]);
+    }
+
+    /**
+     * Reconstructs the wire-format source string by joining each element's
+     * {@link #getRawValue()} with semicolons.
+     *
+     * @param sources The content source array.
+     * @return A semicolon-delimited string of raw source values.
+     * @throws NullPointerException if {@code sources} is null.
+     */
+    public static String toRawString(ContentSource[] sources) {
+        Objects.requireNonNull(sources, "'sources' cannot be null.");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < sources.length; i++) {
+            if (i > 0) {
+                sb.append(';');
+            }
+            sb.append(sources[i].getRawValue());
+        }
+        return sb.toString();
     }
 
     /**

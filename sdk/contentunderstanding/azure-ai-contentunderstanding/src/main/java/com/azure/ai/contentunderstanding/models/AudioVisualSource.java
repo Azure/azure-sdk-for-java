@@ -16,12 +16,7 @@ import java.util.Objects;
  * <p>The time is in milliseconds. The bounding box (x, y, width, height) is optional and
  * present only when spatial information is available (e.g., face detection).</p>
  *
- * <p>Face tracklet pairs use the format {@code AV(...)-AV(...)}. When parsing with
- * {@link ContentSource#parse(String)} or {@link ContentSource#parseAll(String)},
- * tracklet pairs are automatically detected and returned as {@link TrackletSource} instances.</p>
- *
  * @see ContentSource
- * @see TrackletSource
  */
 @Immutable
 public final class AudioVisualSource extends ContentSource {

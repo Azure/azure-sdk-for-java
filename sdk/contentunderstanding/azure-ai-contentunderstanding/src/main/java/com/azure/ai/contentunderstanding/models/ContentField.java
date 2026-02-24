@@ -268,7 +268,7 @@ public class ContentField implements JsonSerializable<ContentField> {
     /**
      * Parses the encoded source string into typed grounding sources.
      *
-     * The returned array contains {@link DocumentSource}, {@link AudioVisualSource}, or {@link TrackletSource}
+     * The returned array contains {@link DocumentSource} or {@link AudioVisualSource}
      * instances depending on the wire format.
      * Returns {@code null} if the source string is null or empty.
      *

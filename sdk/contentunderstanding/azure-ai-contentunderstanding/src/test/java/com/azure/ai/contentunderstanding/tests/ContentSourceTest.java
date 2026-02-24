@@ -9,7 +9,6 @@ import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.PointF;
 import com.azure.ai.contentunderstanding.models.Rectangle;
 import com.azure.ai.contentunderstanding.models.RectangleF;
-import com.azure.ai.contentunderstanding.models.TrackletSource;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -18,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for {@link ContentSource}, {@link DocumentSource}, {@link AudioVisualSource},
- * {@link TrackletSource}, and the geometry types {@link PointF}, {@link RectangleF}, {@link Rectangle}.
+ * and the geometry types {@link PointF}, {@link RectangleF}, {@link Rectangle}.
  */
 public class ContentSourceTest {
 
@@ -168,36 +167,6 @@ public class ContentSourceTest {
         assertEquals(Duration.ZERO, source.getTime());
     }
 
-    // =================== TrackletSource Parsing ===================
-
-    @Test
-    public void trackletSourceParseSplitsPair() {
-        TrackletSource tracklet = TrackletSource.parse("AV(0,100,200,50,60)-AV(1000,105,205,50,60)");
-
-        assertEquals(0, tracklet.getStart().getTimeMs());
-        assertEquals(100, tracklet.getStart().getBoundingBox().getX());
-        assertEquals(1000, tracklet.getEnd().getTimeMs());
-        assertEquals(105, tracklet.getEnd().getBoundingBox().getX());
-    }
-
-    @Test
-    public void trackletSourceParsePreservesRawValue() {
-        String raw = "AV(0,100,200,50,60)-AV(1000,105,205,50,60)";
-        TrackletSource tracklet = TrackletSource.parse(raw);
-        assertEquals(raw, tracklet.getRawValue());
-        assertEquals(raw, tracklet.toString());
-    }
-
-    @Test
-    public void trackletSourceParseInvalidFormatThrows() {
-        assertThrows(IllegalArgumentException.class, () -> TrackletSource.parse("AV(5000)"));
-    }
-
-    @Test
-    public void trackletSourceParseNullThrows() {
-        assertThrows(NullPointerException.class, () -> TrackletSource.parse(null));
-    }
-
     // =================== ContentSource.parse Dispatch ===================
 
     @Test
@@ -210,16 +179,6 @@ public class ContentSourceTest {
     public void contentSourceParseAudioVisualPrefix() {
         ContentSource source = ContentSource.parse("AV(5000,100,200,50,60)");
         assertInstanceOf(AudioVisualSource.class, source);
-    }
-
-    @Test
-    public void contentSourceParseTrackletPair() {
-        ContentSource source = ContentSource.parse("AV(0,100,200,50,60)-AV(1000,105,205,50,60)");
-        assertInstanceOf(TrackletSource.class, source);
-
-        TrackletSource tracklet = (TrackletSource) source;
-        assertEquals(0, tracklet.getStart().getTimeMs());
-        assertEquals(1000, tracklet.getEnd().getTimeMs());
     }
 
     @Test
@@ -251,21 +210,30 @@ public class ContentSourceTest {
         assertInstanceOf(AudioVisualSource.class, sources[0]);
     }
 
+    // =================== ContentSource.toRawString ===================
+
     @Test
-    public void contentSourceParseAllMultiTracklet() {
-        String input = "AV(0,100,200,50,60)-AV(1000,105,205,50,60);AV(5000,200,180,50,60)-AV(7000,210,190,50,60)";
-        ContentSource[] sources = ContentSource.parseAll(input);
+    public void contentSourceToRawStringSingleElement() {
+        ContentSource[] sources = new ContentSource[] { DocumentSource.parse("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)") };
+        assertEquals("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)", ContentSource.toRawString(sources));
+    }
 
-        assertEquals(2, sources.length);
-        assertInstanceOf(TrackletSource.class, sources[0]);
-        assertInstanceOf(TrackletSource.class, sources[1]);
+    @Test
+    public void contentSourceToRawStringMultipleElements() {
+        ContentSource[] sources
+            = ContentSource.parseAll("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)");
+        String result = ContentSource.toRawString(sources);
+        assertEquals("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)", result);
+    }
 
-        TrackletSource t1 = (TrackletSource) sources[0];
-        TrackletSource t2 = (TrackletSource) sources[1];
-        assertEquals(0, t1.getStart().getTimeMs());
-        assertEquals(1000, t1.getEnd().getTimeMs());
-        assertEquals(5000, t2.getStart().getTimeMs());
-        assertEquals(7000, t2.getEnd().getTimeMs());
+    @Test
+    public void contentSourceToRawStringNullThrows() {
+        assertThrows(NullPointerException.class, () -> ContentSource.toRawString(null));
+    }
+
+    @Test
+    public void contentSourceToRawStringEmptyArray() {
+        assertEquals("", ContentSource.toRawString(new ContentSource[0]));
     }
 
     // =================== Geometry Types ===================
