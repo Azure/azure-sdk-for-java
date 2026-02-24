@@ -367,8 +367,6 @@ public class AddressRepositoryIT {
 
     @Test
     public void testFindAllByStreetNotNull() {
-        Address TEST_ADDRESS_TEMP = new Address(
-            TestConstants.POSTAL_CODE, null, TestConstants.CITY);
         final List<Address> result = TestUtils.toList(repository.findAllByStreetNotNull());
         assertThat(result.size()).isEqualTo(4);
         assertThat(result).containsExactlyInAnyOrder(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2,
@@ -393,8 +391,6 @@ public class AddressRepositoryIT {
 
     @Test
     public void testCountByStreetNotNull() {
-        Address TEST_ADDRESS_TEMP = new Address(
-            TestConstants.POSTAL_CODE, null, TestConstants.CITY);
         final Long result = repository.countByStreetNotNull();
         assertThat(result).isEqualTo(4);
     }
