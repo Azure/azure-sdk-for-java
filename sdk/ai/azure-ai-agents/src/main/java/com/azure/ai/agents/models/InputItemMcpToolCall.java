@@ -5,10 +5,12 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * MCP tool call
@@ -58,7 +60,7 @@ public final class InputItemMcpToolCall extends InputItem {
      * The error property.
      */
     @Generated
-    private String error;
+    private Map<String, BinaryData> error;
 
     /*
      * The status of the tool call. One of `in_progress`, `completed`, `incomplete`, `calling`, or `failed`.
@@ -167,20 +169,8 @@ public final class InputItemMcpToolCall extends InputItem {
      * @return the error value.
      */
     @Generated
-    public String getError() {
+    public Map<String, BinaryData> getError() {
         return this.error;
-    }
-
-    /**
-     * Set the error property: The error property.
-     *
-     * @param error the error value to set.
-     * @return the InputItemMcpToolCall object itself.
-     */
-    @Generated
-    public InputItemMcpToolCall setError(String error) {
-        this.error = error;
-        return this;
     }
 
     /**
@@ -229,7 +219,13 @@ public final class InputItemMcpToolCall extends InputItem {
         jsonWriter.writeStringField("arguments", this.arguments);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("output", this.output);
-        jsonWriter.writeStringField("error", this.error);
+        jsonWriter.writeMapField("error", this.error, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("approval_request_id", this.approvalRequestId);
         return jsonWriter.writeEndObject();
@@ -253,7 +249,7 @@ public final class InputItemMcpToolCall extends InputItem {
             String arguments = null;
             InputItemType type = InputItemType.MCP_CALL;
             String output = null;
-            String error = null;
+            Map<String, BinaryData> error = null;
             McpToolCallStatus status = null;
             String approvalRequestId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -272,7 +268,8 @@ public final class InputItemMcpToolCall extends InputItem {
                 } else if ("output".equals(fieldName)) {
                     output = reader.getString();
                 } else if ("error".equals(fieldName)) {
-                    error = reader.getString();
+                    error = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("status".equals(fieldName)) {
                     status = McpToolCallStatus.fromString(reader.getString());
                 } else if ("approval_request_id".equals(fieldName)) {
@@ -302,6 +299,18 @@ public final class InputItemMcpToolCall extends InputItem {
     @Generated
     public InputItemMcpToolCall setStatus(McpToolCallStatus status) {
         this.status = status;
+        return this;
+    }
+
+    /**
+     * Set the error property: The error property.
+     *
+     * @param error the error value to set.
+     * @return the InputItemMcpToolCall object itself.
+     */
+    @Generated
+    public InputItemMcpToolCall setError(Map<String, BinaryData> error) {
+        this.error = error;
         return this;
     }
 }
