@@ -9,6 +9,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -279,7 +280,7 @@ public class AppConfigurationKeyValueSelectorTest {
     public void setTagsFilterReturnsSelectorTest() {
         // Test fluent API returns the selector
         AppConfigurationKeyValueSelector returned = selector.setTagsFilter(Arrays.asList("env=dev"));
-        assertEquals(selector, returned);
+        assertSame(selector, returned);
     }
 
     @Test

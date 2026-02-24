@@ -5,6 +5,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.properties
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -97,7 +98,7 @@ public class FeatureFlagKeyValueSelectorTest {
     public void setTagsFilterReturnsSelectorTest() {
         FeatureFlagKeyValueSelector selector = new FeatureFlagKeyValueSelector();
         FeatureFlagKeyValueSelector returned = selector.setTagsFilter(Arrays.asList("env=dev"));
-        assertEquals(selector, returned);
+        assertSame(selector, returned);
     }
 
     @Test
