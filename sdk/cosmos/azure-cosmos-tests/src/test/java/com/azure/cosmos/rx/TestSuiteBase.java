@@ -143,6 +143,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return false;
     }
 
+    private static boolean isConflictException(Throwable t) {
+        return t instanceof CosmosException && ((CosmosException) t).getStatusCode() == 409;
+    }
+
     protected final static ConsistencyLevel accountConsistency;
     protected static final ImmutableList<String> preferredLocations;
     private static final ImmutableList<ConsistencyLevel> desiredConsistencies;
@@ -519,6 +523,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options)
             .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
                 .filter(TestSuiteBase::isTransientCreateFailure))
+            .onErrorResume(e -> isConflictException(e), e -> {
+                logger.warn("Container {} already exists (409 Conflict), treating as success", cosmosContainerProperties.getId());
+                return Mono.empty();
+            })
             .block();
 
         // Creating a container is async - especially on multi-partition or multi-region accounts
@@ -546,6 +554,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         database.createContainer(cosmosContainerProperties, options)
             .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
                 .filter(TestSuiteBase::isTransientCreateFailure))
+            .onErrorResume(e -> isConflictException(e), e -> {
+                logger.warn("Container {} already exists (409 Conflict), treating as success", cosmosContainerProperties.getId());
+                return Mono.empty();
+            })
             .block();
         return database.getContainer(cosmosContainerProperties.getId());
     }
@@ -668,6 +680,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         database.createContainer(collectionDefinition)
             .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
                 .filter(TestSuiteBase::isTransientCreateFailure))
+            .onErrorResume(e -> isConflictException(e), e -> {
+                logger.warn("Container {} already exists (409 Conflict), treating as success", collectionDefinition.getId());
+                return Mono.empty();
+            })
             .block();
         return database.getContainer(collectionDefinition.getId());
     }
