@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added support for N-Region synchronous commit feature - See [PR 47757](https://github.com/Azure/azure-sdk-for-java/pull/47757)
+* Auto-enable thin client mode under gateway mode when the account's gateway metadata response indicates a thin client endpoint is available. Use system property `COSMOS.THINCLIENT_ENABLED=false` (or env var `COSMOS_THINCLIENT_ENABLED=false`) to opt out. No new public API is introduced.
 
 #### Breaking Changes
 

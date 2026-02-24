@@ -272,6 +272,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
     private final RetryPolicy retryPolicy;
     private HttpClient reactorHttpClient;
+    private HttpClient thinClientReactorHttpClient;
     private Function<HttpClient, HttpClient> httpClientInterceptor;
     private volatile boolean useMultipleWriteLocations;
 
@@ -683,14 +684,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.apiType = apiType;
             this.clientTelemetryConfig = clientTelemetryConfig;
             this.useThinClient = Configs.isThinClientEnabled()
-                && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY
-                && this.connectionPolicy.getHttp2ConnectionConfig() != null
-                && ImplementationBridgeHelpers
-                    .Http2ConnectionConfigHelper
-                    .getHttp2ConnectionConfigAccessor()
-                    .isEffectivelyEnabled(
-                        this.connectionPolicy.getHttp2ConnectionConfig()
-                    );
+                && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY;
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -809,11 +803,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.reactorHttpClient,
                 this.apiType);
 
+            if (this.useThinClient) {
+                HttpClient thinClientHttp = thinClientHttpClient();
+                if (httpClientInterceptor != null) {
+                    thinClientHttp = httpClientInterceptor.apply(thinClientHttp);
+                }
+                this.thinClientReactorHttpClient = thinClientHttp;
+            }
+
             this.thinProxy = createThinProxy(this.sessionContainer,
                 this.consistencyLevel,
                 this.userAgentContainer,
                 this.globalEndpointManager,
-                this.reactorHttpClient);
+                this.useThinClient ? this.thinClientReactorHttpClient : this.reactorHttpClient);
 
             this.perPartitionFailoverConfigModifier
                 = (databaseAccount -> {
@@ -998,6 +1000,36 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             diagnosticsClientConfig.withGatewayHttpClientConfig(httpClientConfig.toDiagnosticsString());
             return HttpClient.createFixed(httpClientConfig);
         }
+    }
+
+    private HttpClient thinClientHttpClient() {
+        // The thin client proxy communicates over HTTP/2; create a dedicated HTTP client with HTTP/2 enabled.
+        // If the user has already supplied an Http2ConnectionConfig with enabled=true, use it directly.
+        // Otherwise create a new Http2ConnectionConfig with HTTP/2 forced on, preserving any pool-size
+        // and stream-concurrency settings the user may have configured.
+        Http2ConnectionConfig userHttp2Config = this.connectionPolicy.getHttp2ConnectionConfig();
+        Http2ConnectionConfig http2Config;
+        if (userHttp2Config != null && Boolean.TRUE.equals(userHttp2Config.isEnabled())) {
+            http2Config = userHttp2Config;
+        } else {
+            http2Config = new Http2ConnectionConfig().setEnabled(true);
+            if (userHttp2Config != null) {
+                http2Config
+                    .setMaxConnectionPoolSize(userHttp2Config.getMaxConnectionPoolSize())
+                    .setMinConnectionPoolSize(userHttp2Config.getMinConnectionPoolSize())
+                    .setMaxConcurrentStreams(userHttp2Config.getMaxConcurrentStreams());
+            }
+        }
+
+        HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
+            .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleHttpConnectionTimeout())
+            .withPoolSize(this.connectionPolicy.getMaxConnectionPoolSize())
+            .withProxy(this.connectionPolicy.getProxy())
+            .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout())
+            .withServerCertValidationDisabled(this.connectionPolicy.isServerCertValidationDisabled())
+            .withHttp2ConnectionConfig(http2Config);
+
+        return HttpClient.createFixed(httpClientConfig);
     }
 
     private void createStoreModel(boolean subscribeRntbdStatus) {
@@ -1530,7 +1562,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.PerPartitionCircuitBreaker);
         }
 
-        if (!Configs.isThinClientEnabled()) {
+        if (!this.useThinClient) {
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.ThinClient);
         }
 
@@ -6587,6 +6619,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             LifeCycleUtils.closeQuietly(this.storeClientFactory);
             logger.info("Shutting down reactorHttpClient ...");
             LifeCycleUtils.closeQuietly(this.reactorHttpClient);
+            if (this.thinClientReactorHttpClient != null) {
+                logger.info("Shutting down thinClientReactorHttpClient ...");
+                LifeCycleUtils.closeQuietly(this.thinClientReactorHttpClient);
+            }
             logger.info("Shutting down CpuMonitor ...");
             CpuMemoryMonitor.unregister(this);
 
