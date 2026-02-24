@@ -190,6 +190,9 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // Add getGroundingSources() to ContentField
         addGroundingSourcesMethod(customization, logger);
+
+        // Add Duration getters and hide *Ms() getters on time-based models
+        customizeDurationProperties(customization, logger);
     }
 
     /**
@@ -1123,6 +1126,104 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("return", "the field value, or null if not available."))
                     .setBody(StaticJavaParser.parseBlock("{ return " + delegateCall + "; }"));
             }));
+    }
+
+    // =================== Duration property customizations ===================
+
+    /**
+     * Add Duration-returning getters to time-based models and hide the raw *Ms() getters
+     * (make them package-private) so the public API exposes Duration instead of raw milliseconds.
+     *
+     * <p>Models and properties affected:</p>
+     * <ul>
+     *   <li>AudioVisualContent: startTimeMs, endTimeMs, cameraShotTimesMs (list), keyFrameTimesMs (list)</li>
+     *   <li>AudioVisualContentSegment: startTimeMs, endTimeMs</li>
+     *   <li>TranscriptPhrase: startTimeMs, endTimeMs</li>
+     *   <li>TranscriptWord: startTimeMs, endTimeMs</li>
+     * </ul>
+     */
+    private void customizeDurationProperties(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding Duration getters and hiding *Ms() getters on time-based models");
+
+        // AudioVisualContent: scalar + list properties
+        customization.getClass(MODELS_PACKAGE, "AudioVisualContent").customizeAst(ast -> {
+            ast.addImport("java.time.Duration");
+            ast.addImport("java.util.stream.Collectors");
+            ast.getClassByName("AudioVisualContent").ifPresent(clazz -> {
+                hideMsGetterAndAddDuration(clazz, "getStartTimeMs", "getStartTime", "startTimeMs", false);
+                hideMsGetterAndAddDuration(clazz, "getEndTimeMs", "getEndTime", "endTimeMs", false);
+                hideMsGetterAndAddDuration(clazz, "getCameraShotTimesMs", "getCameraShotTimes",
+                    "cameraShotTimesMs", true);
+                hideMsGetterAndAddDuration(clazz, "getKeyFrameTimesMs", "getKeyFrameTimes",
+                    "keyFrameTimesMs", true);
+            });
+        });
+
+        // AudioVisualContentSegment: scalar properties
+        customization.getClass(MODELS_PACKAGE, "AudioVisualContentSegment").customizeAst(ast -> {
+            ast.addImport("java.time.Duration");
+            ast.getClassByName("AudioVisualContentSegment").ifPresent(clazz -> {
+                hideMsGetterAndAddDuration(clazz, "getStartTimeMs", "getStartTime", "startTimeMs", false);
+                hideMsGetterAndAddDuration(clazz, "getEndTimeMs", "getEndTime", "endTimeMs", false);
+            });
+        });
+
+        // TranscriptPhrase: scalar properties
+        customization.getClass(MODELS_PACKAGE, "TranscriptPhrase").customizeAst(ast -> {
+            ast.addImport("java.time.Duration");
+            ast.getClassByName("TranscriptPhrase").ifPresent(clazz -> {
+                hideMsGetterAndAddDuration(clazz, "getStartTimeMs", "getStartTime", "startTimeMs", false);
+                hideMsGetterAndAddDuration(clazz, "getEndTimeMs", "getEndTime", "endTimeMs", false);
+            });
+        });
+
+        // TranscriptWord: scalar properties
+        customization.getClass(MODELS_PACKAGE, "TranscriptWord").customizeAst(ast -> {
+            ast.addImport("java.time.Duration");
+            ast.getClassByName("TranscriptWord").ifPresent(clazz -> {
+                hideMsGetterAndAddDuration(clazz, "getStartTimeMs", "getStartTime", "startTimeMs", false);
+                hideMsGetterAndAddDuration(clazz, "getEndTimeMs", "getEndTime", "endTimeMs", false);
+            });
+        });
+    }
+
+    /**
+     * Helper: hides a generated *Ms() getter (removes PUBLIC modifier) and adds a Duration-returning getter.
+     *
+     * @param clazz the class declaration to modify
+     * @param msMethodName the generated getter name (e.g., "getStartTimeMs")
+     * @param durationMethodName the new Duration getter name (e.g., "getStartTime")
+     * @param fieldName the backing field name (e.g., "startTimeMs")
+     * @param isList true if the property is List&lt;Long&gt; (returns List&lt;Duration&gt;)
+     */
+    private void hideMsGetterAndAddDuration(ClassOrInterfaceDeclaration clazz, String msMethodName,
+            String durationMethodName, String fieldName, boolean isList) {
+        // Hide the *Ms() getter by removing PUBLIC modifier
+        clazz.getMethodsByName(msMethodName).forEach(method ->
+            method.removeModifier(Modifier.Keyword.PUBLIC));
+
+        if (isList) {
+            // List<Long> -> List<Duration>
+            clazz.addMethod(durationMethodName, Modifier.Keyword.PUBLIC)
+                .setType("List<Duration>")
+                .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                    "Gets the " + fieldName.replace("Ms", "") + " as a list of Duration values."))
+                    .addBlockTag("return", "the durations, or null if not available."))
+                .setBody(StaticJavaParser.parseBlock(
+                    "{ if (this." + fieldName + " == null) { return null; } "
+                    + "return this." + fieldName + ".stream()"
+                    + ".map(Duration::ofMillis)"
+                    + ".collect(Collectors.toList()); }"));
+        } else {
+            // long -> Duration
+            clazz.addMethod(durationMethodName, Modifier.Keyword.PUBLIC)
+                .setType("Duration")
+                .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                    "Gets the " + fieldName.replace("Ms", "") + " as a Duration."))
+                    .addBlockTag("return", "the duration."))
+                .setBody(StaticJavaParser.parseBlock(
+                    "{ return Duration.ofMillis(this." + fieldName + "); }"));
+        }
     }
 
     // =================== ContentSource class hierarchy ===================

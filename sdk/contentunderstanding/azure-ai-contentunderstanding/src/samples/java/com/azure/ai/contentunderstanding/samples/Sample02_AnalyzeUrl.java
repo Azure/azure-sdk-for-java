@@ -190,7 +190,7 @@ public class Sample02_AnalyzeUrl {
                 : "";
             System.out.println("Summary: " + summary);
 
-            System.out.println("Start: " + videoContent.getStartTimeMs() + " ms, End: " + videoContent.getEndTimeMs() + " ms");
+            System.out.println("Start: " + videoContent.getStartTime().toMillis() + " ms, End: " + videoContent.getEndTime().toMillis() + " ms");
             System.out.println("Frame size: " + videoContent.getWidth() + " x " + videoContent.getHeight());
 
             System.out.println("---------------------");
@@ -242,7 +242,7 @@ public class Sample02_AnalyzeUrl {
                 if (count >= 2) {
                     break;
                 }
-                System.out.println("  [" + phrase.getSpeaker() + "] " + phrase.getStartTimeMs() + " ms: " + phrase.getText());
+                System.out.println("  [" + phrase.getSpeaker() + "] " + phrase.getStartTime().toMillis() + " ms: " + phrase.getText());
                 count++;
             }
         }

@@ -5,6 +5,7 @@ package com.azure.ai.contentunderstanding.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -87,6 +88,15 @@ public final class AudioVisualSource extends ContentSource {
      */
     public int getTimeMs() {
         return timeMs;
+    }
+
+    /**
+     * Gets the time as a Duration.
+     *
+     * @return The time as a Duration.
+     */
+    public Duration getTime() {
+        return Duration.ofMillis(timeMs);
     }
 
     /**

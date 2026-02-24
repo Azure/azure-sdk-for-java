@@ -6,6 +6,8 @@ package com.azure.ai.contentunderstanding.tests;
 import com.azure.ai.contentunderstanding.models.ContentRange;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -69,29 +71,31 @@ public class ContentRangeTest {
 
     @Test
     public void timeRangeMilliseconds() {
-        assertEquals("0-5000", ContentRange.timeRange(0, 5000).toString());
-        assertEquals("1000-2000", ContentRange.timeRange(1000, 2000).toString());
+        assertEquals("0-5000", ContentRange.timeRange(Duration.ZERO, Duration.ofMillis(5000)).toString());
+        assertEquals("1000-2000", ContentRange.timeRange(Duration.ofMillis(1000), Duration.ofMillis(2000)).toString());
     }
 
     @Test
     public void timeRangeRejectsNegativeStart() {
-        assertThrows(IllegalArgumentException.class, () -> ContentRange.timeRange(-1, 5000));
+        assertThrows(IllegalArgumentException.class,
+            () -> ContentRange.timeRange(Duration.ofMillis(-1), Duration.ofMillis(5000)));
     }
 
     @Test
     public void timeRangeRejectsEndBeforeStart() {
-        assertThrows(IllegalArgumentException.class, () -> ContentRange.timeRange(5000, 3000));
+        assertThrows(IllegalArgumentException.class,
+            () -> ContentRange.timeRange(Duration.ofMillis(5000), Duration.ofMillis(3000)));
     }
 
     @Test
     public void timeRangeFromOpenEnded() {
-        assertEquals("5000-", ContentRange.timeRangeFrom(5000).toString());
-        assertEquals("0-", ContentRange.timeRangeFrom(0).toString());
+        assertEquals("5000-", ContentRange.timeRangeFrom(Duration.ofMillis(5000)).toString());
+        assertEquals("0-", ContentRange.timeRangeFrom(Duration.ZERO).toString());
     }
 
     @Test
     public void timeRangeFromRejectsNegative() {
-        assertThrows(IllegalArgumentException.class, () -> ContentRange.timeRangeFrom(-1));
+        assertThrows(IllegalArgumentException.class, () -> ContentRange.timeRangeFrom(Duration.ofMillis(-1)));
     }
 
     @Test
@@ -148,5 +152,34 @@ public class ContentRangeTest {
     public void toStringReturnsValue() {
         ContentRange range = ContentRange.pages(1, 3);
         assertEquals("1-3", range.toString());
+    }
+
+    // =================== Duration overloads ===================
+
+    @Test
+    public void timeRangeDuration() {
+        ContentRange range = ContentRange.timeRange(Duration.ofMillis(0), Duration.ofMillis(5000));
+        assertEquals("0-5000", range.toString());
+    }
+
+    @Test
+    public void timeRangeFromDuration() {
+        ContentRange range = ContentRange.timeRangeFrom(Duration.ofSeconds(5));
+        assertEquals("5000-", range.toString());
+    }
+
+    @Test
+    public void timeRangeDurationRejectsNullStart() {
+        assertThrows(NullPointerException.class, () -> ContentRange.timeRange(null, Duration.ofMillis(5000)));
+    }
+
+    @Test
+    public void timeRangeDurationRejectsNullEnd() {
+        assertThrows(NullPointerException.class, () -> ContentRange.timeRange(Duration.ofMillis(0), null));
+    }
+
+    @Test
+    public void timeRangeFromDurationRejectsNull() {
+        assertThrows(NullPointerException.class, () -> ContentRange.timeRangeFrom((Duration) null));
     }
 }

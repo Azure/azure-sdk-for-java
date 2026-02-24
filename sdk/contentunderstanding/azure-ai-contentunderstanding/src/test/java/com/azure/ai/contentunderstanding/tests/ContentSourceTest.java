@@ -12,6 +12,8 @@ import com.azure.ai.contentunderstanding.models.RectangleF;
 import com.azure.ai.contentunderstanding.models.TrackletSource;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -50,7 +52,8 @@ public class ContentSourceTest {
 
     @Test
     public void documentSourceParseAllMultiRegion() {
-        String input = "D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0);D(1,2.0,2.0,3.0,2.0,3.0,3.0,2.0,3.0);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)";
+        String input
+            = "D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0);D(1,2.0,2.0,3.0,2.0,3.0,3.0,2.0,3.0);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)";
         DocumentSource[] sources = DocumentSource.parseAll(input);
 
         assertEquals(3, sources.length);
@@ -151,6 +154,18 @@ public class ContentSourceTest {
         assertEquals(2, sources.length);
         assertEquals(0, sources[0].getTimeMs());
         assertEquals(1000, sources[1].getTimeMs());
+    }
+
+    @Test
+    public void audioVisualSourceGetTimeDuration() {
+        AudioVisualSource source = AudioVisualSource.parse("AV(5000)");
+        assertEquals(Duration.ofMillis(5000), source.getTime());
+    }
+
+    @Test
+    public void audioVisualSourceGetTimeZero() {
+        AudioVisualSource source = AudioVisualSource.parse("AV(0)");
+        assertEquals(Duration.ZERO, source.getTime());
     }
 
     // =================== TrackletSource Parsing ===================

@@ -6,6 +6,7 @@ package com.azure.ai.contentunderstanding.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.time.Duration;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -25,9 +26,11 @@ import java.util.StringJoiner;
  * ContentRange single = ContentRange.page(5);              // "5"
  * ContentRange openEnd = ContentRange.pagesFrom(9);        // "9-"
  *
- * // Audio/video time ranges (milliseconds)
- * ContentRange time = ContentRange.timeRange(0, 5000);     // "0-5000"
- * ContentRange timeOpen = ContentRange.timeRangeFrom(5000); // "5000-"
+ * // Audio/video time ranges
+ * ContentRange time = ContentRange.timeRange(
+ *     Duration.ZERO, Duration.ofMillis(5000));              // "0-5000"
+ * ContentRange timeOpen = ContentRange.timeRangeFrom(
+ *     Duration.ofMillis(5000));                             // "5000-"
  *
  * // Combine multiple ranges
  * ContentRange combined = ContentRange.combine(
@@ -109,7 +112,7 @@ public final class ContentRange {
      * @return A {@link ContentRange} representing the time range, e.g. {@code "0-5000"}.
      * @throws IllegalArgumentException if {@code startMs} is negative, or {@code endMs} is less than {@code startMs}.
      */
-    public static ContentRange timeRange(long startMs, long endMs) {
+    static ContentRange timeRange(long startMs, long endMs) {
         if (startMs < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Start time must be >= 0."));
         }
@@ -126,11 +129,37 @@ public final class ContentRange {
      * @return A {@link ContentRange} representing the open-ended time range, e.g. {@code "5000-"}.
      * @throws IllegalArgumentException if {@code startMs} is negative.
      */
-    public static ContentRange timeRangeFrom(long startMs) {
+    static ContentRange timeRangeFrom(long startMs) {
         if (startMs < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Start time must be >= 0."));
         }
         return new ContentRange(startMs + "-");
+    }
+
+    /**
+     * Creates a {@link ContentRange} for a time range using {@link Duration} values (for audio/video content).
+     *
+     * @param start The start time (inclusive).
+     * @param end The end time (inclusive).
+     * @return A {@link ContentRange} representing the time range, e.g. {@code "0-5000"}.
+     * @throws NullPointerException if {@code start} or {@code end} is null.
+     */
+    public static ContentRange timeRange(Duration start, Duration end) {
+        Objects.requireNonNull(start, "'start' cannot be null.");
+        Objects.requireNonNull(end, "'end' cannot be null.");
+        return timeRange(start.toMillis(), end.toMillis());
+    }
+
+    /**
+     * Creates a {@link ContentRange} for all content from a starting time to the end using a {@link Duration} value.
+     *
+     * @param start The start time (inclusive).
+     * @return A {@link ContentRange} representing the open-ended time range, e.g. {@code "5000-"}.
+     * @throws NullPointerException if {@code start} is null.
+     */
+    public static ContentRange timeRangeFrom(Duration start) {
+        Objects.requireNonNull(start, "'start' cannot be null.");
+        return timeRangeFrom(start.toMillis());
     }
 
     /**

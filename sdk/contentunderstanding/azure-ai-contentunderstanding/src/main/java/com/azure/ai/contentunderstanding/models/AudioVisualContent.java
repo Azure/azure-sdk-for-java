@@ -9,8 +9,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Audio visual content. Ex. audio/wav, video/mp4.
@@ -104,7 +106,7 @@ public final class AudioVisualContent extends MediaContent {
      * @return the startTimeMs value.
      */
     @Generated
-    public long getStartTimeMs() {
+    long getStartTimeMs() {
         return this.startTimeMs;
     }
 
@@ -114,7 +116,7 @@ public final class AudioVisualContent extends MediaContent {
      * @return the endTimeMs value.
      */
     @Generated
-    public long getEndTimeMs() {
+    long getEndTimeMs() {
         return this.endTimeMs;
     }
 
@@ -145,7 +147,7 @@ public final class AudioVisualContent extends MediaContent {
      * @return the cameraShotTimesMs value.
      */
     @Generated
-    public List<Long> getCameraShotTimesMs() {
+    List<Long> getCameraShotTimesMs() {
         return this.cameraShotTimesMs;
     }
 
@@ -156,7 +158,7 @@ public final class AudioVisualContent extends MediaContent {
      * @return the keyFrameTimesMs value.
      */
     @Generated
-    public List<Long> getKeyFrameTimesMs() {
+    List<Long> getKeyFrameTimesMs() {
         return this.keyFrameTimesMs;
     }
 
@@ -290,5 +292,47 @@ public final class AudioVisualContent extends MediaContent {
             deserializedAudioVisualContent.segments = segments;
             return deserializedAudioVisualContent;
         });
+    }
+
+    /**
+     * Gets the startTime as a Duration.
+     *
+     * @return the duration.
+     */
+    public Duration getStartTime() {
+        return Duration.ofMillis(this.startTimeMs);
+    }
+
+    /**
+     * Gets the endTime as a Duration.
+     *
+     * @return the duration.
+     */
+    public Duration getEndTime() {
+        return Duration.ofMillis(this.endTimeMs);
+    }
+
+    /**
+     * Gets the cameraShotTimes as a list of Duration values.
+     *
+     * @return the durations, or null if not available.
+     */
+    public List<Duration> getCameraShotTimes() {
+        if (this.cameraShotTimesMs == null) {
+            return null;
+        }
+        return this.cameraShotTimesMs.stream().map(Duration::ofMillis).collect(Collectors.toList());
+    }
+
+    /**
+     * Gets the keyFrameTimes as a list of Duration values.
+     *
+     * @return the durations, or null if not available.
+     */
+    public List<Duration> getKeyFrameTimes() {
+        if (this.keyFrameTimesMs == null) {
+            return null;
+        }
+        return this.keyFrameTimesMs.stream().map(Duration::ofMillis).collect(Collectors.toList());
     }
 }
