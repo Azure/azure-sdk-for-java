@@ -37,7 +37,6 @@ import java.util.List;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
 import static com.azure.storage.queue.QueueTestHelper.assertExceptionStatusCodeAndMessage;
-import static com.azure.storage.queue.QueueTestHelper.assertResponseStatusCode;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -204,7 +203,9 @@ public class QueueSasAsyncClientTests extends QueueTestBase {
                 return client.getPropertiesWithResponse();
             });
 
-            StepVerifier.create(response).assertNext(r -> assertResponseStatusCode(r, 200)).verifyComplete();
+            StepVerifier.create(response)
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 

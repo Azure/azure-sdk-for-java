@@ -35,14 +35,14 @@ public class NonessentialStatsbeat extends BaseStatsbeat implements LocalStorage
         long readFailures = readFailureCount.getAndSet(0);
         if (readFailures != 0) {
             StatsbeatTelemetryBuilder telemetryItem
-                = createStatsbeatTelemetry(READ_FAILURE_COUNT, (double) readFailureCount.get());
+                = createStatsbeatTelemetry(READ_FAILURE_COUNT, (double) readFailures);
             telemetryItemExporter.send(Collections.singletonList(telemetryItem.build()));
         }
 
-        long writeFailures = readFailureCount.getAndSet(0);
+        long writeFailures = writeFailureCount.getAndSet(0);
         if (writeFailures != 0) {
             StatsbeatTelemetryBuilder telemetryItem
-                = createStatsbeatTelemetry(WRITE_FAILURE_COUNT, (double) writeFailureCount.get());
+                = createStatsbeatTelemetry(WRITE_FAILURE_COUNT, (double) writeFailures);
             telemetryItemExporter.send(Collections.singletonList(telemetryItem.build()));
         }
     }

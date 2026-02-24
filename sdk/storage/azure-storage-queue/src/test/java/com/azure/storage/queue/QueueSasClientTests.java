@@ -34,8 +34,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.verifySasAndTokenInRequest;
 import static com.azure.storage.queue.QueueTestHelper.assertExceptionStatusCodeAndMessage;
-import static com.azure.storage.queue.QueueTestHelper.assertResponseStatusCode;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -211,7 +211,7 @@ public class QueueSasClientTests extends QueueTestBase {
                     .buildClient();
 
             Response<QueueProperties> response = client.getPropertiesWithResponse(null, Context.NONE);
-            assertResponseStatusCode(response, 200);
+            verifySasAndTokenInRequest(response);
         });
     }
 
