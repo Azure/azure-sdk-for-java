@@ -54,7 +54,7 @@ public class BenchmarkOrchestrator {
             return;
         }
 
-        setGlobalSystemProperties(config.getTenantWorkloads().get(0));
+        setGlobalSystemProperties(config);
 
         // Set up shared metric registry
         MetricRegistry registry = new MetricRegistry();
@@ -350,10 +350,8 @@ public class BenchmarkOrchestrator {
         System.clearProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT");
     }
 
-    private void setGlobalSystemProperties(TenantWorkloadConfig firstTenant) {
-        String circuitBreakerEnabled = firstTenant.getIsPartitionLevelCircuitBreakerEnabled();
-        if (circuitBreakerEnabled == null) circuitBreakerEnabled = "true";
-        if (Boolean.parseBoolean(circuitBreakerEnabled)) {
+    private void setGlobalSystemProperties(BenchmarkConfig config) {
+        if (config.isPartitionLevelCircuitBreakerEnabled()) {
             System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
                 "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
                     + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
@@ -363,21 +361,21 @@ public class BenchmarkOrchestrator {
             System.setProperty("COSMOS.ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS", "30");
         }
 
-        String ppafEnabled = firstTenant.getIsPerPartitionAutomaticFailoverRequired();
-        if (ppafEnabled == null) ppafEnabled = "true";
-        if (Boolean.parseBoolean(ppafEnabled)) {
+        if (config.isPerPartitionAutomaticFailoverRequired()) {
             System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
             System.setProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED", "true");
             System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "5");
             System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF", "120");
         }
 
-        if (firstTenant.getMinConnectionPoolSizePerEndpoint() >= 1) {
+        if (config.getMinConnectionPoolSizePerEndpoint() >= 1) {
             System.setProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT",
-                String.valueOf(firstTenant.getMinConnectionPoolSizePerEndpoint()));
+                String.valueOf(config.getMinConnectionPoolSizePerEndpoint()));
         }
 
         logger.info("Global system properties set (circuit breaker: {}, PPAF: {}, minConnPoolSize: {})",
-            circuitBreakerEnabled, ppafEnabled, firstTenant.getMinConnectionPoolSizePerEndpoint());
+            config.isPartitionLevelCircuitBreakerEnabled(),
+            config.isPerPartitionAutomaticFailoverRequired(),
+            config.getMinConnectionPoolSizePerEndpoint());
     }
 }
