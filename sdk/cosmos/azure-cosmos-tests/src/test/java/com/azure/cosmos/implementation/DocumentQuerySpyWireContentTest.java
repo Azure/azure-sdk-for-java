@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -141,8 +142,32 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     public Document createDocument(AsyncDocumentClient client, String collectionLink, int cnt) {
 
         Document docDefinition = getDocumentDefinition(cnt);
-        return client
-                .createDocument(collectionLink, docDefinition, null, false).block().getResource();
+
+        int maxRetries = 5;
+        for (int retry = 0; retry <= maxRetries; retry++) {
+            try {
+                return client
+                    .createDocument(collectionLink, docDefinition, null, false).block().getResource();
+            } catch (CosmosException e) {
+                if (e.getStatusCode() == 429 && retry < maxRetries) {
+                    long retryAfterMs = e.getRetryAfterDuration().toMillis();
+                    if (retryAfterMs <= 0) {
+                        retryAfterMs = 1000;
+                    }
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(retryAfterMs);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw e;
+                    }
+                } else {
+                    throw e;
+                }
+            }
+        }
+
+        // Should not reach here
+        throw new IllegalStateException("Exhausted retries for createDocument");
     }
 
     @BeforeClass(groups = { "fast" }, timeOut = 2 * SETUP_TIMEOUT)

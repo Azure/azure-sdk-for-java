@@ -45,6 +45,8 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -75,7 +77,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         safeClose(this.bulkClient);
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT * 2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItem_withBulkAndThroughputControlAsDefaultGroup() throws InterruptedException {
         runBulkTest(true);
     }

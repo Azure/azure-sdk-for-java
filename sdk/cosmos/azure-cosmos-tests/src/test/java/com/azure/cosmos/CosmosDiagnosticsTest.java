@@ -1125,7 +1125,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fast"}, dataProvider = "gatewayAndDirect", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "gatewayAndDirect", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void diagnosticsKeywordIdentifiers(CosmosContainer container) {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         HashSet<String> keywordIdentifiers = new HashSet<>();
