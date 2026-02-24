@@ -167,9 +167,6 @@ public class TenantWorkloadConfig {
 
     private boolean suppressCleanup = false;
 
-    /** Region-scoped session container flag (set by orchestrator from BenchmarkConfig). */
-    private boolean isRegionScopedSessionContainerEnabled = false;
-
     /** Cosmos SDK micrometer registry (set by orchestrator, not from JSON). */
     private transient MeterRegistry cosmosMicrometerRegistry;
 
@@ -222,14 +219,6 @@ public class TenantWorkloadConfig {
         return nonPointOperationLatencyThresholdMs != null && nonPointOperationLatencyThresholdMs >= 0
             ? Duration.ofMillis(nonPointOperationLatencyThresholdMs)
             : Duration.ofDays(300);
-    }
-
-    public boolean isRegionScopedSessionContainerEnabled() {
-        return isRegionScopedSessionContainerEnabled;
-    }
-
-    public void setRegionScopedSessionContainerEnabled(boolean value) {
-        this.isRegionScopedSessionContainerEnabled = value;
     }
 
     public boolean isDefaultLog4jLoggerEnabled() {

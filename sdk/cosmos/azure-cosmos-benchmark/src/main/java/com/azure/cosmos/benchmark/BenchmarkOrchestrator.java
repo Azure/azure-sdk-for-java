@@ -274,7 +274,6 @@ public class BenchmarkOrchestrator {
             if (config.isSuppressCleanup()) {
                 tenant.setSuppressCleanup(true);
             }
-            tenant.setRegionScopedSessionContainerEnabled(config.isRegionScopedSessionContainerEnabled());
 
             // Ensure unique applicationName per tenant
             if (tenant.getApplicationName() == null || tenant.getApplicationName().isEmpty()) {
@@ -349,6 +348,7 @@ public class BenchmarkOrchestrator {
         System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF");
         System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF");
         System.clearProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT");
+        System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
     }
 
     private void setGlobalSystemProperties(BenchmarkConfig config) {
@@ -374,9 +374,14 @@ public class BenchmarkOrchestrator {
                 String.valueOf(config.getMinConnectionPoolSizePerEndpoint()));
         }
 
-        logger.info("Global system properties set (circuit breaker: {}, PPAF: {}, minConnPoolSize: {})",
+        if (config.isRegionScopedSessionContainerEnabled()) {
+            System.setProperty("COSMOS.SESSION_CAPTURING_TYPE", "REGION_SCOPED");
+        }
+
+        logger.info("Global system properties set (circuit breaker: {}, PPAF: {}, minConnPoolSize: {}, regionScopedSession: {})",
             config.isPartitionLevelCircuitBreakerEnabled(),
             config.isPerPartitionAutomaticFailoverRequired(),
-            config.getMinConnectionPoolSizePerEndpoint());
+            config.getMinConnectionPoolSizePerEndpoint(),
+            config.isRegionScopedSessionContainerEnabled());
     }
 }
