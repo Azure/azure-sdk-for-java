@@ -8,7 +8,7 @@ The AI Projects client library is part of the Azure AI Foundry SDK and provides 
 * **Upload documents and create Datasets** to reference them using the `Datasets` operations.
 * **Create and enumerate Search Indexes** using the `Indexes` operations.
 
-The client library uses version `v1` of the AI Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects/ga-rest-api-reference).
+The client library uses a single service version `v1` of the AI Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects/ga-rest-api-reference).
 
 ## Documentation
 
@@ -35,8 +35,6 @@ Various documentation is available to help you get started
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-This service has a single supported service version `v1` of the AI Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects/ga-rest-api-reference)
 
 ### Authentication
 

@@ -2,6 +2,8 @@
 
 Develop Agents using the Azure AI Foundry platform, leveraging an extensive ecosystem of models, tools, and capabilities from OpenAI, Microsoft, and other LLM providers.
 
+The client library uses a single service version `v1` of the AI Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects/ga-rest-api-reference).
+
 ## Documentation
 
 Various documentation is available to help you get started
@@ -27,8 +29,6 @@ Various documentation is available to help you get started
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-This service has a single supported service version `v1` of the AI Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects/ga-rest-api-reference)
 
 ### Authentication
 
