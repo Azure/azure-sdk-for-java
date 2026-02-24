@@ -57,13 +57,6 @@
       <groupId>com.openai</groupId>
       <artifactId>openai-java</artifactId>
       <version>4.14.0</version> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
-      <exclusions>
-        <!-- Prefer okio-jvm to avoid duplicate okio modules on the module path. -->
-        <exclusion>
-          <groupId>com.squareup.okio</groupId>
-          <artifactId>okio</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <!-- Align Okio with azure-core-http-okhttp to prevent module-path conflicts in tests. -->
     <dependency>
