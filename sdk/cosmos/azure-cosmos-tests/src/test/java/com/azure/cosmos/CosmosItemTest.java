@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.SuperFlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.ConsistencyTestsBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
@@ -383,7 +384,7 @@ public class CosmosItemTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = 100 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = { "fast" }, timeOut = 100 * TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void readManyWithTwoSecondariesNotReachable() throws Exception {
         if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Fault injection only targeting direct mode");
