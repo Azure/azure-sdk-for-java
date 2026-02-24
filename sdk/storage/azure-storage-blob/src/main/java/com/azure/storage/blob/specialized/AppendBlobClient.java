@@ -39,7 +39,6 @@ import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -516,7 +515,8 @@ public final class AppendBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
-        return appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, null, timeout, context);
+        return appendBlockWithResponse(new AppendBlobAppendBlockOptions(data, length).setContentMd5(contentMd5)
+            .setRequestConditions(appendBlobRequestConditions), timeout, context);
     }
 
     /**
@@ -537,18 +537,12 @@ public final class AppendBlobClient extends BlobClientBase {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "AppendBlobAppendBlockOptions must be constructed with InputStream for sync client."));
         }
-        return appendBlockWithResponse(options.getBodyStream(), options.getLength(), options.getContentMd5(),
-            options.getRequestConditions(), options.getRequestChecksumAlgorithm(), timeout, context);
-    }
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(options.getBodyStream(), options.getLength(),
+            getMaxAppendBlockBytes(), true);
 
-    private Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
-        AppendBlobRequestConditions appendBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm,
-        Duration timeout, Context context) {
-        StorageImplUtils.assertNotNull("data", data);
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, getMaxAppendBlockBytes(), true);
-
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponseInternal(fbb, length,
-            contentMd5, appendBlobRequestConditions, requestChecksumAlgorithm, context);
+        Mono<Response<AppendBlobItem>> response
+            = appendBlobAsyncClient.appendBlockWithResponseInternal(fbb, options.getLength(), options.getContentMd5(),
+                options.getRequestConditions(), options.getRequestChecksumAlgorithm(), context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

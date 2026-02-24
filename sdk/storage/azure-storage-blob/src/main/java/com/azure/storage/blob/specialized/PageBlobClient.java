@@ -59,7 +59,6 @@ import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -554,7 +553,8 @@ public final class PageBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context) {
-        return uploadPagesWithResponse(pageRange, body, contentMd5, pageBlobRequestConditions, null, timeout, context);
+        return uploadPagesWithResponse(new PageBlobUploadPagesOptions(pageRange, body).setContentMd5(contentMd5)
+            .setRequestConditions(pageBlobRequestConditions), timeout, context);
     }
 
     /**
@@ -573,18 +573,11 @@ public final class PageBlobClient extends BlobClientBase {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "PageBlobUploadPagesOptions must be constructed with InputStream for sync client."));
         }
-        return uploadPagesWithResponse(options.getPageRange(), options.getBodyStream(), options.getContentMd5(),
-            options.getRequestConditions(), options.getRequestChecksumAlgorithm(), timeout, context);
-    }
-
-    Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, byte[] contentMd5,
-        PageBlobRequestConditions pageBlobRequestConditions, StorageChecksumAlgorithm requestChecksumAlgorithm,
-        Duration timeout, Context context) {
-        StorageImplUtils.assertNotNull("body", body);
-        final long length = pageRange.getEnd() - pageRange.getStart() + 1;
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES, true);
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponseInternal(pageRange, fbb,
-            contentMd5, pageBlobRequestConditions, requestChecksumAlgorithm, context);
+        final long length = options.getPageRange().getEnd() - options.getPageRange().getStart() + 1;
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(options.getBodyStream(), length, PAGE_BYTES, true);
+        Mono<Response<PageBlobItem>> response
+            = pageBlobAsyncClient.uploadPagesWithResponseInternal(options.getPageRange(), fbb, options.getContentMd5(),
+                options.getRequestConditions(), options.getRequestChecksumAlgorithm(), context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
