@@ -11,7 +11,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * A tool that generates images using a model like `gpt-image-1`.
+ * Image generation tool
+ *
+ * A tool that generates images using the GPT image models.
  */
 @Fluent
 public final class ImageGenTool extends Tool {
@@ -23,7 +25,7 @@ public final class ImageGenTool extends Tool {
     private ToolType type = ToolType.IMAGE_GENERATION;
 
     /*
-     * The image generation model to use. Default: `gpt-image-1`.
+     * The model property.
      */
     @Generated
     private ImageGenToolModel model;
@@ -53,7 +55,7 @@ public final class ImageGenTool extends Tool {
      * Compression level for the output image. Default: 100.
      */
     @Generated
-    private Integer outputCompression;
+    private Long outputCompression;
 
     /*
      * Moderation level for the generated image. Default: `auto`.
@@ -79,7 +81,7 @@ public final class ImageGenTool extends Tool {
      * Number of partial images to generate in streaming mode, from 0 (default value) to 3.
      */
     @Generated
-    private Integer partialImages;
+    private Long partialImages;
 
     /**
      * Creates an instance of ImageGenTool class.
@@ -100,7 +102,7 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Get the model property: The image generation model to use. Default: `gpt-image-1`.
+     * Get the model property: The model property.
      *
      * @return the model value.
      */
@@ -110,7 +112,7 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Set the model property: The image generation model to use. Default: `gpt-image-1`.
+     * Set the model property: The model property.
      *
      * @param model the model value to set.
      * @return the ImageGenTool object itself.
@@ -199,20 +201,8 @@ public final class ImageGenTool extends Tool {
      * @return the outputCompression value.
      */
     @Generated
-    public Integer getOutputCompression() {
+    public Long getOutputCompression() {
         return this.outputCompression;
-    }
-
-    /**
-     * Set the outputCompression property: Compression level for the output image. Default: 100.
-     *
-     * @param outputCompression the outputCompression value to set.
-     * @return the ImageGenTool object itself.
-     */
-    @Generated
-    public ImageGenTool setOutputCompression(Integer outputCompression) {
-        this.outputCompression = outputCompression;
-        return this;
     }
 
     /**
@@ -292,21 +282,8 @@ public final class ImageGenTool extends Tool {
      * @return the partialImages value.
      */
     @Generated
-    public Integer getPartialImages() {
+    public Long getPartialImages() {
         return this.partialImages;
-    }
-
-    /**
-     * Set the partialImages property: Number of partial images to generate in streaming mode, from 0 (default value) to
-     * 3.
-     *
-     * @param partialImages the partialImages value to set.
-     * @return the ImageGenTool object itself.
-     */
-    @Generated
-    public ImageGenTool setPartialImages(Integer partialImages) {
-        this.partialImages = partialImages;
-        return this;
     }
 
     /**
@@ -324,6 +301,8 @@ public final class ImageGenTool extends Tool {
         jsonWriter.writeNumberField("output_compression", this.outputCompression);
         jsonWriter.writeStringField("moderation", this.moderation == null ? null : this.moderation.toString());
         jsonWriter.writeStringField("background", this.background == null ? null : this.background.toString());
+        jsonWriter.writeStringField("input_fidelity",
+            this.inputFidelity == null ? null : this.inputFidelity.toString());
         jsonWriter.writeJsonField("input_image_mask", this.inputImageMask);
         jsonWriter.writeNumberField("partial_images", this.partialImages);
         return jsonWriter.writeEndObject();
@@ -355,20 +334,75 @@ public final class ImageGenTool extends Tool {
                 } else if ("output_format".equals(fieldName)) {
                     deserializedImageGenTool.outputFormat = ImageGenToolOutputFormat.fromString(reader.getString());
                 } else if ("output_compression".equals(fieldName)) {
-                    deserializedImageGenTool.outputCompression = reader.getNullable(JsonReader::getInt);
+                    deserializedImageGenTool.outputCompression = reader.getNullable(JsonReader::getLong);
                 } else if ("moderation".equals(fieldName)) {
                     deserializedImageGenTool.moderation = ImageGenToolModeration.fromString(reader.getString());
                 } else if ("background".equals(fieldName)) {
                     deserializedImageGenTool.background = ImageGenToolBackground.fromString(reader.getString());
+                } else if ("input_fidelity".equals(fieldName)) {
+                    deserializedImageGenTool.inputFidelity = InputFidelity.fromString(reader.getString());
                 } else if ("input_image_mask".equals(fieldName)) {
                     deserializedImageGenTool.inputImageMask = ImageGenToolInputImageMask.fromJson(reader);
                 } else if ("partial_images".equals(fieldName)) {
-                    deserializedImageGenTool.partialImages = reader.getNullable(JsonReader::getInt);
+                    deserializedImageGenTool.partialImages = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedImageGenTool;
         });
+    }
+
+    /*
+     * The input_fidelity property.
+     */
+    @Generated
+    private InputFidelity inputFidelity;
+
+    /**
+     * Set the outputCompression property: Compression level for the output image. Default: 100.
+     *
+     * @param outputCompression the outputCompression value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setOutputCompression(Long outputCompression) {
+        this.outputCompression = outputCompression;
+        return this;
+    }
+
+    /**
+     * Get the inputFidelity property: The input_fidelity property.
+     *
+     * @return the inputFidelity value.
+     */
+    @Generated
+    public InputFidelity getInputFidelity() {
+        return this.inputFidelity;
+    }
+
+    /**
+     * Set the inputFidelity property: The input_fidelity property.
+     *
+     * @param inputFidelity the inputFidelity value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setInputFidelity(InputFidelity inputFidelity) {
+        this.inputFidelity = inputFidelity;
+        return this;
+    }
+
+    /**
+     * Set the partialImages property: Number of partial images to generate in streaming mode, from 0 (default value) to
+     * 3.
+     *
+     * @param partialImages the partialImages value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setPartialImages(Long partialImages) {
+        this.partialImages = partialImages;
+        return this;
     }
 }
