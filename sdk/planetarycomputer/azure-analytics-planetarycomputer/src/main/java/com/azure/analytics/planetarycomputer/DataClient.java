@@ -5111,17 +5111,17 @@ public final class DataClient {
     }
 
     @Generated
-    private static final TypeReference<List<List<List<Long>>>> TYPE_REFERENCE_LIST_LIST_LIST_LONG
-        = new TypeReference<List<List<List<Long>>>>() {
-        };
-
-    @Generated
     private static final TypeReference<List<String>> TYPE_REFERENCE_LIST_STRING = new TypeReference<List<String>>() {
     };
 
     @Generated
     private static final TypeReference<List<StacItemPointAsset>> TYPE_REFERENCE_LIST_STAC_ITEM_POINT_ASSET
         = new TypeReference<List<StacItemPointAsset>>() {
+        };
+
+    @Generated
+    private static final TypeReference<List<List<List<Long>>>> TYPE_REFERENCE_LIST_LIST_LIST_LONG
+        = new TypeReference<List<List<List<Long>>>>() {
         };
 
     @Generated
