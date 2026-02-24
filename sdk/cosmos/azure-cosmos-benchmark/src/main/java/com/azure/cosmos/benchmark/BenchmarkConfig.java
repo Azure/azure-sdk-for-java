@@ -52,7 +52,6 @@ public class BenchmarkConfig {
     private boolean isPartitionLevelCircuitBreakerEnabled = true;
     private boolean isPerPartitionAutomaticFailoverRequired = true;
     private int minConnectionPoolSizePerEndpoint = 0;
-    private boolean isRegionScopedSessionContainerEnabled = false;
 
     // -- Tenants (each carries its full effective config) --
     private List<TenantWorkloadConfig> tenantWorkloads = Collections.emptyList();
@@ -116,7 +115,6 @@ public class BenchmarkConfig {
             config.isPartitionLevelCircuitBreakerEnabled = cfg.isPartitionLevelCircuitBreakerEnabled();
             config.isPerPartitionAutomaticFailoverRequired = cfg.isPerPartitionAutomaticFailoverRequired();
             config.minConnectionPoolSizePerEndpoint = cfg.getMinConnectionPoolSizePerEndpoint();
-            config.isRegionScopedSessionContainerEnabled = cfg.isRegionScopedSessionContainerEnabled();
         }
 
         return config;
@@ -144,7 +142,6 @@ public class BenchmarkConfig {
     public boolean isPartitionLevelCircuitBreakerEnabled() { return isPartitionLevelCircuitBreakerEnabled; }
     public boolean isPerPartitionAutomaticFailoverRequired() { return isPerPartitionAutomaticFailoverRequired; }
     public int getMinConnectionPoolSizePerEndpoint() { return minConnectionPoolSizePerEndpoint; }
-    public boolean isRegionScopedSessionContainerEnabled() { return isRegionScopedSessionContainerEnabled; }
 
     public List<TenantWorkloadConfig> getTenantWorkloads() { return tenantWorkloads; }
 
@@ -153,11 +150,11 @@ public class BenchmarkConfig {
         return String.format(
             "BenchmarkConfig{cycles=%d, settleTimeMs=%d, suppressCleanup=%s, " +
             "gcBetweenCycles=%s, tenants=%d, reportingDirectory=%s, " +
-            "circuitBreaker=%s, ppaf=%s, minConnPoolSize=%d, regionScopedSession=%s}",
+            "circuitBreaker=%s, ppaf=%s, minConnPoolSize=%d}",
             cycles, settleTimeMs, suppressCleanup, gcBetweenCycles,
             tenantWorkloads.size(), reportingDirectory,
             isPartitionLevelCircuitBreakerEnabled, isPerPartitionAutomaticFailoverRequired,
-            minConnectionPoolSizePerEndpoint, isRegionScopedSessionContainerEnabled);
+            minConnectionPoolSizePerEndpoint);
     }
 
     /**
@@ -183,10 +180,6 @@ public class BenchmarkConfig {
         if (defaults.has("minConnectionPoolSizePerEndpoint")) {
             minConnectionPoolSizePerEndpoint =
                 Integer.parseInt(defaults.get("minConnectionPoolSizePerEndpoint").asText());
-        }
-        if (defaults.has("isRegionScopedSessionContainerEnabled")) {
-            isRegionScopedSessionContainerEnabled =
-                Boolean.parseBoolean(defaults.get("isRegionScopedSessionContainerEnabled").asText());
         }
     }
 }

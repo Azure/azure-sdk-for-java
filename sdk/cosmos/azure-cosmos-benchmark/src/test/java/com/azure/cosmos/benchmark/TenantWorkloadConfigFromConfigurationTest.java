@@ -54,7 +54,6 @@ public class TenantWorkloadConfigFromConfigurationTest {
         "isPartitionLevelCircuitBreakerEnabled",
         "isPerPartitionAutomaticFailoverRequired",
         "minConnectionPoolSizePerEndpoint",
-        "isRegionScopedSessionContainerEnabled",
 
         // Azure Monitor config (handled at orchestrator level)
         "azureMonitorMeterRegistry",

@@ -122,6 +122,15 @@ public class TenantWorkloadConfig {
     @JsonProperty("nonPointOperationLatencyThresholdMs")
     private Integer nonPointOperationLatencyThresholdMs;
 
+    /**
+     * Per-client flag: controls region-scoped session capturing on the CosmosClientBuilder.
+     * Unlike JVM-global system properties (circuit breaker, PPAF, minConnectionPoolSize),
+     * this is set per-client via {@code CosmosClientBuilderAccessor.setRegionScopedSessionCapturingEnabled}
+     * and can genuinely differ per tenant.
+     */
+    @JsonProperty("isRegionScopedSessionContainerEnabled")
+    private Boolean isRegionScopedSessionContainerEnabled;
+
     @JsonProperty("isDefaultLog4jLoggerEnabled")
     private Boolean isDefaultLog4jLoggerEnabled;
 
@@ -166,9 +175,6 @@ public class TenantWorkloadConfig {
     // ======== Lifecycle (set by orchestrator, not from JSON) ========
 
     private boolean suppressCleanup = false;
-
-    /** Region-scoped session container flag (set by orchestrator from BenchmarkConfig). */
-    private boolean isRegionScopedSessionContainerEnabled = false;
 
     /** Cosmos SDK micrometer registry (set by orchestrator, not from JSON). */
     private transient MeterRegistry cosmosMicrometerRegistry;
@@ -225,11 +231,7 @@ public class TenantWorkloadConfig {
     }
 
     public boolean isRegionScopedSessionContainerEnabled() {
-        return isRegionScopedSessionContainerEnabled;
-    }
-
-    public void setRegionScopedSessionContainerEnabled(boolean value) {
-        this.isRegionScopedSessionContainerEnabled = value;
+        return isRegionScopedSessionContainerEnabled != null && isRegionScopedSessionContainerEnabled;
     }
 
     public boolean isDefaultLog4jLoggerEnabled() {
@@ -395,14 +397,8 @@ public class TenantWorkloadConfig {
                     if (overwrite || pointOperationLatencyThresholdMs == null) pointOperationLatencyThresholdMs = Integer.parseInt(value); break;
                 case "nonPointOperationLatencyThresholdMs":
                     if (overwrite || nonPointOperationLatencyThresholdMs == null) nonPointOperationLatencyThresholdMs = Integer.parseInt(value); break;
-                // JVM-global properties (minConnectionPoolSizePerEndpoint, isPartitionLevelCircuitBreakerEnabled,
-                // isPerPartitionAutomaticFailoverRequired, isRegionScopedSessionContainerEnabled) are handled
-                // in BenchmarkConfig, not per-tenant.
-                case "minConnectionPoolSizePerEndpoint":
-                case "isPartitionLevelCircuitBreakerEnabled":
-                case "isPerPartitionAutomaticFailoverRequired":
                 case "isRegionScopedSessionContainerEnabled":
-                    break;
+                    if (overwrite || isRegionScopedSessionContainerEnabled == null) isRegionScopedSessionContainerEnabled = Boolean.parseBoolean(value); break;
                 case "isDefaultLog4jLoggerEnabled":
                     if (overwrite || isDefaultLog4jLoggerEnabled == null) isDefaultLog4jLoggerEnabled = Boolean.parseBoolean(value); break;
                 case "maxRunningTimeDuration":
@@ -427,6 +423,12 @@ public class TenantWorkloadConfig {
                     if (overwrite || preferredRegionsList == null) preferredRegionsList = value; break;
                 case "manageDatabase":
                     if (overwrite || manageDatabase == null) manageDatabase = Boolean.parseBoolean(value); break;
+                // JVM-global properties (minConnectionPoolSizePerEndpoint, isPartitionLevelCircuitBreakerEnabled,
+                // isPerPartitionAutomaticFailoverRequired) are handled in BenchmarkConfig, not per-tenant.
+                case "minConnectionPoolSizePerEndpoint":
+                case "isPartitionLevelCircuitBreakerEnabled":
+                case "isPerPartitionAutomaticFailoverRequired":
+                    break;
                 default:
                     logger.debug("Unknown config key '{}' (value: {})", key, value);
                     break;
@@ -488,6 +490,7 @@ public class TenantWorkloadConfig {
             ? (int) cfg.getNonPointOperationThreshold().toMillis() : null;
 
         // Feature flags
+        t.isRegionScopedSessionContainerEnabled = cfg.isRegionScopedSessionContainerEnabled();
         t.isDefaultLog4jLoggerEnabled = cfg.isDefaultLog4jLoggerEnabled();
 
         // Proactive connection management
