@@ -9,33 +9,31 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 /**
- * Date field extracted from the content.
+ * String field extracted from the content.
  */
 @Immutable
-public final class DateField extends ContentField {
+public final class ContentStringField extends ContentField {
 
     /*
      * Semantic data type of the field value.
      */
     @Generated
-    private ContentFieldType type = ContentFieldType.DATE;
+    private ContentFieldType type = ContentFieldType.STRING;
 
     /*
-     * Date field value, in ISO 8601 (YYYY-MM-DD) format.
+     * String field value.
      */
     @Generated
-    private LocalDate valueDate;
+    private String valueString;
 
     /**
-     * Creates an instance of DateField class.
+     * Creates an instance of ContentStringField class.
      */
     @Generated
-    private DateField() {
+    private ContentStringField() {
     }
 
     /**
@@ -50,13 +48,13 @@ public final class DateField extends ContentField {
     }
 
     /**
-     * Get the valueDate property: Date field value, in ISO 8601 (YYYY-MM-DD) format.
+     * Get the valueString property: String field value.
      *
-     * @return the valueDate value.
+     * @return the valueString value.
      */
     @Generated
-    LocalDate getValueDate() {
-        return this.valueDate;
+    String getValueString() {
+        return this.valueString;
     }
 
     /**
@@ -70,42 +68,41 @@ public final class DateField extends ContentField {
         jsonWriter.writeNumberField("confidence", getConfidence());
         jsonWriter.writeStringField("source", getSource());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("valueDate", Objects.toString(this.valueDate, null));
+        jsonWriter.writeStringField("valueString", this.valueString);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of DateField from the JsonReader.
+     * Reads an instance of ContentStringField from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DateField if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IOException If an error occurs while reading the DateField.
+     * @return An instance of ContentStringField if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContentStringField.
      */
     @Generated
-    public static DateField fromJson(JsonReader jsonReader) throws IOException {
+    public static ContentStringField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DateField deserializedDateField = new DateField();
+            ContentStringField deserializedContentStringField = new ContentStringField();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("spans".equals(fieldName)) {
                     List<ContentSpan> spans = reader.readArray(reader1 -> ContentSpan.fromJson(reader1));
-                    deserializedDateField.setSpans(spans);
+                    deserializedContentStringField.setSpans(spans);
                 } else if ("confidence".equals(fieldName)) {
-                    deserializedDateField.setConfidence(reader.getNullable(JsonReader::getDouble));
+                    deserializedContentStringField.setConfidence(reader.getNullable(JsonReader::getDouble));
                 } else if ("source".equals(fieldName)) {
-                    deserializedDateField.setSource(reader.getString());
+                    deserializedContentStringField.setSource(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    deserializedDateField.type = ContentFieldType.fromString(reader.getString());
-                } else if ("valueDate".equals(fieldName)) {
-                    deserializedDateField.valueDate
-                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                    deserializedContentStringField.type = ContentFieldType.fromString(reader.getString());
+                } else if ("valueString".equals(fieldName)) {
+                    deserializedContentStringField.valueString = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedDateField;
+            return deserializedContentStringField;
         });
     }
 
@@ -115,7 +112,7 @@ public final class DateField extends ContentField {
      * @return the field value, or null if not available.
      */
     @Override
-    public LocalDate getValue() {
-        return getValueDate();
+    public String getValue() {
+        return getValueString();
     }
 }

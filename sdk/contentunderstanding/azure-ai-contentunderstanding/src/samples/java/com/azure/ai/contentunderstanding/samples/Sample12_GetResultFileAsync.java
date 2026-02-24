@@ -6,8 +6,8 @@ package com.azure.ai.contentunderstanding.samples;
 
 import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
@@ -57,10 +57,10 @@ public class Sample12_GetResultFileAsync {
             = "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4";
 
         // Step 1: Start the video analysis operation
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(videoUrl);
 
-        PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
+        PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
             = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         System.out.println("Started analysis operation");
@@ -90,7 +90,7 @@ public class Sample12_GetResultFileAsync {
             })
             .doOnNext(entry -> {
                 String operationId = entry.getKey();
-                AnalyzeResult result = entry.getValue();
+                AnalysisResult result = entry.getValue();
 
                 System.out.println("Analysis completed successfully!");
                 System.out.println("Video URL: " + videoUrl);

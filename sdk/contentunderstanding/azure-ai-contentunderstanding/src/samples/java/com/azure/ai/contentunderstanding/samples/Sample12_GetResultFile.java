@@ -6,8 +6,8 @@ package com.azure.ai.contentunderstanding.samples;
 
 import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
@@ -54,16 +54,16 @@ public class Sample12_GetResultFile {
             = "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4";
 
         // Step 1: Start the video analysis operation
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(videoUrl);
 
-        SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
+        SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
             = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         System.out.println("Started analysis operation");
 
         // Wait for completion
-        AnalyzeResult result = poller.getFinalResult();
+        AnalysisResult result = poller.getFinalResult();
         System.out.println("Analysis completed successfully!");
 
         // Get the operation ID from the polling result using the getOperationId() convenience method

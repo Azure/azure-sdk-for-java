@@ -21,7 +21,7 @@ import java.util.List;
  * Analyze operation result.
  */
 @Immutable
-public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
+public final class AnalysisResult implements JsonSerializable<AnalysisResult> {
     /*
      * The unique identifier of the analyzer.
      */
@@ -57,15 +57,15 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * The extracted content.
      */
     @Generated
-    private final List<MediaContent> contents;
+    private final List<AnalysisContent> contents;
 
     /**
-     * Creates an instance of AnalyzeResult class.
+     * Creates an instance of AnalysisResult class.
      * 
      * @param contents the contents value to set.
      */
     @Generated
-    private AnalyzeResult(List<MediaContent> contents) {
+    private AnalysisResult(List<AnalysisContent> contents) {
         this.contents = contents;
     }
 
@@ -126,7 +126,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @return the contents value.
      */
     @Generated
-    public List<MediaContent> getContents() {
+    public List<AnalysisContent> getContents() {
         return this.contents;
     }
 
@@ -148,18 +148,18 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     }
 
     /**
-     * Reads an instance of AnalyzeResult from the JsonReader.
+     * Reads an instance of AnalysisResult from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeResult if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of AnalysisResult if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AnalyzeResult.
+     * @throws IOException If an error occurs while reading the AnalysisResult.
      */
     @Generated
-    public static AnalyzeResult fromJson(JsonReader jsonReader) throws IOException {
+    public static AnalysisResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<MediaContent> contents = null;
+            List<AnalysisContent> contents = null;
             String analyzerId = null;
             String apiVersion = null;
             OffsetDateTime createdAt = null;
@@ -170,7 +170,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
                 reader.nextToken();
 
                 if ("contents".equals(fieldName)) {
-                    contents = reader.readArray(reader1 -> MediaContent.fromJson(reader1));
+                    contents = reader.readArray(reader1 -> AnalysisContent.fromJson(reader1));
                 } else if ("analyzerId".equals(fieldName)) {
                     analyzerId = reader.getString();
                 } else if ("apiVersion".equals(fieldName)) {
@@ -186,14 +186,14 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
                     reader.skipChildren();
                 }
             }
-            AnalyzeResult deserializedAnalyzeResult = new AnalyzeResult(contents);
-            deserializedAnalyzeResult.analyzerId = analyzerId;
-            deserializedAnalyzeResult.apiVersion = apiVersion;
-            deserializedAnalyzeResult.createdAt = createdAt;
-            deserializedAnalyzeResult.warnings = warnings;
-            deserializedAnalyzeResult.stringEncoding = stringEncoding;
+            AnalysisResult deserializedAnalysisResult = new AnalysisResult(contents);
+            deserializedAnalysisResult.analyzerId = analyzerId;
+            deserializedAnalysisResult.apiVersion = apiVersion;
+            deserializedAnalysisResult.createdAt = createdAt;
+            deserializedAnalysisResult.warnings = warnings;
+            deserializedAnalysisResult.stringEncoding = stringEncoding;
 
-            return deserializedAnalyzeResult;
+            return deserializedAnalysisResult;
         });
     }
 }

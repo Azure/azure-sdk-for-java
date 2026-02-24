@@ -16,7 +16,7 @@ import java.io.IOException;
  * Additional input to analyze.
  */
 @Fluent
-public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
+public final class AnalysisInput implements JsonSerializable<AnalysisInput> {
 
     /*
      * The URL of the input to analyze. Only one of url or data should be specified.
@@ -50,10 +50,10 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
     private String contentRange;
 
     /**
-     * Creates an instance of AnalyzeInput class.
+     * Creates an instance of AnalysisInput class.
      */
     @Generated
-    public AnalyzeInput() {
+    public AnalysisInput() {
     }
 
     /**
@@ -70,10 +70,10 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
      * Set the url property: The URL of the input to analyze. Only one of url or data should be specified.
      *
      * @param url the url value to set.
-     * @return the AnalyzeInput object itself.
+     * @return the AnalysisInput object itself.
      */
     @Generated
-    public AnalyzeInput setUrl(String url) {
+    public AnalysisInput setUrl(String url) {
         this.url = url;
         return this;
     }
@@ -94,10 +94,10 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
      * should be specified.
      *
      * @param data the data value to set.
-     * @return the AnalyzeInput object itself.
+     * @return the AnalysisInput object itself.
      */
     @Generated
-    public AnalyzeInput setData(byte[] data) {
+    public AnalysisInput setData(byte[] data) {
         this.data = CoreUtils.clone(data);
         return this;
     }
@@ -116,10 +116,10 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
      * Set the name property: Name of the input.
      *
      * @param name the name value to set.
-     * @return the AnalyzeInput object itself.
+     * @return the AnalysisInput object itself.
      */
     @Generated
-    public AnalyzeInput setName(String name) {
+    public AnalysisInput setName(String name) {
         this.name = name;
         return this;
     }
@@ -138,10 +138,10 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
      * Set the mimeType property: The MIME type of the input content. Ex. application/pdf, image/jpeg, etc.
      *
      * @param mimeType the mimeType value to set.
-     * @return the AnalyzeInput object itself.
+     * @return the AnalysisInput object itself.
      */
     @Generated
-    public AnalyzeInput setMimeType(String mimeType) {
+    public AnalysisInput setMimeType(String mimeType) {
         this.mimeType = mimeType;
         return this;
     }
@@ -162,10 +162,10 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
      * numbers, while audio visual content uses integer milliseconds.
      *
      * @param contentRange the contentRange value to set.
-     * @return the AnalyzeInput object itself.
+     * @return the AnalysisInput object itself.
      */
     @Generated
-    public AnalyzeInput setContentRange(String contentRange) {
+    public AnalysisInput setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
     }
@@ -186,35 +186,35 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
     }
 
     /**
-     * Reads an instance of AnalyzeInput from the JsonReader.
+     * Reads an instance of AnalysisInput from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeInput if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of AnalysisInput if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AnalyzeInput.
+     * @throws IOException If an error occurs while reading the AnalysisInput.
      */
     @Generated
-    public static AnalyzeInput fromJson(JsonReader jsonReader) throws IOException {
+    public static AnalysisInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AnalyzeInput deserializedAnalyzeInput = new AnalyzeInput();
+            AnalysisInput deserializedAnalysisInput = new AnalysisInput();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("url".equals(fieldName)) {
-                    deserializedAnalyzeInput.url = reader.getString();
+                    deserializedAnalysisInput.url = reader.getString();
                 } else if ("data".equals(fieldName)) {
-                    deserializedAnalyzeInput.data = reader.getBinary();
+                    deserializedAnalysisInput.data = reader.getBinary();
                 } else if ("name".equals(fieldName)) {
-                    deserializedAnalyzeInput.name = reader.getString();
+                    deserializedAnalysisInput.name = reader.getString();
                 } else if ("mimeType".equals(fieldName)) {
-                    deserializedAnalyzeInput.mimeType = reader.getString();
+                    deserializedAnalysisInput.mimeType = reader.getString();
                 } else if ("range".equals(fieldName)) {
-                    deserializedAnalyzeInput.contentRange = reader.getString();
+                    deserializedAnalysisInput.contentRange = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedAnalyzeInput;
+            return deserializedAnalysisInput;
         });
     }
 
@@ -225,9 +225,9 @@ public final class AnalyzeInput implements JsonSerializable<AnalyzeInput> {
      * {@link ContentRange#combine(ContentRange...)} to build the range.
      *
      * @param contentRange the range value to set, or null to clear.
-     * @return the AnalyzeInput object itself.
+     * @return the AnalysisInput object itself.
      */
-    public AnalyzeInput setContentRange(ContentRange contentRange) {
+    public AnalysisInput setContentRange(ContentRange contentRange) {
         this.contentRange = contentRange != null ? contentRange.toString() : null;
         return this;
     }

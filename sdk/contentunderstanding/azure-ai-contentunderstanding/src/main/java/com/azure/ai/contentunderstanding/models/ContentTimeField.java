@@ -12,28 +12,28 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Boolean field extracted from the content.
+ * Time field extracted from the content.
  */
 @Immutable
-public final class BooleanField extends ContentField {
+public final class ContentTimeField extends ContentField {
 
     /*
      * Semantic data type of the field value.
      */
     @Generated
-    private ContentFieldType type = ContentFieldType.BOOLEAN;
+    private ContentFieldType type = ContentFieldType.TIME;
 
     /*
-     * Boolean field value.
+     * Time field value, in ISO 8601 (hh:mm:ss) format.
      */
     @Generated
-    private Boolean valueBoolean;
+    private String valueTime;
 
     /**
-     * Creates an instance of BooleanField class.
+     * Creates an instance of ContentTimeField class.
      */
     @Generated
-    private BooleanField() {
+    private ContentTimeField() {
     }
 
     /**
@@ -48,13 +48,13 @@ public final class BooleanField extends ContentField {
     }
 
     /**
-     * Get the valueBoolean property: Boolean field value.
+     * Get the valueTime property: Time field value, in ISO 8601 (hh:mm:ss) format.
      *
-     * @return the valueBoolean value.
+     * @return the valueTime value.
      */
     @Generated
-    Boolean isValueBoolean() {
-        return this.valueBoolean;
+    String getValueTime() {
+        return this.valueTime;
     }
 
     /**
@@ -68,41 +68,41 @@ public final class BooleanField extends ContentField {
         jsonWriter.writeNumberField("confidence", getConfidence());
         jsonWriter.writeStringField("source", getSource());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeBooleanField("valueBoolean", this.valueBoolean);
+        jsonWriter.writeStringField("valueTime", this.valueTime);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of BooleanField from the JsonReader.
+     * Reads an instance of ContentTimeField from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BooleanField if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ContentTimeField if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the BooleanField.
+     * @throws IOException If an error occurs while reading the ContentTimeField.
      */
     @Generated
-    public static BooleanField fromJson(JsonReader jsonReader) throws IOException {
+    public static ContentTimeField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BooleanField deserializedBooleanField = new BooleanField();
+            ContentTimeField deserializedContentTimeField = new ContentTimeField();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("spans".equals(fieldName)) {
                     List<ContentSpan> spans = reader.readArray(reader1 -> ContentSpan.fromJson(reader1));
-                    deserializedBooleanField.setSpans(spans);
+                    deserializedContentTimeField.setSpans(spans);
                 } else if ("confidence".equals(fieldName)) {
-                    deserializedBooleanField.setConfidence(reader.getNullable(JsonReader::getDouble));
+                    deserializedContentTimeField.setConfidence(reader.getNullable(JsonReader::getDouble));
                 } else if ("source".equals(fieldName)) {
-                    deserializedBooleanField.setSource(reader.getString());
+                    deserializedContentTimeField.setSource(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    deserializedBooleanField.type = ContentFieldType.fromString(reader.getString());
-                } else if ("valueBoolean".equals(fieldName)) {
-                    deserializedBooleanField.valueBoolean = reader.getNullable(JsonReader::getBoolean);
+                    deserializedContentTimeField.type = ContentFieldType.fromString(reader.getString());
+                } else if ("valueTime".equals(fieldName)) {
+                    deserializedContentTimeField.valueTime = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedBooleanField;
+            return deserializedContentTimeField;
         });
     }
 
@@ -112,7 +112,7 @@ public final class BooleanField extends ContentField {
      * @return the field value, or null if not available.
      */
     @Override
-    public Boolean getValue() {
-        return isValueBoolean();
+    public String getValue() {
+        return getValueTime();
     }
 }

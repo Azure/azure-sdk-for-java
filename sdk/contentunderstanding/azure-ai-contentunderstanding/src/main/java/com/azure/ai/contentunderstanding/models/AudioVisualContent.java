@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * Audio visual content. Ex. audio/wav, video/mp4.
  */
 @Immutable
-public final class AudioVisualContent extends MediaContent {
+public final class AudioVisualContent extends AnalysisContent {
 
     /*
      * Content kind.

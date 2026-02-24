@@ -12,28 +12,28 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * String field extracted from the content.
+ * Number field extracted from the content.
  */
 @Immutable
-public final class StringField extends ContentField {
+public final class ContentNumberField extends ContentField {
 
     /*
      * Semantic data type of the field value.
      */
     @Generated
-    private ContentFieldType type = ContentFieldType.STRING;
+    private ContentFieldType type = ContentFieldType.NUMBER;
 
     /*
-     * String field value.
+     * Number field value.
      */
     @Generated
-    private String valueString;
+    private Double valueNumber;
 
     /**
-     * Creates an instance of StringField class.
+     * Creates an instance of ContentNumberField class.
      */
     @Generated
-    private StringField() {
+    private ContentNumberField() {
     }
 
     /**
@@ -48,13 +48,13 @@ public final class StringField extends ContentField {
     }
 
     /**
-     * Get the valueString property: String field value.
+     * Get the valueNumber property: Number field value.
      *
-     * @return the valueString value.
+     * @return the valueNumber value.
      */
     @Generated
-    String getValueString() {
-        return this.valueString;
+    Double getValueNumber() {
+        return this.valueNumber;
     }
 
     /**
@@ -68,41 +68,41 @@ public final class StringField extends ContentField {
         jsonWriter.writeNumberField("confidence", getConfidence());
         jsonWriter.writeStringField("source", getSource());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("valueString", this.valueString);
+        jsonWriter.writeNumberField("valueNumber", this.valueNumber);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of StringField from the JsonReader.
+     * Reads an instance of ContentNumberField from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StringField if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ContentNumberField if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StringField.
+     * @throws IOException If an error occurs while reading the ContentNumberField.
      */
     @Generated
-    public static StringField fromJson(JsonReader jsonReader) throws IOException {
+    public static ContentNumberField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StringField deserializedStringField = new StringField();
+            ContentNumberField deserializedContentNumberField = new ContentNumberField();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("spans".equals(fieldName)) {
                     List<ContentSpan> spans = reader.readArray(reader1 -> ContentSpan.fromJson(reader1));
-                    deserializedStringField.setSpans(spans);
+                    deserializedContentNumberField.setSpans(spans);
                 } else if ("confidence".equals(fieldName)) {
-                    deserializedStringField.setConfidence(reader.getNullable(JsonReader::getDouble));
+                    deserializedContentNumberField.setConfidence(reader.getNullable(JsonReader::getDouble));
                 } else if ("source".equals(fieldName)) {
-                    deserializedStringField.setSource(reader.getString());
+                    deserializedContentNumberField.setSource(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    deserializedStringField.type = ContentFieldType.fromString(reader.getString());
-                } else if ("valueString".equals(fieldName)) {
-                    deserializedStringField.valueString = reader.getString();
+                    deserializedContentNumberField.type = ContentFieldType.fromString(reader.getString());
+                } else if ("valueNumber".equals(fieldName)) {
+                    deserializedContentNumberField.valueNumber = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedStringField;
+            return deserializedContentNumberField;
         });
     }
 
@@ -112,7 +112,7 @@ public final class StringField extends ContentField {
      * @return the field value, or null if not available.
      */
     @Override
-    public String getValue() {
-        return getValueString();
+    public Double getValue() {
+        return getValueNumber();
     }
 }

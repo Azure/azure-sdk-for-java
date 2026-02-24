@@ -16,7 +16,7 @@ import java.util.List;
  * JSON field extracted from the content.
  */
 @Immutable
-public final class JsonField extends ContentField {
+public final class ContentJsonField extends ContentField {
 
     /*
      * Semantic data type of the field value.
@@ -31,10 +31,10 @@ public final class JsonField extends ContentField {
     private BinaryData valueJson;
 
     /**
-     * Creates an instance of JsonField class.
+     * Creates an instance of ContentJsonField class.
      */
     @Generated
-    private JsonField() {
+    private ContentJsonField() {
     }
 
     /**
@@ -77,37 +77,37 @@ public final class JsonField extends ContentField {
     }
 
     /**
-     * Reads an instance of JsonField from the JsonReader.
+     * Reads an instance of ContentJsonField from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of JsonField if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IOException If an error occurs while reading the JsonField.
+     * @return An instance of ContentJsonField if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContentJsonField.
      */
     @Generated
-    public static JsonField fromJson(JsonReader jsonReader) throws IOException {
+    public static ContentJsonField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            JsonField deserializedJsonField = new JsonField();
+            ContentJsonField deserializedContentJsonField = new ContentJsonField();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("spans".equals(fieldName)) {
                     List<ContentSpan> spans = reader.readArray(reader1 -> ContentSpan.fromJson(reader1));
-                    deserializedJsonField.setSpans(spans);
+                    deserializedContentJsonField.setSpans(spans);
                 } else if ("confidence".equals(fieldName)) {
-                    deserializedJsonField.setConfidence(reader.getNullable(JsonReader::getDouble));
+                    deserializedContentJsonField.setConfidence(reader.getNullable(JsonReader::getDouble));
                 } else if ("source".equals(fieldName)) {
-                    deserializedJsonField.setSource(reader.getString());
+                    deserializedContentJsonField.setSource(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    deserializedJsonField.type = ContentFieldType.fromString(reader.getString());
+                    deserializedContentJsonField.type = ContentFieldType.fromString(reader.getString());
                 } else if ("valueJson".equals(fieldName)) {
-                    deserializedJsonField.valueJson
+                    deserializedContentJsonField.valueJson
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedJsonField;
+            return deserializedContentJsonField;
         });
     }
 

@@ -17,12 +17,12 @@ import java.util.Map;
  * Media content base class.
  */
 @Immutable
-public class MediaContent implements JsonSerializable<MediaContent> {
+public class AnalysisContent implements JsonSerializable<AnalysisContent> {
     /*
      * Content kind.
      */
     @Generated
-    private MediaContentKind kind = MediaContentKind.fromString("MediaContent");
+    private MediaContentKind kind = MediaContentKind.fromString("AnalysisContent");
 
     /*
      * Detected MIME type of the content. Ex. application/pdf, image/jpeg, etc.
@@ -61,12 +61,12 @@ public class MediaContent implements JsonSerializable<MediaContent> {
     private Map<String, ContentField> fields;
 
     /**
-     * Creates an instance of MediaContent class.
+     * Creates an instance of AnalysisContent class.
      * 
      * @param mimeType the mimeType value to set.
      */
     @Generated
-    protected MediaContent(String mimeType) {
+    protected AnalysisContent(String mimeType) {
         this.mimeType = mimeType;
     }
 
@@ -104,10 +104,10 @@ public class MediaContent implements JsonSerializable<MediaContent> {
      * Set the analyzerId property: The analyzer that generated this content.
      * 
      * @param analyzerId the analyzerId value to set.
-     * @return the MediaContent object itself.
+     * @return the AnalysisContent object itself.
      */
     @Generated
-    MediaContent setAnalyzerId(String analyzerId) {
+    AnalysisContent setAnalyzerId(String analyzerId) {
         this.analyzerId = analyzerId;
         return this;
     }
@@ -126,10 +126,10 @@ public class MediaContent implements JsonSerializable<MediaContent> {
      * Set the category property: Classified content category.
      * 
      * @param category the category value to set.
-     * @return the MediaContent object itself.
+     * @return the AnalysisContent object itself.
      */
     @Generated
-    MediaContent setCategory(String category) {
+    AnalysisContent setCategory(String category) {
         this.category = category;
         return this;
     }
@@ -148,10 +148,10 @@ public class MediaContent implements JsonSerializable<MediaContent> {
      * Set the path property: The path of the content in the input.
      * 
      * @param path the path value to set.
-     * @return the MediaContent object itself.
+     * @return the AnalysisContent object itself.
      */
     @Generated
-    MediaContent setPath(String path) {
+    AnalysisContent setPath(String path) {
         this.path = path;
         return this;
     }
@@ -170,10 +170,10 @@ public class MediaContent implements JsonSerializable<MediaContent> {
      * Set the markdown property: Markdown representation of the content.
      * 
      * @param markdown the markdown value to set.
-     * @return the MediaContent object itself.
+     * @return the AnalysisContent object itself.
      */
     @Generated
-    MediaContent setMarkdown(String markdown) {
+    AnalysisContent setMarkdown(String markdown) {
         this.markdown = markdown;
         return this;
     }
@@ -192,10 +192,10 @@ public class MediaContent implements JsonSerializable<MediaContent> {
      * Set the fields property: Extracted fields from the content.
      * 
      * @param fields the fields value to set.
-     * @return the MediaContent object itself.
+     * @return the AnalysisContent object itself.
      */
     @Generated
-    MediaContent setFields(Map<String, ContentField> fields) {
+    AnalysisContent setFields(Map<String, ContentField> fields) {
         this.fields = fields;
         return this;
     }
@@ -218,16 +218,16 @@ public class MediaContent implements JsonSerializable<MediaContent> {
     }
 
     /**
-     * Reads an instance of MediaContent from the JsonReader.
+     * Reads an instance of AnalysisContent from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaContent if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of AnalysisContent if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MediaContent.
+     * @throws IOException If an error occurs while reading the AnalysisContent.
      */
     @Generated
-    public static MediaContent fromJson(JsonReader jsonReader) throws IOException {
+    public static AnalysisContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -255,7 +255,7 @@ public class MediaContent implements JsonSerializable<MediaContent> {
     }
 
     @Generated
-    static MediaContent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static AnalysisContent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String mimeType = null;
             MediaContentKind kind = null;
@@ -286,15 +286,15 @@ public class MediaContent implements JsonSerializable<MediaContent> {
                     reader.skipChildren();
                 }
             }
-            MediaContent deserializedMediaContent = new MediaContent(mimeType);
-            deserializedMediaContent.kind = kind;
-            deserializedMediaContent.analyzerId = analyzerId;
-            deserializedMediaContent.category = category;
-            deserializedMediaContent.path = path;
-            deserializedMediaContent.markdown = markdown;
-            deserializedMediaContent.fields = fields;
+            AnalysisContent deserializedAnalysisContent = new AnalysisContent(mimeType);
+            deserializedAnalysisContent.kind = kind;
+            deserializedAnalysisContent.analyzerId = analyzerId;
+            deserializedAnalysisContent.category = category;
+            deserializedAnalysisContent.path = path;
+            deserializedAnalysisContent.markdown = markdown;
+            deserializedAnalysisContent.fields = fields;
 
-            return deserializedMediaContent;
+            return deserializedAnalysisContent;
         });
     }
 }

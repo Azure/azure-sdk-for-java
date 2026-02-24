@@ -51,7 +51,7 @@ public final class ContentAnalyzerAnalyzeOperationStatus
      * The result of the operation.
      */
     @Generated
-    private AnalyzeResult result;
+    private AnalysisResult result;
 
     /*
      * Usage details of the analyze operation.
@@ -107,7 +107,7 @@ public final class ContentAnalyzerAnalyzeOperationStatus
      * @return the result value.
      */
     @Generated
-    public AnalyzeResult getResult() {
+    public AnalysisResult getResult() {
         return this.result;
     }
 
@@ -151,7 +151,7 @@ public final class ContentAnalyzerAnalyzeOperationStatus
             String id = null;
             OperationState status = null;
             ResponseError error = null;
-            AnalyzeResult result = null;
+            AnalysisResult result = null;
             UsageDetails usage = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -163,7 +163,7 @@ public final class ContentAnalyzerAnalyzeOperationStatus
                 } else if ("error".equals(fieldName)) {
                     error = ResponseError.fromJson(reader);
                 } else if ("result".equals(fieldName)) {
-                    result = AnalyzeResult.fromJson(reader);
+                    result = AnalysisResult.fromJson(reader);
                 } else if ("usage".equals(fieldName)) {
                     usage = UsageDetails.fromJson(reader);
                 } else {

@@ -5,7 +5,7 @@
 package com.azure.ai.contentunderstanding.implementation;
 
 import com.azure.ai.contentunderstanding.ContentUnderstandingServiceVersion;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
@@ -865,7 +865,7 @@ public final class ContentUnderstandingClientImpl {
      * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>
+    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>
         beginAnalyzeWithModelAsync(String analyzerId, BinaryData analyzeRequest1, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.analyzeWithResponseAsync(analyzerId, analyzeRequest1, requestOptions),
@@ -878,7 +878,7 @@ public final class ContentUnderstandingClientImpl {
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
             TypeReference.createInstance(ContentAnalyzerAnalyzeOperationStatus.class),
-            TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalysisResult.class));
     }
 
     /**
@@ -991,7 +991,7 @@ public final class ContentUnderstandingClientImpl {
      * @return the {@link SyncPoller} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeWithModel(String analyzerId,
+    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeWithModel(String analyzerId,
         BinaryData analyzeRequest1, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeWithResponse(analyzerId, analyzeRequest1, requestOptions),
@@ -1004,7 +1004,7 @@ public final class ContentUnderstandingClientImpl {
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
             TypeReference.createInstance(ContentAnalyzerAnalyzeOperationStatus.class),
-            TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalysisResult.class));
     }
 
     /**
@@ -1573,7 +1573,7 @@ public final class ContentUnderstandingClientImpl {
      * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinaryWithModelAsync(
+    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinaryWithModelAsync(
         String analyzerId, String contentType, BinaryData binaryInput, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.analyzeBinaryWithResponseAsync(analyzerId, contentType, binaryInput, requestOptions),
@@ -1586,7 +1586,7 @@ public final class ContentUnderstandingClientImpl {
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
             TypeReference.createInstance(ContentAnalyzerAnalyzeOperationStatus.class),
-            TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalysisResult.class));
     }
 
     /**
@@ -1689,7 +1689,7 @@ public final class ContentUnderstandingClientImpl {
      * @return the {@link SyncPoller} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinaryWithModel(
+    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinaryWithModel(
         String analyzerId, String contentType, BinaryData binaryInput, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeBinaryWithResponse(analyzerId, contentType, binaryInput, requestOptions),
@@ -1702,7 +1702,7 @@ public final class ContentUnderstandingClientImpl {
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
             TypeReference.createInstance(ContentAnalyzerAnalyzeOperationStatus.class),
-            TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalysisResult.class));
     }
 
     /**

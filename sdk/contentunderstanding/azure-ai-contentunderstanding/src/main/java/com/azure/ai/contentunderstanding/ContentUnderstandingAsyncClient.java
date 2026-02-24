@@ -8,8 +8,8 @@ import com.azure.ai.contentunderstanding.implementation.JsonMergePatchHelper;
 import com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1;
 import com.azure.ai.contentunderstanding.implementation.models.CopyAnalyzerRequest;
 import com.azure.ai.contentunderstanding.implementation.models.GrantCopyAuthorizationRequest1;
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
@@ -1554,8 +1554,8 @@ public final class ContentUnderstandingAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyze(String analyzerId,
-        List<AnalyzeInput> inputs, String stringEncoding, Map<String, String> modelDeployments,
+    PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
+        List<AnalysisInput> inputs, String stringEncoding, Map<String, String> modelDeployments,
         ProcessingLocation processingLocation) {
         // Generated convenience method for beginAnalyzeWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -1585,8 +1585,8 @@ public final class ContentUnderstandingAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyze(String analyzerId,
-        List<AnalyzeInput> inputs, String stringEncoding) {
+    PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
+        List<AnalysisInput> inputs, String stringEncoding) {
         // Generated convenience method for beginAnalyzeWithModel
         RequestOptions requestOptions = new RequestOptions();
         AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs);
@@ -1616,7 +1616,7 @@ public final class ContentUnderstandingAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
+    PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput, String stringEncoding, String contentType, String contentRange,
         ProcessingLocation processingLocation) {
         // Generated convenience method for beginAnalyzeBinaryWithModel
@@ -1649,7 +1649,7 @@ public final class ContentUnderstandingAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
+    PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput, String stringEncoding, String contentType) {
         // Generated convenience method for beginAnalyzeBinaryWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -2035,6 +2035,7 @@ public final class ContentUnderstandingAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContentUnderstandingDefaults> updateDefaults(Map<String, String> modelDeployments) {
         ContentUnderstandingDefaults defaults = new ContentUnderstandingDefaults(modelDeployments);
         return updateDefaultsWithResponse(BinaryData.fromObject(defaults), null)
@@ -2051,6 +2052,7 @@ public final class ContentUnderstandingAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContentUnderstandingDefaults> updateDefaults(ContentUnderstandingDefaults defaults) {
         return updateDefaultsWithResponse(BinaryData.fromObject(defaults), null)
             .map(response -> response.getValue().toObject(ContentUnderstandingDefaults.class));
@@ -2067,7 +2069,7 @@ public final class ContentUnderstandingAsyncClient {
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
+    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput) {
         return beginAnalyzeBinary(analyzerId, binaryInput, (ContentRange) null, "application/octet-stream", null);
     }
@@ -2089,7 +2091,7 @@ public final class ContentUnderstandingAsyncClient {
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
+    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput, ContentRange contentRange, String contentType, ProcessingLocation processingLocation) {
         RequestOptions requestOptions = new RequestOptions();
         if (contentRange != null) {
@@ -2113,8 +2115,8 @@ public final class ContentUnderstandingAsyncClient {
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyze(String analyzerId,
-        List<AnalyzeInput> inputs) {
+    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
+        List<AnalysisInput> inputs) {
         return beginAnalyze(analyzerId, inputs, null, null);
     }
 
@@ -2130,8 +2132,8 @@ public final class ContentUnderstandingAsyncClient {
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyze(String analyzerId,
-        List<AnalyzeInput> inputs, Map<String, String> modelDeployments, ProcessingLocation processingLocation) {
+    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
+        List<AnalysisInput> inputs, Map<String, String> modelDeployments, ProcessingLocation processingLocation) {
         RequestOptions requestOptions = new RequestOptions();
         if (processingLocation != null) {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);

@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
  * Object field extracted from the content.
  */
 @Immutable
-public final class ObjectField extends ContentField {
+public final class ContentObjectField extends ContentField {
 
     /*
      * Semantic data type of the field value.
@@ -33,10 +33,10 @@ public final class ObjectField extends ContentField {
     private Map<String, ContentField> valueObject;
 
     /**
-     * Creates an instance of ObjectField class.
+     * Creates an instance of ContentObjectField class.
      */
     @Generated
-    private ObjectField() {
+    private ContentObjectField() {
     }
 
     /**
@@ -76,41 +76,41 @@ public final class ObjectField extends ContentField {
     }
 
     /**
-     * Reads an instance of ObjectField from the JsonReader.
+     * Reads an instance of ContentObjectField from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ObjectField if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ContentObjectField if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ObjectField.
+     * @throws IOException If an error occurs while reading the ContentObjectField.
      */
     @Generated
-    public static ObjectField fromJson(JsonReader jsonReader) throws IOException {
+    public static ContentObjectField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ObjectField deserializedObjectField = new ObjectField();
+            ContentObjectField deserializedContentObjectField = new ContentObjectField();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("spans".equals(fieldName)) {
                     List<ContentSpan> spans = reader.readArray(reader1 -> ContentSpan.fromJson(reader1));
-                    deserializedObjectField.setSpans(spans);
+                    deserializedContentObjectField.setSpans(spans);
                 } else if ("confidence".equals(fieldName)) {
-                    deserializedObjectField.setConfidence(reader.getNullable(JsonReader::getDouble));
+                    deserializedContentObjectField.setConfidence(reader.getNullable(JsonReader::getDouble));
                 } else if ("source".equals(fieldName)) {
-                    deserializedObjectField.setSource(reader.getString());
+                    deserializedContentObjectField.setSource(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    deserializedObjectField.type = ContentFieldType.fromString(reader.getString());
+                    deserializedContentObjectField.type = ContentFieldType.fromString(reader.getString());
                 } else if ("valueObject".equals(fieldName)) {
                     Map<String, ContentField> valueObject = reader.readMap(reader1 -> ContentField.fromJson(reader1));
-                    deserializedObjectField.valueObject = valueObject;
+                    deserializedContentObjectField.valueObject = valueObject;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedObjectField;
+            return deserializedContentObjectField;
         });
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ObjectField.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContentObjectField.class);
 
     /**
      * Gets a field from the object by name.

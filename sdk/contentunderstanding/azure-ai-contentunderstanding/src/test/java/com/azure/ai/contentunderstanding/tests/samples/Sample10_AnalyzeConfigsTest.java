@@ -4,7 +4,7 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentAnnotation;
 import com.azure.ai.contentunderstanding.models.DocumentChartFigure;
@@ -49,10 +49,10 @@ public class Sample10_AnalyzeConfigsTest extends ContentUnderstandingClientTestB
 
         // Analyze with prebuilt-documentSearch which has formulas, layout, and OCR enabled
         // These configs enable extraction of charts, annotations, hyperlinks, and formulas
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
-        AnalyzeResult result = operation.getFinalResult();
+        AnalysisResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeWithConfigs
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeWithConfigs

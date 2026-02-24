@@ -4,8 +4,8 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentField;
@@ -230,14 +230,14 @@ public class Sample16_CreateAnalyzerWithLabelsAsyncTest extends ContentUnderstan
                 String testDocUrl
                     = "https://github.com/Azure-Samples/cognitive-services-REST-api-samples/raw/master/curl/form-recognizer/sample-invoice.pdf";
 
-                AnalyzeInput input = new AnalyzeInput();
+                AnalysisInput input = new AnalysisInput();
                 input.setUrl(testDocUrl);
 
-                PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> analyzePoller
+                PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzePoller
                     = contentUnderstandingAsyncClient.beginAnalyze(analyzerId, Arrays.asList(input));
 
                 // Use reactive pattern for analyze operation
-                AnalyzeResult analyzeResult = analyzePoller.last().flatMap(pollResponse -> {
+                AnalysisResult analyzeResult = analyzePoller.last().flatMap(pollResponse -> {
                     if (pollResponse.getStatus().isComplete()) {
                         return pollResponse.getFinalResult();
                     } else {

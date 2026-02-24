@@ -4,8 +4,8 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentField;
@@ -219,10 +219,10 @@ public class Sample16_CreateAnalyzerWithLabelsTest extends ContentUnderstandingC
                 String testDocUrl
                     = "https://github.com/Azure-Samples/cognitive-services-REST-api-samples/raw/master/curl/form-recognizer/sample-invoice.pdf";
 
-                AnalyzeInput input = new AnalyzeInput();
+                AnalysisInput input = new AnalysisInput();
                 input.setUrl(testDocUrl);
 
-                AnalyzeResult analyzeResult
+                AnalysisResult analyzeResult
                     = contentUnderstandingClient.beginAnalyze(analyzerId, Arrays.asList(input)).getFinalResult();
 
                 System.out.println("Analysis completed!");

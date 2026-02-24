@@ -12,28 +12,28 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Time field extracted from the content.
+ * Integer field extracted from the content.
  */
 @Immutable
-public final class TimeField extends ContentField {
+public final class ContentIntegerField extends ContentField {
 
     /*
      * Semantic data type of the field value.
      */
     @Generated
-    private ContentFieldType type = ContentFieldType.TIME;
+    private ContentFieldType type = ContentFieldType.INTEGER;
 
     /*
-     * Time field value, in ISO 8601 (hh:mm:ss) format.
+     * Integer field value.
      */
     @Generated
-    private String valueTime;
+    private Long valueInteger;
 
     /**
-     * Creates an instance of TimeField class.
+     * Creates an instance of ContentIntegerField class.
      */
     @Generated
-    private TimeField() {
+    private ContentIntegerField() {
     }
 
     /**
@@ -48,13 +48,13 @@ public final class TimeField extends ContentField {
     }
 
     /**
-     * Get the valueTime property: Time field value, in ISO 8601 (hh:mm:ss) format.
+     * Get the valueInteger property: Integer field value.
      *
-     * @return the valueTime value.
+     * @return the valueInteger value.
      */
     @Generated
-    String getValueTime() {
-        return this.valueTime;
+    Long getValueInteger() {
+        return this.valueInteger;
     }
 
     /**
@@ -68,41 +68,41 @@ public final class TimeField extends ContentField {
         jsonWriter.writeNumberField("confidence", getConfidence());
         jsonWriter.writeStringField("source", getSource());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("valueTime", this.valueTime);
+        jsonWriter.writeNumberField("valueInteger", this.valueInteger);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of TimeField from the JsonReader.
+     * Reads an instance of ContentIntegerField from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TimeField if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IOException If an error occurs while reading the TimeField.
+     * @return An instance of ContentIntegerField if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContentIntegerField.
      */
     @Generated
-    public static TimeField fromJson(JsonReader jsonReader) throws IOException {
+    public static ContentIntegerField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            TimeField deserializedTimeField = new TimeField();
+            ContentIntegerField deserializedContentIntegerField = new ContentIntegerField();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("spans".equals(fieldName)) {
                     List<ContentSpan> spans = reader.readArray(reader1 -> ContentSpan.fromJson(reader1));
-                    deserializedTimeField.setSpans(spans);
+                    deserializedContentIntegerField.setSpans(spans);
                 } else if ("confidence".equals(fieldName)) {
-                    deserializedTimeField.setConfidence(reader.getNullable(JsonReader::getDouble));
+                    deserializedContentIntegerField.setConfidence(reader.getNullable(JsonReader::getDouble));
                 } else if ("source".equals(fieldName)) {
-                    deserializedTimeField.setSource(reader.getString());
+                    deserializedContentIntegerField.setSource(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    deserializedTimeField.type = ContentFieldType.fromString(reader.getString());
-                } else if ("valueTime".equals(fieldName)) {
-                    deserializedTimeField.valueTime = reader.getString();
+                    deserializedContentIntegerField.type = ContentFieldType.fromString(reader.getString());
+                } else if ("valueInteger".equals(fieldName)) {
+                    deserializedContentIntegerField.valueInteger = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedTimeField;
+            return deserializedContentIntegerField;
         });
     }
 
@@ -112,7 +112,7 @@ public final class TimeField extends ContentField {
      * @return the field value, or null if not available.
      */
     @Override
-    public String getValue() {
-        return getValueTime();
+    public Long getValue() {
+        return getValueInteger();
     }
 }

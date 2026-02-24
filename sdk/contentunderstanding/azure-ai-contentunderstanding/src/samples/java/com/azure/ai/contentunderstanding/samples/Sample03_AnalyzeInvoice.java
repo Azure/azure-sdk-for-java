@@ -6,15 +6,15 @@ package com.azure.ai.contentunderstanding.samples;
 
 import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
-import com.azure.ai.contentunderstanding.models.ArrayField;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.ContentArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
-import com.azure.ai.contentunderstanding.models.MediaContent;
-import com.azure.ai.contentunderstanding.models.ObjectField;
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
+import com.azure.ai.contentunderstanding.models.ContentObjectField;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -56,13 +56,13 @@ public class Sample03_AnalyzeInvoice {
         String invoiceUrl
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(invoiceUrl);
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
-        AnalyzeResult result = operation.getFinalResult();
+        AnalysisResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeInvoice
 
         System.out.println("Analysis operation completed");
@@ -70,7 +70,7 @@ public class Sample03_AnalyzeInvoice {
 
         // BEGIN:ContentUnderstandingExtractInvoiceFields
         // Get the document content (invoices are documents)
-        MediaContent firstContent = result.getContents().get(0);
+        AnalysisContent firstContent = result.getContents().get(0);
         if (firstContent instanceof DocumentContent) {
             DocumentContent documentContent = (DocumentContent) firstContent;
 
@@ -91,7 +91,7 @@ public class Sample03_AnalyzeInvoice {
             // Use getValue() instead of casting to specific types
             // Note: getValue() returns the actual typed value - String, Number, LocalDate, etc.
             String customerName = customerNameField != null ? (String) customerNameField.getValue() : null;
-            // InvoiceDate is a DateField, so getValue() returns LocalDate - convert to String for display
+            // InvoiceDate is a ContentDateField, so getValue() returns LocalDate - convert to String for display
             Object invoiceDateValue = invoiceDateField != null ? invoiceDateField.getValue() : null;
             String invoiceDate = invoiceDateValue != null ? invoiceDateValue.toString() : null;
 
@@ -129,8 +129,8 @@ public class Sample03_AnalyzeInvoice {
             // getFieldOrDefault() returns null if the field doesn't exist (safe access pattern)
             ContentField totalAmountField
                 = documentContent.getFields() != null ? documentContent.getFields().get("TotalAmount") : null;
-            if (totalAmountField instanceof ObjectField) {
-                ObjectField totalAmountObj = (ObjectField) totalAmountField;
+            if (totalAmountField instanceof ContentObjectField) {
+                ContentObjectField totalAmountObj = (ContentObjectField) totalAmountField;
 
                 // Use getFieldOrDefault() for safe nested field access
                 ContentField amountField = totalAmountObj.getFieldOrDefault("Amount");
@@ -154,8 +154,8 @@ public class Sample03_AnalyzeInvoice {
             // size() returns the number of elements, get(index) returns the element at the index
             ContentField lineItemsField
                 = documentContent.getFields() != null ? documentContent.getFields().get("LineItems") : null;
-            if (lineItemsField instanceof ArrayField) {
-                ArrayField lineItems = (ArrayField) lineItemsField;
+            if (lineItemsField instanceof ContentArrayField) {
+                ContentArrayField lineItems = (ContentArrayField) lineItemsField;
 
                 // Use size() instead of getValueArray().size()
                 System.out.println("Line Items (" + lineItems.size() + "):");
@@ -163,8 +163,8 @@ public class Sample03_AnalyzeInvoice {
                 // Use get(i) instead of getValueArray().get(i)
                 for (int i = 0; i < lineItems.size(); i++) {
                     ContentField itemField = lineItems.get(i);
-                    if (itemField instanceof ObjectField) {
-                        ObjectField item = (ObjectField) itemField;
+                    if (itemField instanceof ContentObjectField) {
+                        ContentObjectField item = (ContentObjectField) itemField;
 
                         // Use getFieldOrDefault() and getValue() for cleaner access
                         ContentField descField = item.getFieldOrDefault("Description");

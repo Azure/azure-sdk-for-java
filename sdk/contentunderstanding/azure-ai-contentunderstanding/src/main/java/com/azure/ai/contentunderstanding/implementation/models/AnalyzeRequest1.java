@@ -4,7 +4,7 @@
 
 package com.azure.ai.contentunderstanding.implementation.models;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -24,7 +24,7 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
      * Inputs to analyze. Currently, only pro mode supports multiple inputs.
      */
     @Generated
-    private final List<AnalyzeInput> inputs;
+    private final List<AnalysisInput> inputs;
 
     /*
      * Override the resource-level default mapping of supported large language model (LLM) names to model deployment
@@ -44,7 +44,7 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
      * @param inputs the inputs value to set.
      */
     @Generated
-    public AnalyzeRequest1(List<AnalyzeInput> inputs) {
+    public AnalyzeRequest1(List<AnalysisInput> inputs) {
         this.inputs = inputs;
     }
 
@@ -54,7 +54,7 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
      * @return the inputs value.
      */
     @Generated
-    public List<AnalyzeInput> getInputs() {
+    public List<AnalysisInput> getInputs() {
         return this.inputs;
     }
 
@@ -117,14 +117,14 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
     @Generated
     public static AnalyzeRequest1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<AnalyzeInput> inputs = null;
+            List<AnalysisInput> inputs = null;
             Map<String, String> modelDeployments = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> AnalyzeInput.fromJson(reader1));
+                    inputs = reader.readArray(reader1 -> AnalysisInput.fromJson(reader1));
                 } else if ("modelDeployments".equals(fieldName)) {
                     modelDeployments = reader.readMap(reader1 -> reader1.getString());
                 } else {

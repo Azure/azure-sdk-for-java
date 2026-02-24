@@ -17,7 +17,7 @@ import java.util.Map;
  * Document content. Ex. text/plain, application/pdf, image/jpeg.
  */
 @Immutable
-public final class DocumentContent extends MediaContent {
+public final class DocumentContent extends AnalysisContent {
     /*
      * Content kind.
      */

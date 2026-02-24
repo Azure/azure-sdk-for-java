@@ -166,23 +166,23 @@ public class ContentField implements JsonSerializable<ContentField> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("string".equals(discriminatorValue)) {
-                    return StringField.fromJson(readerToUse.reset());
+                    return ContentStringField.fromJson(readerToUse.reset());
                 } else if ("date".equals(discriminatorValue)) {
-                    return DateField.fromJson(readerToUse.reset());
+                    return ContentDateField.fromJson(readerToUse.reset());
                 } else if ("time".equals(discriminatorValue)) {
-                    return TimeField.fromJson(readerToUse.reset());
+                    return ContentTimeField.fromJson(readerToUse.reset());
                 } else if ("number".equals(discriminatorValue)) {
-                    return NumberField.fromJson(readerToUse.reset());
+                    return ContentNumberField.fromJson(readerToUse.reset());
                 } else if ("integer".equals(discriminatorValue)) {
-                    return IntegerField.fromJson(readerToUse.reset());
+                    return ContentIntegerField.fromJson(readerToUse.reset());
                 } else if ("boolean".equals(discriminatorValue)) {
-                    return BooleanField.fromJson(readerToUse.reset());
+                    return ContentBooleanField.fromJson(readerToUse.reset());
                 } else if ("array".equals(discriminatorValue)) {
-                    return ArrayField.fromJson(readerToUse.reset());
+                    return ContentArrayField.fromJson(readerToUse.reset());
                 } else if ("object".equals(discriminatorValue)) {
-                    return ObjectField.fromJson(readerToUse.reset());
+                    return ContentObjectField.fromJson(readerToUse.reset());
                 } else if ("json".equals(discriminatorValue)) {
-                    return JsonField.fromJson(readerToUse.reset());
+                    return ContentJsonField.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -218,15 +218,15 @@ public class ContentField implements JsonSerializable<ContentField> {
      * Gets the value of the field, regardless of its type.
      * This base method returns {@code Object}. Each subclass also overrides this method
      * with a covariant return type for compile-time type safety:
-     * - {@link StringField#getValue()} returns {@code String}
-     * - {@link NumberField#getValue()} returns {@code Double}
-     * - {@link IntegerField#getValue()} returns {@code Long}
-     * - {@link DateField#getValue()} returns {@code LocalDate}
-     * - {@link TimeField#getValue()} returns {@code String}
-     * - {@link BooleanField#getValue()} returns {@code Boolean}
-     * - {@link ObjectField#getValue()} returns {@code Map<String, ContentField>}
-     * - {@link ArrayField#getValue()} returns {@code List<ContentField>}
-     * - {@link JsonField#getValue()} returns {@code BinaryData}
+     * - {@link ContentStringField#getValue()} returns {@code String}
+     * - {@link ContentNumberField#getValue()} returns {@code Double}
+     * - {@link ContentIntegerField#getValue()} returns {@code Long}
+     * - {@link ContentDateField#getValue()} returns {@code LocalDate}
+     * - {@link ContentTimeField#getValue()} returns {@code String}
+     * - {@link ContentBooleanField#getValue()} returns {@code Boolean}
+     * - {@link ContentObjectField#getValue()} returns {@code Map<String, ContentField>}
+     * - {@link ContentArrayField#getValue()} returns {@code List<ContentField>}
+     * - {@link ContentJsonField#getValue()} returns {@code BinaryData}
      *
      * When you have a reference to the specific subclass, use its typed {@code getValue()}
      * to avoid casting. When you only have a {@code ContentField} reference, this method
@@ -235,32 +235,32 @@ public class ContentField implements JsonSerializable<ContentField> {
      * @return the field value, or null if not available.
      */
     public Object getValue() {
-        if (this instanceof StringField) {
-            return ((StringField) this).getValueString();
+        if (this instanceof ContentStringField) {
+            return ((ContentStringField) this).getValueString();
         }
-        if (this instanceof NumberField) {
-            return ((NumberField) this).getValueNumber();
+        if (this instanceof ContentNumberField) {
+            return ((ContentNumberField) this).getValueNumber();
         }
-        if (this instanceof IntegerField) {
-            return ((IntegerField) this).getValueInteger();
+        if (this instanceof ContentIntegerField) {
+            return ((ContentIntegerField) this).getValueInteger();
         }
-        if (this instanceof DateField) {
-            return ((DateField) this).getValueDate();
+        if (this instanceof ContentDateField) {
+            return ((ContentDateField) this).getValueDate();
         }
-        if (this instanceof TimeField) {
-            return ((TimeField) this).getValueTime();
+        if (this instanceof ContentTimeField) {
+            return ((ContentTimeField) this).getValueTime();
         }
-        if (this instanceof BooleanField) {
-            return ((BooleanField) this).isValueBoolean();
+        if (this instanceof ContentBooleanField) {
+            return ((ContentBooleanField) this).isValueBoolean();
         }
-        if (this instanceof ObjectField) {
-            return ((ObjectField) this).getValueObject();
+        if (this instanceof ContentObjectField) {
+            return ((ContentObjectField) this).getValueObject();
         }
-        if (this instanceof ArrayField) {
-            return ((ArrayField) this).getValueArray();
+        if (this instanceof ContentArrayField) {
+            return ((ContentArrayField) this).getValueArray();
         }
-        if (this instanceof JsonField) {
-            return ((JsonField) this).getValueJson();
+        if (this instanceof ContentJsonField) {
+            return ((ContentJsonField) this).getValueJson();
         }
         return null;
     }

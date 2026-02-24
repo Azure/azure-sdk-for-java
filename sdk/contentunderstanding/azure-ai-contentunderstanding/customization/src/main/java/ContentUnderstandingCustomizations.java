@@ -37,7 +37,7 @@ import org.slf4j.Logger;
  *   <li>Add {@code beginAnalyze} and {@code beginAnalyzeBinary} convenience overloads without a
  *       {@code stringEncoding} parameter (default utf16).</li>
  *   <li>Add {@code beginAnalyzeBinary} overload accepting {@link com.azure.ai.contentunderstanding.models.ContentRange ContentRange}
- *       and {@code setContentRange(ContentRange)} on {@code AnalyzeInput} for a self-documenting range API.</li>
+ *       and {@code setContentRange(ContentRange)} on {@code AnalysisInput} for a self-documenting range API.</li>
  * </ul>
  *
  * <p><b>Scenarios and before/after</b></p>
@@ -46,7 +46,7 @@ import org.slf4j.Logger;
  * getResultFile or deleteResult) after starting analyze.</p>
  * <pre>{@code
  * // Before: generated model had no operationId; caller could not get it from the status.
- * SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller = client.beginAnalyze(...);
+ * SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller = client.beginAnalyze(...);
  * ContentAnalyzerAnalyzeOperationStatus status = poller.getFinalResult(); // no getOperationId()
  *
  * // After: status carries operationId, set automatically by polling strategy from Operation-Location header.
@@ -55,39 +55,39 @@ import org.slf4j.Logger;
  * }</pre>
  *
  * <p><b>Content/array/object field extensions</b> — Scenario: Reading document fields
- * (ContentField and subtypes StringField, NumberField, DateField, ObjectField, ArrayField) without
+ * (ContentField and subtypes ContentStringField, ContentNumberField, ContentDateField, ContentObjectField, ContentArrayField) without
  * casting to each subtype or manually navigating getValueObject()/getValueArray().</p>
- * <p>ContentField.getValue() — get typed value without casting to StringField/NumberField/etc.:</p>
+ * <p>ContentField.getValue() — get typed value without casting to ContentStringField/ContentNumberField/etc.:</p>
  * <pre>{@code
  * // Before: Cast to subtype and call type-specific getter, then print.
  * ContentField customerNameField = content.getFields().get("CustomerName");
- * String customerName = customerNameField instanceof StringField
- *     ? ((StringField) customerNameField).getValueString() : null;
+ * String customerName = customerNameField instanceof ContentStringField
+ *     ? ((ContentStringField) customerNameField).getValueString() : null;
  * System.out.println("Customer: " + customerName);
  *
  * // After: getValue() returns the typed value; no cast needed for console output.
  * ContentField customerNameField = content.getFields().get("CustomerName");
  * System.out.println("Customer: " + (customerNameField != null ? customerNameField.getValue() : null));
  * }</pre>
- * <p>ObjectField.getFieldOrDefault() — navigate nested object by name:</p>
+ * <p>ContentObjectField.getFieldOrDefault() — navigate nested object by name:</p>
  * <pre>{@code
- * // Before: Use getValueObject() and map lookup; cast to NumberField for value.
+ * // Before: Use getValueObject() and map lookup; cast to ContentNumberField for value.
  * ContentField totalField = content.getFields().get("TotalAmount");
- * ObjectField totalObj = (ObjectField) totalField;
+ * ContentObjectField totalObj = (ContentObjectField) totalField;
  * ContentField amountField = totalObj.getValueObject() != null ? totalObj.getValueObject().get("Amount") : null;
- * Double amount = amountField instanceof NumberField ? ((NumberField) amountField).getValueNumber() : null;
+ * Double amount = amountField instanceof ContentNumberField ? ((ContentNumberField) amountField).getValueNumber() : null;
  *
  * // After: getFieldOrDefault(name); then getValue() for the typed value.
  * ContentField totalField = content.getFields().get("TotalAmount");
- * ObjectField totalObj = (ObjectField) totalField;
+ * ContentObjectField totalObj = (ContentObjectField) totalField;
  * ContentField amountField = totalObj.getFieldOrDefault("Amount");
  * Double amount = amountField != null ? (Double) amountField.getValue() : null;
  * }</pre>
- * <p>ArrayField.size() and get(i) — iterate array elements without getValueArray():</p>
+ * <p>ContentArrayField.size() and get(i) — iterate array elements without getValueArray():</p>
  * <pre>{@code
  * // Before: Call getValueArray() and use List size/get; null-check the list.
  * ContentField lineItemsField = content.getFields().get("LineItems");
- * ArrayField lineItems = (ArrayField) lineItemsField;
+ * ContentArrayField lineItems = (ContentArrayField) lineItemsField;
  * int count = lineItems.getValueArray() != null ? lineItems.getValueArray().size() : 0;
  * for (int i = 0; i < count; i++) {
  *     ContentField item = lineItems.getValueArray().get(i);
@@ -96,7 +96,7 @@ import org.slf4j.Logger;
  *
  * // After: size() and get(i) convenience methods; get(i) throws IndexOutOfBoundsException if out of range.
  * ContentField lineItemsField = content.getFields().get("LineItems");
- * ArrayField lineItems = (ArrayField) lineItemsField;
+ * ContentArrayField lineItems = (ContentArrayField) lineItemsField;
  * for (int i = 0; i < lineItems.size(); i++) {
  *     ContentField item = lineItems.get(i);
  *     // use item...
@@ -109,8 +109,8 @@ import org.slf4j.Logger;
  * // Before: Generated API required stringEncoding parameter (if present), e.g. beginAnalyze(..., "utf16").
  *
  * // After: Convenience overloads default utf16; caller uses simple signatures.
- * SyncPoller<..., AnalyzeResult> poller = client.beginAnalyze(analyzerId, inputs);
- * SyncPoller<..., AnalyzeResult> binaryPoller = client.beginAnalyzeBinary(analyzerId, binaryInput);
+ * SyncPoller<..., AnalysisResult> poller = client.beginAnalyze(analyzerId, inputs);
+ * SyncPoller<..., AnalysisResult> binaryPoller = client.beginAnalyzeBinary(analyzerId, binaryInput);
  * }</pre>
  *
  * <h3>Fix service issue (SERVICE-FIX)</h3>
@@ -140,8 +140,8 @@ public class ContentUnderstandingCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        // Add operationId field to AnalyzeResult model
-        customizeAnalyzeResult(customization, logger);
+        // Add operationId field to AnalysisResult model
+        customizeAnalysisResult(customization, logger);
 
         // Customize PollingUtils to add parseOperationId method
         customizePollingUtils(customization, logger);
@@ -175,7 +175,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         // Add beginAnalyzeBinary convenience overloads (no stringEncoding)
         addBeginAnalyzeBinaryConvenienceOverloads(customization, logger);
 
-        // Add ContentRange overloads for beginAnalyzeBinary and setInputRange on AnalyzeInput
+        // Add ContentRange overloads for beginAnalyzeBinary and setInputRange on AnalysisInput
         addContentRangeOverloads(customization, logger);
         addContentRangeSetterToAnalyzeInput(customization, logger);
 
@@ -198,7 +198,7 @@ public class ContentUnderstandingCustomizations extends Customization {
     /**
      * Add operationId field and getter/setter to ContentAnalyzerAnalyzeOperationStatus
      */
-    private void customizeAnalyzeResult(LibraryCustomization customization, Logger logger) {
+    private void customizeAnalysisResult(LibraryCustomization customization, Logger logger) {
         logger.info("Customizing ContentAnalyzerAnalyzeOperationStatus to add operationId field");
 
         customization.getClass(MODELS_PACKAGE, "ContentAnalyzerAnalyzeOperationStatus")
@@ -452,45 +452,45 @@ public class ContentUnderstandingCustomizations extends Customization {
                         "Gets the value of the field, regardless of its type.\n"
                         + "This base method returns {@code Object}. Each subclass also overrides this method\n"
                         + "with a covariant return type for compile-time type safety:\n"
-                        + "- {@link StringField#getValue()} returns {@code String}\n"
-                        + "- {@link NumberField#getValue()} returns {@code Double}\n"
-                        + "- {@link IntegerField#getValue()} returns {@code Long}\n"
-                        + "- {@link DateField#getValue()} returns {@code LocalDate}\n"
-                        + "- {@link TimeField#getValue()} returns {@code String}\n"
-                        + "- {@link BooleanField#getValue()} returns {@code Boolean}\n"
-                        + "- {@link ObjectField#getValue()} returns {@code Map<String, ContentField>}\n"
-                        + "- {@link ArrayField#getValue()} returns {@code List<ContentField>}\n"
-                        + "- {@link JsonField#getValue()} returns {@code BinaryData}\n\n"
+                        + "- {@link ContentStringField#getValue()} returns {@code String}\n"
+                        + "- {@link ContentNumberField#getValue()} returns {@code Double}\n"
+                        + "- {@link ContentIntegerField#getValue()} returns {@code Long}\n"
+                        + "- {@link ContentDateField#getValue()} returns {@code LocalDate}\n"
+                        + "- {@link ContentTimeField#getValue()} returns {@code String}\n"
+                        + "- {@link ContentBooleanField#getValue()} returns {@code Boolean}\n"
+                        + "- {@link ContentObjectField#getValue()} returns {@code Map<String, ContentField>}\n"
+                        + "- {@link ContentArrayField#getValue()} returns {@code List<ContentField>}\n"
+                        + "- {@link ContentJsonField#getValue()} returns {@code BinaryData}\n\n"
                         + "When you have a reference to the specific subclass, use its typed {@code getValue()}\n"
                         + "to avoid casting. When you only have a {@code ContentField} reference, this method\n"
                         + "returns the value as {@code Object}."))
                         .addBlockTag("return", "the field value, or null if not available."))
                     .setBody(StaticJavaParser.parseBlock("{"
-                        + "if (this instanceof StringField) { return ((StringField) this).getValueString(); }"
-                        + "if (this instanceof NumberField) { return ((NumberField) this).getValueNumber(); }"
-                        + "if (this instanceof IntegerField) { return ((IntegerField) this).getValueInteger(); }"
-                        + "if (this instanceof DateField) { return ((DateField) this).getValueDate(); }"
-                        + "if (this instanceof TimeField) { return ((TimeField) this).getValueTime(); }"
-                        + "if (this instanceof BooleanField) { return ((BooleanField) this).isValueBoolean(); }"
-                        + "if (this instanceof ObjectField) { return ((ObjectField) this).getValueObject(); }"
-                        + "if (this instanceof ArrayField) { return ((ArrayField) this).getValueArray(); }"
-                        + "if (this instanceof JsonField) { return ((JsonField) this).getValueJson(); }"
+                        + "if (this instanceof ContentStringField) { return ((ContentStringField) this).getValueString(); }"
+                        + "if (this instanceof ContentNumberField) { return ((ContentNumberField) this).getValueNumber(); }"
+                        + "if (this instanceof ContentIntegerField) { return ((ContentIntegerField) this).getValueInteger(); }"
+                        + "if (this instanceof ContentDateField) { return ((ContentDateField) this).getValueDate(); }"
+                        + "if (this instanceof ContentTimeField) { return ((ContentTimeField) this).getValueTime(); }"
+                        + "if (this instanceof ContentBooleanField) { return ((ContentBooleanField) this).isValueBoolean(); }"
+                        + "if (this instanceof ContentObjectField) { return ((ContentObjectField) this).getValueObject(); }"
+                        + "if (this instanceof ContentArrayField) { return ((ContentArrayField) this).getValueArray(); }"
+                        + "if (this instanceof ContentJsonField) { return ((ContentJsonField) this).getValueJson(); }"
                         + "return null; }"));
             }));
     }
 
     /**
-     * Add convenience methods to ArrayField class (equivalent to ArrayField.Extensions.cs)
+     * Add convenience methods to ContentArrayField class (equivalent to ArrayField.Extensions.cs)
      */
     private void customizeArrayFieldExtensions(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding convenience methods to ArrayField class");
+        logger.info("Adding convenience methods to ContentArrayField class");
 
-        customization.getClass(MODELS_PACKAGE, "ArrayField").customizeAst(ast -> {
+        customization.getClass(MODELS_PACKAGE, "ContentArrayField").customizeAst(ast -> {
             ast.addImport("com.azure.core.util.logging.ClientLogger");
-            ast.getClassByName("ArrayField").ifPresent(clazz -> {
+            ast.getClassByName("ContentArrayField").ifPresent(clazz -> {
                 // Add static ClientLogger for throwing through Azure SDK lint (ThrowFromClientLoggerCheck)
                 clazz.addFieldWithInitializer("ClientLogger", "LOGGER",
-                    StaticJavaParser.parseExpression("new ClientLogger(ArrayField.class)"),
+                    StaticJavaParser.parseExpression("new ClientLogger(ContentArrayField.class)"),
                     Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
 
                 // Add size() method - equivalent to Count property in C#
@@ -521,18 +521,18 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Add convenience methods to ObjectField class (equivalent to ObjectField.Extensions.cs)
+     * Add convenience methods to ContentObjectField class (equivalent to ObjectField.Extensions.cs)
      */
     private void customizeObjectFieldExtensions(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding convenience methods to ObjectField class");
+        logger.info("Adding convenience methods to ContentObjectField class");
 
-        customization.getClass(MODELS_PACKAGE, "ObjectField").customizeAst(ast -> {
+        customization.getClass(MODELS_PACKAGE, "ContentObjectField").customizeAst(ast -> {
             ast.addImport("com.azure.core.util.logging.ClientLogger");
             ast.addImport("java.util.NoSuchElementException");
-            ast.getClassByName("ObjectField").ifPresent(clazz -> {
+            ast.getClassByName("ContentObjectField").ifPresent(clazz -> {
                 // Add static ClientLogger for throwing through Azure SDK lint (ThrowFromClientLoggerCheck)
                 clazz.addFieldWithInitializer("ClientLogger", "LOGGER",
-                    StaticJavaParser.parseExpression("new ClientLogger(ObjectField.class)"),
+                    StaticJavaParser.parseExpression("new ClientLogger(ContentObjectField.class)"),
                     Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
 
                 // Add getField(String fieldName) method - equivalent to indexer in C# (throw via ClientLogger per SDK lint)
@@ -713,12 +713,15 @@ public class ContentUnderstandingCustomizations extends Customization {
         // Add to sync client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults");
+            ast.addImport("com.azure.core.annotation.ReturnType");
+            ast.addImport("com.azure.core.annotation.ServiceMethod");
             ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport("java.util.Map");
 
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
                 // Add updateDefaults convenience method with Map parameter - returns ContentUnderstandingDefaults directly
                 clazz.addMethod("updateDefaults", Modifier.Keyword.PUBLIC)
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
                     .setType("ContentUnderstandingDefaults")
                     .addParameter("Map<String, String>", "modelDeployments")
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
@@ -737,6 +740,7 @@ public class ContentUnderstandingCustomizations extends Customization {
 
                 // Add updateDefaults convenience method with ContentUnderstandingDefaults parameter
                 clazz.addMethod("updateDefaults", Modifier.Keyword.PUBLIC)
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
                     .setType("ContentUnderstandingDefaults")
                     .addParameter("ContentUnderstandingDefaults", "defaults")
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
@@ -755,12 +759,15 @@ public class ContentUnderstandingCustomizations extends Customization {
         // Add to async client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults");
+            ast.addImport("com.azure.core.annotation.ReturnType");
+            ast.addImport("com.azure.core.annotation.ServiceMethod");
             ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport("java.util.Map");
 
             ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
                 // Add updateDefaults convenience method with Map parameter - returns Mono<ContentUnderstandingDefaults>
                 clazz.addMethod("updateDefaults", Modifier.Keyword.PUBLIC)
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
                     .setType("Mono<ContentUnderstandingDefaults>")
                     .addParameter("Map<String, String>", "modelDeployments")
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
@@ -779,6 +786,7 @@ public class ContentUnderstandingCustomizations extends Customization {
 
                 // Add updateDefaults convenience method with ContentUnderstandingDefaults parameter
                 clazz.addMethod("updateDefaults", Modifier.Keyword.PUBLIC)
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
                     .setType("Mono<ContentUnderstandingDefaults>")
                     .addParameter("ContentUnderstandingDefaults", "defaults")
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
@@ -808,7 +816,7 @@ public class ContentUnderstandingCustomizations extends Customization {
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
                 // 2-param: analyzerId, binaryInput
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
-                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
                     .addParameter("String", "analyzerId")
                     .addParameter("BinaryData", "binaryInput")
                     .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
@@ -831,7 +839,7 @@ public class ContentUnderstandingCustomizations extends Customization {
             ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
                 // 2-param: analyzerId, binaryInput
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
-                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
                     .addParameter("String", "analyzerId")
                     .addParameter("BinaryData", "binaryInput")
                     .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
@@ -862,7 +870,7 @@ public class ContentUnderstandingCustomizations extends Customization {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
-                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
                     .addParameter("String", "analyzerId")
                     .addParameter("BinaryData", "binaryInput")
                     .addParameter("ContentRange", "contentRange")
@@ -896,7 +904,7 @@ public class ContentUnderstandingCustomizations extends Customization {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
             ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
-                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
                     .addParameter("String", "analyzerId")
                     .addParameter("BinaryData", "binaryInput")
                     .addParameter("ContentRange", "contentRange")
@@ -927,17 +935,17 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Add setContentRange(ContentRange) overload to AnalyzeInput model class.
+     * Add setContentRange(ContentRange) overload to AnalysisInput model class.
      * This allows users to pass a ContentRange directly instead of a raw String.
      */
     private void addContentRangeSetterToAnalyzeInput(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding setContentRange(ContentRange) overload to AnalyzeInput");
+        logger.info("Adding setContentRange(ContentRange) overload to AnalysisInput");
 
-        customization.getClass(MODELS_PACKAGE, "AnalyzeInput").customizeAst(ast -> {
+        customization.getClass(MODELS_PACKAGE, "AnalysisInput").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
-            ast.getClassByName("AnalyzeInput").ifPresent(clazz -> {
+            ast.getClassByName("AnalysisInput").ifPresent(clazz -> {
                 clazz.addMethod("setContentRange", Modifier.Keyword.PUBLIC)
-                    .setType("AnalyzeInput")
+                    .setType("AnalysisInput")
                     .addParameter("ContentRange", "contentRange")
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
                         "Set the contentRange property using a {@link ContentRange} for a self-documenting API.\n\n"
@@ -945,7 +953,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "{@link ContentRange#timeRange(long, long)}, or "
                         + "{@link ContentRange#combine(ContentRange...)} to build the range."))
                         .addBlockTag("param", "contentRange the range value to set, or null to clear.")
-                        .addBlockTag("return", "the AnalyzeInput object itself."))
+                        .addBlockTag("return", "the AnalysisInput object itself."))
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "this.contentRange = contentRange != null ? contentRange.toString() : null;"
                         + "return this; }"));
@@ -967,9 +975,9 @@ public class ContentUnderstandingCustomizations extends Customization {
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
                 // 2-param: analyzerId, inputs
                 clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
-                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
                     .addParameter("String", "analyzerId")
-                    .addParameter("List<AnalyzeInput>", "inputs")
+                    .addParameter("List<AnalysisInput>", "inputs")
                     .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
                         "Extract content and fields from inputs. Uses default string encoding (utf16), "
@@ -984,9 +992,9 @@ public class ContentUnderstandingCustomizations extends Customization {
 
                 // 4-param: analyzerId, inputs, modelDeployments, processingLocation
                 clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
-                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
                     .addParameter("String", "analyzerId")
-                    .addParameter("List<AnalyzeInput>", "inputs")
+                    .addParameter("List<AnalysisInput>", "inputs")
                     .addParameter("Map<String, String>", "modelDeployments")
                     .addParameter("ProcessingLocation", "processingLocation")
                     .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
@@ -1016,9 +1024,9 @@ public class ContentUnderstandingCustomizations extends Customization {
             ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
                 // 2-param: analyzerId, inputs
                 clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
-                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
                     .addParameter("String", "analyzerId")
-                    .addParameter("List<AnalyzeInput>", "inputs")
+                    .addParameter("List<AnalysisInput>", "inputs")
                     .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
                         "Extract content and fields from inputs. Uses default string encoding (utf16), "
@@ -1033,9 +1041,9 @@ public class ContentUnderstandingCustomizations extends Customization {
 
                 // 4-param: analyzerId, inputs, modelDeployments, processingLocation
                 clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
-                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
                     .addParameter("String", "analyzerId")
-                    .addParameter("List<AnalyzeInput>", "inputs")
+                    .addParameter("List<AnalysisInput>", "inputs")
                     .addParameter("Map<String, String>", "modelDeployments")
                     .addParameter("ProcessingLocation", "processingLocation")
                     .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
@@ -1063,46 +1071,46 @@ public class ContentUnderstandingCustomizations extends Customization {
      * Add typed getValue() override to each ContentField subclass and hide the verbose getters
      * (e.g., getValueString, getValueNumber) by removing their PUBLIC modifier.
      *
-     * Each subclass's getValue() returns the covariant return type (e.g., String for StringField)
+     * Each subclass's getValue() returns the covariant return type (e.g., String for ContentStringField)
      * and delegates to the now-package-private verbose getter.
      */
     private void customizeFieldValueAccessors(LibraryCustomization customization, Logger logger) {
         logger.info("Adding typed getValue() to ContentField subclasses and hiding verbose getters");
 
-        // StringField: getValue() -> String, hide getValueString()
-        addTypedGetValueAndHideVerbose(customization, "StringField", "String", "getValueString",
+        // ContentStringField: getValue() -> String, hide getValueString()
+        addTypedGetValueAndHideVerbose(customization, "ContentStringField", "String", "getValueString",
             "getValueString()", logger);
 
-        // NumberField: getValue() -> Double, hide getValueNumber()
-        addTypedGetValueAndHideVerbose(customization, "NumberField", "Double", "getValueNumber",
+        // ContentNumberField: getValue() -> Double, hide getValueNumber()
+        addTypedGetValueAndHideVerbose(customization, "ContentNumberField", "Double", "getValueNumber",
             "getValueNumber()", logger);
 
-        // IntegerField: getValue() -> Long, hide getValueInteger()
-        addTypedGetValueAndHideVerbose(customization, "IntegerField", "Long", "getValueInteger",
+        // ContentIntegerField: getValue() -> Long, hide getValueInteger()
+        addTypedGetValueAndHideVerbose(customization, "ContentIntegerField", "Long", "getValueInteger",
             "getValueInteger()", logger);
 
-        // DateField: getValue() -> LocalDate, hide getValueDate()
-        addTypedGetValueAndHideVerbose(customization, "DateField", "LocalDate", "getValueDate",
+        // ContentDateField: getValue() -> LocalDate, hide getValueDate()
+        addTypedGetValueAndHideVerbose(customization, "ContentDateField", "LocalDate", "getValueDate",
             "getValueDate()", logger);
 
-        // TimeField: getValue() -> String, hide getValueTime()
-        addTypedGetValueAndHideVerbose(customization, "TimeField", "String", "getValueTime",
+        // ContentTimeField: getValue() -> String, hide getValueTime()
+        addTypedGetValueAndHideVerbose(customization, "ContentTimeField", "String", "getValueTime",
             "getValueTime()", logger);
 
-        // BooleanField: getValue() -> Boolean, hide isValueBoolean()
-        addTypedGetValueAndHideVerbose(customization, "BooleanField", "Boolean", "isValueBoolean",
+        // ContentBooleanField: getValue() -> Boolean, hide isValueBoolean()
+        addTypedGetValueAndHideVerbose(customization, "ContentBooleanField", "Boolean", "isValueBoolean",
             "isValueBoolean()", logger);
 
-        // ObjectField: getValue() -> Map<String, ContentField>, hide getValueObject()
-        addTypedGetValueAndHideVerbose(customization, "ObjectField", "Map<String, ContentField>", "getValueObject",
+        // ContentObjectField: getValue() -> Map<String, ContentField>, hide getValueObject()
+        addTypedGetValueAndHideVerbose(customization, "ContentObjectField", "Map<String, ContentField>", "getValueObject",
             "getValueObject()", logger);
 
-        // ArrayField: getValue() -> List<ContentField>, hide getValueArray()
-        addTypedGetValueAndHideVerbose(customization, "ArrayField", "List<ContentField>", "getValueArray",
+        // ContentArrayField: getValue() -> List<ContentField>, hide getValueArray()
+        addTypedGetValueAndHideVerbose(customization, "ContentArrayField", "List<ContentField>", "getValueArray",
             "getValueArray()", logger);
 
-        // JsonField: getValue() -> BinaryData, hide getValueJson()
-        addTypedGetValueAndHideVerbose(customization, "JsonField", "BinaryData", "getValueJson",
+        // ContentJsonField: getValue() -> BinaryData, hide getValueJson()
+        addTypedGetValueAndHideVerbose(customization, "ContentJsonField", "BinaryData", "getValueJson",
             "getValueJson()", logger);
     }
 

@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter;
  * 3. Pretty-printing and saving JSON to file
  *
  * Note: For production use, prefer the object model approach (beginAnalyzeBinary with typed parameters)
- * which returns AnalyzeResult objects that are easier to work with.
+ * which returns AnalysisResult objects that are easier to work with.
  */
 public class Sample11_AnalyzeReturnRawJson {
 
@@ -66,7 +66,7 @@ public class Sample11_AnalyzeReturnRawJson {
 
         // Use protocol method to get raw JSON response
         // Note: For production use, prefer the object model approach (beginAnalyze with typed parameters)
-        // which returns AnalyzeResult objects that are easier to work with
+        // which returns AnalysisResult objects that are easier to work with
         SyncPoller<BinaryData, BinaryData> operation
             = client.beginAnalyze("prebuilt-documentSearch", requestBody, new RequestOptions());
 

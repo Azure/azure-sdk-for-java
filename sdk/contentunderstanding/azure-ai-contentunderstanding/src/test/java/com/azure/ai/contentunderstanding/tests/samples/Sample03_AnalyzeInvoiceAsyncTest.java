@@ -4,15 +4,15 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
-import com.azure.ai.contentunderstanding.models.ArrayField;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.ContentArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
-import com.azure.ai.contentunderstanding.models.MediaContent;
-import com.azure.ai.contentunderstanding.models.ObjectField;
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
+import com.azure.ai.contentunderstanding.models.ContentObjectField;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -41,15 +41,15 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
         String invoiceUrl
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(invoiceUrl);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
         // Use reactive pattern: chain operations using flatMap
         // In a real application, you would use subscribe() instead of block()
-        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+        AnalysisResult result = operation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
             } else {
@@ -72,7 +72,7 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
 
         // BEGIN:ContentUnderstandingExtractInvoiceFieldsAsync
         // Get the document content (invoices are documents)
-        MediaContent firstContent = result.getContents().get(0);
+        AnalysisContent firstContent = result.getContents().get(0);
         if (firstContent instanceof DocumentContent) {
             DocumentContent documentContent = (DocumentContent) firstContent;
 
@@ -94,7 +94,7 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
             // Use getValue() instead of casting to specific types
             // Note: getValue() returns the actual typed value - String, Number, LocalDate, etc.
             String customerName = customerNameField != null ? (String) customerNameField.getValue() : null;
-            // InvoiceDate is a DateField, so getValue() returns LocalDate - convert to String for display
+            // InvoiceDate is a ContentDateField, so getValue() returns LocalDate - convert to String for display
             Object invoiceDateValue = invoiceDateField != null ? invoiceDateField.getValue() : null;
             String invoiceDate = invoiceDateValue != null ? invoiceDateValue.toString() : null;
 
@@ -132,8 +132,8 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
             // getFieldOrDefault() returns null if the field doesn't exist (safe access pattern)
             ContentField totalAmountField
                 = documentContent.getFields() != null ? documentContent.getFields().get("TotalAmount") : null;
-            if (totalAmountField instanceof ObjectField) {
-                ObjectField totalAmountObj = (ObjectField) totalAmountField;
+            if (totalAmountField instanceof ContentObjectField) {
+                ContentObjectField totalAmountObj = (ContentObjectField) totalAmountField;
 
                 // Use getFieldOrDefault() for safe nested field access
                 ContentField amountField = totalAmountObj.getFieldOrDefault("Amount");
@@ -156,15 +156,15 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
             // Extract array fields (collections like line items) using size() and get() convenience methods
             ContentField lineItemsField
                 = documentContent.getFields() != null ? documentContent.getFields().get("LineItems") : null;
-            if (lineItemsField instanceof ArrayField) {
-                ArrayField lineItems = (ArrayField) lineItemsField;
+            if (lineItemsField instanceof ContentArrayField) {
+                ContentArrayField lineItems = (ContentArrayField) lineItemsField;
                 // Use size() convenience method instead of getValueArray().size()
                 System.out.println("Line Items (" + lineItems.size() + "):");
                 for (int i = 0; i < lineItems.size(); i++) {
                     // Use get(index) convenience method instead of getValueArray().get(i)
                     ContentField itemField = lineItems.get(i);
-                    if (itemField instanceof ObjectField) {
-                        ObjectField item = (ObjectField) itemField;
+                    if (itemField instanceof ContentObjectField) {
+                        ContentObjectField item = (ContentObjectField) itemField;
                         // Use getFieldOrDefault() for safe nested access
                         ContentField descField = item.getFieldOrDefault("Description");
                         ContentField qtyField = item.getFieldOrDefault("Quantity");
@@ -185,7 +185,7 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
         // END:ContentUnderstandingExtractInvoiceFieldsAsync
 
         // BEGIN:Assertion_ContentUnderstandingExtractInvoiceFieldsAsync
-        MediaContent content = result.getContents().get(0);
+        AnalysisContent content = result.getContents().get(0);
         assertNotNull(content, "Content should not be null");
         assertTrue(content instanceof DocumentContent, "Content should be of type DocumentContent");
 

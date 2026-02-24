@@ -4,8 +4,8 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 
@@ -18,8 +18,8 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
-import com.azure.ai.contentunderstanding.models.NumberField;
-import com.azure.ai.contentunderstanding.models.StringField;
+import com.azure.ai.contentunderstanding.models.ContentNumberField;
+import com.azure.ai.contentunderstanding.models.ContentStringField;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -327,16 +327,16 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
             String documentUrl
                 = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
 
-            AnalyzeInput input = new AnalyzeInput();
+            AnalysisInput input = new AnalysisInput();
             input.setUrl(documentUrl);
 
             // Analyze a document using the custom analyzer
-            PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> analyzeOperation
+            PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzeOperation
                 = contentUnderstandingAsyncClient.beginAnalyze(analyzerId, Arrays.asList(input));
 
             // Use reactive pattern: chain operations using flatMap
             // In a real application, you would use subscribe() instead of block()
-            AnalyzeResult analyzeResult = analyzeOperation.last().flatMap(pollResponse -> {
+            AnalysisResult analyzeResult = analyzeOperation.last().flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
                     return pollResponse.getFinalResult();
                 } else {
@@ -355,8 +355,8 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
                 // Extract field (literal text extraction)
                 ContentField companyNameField
                     = content.getFields() != null ? content.getFields().get("company_name") : null;
-                if (companyNameField instanceof StringField) {
-                    StringField sf = (StringField) companyNameField;
+                if (companyNameField instanceof ContentStringField) {
+                    ContentStringField sf = (ContentStringField) companyNameField;
                     String companyName = sf.getValue();
                     System.out
                         .println("Company Name (extract): " + (companyName != null ? companyName : "(not found)"));
@@ -376,8 +376,8 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
                 // Extract field (literal text extraction)
                 ContentField totalAmountField
                     = content.getFields() != null ? content.getFields().get("total_amount") : null;
-                if (totalAmountField instanceof NumberField) {
-                    NumberField nf = (NumberField) totalAmountField;
+                if (totalAmountField instanceof ContentNumberField) {
+                    ContentNumberField nf = (ContentNumberField) totalAmountField;
                     Double totalAmount = nf.getValue();
                     System.out.println("Total Amount (extract): "
                         + (totalAmount != null ? String.format("%.2f", totalAmount) : "(not found)"));
@@ -397,8 +397,8 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
                 // Generate field (AI-generated value)
                 ContentField summaryField
                     = content.getFields() != null ? content.getFields().get("document_summary") : null;
-                if (summaryField instanceof StringField) {
-                    StringField sf = (StringField) summaryField;
+                if (summaryField instanceof ContentStringField) {
+                    ContentStringField sf = (ContentStringField) summaryField;
                     String summary = sf.getValue();
                     System.out.println("Document Summary (generate): " + (summary != null ? summary : "(not found)"));
                     System.out.println("  Confidence: " + (summaryField.getConfidence() != null
@@ -413,8 +413,8 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
                 // Classify field (classification against predefined categories)
                 ContentField documentTypeField
                     = content.getFields() != null ? content.getFields().get("document_type") : null;
-                if (documentTypeField instanceof StringField) {
-                    StringField sf = (StringField) documentTypeField;
+                if (documentTypeField instanceof ContentStringField) {
+                    ContentStringField sf = (ContentStringField) documentTypeField;
                     String documentType = sf.getValue();
                     System.out
                         .println("Document Type (classify): " + (documentType != null ? documentType : "(not found)"));
@@ -451,10 +451,11 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
                 = documentContent.getFields() != null ? documentContent.getFields().get("company_name") : null;
             if (companyNameFieldAssert != null) {
                 System.out.println("company_name field found");
-                assertTrue(companyNameFieldAssert instanceof StringField, "company_name should be a StringField");
+                assertTrue(companyNameFieldAssert instanceof ContentStringField,
+                    "company_name should be a ContentStringField");
 
-                if (companyNameFieldAssert instanceof StringField) {
-                    StringField cnf = (StringField) companyNameFieldAssert;
+                if (companyNameFieldAssert instanceof ContentStringField) {
+                    ContentStringField cnf = (ContentStringField) companyNameFieldAssert;
                     if (cnf.getValue() != null && !cnf.getValue().trim().isEmpty()) {
                         System.out.println("  Value: " + cnf.getValue());
                     }

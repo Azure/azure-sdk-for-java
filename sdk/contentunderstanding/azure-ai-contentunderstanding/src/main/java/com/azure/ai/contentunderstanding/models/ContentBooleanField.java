@@ -12,28 +12,28 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Integer field extracted from the content.
+ * Boolean field extracted from the content.
  */
 @Immutable
-public final class IntegerField extends ContentField {
+public final class ContentBooleanField extends ContentField {
 
     /*
      * Semantic data type of the field value.
      */
     @Generated
-    private ContentFieldType type = ContentFieldType.INTEGER;
+    private ContentFieldType type = ContentFieldType.BOOLEAN;
 
     /*
-     * Integer field value.
+     * Boolean field value.
      */
     @Generated
-    private Long valueInteger;
+    private Boolean valueBoolean;
 
     /**
-     * Creates an instance of IntegerField class.
+     * Creates an instance of ContentBooleanField class.
      */
     @Generated
-    private IntegerField() {
+    private ContentBooleanField() {
     }
 
     /**
@@ -48,13 +48,13 @@ public final class IntegerField extends ContentField {
     }
 
     /**
-     * Get the valueInteger property: Integer field value.
+     * Get the valueBoolean property: Boolean field value.
      *
-     * @return the valueInteger value.
+     * @return the valueBoolean value.
      */
     @Generated
-    Long getValueInteger() {
-        return this.valueInteger;
+    Boolean isValueBoolean() {
+        return this.valueBoolean;
     }
 
     /**
@@ -68,41 +68,41 @@ public final class IntegerField extends ContentField {
         jsonWriter.writeNumberField("confidence", getConfidence());
         jsonWriter.writeStringField("source", getSource());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeNumberField("valueInteger", this.valueInteger);
+        jsonWriter.writeBooleanField("valueBoolean", this.valueBoolean);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of IntegerField from the JsonReader.
+     * Reads an instance of ContentBooleanField from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of IntegerField if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ContentBooleanField if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the IntegerField.
+     * @throws IOException If an error occurs while reading the ContentBooleanField.
      */
     @Generated
-    public static IntegerField fromJson(JsonReader jsonReader) throws IOException {
+    public static ContentBooleanField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            IntegerField deserializedIntegerField = new IntegerField();
+            ContentBooleanField deserializedContentBooleanField = new ContentBooleanField();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("spans".equals(fieldName)) {
                     List<ContentSpan> spans = reader.readArray(reader1 -> ContentSpan.fromJson(reader1));
-                    deserializedIntegerField.setSpans(spans);
+                    deserializedContentBooleanField.setSpans(spans);
                 } else if ("confidence".equals(fieldName)) {
-                    deserializedIntegerField.setConfidence(reader.getNullable(JsonReader::getDouble));
+                    deserializedContentBooleanField.setConfidence(reader.getNullable(JsonReader::getDouble));
                 } else if ("source".equals(fieldName)) {
-                    deserializedIntegerField.setSource(reader.getString());
+                    deserializedContentBooleanField.setSource(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    deserializedIntegerField.type = ContentFieldType.fromString(reader.getString());
-                } else if ("valueInteger".equals(fieldName)) {
-                    deserializedIntegerField.valueInteger = reader.getNullable(JsonReader::getLong);
+                    deserializedContentBooleanField.type = ContentFieldType.fromString(reader.getString());
+                } else if ("valueBoolean".equals(fieldName)) {
+                    deserializedContentBooleanField.valueBoolean = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedIntegerField;
+            return deserializedContentBooleanField;
         });
     }
 
@@ -112,7 +112,7 @@ public final class IntegerField extends ContentField {
      * @return the field value, or null if not available.
      */
     @Override
-    public Long getValue() {
-        return getValueInteger();
+    public Boolean getValue() {
+        return isValueBoolean();
     }
 }
