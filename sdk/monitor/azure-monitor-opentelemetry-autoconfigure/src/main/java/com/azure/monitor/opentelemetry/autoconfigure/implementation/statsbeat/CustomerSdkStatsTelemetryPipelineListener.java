@@ -53,10 +53,9 @@ public class CustomerSdkStatsTelemetryPipelineListener implements TelemetryPipel
             String retryCode = String.valueOf(statusCode);
             String retryReason = getReasonPhraseForStatusCode(statusCode);
             customerSdkStats.incrementRetryCount(itemCountsByType, retryCode, retryReason);
-        } else if (StatusCode.isRedirect(statusCode)) {
-            // Redirects are handled transparently by the HTTP client; do not count
-        } else {
-            // Non-retryable status codes: items are dropped
+        } else if (!StatusCode.isRedirect(statusCode)) {
+            // Non-redirect, non-retryable status codes: items are dropped.
+            // Redirects are handled transparently by the HTTP client and are not counted.
             String dropCode = String.valueOf(statusCode);
             String dropReason = getReasonPhraseForStatusCode(statusCode);
             customerSdkStats.incrementDroppedCount(itemCountsByType, dropCode, dropReason,

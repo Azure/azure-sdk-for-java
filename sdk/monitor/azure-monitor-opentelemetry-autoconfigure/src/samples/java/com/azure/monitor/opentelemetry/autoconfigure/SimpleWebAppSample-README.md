@@ -6,8 +6,8 @@ A long-running web app that generates telemetry and validates customer-facing SD
 
 ## Prerequisites
 
-- **Java 21**: `C:\Program Files\Microsoft\jdk-21.0.10.7-hotspot`
-- **Maven 3.9.9**: `C:\apache-maven\apache-maven-3.9.9`
+- **Java 8+** (JDK 8, 11, 17, or 21)
+- **Maven 3.6+**
 - The `azure-monitor-opentelemetry-autoconfigure` module must be compiled (including test sources).
 
 ---
@@ -16,22 +16,29 @@ A long-running web app that generates telemetry and validates customer-facing SD
 
 ### 1. Set up environment variables
 
-Open a PowerShell terminal:
+Ensure `JAVA_HOME` points to your JDK installation and Maven is on your `PATH`.
 
+**Windows (PowerShell):**
 ```powershell
-$env:JAVA_HOME = "C:\Program Files\Microsoft\jdk-21.0.10.7-hotspot"
-$env:PATH = "C:\apache-maven\apache-maven-3.9.9\bin;$env:JAVA_HOME\bin;$env:PATH"
+$env:JAVA_HOME = "<path-to-your-jdk>"
+$env:PATH = "<path-to-maven>/bin;$env:JAVA_HOME/bin;$env:PATH"
+```
+
+**Linux / macOS:**
+```bash
+export JAVA_HOME=<path-to-your-jdk>
+export PATH=<path-to-maven>/bin:$JAVA_HOME/bin:$PATH
 ```
 
 ### 2. Navigate to the project
 
-```powershell
-cd c:\repo\azure-sdk-for-java\sdk\monitor\azure-monitor-opentelemetry-autoconfigure
+```bash
+cd sdk/monitor/azure-monitor-opentelemetry-autoconfigure
 ```
 
 ### 3. Compile
 
-```powershell
+```bash
 mvn compile test-compile
 ```
 
@@ -39,8 +46,14 @@ mvn compile test-compile
 
 Set the SDKStats export interval to 60 seconds (instead of the default 900) so results appear sooner:
 
+**Windows (PowerShell):**
 ```powershell
 $env:APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL = "60"
+```
+
+**Linux / macOS:**
+```bash
+export APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL=60
 ```
 
 Then pick **one** of the following modes:
@@ -48,8 +61,9 @@ Then pick **one** of the following modes:
 #### Success mode (default)
 
 Telemetry is sent to real Azure Monitor. You will see `Item_Success_Count` in the `customMetrics` table.
+Set `APPLICATIONINSIGHTS_CONNECTION_STRING` to your Application Insights connection string.
 
-```powershell
+```bash
 # No TEST_MODE needed — defaults to "success"
 ```
 
@@ -57,27 +71,21 @@ Telemetry is sent to real Azure Monitor. You will see `Item_Success_Count` in th
 
 A local mock server on port 9090 returns **400** for all requests. You will see `Item_Dropped_Count` printed in the console.
 
-```powershell
-$env:TEST_MODE = "drop"
-```
+**Windows:** `$env:TEST_MODE = "drop"` &nbsp;|&nbsp; **Linux/macOS:** `export TEST_MODE=drop`
 
 #### Retry mode
 
 A local mock server on port 9090 returns **500** for all requests. You will see `Item_Retry_Count` printed in the console.
 
-```powershell
-$env:TEST_MODE = "retry"
-```
+**Windows:** `$env:TEST_MODE = "retry"` &nbsp;|&nbsp; **Linux/macOS:** `export TEST_MODE=retry`
 
 #### Optional: enable Azure SDK logging
 
-```powershell
-$env:AZURE_LOG_LEVEL = "informational"
-```
+**Windows:** `$env:AZURE_LOG_LEVEL = "informational"` &nbsp;|&nbsp; **Linux/macOS:** `export AZURE_LOG_LEVEL=informational`
 
 ### 5. Run the sample
 
-```powershell
+```bash
 mvn exec:java "-Dexec.mainClass=com.azure.monitor.opentelemetry.autoconfigure.SimpleWebAppSample" "-Dexec.classpathScope=test"
 ```
 
@@ -92,14 +100,14 @@ You should see:
 
 ### 6. Generate telemetry
 
-Open a **second** PowerShell terminal and hit the endpoints:
+Open a **second** terminal and hit the endpoints:
 
-```powershell
-Invoke-WebRequest http://localhost:8080/
-Invoke-WebRequest http://localhost:8080/dependency
-Invoke-WebRequest http://localhost:8080/error
-Invoke-WebRequest http://localhost:8080/exception
-Invoke-WebRequest http://localhost:8080/load
+```bash
+curl http://localhost:8080/
+curl http://localhost:8080/dependency
+curl http://localhost:8080/error
+curl http://localhost:8080/exception
+curl http://localhost:8080/load
 ```
 
 | Endpoint       | What it does                              |
