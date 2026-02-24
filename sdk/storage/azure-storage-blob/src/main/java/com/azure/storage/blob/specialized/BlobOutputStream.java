@@ -375,8 +375,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private Mono<Void> writePages(Flux<ByteBuffer> pageData, int length, long offset) {
             return client
-                .uploadPagesWithResponse(new PageRange().setStart(offset).setEnd(offset + length - 1), pageData, null,
-                    pageBlobRequestConditions, requestChecksumAlgorithm, com.azure.core.util.Context.NONE)
+                .uploadPagesWithResponseInternal(new PageRange().setStart(offset).setEnd(offset + length - 1), pageData,
+                    null, pageBlobRequestConditions, requestChecksumAlgorithm, com.azure.core.util.Context.NONE)
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);

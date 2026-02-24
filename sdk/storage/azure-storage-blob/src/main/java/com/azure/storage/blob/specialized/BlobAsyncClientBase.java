@@ -1170,7 +1170,7 @@ public class BlobAsyncClientBase {
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         try {
-            return withContext(context -> downloadStreamWithResponse(range, options, requestConditions,
+            return withContext(context -> downloadStreamWithResponseInternal(range, options, requestConditions,
                 getRangeContentMd5, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1187,7 +1187,7 @@ public class BlobAsyncClientBase {
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobDownloadStreamOptions options) {
         try {
             BlobDownloadStreamOptions finalOptions = options == null ? new BlobDownloadStreamOptions() : options;
-            return withContext(context -> downloadStreamWithResponse(finalOptions.getRange(),
+            return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
                 finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
                 finalOptions.isRetrieveContentRangeMd5(), finalOptions.getResponseChecksumAlgorithm(), context));
         } catch (RuntimeException ex) {
@@ -1228,7 +1228,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions) {
         try {
             return withContext(
-                context -> downloadStreamWithResponse(null, options, requestConditions, false, null, context)
+                context -> downloadStreamWithResponseInternal(null, options, requestConditions, false, null, context)
                     .flatMap(r -> BinaryData.fromFlux(r.getValue())
                         .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
                             r.getHeaders(), data, r.getDeserializedHeaders()))));
@@ -1247,7 +1247,7 @@ public class BlobAsyncClientBase {
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(BlobDownloadContentOptions options) {
         try {
             BlobDownloadContentOptions finalOptions = options == null ? new BlobDownloadContentOptions() : options;
-            return withContext(context -> downloadStreamWithResponse(finalOptions.getRange(),
+            return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
                 finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
                 finalOptions.isRetrieveContentRangeMd5(), finalOptions.getResponseChecksumAlgorithm(), context)
                     .flatMap(r -> BinaryData.fromFlux(r.getValue())
@@ -1258,7 +1258,7 @@ public class BlobAsyncClientBase {
         }
     }
 
-    Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
+    Mono<BlobDownloadAsyncResponse> downloadStreamWithResponseInternal(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         StorageChecksumAlgorithm responseChecksumAlgorithm, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
@@ -1574,7 +1574,7 @@ public class BlobAsyncClientBase {
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
-            = (range, conditions) -> this.downloadStreamWithResponse(range, downloadRetryOptions, conditions,
+            = (range, conditions) -> this.downloadStreamWithResponseInternal(range, downloadRetryOptions, conditions,
                 rangeGetContentMd5, responseChecksumAlgorithm, context);
 
         return ChunkedDownloadUtils

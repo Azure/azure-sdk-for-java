@@ -583,8 +583,8 @@ public final class PageBlobClient extends BlobClientBase {
         StorageImplUtils.assertNotNull("body", body);
         final long length = pageRange.getEnd() - pageRange.getStart() + 1;
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES, true);
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange, fbb, contentMd5,
-            pageBlobRequestConditions, requestChecksumAlgorithm, context);
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponseInternal(pageRange, fbb,
+            contentMd5, pageBlobRequestConditions, requestChecksumAlgorithm, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

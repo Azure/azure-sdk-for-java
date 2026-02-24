@@ -17,7 +17,7 @@ import java.nio.ByteBuffer;
  * Extended options that may be passed when appending a block to an append blob.
  */
 @Fluent
-public class AppendBlobAppendBlockOptions {
+public final class AppendBlobAppendBlockOptions {
     private final InputStream bodyStream;
     private final Flux<ByteBuffer> bodyFlux;
     private final long length;

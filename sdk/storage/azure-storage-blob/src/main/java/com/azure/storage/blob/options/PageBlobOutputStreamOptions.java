@@ -13,7 +13,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
  * Extended options that may be passed when opening an output stream to a page blob.
  */
 @Fluent
-public class PageBlobOutputStreamOptions {
+public final class PageBlobOutputStreamOptions {
     private final PageRange pageRange;
     private BlobRequestConditions requestConditions;
     private StorageChecksumAlgorithm requestChecksumAlgorithm;

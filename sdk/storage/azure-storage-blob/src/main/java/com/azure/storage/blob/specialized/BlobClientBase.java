@@ -516,7 +516,7 @@ public class BlobClientBase {
         com.azure.storage.common.ParallelTransferOptions parallelTransferOptions
             = new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
-            = (chunkRange, conditions) -> client.downloadStreamWithResponse(chunkRange, null, conditions, false,
+            = (chunkRange, conditions) -> client.downloadStreamWithResponseInternal(chunkRange, null, conditions, false,
                 responseChecksumAlgorithm, contextFinal);
         return ChunkedDownloadUtils
             .downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
@@ -1276,7 +1276,7 @@ public class BlobClientBase {
         StorageChecksumAlgorithm responseChecksumAlgorithm, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
-            .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5,
+            .downloadStreamWithResponseInternal(range, options, requestConditions, getRangeContentMd5,
                 responseChecksumAlgorithm, context)
             .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
                 .thenReturn(new BlobDownloadResponse(response)));
@@ -1402,12 +1402,12 @@ public class BlobClientBase {
     public BlobDownloadContentResponse downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions, BlobRange range, boolean getRangeContentMd5, Duration timeout,
         Context context) {
-        Mono<BlobDownloadContentResponse> download
-            = client.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, null, context)
-                .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        data, r.getDeserializedHeaders())))
-                .map(BlobDownloadContentResponse::new);
+        Mono<BlobDownloadContentResponse> download = client
+            .downloadStreamWithResponseInternal(range, options, requestConditions, getRangeContentMd5, null, context)
+            .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                    data, r.getDeserializedHeaders())))
+            .map(BlobDownloadContentResponse::new);
 
         return blockWithOptionalTimeout(download, timeout);
     }

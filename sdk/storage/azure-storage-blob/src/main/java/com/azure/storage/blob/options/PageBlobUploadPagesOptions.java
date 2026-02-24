@@ -18,7 +18,7 @@ import java.nio.ByteBuffer;
  * Extended options that may be passed when uploading pages to a page blob.
  */
 @Fluent
-public class PageBlobUploadPagesOptions {
+public final class PageBlobUploadPagesOptions {
     private final PageRange pageRange;
     private final Flux<ByteBuffer> bodyFlux;
     private final InputStream bodyStream;
