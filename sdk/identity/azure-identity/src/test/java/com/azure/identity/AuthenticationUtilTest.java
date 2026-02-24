@@ -10,13 +10,24 @@ import java.util.function.Supplier;
 
 import static com.azure.identity.AuthenticationUtil.getBearerTokenSupplier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.azure.core.http.HttpClient;
+import com.azure.core.test.http.MockHttpResponse;
+import static org.mockito.Mockito.mockStatic;
+import org.mockito.MockedStatic;
+import reactor.core.publisher.Mono;
 
 public class AuthenticationUtilTest {
 
     @Test
     public void testGetBearerTokenSupplier() {
-        MockTokenCredential credential = new MockTokenCredential();
-        Supplier<String> supplier = getBearerTokenSupplier(credential, "scope");
-        assertEquals("mockToken", supplier.get());
+        HttpClient mockHttpClient = request -> Mono.just(new MockHttpResponse(request, 200));
+
+        try (MockedStatic<HttpClient> httpClientMock = mockStatic(HttpClient.class)) {
+            httpClientMock.when(HttpClient::createDefault).thenReturn(mockHttpClient);
+
+            MockTokenCredential credential = new MockTokenCredential();
+            Supplier<String> supplier = getBearerTokenSupplier(credential, "scope");
+            assertEquals("mockToken", supplier.get());
+        }
     }
 }
