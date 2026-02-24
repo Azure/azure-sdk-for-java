@@ -24,6 +24,10 @@ public final class AzureMonitorHelper {
         @Nullable CustomerSdkStatsTelemetryPipelineListener customerSdkStatsListener) {
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline, statsbeatModule::shutdown);
 
+        // Listener ordering matters: localStorageListener must come before customerSdkStatsListener
+        // so that telemetry is persisted to disk (for later retry) before the retry is recorded in
+        // SDKStats. If the order is reversed, SDKStats would record a retry before the items are
+        // actually persisted, and a persistence failure would not be reflected.
         TelemetryPipelineListener telemetryPipelineListener;
         if (tempDir == null) {
             DiagnosticTelemetryPipelineListener diagnosticListener = new DiagnosticTelemetryPipelineListener(

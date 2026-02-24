@@ -31,22 +31,31 @@ final class CustomerSdkStatsExceptionCategory {
     }
 
     /**
-     * Returns true if the exception represents a timeout scenario (use CLIENT_TIMEOUT retry code),
-     * false for other exceptions (use CLIENT_EXCEPTION retry code).
+     * Returns true if any exception in the cause chain represents a timeout scenario
+     * (use CLIENT_TIMEOUT retry code), false otherwise (use CLIENT_EXCEPTION retry code).
      */
     static boolean isTimeout(Throwable throwable) {
-        if (throwable == null) {
-            return false;
-        }
-        return isTimeoutType(throwable);
-    }
-
-    private static String categorizeByType(Throwable throwable) {
-        // Traverse the cause chain to find the most specific category
         Throwable current = throwable;
         int depth = 0;
         while (current != null && depth < 10) {
-            if (isTimeoutType(current)) {
+            if (isSingleTimeoutType(current)) {
+                return true;
+            }
+            current = current.getCause();
+            depth++;
+        }
+        return false;
+    }
+
+    private static String categorizeByType(Throwable throwable) {
+        // Traverse the cause chain to find the most specific category.
+        // Each type-check method examines only the current node (no nested traversal)
+        // so that priority ordering (timeout > network > storage) is evaluated
+        // consistently at each level of the chain.
+        Throwable current = throwable;
+        int depth = 0;
+        while (current != null && depth < 10) {
+            if (isSingleTimeoutType(current)) {
                 return TIMEOUT_EXCEPTION;
             }
             if (isNetworkType(current)) {
@@ -61,25 +70,18 @@ final class CustomerSdkStatsExceptionCategory {
         return CLIENT_EXCEPTION;
     }
 
-    private static boolean isTimeoutType(Throwable throwable) {
-        // Check the cause chain
-        Throwable current = throwable;
-        int depth = 0;
-        while (current != null && depth < 10) {
-            if (current instanceof SocketTimeoutException || current instanceof TimeoutException) {
-                return true;
-            }
-            // Check class name for netty timeout types without creating a hard dependency
-            String className = current.getClass().getName();
-            if (className.contains("TimeoutException")
-                || className.contains("ReadTimeoutException")
-                || className.contains("WriteTimeoutException")) {
-                return true;
-            }
-            current = current.getCause();
-            depth++;
+    /**
+     * Checks whether a single throwable (not its cause chain) is a timeout type.
+     */
+    private static boolean isSingleTimeoutType(Throwable throwable) {
+        if (throwable instanceof SocketTimeoutException || throwable instanceof TimeoutException) {
+            return true;
         }
-        return false;
+        // Check class name for netty timeout types without creating a hard dependency
+        String className = throwable.getClass().getName();
+        return className.contains("TimeoutException")
+            || className.contains("ReadTimeoutException")
+            || className.contains("WriteTimeoutException");
     }
 
     private static boolean isNetworkType(Throwable throwable) {

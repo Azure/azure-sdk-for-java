@@ -79,6 +79,10 @@ public class TelemetryItemExporter {
      * Used for sending customer SDKStats metrics themselves to prevent recursive counting.
      * Items sent via this method will NOT trigger CustomerSdkStatsTelemetryPipelineListener
      * since the TelemetryPipelineRequest will have empty item count maps.
+     *
+     * <p>This intentionally bypasses {@link #internalSendByBatch} and its AKS
+     * {@code _OTELRESOURCE_} metric injection, since SDKStats metrics are not
+     * application telemetry and should not carry OTel resource attributes.</p>
      */
     public CompletableResultCode sendWithoutTracking(List<TelemetryItem> telemetryItems) {
         Map<TelemetryItemBatchKey, List<TelemetryItem>> batches = splitIntoBatches(telemetryItems);
@@ -136,6 +140,16 @@ public class TelemetryItemExporter {
     CompletableResultCode internalSendByBatch(TelemetryItemBatchKey telemetryItemBatchKey,
         List<TelemetryItem> telemetryItems) {
         List<ByteBuffer> byteBuffers;
+
+        // Compute per-type item counts BEFORE injecting internal metrics (e.g. _OTELRESOURCE_)
+        // so that only customer telemetry is counted in SDKStats.
+        // TODO consider moving this computation into the statsbeat package to avoid a cross-layer
+        //  dependency from TelemetryItemExporter (pipeline) → CustomerSdkStatsTelemetryType (statsbeat)
+        Map<String, Long> itemCountsByType = new HashMap<>();
+        Map<String, Long> successItemCountsByType = new HashMap<>();
+        Map<String, Long> failureItemCountsByType = new HashMap<>();
+        computeItemCountMetadata(telemetryItems, itemCountsByType, successItemCountsByType, failureItemCountsByType);
+
         // Don't send _OTELRESOURCE_ custom metric when OTEL_RESOURCE_ATTRIBUTES env var is empty
         // Don't send _OTELRESOURCE_ custom metric to Statsbeat yet
         // Don't Send _OTELRESOURCE_ when the app is running on other env other than AKS
@@ -145,12 +159,6 @@ public class TelemetryItemExporter {
             && AksResourceAttributes.isAks(telemetryItemBatchKey.resource)) {
             telemetryItems.add(0, createOtelResourceMetric(telemetryItemBatchKey));
         }
-
-        // Compute per-type item counts before serialization for customer-facing SDKStats
-        Map<String, Long> itemCountsByType = new HashMap<>();
-        Map<String, Long> successItemCountsByType = new HashMap<>();
-        Map<String, Long> failureItemCountsByType = new HashMap<>();
-        computeItemCountMetadata(telemetryItems, itemCountsByType, successItemCountsByType, failureItemCountsByType);
 
         try {
             byteBuffers = serialize(telemetryItems);

@@ -24,6 +24,8 @@ public class TelemetryPipelineRequest {
     private final int contentLength;
 
     // Customer-facing SDKStats metadata: item counts by telemetry type
+    // TODO consider extracting these three maps into a lightweight TelemetryBatchMetadata value
+    //  object to reduce parameter proliferation and simplify TelemetryPipeline.send() signatures
     private final Map<String, Long> itemCountsByType;
     private final Map<String, Long> successItemCountsByType;
     private final Map<String, Long> failureItemCountsByType;

@@ -265,6 +265,8 @@ class AzureMonitorExporterBuilder {
         return CustomerSdkStats.create(version);
     }
 
+    // TODO consider reading SDKStats env vars from ConfigProperties (like STATSBEAT_*_PROPERTY_NAME)
+    //  instead of System.getenv() directly, for testability and consistency
     private boolean isCustomerSdkStatsEnabled() {
         String disabledEnvVar = System.getenv(SDKSTATS_DISABLED_ENV_VAR);
         if ("true".equalsIgnoreCase(disabledEnvVar)) {
