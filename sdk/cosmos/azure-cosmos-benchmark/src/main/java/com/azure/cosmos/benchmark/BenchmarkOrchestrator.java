@@ -270,10 +270,11 @@ public class BenchmarkOrchestrator {
             // Inject shared micrometer registry
             tenant.setCosmosMicrometerRegistry(cosmosMicrometerRegistry);
 
-            // Propagate suppressCleanup from orchestrator config
+            // Propagate global config flags
             if (config.isSuppressCleanup()) {
                 tenant.setSuppressCleanup(true);
             }
+            tenant.setRegionScopedSessionContainerEnabled(config.isRegionScopedSessionContainerEnabled());
 
             // Ensure unique applicationName per tenant
             if (tenant.getApplicationName() == null || tenant.getApplicationName().isEmpty()) {
