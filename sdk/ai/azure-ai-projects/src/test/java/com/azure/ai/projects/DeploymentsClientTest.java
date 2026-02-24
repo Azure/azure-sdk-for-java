@@ -21,7 +21,7 @@ public class DeploymentsClientTest extends ClientTestBase {
     public void testListDeployments(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         DeploymentsClient deploymentsClient = getDeploymentsClient(httpClient, serviceVersion);
         // Verify that listing deployments returns results
-        Iterable<Deployment> deployments = deploymentsClient.list();
+        Iterable<Deployment> deployments = deploymentsClient.listDeployments();
         Assertions.assertNotNull(deployments);
 
         // Verify that at least one deployment can be retrieved if available
@@ -45,17 +45,18 @@ public class DeploymentsClientTest extends ClientTestBase {
 
         // Test listing deployments with model publisher filter
         String testPublisher = "openai";
-        Iterable<Deployment> filteredDeployments = deploymentsClient.list(testPublisher, null, null);
+        Iterable<Deployment> filteredDeployments = deploymentsClient.listDeployments(testPublisher, null, null);
         Assertions.assertNotNull(filteredDeployments);
 
         // Test listing deployments with model name filter
         String testModelName = "gpt-4o-mini";
-        Iterable<Deployment> modelNameFilteredDeployments = deploymentsClient.list(null, testModelName, null);
+        Iterable<Deployment> modelNameFilteredDeployments
+            = deploymentsClient.listDeployments(null, testModelName, null);
         Assertions.assertNotNull(modelNameFilteredDeployments);
 
         // Test listing deployments with deployment type filter
         Iterable<Deployment> typeFilteredDeployments
-            = deploymentsClient.list(null, null, DeploymentType.MODEL_DEPLOYMENT);
+            = deploymentsClient.listDeployments(null, null, DeploymentType.MODEL_DEPLOYMENT);
         Assertions.assertNotNull(typeFilteredDeployments);
 
         // Verify that all returned deployments have the correct type
@@ -72,7 +73,7 @@ public class DeploymentsClientTest extends ClientTestBase {
         String deploymentName = Configuration.getGlobalConfiguration().get("TEST_DEPLOYMENT_NAME", "gpt-4o-mini");
 
         try {
-            Deployment deployment = deploymentsClient.get(deploymentName);
+            Deployment deployment = deploymentsClient.getDeployment(deploymentName);
 
             // Verify the deployment properties
             assertValidDeployment(deployment, deploymentName, null);
@@ -95,7 +96,7 @@ public class DeploymentsClientTest extends ClientTestBase {
         String deploymentName = Configuration.getGlobalConfiguration().get("TEST_DEPLOYMENT_NAME", "gpt-4o-mini");
 
         try {
-            Deployment deployment = deploymentsClient.get(deploymentName);
+            Deployment deployment = deploymentsClient.getDeployment(deploymentName);
 
             // Verify the deployment properties
             assertValidDeployment(deployment, deploymentName, DeploymentType.MODEL_DEPLOYMENT);
