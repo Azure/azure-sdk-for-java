@@ -141,11 +141,11 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             byte[] hash = hmac.doFinal(aadLength);
 
             // Compute the new tag
-            byte[] tag = new byte[hmacKey.length];
-            System.arraycopy(hash, 0, tag, 0, hmacKey.length);
+            byte[] newTag = new byte[hmacKey.length];
+            System.arraycopy(hash, 0, newTag, 0, hmacKey.length);
 
             // Check the tag before performing the final decrypt
-            if (!CryptographyUtils.sequenceEqualConstantTime(tag, tag)) {
+            if (!CryptographyUtils.sequenceEqualConstantTime(tag, newTag)) {
                 throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("Data is not authentic"));
             }
 
