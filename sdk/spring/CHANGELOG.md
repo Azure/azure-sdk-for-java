@@ -16,7 +16,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 The ConnectionFactory type is determined by the following configuration properties:
 
-  | `spring.jms.servicebus.pool.enabled` | `spring.jms.cache.enabled` | Sender ConnectionFactory       | Receiver ConnectionFactory     |
+  | `spring.jms.servicebus.pool.enabled` | `spring.jms.cache.enabled` | Sender ConnectionFactory       | Listener Container ConnectionFactory     |
   |--------------------------------------|----------------------------|--------------------------------|--------------------------------|
   | not set                              | not set                    | CachingConnectionFactory       | ServiceBusJmsConnectionFactory |
   | not set                              | true                       | CachingConnectionFactory       | CachingConnectionFactory       |

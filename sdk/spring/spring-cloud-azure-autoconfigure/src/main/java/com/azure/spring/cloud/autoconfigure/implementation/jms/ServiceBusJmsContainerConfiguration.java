@@ -44,7 +44,7 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
      *   <tr>
      *     <th>spring.jms.servicebus.pool.enabled</th>
      *     <th>spring.jms.cache.enabled</th>
-     *     <th>Receiver ConnectionFactory</th>
+     *     <th>Listener Container ConnectionFactory</th>
      *   </tr>
      *   <tr><td>not set</td><td>not set</td><td>ServiceBusJmsConnectionFactory</td></tr>
      *   <tr><td>not set</td><td>true</td><td>CachingConnectionFactory</td></tr>
@@ -71,7 +71,7 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
     private final Environment environment;
     private final JmsProperties jmsProperties;
     
-    // Memoized dedicated receiver ConnectionFactory instances to avoid duplicates and enable lifecycle management
+    // Memoized dedicated listener container ConnectionFactory instances to avoid duplicates and enable lifecycle management
     // Use ConnectionFactory type instead of concrete types to avoid NoClassDefFoundError when optional dependencies are missing
     private volatile ConnectionFactory dedicatedCachingConnectionFactory;
     private volatile ConnectionFactory dedicatedPoolConnectionFactory;
@@ -92,7 +92,7 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
     JmsListenerContainerFactory<?> jmsListenerContainerFactory(
         DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        // Use the bean ConnectionFactory if it's pooled or cached, otherwise create a dedicated one for receiver
+        // Use the bean ConnectionFactory if it's pooled or cached, otherwise create a dedicated one for listener container
         ConnectionFactory receiverConnectionFactory = getReceiverConnectionFactory(connectionFactory);
         configurer.configure(jmsListenerContainerFactory, receiverConnectionFactory);
         jmsListenerContainerFactory.setPubSubDomain(Boolean.FALSE);
@@ -105,7 +105,7 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
     JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
         DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        // Use the bean ConnectionFactory if it's pooled or cached, otherwise create a dedicated one for receiver
+        // Use the bean ConnectionFactory if it's pooled or cached, otherwise create a dedicated one for listener container
         ConnectionFactory receiverConnectionFactory = getReceiverConnectionFactory(connectionFactory);
         configurer.configure(jmsListenerContainerFactory, receiverConnectionFactory);
         jmsListenerContainerFactory.setPubSubDomain(Boolean.TRUE);
@@ -118,7 +118,7 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
      * Determines the appropriate ConnectionFactory for JMS listener containers based on configuration properties.
      *
      * @param connectionFactory the ConnectionFactory bean registered by {@link ServiceBusJmsConnectionFactoryConfiguration}
-     * @return the ConnectionFactory to use for the receiver
+     * @return the ConnectionFactory to use for the listener container
      */
     private ConnectionFactory getReceiverConnectionFactory(ConnectionFactory connectionFactory) {
         BindResult<Boolean> poolEnabledResult = Binder.get(environment).bind("spring.jms.servicebus.pool.enabled", Boolean.class);

@@ -46,7 +46,7 @@ class ServiceBusJmsConnectionFactoryConfiguration {
 
     /**
      * Creates a ServiceBusJmsConnectionFactory using the provided properties and customizers.
-     * This is a shared helper method used by both sender and receiver configurations.
+     * This is a shared helper method used by both sender and listener container configurations.
      *
      * @param properties the Azure Service Bus JMS properties
      * @param customizers the list of customizers to apply
