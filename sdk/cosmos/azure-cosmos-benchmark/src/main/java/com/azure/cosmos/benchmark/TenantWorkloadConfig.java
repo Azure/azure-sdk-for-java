@@ -552,11 +552,37 @@ public class TenantWorkloadConfig {
             for (JsonNode tenantNode : tenantsNode) {
                 TenantWorkloadConfig tenant = OBJECT_MAPPER.treeToValue(tenantNode, TenantWorkloadConfig.class);
                 tenant.applyMap(globalDefaults, false);
+                validateTenantConfig(tenant);
                 tenants.add(tenant);
             }
         }
 
         logger.info("Parsed {} tenants from {}", tenants.size(), tenantsFile.getName());
         return tenants;
+    }
+
+    private static void validateTenantConfig(TenantWorkloadConfig tenant) {
+        List<String> missing = new ArrayList<>();
+        if (isNullOrEmpty(tenant.getServiceEndpoint())) {
+            missing.add("serviceEndpoint");
+        }
+        if (isNullOrEmpty(tenant.getDatabaseId())) {
+            missing.add("databaseId");
+        }
+        if (isNullOrEmpty(tenant.getContainerId())) {
+            missing.add("containerId");
+        }
+        if (!tenant.isManagedIdentityRequired()
+            && isNullOrEmpty(tenant.getMasterKey())) {
+            missing.add("masterKey (required when isManagedIdentityRequired is not true)");
+        }
+        if (!missing.isEmpty()) {
+            throw new IllegalArgumentException(
+                "Tenant '" + tenant.getId() + "' is missing required configuration: " + missing);
+        }
+    }
+
+    private static boolean isNullOrEmpty(String value) {
+        return value == null || value.isEmpty();
     }
 }
