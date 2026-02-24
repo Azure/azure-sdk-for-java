@@ -440,7 +440,7 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"standard", "premium"})
-    void receiverUsesDedicatedServiceBusConnectionFactoryByDefault(String pricingTier) {
+    void listenerContainerUsesDedicatedServiceBusConnectionFactoryByDefault(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -474,7 +474,7 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"standard", "premium"})
-    void receiverUsesCachingConnectionFactoryWhenExplicitlyEnabled(String pricingTier) {
+    void listenerContainerUsesCachingConnectionFactoryWhenExplicitlyEnabled(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -501,7 +501,7 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"standard", "premium"})
-    void receiverUsesPoolConnectionFactoryWhenExplicitlyEnabled(String pricingTier) {
+    void listenerContainerUsesPoolConnectionFactoryWhenExplicitlyEnabled(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -528,7 +528,7 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"standard", "premium"})
-    void receiverUsesDedicatedServiceBusConnectionFactoryWhenPoolDisabled(String pricingTier) {
+    void listenerContainerUsesDedicatedServiceBusConnectionFactoryWhenPoolDisabled(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
