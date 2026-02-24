@@ -6,9 +6,6 @@ package com.azure.cosmos.benchmark;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.ScheduledReporter;
-import com.codahale.metrics.graphite.Graphite;
-import com.codahale.metrics.graphite.GraphiteReporter;
-import com.codahale.metrics.MetricFilter;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.codahale.metrics.MetricRegistry;
@@ -20,7 +17,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -73,20 +69,9 @@ public class BenchmarkOrchestrator {
         // Prepare all tenants (inject shared state, set defaults)
         prepareTenants(config);
 
-        // Reporter selection: Graphite > CSV > Console (same pattern as original AsyncBenchmark)
+        // Reporter selection: CSV > Console
         ScheduledReporter reporter;
-        if (config.getGraphiteEndpoint() != null) {
-            Graphite graphite = new Graphite(new InetSocketAddress(
-                config.getGraphiteEndpoint(),
-                config.getGraphiteEndpointPort()));
-            reporter = GraphiteReporter.forRegistry(registry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .filter(MetricFilter.ALL)
-                .build(graphite);
-            logger.info("Graphite reporter started -> {}:{}",
-                config.getGraphiteEndpoint(), config.getGraphiteEndpointPort());
-        } else if (config.getReportingDirectory() != null) {
+        if (config.getReportingDirectory() != null) {
             Path metricsDir = Paths.get(config.getReportingDirectory(), "metrics");
             Files.createDirectories(metricsDir);
             reporter = CsvReporter.forRegistry(registry)
@@ -347,15 +332,6 @@ public class BenchmarkOrchestrator {
         if (instrumentationKey != null || appInsightsConnStr != null) {
             Configuration tempCfg = new Configuration();
             return tempCfg.getAzureMonitorMeterRegistry();
-        }
-
-        String graphiteAddress = System.getProperty("azure.cosmos.monitoring.graphite.serviceAddress",
-            StringUtils.defaultString(
-                com.google.common.base.Strings.emptyToNull(
-                    System.getenv("GRAPHITE_SERVICE_ADDRESS")), null));
-        if (graphiteAddress != null) {
-            Configuration tempCfg = new Configuration();
-            return tempCfg.getGraphiteMeterRegistry();
         }
 
         return null;

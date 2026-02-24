@@ -208,7 +208,7 @@ public class ClientTelemetry {
             })
         )
         .onErrorResume(throwable -> {
-            logger.info("Client is not on azure vm");
+            logger.debug("Client is not on azure vm");
             logger.debug("Unable to get azure vm metadata", throwable);
             return Mono.just(METADATA_NOT_AVAILABLE);
         })

@@ -35,8 +35,6 @@ public class BenchmarkConfig {
 
     // -- Reporting --
     private String reportingDirectory;
-    private String graphiteEndpoint;
-    private int graphiteEndpointPort = 2003;
     private int printingInterval = 10;
     private String resultUploadEndpoint;
     private String resultUploadKey;
@@ -80,10 +78,6 @@ public class BenchmarkConfig {
         // Reporting
         config.reportingDirectory = cfg.getReportingDirectory() != null
             ? cfg.getReportingDirectory().getPath() : null;
-        if (cfg.getGraphiteEndpoint() != null) {
-            config.graphiteEndpoint = cfg.getGraphiteEndpoint();
-            config.graphiteEndpointPort = cfg.getGraphiteEndpointPort();
-        }
         config.printingInterval = cfg.getPrintingInterval();
         config.resultUploadEndpoint = cfg.getServiceEndpointForRunResultsUploadAccount();
         config.resultUploadKey = cfg.getMasterKeyForRunResultsUploadAccount();
@@ -120,8 +114,6 @@ public class BenchmarkConfig {
     public boolean isEnableJvmStats() { return enableJvmStats; }
 
     public String getReportingDirectory() { return reportingDirectory; }
-    public String getGraphiteEndpoint() { return graphiteEndpoint; }
-    public int getGraphiteEndpointPort() { return graphiteEndpointPort; }
     public int getPrintingInterval() { return printingInterval; }
     public String getResultUploadEndpoint() { return resultUploadEndpoint; }
     public String getResultUploadKey() { return resultUploadKey; }
