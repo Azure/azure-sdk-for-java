@@ -138,16 +138,17 @@ public class CustomerSdkStatsTelemetryPipelineListenerTest {
             .isEqualTo("Too many requests");
         assertThat(CustomerSdkStatsTelemetryPipelineListener.getReasonPhraseForStatusCode(500))
             .isEqualTo("Internal server error");
-        assertThat(CustomerSdkStatsTelemetryPipelineListener.getReasonPhraseForStatusCode(999)).isNull();
+        assertThat(CustomerSdkStatsTelemetryPipelineListener.getReasonPhraseForStatusCode(999)).isEqualTo("Unknown");
     }
 
     private static TelemetryPipelineRequest createRequest(Map<String, Long> itemCountsByType) {
         List<ByteBuffer> byteBuffers = Collections.singletonList(ByteBuffer.allocate(0));
         try {
             URL url = new URL("https://dc.services.visualstudio.com/v2.1/track");
+            TelemetryBatchMetadata batchMetadata
+                = new TelemetryBatchMetadata(itemCountsByType, Collections.emptyMap(), Collections.emptyMap());
             return new TelemetryPipelineRequest(url, "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF",
-                "00000000-0000-0000-0000-0FEEDDADBEEF", byteBuffers, itemCountsByType, Collections.emptyMap(),
-                Collections.emptyMap());
+                "00000000-0000-0000-0000-0FEEDDADBEEF", byteBuffers, batchMetadata);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

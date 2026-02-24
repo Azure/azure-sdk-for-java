@@ -8,9 +8,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.Tel
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipelineResponse;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.StatusCode;
 import io.opentelemetry.sdk.common.CompletableResultCode;
-import reactor.util.annotation.Nullable;
 
-import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
@@ -36,8 +34,8 @@ public class CustomerSdkStatsTelemetryPipelineListener implements TelemetryPipel
 
     @Override
     public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
-        Map<String, Long> itemCountsByType = request.getItemCountsByType();
-        if (itemCountsByType.isEmpty()) {
+        TelemetryBatchMetadata batchMetadata = request.getTelemetryBatchMetadata();
+        if (batchMetadata.isEmpty()) {
             // No item metadata (e.g. from local storage resend) — skip tracking.
             // NOTE: This means telemetry retried from disk will not be counted in SDKStats.
             // To track those, item-count metadata would need to be persisted alongside the payload.
@@ -47,26 +45,26 @@ public class CustomerSdkStatsTelemetryPipelineListener implements TelemetryPipel
         int statusCode = response.getStatusCode();
 
         if (statusCode == 200) {
-            customerSdkStats.incrementSuccessCount(itemCountsByType);
+            customerSdkStats.incrementSuccessCount(batchMetadata.getItemCountsByType());
         } else if (StatusCode.isRetryable(statusCode)) {
             // Retryable status codes: items will be retried via local storage
             String retryCode = String.valueOf(statusCode);
             String retryReason = getReasonPhraseForStatusCode(statusCode);
-            customerSdkStats.incrementRetryCount(itemCountsByType, retryCode, retryReason);
+            customerSdkStats.incrementRetryCount(batchMetadata.getItemCountsByType(), retryCode, retryReason);
         } else if (!StatusCode.isRedirect(statusCode)) {
             // Non-redirect, non-retryable status codes: items are dropped.
             // Redirects are handled transparently by the HTTP client and are not counted.
             String dropCode = String.valueOf(statusCode);
             String dropReason = getReasonPhraseForStatusCode(statusCode);
-            customerSdkStats.incrementDroppedCount(itemCountsByType, dropCode, dropReason,
-                request.getSuccessItemCountsByType(), request.getFailureItemCountsByType());
+            customerSdkStats.incrementDroppedCount(batchMetadata.getItemCountsByType(), dropCode, dropReason,
+                batchMetadata.getSuccessItemCountsByType(), batchMetadata.getFailureItemCountsByType());
         }
     }
 
     @Override
     public void onException(TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
-        Map<String, Long> itemCountsByType = request.getItemCountsByType();
-        if (itemCountsByType.isEmpty()) {
+        TelemetryBatchMetadata batchMetadata = request.getTelemetryBatchMetadata();
+        if (batchMetadata.isEmpty()) {
             return;
         }
 
@@ -75,7 +73,7 @@ public class CustomerSdkStatsTelemetryPipelineListener implements TelemetryPipel
         String retryCode
             = isTimeout ? CustomerSdkStats.RETRY_CODE_CLIENT_TIMEOUT : CustomerSdkStats.RETRY_CODE_CLIENT_EXCEPTION;
         String retryReason = CustomerSdkStatsExceptionCategory.categorize(throwable);
-        customerSdkStats.incrementRetryCount(itemCountsByType, retryCode, retryReason);
+        customerSdkStats.incrementRetryCount(batchMetadata.getItemCountsByType(), retryCode, retryReason);
     }
 
     @Override
@@ -87,7 +85,6 @@ public class CustomerSdkStatsTelemetryPipelineListener implements TelemetryPipel
         return CompletableResultCode.ofSuccess();
     }
 
-    @Nullable
     static String getReasonPhraseForStatusCode(int statusCode) {
         switch (statusCode) {
             case 400:
@@ -127,7 +124,7 @@ public class CustomerSdkStatsTelemetryPipelineListener implements TelemetryPipel
                 return "Gateway timeout";
 
             default:
-                return null;
+                return "Unknown";
         }
     }
 }

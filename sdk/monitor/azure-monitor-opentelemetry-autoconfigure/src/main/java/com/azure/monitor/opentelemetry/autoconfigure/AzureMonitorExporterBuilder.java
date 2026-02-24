@@ -265,12 +265,10 @@ class AzureMonitorExporterBuilder {
         return CustomerSdkStats.create(version);
     }
 
-    // TODO consider reading SDKStats env vars from ConfigProperties (like STATSBEAT_*_PROPERTY_NAME)
-    //  instead of System.getenv() directly, for testability and consistency
     private boolean isCustomerSdkStatsEnabled() {
-        String disabledEnvVar = System.getenv(SDKSTATS_DISABLED_ENV_VAR);
-        if ("true".equalsIgnoreCase(disabledEnvVar)) {
-            LOGGER.verbose("Customer SDKStats is disabled via environment variable {}.", SDKSTATS_DISABLED_ENV_VAR);
+        String disabledValue = configProperties.getString(SDKSTATS_DISABLED_ENV_VAR);
+        if ("true".equalsIgnoreCase(disabledValue)) {
+            LOGGER.verbose("Customer SDKStats is disabled via configuration property {}.", SDKSTATS_DISABLED_ENV_VAR);
             return false;
         }
         return true;
@@ -278,22 +276,13 @@ class AzureMonitorExporterBuilder {
 
     private void startCustomerSdkStats(CustomerSdkStats customerSdkStats,
         CustomerSdkStatsTelemetryPipelineListener customerSdkStatsListener, Resource resource) {
-        // Get export interval from env var or use default
-        long exportIntervalSeconds = SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS;
-        String intervalEnvVar = System.getenv(SDKSTATS_EXPORT_INTERVAL_ENV_VAR);
-        if (intervalEnvVar != null && !intervalEnvVar.isEmpty()) {
-            try {
-                long parsedInterval = Long.parseLong(intervalEnvVar);
-                if (parsedInterval > 0) {
-                    exportIntervalSeconds = parsedInterval;
-                } else {
-                    LOGGER.warning("Value for {} must be positive: {}. Using default {} seconds.",
-                        SDKSTATS_EXPORT_INTERVAL_ENV_VAR, intervalEnvVar, SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS);
-                }
-            } catch (NumberFormatException e) {
-                LOGGER.warning("Invalid value for {}: {}. Using default {} seconds.", SDKSTATS_EXPORT_INTERVAL_ENV_VAR,
-                    intervalEnvVar, SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS);
-            }
+        // Get export interval from configuration or use default
+        long exportIntervalSeconds
+            = configProperties.getLong(SDKSTATS_EXPORT_INTERVAL_ENV_VAR, SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS);
+        if (exportIntervalSeconds <= 0) {
+            LOGGER.warning("Value for {} must be positive: {}. Using default {} seconds.",
+                SDKSTATS_EXPORT_INTERVAL_ENV_VAR, exportIntervalSeconds, SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS);
+            exportIntervalSeconds = SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS;
         }
 
         ConnectionString connectionString = getConnectionString();
@@ -305,7 +294,7 @@ class AzureMonitorExporterBuilder {
             .newSingleThreadScheduledExecutor(ThreadPoolUtils.createDaemonThreadFactory(CustomerSdkStats.class));
         customerSdkStatsListener.setScheduler(customerSdkStatsExecutor);
 
-        LOGGER.info("Customer SDKStats scheduler starting with interval {} seconds.", exportIntervalSeconds);
+        LOGGER.verbose("Customer SDKStats scheduler starting with interval {} seconds.", exportIntervalSeconds);
         customerSdkStatsExecutor.scheduleWithFixedDelay(() -> {
             try {
                 List<TelemetryItem> items

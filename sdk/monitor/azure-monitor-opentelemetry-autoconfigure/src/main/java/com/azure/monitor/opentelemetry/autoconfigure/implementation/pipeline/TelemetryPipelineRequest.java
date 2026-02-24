@@ -6,14 +6,12 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.TelemetryBatchMetadata;
 import reactor.core.publisher.Flux;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TelemetryPipelineRequest {
 
@@ -23,36 +21,22 @@ public class TelemetryPipelineRequest {
     private final List<ByteBuffer> byteBuffers;
     private final int contentLength;
 
-    // Customer-facing SDKStats metadata: item counts by telemetry type
-    // TODO consider extracting these three maps into a lightweight TelemetryBatchMetadata value
-    //  object to reduce parameter proliferation and simplify TelemetryPipeline.send() signatures
-    private final Map<String, Long> itemCountsByType;
-    private final Map<String, Long> successItemCountsByType;
-    private final Map<String, Long> failureItemCountsByType;
+    // Customer-facing SDKStats metadata
+    private final TelemetryBatchMetadata batchMetadata;
 
     TelemetryPipelineRequest(URL url, String connectionString, String instrumentationKey,
         List<ByteBuffer> byteBuffers) {
-        this(url, connectionString, instrumentationKey, byteBuffers, Collections.emptyMap(), Collections.emptyMap(),
-            Collections.emptyMap());
+        this(url, connectionString, instrumentationKey, byteBuffers, TelemetryBatchMetadata.empty());
     }
 
     public TelemetryPipelineRequest(URL url, String connectionString, String instrumentationKey,
-        List<ByteBuffer> byteBuffers, Map<String, Long> itemCountsByType, Map<String, Long> successItemCountsByType,
-        Map<String, Long> failureItemCountsByType) {
+        List<ByteBuffer> byteBuffers, TelemetryBatchMetadata batchMetadata) {
         this.url = url;
         this.connectionString = connectionString;
         this.instrumentationKey = instrumentationKey;
         this.byteBuffers = byteBuffers;
         contentLength = byteBuffers.stream().mapToInt(ByteBuffer::limit).sum();
-        this.itemCountsByType = itemCountsByType != null
-            ? Collections.unmodifiableMap(new HashMap<>(itemCountsByType))
-            : Collections.emptyMap();
-        this.successItemCountsByType = successItemCountsByType != null
-            ? Collections.unmodifiableMap(new HashMap<>(successItemCountsByType))
-            : Collections.emptyMap();
-        this.failureItemCountsByType = failureItemCountsByType != null
-            ? Collections.unmodifiableMap(new HashMap<>(failureItemCountsByType))
-            : Collections.emptyMap();
+        this.batchMetadata = batchMetadata != null ? batchMetadata : TelemetryBatchMetadata.empty();
     }
 
     public URL getUrl() {
@@ -77,25 +61,12 @@ public class TelemetryPipelineRequest {
     }
 
     /**
-     * Returns item counts by telemetry type (e.g. "REQUEST" -> 200, "DEPENDENCY" -> 300).
-     * Empty map for batches where item counting is not applicable (e.g. statsbeat, disk retries).
+     * Returns metadata about the telemetry batch, including item counts by type
+     * and success/failure breakdowns. Returns empty metadata for batches where
+     * item counting is not applicable (e.g. statsbeat, disk retries).
      */
-    public Map<String, Long> getItemCountsByType() {
-        return itemCountsByType;
-    }
-
-    /**
-     * Returns counts of successful REQUEST/DEPENDENCY items (where isSuccess() == true).
-     */
-    public Map<String, Long> getSuccessItemCountsByType() {
-        return successItemCountsByType;
-    }
-
-    /**
-     * Returns counts of failed REQUEST/DEPENDENCY items (where isSuccess() == false).
-     */
-    public Map<String, Long> getFailureItemCountsByType() {
-        return failureItemCountsByType;
+    public TelemetryBatchMetadata getTelemetryBatchMetadata() {
+        return batchMetadata;
     }
 
     HttpRequest createHttpRequest() {

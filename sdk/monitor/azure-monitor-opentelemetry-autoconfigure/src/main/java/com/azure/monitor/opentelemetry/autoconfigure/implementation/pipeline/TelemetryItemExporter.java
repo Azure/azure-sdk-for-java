@@ -10,11 +10,8 @@ import com.azure.json.JsonWriter;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomerSdkStatsTelemetryType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.TelemetryBatchMetadata;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AksResourceAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker;
 import io.opentelemetry.api.common.AttributeKey;
@@ -143,12 +140,7 @@ public class TelemetryItemExporter {
 
         // Compute per-type item counts BEFORE injecting internal metrics (e.g. _OTELRESOURCE_)
         // so that only customer telemetry is counted in SDKStats.
-        // TODO consider moving this computation into the statsbeat package to avoid a cross-layer
-        //  dependency from TelemetryItemExporter (pipeline) → CustomerSdkStatsTelemetryType (statsbeat)
-        Map<String, Long> itemCountsByType = new HashMap<>();
-        Map<String, Long> successItemCountsByType = new HashMap<>();
-        Map<String, Long> failureItemCountsByType = new HashMap<>();
-        computeItemCountMetadata(telemetryItems, itemCountsByType, successItemCountsByType, failureItemCountsByType);
+        TelemetryBatchMetadata batchMetadata = TelemetryBatchMetadata.fromTelemetryItems(telemetryItems);
 
         // Don't send _OTELRESOURCE_ custom metric when OTEL_RESOURCE_ATTRIBUTES env var is empty
         // Don't send _OTELRESOURCE_ custom metric to Statsbeat yet
@@ -167,41 +159,7 @@ public class TelemetryItemExporter {
             encodeBatchOperationLogger.recordFailure(t.getMessage(), t);
             return CompletableResultCode.ofFailure();
         }
-        return telemetryPipeline.send(byteBuffers, telemetryItemBatchKey.connectionString, listener, itemCountsByType,
-            successItemCountsByType, failureItemCountsByType);
-    }
-
-    static void computeItemCountMetadata(List<TelemetryItem> telemetryItems, Map<String, Long> itemCountsByType,
-        Map<String, Long> successItemCountsByType, Map<String, Long> failureItemCountsByType) {
-        for (TelemetryItem item : telemetryItems) {
-            String telemetryType = CustomerSdkStatsTelemetryType.fromTelemetryItemName(item.getName());
-            if (telemetryType == null) {
-                // Skip internal items (e.g. Statsbeat)
-                continue;
-            }
-
-            itemCountsByType.merge(telemetryType, 1L, Long::sum);
-
-            // Track success/failure for Request and Dependency types
-            if ("REQUEST".equals(telemetryType) || "DEPENDENCY".equals(telemetryType)) {
-                MonitorDomain baseData = item.getData() != null ? item.getData().getBaseData() : null;
-                if (baseData instanceof RequestData) {
-                    if (((RequestData) baseData).isSuccess()) {
-                        successItemCountsByType.merge(telemetryType, 1L, Long::sum);
-                    } else {
-                        failureItemCountsByType.merge(telemetryType, 1L, Long::sum);
-                    }
-                } else if (baseData instanceof RemoteDependencyData) {
-                    Boolean success = ((RemoteDependencyData) baseData).isSuccess();
-                    if (success != null && success) {
-                        successItemCountsByType.merge(telemetryType, 1L, Long::sum);
-                    } else if (success != null) {
-                        // Only count explicit false as failure; null is treated as unknown
-                        failureItemCountsByType.merge(telemetryType, 1L, Long::sum);
-                    }
-                }
-            }
-        }
+        return telemetryPipeline.send(byteBuffers, telemetryItemBatchKey.connectionString, listener, batchMetadata);
     }
 
     // serialize an array of TelemetryItems to an array of byte buffers

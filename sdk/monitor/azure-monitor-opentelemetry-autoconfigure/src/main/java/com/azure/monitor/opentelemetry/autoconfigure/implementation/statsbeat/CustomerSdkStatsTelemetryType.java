@@ -5,6 +5,7 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat;
 
 import reactor.util.annotation.Nullable;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,17 +15,19 @@ import java.util.Map;
  */
 public final class CustomerSdkStatsTelemetryType {
 
-    private static final Map<String, String> MAPPING = new HashMap<>();
+    private static final Map<String, String> MAPPING;
 
     static {
-        MAPPING.put("Request", "REQUEST");
-        MAPPING.put("RemoteDependency", "DEPENDENCY");
-        MAPPING.put("Message", "TRACE");
-        MAPPING.put("Exception", "EXCEPTION");
-        MAPPING.put("Metric", "CUSTOM_METRIC");
-        MAPPING.put("Event", "CUSTOM_EVENT");
-        MAPPING.put("PageView", "PAGE_VIEW");
-        MAPPING.put("Availability", "AVAILABILITY");
+        Map<String, String> m = new HashMap<>();
+        m.put("Request", "REQUEST");
+        m.put("RemoteDependency", "DEPENDENCY");
+        m.put("Message", "TRACE");
+        m.put("Exception", "EXCEPTION");
+        m.put("Metric", "CUSTOM_METRIC");
+        m.put("Event", "CUSTOM_EVENT");
+        m.put("PageView", "PAGE_VIEW");
+        m.put("Availability", "AVAILABILITY");
+        MAPPING = Collections.unmodifiableMap(m);
     }
 
     /**
