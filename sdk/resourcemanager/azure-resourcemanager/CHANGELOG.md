@@ -1,6 +1,56 @@
 # Release History
 
-## 2.57.0-beta.1 (Unreleased)
+## 2.60.0-beta.1 (Unreleased)
+
+### azure-resourcemanager-network
+
+#### Breaking Changes
+
+- Removed `ADVANCED`, `BASIC`, and `STANDARD` from `FirewallPolicyIntrusionDetectionProfileType` to align with the service model.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
+
+### Other Changes
+
+## 2.59.0 (2026-01-30)
+
+### azure-resourcemanager-redis
+
+#### Features Added
+
+- Supported enabling/disabling authentication through access keys for `RedisCache`.
+
+### Other Changes
+
+### azure-resourcemanager-compute
+
+#### Dependency Updates
+
+- Updated `GalleryRP api-version` to `2025-03-03`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.58.0 (2025-12-22)
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-10-01`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.57.0 (2025-11-25)
 
 ### azure-resourcemanager-containerregistry
 
@@ -18,7 +68,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` to `2025-01-01`.
+- Updated `api-version` to `2025-03-01`.
 
 #### Features Added
 
@@ -35,6 +85,24 @@
 #### Dependency Updates
 
 - Updated `api-version` to `2025-09-01`.
+
+### azure-resourcemanager-cosmos
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-10-15`
+
+### azure-resourcemanager-resources
+
+#### Other Changes
+
+- Optimized `AzureServiceClient` to load library versions during class initialization.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.56.0 (2025-10-31)
 

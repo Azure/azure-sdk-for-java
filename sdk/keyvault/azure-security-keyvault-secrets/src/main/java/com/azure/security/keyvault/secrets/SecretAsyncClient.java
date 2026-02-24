@@ -316,7 +316,7 @@ public final class SecretAsyncClient {
     // For some reason, the service does not return a 409 when a secret with the same name exists. Instead, it returns
     // a 400.
     static HttpResponseException mapSetSecretException(HttpResponseException e) {
-        return (e.getResponse().getStatusCode() == 400)
+        return (e.getResponse() != null && e.getResponse().getStatusCode() == 400)
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }
@@ -443,7 +443,7 @@ public final class SecretAsyncClient {
     // For some reason, the service does not return a 409 when a secret with the same name exists. Instead, it returns
     // a 403.
     static HttpResponseException mapGetSecretException(HttpResponseException e) {
-        if (e.getResponse().getStatusCode() == 403) {
+        if (e.getResponse() != null && e.getResponse().getStatusCode() == 403) {
             return new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue());
         } else {
             return e;
@@ -597,7 +597,7 @@ public final class SecretAsyncClient {
             .map(response -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 createDeletedSecret(response.getValue().toObject(DeletedSecretBundle.class))))
             .onErrorResume(HttpResponseException.class, exception -> {
-                if (exception.getResponse().getStatusCode() == 404) {
+                if (exception.getResponse() != null && exception.getResponse().getStatusCode() == 404) {
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue()));
                 } else {
@@ -790,7 +790,7 @@ public final class SecretAsyncClient {
             .map(response -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 createKeyVaultSecret(response.getValue().toObject(SecretBundle.class))))
             .onErrorResume(HttpResponseException.class, exception -> {
-                if (exception.getResponse().getStatusCode() == 404) {
+                if (exception.getResponse() != null && exception.getResponse().getStatusCode() == 404) {
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue()));
                 } else {
@@ -944,7 +944,7 @@ public final class SecretAsyncClient {
 
     // For some reason, the service does not return a 409 but a 400 in this case.
     static HttpResponseException mapRestoreSecretException(HttpResponseException e) {
-        return (e.getResponse().getStatusCode() == 400)
+        return (e.getResponse() != null && e.getResponse().getStatusCode() == 400)
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }

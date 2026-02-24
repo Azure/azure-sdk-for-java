@@ -10,6 +10,22 @@
 
 ### Other Changes
 
+## 2.53.7 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+## 2.53.6 (2025-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
 ## 2.53.5 (2025-11-14)
 
 ### Other Changes

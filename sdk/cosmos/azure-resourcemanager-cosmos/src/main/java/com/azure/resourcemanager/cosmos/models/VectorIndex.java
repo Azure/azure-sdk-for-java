@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The VectorIndex model.
@@ -26,6 +27,26 @@ public final class VectorIndex implements JsonSerializable<VectorIndex> {
      * The index type of the vector. Currently, flat, diskANN, and quantizedFlat are supported.
      */
     private VectorIndexType type;
+
+    /*
+     * The number of bytes used in product quantization of the vectors. A larger value may result in better recall for
+     * vector searches at the expense of latency. This is only applicable for the quantizedFlat and diskANN vector index
+     * types.
+     */
+    private Long quantizationByteSize;
+
+    /*
+     * This is the size of the candidate list of approximate neighbors stored while building the DiskANN index as part
+     * of the optimization processes. Large values may improve recall at the expense of latency. This is only applicable
+     * for the diskANN vector index type.
+     */
+    private Long indexingSearchListSize;
+
+    /*
+     * Array of shard keys for the vector index. This is only applicable for the quantizedFlat and diskANN vector index
+     * types.
+     */
+    private List<String> vectorIndexShardKey;
 
     /**
      * Creates an instance of VectorIndex class.
@@ -74,6 +95,76 @@ public final class VectorIndex implements JsonSerializable<VectorIndex> {
     }
 
     /**
+     * Get the quantizationByteSize property: The number of bytes used in product quantization of the vectors. A larger
+     * value may result in better recall for vector searches at the expense of latency. This is only applicable for the
+     * quantizedFlat and diskANN vector index types.
+     * 
+     * @return the quantizationByteSize value.
+     */
+    public Long quantizationByteSize() {
+        return this.quantizationByteSize;
+    }
+
+    /**
+     * Set the quantizationByteSize property: The number of bytes used in product quantization of the vectors. A larger
+     * value may result in better recall for vector searches at the expense of latency. This is only applicable for the
+     * quantizedFlat and diskANN vector index types.
+     * 
+     * @param quantizationByteSize the quantizationByteSize value to set.
+     * @return the VectorIndex object itself.
+     */
+    public VectorIndex withQuantizationByteSize(Long quantizationByteSize) {
+        this.quantizationByteSize = quantizationByteSize;
+        return this;
+    }
+
+    /**
+     * Get the indexingSearchListSize property: This is the size of the candidate list of approximate neighbors stored
+     * while building the DiskANN index as part of the optimization processes. Large values may improve recall at the
+     * expense of latency. This is only applicable for the diskANN vector index type.
+     * 
+     * @return the indexingSearchListSize value.
+     */
+    public Long indexingSearchListSize() {
+        return this.indexingSearchListSize;
+    }
+
+    /**
+     * Set the indexingSearchListSize property: This is the size of the candidate list of approximate neighbors stored
+     * while building the DiskANN index as part of the optimization processes. Large values may improve recall at the
+     * expense of latency. This is only applicable for the diskANN vector index type.
+     * 
+     * @param indexingSearchListSize the indexingSearchListSize value to set.
+     * @return the VectorIndex object itself.
+     */
+    public VectorIndex withIndexingSearchListSize(Long indexingSearchListSize) {
+        this.indexingSearchListSize = indexingSearchListSize;
+        return this;
+    }
+
+    /**
+     * Get the vectorIndexShardKey property: Array of shard keys for the vector index. This is only applicable for the
+     * quantizedFlat and diskANN vector index types.
+     * 
+     * @return the vectorIndexShardKey value.
+     */
+    public List<String> vectorIndexShardKey() {
+        return this.vectorIndexShardKey;
+    }
+
+    /**
+     * Set the vectorIndexShardKey property: Array of shard keys for the vector index. This is only applicable for the
+     * quantizedFlat and diskANN vector index types.
+     * 
+     * @param vectorIndexShardKey the vectorIndexShardKey value to set.
+     * @return the VectorIndex object itself.
+     */
+    public VectorIndex withVectorIndexShardKey(List<String> vectorIndexShardKey) {
+        this.vectorIndexShardKey = vectorIndexShardKey;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -99,6 +190,10 @@ public final class VectorIndex implements JsonSerializable<VectorIndex> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeNumberField("quantizationByteSize", this.quantizationByteSize);
+        jsonWriter.writeNumberField("indexingSearchListSize", this.indexingSearchListSize);
+        jsonWriter.writeArrayField("vectorIndexShardKey", this.vectorIndexShardKey,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -122,6 +217,13 @@ public final class VectorIndex implements JsonSerializable<VectorIndex> {
                     deserializedVectorIndex.path = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedVectorIndex.type = VectorIndexType.fromString(reader.getString());
+                } else if ("quantizationByteSize".equals(fieldName)) {
+                    deserializedVectorIndex.quantizationByteSize = reader.getNullable(JsonReader::getLong);
+                } else if ("indexingSearchListSize".equals(fieldName)) {
+                    deserializedVectorIndex.indexingSearchListSize = reader.getNullable(JsonReader::getLong);
+                } else if ("vectorIndexShardKey".equals(fieldName)) {
+                    List<String> vectorIndexShardKey = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVectorIndex.vectorIndexShardKey = vectorIndexShardKey;
                 } else {
                     reader.skipChildren();
                 }

@@ -13,10 +13,12 @@ import com.azure.resourcemanager.loganalytics.models.AssociatedWorkspace;
 import com.azure.resourcemanager.loganalytics.models.BillingType;
 import com.azure.resourcemanager.loganalytics.models.CapacityReservationProperties;
 import com.azure.resourcemanager.loganalytics.models.ClusterEntityStatus;
+import com.azure.resourcemanager.loganalytics.models.ClusterReplicationProperties;
 import com.azure.resourcemanager.loganalytics.models.ClusterSku;
 import com.azure.resourcemanager.loganalytics.models.KeyVaultProperties;
 import com.azure.resourcemanager.loganalytics.models.ManagedServiceIdentity;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -279,7 +281,7 @@ public final class ClusterInner extends Resource {
      * 
      * @return the lastModifiedDate value.
      */
-    public String lastModifiedDate() {
+    public OffsetDateTime lastModifiedDate() {
         return this.innerProperties() == null ? null : this.innerProperties().lastModifiedDate();
     }
 
@@ -288,7 +290,7 @@ public final class ClusterInner extends Resource {
      * 
      * @return the createdDate value.
      */
-    public String createdDate() {
+    public OffsetDateTime createdDate() {
         return this.innerProperties() == null ? null : this.innerProperties().createdDate();
     }
 
@@ -335,6 +337,29 @@ public final class ClusterInner extends Resource {
             this.innerProperties = new ClusterProperties();
         }
         this.innerProperties().withCapacityReservationProperties(capacityReservationProperties);
+        return this;
+    }
+
+    /**
+     * Get the replication property: Cluster's replication properties.
+     * 
+     * @return the replication value.
+     */
+    public ClusterReplicationProperties replication() {
+        return this.innerProperties() == null ? null : this.innerProperties().replication();
+    }
+
+    /**
+     * Set the replication property: Cluster's replication properties.
+     * 
+     * @param replication the replication value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withReplication(ClusterReplicationProperties replication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withReplication(replication);
         return this;
     }
 

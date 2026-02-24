@@ -10,20 +10,15 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databasewatcher.DatabaseWatcherManager;
-import com.azure.resourcemanager.databasewatcher.models.KustoOfferingType;
-import com.azure.resourcemanager.databasewatcher.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.databasewatcher.models.Watcher;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public final class WatchersStopMockTests {
     @Test
     public void testStop() throws Exception {
-        String responseStr
-            = "{\"properties\":{\"datastore\":{\"adxClusterResourceId\":\"p\",\"kustoClusterDisplayName\":\"afkuwb\",\"kustoClusterUri\":\"rnwb\",\"kustoDataIngestionUri\":\"ehhseyvjusrts\",\"kustoDatabaseName\":\"hspkdeemao\",\"kustoManagementUrl\":\"mx\",\"kustoOfferingType\":\"free\"},\"status\":\"Deleting\",\"provisioningState\":\"Succeeded\",\"defaultAlertRuleIdentityResourceId\":\"lmqkrhahvlj\"},\"identity\":{\"principalId\":\"aquhcdhm\",\"tenantId\":\"alaexqpvfadmwsrc\",\"type\":\"None\",\"userAssignedIdentities\":{\"e\":{\"principalId\":\"vgomz\",\"clientId\":\"misgwbnb\"},\"uhashsfwx\":{\"principalId\":\"awkz\",\"clientId\":\"liourqhak\"}}},\"location\":\"owzxcu\",\"tags\":{\"ucww\":\"jooxdjebw\",\"bvmeuecivy\":\"vo\",\"ueiotwmcdyt\":\"zceuojgjrw\",\"it\":\"x\"},\"id\":\"nrjawgqwg\",\"name\":\"hniskxfbkpyc\",\"type\":\"klwndnhjdauwhv\"}";
+        String responseStr = "{}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,18 +27,7 @@ public final class WatchersStopMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Watcher response = manager.watchers().stop("rxsbkyvp", "ca", com.azure.core.util.Context.NONE);
+        manager.watchers().stop("fpl", "mg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("owzxcu", response.location());
-        Assertions.assertEquals("jooxdjebw", response.tags().get("ucww"));
-        Assertions.assertEquals("p", response.properties().datastore().adxClusterResourceId());
-        Assertions.assertEquals("afkuwb", response.properties().datastore().kustoClusterDisplayName());
-        Assertions.assertEquals("rnwb", response.properties().datastore().kustoClusterUri());
-        Assertions.assertEquals("ehhseyvjusrts", response.properties().datastore().kustoDataIngestionUri());
-        Assertions.assertEquals("hspkdeemao", response.properties().datastore().kustoDatabaseName());
-        Assertions.assertEquals("mx", response.properties().datastore().kustoManagementUrl());
-        Assertions.assertEquals(KustoOfferingType.FREE, response.properties().datastore().kustoOfferingType());
-        Assertions.assertEquals("lmqkrhahvlj", response.properties().defaultAlertRuleIdentityResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 }

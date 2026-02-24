@@ -84,14 +84,12 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
     private Boolean toBeDetached;
 
     /*
-     * Specifies the Read-Write IOPS for the managed disk when StorageAccountType is UltraSSD_LRS. Returned only for
-     * VirtualMachine ScaleSet VM disks. Can be updated only via updates to the VirtualMachine Scale Set.
+     * Specifies the Read-Write IOPS for the managed disk when StorageAccountType is UltraSSD_LRS.
      */
     private Long diskIopsReadWrite;
 
     /*
-     * Specifies the bandwidth in MB per second for the managed disk when StorageAccountType is UltraSSD_LRS. Returned
-     * only for VirtualMachine ScaleSet VM disks. Can be updated only via updates to the VirtualMachine Scale Set.
+     * Specifies the bandwidth in MB per second for the managed disk when StorageAccountType is UltraSSD_LRS.
      */
     private Long diskMBpsReadWrite;
 
@@ -371,8 +369,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
 
     /**
      * Get the diskIopsReadWrite property: Specifies the Read-Write IOPS for the managed disk when StorageAccountType is
-     * UltraSSD_LRS. Returned only for VirtualMachine ScaleSet VM disks. Can be updated only via updates to the
-     * VirtualMachine Scale Set.
+     * UltraSSD_LRS.
      * 
      * @return the diskIopsReadWrite value.
      */
@@ -381,14 +378,37 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
     }
 
     /**
+     * Set the diskIopsReadWrite property: Specifies the Read-Write IOPS for the managed disk when StorageAccountType is
+     * UltraSSD_LRS.
+     * 
+     * @param diskIopsReadWrite the diskIopsReadWrite value to set.
+     * @return the DataDisk object itself.
+     */
+    public DataDisk withDiskIopsReadWrite(Long diskIopsReadWrite) {
+        this.diskIopsReadWrite = diskIopsReadWrite;
+        return this;
+    }
+
+    /**
      * Get the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk when
-     * StorageAccountType is UltraSSD_LRS. Returned only for VirtualMachine ScaleSet VM disks. Can be updated only via
-     * updates to the VirtualMachine Scale Set.
+     * StorageAccountType is UltraSSD_LRS.
      * 
      * @return the diskMBpsReadWrite value.
      */
     public Long diskMBpsReadWrite() {
         return this.diskMBpsReadWrite;
+    }
+
+    /**
+     * Set the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk when
+     * StorageAccountType is UltraSSD_LRS.
+     * 
+     * @param diskMBpsReadWrite the diskMBpsReadWrite value to set.
+     * @return the DataDisk object itself.
+     */
+    public DataDisk withDiskMBpsReadWrite(Long diskMBpsReadWrite) {
+        this.diskMBpsReadWrite = diskMBpsReadWrite;
+        return this;
     }
 
     /**
@@ -490,6 +510,8 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
         jsonWriter.writeJsonField("managedDisk", this.managedDisk);
         jsonWriter.writeJsonField("sourceResource", this.sourceResource);
         jsonWriter.writeBooleanField("toBeDetached", this.toBeDetached);
+        jsonWriter.writeNumberField("diskIOPSReadWrite", this.diskIopsReadWrite);
+        jsonWriter.writeNumberField("diskMBpsReadWrite", this.diskMBpsReadWrite);
         jsonWriter.writeStringField("detachOption", this.detachOption == null ? null : this.detachOption.toString());
         jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
         return jsonWriter.writeEndObject();

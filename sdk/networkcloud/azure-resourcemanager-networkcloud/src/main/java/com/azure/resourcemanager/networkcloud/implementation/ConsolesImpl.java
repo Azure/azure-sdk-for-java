@@ -35,10 +35,10 @@ public final class ConsolesImpl implements Consoles {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ConsoleImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Console> listByVirtualMachine(String resourceGroupName, String virtualMachineName,
-        Context context) {
+    public PagedIterable<Console> listByVirtualMachine(String resourceGroupName, String virtualMachineName, Integer top,
+        String skipToken, Context context) {
         PagedIterable<ConsoleInner> inner
-            = this.serviceClient().listByVirtualMachine(resourceGroupName, virtualMachineName, context);
+            = this.serviceClient().listByVirtualMachine(resourceGroupName, virtualMachineName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ConsoleImpl(inner1, this.manager()));
     }
 

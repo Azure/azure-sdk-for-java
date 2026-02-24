@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import java.util.List;
 
 /**
  * Used internally. Constants in the Azure Cosmos DB database service Java SDK.
@@ -121,6 +120,7 @@ public final class Constants {
         public static final String ORDER = "order";
         public static final String SPATIAL_INDEXES = "spatialIndexes";
         public static final String TYPES = "types";
+        public static final String QUANTIZER_TYPE = "quantizerType";
 
         // Full text search
         public static final String FULL_TEXT_INDEXES = "fullTextIndexes";
@@ -205,6 +205,7 @@ public final class Constants {
         public static final String THINCLIENT_READABLE_LOCATIONS = "thinClientReadableLocations";
         public static final String DATABASE_ACCOUNT_ENDPOINT = "databaseAccountEndpoint";
         public static final String ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR = "enablePerPartitionFailoverBehavior";
+        public static final String ENABLE_N_REGION_SYNCHRONOUS_COMMIT = "enableNRegionSynchronousCommit";
 
       //Authorization
         public static final String MASTER_TOKEN = "master";

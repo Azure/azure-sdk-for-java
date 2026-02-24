@@ -133,24 +133,48 @@ public final class NodeTypesImpl implements NodeTypes {
         this.serviceClient().start(resourceGroupName, clusterName, nodeTypeName, parameters, context);
     }
 
-    public void startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    public FaultSimulation startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationContentWrapper parameters) {
-        this.serviceClient().startFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters);
+        FaultSimulationInner inner
+            = this.serviceClient().startFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters);
+        if (inner != null) {
+            return new FaultSimulationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    public FaultSimulation startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationContentWrapper parameters, Context context) {
-        this.serviceClient().startFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context);
+        FaultSimulationInner inner = this.serviceClient()
+            .startFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context);
+        if (inner != null) {
+            return new FaultSimulationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    public FaultSimulation stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters) {
-        this.serviceClient().stopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters);
+        FaultSimulationInner inner
+            = this.serviceClient().stopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters);
+        if (inner != null) {
+            return new FaultSimulationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    public FaultSimulation stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters, Context context) {
-        this.serviceClient().stopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context);
+        FaultSimulationInner inner = this.serviceClient()
+            .stopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context);
+        if (inner != null) {
+            return new FaultSimulationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<FaultSimulation> getFaultSimulationWithResponse(String resourceGroupName, String clusterName,

@@ -17,6 +17,7 @@ import com.azure.resourcemanager.newrelicobservability.models.NewRelicAccountPro
 import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.ProvisioningState;
+import com.azure.resourcemanager.newrelicobservability.models.SaaSData;
 import com.azure.resourcemanager.newrelicobservability.models.UserInfo;
 import java.io.IOException;
 
@@ -59,6 +60,11 @@ public final class MonitorProperties implements JsonSerializable<MonitorProperti
      * Plan details
      */
     private PlanData planData;
+
+    /*
+     * SaaS details
+     */
+    private SaaSData saaSData;
 
     /*
      * Liftr resource category
@@ -193,6 +199,26 @@ public final class MonitorProperties implements JsonSerializable<MonitorProperti
     }
 
     /**
+     * Get the saaSData property: SaaS details.
+     * 
+     * @return the saaSData value.
+     */
+    public SaaSData saaSData() {
+        return this.saaSData;
+    }
+
+    /**
+     * Set the saaSData property: SaaS details.
+     * 
+     * @param saaSData the saaSData value to set.
+     * @return the MonitorProperties object itself.
+     */
+    public MonitorProperties withSaaSData(SaaSData saaSData) {
+        this.saaSData = saaSData;
+        return this;
+    }
+
+    /**
      * Get the liftrResourceCategory property: Liftr resource category.
      * 
      * @return the liftrResourceCategory value.
@@ -305,6 +331,9 @@ public final class MonitorProperties implements JsonSerializable<MonitorProperti
         if (planData() != null) {
             planData().validate();
         }
+        if (saaSData() != null) {
+            saaSData().validate();
+        }
     }
 
     /**
@@ -316,6 +345,7 @@ public final class MonitorProperties implements JsonSerializable<MonitorProperti
         jsonWriter.writeJsonField("newRelicAccountProperties", this.newRelicAccountProperties);
         jsonWriter.writeJsonField("userInfo", this.userInfo);
         jsonWriter.writeJsonField("planData", this.planData);
+        jsonWriter.writeJsonField("saaSData", this.saaSData);
         jsonWriter.writeStringField("orgCreationSource",
             this.orgCreationSource == null ? null : this.orgCreationSource.toString());
         jsonWriter.writeStringField("accountCreationSource",
@@ -356,6 +386,8 @@ public final class MonitorProperties implements JsonSerializable<MonitorProperti
                     deserializedMonitorProperties.userInfo = UserInfo.fromJson(reader);
                 } else if ("planData".equals(fieldName)) {
                     deserializedMonitorProperties.planData = PlanData.fromJson(reader);
+                } else if ("saaSData".equals(fieldName)) {
+                    deserializedMonitorProperties.saaSData = SaaSData.fromJson(reader);
                 } else if ("liftrResourceCategory".equals(fieldName)) {
                     deserializedMonitorProperties.liftrResourceCategory
                         = LiftrResourceCategories.fromString(reader.getString());

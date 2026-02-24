@@ -14,22 +14,22 @@ public final class NamespaceStreamTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceStream model = BinaryData.fromString(
-            "{\"name\":\"kxfbkpycgklwndn\",\"streamConfiguration\":\"dauwhvylwzbtd\",\"typeRef\":\"ujznb\",\"destinations\":[{\"target\":\"StreamDestination\"}]}")
+            "{\"name\":\"uvjfdxxive\",\"streamConfiguration\":\"t\",\"typeRef\":\"aqtdoqmcbx\",\"destinations\":[{\"target\":\"StreamDestination\"},{\"target\":\"StreamDestination\"}]}")
             .toObject(NamespaceStream.class);
-        Assertions.assertEquals("kxfbkpycgklwndn", model.name());
-        Assertions.assertEquals("dauwhvylwzbtd", model.streamConfiguration());
-        Assertions.assertEquals("ujznb", model.typeRef());
+        Assertions.assertEquals("uvjfdxxive", model.name());
+        Assertions.assertEquals("t", model.streamConfiguration());
+        Assertions.assertEquals("aqtdoqmcbx", model.typeRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceStream model = new NamespaceStream().withName("kxfbkpycgklwndn")
-            .withStreamConfiguration("dauwhvylwzbtd")
-            .withTypeRef("ujznb")
-            .withDestinations(Arrays.asList(new StreamDestination()));
+        NamespaceStream model = new NamespaceStream().withName("uvjfdxxive")
+            .withStreamConfiguration("t")
+            .withTypeRef("aqtdoqmcbx")
+            .withDestinations(Arrays.asList(new StreamDestination(), new StreamDestination()));
         model = BinaryData.fromObject(model).toObject(NamespaceStream.class);
-        Assertions.assertEquals("kxfbkpycgklwndn", model.name());
-        Assertions.assertEquals("dauwhvylwzbtd", model.streamConfiguration());
-        Assertions.assertEquals("ujznb", model.typeRef());
+        Assertions.assertEquals("uvjfdxxive", model.name());
+        Assertions.assertEquals("t", model.streamConfiguration());
+        Assertions.assertEquals("aqtdoqmcbx", model.typeRef());
     }
 }

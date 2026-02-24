@@ -11,7 +11,7 @@
   </parent>
   <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>azure-cosmos-spark_3-3_2-12</artifactId>
-  <version>4.42.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;current} -->
+  <version>4.44.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;current} -->
   <packaging>jar</packaging>
   <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-3_2-12</url>
   <name>OLTP Spark 3.3 Connector for Azure Cosmos DB SQL API</name>
@@ -109,6 +109,7 @@
         </file>
         <property>
           <name>spark-e2e_3-3</name>
+          <value>true</value>
         </property>
       </activation>
       <build>
@@ -118,6 +119,12 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
               <includes>
                 <include>**/*.*</include>
                 <include>**/*Test.*</include>
@@ -125,6 +132,16 @@
                 <include>**/*Spec.*</include>
               </includes>
               <skipTests>true</skipTests>
+              <properties>
+                <property>
+                  <name>surefire.testng.verbose</name>
+                  <value>2</value>
+                </property>
+                <property>
+                  <name>listener</name>
+                  <value>com.azure.cosmos.CosmosNettyLeakDetectorFactory</value>
+                </property>
+              </properties>
             </configuration>
           </plugin>
           <plugin>
@@ -132,6 +149,12 @@
             <artifactId>scalatest-maven-plugin</artifactId>
             <version>2.1.0</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
             <configuration>
+              <config>stdOut=true,verbose=true,stdErr=true</config>
+              <noScalaTestIgnore>false</noScalaTestIgnore>
+              <stdout>FDEF</stdout>
+              <stderr>FDEF</stderr>
+              <forkMode>once</forkMode>
+              <logForkedProcessCommand>true</logForkedProcessCommand>
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>

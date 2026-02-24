@@ -7,12 +7,11 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSource;
-import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
 import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.PlanDataResource;
 import com.azure.resourcemanager.newrelicobservability.models.UsageType;
@@ -26,24 +25,24 @@ public final class PlansListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"planData\":{\"usageType\":\"PAYG\",\"billingCycle\":\"MONTHLY\",\"planDetails\":\"ft\",\"effectiveDate\":\"2021-05-16T02:46:56Z\"},\"orgCreationSource\":\"NEWRELIC\",\"accountCreationSource\":\"NEWRELIC\"},\"id\":\"zvqtmnubexkp\",\"name\":\"ksmond\",\"type\":\"mquxvypo\"}]}";
+            = "{\"value\":[{\"properties\":{\"planData\":{\"usageType\":\"PAYG\",\"billingCycle\":\"mnzgmwznmabi\",\"planDetails\":\"sorgj\",\"effectiveDate\":\"2021-10-23T19:23:01Z\"},\"orgCreationSource\":\"NEWRELIC\",\"accountCreationSource\":\"LIFTR\"},\"id\":\"wrlkdmtn\",\"name\":\"vokotllxdyh\",\"type\":\"syocogjltdtbnnha\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PlanDataResource> response
-            = manager.plans().list("dggkzzlvmbmpa", "modfvuefywsbpfvm", com.azure.core.util.Context.NONE);
+            = manager.plans().list("rwyhqmibzyhwitsm", "pyy", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(UsageType.PAYG, response.iterator().next().planData().usageType());
-        Assertions.assertEquals(BillingCycle.MONTHLY, response.iterator().next().planData().billingCycle());
-        Assertions.assertEquals("ft", response.iterator().next().planData().planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T02:46:56Z"),
+        Assertions.assertEquals("mnzgmwznmabi", response.iterator().next().planData().billingCycle());
+        Assertions.assertEquals("sorgj", response.iterator().next().planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T19:23:01Z"),
             response.iterator().next().planData().effectiveDate());
         Assertions.assertEquals(OrgCreationSource.NEWRELIC, response.iterator().next().orgCreationSource());
-        Assertions.assertEquals(AccountCreationSource.NEWRELIC, response.iterator().next().accountCreationSource());
+        Assertions.assertEquals(AccountCreationSource.LIFTR, response.iterator().next().accountCreationSource());
     }
 }

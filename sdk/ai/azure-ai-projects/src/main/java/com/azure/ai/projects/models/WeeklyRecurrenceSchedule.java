@@ -30,16 +30,6 @@ public final class WeeklyRecurrenceSchedule extends RecurrenceSchedule {
     private final List<DayOfWeek> daysOfWeek;
 
     /**
-     * Creates an instance of WeeklyRecurrenceSchedule class.
-     *
-     * @param daysOfWeek the daysOfWeek value to set.
-     */
-    @Generated
-    public WeeklyRecurrenceSchedule(List<DayOfWeek> daysOfWeek) {
-        this.daysOfWeek = daysOfWeek;
-    }
-
-    /**
      * Get the type property: Recurrence type for the recurrence schedule.
      *
      * @return the type value.
@@ -102,5 +92,15 @@ public final class WeeklyRecurrenceSchedule extends RecurrenceSchedule {
             deserializedWeeklyRecurrenceSchedule.type = type;
             return deserializedWeeklyRecurrenceSchedule;
         });
+    }
+
+    /**
+     * Creates an instance of WeeklyRecurrenceSchedule class.
+     *
+     * @param daysOfWeek the daysOfWeek value to set.
+     */
+    @Generated
+    public WeeklyRecurrenceSchedule(List<DayOfWeek> daysOfWeek) {
+        this.daysOfWeek = daysOfWeek;
     }
 }

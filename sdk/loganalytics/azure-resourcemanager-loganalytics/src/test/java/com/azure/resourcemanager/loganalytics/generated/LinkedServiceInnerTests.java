@@ -15,25 +15,27 @@ public final class LinkedServiceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedServiceInner model = BinaryData.fromString(
-            "{\"properties\":{\"resourceId\":\"idybyxczf\",\"writeAccessResourceId\":\"haaxdbabphl\",\"provisioningState\":\"ProvisioningAccount\"},\"tags\":{\"azt\":\"ktsthsucocmny\"},\"id\":\"bt\",\"name\":\"wrqpue\",\"type\":\"ckzywbiexzfeyue\"}")
+            "{\"properties\":{\"resourceId\":\"eiachboosflnr\",\"writeAccessResourceId\":\"fqpte\",\"provisioningState\":\"Updating\"},\"tags\":{\"swjdkirso\":\"ypyqrimzinp\",\"soifiyipjxsqw\":\"dqxhcrmnohjtckwh\",\"bznorcjxvsnby\":\"gr\",\"cyshurzafbljjgp\":\"qabnmoc\"},\"id\":\"toqcjmklja\",\"name\":\"bqidtqaj\",\"type\":\"yulpkudjkr\"}")
             .toObject(LinkedServiceInner.class);
-        Assertions.assertEquals("ktsthsucocmny", model.tags().get("azt"));
-        Assertions.assertEquals("idybyxczf", model.resourceId());
-        Assertions.assertEquals("haaxdbabphl", model.writeAccessResourceId());
-        Assertions.assertEquals(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT, model.provisioningState());
+        Assertions.assertEquals("ypyqrimzinp", model.tags().get("swjdkirso"));
+        Assertions.assertEquals("eiachboosflnr", model.resourceId());
+        Assertions.assertEquals("fqpte", model.writeAccessResourceId());
+        Assertions.assertEquals(LinkedServiceEntityStatus.UPDATING, model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceInner model = new LinkedServiceInner().withTags(mapOf("azt", "ktsthsucocmny"))
-            .withResourceId("idybyxczf")
-            .withWriteAccessResourceId("haaxdbabphl")
-            .withProvisioningState(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT);
+        LinkedServiceInner model = new LinkedServiceInner()
+            .withTags(mapOf("swjdkirso", "ypyqrimzinp", "soifiyipjxsqw", "dqxhcrmnohjtckwh", "bznorcjxvsnby", "gr",
+                "cyshurzafbljjgp", "qabnmoc"))
+            .withResourceId("eiachboosflnr")
+            .withWriteAccessResourceId("fqpte")
+            .withProvisioningState(LinkedServiceEntityStatus.UPDATING);
         model = BinaryData.fromObject(model).toObject(LinkedServiceInner.class);
-        Assertions.assertEquals("ktsthsucocmny", model.tags().get("azt"));
-        Assertions.assertEquals("idybyxczf", model.resourceId());
-        Assertions.assertEquals("haaxdbabphl", model.writeAccessResourceId());
-        Assertions.assertEquals(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT, model.provisioningState());
+        Assertions.assertEquals("ypyqrimzinp", model.tags().get("swjdkirso"));
+        Assertions.assertEquals("eiachboosflnr", model.resourceId());
+        Assertions.assertEquals("fqpte", model.writeAccessResourceId());
+        Assertions.assertEquals(LinkedServiceEntityStatus.UPDATING, model.provisioningState());
     }
 
     // Use "Map.of" if available

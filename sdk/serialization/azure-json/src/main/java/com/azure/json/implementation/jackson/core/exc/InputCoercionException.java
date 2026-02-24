@@ -2,7 +2,6 @@
 package com.azure.json.implementation.jackson.core.exc;
 
 import com.azure.json.implementation.jackson.core.*;
-import com.azure.json.implementation.jackson.core.util.RequestPayload;
 
 /**
  * Exception type for read-side problems that are not direct decoding ("parsing")
@@ -27,9 +26,7 @@ public class InputCoercionException extends StreamReadException {
     protected final Class<?> _targetType;
 
     /**
-     * Constructor that uses current parsing location as location, and
-     * sets processor (accessible via {@link #getProcessor()}) to
-     * specified parser.
+     * Constructor that uses current parsing location as location.
      *
      * @param p Parser in use at the point where failure occurred
      * @param msg Exception mesage to use
@@ -40,12 +37,6 @@ public class InputCoercionException extends StreamReadException {
         super(p, msg);
         _inputType = inputType;
         _targetType = targetType;
-    }
-
-    @Override
-    public InputCoercionException withRequestPayload(RequestPayload p) {
-        _requestPayload = p;
-        return this;
     }
 
 }

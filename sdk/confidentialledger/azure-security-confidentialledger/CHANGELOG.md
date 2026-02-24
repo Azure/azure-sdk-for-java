@@ -1,14 +1,23 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2026-02-18)
 
 ### Features Added
 
-### Breaking Changes
+- Added `ConfidentialLedgerRedirectPolicy` to the HTTP pipeline by default. This policy automatically follows
+  HTTP redirects (301, 302, 307, 308) for all HTTP methods including POST, and preserves the Authorization
+  header when redirecting to the same scheme and to hosts that are the same as or subdomains of the original
+  request (ports may differ). This fixes write operations (POST) being rejected when the Confidential Ledger
+  service redirects from a secondary node to the primary node.
 
-### Bugs Fixed
+## 1.0.34 (2026-01-29)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 
 ## 1.0.33 (2025-10-27)
 

@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Create a new VoiceLive response with these parameters.
@@ -418,6 +419,10 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
             jsonWriter.writeFieldName("max_output_tokens");
             this.maxOutputTokens.writeTo(jsonWriter);
         }
+        jsonWriter.writeJsonField("pre_generated_assistant_message", this.preGeneratedAssistantMessage);
+        jsonWriter.writeStringField("reasoning_effort",
+            this.reasoningEffort == null ? null : this.reasoningEffort.toString());
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -471,6 +476,14 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
                 } else if ("max_output_tokens".equals(fieldName)) {
                     deserializedResponseCreateParams.maxOutputTokens
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("pre_generated_assistant_message".equals(fieldName)) {
+                    deserializedResponseCreateParams.preGeneratedAssistantMessage
+                        = AssistantMessageItem.fromJson(reader);
+                } else if ("reasoning_effort".equals(fieldName)) {
+                    deserializedResponseCreateParams.reasoningEffort = ReasoningEffort.fromString(reader.getString());
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResponseCreateParams.metadata = metadata;
                 } else {
                     reader.skipChildren();
                 }
@@ -503,6 +516,107 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     @Generated
     public ResponseCreateParams setMaxOutputTokens(BinaryData maxOutputTokens) {
         this.maxOutputTokens = maxOutputTokens;
+        return this;
+    }
+
+    /*
+     * Create the response with pre-generated assistant message. The message item would be
+     * added into the conversation history and returned with synthesized audio output in the created response.
+     */
+    @Generated
+    private AssistantMessageItem preGeneratedAssistantMessage;
+
+    /**
+     * Get the preGeneratedAssistantMessage property: Create the response with pre-generated assistant message. The
+     * message item would be
+     * added into the conversation history and returned with synthesized audio output in the created response.
+     *
+     * @return the preGeneratedAssistantMessage value.
+     */
+    @Generated
+    public AssistantMessageItem getPreGeneratedAssistantMessage() {
+        return this.preGeneratedAssistantMessage;
+    }
+
+    /**
+     * Set the preGeneratedAssistantMessage property: Create the response with pre-generated assistant message. The
+     * message item would be
+     * added into the conversation history and returned with synthesized audio output in the created response.
+     *
+     * @param preGeneratedAssistantMessage the preGeneratedAssistantMessage value to set.
+     * @return the ResponseCreateParams object itself.
+     */
+    @Generated
+    public ResponseCreateParams setPreGeneratedAssistantMessage(AssistantMessageItem preGeneratedAssistantMessage) {
+        this.preGeneratedAssistantMessage = preGeneratedAssistantMessage;
+        return this;
+    }
+
+    /*
+     * Constrains effort on reasoning for reasoning models. Check model documentation for supported values for each
+     * model.
+     * Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+     */
+    @Generated
+    private ReasoningEffort reasoningEffort;
+
+    /*
+     * Set of up to 16 key-value pairs that can be attached to an object.
+     * This can be useful for storing additional information about the object in a structured format.
+     * Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+     */
+    @Generated
+    private Map<String, String> metadata;
+
+    /**
+     * Get the reasoningEffort property: Constrains effort on reasoning for reasoning models. Check model documentation
+     * for supported values for each model.
+     * Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+     *
+     * @return the reasoningEffort value.
+     */
+    @Generated
+    public ReasoningEffort getReasoningEffort() {
+        return this.reasoningEffort;
+    }
+
+    /**
+     * Set the reasoningEffort property: Constrains effort on reasoning for reasoning models. Check model documentation
+     * for supported values for each model.
+     * Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+     *
+     * @param reasoningEffort the reasoningEffort value to set.
+     * @return the ResponseCreateParams object itself.
+     */
+    @Generated
+    public ResponseCreateParams setReasoningEffort(ReasoningEffort reasoningEffort) {
+        this.reasoningEffort = reasoningEffort;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Set of up to 16 key-value pairs that can be attached to an object.
+     * This can be useful for storing additional information about the object in a structured format.
+     * Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+     *
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Set of up to 16 key-value pairs that can be attached to an object.
+     * This can be useful for storing additional information about the object in a structured format.
+     * Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+     *
+     * @param metadata the metadata value to set.
+     * @return the ResponseCreateParams object itself.
+     */
+    @Generated
+    public ResponseCreateParams setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 }

@@ -1,14 +1,89 @@
 # Release History
 
-## 1.2.0-beta.3 (Unreleased)
+## 1.2.0 (2026-02-06)
 
-### Features Added
+- Azure Resource Manager ElasticSan client library for Java. This package contains Microsoft Azure SDK for ElasticSan Management SDK. Elastic SAN is a fully integrated solution that simplifies deploying, scaling, managing, and configuring a storage area network (SAN). It also offers built-in cloud capabilities like high availability. Elastic SAN works with many types of compute resources, such as Azure Virtual Machines, Azure VMware Solution, and Azure Kubernetes Service. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+- Azure Resource Manager ElasticSan client library for Java. This package contains Microsoft Azure SDK for ElasticSan Management SDK. (missing-service-description) Add service description. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SnapshotList` was removed
 
-### Other Changes
+#### `models.SkuInformationList` was removed
+
+#### `models.VolumeList` was removed
+
+#### `models.ElasticSanList` was removed
+
+#### `models.VolumeGroupList` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.SkuCapability` was modified
+
+* `SkuCapability()` was changed to private access
+
+#### `models.SkuLocationInfo` was modified
+
+* `SkuLocationInfo()` was changed to private access
+
+#### `ElasticSanManager` was modified
+
+* `fluent.ElasticSanManagement serviceClient()` -> `fluent.ElasticSanManagementClient serviceClient()`
+
+#### `models.IscsiTargetInfo` was modified
+
+* `IscsiTargetInfo()` was changed to private access
+* `withStatus(models.OperationalStatus)` was removed
+
+#### `models.PrivateLinkResource` was modified
+
+* `PrivateLinkResource()` was changed to private access
+* `withRequiredZoneNames(java.util.List)` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+
+### Features Added
+
+* `models.PreValidationResponse` was added
+
+* `models.AutoScaleProperties` was added
+
+* `models.DiskSnapshotList` was added
+
+* `models.VolumeNameList` was added
+
+* `models.AutoScalePolicyEnforcement` was added
+
+* `models.ScaleUpProperties` was added
+
+#### `models.ElasticSanUpdate` was modified
+
+* `withAutoScaleProperties(models.AutoScaleProperties)` was added
+* `autoScaleProperties()` was added
+
+#### `models.ElasticSan` was modified
+
+* `autoScaleProperties()` was added
+
+#### `models.Volumes` was modified
+
+* `preBackup(java.lang.String,java.lang.String,java.lang.String,models.VolumeNameList)` was added
+* `preRestore(java.lang.String,java.lang.String,java.lang.String,models.DiskSnapshotList)` was added
+* `preBackup(java.lang.String,java.lang.String,java.lang.String,models.VolumeNameList,com.azure.core.util.Context)` was added
+* `preRestore(java.lang.String,java.lang.String,java.lang.String,models.DiskSnapshotList,com.azure.core.util.Context)` was added
+
+#### `models.ElasticSan$Definition` was modified
+
+* `withAutoScaleProperties(models.AutoScaleProperties)` was added
+
+#### `models.ElasticSan$Update` was modified
+
+* `withAutoScaleProperties(models.AutoScaleProperties)` was added
 
 ## 1.2.0-beta.2 (2025-04-18)
 

@@ -19,6 +19,9 @@ import com.azure.resourcemanager.cosmos.fluent.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountRegionsClient;
 import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsClient;
 import com.azure.resourcemanager.cosmos.fluent.DatabasesClient;
+import com.azure.resourcemanager.cosmos.fluent.FleetsClient;
+import com.azure.resourcemanager.cosmos.fluent.FleetspaceAccountsClient;
+import com.azure.resourcemanager.cosmos.fluent.FleetspacesClient;
 import com.azure.resourcemanager.cosmos.fluent.GremlinResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.LocationsClient;
 import com.azure.resourcemanager.cosmos.fluent.MongoDBResourcesClient;
@@ -657,6 +660,48 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
+     * The FleetsClient object to access its operations.
+     */
+    private final FleetsClient fleets;
+
+    /**
+     * Gets the FleetsClient object to access its operations.
+     * 
+     * @return the FleetsClient object.
+     */
+    public FleetsClient getFleets() {
+        return this.fleets;
+    }
+
+    /**
+     * The FleetspacesClient object to access its operations.
+     */
+    private final FleetspacesClient fleetspaces;
+
+    /**
+     * Gets the FleetspacesClient object to access its operations.
+     * 
+     * @return the FleetspacesClient object.
+     */
+    public FleetspacesClient getFleetspaces() {
+        return this.fleetspaces;
+    }
+
+    /**
+     * The FleetspaceAccountsClient object to access its operations.
+     */
+    private final FleetspaceAccountsClient fleetspaceAccounts;
+
+    /**
+     * Gets the FleetspaceAccountsClient object to access its operations.
+     * 
+     * @return the FleetspaceAccountsClient object.
+     */
+    public FleetspaceAccountsClient getFleetspaceAccounts() {
+        return this.fleetspaceAccounts;
+    }
+
+    /**
      * Initializes an instance of CosmosDBManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -674,7 +719,7 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2025-04-15";
+        this.apiVersion = "2025-10-15";
         this.databaseAccounts = new DatabaseAccountsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
@@ -712,5 +757,8 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.restorableTables = new RestorableTablesClientImpl(this);
         this.restorableTableResources = new RestorableTableResourcesClientImpl(this);
         this.services = new ServicesClientImpl(this);
+        this.fleets = new FleetsClientImpl(this);
+        this.fleetspaces = new FleetspacesClientImpl(this);
+        this.fleetspaceAccounts = new FleetspaceAccountsClientImpl(this);
     }
 }

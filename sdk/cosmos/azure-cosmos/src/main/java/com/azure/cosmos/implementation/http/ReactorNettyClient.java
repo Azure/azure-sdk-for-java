@@ -11,6 +11,8 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
+import io.netty.util.ReferenceCountUtil;
+import io.netty.util.ResourceLeakDetector;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -39,7 +41,8 @@ import java.util.function.BiFunction;
  * HttpClient that is implemented using reactor-netty.
  */
 public class ReactorNettyClient implements HttpClient {
-
+    private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
+        ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final String REACTOR_NETTY_REQUEST_RECORD_KEY = "reactorNettyRequestRecordKey";
 
     private static final Logger logger = LoggerFactory.getLogger(ReactorNettyClient.class.getSimpleName());
@@ -348,7 +351,17 @@ public class ReactorNettyClient implements HttpClient {
         public Mono<ByteBuf> body() {
             return ByteBufFlux
                 .fromInbound(
-                    bodyIntern().doOnDiscard(ByteBuf.class, io.netty.util.ReferenceCountUtil::safeRelease)
+                    bodyIntern().doOnDiscard(
+                        ByteBuf.class,
+                        buf -> {
+                            if (buf.refCnt() > 0) {
+                                if (leakDetectionDebuggingEnabled) {
+                                    buf.touch("ReactorNettyHttpResponse.body - onDiscard - refCnt: " + buf.refCnt());
+                                    logger.debug("ReactorNettyHttpResponse.body - onDiscard - refCnt: {}", buf.refCnt());
+                                }
+                                ReferenceCountUtil.safeRelease(buf);
+                            }
+                        })
                 )
                 .aggregate()
                 .doOnSubscribe(this::updateSubscriptionState);
@@ -400,8 +413,19 @@ public class ReactorNettyClient implements HttpClient {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Releasing body, not yet subscribed");
                 }
-                this.bodyIntern()
-                    .doOnNext(io.netty.util.ReferenceCountUtil::safeRelease)
+
+                body()
+                    .map(buf -> {
+                        if (buf.refCnt() > 0) {
+                            if (leakDetectionDebuggingEnabled) {
+                                buf.touch("ReactorNettyHttpResponse.releaseOnNotSubscribedResponse - refCnt: " + buf.refCnt());
+                                logger.debug("ReactorNettyHttpResponse.releaseOnNotSubscribedResponse - refCnt: {}", buf.refCnt());
+                            }
+                            ReferenceCountUtil.safeRelease(buf);
+                        }
+
+                        return buf;
+                    })
                     .subscribe(v -> {}, ex -> {}, () -> {});
             }
         }

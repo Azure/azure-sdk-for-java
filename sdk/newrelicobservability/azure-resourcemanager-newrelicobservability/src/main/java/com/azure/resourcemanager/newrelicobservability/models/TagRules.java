@@ -13,7 +13,8 @@ import com.azure.core.util.Context;
  */
 public interface TagRules {
     /**
-     * List TagRule resources by NewRelicMonitorResource.
+     * Lists all tag rules associated with a specific New Relic monitor resource, helping you manage and audit the rules
+     * that control resource monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -25,7 +26,8 @@ public interface TagRules {
     PagedIterable<TagRule> listByNewRelicMonitorResource(String resourceGroupName, String monitorName);
 
     /**
-     * List TagRule resources by NewRelicMonitorResource.
+     * Lists all tag rules associated with a specific New Relic monitor resource, helping you manage and audit the rules
+     * that control resource monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -38,7 +40,8 @@ public interface TagRules {
     PagedIterable<TagRule> listByNewRelicMonitorResource(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Get a TagRule.
+     * Retrieves the details of the tag rules for a specific New Relic monitor resource, providing insight into its
+     * setup and status.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -47,13 +50,14 @@ public interface TagRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a TagRule along with {@link Response}.
+     * @return a tag rule belonging to NewRelic account along with {@link Response}.
      */
     Response<TagRule> getWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
         Context context);
 
     /**
-     * Get a TagRule.
+     * Retrieves the details of the tag rules for a specific New Relic monitor resource, providing insight into its
+     * setup and status.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -61,12 +65,13 @@ public interface TagRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a TagRule.
+     * @return a tag rule belonging to NewRelic account.
      */
     TagRule get(String resourceGroupName, String monitorName, String ruleSetName);
 
     /**
-     * Delete a TagRule.
+     * Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -78,7 +83,8 @@ public interface TagRules {
     void delete(String resourceGroupName, String monitorName, String ruleSetName);
 
     /**
-     * Delete a TagRule.
+     * Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -91,30 +97,33 @@ public interface TagRules {
     void delete(String resourceGroupName, String monitorName, String ruleSetName, Context context);
 
     /**
-     * Get a TagRule.
+     * Retrieves the details of the tag rules for a specific New Relic monitor resource, providing insight into its
+     * setup and status.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a TagRule along with {@link Response}.
+     * @return a tag rule belonging to NewRelic account along with {@link Response}.
      */
     TagRule getById(String id);
 
     /**
-     * Get a TagRule.
+     * Retrieves the details of the tag rules for a specific New Relic monitor resource, providing insight into its
+     * setup and status.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a TagRule along with {@link Response}.
+     * @return a tag rule belonging to NewRelic account along with {@link Response}.
      */
     Response<TagRule> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a TagRule.
+     * Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +133,8 @@ public interface TagRules {
     void deleteById(String id);
 
     /**
-     * Delete a TagRule.
+     * Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

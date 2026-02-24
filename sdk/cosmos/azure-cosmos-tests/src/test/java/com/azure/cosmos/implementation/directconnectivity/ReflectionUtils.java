@@ -309,12 +309,25 @@ public class ReflectionUtils {
         return get(StoreReader.class, consistencyReader, "storeReader");
     }
 
+    public static StoreReader getStoreReader(ConsistencyWriter consistencyWriter) {
+        return get(StoreReader.class, consistencyWriter, "storeReader");
+    }
+
     public static void setStoreReader(ConsistencyReader consistencyReader, StoreReader storeReader) {
         set(consistencyReader, storeReader, "storeReader");
     }
 
     public static void setTransportClient(StoreReader storeReader, TransportClient transportClient) {
         set(storeReader, transportClient, "transportClient");
+    }
+
+    public static void setTransportClient(CosmosClient client, TransportClient transportClient) {
+        StoreClient storeClient = getStoreClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
+        set(storeClient, transportClient, "transportClient");
+        ReplicatedResourceClient replicatedResClient = getReplicatedResourceClient(storeClient);
+        ConsistencyWriter writer = getConsistencyWriter(replicatedResClient);
+        set(replicatedResClient, transportClient, "transportClient");
+        set(writer, transportClient, "transportClient");
     }
 
     public static TransportClient getTransportClient(ReplicatedResourceClient replicatedResourceClient) {

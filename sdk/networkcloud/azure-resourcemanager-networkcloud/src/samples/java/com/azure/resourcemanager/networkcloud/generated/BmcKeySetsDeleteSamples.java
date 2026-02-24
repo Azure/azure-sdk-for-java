@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class BmcKeySetsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BmcKeySets_Delete.
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/BmcKeySets_Delete.
      * json
      */
     /**

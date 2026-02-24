@@ -620,8 +620,13 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
         jsonWriter.writeStringField("softwareRevision", this.softwareRevision);
         jsonWriter.writeStringField("documentationUri", this.documentationUri);
         jsonWriter.writeStringField("serialNumber", this.serialNumber);
-        jsonWriter.writeMapField("attributes", this.attributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeArrayField("discoveredAssetRefs", this.discoveredAssetRefs,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("defaultDatasetsConfiguration", this.defaultDatasetsConfiguration);

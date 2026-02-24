@@ -741,6 +741,11 @@ public final class CosmosChangeFeedRequestOptions {
 
                     return changeFeedRequestOptions.getImpl().getProperties();
                 }
+
+                @Override
+                public CosmosChangeFeedRequestOptions disableSplitHandling(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    return changeFeedRequestOptions.disableSplitHandling();
+                }
             });
     }
 

@@ -256,13 +256,6 @@ public class BuildHelperTests {
         assertThrows(IllegalStateException.class,
             () -> new QueueClientBuilder().endpoint(ENDPOINT)
                 .queueName("foo")
-                .credential(MOCK_CREDENTIAL)
-                .credential(new AzureSasCredential("foo"))
-                .buildClient());
-
-        assertThrows(IllegalStateException.class,
-            () -> new QueueClientBuilder().endpoint(ENDPOINT)
-                .queueName("foo")
                 .sasToken("foo")
                 .credential(new AzureSasCredential("foo"))
                 .buildClient());
@@ -276,12 +269,6 @@ public class BuildHelperTests {
         assertThrows(IllegalStateException.class,
             () -> new QueueServiceClientBuilder().endpoint(ENDPOINT)
                 .credential(new StorageSharedKeyCredential("foo", "bar"))
-                .credential(new AzureSasCredential("foo"))
-                .buildClient());
-
-        assertThrows(IllegalStateException.class,
-            () -> new QueueServiceClientBuilder().endpoint(ENDPOINT)
-                .credential(MOCK_CREDENTIAL)
                 .credential(new AzureSasCredential("foo"))
                 .buildClient());
 

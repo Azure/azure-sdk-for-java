@@ -14,27 +14,27 @@ public final class RoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RouteProperties model = BinaryData.fromString(
-            "{\"name\":\"dbhrbnlankxm\",\"source\":\"TwinChangeEvents\",\"condition\":\"pbh\",\"endpointNames\":[\"btkcxywnytnrsyn\",\"qidybyx\",\"zfcl\",\"aaxdbabphlwrq\"],\"isEnabled\":false}")
+            "{\"name\":\"dbhrbnlankxm\",\"source\":\"MqttBrokerMessages\",\"condition\":\"pbh\",\"endpointNames\":[\"btkcxywnytnrsyn\",\"qidybyx\",\"zfcl\",\"aaxdbabphlwrq\"],\"isEnabled\":false}")
             .toObject(RouteProperties.class);
         Assertions.assertEquals("dbhrbnlankxm", model.name());
-        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.source());
+        Assertions.assertEquals(RoutingSource.MQTT_BROKER_MESSAGES, model.source());
         Assertions.assertEquals("pbh", model.condition());
         Assertions.assertEquals("btkcxywnytnrsyn", model.endpointNames().get(0));
-        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertFalse(model.isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RouteProperties model = new RouteProperties().withName("dbhrbnlankxm")
-            .withSource(RoutingSource.TWIN_CHANGE_EVENTS)
+            .withSource(RoutingSource.MQTT_BROKER_MESSAGES)
             .withCondition("pbh")
             .withEndpointNames(Arrays.asList("btkcxywnytnrsyn", "qidybyx", "zfcl", "aaxdbabphlwrq"))
             .withIsEnabled(false);
         model = BinaryData.fromObject(model).toObject(RouteProperties.class);
         Assertions.assertEquals("dbhrbnlankxm", model.name());
-        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.source());
+        Assertions.assertEquals(RoutingSource.MQTT_BROKER_MESSAGES, model.source());
         Assertions.assertEquals("pbh", model.condition());
         Assertions.assertEquals("btkcxywnytnrsyn", model.endpointNames().get(0));
-        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertFalse(model.isEnabled());
     }
 }

@@ -14,20 +14,20 @@ public final class LinkedResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedResourceListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"ovawjvzunlu\"},{\"id\":\"nnprn\"},{\"id\":\"peilpjzuaejxdu\"},{\"id\":\"skzbb\"}],\"nextLink\":\"zumveekgpwo\"}")
+            "{\"value\":[{\"id\":\"rvjx\"},{\"id\":\"nspydptkoenkoukn\"},{\"id\":\"dwtiukbldngkp\"}],\"nextLink\":\"ipazyxoegukgjnpi\"}")
             .toObject(LinkedResourceListResponse.class);
-        Assertions.assertEquals("ovawjvzunlu", model.value().get(0).id());
-        Assertions.assertEquals("zumveekgpwo", model.nextLink());
+        Assertions.assertEquals("rvjx", model.value().get(0).id());
+        Assertions.assertEquals("ipazyxoegukgjnpi", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedResourceListResponse model = new LinkedResourceListResponse().withValue(
-            Arrays.asList(new LinkedResourceInner().withId("ovawjvzunlu"), new LinkedResourceInner().withId("nnprn"),
-                new LinkedResourceInner().withId("peilpjzuaejxdu"), new LinkedResourceInner().withId("skzbb")))
-            .withNextLink("zumveekgpwo");
+        LinkedResourceListResponse model
+            = new LinkedResourceListResponse().withValue(Arrays.asList(new LinkedResourceInner().withId("rvjx"),
+                new LinkedResourceInner().withId("nspydptkoenkoukn"),
+                new LinkedResourceInner().withId("dwtiukbldngkp"))).withNextLink("ipazyxoegukgjnpi");
         model = BinaryData.fromObject(model).toObject(LinkedResourceListResponse.class);
-        Assertions.assertEquals("ovawjvzunlu", model.value().get(0).id());
-        Assertions.assertEquals("zumveekgpwo", model.nextLink());
+        Assertions.assertEquals("rvjx", model.value().get(0).id());
+        Assertions.assertEquals("ipazyxoegukgjnpi", model.nextLink());
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.1.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,75 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.3 (2025-11-10)
+
+- Azure Resource Manager Service Fabric Managed Clusters client library for Java. This package contains Microsoft Azure SDK for Service Fabric Managed Clusters Management SDK. Service Fabric Managed Clusters Management Client. Package api-version 2025-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.RuntimeUpdateApplicationUpgradeParameters` was added
+
+* `models.RestartKind` was added
+
+* `models.ApplicationFetchHealthRequest` was added
+
+* `models.RestartDeployedCodePackageRequest` was added
+
+* `models.RestartReplicaRequest` was added
+
+* `models.RuntimeApplicationHealthPolicy` was added
+
+* `models.RuntimeRollingUpgradeMode` was added
+
+* `models.RuntimeRollingUpgradeUpdateMonitoringPolicy` was added
+
+* `models.RuntimeUpgradeKind` was added
+
+* `models.RuntimeServiceTypeHealthPolicy` was added
+
+* `models.RuntimeFailureAction` was added
+
+* `models.ApplicationUpdateParametersProperties` was added
+
+* `models.HealthFilter` was added
+
+#### `models.ApplicationResource` was modified
+
+* `updateUpgrade(models.RuntimeUpdateApplicationUpgradeParameters)` was added
+* `restartDeployedCodePackage(models.RestartDeployedCodePackageRequest)` was added
+* `fetchHealth(models.ApplicationFetchHealthRequest)` was added
+* `updateUpgrade(models.RuntimeUpdateApplicationUpgradeParameters,com.azure.core.util.Context)` was added
+* `restartDeployedCodePackage(models.RestartDeployedCodePackageRequest,com.azure.core.util.Context)` was added
+* `fetchHealth(models.ApplicationFetchHealthRequest,com.azure.core.util.Context)` was added
+
+#### `models.ApplicationUpdateParameters` was modified
+
+* `withProperties(models.ApplicationUpdateParametersProperties)` was added
+* `properties()` was added
+
+#### `models.Services` was modified
+
+* `restartReplica(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.RestartReplicaRequest,com.azure.core.util.Context)` was added
+* `restartReplica(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.RestartReplicaRequest)` was added
+
+#### `models.Applications` was modified
+
+* `fetchHealth(java.lang.String,java.lang.String,java.lang.String,models.ApplicationFetchHealthRequest)` was added
+* `updateUpgrade(java.lang.String,java.lang.String,java.lang.String,models.RuntimeUpdateApplicationUpgradeParameters)` was added
+* `updateUpgrade(java.lang.String,java.lang.String,java.lang.String,models.RuntimeUpdateApplicationUpgradeParameters,com.azure.core.util.Context)` was added
+* `restartDeployedCodePackage(java.lang.String,java.lang.String,java.lang.String,models.RestartDeployedCodePackageRequest)` was added
+* `restartDeployedCodePackage(java.lang.String,java.lang.String,java.lang.String,models.RestartDeployedCodePackageRequest,com.azure.core.util.Context)` was added
+* `fetchHealth(java.lang.String,java.lang.String,java.lang.String,models.ApplicationFetchHealthRequest,com.azure.core.util.Context)` was added
+
+#### `models.ServiceResource` was modified
+
+* `restartReplica(models.RestartReplicaRequest)` was added
+* `restartReplica(models.RestartReplicaRequest,com.azure.core.util.Context)` was added
+
+#### `models.ApplicationResource$Update` was modified
+
+* `withProperties(models.ApplicationUpdateParametersProperties)` was added
 
 ## 1.1.0-beta.2 (2025-08-11)
 

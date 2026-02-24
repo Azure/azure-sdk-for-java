@@ -11,7 +11,7 @@ public final class CapacityReservationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityReservationProperties model
-            = BinaryData.fromString("{\"lastSkuUpdate\":\"eyvpnqicvinvkj\",\"minCapacity\":2624293456615314766}")
+            = BinaryData.fromString("{\"lastSkuUpdate\":\"2021-01-05T18:43:06Z\",\"minCapacity\":8378841457136361246}")
                 .toObject(CapacityReservationProperties.class);
     }
 

@@ -41,6 +41,16 @@ public final class MarketplaceSaaSInfo implements JsonSerializable<MarketplaceSa
      */
     private String billedAzureSubscriptionId;
 
+    /*
+     * Publisher Id of the Marketplace offer.
+     */
+    private String publisherId;
+
+    /*
+     * Offer Id of the Marketplace offer,
+     */
+    private String offerId;
+
     /**
      * Creates an instance of MarketplaceSaaSInfo class.
      */
@@ -150,6 +160,46 @@ public final class MarketplaceSaaSInfo implements JsonSerializable<MarketplaceSa
     }
 
     /**
+     * Get the publisherId property: Publisher Id of the Marketplace offer.
+     * 
+     * @return the publisherId value.
+     */
+    public String publisherId() {
+        return this.publisherId;
+    }
+
+    /**
+     * Set the publisherId property: Publisher Id of the Marketplace offer.
+     * 
+     * @param publisherId the publisherId value to set.
+     * @return the MarketplaceSaaSInfo object itself.
+     */
+    public MarketplaceSaaSInfo withPublisherId(String publisherId) {
+        this.publisherId = publisherId;
+        return this;
+    }
+
+    /**
+     * Get the offerId property: Offer Id of the Marketplace offer,.
+     * 
+     * @return the offerId value.
+     */
+    public String offerId() {
+        return this.offerId;
+    }
+
+    /**
+     * Set the offerId property: Offer Id of the Marketplace offer,.
+     * 
+     * @param offerId the offerId value to set.
+     * @return the MarketplaceSaaSInfo object itself.
+     */
+    public MarketplaceSaaSInfo withOfferId(String offerId) {
+        this.offerId = offerId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -168,6 +218,8 @@ public final class MarketplaceSaaSInfo implements JsonSerializable<MarketplaceSa
         jsonWriter.writeStringField("marketplaceResourceId", this.marketplaceResourceId);
         jsonWriter.writeStringField("marketplaceStatus", this.marketplaceStatus);
         jsonWriter.writeStringField("billedAzureSubscriptionId", this.billedAzureSubscriptionId);
+        jsonWriter.writeStringField("publisherId", this.publisherId);
+        jsonWriter.writeStringField("offerId", this.offerId);
         return jsonWriter.writeEndObject();
     }
 
@@ -196,6 +248,10 @@ public final class MarketplaceSaaSInfo implements JsonSerializable<MarketplaceSa
                     deserializedMarketplaceSaaSInfo.marketplaceStatus = reader.getString();
                 } else if ("billedAzureSubscriptionId".equals(fieldName)) {
                     deserializedMarketplaceSaaSInfo.billedAzureSubscriptionId = reader.getString();
+                } else if ("publisherId".equals(fieldName)) {
+                    deserializedMarketplaceSaaSInfo.publisherId = reader.getString();
+                } else if ("offerId".equals(fieldName)) {
+                    deserializedMarketplaceSaaSInfo.offerId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

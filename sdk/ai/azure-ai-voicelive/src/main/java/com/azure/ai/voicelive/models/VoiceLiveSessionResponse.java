@@ -603,6 +603,12 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
             jsonWriter.writeFieldName("max_response_output_tokens");
             this.maxResponseOutputTokens.writeTo(jsonWriter);
         }
+        jsonWriter.writeStringField("reasoning_effort",
+            this.reasoningEffort == null ? null : this.reasoningEffort.toString());
+        if (this.interimResponse != null) {
+            jsonWriter.writeFieldName("interim_response");
+            this.interimResponse.writeTo(jsonWriter);
+        }
         jsonWriter.writeJsonField("agent", this.agent);
         jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
@@ -674,6 +680,12 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
                 } else if ("max_response_output_tokens".equals(fieldName)) {
                     deserializedVoiceLiveSessionResponse.maxResponseOutputTokens
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("reasoning_effort".equals(fieldName)) {
+                    deserializedVoiceLiveSessionResponse.reasoningEffort
+                        = ReasoningEffort.fromString(reader.getString());
+                } else if ("interim_response".equals(fieldName)) {
+                    deserializedVoiceLiveSessionResponse.interimResponse
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("agent".equals(fieldName)) {
                     deserializedVoiceLiveSessionResponse.agent = RespondingAgentOptions.fromJson(reader);
                 } else if ("id".equals(fieldName)) {
@@ -720,6 +732,68 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
     @Generated
     public VoiceLiveSessionResponse setMaxResponseOutputTokens(BinaryData maxResponseOutputTokens) {
         this.maxResponseOutputTokens = maxResponseOutputTokens;
+        return this;
+    }
+
+    /*
+     * Constrains effort on reasoning for reasoning models. Check model documentation for supported values for each
+     * model.
+     * Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+     */
+    @Generated
+    private ReasoningEffort reasoningEffort;
+
+    /**
+     * Get the reasoningEffort property: Constrains effort on reasoning for reasoning models. Check model documentation
+     * for supported values for each model.
+     * Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+     *
+     * @return the reasoningEffort value.
+     */
+    @Generated
+    public ReasoningEffort getReasoningEffort() {
+        return this.reasoningEffort;
+    }
+
+    /**
+     * Set the reasoningEffort property: Constrains effort on reasoning for reasoning models. Check model documentation
+     * for supported values for each model.
+     * Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+     *
+     * @param reasoningEffort the reasoningEffort value to set.
+     * @return the VoiceLiveSessionResponse object itself.
+     */
+    @Generated
+    public VoiceLiveSessionResponse setReasoningEffort(ReasoningEffort reasoningEffort) {
+        this.reasoningEffort = reasoningEffort;
+        return this;
+    }
+
+    /*
+     * Configuration for interim response generation during latency or tool calls.
+     */
+    @Generated
+    private BinaryData interimResponse;
+
+    /**
+     * Get the interimResponse property: Configuration for interim response generation during latency or tool calls.
+     *
+     * @return the interimResponse value.
+     */
+    @Generated
+    public BinaryData getInterimResponse() {
+        return this.interimResponse;
+    }
+
+    /**
+     * Set the interimResponse property: Configuration for interim response generation during latency or tool calls.
+     *
+     * @param interimResponse the interimResponse value to set.
+     * @return the VoiceLiveSessionResponse object itself.
+     */
+    @Generated
+    public VoiceLiveSessionResponse setInterimResponse(BinaryData interimResponse) {
+        this.interimResponse = interimResponse;
         return this;
     }
 }

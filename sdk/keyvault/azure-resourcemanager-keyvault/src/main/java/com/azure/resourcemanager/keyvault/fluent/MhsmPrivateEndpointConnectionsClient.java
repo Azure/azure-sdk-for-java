@@ -189,8 +189,8 @@ public interface MhsmPrivateEndpointConnectionsClient {
      * @return the {@link PollerFlux} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<MhsmPrivateEndpointConnectionInner>, MhsmPrivateEndpointConnectionInner>
-        beginDeleteAsync(String resourceGroupName, String name, String privateEndpointConnectionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the managed hsm pool.
@@ -205,8 +205,8 @@ public interface MhsmPrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MhsmPrivateEndpointConnectionInner>, MhsmPrivateEndpointConnectionInner>
-        beginDelete(String resourceGroupName, String name, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the managed hsm pool.
@@ -222,8 +222,8 @@ public interface MhsmPrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MhsmPrivateEndpointConnectionInner>, MhsmPrivateEndpointConnectionInner>
-        beginDelete(String resourceGroupName, String name, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes the specified private endpoint connection associated with the managed hsm pool.
@@ -238,8 +238,7 @@ public interface MhsmPrivateEndpointConnectionsClient {
      * @return private endpoint connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MhsmPrivateEndpointConnectionInner> deleteAsync(String resourceGroupName, String name,
-        String privateEndpointConnectionName);
+    Mono<Void> deleteAsync(String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the managed hsm pool.
@@ -251,11 +250,9 @@ public interface MhsmPrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MhsmPrivateEndpointConnectionInner delete(String resourceGroupName, String name,
-        String privateEndpointConnectionName);
+    void delete(String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the managed hsm pool.
@@ -268,11 +265,9 @@ public interface MhsmPrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MhsmPrivateEndpointConnectionInner delete(String resourceGroupName, String name,
-        String privateEndpointConnectionName, Context context);
+    void delete(String resourceGroupName, String name, String privateEndpointConnectionName, Context context);
 
     /**
      * The List operation gets information about the private endpoint connections associated with the managed HSM Pool.

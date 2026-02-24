@@ -37,6 +37,11 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
     public static final ActionType JSCHALLENGE = fromString("JSChallenge");
 
     /**
+     * Static value CAPTCHA for ActionType.
+     */
+    public static final ActionType CAPTCHA = fromString("CAPTCHA");
+
+    /**
      * Creates a new instance of ActionType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

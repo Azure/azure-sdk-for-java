@@ -13,25 +13,25 @@ public final class ConnectedPartnerResourcesListFormatInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectedPartnerResourcesListFormatInner model = BinaryData.fromString(
-            "{\"properties\":{\"accountName\":\"eupfhyhltrpm\",\"accountId\":\"jmcmatuokthfu\",\"azureResourceId\":\"aodsfcpkv\",\"location\":\"dpuozmyz\"}}")
+            "{\"properties\":{\"accountName\":\"reximoryocfs\",\"accountId\":\"s\",\"azureResourceId\":\"ddystkiiuxhqy\",\"location\":\"xorrqnb\"}}")
             .toObject(ConnectedPartnerResourcesListFormatInner.class);
-        Assertions.assertEquals("eupfhyhltrpm", model.properties().accountName());
-        Assertions.assertEquals("jmcmatuokthfu", model.properties().accountId());
-        Assertions.assertEquals("aodsfcpkv", model.properties().azureResourceId());
-        Assertions.assertEquals("dpuozmyz", model.properties().location());
+        Assertions.assertEquals("reximoryocfs", model.properties().accountName());
+        Assertions.assertEquals("s", model.properties().accountId());
+        Assertions.assertEquals("ddystkiiuxhqy", model.properties().azureResourceId());
+        Assertions.assertEquals("xorrqnb", model.properties().location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectedPartnerResourcesListFormatInner model = new ConnectedPartnerResourcesListFormatInner()
-            .withProperties(new ConnectedPartnerResourceProperties().withAccountName("eupfhyhltrpm")
-                .withAccountId("jmcmatuokthfu")
-                .withAzureResourceId("aodsfcpkv")
-                .withLocation("dpuozmyz"));
+            .withProperties(new ConnectedPartnerResourceProperties().withAccountName("reximoryocfs")
+                .withAccountId("s")
+                .withAzureResourceId("ddystkiiuxhqy")
+                .withLocation("xorrqnb"));
         model = BinaryData.fromObject(model).toObject(ConnectedPartnerResourcesListFormatInner.class);
-        Assertions.assertEquals("eupfhyhltrpm", model.properties().accountName());
-        Assertions.assertEquals("jmcmatuokthfu", model.properties().accountId());
-        Assertions.assertEquals("aodsfcpkv", model.properties().azureResourceId());
-        Assertions.assertEquals("dpuozmyz", model.properties().location());
+        Assertions.assertEquals("reximoryocfs", model.properties().accountName());
+        Assertions.assertEquals("s", model.properties().accountId());
+        Assertions.assertEquals("ddystkiiuxhqy", model.properties().azureResourceId());
+        Assertions.assertEquals("xorrqnb", model.properties().location());
     }
 }

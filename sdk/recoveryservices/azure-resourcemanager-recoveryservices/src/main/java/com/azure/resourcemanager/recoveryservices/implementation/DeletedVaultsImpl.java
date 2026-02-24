@@ -59,23 +59,12 @@ public final class DeletedVaultsImpl implements DeletedVaults {
         }
     }
 
-    public DeletedVault undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body) {
-        DeletedVaultInner inner = this.serviceClient().undelete(location, deletedVaultName, body);
-        if (inner != null) {
-            return new DeletedVaultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body) {
+        this.serviceClient().undelete(location, deletedVaultName, body);
     }
 
-    public DeletedVault undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body,
-        Context context) {
-        DeletedVaultInner inner = this.serviceClient().undelete(location, deletedVaultName, body, context);
-        if (inner != null) {
-            return new DeletedVaultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body, Context context) {
+        this.serviceClient().undelete(location, deletedVaultName, body, context);
     }
 
     public Response<OperationResource> getOperationStatusWithResponse(String location, String deletedVaultName,

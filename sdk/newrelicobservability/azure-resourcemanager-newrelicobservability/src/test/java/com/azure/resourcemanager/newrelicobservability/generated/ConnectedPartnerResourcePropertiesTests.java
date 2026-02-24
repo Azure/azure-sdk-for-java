@@ -12,25 +12,24 @@ public final class ConnectedPartnerResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectedPartnerResourceProperties model = BinaryData.fromString(
-            "{\"accountName\":\"agfuaxbezyiu\",\"accountId\":\"ktwh\",\"azureResourceId\":\"xw\",\"location\":\"wqsmbsur\"}")
+            "{\"accountName\":\"czvyifq\",\"accountId\":\"kdvjsll\",\"azureResourceId\":\"vvdfwatkpnpul\",\"location\":\"xbczwtruwiqz\"}")
             .toObject(ConnectedPartnerResourceProperties.class);
-        Assertions.assertEquals("agfuaxbezyiu", model.accountName());
-        Assertions.assertEquals("ktwh", model.accountId());
-        Assertions.assertEquals("xw", model.azureResourceId());
-        Assertions.assertEquals("wqsmbsur", model.location());
+        Assertions.assertEquals("czvyifq", model.accountName());
+        Assertions.assertEquals("kdvjsll", model.accountId());
+        Assertions.assertEquals("vvdfwatkpnpul", model.azureResourceId());
+        Assertions.assertEquals("xbczwtruwiqz", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectedPartnerResourceProperties model
-            = new ConnectedPartnerResourceProperties().withAccountName("agfuaxbezyiu")
-                .withAccountId("ktwh")
-                .withAzureResourceId("xw")
-                .withLocation("wqsmbsur");
+        ConnectedPartnerResourceProperties model = new ConnectedPartnerResourceProperties().withAccountName("czvyifq")
+            .withAccountId("kdvjsll")
+            .withAzureResourceId("vvdfwatkpnpul")
+            .withLocation("xbczwtruwiqz");
         model = BinaryData.fromObject(model).toObject(ConnectedPartnerResourceProperties.class);
-        Assertions.assertEquals("agfuaxbezyiu", model.accountName());
-        Assertions.assertEquals("ktwh", model.accountId());
-        Assertions.assertEquals("xw", model.azureResourceId());
-        Assertions.assertEquals("wqsmbsur", model.location());
+        Assertions.assertEquals("czvyifq", model.accountName());
+        Assertions.assertEquals("kdvjsll", model.accountId());
+        Assertions.assertEquals("vvdfwatkpnpul", model.azureResourceId());
+        Assertions.assertEquals("xbczwtruwiqz", model.location());
     }
 }

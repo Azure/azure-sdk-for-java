@@ -139,6 +139,11 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
      */
     private List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations;
 
+    /*
+     * Reference to an existing service gateway.
+     */
+    private SubResource serviceGateway;
+
     /**
      * Creates an instance of SubnetPropertiesFormatInner class.
      */
@@ -528,6 +533,26 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
     }
 
     /**
+     * Get the serviceGateway property: Reference to an existing service gateway.
+     * 
+     * @return the serviceGateway value.
+     */
+    public SubResource serviceGateway() {
+        return this.serviceGateway;
+    }
+
+    /**
+     * Set the serviceGateway property: Reference to an existing service gateway.
+     * 
+     * @param serviceGateway the serviceGateway value to set.
+     * @return the SubnetPropertiesFormatInner object itself.
+     */
+    public SubnetPropertiesFormatInner withServiceGateway(SubResource serviceGateway) {
+        this.serviceGateway = serviceGateway;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -599,6 +624,7 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
         jsonWriter.writeBooleanField("defaultOutboundAccess", this.defaultOutboundAccess);
         jsonWriter.writeArrayField("ipamPoolPrefixAllocations", this.ipamPoolPrefixAllocations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("serviceGateway", this.serviceGateway);
         return jsonWriter.writeEndObject();
     }
 
@@ -688,6 +714,8 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
                     List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations
                         = reader.readArray(reader1 -> IpamPoolPrefixAllocation.fromJson(reader1));
                     deserializedSubnetPropertiesFormatInner.ipamPoolPrefixAllocations = ipamPoolPrefixAllocations;
+                } else if ("serviceGateway".equals(fieldName)) {
+                    deserializedSubnetPropertiesFormatInner.serviceGateway = SubResource.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -42,7 +43,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdMultiPartitionCollection.getId());
     }
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public DocumentQuerySpyWireContentTest(Builder clientBuilder) {
         super(clientBuilder);
     }
@@ -95,22 +96,27 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
-        Flux<FeedResponse<Document>> queryObservable = client
+        QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
+        try {
+            Flux<FeedResponse<Document>> queryObservable = client
                 .queryDocuments(
                     collectionLink,
                     query,
-                    TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
+                    dummyState,
                     Document.class);
 
-        List<Document> results = queryObservable.flatMap(p -> Flux.fromIterable(p.getResults()))
-            .collectList().block();
+            List<Document> results = queryObservable.flatMap(p -> Flux.fromIterable(p.getResults()))
+                                                    .collectList().block();
 
-        assertThat(results.size()).describedAs("total results").isGreaterThanOrEqualTo(1);
+            assertThat(results.size()).describedAs("total results").isGreaterThanOrEqualTo(1);
 
-        List<HttpRequest> requests = client.getCapturedRequests();
+            List<HttpRequest> requests = client.getCapturedRequests();
 
-        for(HttpRequest req: requests) {
-            validateRequestHasContinuationTokenLimit(req, options.getResponseContinuationTokenLimitInKb());
+            for (HttpRequest req : requests) {
+                validateRequestHasContinuationTokenLimit(req, options.getResponseContinuationTokenLimitInKb());
+            }
+        } finally {
+            safeClose(dummyState);
         }
     }
 
@@ -142,14 +148,19 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_DocumentQuerySpyWireContentTest() throws Exception {
 
+        SpyClientUnderTestFactory.ClientUnderTest oldSnapshot = client;
+        if (oldSnapshot != null) {
+            oldSnapshot.close();
+        }
+
         client = new SpyClientBuilder(this.clientBuilder()).build();
 
-        createdDatabase = SHARED_DATABASE;
-        createdSinglePartitionCollection = SHARED_SINGLE_PARTITION_COLLECTION;
-        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION);
+        createdDatabase = SHARED_DATABASE_INTERNAL;
+        createdSinglePartitionCollection = SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL;
+        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL);
 
-        createdMultiPartitionCollection = SHARED_MULTI_PARTITION_COLLECTION;
-        truncateCollection(SHARED_MULTI_PARTITION_COLLECTION);
+        createdMultiPartitionCollection = SHARED_MULTI_PARTITION_COLLECTION_INTERNAL;
+        truncateCollection(SHARED_MULTI_PARTITION_COLLECTION_INTERNAL);
 
         for(int i = 0; i < 3; i++) {
             createdDocumentsInSinglePartitionCollection.add(createDocument(client, getCollectionLink(createdSinglePartitionCollection), i));
@@ -172,13 +183,17 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
             client
         );
 
-        // do the query once to ensure the collection is cached.
-        client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", state, Document.class)
-            .then().block();
+        try {
+            // do the query once to ensure the collection is cached.
+            client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", state, Document.class)
+                  .then().block();
 
-        // do the query once to ensure the collection is cached.
-        client.queryDocuments(getSinglePartitionCollectionLink(), "select * from root", state, Document.class)
-              .then().block();
+            // do the query once to ensure the collection is cached.
+            client.queryDocuments(getSinglePartitionCollectionLink(), "select * from root", state, Document.class)
+                  .then().block();
+        } finally {
+            safeClose(state);
+        }
     }
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class GatesGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Gates_Get.json
+     * x-ms-original-file: 2025-08-01-preview/Gates_Get.json
      */
     /**
      * Sample code: Gets a Gate resource.
@@ -20,5 +20,20 @@ public final class GatesGetSamples {
         getsAGateResource(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
         manager.gates()
             .getWithResponse("rg1", "fleet1", "12345678-910a-bcde-f000-000000000000", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/Gates_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Gates_Get_MaximumSet.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void
+        gatesGetMaximumSet(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.gates()
+            .getWithResponse("rgfleets", "fleet-1", "12345678-910a-bcde-f000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

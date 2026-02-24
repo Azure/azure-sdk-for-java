@@ -156,12 +156,12 @@ public class MessageItem extends ConversationRequestItem {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("system".equals(discriminatorValue)) {
+                if ("assistant".equals(discriminatorValue)) {
+                    return AssistantMessageItem.fromJson(readerToUse.reset());
+                } else if ("system".equals(discriminatorValue)) {
                     return SystemMessageItem.fromJson(readerToUse.reset());
                 } else if ("user".equals(discriminatorValue)) {
                     return UserMessageItem.fromJson(readerToUse.reset());
-                } else if ("assistant".equals(discriminatorValue)) {
-                    return AssistantMessageItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

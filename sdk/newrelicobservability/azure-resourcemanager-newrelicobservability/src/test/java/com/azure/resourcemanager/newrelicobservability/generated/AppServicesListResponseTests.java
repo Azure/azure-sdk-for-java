@@ -14,32 +14,26 @@ public final class AppServicesListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AppServicesListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"azureResourceId\":\"ionpimexg\",\"agentVersion\":\"xgcp\",\"agentStatus\":\"gmaajrm\"},{\"azureResourceId\":\"jwzrl\",\"agentVersion\":\"mcl\",\"agentStatus\":\"ijcoejctb\"},{\"azureResourceId\":\"qsqsy\",\"agentVersion\":\"kbfkg\",\"agentStatus\":\"dkexxppofm\"},{\"azureResourceId\":\"x\",\"agentVersion\":\"jpgd\",\"agentStatus\":\"ocjjxhvpmouexh\"}],\"nextLink\":\"xibqeojnx\"}")
+            "{\"value\":[{\"azureResourceId\":\"jj\",\"agentVersion\":\"v\",\"agentStatus\":\"dgwdslfhot\"},{\"azureResourceId\":\"cynpwlbjnp\",\"agentVersion\":\"cftadeh\",\"agentStatus\":\"ltyfsop\"}],\"nextLink\":\"suesnzw\"}")
             .toObject(AppServicesListResponse.class);
-        Assertions.assertEquals("ionpimexg", model.value().get(0).azureResourceId());
-        Assertions.assertEquals("xgcp", model.value().get(0).agentVersion());
-        Assertions.assertEquals("gmaajrm", model.value().get(0).agentStatus());
-        Assertions.assertEquals("xibqeojnx", model.nextLink());
+        Assertions.assertEquals("jj", model.value().get(0).azureResourceId());
+        Assertions.assertEquals("v", model.value().get(0).agentVersion());
+        Assertions.assertEquals("dgwdslfhot", model.value().get(0).agentStatus());
+        Assertions.assertEquals("suesnzw", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AppServicesListResponse model = new AppServicesListResponse().withValue(Arrays.asList(
-            new AppServiceInfoInner().withAzureResourceId("ionpimexg")
-                .withAgentVersion("xgcp")
-                .withAgentStatus("gmaajrm"),
-            new AppServiceInfoInner().withAzureResourceId("jwzrl").withAgentVersion("mcl").withAgentStatus("ijcoejctb"),
-            new AppServiceInfoInner().withAzureResourceId("qsqsy")
-                .withAgentVersion("kbfkg")
-                .withAgentStatus("dkexxppofm"),
-            new AppServiceInfoInner().withAzureResourceId("x")
-                .withAgentVersion("jpgd")
-                .withAgentStatus("ocjjxhvpmouexh")))
-            .withNextLink("xibqeojnx");
+            new AppServiceInfoInner().withAzureResourceId("jj").withAgentVersion("v").withAgentStatus("dgwdslfhot"),
+            new AppServiceInfoInner().withAzureResourceId("cynpwlbjnp")
+                .withAgentVersion("cftadeh")
+                .withAgentStatus("ltyfsop")))
+            .withNextLink("suesnzw");
         model = BinaryData.fromObject(model).toObject(AppServicesListResponse.class);
-        Assertions.assertEquals("ionpimexg", model.value().get(0).azureResourceId());
-        Assertions.assertEquals("xgcp", model.value().get(0).agentVersion());
-        Assertions.assertEquals("gmaajrm", model.value().get(0).agentStatus());
-        Assertions.assertEquals("xibqeojnx", model.nextLink());
+        Assertions.assertEquals("jj", model.value().get(0).azureResourceId());
+        Assertions.assertEquals("v", model.value().get(0).agentVersion());
+        Assertions.assertEquals("dgwdslfhot", model.value().get(0).agentStatus());
+        Assertions.assertEquals("suesnzw", model.nextLink());
     }
 }

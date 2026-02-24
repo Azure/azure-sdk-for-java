@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateCloudIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateCloudIdentity model
-            = BinaryData.fromString("{\"principalId\":\"ofd\",\"tenantId\":\"uusdttouwa\",\"type\":\"None\"}")
-                .toObject(PrivateCloudIdentity.class);
+        PrivateCloudIdentity model = BinaryData
+            .fromString("{\"principalId\":\"nhdldwmgxcx\",\"tenantId\":\"lpmutwuoegrpkhj\",\"type\":\"None\"}")
+            .toObject(PrivateCloudIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 

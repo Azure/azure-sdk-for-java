@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.naming.NamingException;
 
 import org.apache.commons.logging.Log;
-import org.springframework.boot.BootstrapRegistry.InstanceSupplier;
+import org.springframework.boot.bootstrap.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigDataLocation;
 import org.springframework.boot.context.config.ConfigDataLocationNotFoundException;
 import org.springframework.boot.context.config.ConfigDataLocationResolver;
@@ -29,7 +29,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 
 /**
  * Resolves Azure App Configuration data locations for Spring Boot's ConfigData API.
- * 
+ *
  * @since 6.0.0
  */
 
@@ -46,7 +46,7 @@ public class AzureAppConfigDataLocationResolver
 
     /**
      * Determines if the given location can be resolved by this resolver.
-     * 
+     *
      * @param context the resolver context containing binder and bootstrap information
      * @param location the configuration data location to check
      * @return true if this resolver can handle the location, false otherwise
@@ -57,13 +57,21 @@ public class AzureAppConfigDataLocationResolver
             return false;
         }
 
+        Binder binder = context.getBinder();
+        
+        // Check if Azure App Configuration is enabled
+        Boolean enabled = binder.bind(AppConfigurationProperties.CONFIG_PREFIX + ".enabled", Boolean.class).orElse(true);
+        if (!enabled) {
+            return false;
+        }
+
         // Check if the configuration properties for Azure App Configuration are present
-        return hasValidStoreConfiguration(context.getBinder());
+        return hasValidStoreConfiguration(binder);
     }
 
     /**
      * Checks if the required configuration properties for Azure App Configuration are present.
-     * 
+     *
      * @param binder the binder to check for properties
      * @return true if at least one of the required properties is present, false otherwise
      */
@@ -83,7 +91,7 @@ public class AzureAppConfigDataLocationResolver
 
     /**
      * Resolves configuration data resources for the given location.
-     * 
+     *
      * @param context the resolver context
      * @param location the configuration data location
      * @return empty list of resources
@@ -97,7 +105,7 @@ public class AzureAppConfigDataLocationResolver
 
     /**
      * Resolves profile-specific configuration data resources.
-     * 
+     *
      * @param resolverContext the resolver context
      * @param location the configuration data location
      * @param profiles the active Spring profiles
@@ -128,7 +136,7 @@ public class AzureAppConfigDataLocationResolver
 
     /**
      * Loads and validates Azure App Configuration properties from the configuration context.
-     * 
+     *
      * @param context the configuration data location resolver context
      * @return validated Azure App Configuration properties
      */

@@ -96,7 +96,7 @@ class KeyVaultAdministrationUtil {
 
         HttpResponse httpResponse = httpResponseException.getResponse();
 
-        if (httpResponse.getStatusCode() == statusCode) {
+        if (httpResponse != null && httpResponse.getStatusCode() == statusCode) {
             return new SimpleResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
                 httpResponse.getHeaders(), null);
         }

@@ -308,6 +308,32 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
+     * Get the entraJwtValidationConfig property: Entra JWT validation configuration resource of the application
+     * gateway.
+     * 
+     * @return the entraJwtValidationConfig value.
+     */
+    public SubResource entraJwtValidationConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().entraJwtValidationConfig();
+    }
+
+    /**
+     * Set the entraJwtValidationConfig property: Entra JWT validation configuration resource of the application
+     * gateway.
+     * 
+     * @param entraJwtValidationConfig the entraJwtValidationConfig value to set.
+     * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
+     */
+    public ApplicationGatewayRequestRoutingRuleInner
+        withEntraJwtValidationConfig(SubResource entraJwtValidationConfig) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withEntraJwtValidationConfig(entraJwtValidationConfig);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the request routing rule resource.
      * 
      * @return the provisioningState value.

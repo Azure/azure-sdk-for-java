@@ -20,7 +20,7 @@ import java.util.Arrays;
 public final class MaintenanceConfigurationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-09-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
      * MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
      */
     /**

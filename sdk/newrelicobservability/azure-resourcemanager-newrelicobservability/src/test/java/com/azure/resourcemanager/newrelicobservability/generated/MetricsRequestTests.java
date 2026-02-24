@@ -12,14 +12,14 @@ public final class MetricsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsRequest model
-            = BinaryData.fromString("{\"userEmail\":\"rsoodqxhcrmnoh\"}").toObject(MetricsRequest.class);
-        Assertions.assertEquals("rsoodqxhcrmnoh", model.userEmail());
+            = BinaryData.fromString("{\"userEmail\":\"gvdfgiotkftutq\"}").toObject(MetricsRequest.class);
+        Assertions.assertEquals("gvdfgiotkftutq", model.userEmail());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricsRequest model = new MetricsRequest().withUserEmail("rsoodqxhcrmnoh");
+        MetricsRequest model = new MetricsRequest().withUserEmail("gvdfgiotkftutq");
         model = BinaryData.fromObject(model).toObject(MetricsRequest.class);
-        Assertions.assertEquals("rsoodqxhcrmnoh", model.userEmail());
+        Assertions.assertEquals("gvdfgiotkftutq", model.userEmail());
     }
 }

@@ -69,6 +69,8 @@ hybridaks:
   service: hybridcontainerservice
 informatica:
   service: informaticadatamanagement
+iothub/Microsoft.Devices/IoTHub:
+  service: iothub
 keyvault:
   suffix: generated
 kubernetesconfiguration/Microsoft.KubernetesConfiguration/extensionTypes:
@@ -107,6 +109,8 @@ newrelic:
 offazurespringboot:
   service: springappdiscovery
 operationalinsights:
+  service: loganalytics
+operationalinsights/Microsoft.OperationalInsights/OperationalInsights:
   service: loganalytics
 oracle:
   service: oracledatabase

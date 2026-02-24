@@ -13,33 +13,33 @@ public final class ManagementActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagementAction model = BinaryData.fromString(
-            "{\"name\":\"gfhzovawjvzunlut\",\"actionConfiguration\":\"n\",\"targetUri\":\"rnxipei\",\"typeRef\":\"jzuaejxdultskzbb\",\"topic\":\"zumveekgpwo\",\"actionType\":\"Call\",\"timeoutInSeconds\":733253816}")
+            "{\"name\":\"glzpswiydm\",\"actionConfiguration\":\"yhz\",\"targetUri\":\"xssadbzmnvdf\",\"typeRef\":\"ud\",\"topic\":\"dvxzbncblylpst\",\"actionType\":\"Write\",\"timeoutInSeconds\":907370686}")
             .toObject(ManagementAction.class);
-        Assertions.assertEquals("gfhzovawjvzunlut", model.name());
-        Assertions.assertEquals("n", model.actionConfiguration());
-        Assertions.assertEquals("rnxipei", model.targetUri());
-        Assertions.assertEquals("jzuaejxdultskzbb", model.typeRef());
-        Assertions.assertEquals("zumveekgpwo", model.topic());
-        Assertions.assertEquals(ManagementActionType.CALL, model.actionType());
-        Assertions.assertEquals(733253816, model.timeoutInSeconds());
+        Assertions.assertEquals("glzpswiydm", model.name());
+        Assertions.assertEquals("yhz", model.actionConfiguration());
+        Assertions.assertEquals("xssadbzmnvdf", model.targetUri());
+        Assertions.assertEquals("ud", model.typeRef());
+        Assertions.assertEquals("dvxzbncblylpst", model.topic());
+        Assertions.assertEquals(ManagementActionType.WRITE, model.actionType());
+        Assertions.assertEquals(907370686, model.timeoutInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementAction model = new ManagementAction().withName("gfhzovawjvzunlut")
-            .withActionConfiguration("n")
-            .withTargetUri("rnxipei")
-            .withTypeRef("jzuaejxdultskzbb")
-            .withTopic("zumveekgpwo")
-            .withActionType(ManagementActionType.CALL)
-            .withTimeoutInSeconds(733253816);
+        ManagementAction model = new ManagementAction().withName("glzpswiydm")
+            .withActionConfiguration("yhz")
+            .withTargetUri("xssadbzmnvdf")
+            .withTypeRef("ud")
+            .withTopic("dvxzbncblylpst")
+            .withActionType(ManagementActionType.WRITE)
+            .withTimeoutInSeconds(907370686);
         model = BinaryData.fromObject(model).toObject(ManagementAction.class);
-        Assertions.assertEquals("gfhzovawjvzunlut", model.name());
-        Assertions.assertEquals("n", model.actionConfiguration());
-        Assertions.assertEquals("rnxipei", model.targetUri());
-        Assertions.assertEquals("jzuaejxdultskzbb", model.typeRef());
-        Assertions.assertEquals("zumveekgpwo", model.topic());
-        Assertions.assertEquals(ManagementActionType.CALL, model.actionType());
-        Assertions.assertEquals(733253816, model.timeoutInSeconds());
+        Assertions.assertEquals("glzpswiydm", model.name());
+        Assertions.assertEquals("yhz", model.actionConfiguration());
+        Assertions.assertEquals("xssadbzmnvdf", model.targetUri());
+        Assertions.assertEquals("ud", model.typeRef());
+        Assertions.assertEquals("dvxzbncblylpst", model.topic());
+        Assertions.assertEquals(ManagementActionType.WRITE, model.actionType());
+        Assertions.assertEquals(907370686, model.timeoutInSeconds());
     }
 }

@@ -396,7 +396,13 @@ public final class CosmosBatch {
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.CosmosBatchHelper.setCosmosBatchAccessor(
-            cosmosBatch -> cosmosBatch.getOperationsInternal());
+            new ImplementationBridgeHelpers.CosmosBatchHelper.CosmosBatchAccessor() {
+                @Override
+                public List<ItemBatchOperation<?>> getOperationsInternal(CosmosBatch cosmosBatch) {
+                    return cosmosBatch.getOperationsInternal();
+                }
+            }
+        );
     }
 
     static { initialize(); }

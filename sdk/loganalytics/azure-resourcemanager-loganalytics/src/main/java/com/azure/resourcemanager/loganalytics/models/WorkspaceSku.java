@@ -5,12 +5,14 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * The SKU (tier) of a workspace.
@@ -25,12 +27,12 @@ public final class WorkspaceSku implements JsonSerializable<WorkspaceSku> {
     /*
      * The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected.
      */
-    private CapacityReservationLevel capacityReservationLevel;
+    private Integer capacityReservationLevel;
 
     /*
      * The last time when the sku was updated.
      */
-    private String lastSkuUpdate;
+    private OffsetDateTime lastSkuUpdate;
 
     /**
      * Creates an instance of WorkspaceSku class.
@@ -64,7 +66,7 @@ public final class WorkspaceSku implements JsonSerializable<WorkspaceSku> {
      * 
      * @return the capacityReservationLevel value.
      */
-    public CapacityReservationLevel capacityReservationLevel() {
+    public Integer capacityReservationLevel() {
         return this.capacityReservationLevel;
     }
 
@@ -75,7 +77,7 @@ public final class WorkspaceSku implements JsonSerializable<WorkspaceSku> {
      * @param capacityReservationLevel the capacityReservationLevel value to set.
      * @return the WorkspaceSku object itself.
      */
-    public WorkspaceSku withCapacityReservationLevel(CapacityReservationLevel capacityReservationLevel) {
+    public WorkspaceSku withCapacityReservationLevel(Integer capacityReservationLevel) {
         this.capacityReservationLevel = capacityReservationLevel;
         return this;
     }
@@ -85,7 +87,7 @@ public final class WorkspaceSku implements JsonSerializable<WorkspaceSku> {
      * 
      * @return the lastSkuUpdate value.
      */
-    public String lastSkuUpdate() {
+    public OffsetDateTime lastSkuUpdate() {
         return this.lastSkuUpdate;
     }
 
@@ -110,8 +112,7 @@ public final class WorkspaceSku implements JsonSerializable<WorkspaceSku> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
-        jsonWriter.writeNumberField("capacityReservationLevel",
-            this.capacityReservationLevel == null ? null : this.capacityReservationLevel.toInt());
+        jsonWriter.writeNumberField("capacityReservationLevel", this.capacityReservationLevel);
         return jsonWriter.writeEndObject();
     }
 
@@ -134,10 +135,10 @@ public final class WorkspaceSku implements JsonSerializable<WorkspaceSku> {
                 if ("name".equals(fieldName)) {
                     deserializedWorkspaceSku.name = WorkspaceSkuNameEnum.fromString(reader.getString());
                 } else if ("capacityReservationLevel".equals(fieldName)) {
-                    deserializedWorkspaceSku.capacityReservationLevel
-                        = CapacityReservationLevel.fromInt(reader.getInt());
+                    deserializedWorkspaceSku.capacityReservationLevel = reader.getNullable(JsonReader::getInt);
                 } else if ("lastSkuUpdate".equals(fieldName)) {
-                    deserializedWorkspaceSku.lastSkuUpdate = reader.getString();
+                    deserializedWorkspaceSku.lastSkuUpdate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

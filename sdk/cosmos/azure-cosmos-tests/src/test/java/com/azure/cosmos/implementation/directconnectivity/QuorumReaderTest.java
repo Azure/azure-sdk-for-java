@@ -17,17 +17,16 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,15 +43,15 @@ public class QuorumReaderTest {
     public Object[][] simpleReadStrongArgProvider() {
         return new Object[][]{
                 //int replicaCountToRead, ReadMode readMode, Long lsn, Long localLSN
-                {  1, ReadMode.Strong, 51l, 18l },
-                {  2, ReadMode.Strong, 51l, 18l },
-                {  3, ReadMode.Strong, 51l, 18l },
+                {  1, ReadMode.Strong, 51L, 18L },
+                {  2, ReadMode.Strong, 51L, 18L },
+                {  3, ReadMode.Strong, 51L, 18L },
 
-                {  2, ReadMode.Any, 51l, 18l },
-                {  1, ReadMode.Any, 51l, 18l },
+                {  2, ReadMode.Any, 51L, 18L },
+                {  1, ReadMode.Any, 51L, 18L },
 
-                {  2, ReadMode.Any, null, 18l },
-                {  1, ReadMode.Any, null, 18l },
+                {  2, ReadMode.Any, null, 18L },
+                {  1, ReadMode.Any, null, 18L },
         };
     }
 
@@ -268,8 +267,8 @@ public class QuorumReaderTest {
 
         DocumentServiceRequestValidator requestValidator = DocumentServiceRequestValidator.builder()
                 .add(DocumentServiceRequestContextValidator.builder()
-                             .qurorumSelectedLSN(0l)
-                             .globalCommittedSelectedLSN(0l)
+                             .qurorumSelectedLSN(0L)
+                             .globalCommittedSelectedLSN(0L)
                              .storeResponses(null)
                              .build())
                 .build();
@@ -439,8 +438,8 @@ public class QuorumReaderTest {
 
         DocumentServiceRequestValidator requestValidator = DocumentServiceRequestValidator.builder()
                 .add(DocumentServiceRequestContextValidator.builder()
-                             .qurorumSelectedLSN(0l)
-                             .globalCommittedSelectedLSN(0l)
+                             .qurorumSelectedLSN(0L)
+                             .globalCommittedSelectedLSN(0L)
                              .storeResponses(null)
                              .build())
                 .build();
@@ -545,8 +544,8 @@ public class QuorumReaderTest {
 
         DocumentServiceRequestValidator requestValidator = DocumentServiceRequestValidator.builder()
                 .add(DocumentServiceRequestContextValidator.builder()
-                             .qurorumSelectedLSN(0l)
-                             .globalCommittedSelectedLSN(0l)
+                             .qurorumSelectedLSN(0L)
+                             .globalCommittedSelectedLSN(0L)
                              .storeResponses(null)
                              .build())
                 .build();
@@ -631,14 +630,10 @@ public class QuorumReaderTest {
     public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator,
                                        long timeout) {
-        TestSubscriber<List<StoreResult>> testSubscriber = new TestSubscriber<>();
-
-        single.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(single)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     public static void validateSuccess(Mono<StoreResponse> single,
@@ -649,13 +644,9 @@ public class QuorumReaderTest {
     public static void validateSuccess(Mono<StoreResponse> single,
                                        StoreResponseValidator validator,
                                        long timeout) {
-        TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
-
-        single.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(single)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 }

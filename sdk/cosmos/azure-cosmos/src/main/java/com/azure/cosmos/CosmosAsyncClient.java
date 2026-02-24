@@ -29,6 +29,7 @@ import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
 import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
@@ -794,6 +795,10 @@ public final class CosmosAsyncClient implements Closeable {
         return this.asyncDocumentClient.getEffectiveItemSerializer(requestOptionsItemSerializer);
     }
 
+    void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor) {
+        this.asyncDocumentClient.registerTransportClientInterceptor(transportClientInterceptor);
+    }
+
     boolean isTransportLevelTracingEnabled() {
 
         CosmosClientTelemetryConfig effectiveConfig = this.clientTelemetryConfig != null ?
@@ -949,6 +954,14 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public CosmosItemSerializer getEffectiveItemSerializer(CosmosAsyncClient client, CosmosItemSerializer requestOptionsItemSerializer) {
                     return client.getEffectiveItemSerializer(requestOptionsItemSerializer);
+                }
+
+                @Override
+                public void registerTransportClientInterceptor(
+                    CosmosAsyncClient client,
+                    ITransportClientInterceptor transportClientInterceptor) {
+
+                    client.registerTransportClientInterceptor(transportClientInterceptor);
                 }
             }
         );

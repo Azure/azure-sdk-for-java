@@ -12,14 +12,14 @@ public final class DestinationMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DestinationMetadata model
-            = BinaryData.fromString("{\"eventHubName\":\"uknvudwti\"}").toObject(DestinationMetadata.class);
-        Assertions.assertEquals("uknvudwti", model.eventHubName());
+            = BinaryData.fromString("{\"eventHubName\":\"kgiawxklryplwck\"}").toObject(DestinationMetadata.class);
+        Assertions.assertEquals("kgiawxklryplwck", model.eventHubName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DestinationMetadata model = new DestinationMetadata().withEventHubName("uknvudwti");
+        DestinationMetadata model = new DestinationMetadata().withEventHubName("kgiawxklryplwck");
         model = BinaryData.fromObject(model).toObject(DestinationMetadata.class);
-        Assertions.assertEquals("uknvudwti", model.eventHubName());
+        Assertions.assertEquals("kgiawxklryplwck", model.eventHubName());
     }
 }

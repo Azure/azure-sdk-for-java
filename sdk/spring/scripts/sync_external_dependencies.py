@@ -11,6 +11,8 @@
 #     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring-boot-dependencies-version 2.7.18`.
 #     3.2 Sync Spring Boot 3.x, run command: `python .\sdk\spring\scripts\sync_external_dependencies.py -b 3.3.1 -sbmvn 3`.
 #     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring-boot-dependencies-version 3.3.1 --spring-boot-major-version-number 3`.
+#     3.3 Sync Spring Boot 4.x, run command: `python .\sdk\spring\scripts\sync_external_dependencies.py -b 4.0.0 -sbmvn 4`.
+#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring-boot-dependencies-version 4.0.0 --spring-boot-major-version-number 4`.
 #  4. Then `eng/versioning/external_dependencies.txt` will be updated.
 #
 # Please refer to ./README.md to get more information about this script.
@@ -23,7 +25,7 @@ import argparse
 from version_util import version_greater_than
 
 from log import log
-from _constants import SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME, get_spring_boot_version_tag_prefix
+from _constants import SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME, SPRING_BOOT_MAJOR_4_VERSION_NAME, get_spring_boot_version_tag_prefix
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 SKIP_IDS = [
@@ -50,7 +52,7 @@ def get_args():
         '-sbmvn',
         '--spring-boot-major-version-number',
         type=str,
-        choices=[SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME],
+        choices=[SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME, SPRING_BOOT_MAJOR_4_VERSION_NAME],
         required=False,
         default=SPRING_BOOT_MAJOR_2_VERSION_NAME,
         help='Update the dependencies of Spring Boot major version. The default is ' + SPRING_BOOT_MAJOR_2_VERSION_NAME + '.'

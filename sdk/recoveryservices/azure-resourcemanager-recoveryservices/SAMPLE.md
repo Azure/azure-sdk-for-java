@@ -8,6 +8,10 @@
 - [ListBySubscriptionId](#deletedvaults_listbysubscriptionid)
 - [Undelete](#deletedvaults_undelete)
 
+## Operations
+
+- [List](#operations_list)
+
 ## PrivateLinkResourcesOperation
 
 - [Get](#privatelinkresourcesoperation_get)
@@ -146,6 +150,27 @@ public final class DeletedVaultsUndeleteSamples {
                 .withProperties(new DeletedVaultUndeleteInputProperties().withRecoveryResourceGroupId(
                     "/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup")),
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Operations_List
+
+```java
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2025-08-01/ListOperations.json
+     */
+    /**
+     * Sample code: ListOperations.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void listOperations(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```

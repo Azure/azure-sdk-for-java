@@ -12,7 +12,8 @@ import com.azure.core.util.Context;
  */
 public interface Accounts {
     /**
-     * List all the existing accounts.
+     * Lists all the New Relic accounts linked to your email address, helping you understand the existing accounts that
+     * have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
@@ -24,7 +25,8 @@ public interface Accounts {
     PagedIterable<AccountResource> list(String userEmail, String location);
 
     /**
-     * List all the existing accounts.
+     * Lists all the New Relic accounts linked to your email address, helping you understand the existing accounts that
+     * have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.

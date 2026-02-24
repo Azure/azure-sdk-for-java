@@ -17,25 +17,26 @@ public final class SchemaRegistryUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"cev\",\"tenantId\":\"gtltdhlf\",\"type\":\"None\"},\"tags\":{\"vgtrdcnifmzzs\":\"py\",\"g\":\"ymbrnysuxmpraf\",\"roud\":\"khocxvdfffwaf\",\"hrv\":\"spave\"},\"properties\":{\"displayName\":\"n\",\"description\":\"zudhcxg\"}}")
+            "{\"identity\":{\"principalId\":\"qlyvijo\",\"tenantId\":\"iv\",\"type\":\"SystemAssigned\"},\"tags\":{\"ti\":\"zunbixx\",\"vtsoxf\":\"vcpwpgclrc\",\"m\":\"kenx\",\"ao\":\"yefrpmpdnqqska\"},\"properties\":{\"displayName\":\"mbnpqf\",\"description\":\"qlkzme\"}}")
             .toObject(SchemaRegistryUpdate.class);
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("py", model.tags().get("vgtrdcnifmzzs"));
-        Assertions.assertEquals("n", model.properties().displayName());
-        Assertions.assertEquals("zudhcxg", model.properties().description());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("zunbixx", model.tags().get("ti"));
+        Assertions.assertEquals("mbnpqf", model.properties().displayName());
+        Assertions.assertEquals("qlkzme", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchemaRegistryUpdate model = new SchemaRegistryUpdate()
-            .withIdentity(new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.NONE))
-            .withTags(mapOf("vgtrdcnifmzzs", "py", "g", "ymbrnysuxmpraf", "roud", "khocxvdfffwaf", "hrv", "spave"))
-            .withProperties(new SchemaRegistryUpdateProperties().withDisplayName("n").withDescription("zudhcxg"));
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withTags(mapOf("ti", "zunbixx", "vtsoxf", "vcpwpgclrc", "m", "kenx", "ao", "yefrpmpdnqqska"))
+            .withProperties(new SchemaRegistryUpdateProperties().withDisplayName("mbnpqf").withDescription("qlkzme"));
         model = BinaryData.fromObject(model).toObject(SchemaRegistryUpdate.class);
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("py", model.tags().get("vgtrdcnifmzzs"));
-        Assertions.assertEquals("n", model.properties().displayName());
-        Assertions.assertEquals("zudhcxg", model.properties().description());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("zunbixx", model.tags().get("ti"));
+        Assertions.assertEquals("mbnpqf", model.properties().displayName());
+        Assertions.assertEquals("qlkzme", model.properties().description());
     }
 
     // Use "Map.of" if available

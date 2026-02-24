@@ -39,7 +39,7 @@ import java.util.Map;
  */
 public final class ManagedClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ManagedClusterPutOperation_example_max.json
+     * x-ms-original-file: 2025-10-01-preview/ManagedClusterPutOperation_example_max.json
      */
     /**
      * Sample code: Put a cluster with maximum parameters.
@@ -148,7 +148,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ManagedClusterPutOperation_example_min.json
+     * x-ms-original-file: 2025-10-01-preview/ManagedClusterPutOperation_example_min.json
      */
     /**
      * Sample code: Put a cluster with minimum parameters.

@@ -274,8 +274,8 @@ public class ShareApiTests extends FileShareTestBase {
     @Test
     public void createFileAndDirectoryOAuth() {
         primaryShareClient.create();
-        ShareClient oAuthShareClient = getOAuthShareClient(
-            new ShareClientBuilder().shareName(shareName).shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareClient oAuthShareClient = getOAuthShareClientBuilder(
+            new ShareClientBuilder().shareName(shareName).shareTokenIntent(ShareTokenIntent.BACKUP)).buildClient();
         String dirName = generatePathName();
         ShareDirectoryClient dirClient = oAuthShareClient.getDirectoryClient(dirName);
 

@@ -10,21 +10,20 @@ import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveAddressRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS1_PARTITION1;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestRepositoryConfig.class, ErrorEventListenerConfig.class})
 public class ApplicationContextEventErrorReactiveIT {
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -32,14 +31,12 @@ public class ApplicationContextEventErrorReactiveIT {
     @Autowired
     private CosmosTemplate template;
 
-    @Before
-    public void setUp() {
-        collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
-        repository.saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1)).collectList().block();
-    }
-
-    @Test(expected = CosmosAccessException.class)
+    @Test
     public void shouldThrowExceptionIfEventListenerThrowsException() {
-        repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(), new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity())).block();
+        assertThrows(CosmosAccessException.class, () -> {
+            collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
+            repository.saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1)).collectList().block();
+            repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(), new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity())).block();
+        });
     }
 }

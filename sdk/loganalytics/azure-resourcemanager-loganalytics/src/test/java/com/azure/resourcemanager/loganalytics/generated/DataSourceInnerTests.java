@@ -15,23 +15,23 @@ public final class DataSourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataSourceInner model = BinaryData.fromString(
-            "{\"properties\":\"datakbldngkpocipa\",\"etag\":\"xoegukgjnpiucgy\",\"kind\":\"LinuxChangeTrackingPath\",\"tags\":{\"izcdrqjsd\":\"zntypmrb\",\"cwif\":\"ydnfyhxdeoejz\"},\"id\":\"jttgzf\",\"name\":\"ishc\",\"type\":\"khaj\"}")
+            "{\"properties\":\"dataasy\",\"etag\":\"nddhsgcbacph\",\"kind\":\"ChangeTrackingRegistry\",\"tags\":{\"ndlik\":\"tynqgoul\"},\"id\":\"yqkgfg\",\"name\":\"bmadgak\",\"type\":\"qsrxybzqqed\"}")
             .toObject(DataSourceInner.class);
-        Assertions.assertEquals("xoegukgjnpiucgy", model.etag());
-        Assertions.assertEquals(DataSourceKind.LINUX_CHANGE_TRACKING_PATH, model.kind());
-        Assertions.assertEquals("zntypmrb", model.tags().get("izcdrqjsd"));
+        Assertions.assertEquals("nddhsgcbacph", model.etag());
+        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_REGISTRY, model.kind());
+        Assertions.assertEquals("tynqgoul", model.tags().get("ndlik"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataSourceInner model = new DataSourceInner().withProperties("datakbldngkpocipa")
-            .withEtag("xoegukgjnpiucgy")
-            .withKind(DataSourceKind.LINUX_CHANGE_TRACKING_PATH)
-            .withTags(mapOf("izcdrqjsd", "zntypmrb", "cwif", "ydnfyhxdeoejz"));
+        DataSourceInner model = new DataSourceInner().withProperties("dataasy")
+            .withEtag("nddhsgcbacph")
+            .withKind(DataSourceKind.CHANGE_TRACKING_REGISTRY)
+            .withTags(mapOf("ndlik", "tynqgoul"));
         model = BinaryData.fromObject(model).toObject(DataSourceInner.class);
-        Assertions.assertEquals("xoegukgjnpiucgy", model.etag());
-        Assertions.assertEquals(DataSourceKind.LINUX_CHANGE_TRACKING_PATH, model.kind());
-        Assertions.assertEquals("zntypmrb", model.tags().get("izcdrqjsd"));
+        Assertions.assertEquals("nddhsgcbacph", model.etag());
+        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_REGISTRY, model.kind());
+        Assertions.assertEquals("tynqgoul", model.tags().get("ndlik"));
     }
 
     // Use "Map.of" if available

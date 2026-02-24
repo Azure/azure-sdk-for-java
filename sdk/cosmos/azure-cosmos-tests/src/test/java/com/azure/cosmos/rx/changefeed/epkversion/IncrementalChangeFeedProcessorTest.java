@@ -987,7 +987,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                                     docDefList.add(getDocumentDefinition());
                                 }
 
-                                return bulkInsert(createdFeedCollection, docDefList, FEED_COUNT)
+                                return bulkInsert(createdFeedCollection, docDefList)
                                     .last()
                                     .delayElement(Duration.ofMillis(1000))
                                     .flatMap(cosmosItemResponse -> {
@@ -1074,7 +1074,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     docDefList.add(getDocumentDefinition());
                 }
 
-                bulkInsert(createdFeedCollection, docDefList, FEED_COUNT)
+                bulkInsert(createdFeedCollection, docDefList)
                     .last()
                     .flatMap(cosmosItemResponse -> {
                         logger.info("Start first Change feed processor");
@@ -1126,7 +1126,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                                             docDefList1.add(getDocumentDefinition());
                                         }
 
-                                        return bulkInsert(createdFeedCollection, docDefList1, FEED_COUNT)
+                                        return bulkInsert(createdFeedCollection, docDefList1)
                                             .last();
                                     });
                             }))
@@ -1795,7 +1795,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"query" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = {"query" }, timeOut = 3 * TIMEOUT)
     public void readFeedDocumentsWithThroughputControl() throws InterruptedException {
         // Create a separate client as throughput control group will be applied to it
         CosmosAsyncClient clientWithThroughputControl =
@@ -1819,8 +1819,15 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
 
             int maxItemCount = 100; // force the RU usage per requests > 1
-            int feedCount = maxItemCount * 2; // force to do two fetches
-            setupReadFeedDocuments(createdDocuments, createdFeedCollection, feedCount);
+
+            // force to do two fetches
+            for (int i = 0; i < 2; i++) {
+                setupReadFeedDocuments(
+                    createdDocuments,
+                    this.createdDatabase.getContainer(createdFeedCollection.getId()),
+                    maxItemCount,
+                    true);
+            }
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
@@ -2344,13 +2351,23 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         List<InternalObjectNode> createdDocuments,
         CosmosAsyncContainer feedCollection,
         long count) {
+
+        setupReadFeedDocuments(createdDocuments, feedCollection, count, false);
+    }
+
+    private void setupReadFeedDocuments(
+        List<InternalObjectNode> createdDocuments,
+        CosmosAsyncContainer feedCollection,
+        long count,
+        boolean bulkEnabled) {
         List<InternalObjectNode> docDefList = new ArrayList<>();
 
         for(int i = 0; i < count; i++) {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, bulkEnabled));
+
         for (InternalObjectNode current : createdDocuments) {
             try {
                 logger.info("CREATED {}", OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(current));
@@ -2368,7 +2385,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

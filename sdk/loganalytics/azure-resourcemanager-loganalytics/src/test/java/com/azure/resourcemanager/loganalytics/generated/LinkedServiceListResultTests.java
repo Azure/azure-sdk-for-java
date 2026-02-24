@@ -17,29 +17,37 @@ public final class LinkedServiceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedServiceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceId\":\"aepdkzjanc\",\"writeAccessResourceId\":\"rhdwbavxbniw\",\"provisioningState\":\"Deleting\"},\"tags\":{\"ytxhp\":\"tsdbpgn\"},\"id\":\"xbzpfzab\",\"name\":\"lcuhxwtctyqiklb\",\"type\":\"ovplw\"},{\"properties\":{\"resourceId\":\"hvgyuguosvmk\",\"writeAccessResourceId\":\"sxqu\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"lpvlopw\":\"gmgsxnkjzkde\"},\"id\":\"yighxpk\",\"name\":\"wzbaiue\",\"type\":\"baumnyqupedeoj\"}]}")
+            "{\"value\":[{\"properties\":{\"resourceId\":\"c\",\"writeAccessResourceId\":\"ierhhbcsglummaj\",\"provisioningState\":\"Deleting\"},\"tags\":{\"jionpimexgstxgc\":\"xobnbdxkqpxok\"},\"id\":\"odgmaajrmvdjwz\",\"name\":\"lovmclwhijcoe\",\"type\":\"ctbzaq\"},{\"properties\":{\"resourceId\":\"sycbkbfk\",\"writeAccessResourceId\":\"kdkexxp\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"vpmouexhdzxib\":\"axcfjpgddtocjjx\",\"wndeicbtwnp\":\"eojnxqbzvddn\",\"hcffcyddglmjthjq\":\"aoqvuh\",\"hix\":\"wpyeicxmqciwqvh\"},\"id\":\"igdtopbob\",\"name\":\"og\",\"type\":\"m\"},{\"properties\":{\"resourceId\":\"u\",\"writeAccessResourceId\":\"a\",\"provisioningState\":\"Deleting\"},\"tags\":{\"kftutqxlngxlefg\":\"yvvtpgvdfgio\",\"rvqdra\":\"gnxkrxdqmidtth\",\"skanyk\":\"hjybigehoqfbo\"},\"id\":\"zlcuiywgqywgndrv\",\"name\":\"nhzgpphrcgyn\",\"type\":\"ocpecfvmmco\"}]}")
             .toObject(LinkedServiceListResult.class);
-        Assertions.assertEquals("tsdbpgn", model.value().get(0).tags().get("ytxhp"));
-        Assertions.assertEquals("aepdkzjanc", model.value().get(0).resourceId());
-        Assertions.assertEquals("rhdwbavxbniw", model.value().get(0).writeAccessResourceId());
+        Assertions.assertEquals("xobnbdxkqpxok", model.value().get(0).tags().get("jionpimexgstxgc"));
+        Assertions.assertEquals("c", model.value().get(0).resourceId());
+        Assertions.assertEquals("ierhhbcsglummaj", model.value().get(0).writeAccessResourceId());
         Assertions.assertEquals(LinkedServiceEntityStatus.DELETING, model.value().get(0).provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LinkedServiceListResult model = new LinkedServiceListResult().withValue(Arrays.asList(
-            new LinkedServiceInner().withTags(mapOf("ytxhp", "tsdbpgn"))
-                .withResourceId("aepdkzjanc")
-                .withWriteAccessResourceId("rhdwbavxbniw")
+            new LinkedServiceInner().withTags(mapOf("jionpimexgstxgc", "xobnbdxkqpxok"))
+                .withResourceId("c")
+                .withWriteAccessResourceId("ierhhbcsglummaj")
                 .withProvisioningState(LinkedServiceEntityStatus.DELETING),
-            new LinkedServiceInner().withTags(mapOf("lpvlopw", "gmgsxnkjzkde"))
-                .withResourceId("hvgyuguosvmk")
-                .withWriteAccessResourceId("sxqu")
-                .withProvisioningState(LinkedServiceEntityStatus.SUCCEEDED)));
+            new LinkedServiceInner()
+                .withTags(mapOf("vpmouexhdzxib", "axcfjpgddtocjjx", "wndeicbtwnp", "eojnxqbzvddn", "hcffcyddglmjthjq",
+                    "aoqvuh", "hix", "wpyeicxmqciwqvh"))
+                .withResourceId("sycbkbfk")
+                .withWriteAccessResourceId("kdkexxp")
+                .withProvisioningState(LinkedServiceEntityStatus.SUCCEEDED),
+            new LinkedServiceInner()
+                .withTags(
+                    mapOf("kftutqxlngxlefg", "yvvtpgvdfgio", "rvqdra", "gnxkrxdqmidtth", "skanyk", "hjybigehoqfbo"))
+                .withResourceId("u")
+                .withWriteAccessResourceId("a")
+                .withProvisioningState(LinkedServiceEntityStatus.DELETING)));
         model = BinaryData.fromObject(model).toObject(LinkedServiceListResult.class);
-        Assertions.assertEquals("tsdbpgn", model.value().get(0).tags().get("ytxhp"));
-        Assertions.assertEquals("aepdkzjanc", model.value().get(0).resourceId());
-        Assertions.assertEquals("rhdwbavxbniw", model.value().get(0).writeAccessResourceId());
+        Assertions.assertEquals("xobnbdxkqpxok", model.value().get(0).tags().get("jionpimexgstxgc"));
+        Assertions.assertEquals("c", model.value().get(0).resourceId());
+        Assertions.assertEquals("ierhhbcsglummaj", model.value().get(0).writeAccessResourceId());
         Assertions.assertEquals(LinkedServiceEntityStatus.DELETING, model.value().get(0).provisioningState());
     }
 

@@ -77,13 +77,65 @@ The JCA library supports SSL/TLS and mTLS (Mutual TLS) to enhance security in se
 The JCA library provides support for Java Archive (JAR) signing, ensuring the integrity and authenticity of JAR files using certificates stored in Azure Key Vault.
 
 ## Examples
+
+### Authentication Methods
+The JCA provider supports four authentication methods, which are automatically selected based on the configuration priority:
+
+#### 1. Service Principal (Client Credentials)
+Use this method when you have explicit credentials (tenant ID, client ID, client secret):
+```java
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.tenant-id", "<your-tenant-id>");
+System.setProperty("azure.keyvault.client-id", "<your-client-id>");
+System.setProperty("azure.keyvault.client-secret", "<your-client-secret>");
+```
+
+#### 2. Workload Identity (AKS)
+Use this method when running in Azure Kubernetes Service with Workload Identity enabled. **Only set the Key Vault URI** - the federated credentials are automatically detected from environment variables (`AZURE_FEDERATED_TOKEN_FILE`, `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`) or can be explicitly set via system properties:
+```java
+// Automatic detection from environment variables
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+
+// Or explicitly set client ID and tenant ID via system properties
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.tenant-id", "<your-tenant-id>");
+System.setProperty("azure.keyvault.client-id", "<your-client-id>");
+```
+
+#### 3. Managed Identity
+Use this method when running on Azure services (VMs, App Service, Container Apps) with Managed Identity enabled. **Only set the Key Vault URI**:
+```java
+// System-assigned managed identity
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+
+// User-assigned managed identity (specify the object ID)
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.managed-identity", "<managed-identity-object-id>");
+```
+
+#### 4. Access Token
+Use this method when you have a pre-obtained bearer token:
+```java
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.access-token", "<your-access-token>");
+```
+
+**Authentication Selection Logic:**
+- If `tenant-id`, `client-id`, and `client-secret` are set → Service Principal authentication
+- If only `azure.keyvault.uri` is set → Automatic detection:
+  - **Workload Identity** (if `AZURE_FEDERATED_TOKEN_FILE` environment variable exists)
+  - **Managed Identity** on App Service (if `MSI_ENDPOINT` environment variable exists)
+  - **Managed Identity** on Container Apps/AKS (if `IDENTITY_ENDPOINT` environment variable exists)
+  - **Managed Identity** on VM (via IMDS endpoint at 169.254.169.254)
+
 ### Exposed Options
 The JCA library supports configuring the following options:
-* `azure.keyvault.uri`: The Azure Key Vault endpoint to retrieve certificates.
-* `azure.keyvault.tenant-id`: The Microsoft Entra ID tenant ID required for authentication.
-* `azure.keyvault.client-id`: The client/application ID used for authentication.
-* `azure.keyvault.client-secret`: The client secret for authentication when using client credentials.
-* `azure.keyvault.managed-identity`: Indicates whether Managed Identity authentication is enabled.
+* `azure.keyvault.uri`: **(Required)** The Azure Key Vault endpoint to retrieve certificates.
+* `azure.keyvault.tenant-id`: The Microsoft Entra ID tenant ID (required for Service Principal authentication; optional for Workload Identity if `AZURE_TENANT_ID` environment variable is set).
+* `azure.keyvault.client-id`: The client/application ID (required for Service Principal authentication; optional for Workload Identity if `AZURE_CLIENT_ID` environment variable is set).
+* `azure.keyvault.client-secret`: The client secret (only required when using Service Principal authentication).
+* `azure.keyvault.managed-identity`: The user-assigned managed identity object ID (optional, for user-assigned managed identity).
+* `azure.keyvault.access-token`: The access token for authentication. This allows using a pre-obtained bearer token instead of client credentials.
 * `azure.cert-path.well-known`: The path where the well-known certificate is stored.
 * `azure.cert-path.custom`: The path where the custom certificate is stored.
 * `azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate`: Indicates whether to refresh certificates when have untrusted certificate.
@@ -139,7 +191,7 @@ while (true) {
 }
 ```
 
-Note if you want to use Azure Managed Identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
+**Note:** See [Authentication Methods](#authentication-methods) for configuration details.
 
 #### Client side SSL
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
@@ -187,7 +239,7 @@ try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(mana
 System.out.println(result);
 ```
 
-Note if you want to use Azure managed identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
+**Note:** See [Authentication Methods](#authentication-methods) for configuration details.
 
 ### mTLS
 #### Server side mTLS
@@ -237,7 +289,7 @@ while (true) {
 }
 ```
 
-Note if you want to use Azure Managed Identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
+**Note:** See [Authentication Methods](#authentication-methods) for configuration details.
 
 #### Client side mTLS
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
@@ -291,7 +343,7 @@ try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(mana
 System.out.println(result);
 ```
 
-Note if you want to use Azure managed identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
+**Note:** See [Authentication Methods](#authentication-methods) for configuration details.
 
 ### Jarsigner
 You can use the JCA provider to sign JAR files using certificates stored in Azure Key Vault by the following commands:

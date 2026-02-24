@@ -21,41 +21,13 @@ import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 @Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class DeploymentsAsyncClientTest extends ClientTestBase {
 
-    private AIProjectClientBuilder clientBuilder;
-    private DeploymentsAsyncClient deploymentsAsyncClient;
-
-    private void setup(HttpClient httpClient) {
-        clientBuilder = getClientBuilder(httpClient);
-        deploymentsAsyncClient = clientBuilder.buildDeploymentsAsyncClient();
-    }
-
-    /**
-     * Helper method to verify a Deployment has valid properties.
-     * @param deployment The deployment to validate
-     * @param expectedName The expected name of the deployment, or null if no specific name is expected
-     * @param expectedType The expected deployment type, or null if no specific type is expected
-     */
-    private void assertValidDeployment(Deployment deployment, String expectedName, DeploymentType expectedType) {
-        Assertions.assertNotNull(deployment);
-        Assertions.assertNotNull(deployment.getName());
-        Assertions.assertNotNull(deployment.getType());
-
-        if (expectedName != null) {
-            Assertions.assertEquals(expectedName, deployment.getName());
-        }
-
-        if (expectedType != null) {
-            Assertions.assertEquals(expectedType, deployment.getType());
-        }
-    }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testListDeployments(HttpClient httpClient) {
-        setup(httpClient);
+    public void testListDeployments(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DeploymentsAsyncClient deploymentsAsyncClient = getDeploymentsAsyncClient(httpClient, serviceVersion);
 
         // Verify that listing deployments returns results
-        PagedFlux<Deployment> deploymentsFlux = deploymentsAsyncClient.list();
+        PagedFlux<Deployment> deploymentsFlux = deploymentsAsyncClient.listDeployments();
         Assertions.assertNotNull(deploymentsFlux);
 
         // Collect all deployments and verify
@@ -73,12 +45,13 @@ public class DeploymentsAsyncClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testListDeploymentsWithFilters(HttpClient httpClient) {
-        setup(httpClient);
+    public void testListDeploymentsWithFilters(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DeploymentsAsyncClient deploymentsAsyncClient = getDeploymentsAsyncClient(httpClient, serviceVersion);
 
         // Test listing deployments with model publisher filter
         String testPublisher = "openai";
-        PagedFlux<Deployment> publisherFilteredDeployments = deploymentsAsyncClient.list(testPublisher, null, null);
+        PagedFlux<Deployment> publisherFilteredDeployments
+            = deploymentsAsyncClient.listDeployments(testPublisher, null, null);
         Assertions.assertNotNull(publisherFilteredDeployments);
 
         // Verify filtered deployments
@@ -90,7 +63,8 @@ public class DeploymentsAsyncClientTest extends ClientTestBase {
 
         // Test listing deployments with model name filter
         String testModelName = "gpt-4o-mini";
-        PagedFlux<Deployment> modelNameFilteredDeployments = deploymentsAsyncClient.list(null, testModelName, null);
+        PagedFlux<Deployment> modelNameFilteredDeployments
+            = deploymentsAsyncClient.listDeployments(null, testModelName, null);
         Assertions.assertNotNull(modelNameFilteredDeployments);
 
         // Verify filtered deployments
@@ -102,7 +76,7 @@ public class DeploymentsAsyncClientTest extends ClientTestBase {
 
         // Test listing deployments with deployment type filter
         PagedFlux<Deployment> typeFilteredDeployments
-            = deploymentsAsyncClient.list(null, null, DeploymentType.MODEL_DEPLOYMENT);
+            = deploymentsAsyncClient.listDeployments(null, null, DeploymentType.MODEL_DEPLOYMENT);
         Assertions.assertNotNull(typeFilteredDeployments);
 
         // Verify filtered deployments
@@ -115,12 +89,12 @@ public class DeploymentsAsyncClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testGetDeployment(HttpClient httpClient) {
-        setup(httpClient);
+    public void testGetDeployment(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DeploymentsAsyncClient deploymentsAsyncClient = getDeploymentsAsyncClient(httpClient, serviceVersion);
 
         String deploymentName = Configuration.getGlobalConfiguration().get("TEST_DEPLOYMENT_NAME", "gpt-4o-mini");
 
-        StepVerifier.create(deploymentsAsyncClient.get(deploymentName)).assertNext(deployment -> {
+        StepVerifier.create(deploymentsAsyncClient.getDeployment(deploymentName)).assertNext(deployment -> {
             assertValidDeployment(deployment, deploymentName, null);
             System.out.println("Deployment retrieved successfully: " + deployment.getName());
         }).verifyComplete();
@@ -128,12 +102,12 @@ public class DeploymentsAsyncClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testGetDeploymentAndVerifyType(HttpClient httpClient) {
-        setup(httpClient);
+    public void testGetDeploymentAndVerifyType(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DeploymentsAsyncClient deploymentsAsyncClient = getDeploymentsAsyncClient(httpClient, serviceVersion);
 
         String deploymentName = Configuration.getGlobalConfiguration().get("TEST_DEPLOYMENT_NAME", "gpt-4o-mini");
 
-        StepVerifier.create(deploymentsAsyncClient.get(deploymentName)).assertNext(deployment -> {
+        StepVerifier.create(deploymentsAsyncClient.getDeployment(deploymentName)).assertNext(deployment -> {
             assertValidDeployment(deployment, deploymentName, DeploymentType.MODEL_DEPLOYMENT);
             System.out.println("Deployment type successfully verified for: " + deployment.getName());
         }).verifyComplete();
@@ -141,14 +115,16 @@ public class DeploymentsAsyncClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testGetDeploymentNotFound(HttpClient httpClient) {
-        setup(httpClient);
+    public void testGetDeploymentNotFound(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DeploymentsAsyncClient deploymentsAsyncClient = getDeploymentsAsyncClient(httpClient, serviceVersion);
 
         String nonExistentDeploymentName = "non-existent-deployment-name";
 
-        StepVerifier.create(deploymentsAsyncClient.get(nonExistentDeploymentName)).expectErrorMatches(error -> {
-            System.out.println("Expected error received: " + error.getMessage());
-            return error.getMessage().contains("404") || error.getMessage().contains("Not Found");
-        }).verify();
+        StepVerifier.create(deploymentsAsyncClient.getDeployment(nonExistentDeploymentName))
+            .expectErrorMatches(error -> {
+                System.out.println("Expected error received: " + error.getMessage());
+                return error.getMessage().contains("404") || error.getMessage().contains("Not Found");
+            })
+            .verify();
     }
 }

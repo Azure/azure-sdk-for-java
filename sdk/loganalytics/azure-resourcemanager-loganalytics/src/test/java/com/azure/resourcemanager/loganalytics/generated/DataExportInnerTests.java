@@ -13,33 +13,33 @@ public final class DataExportInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataExportInner model = BinaryData.fromString(
-            "{\"properties\":{\"dataExportId\":\"ovm\",\"tableNames\":[\"kacspkw\",\"hzdobpxjmflbvvnc\"],\"destination\":{\"resourceId\":\"kcciwwzjuqkhr\",\"type\":\"EventHub\",\"metaData\":{\"eventHubName\":\"ku\"}},\"enable\":false,\"createdDate\":\"kg\",\"lastModifiedDate\":\"auu\"},\"id\":\"mjmvxieduugidyjr\",\"name\":\"f\",\"type\":\"y\"}")
+            "{\"properties\":{\"dataExportId\":\"qeof\",\"tableNames\":[\"e\",\"jhqjbasvmsmjqul\",\"gsntnbybkzgcwr\",\"clxxwrljdo\"],\"destination\":{\"resourceId\":\"kcqvkocrc\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"nh\"}},\"enable\":true,\"createdDate\":\"biksq\",\"lastModifiedDate\":\"lssai\"},\"id\":\"qpjwnzlljfm\",\"name\":\"pee\",\"type\":\"vmgxsab\"}")
             .toObject(DataExportInner.class);
-        Assertions.assertEquals("ovm", model.dataExportId());
-        Assertions.assertEquals("kacspkw", model.tableNames().get(0));
-        Assertions.assertEquals(false, model.enable());
-        Assertions.assertEquals("kg", model.createdDate());
-        Assertions.assertEquals("auu", model.lastModifiedDate());
-        Assertions.assertEquals("kcciwwzjuqkhr", model.resourceId());
-        Assertions.assertEquals("ku", model.eventHubName());
+        Assertions.assertEquals("qeof", model.dataExportId());
+        Assertions.assertEquals("e", model.tableNames().get(0));
+        Assertions.assertTrue(model.enable());
+        Assertions.assertEquals("biksq", model.createdDate());
+        Assertions.assertEquals("lssai", model.lastModifiedDate());
+        Assertions.assertEquals("kcqvkocrc", model.resourceId());
+        Assertions.assertEquals("nh", model.eventHubName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataExportInner model = new DataExportInner().withDataExportId("ovm")
-            .withTableNames(Arrays.asList("kacspkw", "hzdobpxjmflbvvnc"))
-            .withEnable(false)
-            .withCreatedDate("kg")
-            .withLastModifiedDate("auu")
-            .withResourceId("kcciwwzjuqkhr")
-            .withEventHubName("ku");
+        DataExportInner model = new DataExportInner().withDataExportId("qeof")
+            .withTableNames(Arrays.asList("e", "jhqjbasvmsmjqul", "gsntnbybkzgcwr", "clxxwrljdo"))
+            .withEnable(true)
+            .withCreatedDate("biksq")
+            .withLastModifiedDate("lssai")
+            .withResourceId("kcqvkocrc")
+            .withEventHubName("nh");
         model = BinaryData.fromObject(model).toObject(DataExportInner.class);
-        Assertions.assertEquals("ovm", model.dataExportId());
-        Assertions.assertEquals("kacspkw", model.tableNames().get(0));
-        Assertions.assertEquals(false, model.enable());
-        Assertions.assertEquals("kg", model.createdDate());
-        Assertions.assertEquals("auu", model.lastModifiedDate());
-        Assertions.assertEquals("kcciwwzjuqkhr", model.resourceId());
-        Assertions.assertEquals("ku", model.eventHubName());
+        Assertions.assertEquals("qeof", model.dataExportId());
+        Assertions.assertEquals("e", model.tableNames().get(0));
+        Assertions.assertTrue(model.enable());
+        Assertions.assertEquals("biksq", model.createdDate());
+        Assertions.assertEquals("lssai", model.lastModifiedDate());
+        Assertions.assertEquals("kcqvkocrc", model.resourceId());
+        Assertions.assertEquals("nh", model.eventHubName());
     }
 }

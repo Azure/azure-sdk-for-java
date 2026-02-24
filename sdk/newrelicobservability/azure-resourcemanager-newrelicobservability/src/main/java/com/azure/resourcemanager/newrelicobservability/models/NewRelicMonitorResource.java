@@ -115,6 +115,13 @@ public interface NewRelicMonitorResource {
     PlanData planData();
 
     /**
+     * Gets the saaSData property: SaaS details.
+     * 
+     * @return the saaSData value.
+     */
+    SaaSData saaSData();
+
+    /**
      * Gets the liftrResourceCategory property: Liftr resource category.
      * 
      * @return the liftrResourceCategory value.
@@ -241,7 +248,7 @@ public interface NewRelicMonitorResource {
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
             DefinitionStages.WithNewRelicAccountProperties, DefinitionStages.WithUserInfo,
-            DefinitionStages.WithPlanData, DefinitionStages.WithOrgCreationSource,
+            DefinitionStages.WithPlanData, DefinitionStages.WithSaaSData, DefinitionStages.WithOrgCreationSource,
             DefinitionStages.WithAccountCreationSource, DefinitionStages.WithSubscriptionState,
             DefinitionStages.WithSaaSAzureSubscriptionStatus {
             /**
@@ -326,6 +333,19 @@ public interface NewRelicMonitorResource {
         }
 
         /**
+         * The stage of the NewRelicMonitorResource definition allowing to specify saaSData.
+         */
+        interface WithSaaSData {
+            /**
+             * Specifies the saaSData property: SaaS details.
+             * 
+             * @param saaSData SaaS details.
+             * @return the next definition stage.
+             */
+            WithCreate withSaaSData(SaaSData saaSData);
+        }
+
+        /**
          * The stage of the NewRelicMonitorResource definition allowing to specify orgCreationSource.
          */
         interface WithOrgCreationSource {
@@ -392,7 +412,7 @@ public interface NewRelicMonitorResource {
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity,
         UpdateStages.WithNewRelicAccountProperties, UpdateStages.WithUserInfo, UpdateStages.WithPlanData,
-        UpdateStages.WithOrgCreationSource, UpdateStages.WithAccountCreationSource {
+        UpdateStages.WithSaaSData, UpdateStages.WithOrgCreationSource, UpdateStages.WithAccountCreationSource {
         /**
          * Executes the update request.
          * 
@@ -479,6 +499,19 @@ public interface NewRelicMonitorResource {
         }
 
         /**
+         * The stage of the NewRelicMonitorResource update allowing to specify saaSData.
+         */
+        interface WithSaaSData {
+            /**
+             * Specifies the saaSData property: SaaS details.
+             * 
+             * @param saaSData SaaS details.
+             * @return the next definition stage.
+             */
+            Update withSaaSData(SaaSData saaSData);
+        }
+
+        /**
          * The stage of the NewRelicMonitorResource update allowing to specify orgCreationSource.
          */
         interface WithOrgCreationSource {
@@ -521,53 +554,97 @@ public interface NewRelicMonitorResource {
     NewRelicMonitorResource refresh(Context context);
 
     /**
-     * Get metric rules.
+     * Retrieves the metric rules that are configured in the New Relic monitor resource.
      * 
      * @param request The details of the get metrics status request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metric rules along with {@link Response}.
+     * @return set of rules for sending metrics for the Monitor resource along with {@link Response}.
      */
     Response<MetricRules> getMetricRulesWithResponse(MetricsRequest request, Context context);
 
     /**
-     * Get metric rules.
+     * Retrieves the metric rules that are configured in the New Relic monitor resource.
      * 
      * @param request The details of the get metrics status request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metric rules.
+     * @return set of rules for sending metrics for the Monitor resource.
      */
     MetricRules getMetricRules(MetricsRequest request);
 
     /**
-     * Get metric status.
+     * Retrieves the metric status that are configured in the New Relic monitor resource.
      * 
      * @param request The details of the get metrics status request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metric status along with {@link Response}.
+     * @return response of get metrics status Operation along with {@link Response}.
      */
     Response<MetricsStatusResponse> getMetricStatusWithResponse(MetricsStatusRequest request, Context context);
 
     /**
-     * Get metric status.
+     * Retrieves the metric status that are configured in the New Relic monitor resource.
      * 
      * @param request The details of the get metrics status request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metric status.
+     * @return response of get metrics status Operation.
      */
     MetricsStatusResponse getMetricStatus(MetricsStatusRequest request);
 
     /**
-     * List the app service resources currently being monitored by the NewRelic resource.
+     * Returns the latest SaaS linked to the newrelic organization of the underlying monitor.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation along with {@link Response}.
+     */
+    Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(Context context);
+
+    /**
+     * Returns the latest SaaS linked to the newrelic organization of the underlying monitor.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation.
+     */
+    LatestLinkedSaaSResponse latestLinkedSaaS();
+
+    /**
+     * Links a new SaaS to the newrelic organization of the underlying monitor.
+     * 
+     * @param body Link SaaS body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Monitor Resource by NewRelic.
+     */
+    NewRelicMonitorResource linkSaaS(SaaSData body);
+
+    /**
+     * Links a new SaaS to the newrelic organization of the underlying monitor.
+     * 
+     * @param body Link SaaS body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Monitor Resource by NewRelic.
+     */
+    NewRelicMonitorResource linkSaaS(SaaSData body, Context context);
+
+    /**
+     * Lists the app service resources currently being monitored by the New Relic resource, helping you understand which
+     * app services are under monitoring.
      * 
      * @param request The details of the app services get request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -578,7 +655,8 @@ public interface NewRelicMonitorResource {
     PagedIterable<AppServiceInfo> listAppServices(AppServicesGetRequest request);
 
     /**
-     * List the app service resources currently being monitored by the NewRelic resource.
+     * Lists the app service resources currently being monitored by the New Relic resource, helping you understand which
+     * app services are under monitoring.
      * 
      * @param request The details of the app services get request.
      * @param context The context to associate with this operation.
@@ -590,30 +668,8 @@ public interface NewRelicMonitorResource {
     PagedIterable<AppServiceInfo> listAppServices(AppServicesGetRequest request, Context context);
 
     /**
-     * Switches the billing for NewRelic monitor resource.
-     * 
-     * @param request The details of the switch billing request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Monitor Resource by NewRelic.
-     */
-    Response<NewRelicMonitorResource> switchBillingWithResponse(SwitchBillingRequest request, Context context);
-
-    /**
-     * Switches the billing for NewRelic monitor resource.
-     * 
-     * @param request The details of the switch billing request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Monitor Resource by NewRelic.
-     */
-    NewRelicMonitorResource switchBilling(SwitchBillingRequest request);
-
-    /**
-     * List the compute vm resources currently being monitored by the NewRelic resource.
+     * Lists all VM resources currently being monitored by the New Relic monitor resource, helping you manage
+     * observability.
      * 
      * @param request The details of the Hosts get request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -624,7 +680,8 @@ public interface NewRelicMonitorResource {
     PagedIterable<VMInfo> listHosts(HostsGetRequest request);
 
     /**
-     * List the compute vm resources currently being monitored by the NewRelic resource.
+     * Lists all VM resources currently being monitored by the New Relic monitor resource, helping you manage
+     * observability.
      * 
      * @param request The details of the Hosts get request.
      * @param context The context to associate with this operation.
@@ -636,7 +693,30 @@ public interface NewRelicMonitorResource {
     PagedIterable<VMInfo> listHosts(HostsGetRequest request, Context context);
 
     /**
-     * List the resources currently being monitored by the NewRelic monitor resource.
+     * Lists all Azure resources that are linked to the same New Relic organization as the specified monitor resource,
+     * helping you understand the scope of integration.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LinkedResource> listLinkedResources();
+
+    /**
+     * Lists all Azure resources that are linked to the same New Relic organization as the specified monitor resource,
+     * helping you understand the scope of integration.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LinkedResource> listLinkedResources(Context context);
+
+    /**
+     * Lists all Azure resources that are currently being monitored by the specified New Relic monitor resource,
+     * providing insight into the coverage of your observability setup.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -646,7 +726,8 @@ public interface NewRelicMonitorResource {
     PagedIterable<MonitoredResource> listMonitoredResources();
 
     /**
-     * List the resources currently being monitored by the NewRelic monitor resource.
+     * Lists all Azure resources that are currently being monitored by the specified New Relic monitor resource,
+     * providing insight into the coverage of your observability setup.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -658,27 +739,75 @@ public interface NewRelicMonitorResource {
     PagedIterable<MonitoredResource> listMonitoredResources(Context context);
 
     /**
-     * List all Azure resources associated to the same NewRelic organization and account as the target resource.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<LinkedResource> listLinkedResources();
-
-    /**
-     * List all Azure resources associated to the same NewRelic organization and account as the target resource.
+     * Refreshes the ingestion key for all monitors linked to the same account associated to the underlying monitor.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
+     * @return the {@link Response}.
      */
-    PagedIterable<LinkedResource> listLinkedResources(Context context);
+    Response<Void> refreshIngestionKeyWithResponse(Context context);
 
     /**
-     * Returns the payload that needs to be passed in the request body for installing NewRelic agent on a VM.
+     * Refreshes the ingestion key for all monitors linked to the same account associated to the underlying monitor.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void refreshIngestionKey();
+
+    /**
+     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * 
+     * A long-running resource action.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Monitor Resource by NewRelic.
+     */
+    NewRelicMonitorResource resubscribe();
+
+    /**
+     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * 
+     * A long-running resource action.
+     * 
+     * @param body Resubscribe Properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Monitor Resource by NewRelic.
+     */
+    NewRelicMonitorResource resubscribe(ResubscribeProperties body, Context context);
+
+    /**
+     * Switches the billing for the New Relic Monitor resource to be billed by Azure Marketplace.
+     * 
+     * @param request The details of the switch billing request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Monitor Resource by NewRelic.
+     */
+    Response<NewRelicMonitorResource> switchBillingWithResponse(SwitchBillingRequest request, Context context);
+
+    /**
+     * Switches the billing for the New Relic Monitor resource to be billed by Azure Marketplace.
+     * 
+     * @param request The details of the switch billing request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Monitor Resource by NewRelic.
+     */
+    NewRelicMonitorResource switchBilling(SwitchBillingRequest request);
+
+    /**
+     * Returns the payload that needs to be passed in the request body for installing the New Relic agent on a VM,
+     * providing the necessary configuration details.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -689,7 +818,8 @@ public interface NewRelicMonitorResource {
     Response<VMExtensionPayload> vmHostPayloadWithResponse(Context context);
 
     /**
-     * Returns the payload that needs to be passed in the request body for installing NewRelic agent on a VM.
+     * Returns the payload that needs to be passed in the request body for installing the New Relic agent on a VM,
+     * providing the necessary configuration details.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

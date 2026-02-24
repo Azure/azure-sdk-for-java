@@ -49,7 +49,8 @@ public class GalleryArtifactPublishingProfileBase implements JsonSerializable<Ga
     private OffsetDateTime endOfLifeDate;
 
     /*
-     * Specifies the storage account type to be used to store the image. This property is not updatable.
+     * Specifies the storage account type to be used to store the image. Cannot be specified along with
+     * storageAccountStrategy. This property is not updatable.
      */
     private StorageAccountType storageAccountType;
 
@@ -62,6 +63,13 @@ public class GalleryArtifactPublishingProfileBase implements JsonSerializable<Ga
      * The target extended locations where the Image Version is going to be replicated to. This property is updatable.
      */
     private List<GalleryTargetExtendedLocation> targetExtendedLocations;
+
+    /*
+     * Specifies the strategy to be used when selecting the storage account type. Cannot be specified along with
+     * storageAccountType, but can be overridden per region by specifying targetRegions[].storageAccountType. This
+     * property is not updatable.
+     */
+    private StorageAccountStrategy storageAccountStrategy;
 
     /**
      * Creates an instance of GalleryArtifactPublishingProfileBase class.
@@ -178,8 +186,8 @@ public class GalleryArtifactPublishingProfileBase implements JsonSerializable<Ga
     }
 
     /**
-     * Get the storageAccountType property: Specifies the storage account type to be used to store the image. This
-     * property is not updatable.
+     * Get the storageAccountType property: Specifies the storage account type to be used to store the image. Cannot be
+     * specified along with storageAccountStrategy. This property is not updatable.
      * 
      * @return the storageAccountType value.
      */
@@ -188,8 +196,8 @@ public class GalleryArtifactPublishingProfileBase implements JsonSerializable<Ga
     }
 
     /**
-     * Set the storageAccountType property: Specifies the storage account type to be used to store the image. This
-     * property is not updatable.
+     * Set the storageAccountType property: Specifies the storage account type to be used to store the image. Cannot be
+     * specified along with storageAccountStrategy. This property is not updatable.
      * 
      * @param storageAccountType the storageAccountType value to set.
      * @return the GalleryArtifactPublishingProfileBase object itself.
@@ -245,6 +253,31 @@ public class GalleryArtifactPublishingProfileBase implements JsonSerializable<Ga
     }
 
     /**
+     * Get the storageAccountStrategy property: Specifies the strategy to be used when selecting the storage account
+     * type. Cannot be specified along with storageAccountType, but can be overridden per region by specifying
+     * targetRegions[].storageAccountType. This property is not updatable.
+     * 
+     * @return the storageAccountStrategy value.
+     */
+    public StorageAccountStrategy storageAccountStrategy() {
+        return this.storageAccountStrategy;
+    }
+
+    /**
+     * Set the storageAccountStrategy property: Specifies the strategy to be used when selecting the storage account
+     * type. Cannot be specified along with storageAccountType, but can be overridden per region by specifying
+     * targetRegions[].storageAccountType. This property is not updatable.
+     * 
+     * @param storageAccountStrategy the storageAccountStrategy value to set.
+     * @return the GalleryArtifactPublishingProfileBase object itself.
+     */
+    public GalleryArtifactPublishingProfileBase
+        withStorageAccountStrategy(StorageAccountStrategy storageAccountStrategy) {
+        this.storageAccountStrategy = storageAccountStrategy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -275,6 +308,8 @@ public class GalleryArtifactPublishingProfileBase implements JsonSerializable<Ga
             this.replicationMode == null ? null : this.replicationMode.toString());
         jsonWriter.writeArrayField("targetExtendedLocations", this.targetExtendedLocations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("storageAccountStrategy",
+            this.storageAccountStrategy == null ? null : this.storageAccountStrategy.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -319,6 +354,9 @@ public class GalleryArtifactPublishingProfileBase implements JsonSerializable<Ga
                     List<GalleryTargetExtendedLocation> targetExtendedLocations
                         = reader.readArray(reader1 -> GalleryTargetExtendedLocation.fromJson(reader1));
                     deserializedGalleryArtifactPublishingProfileBase.targetExtendedLocations = targetExtendedLocations;
+                } else if ("storageAccountStrategy".equals(fieldName)) {
+                    deserializedGalleryArtifactPublishingProfileBase.storageAccountStrategy
+                        = StorageAccountStrategy.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
