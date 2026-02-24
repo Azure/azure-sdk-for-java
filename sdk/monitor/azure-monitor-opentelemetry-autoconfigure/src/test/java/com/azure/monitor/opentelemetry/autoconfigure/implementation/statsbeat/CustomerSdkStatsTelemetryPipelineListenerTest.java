@@ -54,7 +54,8 @@ public class CustomerSdkStatsTelemetryPipelineListenerTest {
 
         TelemetryPipelineRequest request = createRequest(itemCounts);
         // 206 = partial success: some items accepted, some rejected
-        TelemetryPipelineResponse response = new TelemetryPipelineResponse(206, "{\"itemsReceived\":10,\"itemsAccepted\":7,\"errors\":[]}");
+        TelemetryPipelineResponse response
+            = new TelemetryPipelineResponse(206, "{\"itemsReceived\":10,\"itemsAccepted\":7,\"errors\":[]}");
 
         listener.onResponse(request, response);
 
