@@ -92,7 +92,7 @@ public class CustomerSdkStats {
                 long successCount = successItemCountsByType.getOrDefault(telemetryType, 0L);
                 long failureCount = failureItemCountsByType.getOrDefault(telemetryType, 0L);
                 // Any items not accounted for in success/failure maps go to the "unknown" bucket
-                long unaccounted = totalCount - successCount - failureCount;
+                long unaccounted = Math.max(0, totalCount - successCount - failureCount);
 
                 if (successCount > 0) {
                     DroppedKey key = new DroppedKey(telemetryType, dropCode, dropReason, Boolean.TRUE);
@@ -231,8 +231,10 @@ public class CustomerSdkStats {
                 snapshot.put(entry.getKey(), value);
             }
         }
-        // Remove zero-valued entries to prevent unbounded growth
-        map.entrySet().removeIf(entry -> entry.getValue().get() == 0);
+        // Note: we don't remove zero-valued entries here because doing so with removeIf()
+        // can race with concurrent increment*() calls, causing those increments to be lost.
+        // The number of distinct keys is bounded by the set of telemetry types and code/reason
+        // combinations, so unbounded growth is not a concern in practice.
         return snapshot;
     }
 

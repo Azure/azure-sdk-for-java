@@ -187,7 +187,8 @@ public class TelemetryItemExporter {
                     Boolean success = ((RemoteDependencyData) baseData).isSuccess();
                     if (success != null && success) {
                         successItemCountsByType.merge(telemetryType, 1L, Long::sum);
-                    } else {
+                    } else if (success != null) {
+                        // Only count explicit false as failure; null is treated as unknown
                         failureItemCountsByType.merge(telemetryType, 1L, Long::sum);
                     }
                 }

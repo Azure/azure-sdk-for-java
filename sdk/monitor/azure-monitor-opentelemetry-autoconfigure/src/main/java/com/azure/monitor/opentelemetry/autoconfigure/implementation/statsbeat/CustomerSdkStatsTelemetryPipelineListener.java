@@ -3,7 +3,6 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipelineRequest;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipelineResponse;
@@ -12,6 +11,7 @@ import io.opentelemetry.sdk.common.CompletableResultCode;
 import reactor.util.annotation.Nullable;
 
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * TelemetryPipelineListener that observes HTTP responses and exceptions from the telemetry
@@ -19,25 +19,32 @@ import java.util.Map;
  */
 public class CustomerSdkStatsTelemetryPipelineListener implements TelemetryPipelineListener {
 
-    private static final ClientLogger LOGGER = new ClientLogger(CustomerSdkStatsTelemetryPipelineListener.class);
-
     private final CustomerSdkStats customerSdkStats;
+    private volatile ScheduledExecutorService scheduler;
 
     public CustomerSdkStatsTelemetryPipelineListener(CustomerSdkStats customerSdkStats) {
         this.customerSdkStats = customerSdkStats;
+    }
+
+    /**
+     * Sets the scheduler used for periodic SDKStats export, so it can be shut down
+     * when the pipeline is shut down.
+     */
+    public void setScheduler(ScheduledExecutorService scheduler) {
+        this.scheduler = scheduler;
     }
 
     @Override
     public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
         Map<String, Long> itemCountsByType = request.getItemCountsByType();
         if (itemCountsByType.isEmpty()) {
-            // No item metadata (e.g. from local storage resend) — skip tracking
-            LOGGER.info("CustomerSdkStats onResponse: itemCountsByType is empty, skipping.");
+            // No item metadata (e.g. from local storage resend) — skip tracking.
+            // NOTE: This means telemetry retried from disk will not be counted in SDKStats.
+            // To track those, item-count metadata would need to be persisted alongside the payload.
             return;
         }
 
         int statusCode = response.getStatusCode();
-        LOGGER.info("CustomerSdkStats onResponse: statusCode={}, itemCountsByType={}", statusCode, itemCountsByType);
 
         if (statusCode == 200) {
             customerSdkStats.incrementSuccessCount(itemCountsByType);
@@ -74,6 +81,10 @@ public class CustomerSdkStatsTelemetryPipelineListener implements TelemetryPipel
 
     @Override
     public CompletableResultCode shutdown() {
+        ScheduledExecutorService exec = this.scheduler;
+        if (exec != null) {
+            exec.shutdown();
+        }
         return CompletableResultCode.ofSuccess();
     }
 
@@ -102,7 +113,7 @@ public class CustomerSdkStatsTelemetryPipelineListener implements TelemetryPipel
                 return "Too many requests";
 
             case 439:
-                return "Too many requests";
+                return "Exceeded daily quota";
 
             case 500:
                 return "Internal server error";

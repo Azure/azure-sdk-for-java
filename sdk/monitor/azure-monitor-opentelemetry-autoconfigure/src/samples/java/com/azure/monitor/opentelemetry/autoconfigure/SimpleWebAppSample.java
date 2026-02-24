@@ -81,16 +81,19 @@ import java.util.zip.GZIPInputStream;
 public class SimpleWebAppSample {
 
     // ── Connection string for success mode (real Azure Monitor) ─────────────
+    // Read from APPLICATIONINSIGHTS_CONNECTION_STRING env var; if not set, use a placeholder.
     private static final String CONNECTION_STRING_SUCCESS
-        = "InstrumentationKey=66f50587-a821-4a96-8511-fa96e8f28fd7"
-            + ";IngestionEndpoint=https://westus2-1.in.applicationinsights.azure.com/"
-            + ";LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/"
-            + ";ApplicationId=b9fa6c07-f06f-414c-b222-f3207aab66cd";
+        = System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING") != null
+            ? System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")
+            : "InstrumentationKey=<your-instrumentation-key>"
+                + ";IngestionEndpoint=https://<region>.in.applicationinsights.azure.com/"
+                + ";LiveEndpoint=https://<region>.livediagnostics.monitor.azure.com/"
+                + ";ApplicationId=<your-application-id>";
 
     // ── Connection string for mock server (drop/retry modes) ────────────────
     private static final int MOCK_PORT = 9090;
     private static final String CONNECTION_STRING_MOCK
-        = "InstrumentationKey=66f50587-a821-4a96-8511-fa96e8f28fd7"
+        = "InstrumentationKey=00000000-0000-0000-0000-000000000000"
             + ";IngestionEndpoint=http://localhost:" + MOCK_PORT + "/"
             + ";LiveEndpoint=http://localhost:" + MOCK_PORT + "/";
 

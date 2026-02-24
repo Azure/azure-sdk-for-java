@@ -10,10 +10,10 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.Diag
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipelineListener;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomerSdkStats;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomerSdkStatsTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatTelemetryPipelineListener;
+import reactor.util.annotation.Nullable;
 
 import java.io.File;
 
@@ -21,25 +21,28 @@ public final class AzureMonitorHelper {
 
     public static TelemetryItemExporter createTelemetryItemExporter(HttpPipeline httpPipeline,
         StatsbeatModule statsbeatModule, File tempDir, LocalStorageStats localStorageStats,
-        CustomerSdkStats customerSdkStats) {
+        @Nullable CustomerSdkStatsTelemetryPipelineListener customerSdkStatsListener) {
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline, statsbeatModule::shutdown);
 
         TelemetryPipelineListener telemetryPipelineListener;
-        CustomerSdkStatsTelemetryPipelineListener customerSdkStatsListener
-            = new CustomerSdkStatsTelemetryPipelineListener(customerSdkStats);
         if (tempDir == null) {
-            telemetryPipelineListener = TelemetryPipelineListener
-                .composite(new DiagnosticTelemetryPipelineListener("Sending telemetry to the ingestion service", true,
-                    " (telemetry will be lost)"), customerSdkStatsListener);
+            DiagnosticTelemetryPipelineListener diagnosticListener = new DiagnosticTelemetryPipelineListener(
+                "Sending telemetry to the ingestion service", true, " (telemetry will be lost)");
+            telemetryPipelineListener = customerSdkStatsListener != null
+                ? TelemetryPipelineListener.composite(diagnosticListener, customerSdkStatsListener)
+                : diagnosticListener;
         } else {
-            telemetryPipelineListener = TelemetryPipelineListener.composite(
-                // suppress warnings on retryable failures, in order to reduce sporadic/annoying
-                // warnings when storing to disk and retrying shortly afterwards anyways
-                // will log if that retry from disk fails
-                new DiagnosticTelemetryPipelineListener("Sending telemetry to the ingestion service", false, ""),
-                new LocalStorageTelemetryPipelineListener(50, // default to 50MB
-                    TempDirs.getSubDir(tempDir, "telemetry"), telemetryPipeline, localStorageStats, false),
-                customerSdkStatsListener);
+            // suppress warnings on retryable failures, in order to reduce sporadic/annoying
+            // warnings when storing to disk and retrying shortly afterwards anyways
+            // will log if that retry from disk fails
+            DiagnosticTelemetryPipelineListener diagnosticListener
+                = new DiagnosticTelemetryPipelineListener("Sending telemetry to the ingestion service", false, "");
+            LocalStorageTelemetryPipelineListener localStorageListener = new LocalStorageTelemetryPipelineListener(50, // default to 50MB
+                TempDirs.getSubDir(tempDir, "telemetry"), telemetryPipeline, localStorageStats, false);
+            telemetryPipelineListener = customerSdkStatsListener != null
+                ? TelemetryPipelineListener.composite(diagnosticListener, localStorageListener,
+                    customerSdkStatsListener)
+                : TelemetryPipelineListener.composite(diagnosticListener, localStorageListener);
         }
 
         return new TelemetryItemExporter(telemetryPipeline, telemetryPipelineListener);

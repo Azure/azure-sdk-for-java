@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,9 +42,15 @@ public class TelemetryPipelineRequest {
         this.instrumentationKey = instrumentationKey;
         this.byteBuffers = byteBuffers;
         contentLength = byteBuffers.stream().mapToInt(ByteBuffer::limit).sum();
-        this.itemCountsByType = itemCountsByType;
-        this.successItemCountsByType = successItemCountsByType;
-        this.failureItemCountsByType = failureItemCountsByType;
+        this.itemCountsByType = itemCountsByType != null
+            ? Collections.unmodifiableMap(new HashMap<>(itemCountsByType))
+            : Collections.emptyMap();
+        this.successItemCountsByType = successItemCountsByType != null
+            ? Collections.unmodifiableMap(new HashMap<>(successItemCountsByType))
+            : Collections.emptyMap();
+        this.failureItemCountsByType = failureItemCountsByType != null
+            ? Collections.unmodifiableMap(new HashMap<>(failureItemCountsByType))
+            : Collections.emptyMap();
     }
 
     public URL getUrl() {
