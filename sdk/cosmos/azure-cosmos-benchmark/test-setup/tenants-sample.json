@@ -1,0 +1,51 @@
+{
+    "globalDefaults": {
+        "connectionMode": "GATEWAY",
+        "consistencyLevel": "SESSION",
+        "concurrency": "20",
+        "numberOfOperations": "100000",
+        "operation": "ReadThroughput",
+        "numberOfPreCreatedDocuments": "1000",
+        "connectionSharingAcrossClientsEnabled": "false",
+        "maxConnectionPoolSize": "1000",
+        "applicationName": "mt-bench"
+    },
+    "tenants": [
+        {
+            "id": "tenant-0",
+            "serviceEndpoint": "https://account0.documents.azure.com:443/",
+            "masterKey": "key0==",
+            "databaseId": "benchdb",
+            "containerId": "benchcol",
+            "overrides": {
+                "concurrency": "50"
+            }
+        },
+        {
+            "id": "tenant-1",
+            "serviceEndpoint": "https://account1.documents.azure.com:443/",
+            "masterKey": "key1==",
+            "databaseId": "benchdb",
+            "containerId": "benchcol"
+        },
+        {
+            "id": "tenant-2-managed-identity",
+            "serviceEndpoint": "https://account2.documents.azure.com:443/",
+            "databaseId": "benchdb",
+            "containerId": "benchcol",
+            "overrides": {
+                "isManagedIdentityRequired": "true",
+                "aadManagedIdentityClientId": "client-id-for-tenant-2",
+                "aadTenantId": "tenant-id-for-tenant-2"
+            }
+        }
+    ],
+    "tenantTemplate": {
+        "enabled": false,
+        "count": 100,
+        "endpointPattern": "https://account{i}.documents.azure.com:443/",
+        "keyEnvVarPattern": "COSMOS_KEY_{i}",
+        "databaseId": "benchdb",
+        "containerIdPattern": "benchcol-{i}"
+    }
+}
