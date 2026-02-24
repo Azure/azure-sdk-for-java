@@ -15,186 +15,208 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigur
 import jakarta.annotation.PostConstruct;
 
 /**
- * Config Store Properties for Requests to an Azure App Configuration Store.
+ * Connection and behavior properties for an Azure App Configuration store.
  */
 public final class ConfigStore {
 
-    private static final String DEFAULT_KEYS = "/application/";
-
     /**
-     * Endpoint for the Azure Config Service.
+     * Primary endpoint URL for the App Configuration store.
      */
     private String endpoint = ""; // Config store endpoint
 
     /**
-     * List of endpoints for geo-replicated config store instances. When connecting
-     * to Azure App Configuration, the endpoints will failover to the next endpoint
-     * in the list if the current endpoint is unreachable.
+     * Endpoint URLs for geo-replicated store instances. Requests fail over to the
+     * next endpoint in the list when the current one is unreachable.
      */
     private List<String> endpoints = new ArrayList<>();
 
     /**
-     * Connection String for the Azure Config Service.
+     * Primary connection string for the App Configuration store.
      */
     private String connectionString;
 
     /**
-     * List of connection strings for geo-replicated config store instances. When
-     * connecting to Azure App Configuration, the connection strings will failover
-     * to the next connection string in the list if the current connection string is
-     * unreachable.
+     * Connection strings for geo-replicated store instances. Requests fail over to
+     * the next connection string in the list when the current one is unreachable.
      */
     private List<String> connectionStrings = new ArrayList<>();
 
     /**
-     * List of key selectors to filter the keys to be retrieved from the Azure
-     * Config Service. If no selectors are provided, the default selector will
-     * retrieve all keys with the prefix "/application/" and no label.
+     * Key/label selectors that determine which configuration settings to load.
+     * Defaults to a single selector matching the {@code /application/} prefix
+     * with no label.
      */
     private List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
 
     private FeatureFlagStore featureFlags = new FeatureFlagStore();
 
     /**
-     * If true, the Config Store will be enabled. If false, the Config Store will be
-     * disabled and no keys will be retrieved from the Config Store.
+     * Enables or disables this config store. When disabled, no settings are
+     * loaded from it.
      */
     private boolean enabled = true;
 
     /**
-     * Options for monitoring the Config Store.
+     * Monitoring configuration for detecting configuration changes.
      */
     private AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
 
     /**
-     * List of values to be trimmed from key names before being set to
-     * `@ConfigurationProperties`. By default the prefix "/application/" is trimmed
-     * from key names. If any trimKeyPrefix values are provided, the default prefix
-     * will not be trimmed.
+     * Prefixes to strip from key names before binding to
+     * {@code @ConfigurationProperties}. When set, the default {@code /application/}
+     * prefix is no longer trimmed automatically.
      */
     private List<String> trimKeyPrefix;
 
     /**
-     * If true, the Config Store will attempt to discover the replica endpoints for
-     * the Config Store. If false, the Config Store will not attempt to discover the
-     * replica endpoints for the Config Store.
+     * Enables automatic discovery of geo-replicated store endpoints.
      */
     private boolean replicaDiscoveryEnabled = true;
 
     /**
-     * If true, the Config Store will use load balancing to distribute requests
-     * across multiple endpoints.
+     * Enables request distribution across multiple endpoints via load balancing.
      */
     private boolean loadBalancingEnabled = false;
 
     /**
-     * @return the endpoint
+     * Returns the primary endpoint URL.
+     *
+     * @return the endpoint URL
      */
     public String getEndpoint() {
         return endpoint;
     }
 
     /**
-     * @param endpoint the endpoint to set
+     * Sets the primary endpoint URL.
+     *
+     * @param endpoint the endpoint URL
      */
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
     /**
-     * @return list of endpoints
+     * Returns the list of geo-replicated endpoint URLs.
+     *
+     * @return the endpoint URL list
      */
     public List<String> getEndpoints() {
         return endpoints;
     }
 
     /**
-     * @param endpoints list of endpoints to connect to geo-replicated config store
-     *                  instances.
+     * Sets the list of geo-replicated endpoint URLs.
+     *
+     * @param endpoints the endpoint URL list
      */
     public void setEndpoints(List<String> endpoints) {
         this.endpoints = endpoints;
     }
 
     /**
-     * @return the connectionString
+     * Returns the primary connection string.
+     *
+     * @return the connection string, or {@code null} if not set
      */
     public String getConnectionString() {
         return connectionString;
     }
 
     /**
-     * @param connectionString the connectionString to set
+     * Sets the primary connection string.
+     *
+     * @param connectionString the connection string
      */
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }
 
     /**
-     * @return connectionStrings
+     * Returns the list of geo-replicated connection strings.
+     *
+     * @return the connection string list
      */
     public List<String> getConnectionStrings() {
         return connectionStrings;
     }
 
     /**
-     * @param connectionStrings the connectionStrings to set
+     * Sets the list of geo-replicated connection strings.
+     *
+     * @param connectionStrings the connection string list
      */
     public void setConnectionStrings(List<String> connectionStrings) {
         this.connectionStrings = connectionStrings;
     }
 
     /**
-     * @return the enabled
+     * Returns whether this config store is enabled.
+     *
+     * @return {@code true} if enabled, {@code false} otherwise
      */
     public boolean isEnabled() {
         return enabled;
     }
 
     /**
-     * @param enabled the enabled to set
+     * Sets whether this config store is enabled.
+     *
+     * @param enabled {@code true} to enable, {@code false} to disable
      */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
     /**
-     * @return the selects
+     * Returns the key/label selectors for this store.
+     *
+     * @return the list of {@link AppConfigurationKeyValueSelector} instances
      */
     public List<AppConfigurationKeyValueSelector> getSelects() {
         return selects;
     }
 
     /**
-     * @param selects the selects to set
+     * Sets the key/label selectors for this store.
+     *
+     * @param selects the list of {@link AppConfigurationKeyValueSelector} instances
      */
     public void setSelects(List<AppConfigurationKeyValueSelector> selects) {
         this.selects = selects;
     }
 
     /**
-     * @return the monitoring
+     * Returns the monitoring configuration for this store.
+     *
+     * @return the {@link AppConfigurationStoreMonitoring} settings
      */
     public AppConfigurationStoreMonitoring getMonitoring() {
         return monitoring;
     }
 
     /**
-     * @param monitoring the monitoring to set
+     * Sets the monitoring configuration for this store.
+     *
+     * @param monitoring the {@link AppConfigurationStoreMonitoring} settings
      */
     public void setMonitoring(AppConfigurationStoreMonitoring monitoring) {
         this.monitoring = monitoring;
     }
 
     /**
-     * @return the featureFlags
+     * Returns the feature flag store configuration.
+     *
+     * @return the {@link FeatureFlagStore} settings
      */
     public FeatureFlagStore getFeatureFlags() {
         return featureFlags;
     }
 
     /**
-     * @param featureFlags the featureFlags to set
+     * Sets the feature flag store configuration.
+     *
+     * @param featureFlags the {@link FeatureFlagStore} settings
      */
     public void setFeatureFlags(FeatureFlagStore featureFlags) {
         this.featureFlags = featureFlags;
@@ -208,55 +230,70 @@ public final class ConfigStore {
     }
 
     /**
-     * @return the trimKeyPrefix
+     * Returns the key-name prefixes to strip before property binding.
+     *
+     * @return the prefix list, or {@code null} if not set
      */
     public List<String> getTrimKeyPrefix() {
         return trimKeyPrefix;
     }
 
     /**
-     * @param trimKeyPrefix the values to be trimmed from key names before being set
-     *                      to `@ConfigurationProperties`
+     * Sets the key-name prefixes to strip before property binding.
+     *
+     * @param trimKeyPrefix the prefix list
      */
     public void setTrimKeyPrefix(List<String> trimKeyPrefix) {
         this.trimKeyPrefix = trimKeyPrefix;
     }
 
     /**
-     * @return the replicaDiscoveryEnabled
+     * Returns whether automatic replica endpoint discovery is enabled.
+     *
+     * @return {@code true} if replica discovery is enabled
      */
     public boolean isReplicaDiscoveryEnabled() {
         return replicaDiscoveryEnabled;
     }
 
     /**
-     * @param replicaDiscoveryEnabled the replicaDiscoveryEnabled to set
+     * Sets whether automatic replica endpoint discovery is enabled.
+     *
+     * @param replicaDiscoveryEnabled {@code true} to enable replica discovery
      */
     public void setReplicaDiscoveryEnabled(boolean replicaDiscoveryEnabled) {
         this.replicaDiscoveryEnabled = replicaDiscoveryEnabled;
     }
 
     /**
-     * @return the loadBalancingEnabled
+     * Returns whether load balancing across endpoints is enabled.
+     *
+     * @return {@code true} if load balancing is enabled
      */
     public boolean isLoadBalancingEnabled() {
         return loadBalancingEnabled;
     }
 
     /**
-     * @param loadBalancingEnabled the loadBalancingEnabled to set
+     * Sets whether load balancing across endpoints is enabled.
+     *
+     * @param loadBalancingEnabled {@code true} to enable load balancing
      */
     public void setLoadBalancingEnabled(boolean loadBalancingEnabled) {
         this.loadBalancingEnabled = loadBalancingEnabled;
     }
 
     /**
-     * @throws IllegalStateException Connection String URL endpoint is invalid
+     * Initializes default selectors, validates connection settings, extracts
+     * the endpoint from connection strings, and delegates to monitoring and
+     * feature-flag validation.
+     *
+     * @throws IllegalStateException if a connection string contains an invalid endpoint URI
      */
     @PostConstruct
     public void validateAndInit() {
         if (selects.isEmpty()) {
-            selects.add(new AppConfigurationKeyValueSelector().setKeyFilter(DEFAULT_KEYS));
+            selects.add(new AppConfigurationKeyValueSelector());
         }
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
