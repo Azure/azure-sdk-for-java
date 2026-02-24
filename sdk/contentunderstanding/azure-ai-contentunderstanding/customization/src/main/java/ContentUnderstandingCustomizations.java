@@ -1265,7 +1265,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                     .setType("ContentSource[]")
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
                         "Parses the encoded source string into typed grounding sources.\n\n"
-                        + "The returned array contains {@link DocumentSource}, {@link AudioVisualSource}, "
+                        + "The returned array contains {@link DocumentSource} or {@link AudioVisualSource} "
                         + "instances depending on the wire format.\n"
                         + "Returns {@code null} if the source string is null or empty."))
                         .addBlockTag("return", "an array of {@link ContentSource} instances, or null if no source is available.")
@@ -1801,8 +1801,6 @@ public class ContentUnderstandingCustomizations extends Customization {
         + " * <p>The time is in milliseconds. The bounding box (x, y, width, height) is optional and\n"
         + " * present only when spatial information is available (e.g., face detection).</p>\n"
         + " *\n"
-        + " * <p>Face tracklet pairs use the format {@code AV(...)-AV(...)}. When parsing with\n"
-        + " * {@link ContentSource#parse(String)} or {@link ContentSource#parseAll(String)},\n"
         + " * @see ContentSource\n"
         + " */\n"
         + "@Immutable\n"
