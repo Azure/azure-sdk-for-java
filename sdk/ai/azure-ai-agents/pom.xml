@@ -46,6 +46,10 @@
     <!-- TODO: remove on Public Preview release -->
     <jacoco.min.linecoverage>0.0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
   <dependencies>
     <!-- compile scope -->
@@ -54,6 +58,7 @@
       <artifactId>openai-java</artifactId>
       <version>4.14.0</version> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
     </dependency>
+    <!-- Align Okio with azure-core-http-okhttp to prevent module-path conflicts in tests. -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
@@ -68,6 +73,12 @@
     <!-- test scope -->
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-okhttp</artifactId>
+      <version>1.13.3</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.18.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
@@ -76,12 +87,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
       <version>1.27.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.13.3</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
 
