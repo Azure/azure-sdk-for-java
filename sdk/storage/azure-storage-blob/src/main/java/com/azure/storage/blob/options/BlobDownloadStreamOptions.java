@@ -13,7 +13,7 @@ import com.azure.storage.common.StorageChecksumAlgorithm;
  * Extended options that may be passed when downloading a blob range to an output stream.
  */
 @Fluent
-public class BlobDownloadStreamOptions {
+public final class BlobDownloadStreamOptions {
     private BlobRange range;
     private DownloadRetryOptions downloadRetryOptions;
     private BlobRequestConditions requestConditions;

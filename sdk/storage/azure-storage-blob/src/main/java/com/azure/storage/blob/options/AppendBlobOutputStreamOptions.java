@@ -11,7 +11,7 @@ import com.azure.storage.common.StorageChecksumAlgorithm;
  * Extended options that may be passed when opening an output stream to an append blob.
  */
 @Fluent
-public class AppendBlobOutputStreamOptions {
+public final class AppendBlobOutputStreamOptions {
     private AppendBlobRequestConditions requestConditions;
     private StorageChecksumAlgorithm requestChecksumAlgorithm;
 

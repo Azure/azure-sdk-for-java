@@ -488,6 +488,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
+    Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
+        AppendBlobRequestConditions appendBlobRequestConditions, Context context) {
+        // Prevents revapi visibility increased error
+        return appendBlockWithResponseInternal(data, length, contentMd5, appendBlobRequestConditions, null, context);
+    }
+
     Mono<Response<AppendBlobItem>> appendBlockWithResponseInternal(Flux<ByteBuffer> data, long length,
         byte[] contentMd5, AppendBlobRequestConditions appendBlobRequestConditions,
         StorageChecksumAlgorithm requestChecksumAlgorithm, Context context) {

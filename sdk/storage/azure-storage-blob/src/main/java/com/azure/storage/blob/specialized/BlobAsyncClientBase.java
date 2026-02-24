@@ -1258,6 +1258,12 @@ public class BlobAsyncClientBase {
         }
     }
 
+    Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
+        // Prevents revapi visibility increased error
+        return downloadStreamWithResponseInternal(range, options, requestConditions, getRangeContentMd5, null, context);
+    }
+
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponseInternal(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         StorageChecksumAlgorithm responseChecksumAlgorithm, Context context) {

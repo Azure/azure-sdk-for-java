@@ -530,6 +530,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
+    Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body, byte[] contentMd5,
+        PageBlobRequestConditions pageBlobRequestConditions, Context context) {
+        // Prevents revapi visibility increased error
+        return uploadPagesWithResponseInternal(pageRange, body, contentMd5, pageBlobRequestConditions, null, context);
+    }
+
     Mono<Response<PageBlobItem>> uploadPagesWithResponseInternal(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions,
         StorageChecksumAlgorithm requestChecksumAlgorithm, Context context) {
