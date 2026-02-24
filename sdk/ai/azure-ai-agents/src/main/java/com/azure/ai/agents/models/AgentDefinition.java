@@ -106,16 +106,14 @@ public class AgentDefinition implements JsonSerializable<AgentDefinition> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("workflow".equals(discriminatorValue)) {
+                if ("prompt".equals(discriminatorValue)) {
+                    return PromptAgentDefinition.fromJson(readerToUse.reset());
+                } else if ("workflow".equals(discriminatorValue)) {
                     return WorkflowAgentDefinition.fromJson(readerToUse.reset());
                 } else if ("hosted".equals(discriminatorValue)) {
-                    return HostedAgentDefinition.fromJsonKnownDiscriminator(readerToUse.reset());
-                } else if ("hosted".equals(discriminatorValue)) {
-                    return ImageBasedHostedAgentDefinition.fromJson(readerToUse.reset());
+                    return HostedAgentDefinition.fromJson(readerToUse.reset());
                 } else if ("container_app".equals(discriminatorValue)) {
                     return ContainerAppAgentDefinition.fromJson(readerToUse.reset());
-                } else if ("prompt".equals(discriminatorValue)) {
-                    return PromptAgentDefinition.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

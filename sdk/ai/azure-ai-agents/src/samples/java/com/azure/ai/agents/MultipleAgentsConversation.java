@@ -29,7 +29,7 @@ public class MultipleAgentsConversation {
         // Code sample for creating an agent
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .serviceVersion(AgentsServiceVersion.V2025_05_15_PREVIEW)
+            .serviceVersion(AgentsServiceVersion.getLatest())
             .endpoint(endpoint);
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
