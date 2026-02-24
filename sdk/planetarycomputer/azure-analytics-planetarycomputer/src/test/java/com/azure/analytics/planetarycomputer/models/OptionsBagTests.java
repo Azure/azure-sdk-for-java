@@ -165,7 +165,7 @@ public final class OptionsBagTests {
         RegisterMosaicsSearchOptions options
             = new RegisterMosaicsSearchOptions().setCollections(Arrays.asList("sentinel-2-l2a"))
                 .setIds(Arrays.asList("item-1", "item-2"))
-                .setBoundingBox(-180.0)
+                .setBoundingBox(Arrays.asList(-180.0, -90.0, 180.0, 90.0))
                 .setDatetime("2021-01-01T00:00:00Z/2021-12-31T23:59:59Z")
                 .setFilterLanguage(FilterLanguage.CQL2_JSON)
                 .setQuery(mapOf("cloud_cover", mapOf("lt", 20)))
@@ -175,7 +175,9 @@ public final class OptionsBagTests {
         Assertions.assertEquals(1, options.getCollections().size());
         Assertions.assertEquals("sentinel-2-l2a", options.getCollections().get(0));
         Assertions.assertEquals(2, options.getIds().size());
-        Assertions.assertEquals(-180.0, options.getBoundingBox());
+        Assertions.assertEquals(4, options.getBoundingBox().size());
+        Assertions.assertEquals(-180.0, options.getBoundingBox().get(0));
+        Assertions.assertEquals(90.0, options.getBoundingBox().get(3));
         Assertions.assertEquals("2021-01-01T00:00:00Z/2021-12-31T23:59:59Z", options.getDatetime());
         Assertions.assertEquals(FilterLanguage.CQL2_JSON, options.getFilterLanguage());
         Assertions.assertNotNull(options.getQuery());
