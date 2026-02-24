@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Top log probability
+ *
  * The top log probability of a token.
  */
 @Immutable
@@ -34,7 +36,7 @@ public final class TopLogProb implements JsonSerializable<TopLogProb> {
      * The bytes property.
      */
     @Generated
-    private final List<Integer> bytes;
+    private final List<Long> bytes;
 
     /**
      * Creates an instance of TopLogProb class.
@@ -44,7 +46,7 @@ public final class TopLogProb implements JsonSerializable<TopLogProb> {
      * @param bytes the bytes value to set.
      */
     @Generated
-    public TopLogProb(String token, double logprob, List<Integer> bytes) {
+    public TopLogProb(String token, double logprob, List<Long> bytes) {
         this.token = token;
         this.logprob = logprob;
         this.bytes = bytes;
@@ -76,7 +78,7 @@ public final class TopLogProb implements JsonSerializable<TopLogProb> {
      * @return the bytes value.
      */
     @Generated
-    public List<Integer> getBytes() {
+    public List<Long> getBytes() {
         return this.bytes;
     }
 
@@ -89,7 +91,7 @@ public final class TopLogProb implements JsonSerializable<TopLogProb> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("token", this.token);
         jsonWriter.writeDoubleField("logprob", this.logprob);
-        jsonWriter.writeArrayField("bytes", this.bytes, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("bytes", this.bytes, (writer, element) -> writer.writeLong(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -107,7 +109,7 @@ public final class TopLogProb implements JsonSerializable<TopLogProb> {
         return jsonReader.readObject(reader -> {
             String token = null;
             double logprob = 0.0;
-            List<Integer> bytes = null;
+            List<Long> bytes = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -116,7 +118,7 @@ public final class TopLogProb implements JsonSerializable<TopLogProb> {
                 } else if ("logprob".equals(fieldName)) {
                     logprob = reader.getDouble();
                 } else if ("bytes".equals(fieldName)) {
-                    bytes = reader.readArray(reader1 -> reader1.getInt());
+                    bytes = reader.readArray(reader1 -> reader1.getLong());
                 } else {
                     reader.skipChildren();
                 }
