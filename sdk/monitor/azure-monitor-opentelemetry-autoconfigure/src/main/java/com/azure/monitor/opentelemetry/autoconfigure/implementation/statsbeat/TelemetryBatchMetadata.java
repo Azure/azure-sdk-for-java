@@ -87,8 +87,7 @@ public final class TelemetryBatchMetadata {
         }
 
         return new TelemetryBatchMetadata(Collections.unmodifiableMap(itemCountsByType),
-            Collections.unmodifiableMap(successItemCountsByType),
-            Collections.unmodifiableMap(failureItemCountsByType));
+            Collections.unmodifiableMap(successItemCountsByType), Collections.unmodifiableMap(failureItemCountsByType));
     }
 
     /**

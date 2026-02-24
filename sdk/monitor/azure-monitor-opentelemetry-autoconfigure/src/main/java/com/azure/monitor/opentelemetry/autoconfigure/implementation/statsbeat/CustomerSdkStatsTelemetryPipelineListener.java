@@ -44,7 +44,14 @@ public class CustomerSdkStatsTelemetryPipelineListener implements TelemetryPipel
 
         int statusCode = response.getStatusCode();
 
-        if (statusCode == 200) {
+        if (statusCode == 200 || statusCode == 206) {
+            // 200 = full success; 206 = partial success (some items accepted, some rejected).
+            // For 206, we count the entire batch as success because:
+            //  - The majority of items were accepted by the ingestion service.
+            //  - The failed items are retried from disk by LocalStorageTelemetryPipelineListener.
+            //  - Disk retries carry empty metadata, so there is no double-counting risk.
+            //  - Splitting counts proportionally per-type would require complex response parsing
+            //    for a rare edge case.
             customerSdkStats.incrementSuccessCount(batchMetadata.getItemCountsByType());
         } else if (StatusCode.isRetryable(statusCode)) {
             // Retryable status codes: items will be retried via local storage

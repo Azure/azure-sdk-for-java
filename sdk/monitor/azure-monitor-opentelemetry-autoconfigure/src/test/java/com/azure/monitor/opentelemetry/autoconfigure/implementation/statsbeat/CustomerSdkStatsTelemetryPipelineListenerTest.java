@@ -47,6 +47,24 @@ public class CustomerSdkStatsTelemetryPipelineListenerTest {
     }
 
     @Test
+    public void testPartialSuccessResponse206() {
+        Map<String, Long> itemCounts = new HashMap<>();
+        itemCounts.put("REQUEST", 8L);
+        itemCounts.put("TRACE", 2L);
+
+        TelemetryPipelineRequest request = createRequest(itemCounts);
+        // 206 = partial success: some items accepted, some rejected
+        TelemetryPipelineResponse response = new TelemetryPipelineResponse(206, "{\"itemsReceived\":10,\"itemsAccepted\":7,\"errors\":[]}");
+
+        listener.onResponse(request, response);
+
+        // Entire batch counted as success (failed items retried from disk with empty metadata)
+        assertThat(customerSdkStats.getSuccessCount("REQUEST")).isEqualTo(8);
+        assertThat(customerSdkStats.getSuccessCount("TRACE")).isEqualTo(2);
+        assertThat(customerSdkStats.getDroppedCount("REQUEST", "206")).isEqualTo(0);
+    }
+
+    @Test
     public void testRetryableStatusCode429() {
         Map<String, Long> itemCounts = Collections.singletonMap("TRACE", 10L);
 

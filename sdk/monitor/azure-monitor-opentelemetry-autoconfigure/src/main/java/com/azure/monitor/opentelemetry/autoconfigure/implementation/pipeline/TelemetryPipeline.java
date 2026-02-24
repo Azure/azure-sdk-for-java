@@ -57,9 +57,8 @@ public class TelemetryPipeline {
         URL url = redirectCache.computeIfAbsent(connectionString,
             k -> getFullIngestionUrl(connectionStringObj.getIngestionEndpoint()));
 
-        TelemetryPipelineRequest request
-            = new TelemetryPipelineRequest(url, connectionString, connectionStringObj.getInstrumentationKey(),
-                telemetry, batchMetadata);
+        TelemetryPipelineRequest request = new TelemetryPipelineRequest(url, connectionString,
+            connectionStringObj.getInstrumentationKey(), telemetry, batchMetadata);
 
         try {
             CompletableResultCode result = new CompletableResultCode();
