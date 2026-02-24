@@ -65,8 +65,13 @@ public class BenchmarkConfig {
         config.suppressCleanup = cfg.isSuppressCleanup();
 
         if (config.cycles > 1) {
-          config.settleTimeMs = Math.max(DEFAULT_SETTLE_TIME_MS, cfg.getSettleTimeMs());
-          config.suppressCleanup = true; // suppress container/database cleanup
+            long configuredSettleTimeMs = cfg.getSettleTimeMs();
+            // Only apply the default settle time when the configuration uses the sentinel -1.
+            // An explicit value (including 0 to disable settling) should be respected.
+            config.settleTimeMs = (configuredSettleTimeMs == -1)
+                ? DEFAULT_SETTLE_TIME_MS
+                : configuredSettleTimeMs;
+            config.suppressCleanup = true; // suppress container/database cleanup
         }
 
         config.gcBetweenCycles = cfg.isGcBetweenCycles();

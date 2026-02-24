@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Benchmark orchestrator. Sets up infrastructure (metrics, reporters, system properties),
@@ -167,41 +168,65 @@ public class BenchmarkOrchestrator {
         logger.info("Starting benchmark: {} cycles x {} tenants", totalCycles, tenants.size());
         long startTime = System.currentTimeMillis();
 
-        for (int cycle = 1; cycle <= totalCycles; cycle++) {
-            reporter.report();
-            logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
+        AtomicInteger threadCounter = new AtomicInteger(0);
+        ExecutorService executor = Executors.newFixedThreadPool(tenants.size(), r -> {
+            Thread t = new Thread(r, "tenant-worker-" + threadCounter.getAndIncrement());
+            t.setDaemon(false);
+            return t;
+        });
 
-            // 1. Create clients
-            List<AsyncBenchmark<?>> benchmarks = createBenchmarks(config, registry);
-            reporter.report();
-            logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
-                cycle, benchmarks.size(), Instant.now());
+        try {
+            for (int cycle = 1; cycle <= totalCycles; cycle++) {
+                reporter.report();
+                logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
 
-            // 2. Run workload in parallel
-            runWorkload(benchmarks, cycle);
-            reporter.report();
-            logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
+                // 1. Create clients
+                List<AsyncBenchmark<?>> benchmarks = createBenchmarks(config, registry);
+                reporter.report();
+                logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
+                    cycle, benchmarks.size(), Instant.now());
 
-            // 3. Close all clients
-            shutdownBenchmarks(benchmarks, cycle);
-            reporter.report();
-            logger.info("[LIFECYCLE] POST_CLOSE cycle={} timestamp={}", cycle, Instant.now());
+                // 2. Run workload in parallel
+                runWorkload(benchmarks, cycle, executor);
+                reporter.report();
+                logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
 
-            // 4. Settle
-            if (config.getSettleTimeMs() > 0) {
-                logger.info("  Settling for {}ms...", config.getSettleTimeMs());
-                long halfSettle = config.getSettleTimeMs() / 2;
-                Thread.sleep(halfSettle);
-                if (config.isGcBetweenCycles()) {
-                    System.gc();
+                // 3. Close all clients
+                shutdownBenchmarks(benchmarks, cycle);
+                reporter.report();
+                logger.info("[LIFECYCLE] POST_CLOSE cycle={} timestamp={}", cycle, Instant.now());
+
+                // 4. Settle
+                if (config.getSettleTimeMs() > 0) {
+                    logger.info("  Settling for {}ms...", config.getSettleTimeMs());
+                    long halfSettle = config.getSettleTimeMs() / 2;
+                    Thread.sleep(halfSettle);
+                    if (config.isGcBetweenCycles()) {
+                        System.gc();
+                    }
+                    Thread.sleep(config.getSettleTimeMs() - halfSettle);
+                    if (config.isGcBetweenCycles()) {
+                        System.gc();
+                    }
                 }
-                Thread.sleep(config.getSettleTimeMs() - halfSettle);
-                if (config.isGcBetweenCycles()) {
-                    System.gc();
-                }
+                reporter.report();
+                logger.info("[LIFECYCLE] POST_SETTLE cycle={} timestamp={}", cycle, Instant.now());
             }
-            reporter.report();
-            logger.info("[LIFECYCLE] POST_SETTLE cycle={} timestamp={}", cycle, Instant.now());
+        } finally {
+            executor.shutdown();
+            try {
+                if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+                    logger.warn("Executor did not terminate within the timeout");
+                    executor.shutdownNow();
+                    if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+                        logger.error("Executor did not terminate after shutdownNow");
+                    }
+                }
+            } catch (InterruptedException e) {
+                logger.warn("Interrupted while awaiting executor termination", e);
+                executor.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
         }
 
         long durationSec = (System.currentTimeMillis() - startTime) / 1000;
@@ -217,12 +242,7 @@ public class BenchmarkOrchestrator {
         return benchmarks;
     }
 
-    private void runWorkload(List<AsyncBenchmark<?>> benchmarks, int cycle) throws Exception {
-        ExecutorService executor = Executors.newFixedThreadPool(benchmarks.size(), r -> {
-            Thread t = new Thread(r, "tenant-worker");
-            t.setDaemon(false);
-            return t;
-        });
+    private void runWorkload(List<AsyncBenchmark<?>> benchmarks, int cycle, ExecutorService executor) throws Exception {
         List<Future<?>> futures = new ArrayList<>();
         final int currentCycle = cycle;
         for (AsyncBenchmark<?> benchmark : benchmarks) {
@@ -237,7 +257,6 @@ public class BenchmarkOrchestrator {
         for (Future<?> f : futures) {
             f.get();
         }
-        executor.shutdown();
     }
 
     private void shutdownBenchmarks(List<AsyncBenchmark<?>> benchmarks, int cycle) {
