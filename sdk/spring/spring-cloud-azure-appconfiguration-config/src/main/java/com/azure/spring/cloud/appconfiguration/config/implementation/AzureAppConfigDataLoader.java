@@ -263,7 +263,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             } else {
                 propertySource = new AppConfigurationApplicationSettingPropertySource(
                     selectedKeys.getKeyFilter() + resource.getEndpoint() + "/", client, keyVaultClientFactory,
-                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
+                    selectedKeys.getTagsFilter());
             }
             propertySource.initProperties(resource.getTrimKeyPrefix(), requestContext);
             sourceList.add(propertySource);
@@ -285,7 +286,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
         for (FeatureFlagKeyValueSelector selectedKeys : resource.getFeatureFlagSelects()) {
             List<WatchedConfigurationSettings> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
-                selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles), requestContext);
+                selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
+                selectedKeys.getTagsFilter(), requestContext);
             featureFlagWatchKeys.addAll(storesFeatureFlags);
         }
 
@@ -317,6 +319,10 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 SettingSelector settingSelector = new SettingSelector()
                     .setKeyFilter(selectedKeys.getKeyFilter() + "*")
                     .setLabelFilter(label);
+
+                if (selectedKeys.getTagsFilter() != null && !selectedKeys.getTagsFilter().isEmpty()) {
+                    settingSelector.setTagsFilter(selectedKeys.getTagsFilter());
+                }
 
                 WatchedConfigurationSettings watchedConfigurationSettings = client.loadWatchedSettings(settingSelector,
                     requestContext);

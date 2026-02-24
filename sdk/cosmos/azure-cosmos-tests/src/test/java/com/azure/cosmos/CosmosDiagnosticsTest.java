@@ -555,6 +555,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"fast"})
     public void databaseAccountToClients() {
         CosmosClient testClient = null;
+        CosmosClient testClient2 = null;
         try {
             testClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -567,29 +568,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             InternalObjectNode internalObjectNode = getInternalObjectNode();
             CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
             String diagnostics = createResponse.getDiagnostics().toString();
+            ObjectNode cosmosDiagnosticsNode =
+                (ObjectNode) Utils.getSimpleObjectMapper().readTree(diagnostics);
 
-            // assert diagnostics shows the correct format for tracking client instances
-            String prefix = "\"clientEndpoints\":{";
-            int startIndex = diagnostics.indexOf(prefix);
-            assertThat(startIndex).isGreaterThanOrEqualTo(0);
-            startIndex += prefix.length();
-            int endIndex = diagnostics.indexOf("}", startIndex);
-            assertThat(endIndex).isGreaterThan(startIndex);
-            int matchingIndex = diagnostics.indexOf(TestConfigurations.HOST, startIndex);
-            assertThat(matchingIndex).isGreaterThanOrEqualTo(startIndex);
-            assertThat(matchingIndex).isLessThanOrEqualTo(endIndex);
+            int clientCount =
+                cosmosDiagnosticsNode.get("clientCfgs").get("clientEndpoints").get(TestConfigurations.HOST).asInt();
 
-            // track number of clients currently mapped to account
-            int clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
-            // we do end at +120 to ensure we grab the bracket even if the account is very long or if
-            // we have hundreds of clients (triple digit ints) running at once in the pipelines
-            String[] substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
-                .split("}")[0].split(":");
-            String intString = substrings[substrings.length-1];
-            int intValue = Integer.parseInt(intString);
-
-
-            CosmosClient testClient2 = new CosmosClientBuilder()
+            testClient2 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
@@ -599,29 +584,18 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             internalObjectNode = getInternalObjectNode();
             createResponse = cosmosContainer.createItem(internalObjectNode);
             diagnostics = createResponse.getDiagnostics().toString();
-            // assert diagnostics shows the correct format for tracking client instances
-            startIndex = diagnostics.indexOf(prefix);
-            assertThat(startIndex).isGreaterThanOrEqualTo(0);
-            startIndex += prefix.length();
-            endIndex = diagnostics.indexOf("}", startIndex);
-            assertThat(endIndex).isGreaterThan(startIndex);
-            matchingIndex = diagnostics.indexOf(TestConfigurations.HOST, startIndex);
-            assertThat(matchingIndex).isGreaterThanOrEqualTo(startIndex);
-            assertThat(matchingIndex).isLessThanOrEqualTo(endIndex);
-            // grab new value and assert one additional client is mapped to the same account used previously
-            clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
-            substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
-                .split("}")[0].split(":");
-            intString = substrings[substrings.length-1];
-            assertThat(Integer.parseInt(intString)).isEqualTo(intValue+1);
+            cosmosDiagnosticsNode =
+                (ObjectNode) Utils.getSimpleObjectMapper().readTree(diagnostics);
 
-            //close second client
-            testClient2.close();
+            int updatedClientCount =
+                cosmosDiagnosticsNode.get("clientCfgs").get("clientEndpoints").get(TestConfigurations.HOST).asInt();
 
+            assertThat(updatedClientCount).isEqualTo(clientCount + 1);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         } finally {
-            if (testClient != null) {
-                testClient.close();
-            }
+            safeCloseSyncClient(testClient);
+            safeCloseSyncClient(testClient2);
         }
     }
 

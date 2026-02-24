@@ -103,7 +103,6 @@ public class ClientRetryPolicyTest {
             endpointManager,
             true,
             throttlingRetryOptions,
-            null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             false);
@@ -180,7 +179,6 @@ public class ClientRetryPolicyTest {
             endpointManager,
             true,
             throttlingRetryOptions,
-            null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             false);
@@ -233,7 +231,6 @@ public class ClientRetryPolicyTest {
                 endpointManager,
                 true,
                 throttlingRetryOptions,
-                null,
                 globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
                 globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
                 false);
@@ -281,7 +278,6 @@ public class ClientRetryPolicyTest {
             endpointManager,
             true,
             retryOptions,
-            null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             false);
@@ -339,7 +335,6 @@ public class ClientRetryPolicyTest {
             endpointManager,
             true,
             throttlingRetryOptions,
-            null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             false);
@@ -386,7 +381,6 @@ public class ClientRetryPolicyTest {
             endpointManager,
             true,
             retryOptions,
-            null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             false);
@@ -456,7 +450,6 @@ public class ClientRetryPolicyTest {
             endpointManager,
             true,
             throttlingRetryOptions,
-            null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             false);
@@ -501,7 +494,6 @@ public class ClientRetryPolicyTest {
             endpointManager,
             true,
             retryOptions,
-            null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             false);
@@ -547,7 +539,6 @@ public class ClientRetryPolicyTest {
             endpointManager,
             true,
             throttlingRetryOptions,
-            null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             false);
@@ -593,7 +584,6 @@ public class ClientRetryPolicyTest {
             endpointManager,
             true,
             retryOptions,
-            null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             false);
@@ -638,7 +628,6 @@ public class ClientRetryPolicyTest {
             endpointManager,
             true,
             throttlingRetryOptions,
-            null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             false);
@@ -680,7 +669,6 @@ public class ClientRetryPolicyTest {
                 endpointManager,
                 true,
                 throttlingRetryOptions,
-                null,
                 globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
                 globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
                 false);
@@ -726,7 +714,6 @@ public class ClientRetryPolicyTest {
             endpointManager,
             true,
             throttlingRetryOptions,
-            null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             disableRetryForThrottledBatchRequest);

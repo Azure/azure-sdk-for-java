@@ -1,6 +1,6 @@
 # Release History
 
-## 12.34.0-beta.1 (Unreleased)
+## 12.34.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.34.0-beta.1 (2026-02-19)
+
+### Features Added
+- Added support for specifying a source customer-provided encryption key when using `AppendBlobClient.appendBlockFromUrl()`,
+`BlockBlobClient.stageBlockFromUrl()`, `BlockBlobClient.uploadFromUrl()`, and `PageBlobClient.uploadPagesFromUrl()` APIs. 
+- Added support for `AccessTierIfModifiedSince` and `AccessTierIfUnmodifiedSince` to conditionally perform `BlobClient.delete` operations.
+- Added support for missing SKU names `STANDARD_GZRS`, `STANDARD_RAGZRS` and `PREMIUM_ZRS` when using `getAccountInfo()` API.
+- Added support for error code `INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED`. This replaces `INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED` which has been deprecated.
+- Added support for Dynamic User Delegation SAS.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+## 12.33.2 (2026-02-05)
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
+
+### Other Changes
+
+#### Dependency Updates
+- updated `azure-storage-common` from `12.32.1` to `12.32.2` in `azure-storage-common`.
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
 
 ## 12.33.1 (2026-01-29)
 

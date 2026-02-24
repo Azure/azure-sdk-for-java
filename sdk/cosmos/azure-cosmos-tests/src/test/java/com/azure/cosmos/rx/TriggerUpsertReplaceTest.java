@@ -73,7 +73,7 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
     public void before_TriggerUpsertReplaceTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
     }
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

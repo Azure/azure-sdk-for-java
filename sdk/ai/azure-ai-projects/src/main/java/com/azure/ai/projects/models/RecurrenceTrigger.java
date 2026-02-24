@@ -5,10 +5,13 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Recurrence based trigger.
@@ -26,13 +29,13 @@ public final class RecurrenceTrigger extends Trigger {
      * Start time for the recurrence schedule in ISO 8601 format.
      */
     @Generated
-    private String startTime;
+    private OffsetDateTime startTime;
 
     /*
      * End time for the recurrence schedule in ISO 8601 format.
      */
     @Generated
-    private String endTime;
+    private OffsetDateTime endTime;
 
     /*
      * Time zone for the recurrence schedule.
@@ -53,18 +56,6 @@ public final class RecurrenceTrigger extends Trigger {
     private final RecurrenceSchedule schedule;
 
     /**
-     * Creates an instance of RecurrenceTrigger class.
-     *
-     * @param interval the interval value to set.
-     * @param schedule the schedule value to set.
-     */
-    @Generated
-    public RecurrenceTrigger(int interval, RecurrenceSchedule schedule) {
-        this.interval = interval;
-        this.schedule = schedule;
-    }
-
-    /**
      * Get the type property: Type of the trigger.
      *
      * @return the type value.
@@ -81,20 +72,8 @@ public final class RecurrenceTrigger extends Trigger {
      * @return the startTime value.
      */
     @Generated
-    public String getStartTime() {
+    public OffsetDateTime getStartTime() {
         return this.startTime;
-    }
-
-    /**
-     * Set the startTime property: Start time for the recurrence schedule in ISO 8601 format.
-     *
-     * @param startTime the startTime value to set.
-     * @return the RecurrenceTrigger object itself.
-     */
-    @Generated
-    public RecurrenceTrigger setStartTime(String startTime) {
-        this.startTime = startTime;
-        return this;
     }
 
     /**
@@ -103,20 +82,8 @@ public final class RecurrenceTrigger extends Trigger {
      * @return the endTime value.
      */
     @Generated
-    public String getEndTime() {
+    public OffsetDateTime getEndTime() {
         return this.endTime;
-    }
-
-    /**
-     * Set the endTime property: End time for the recurrence schedule in ISO 8601 format.
-     *
-     * @param endTime the endTime value to set.
-     * @return the RecurrenceTrigger object itself.
-     */
-    @Generated
-    public RecurrenceTrigger setEndTime(String endTime) {
-        this.endTime = endTime;
-        return this;
     }
 
     /**
@@ -171,8 +138,10 @@ public final class RecurrenceTrigger extends Trigger {
         jsonWriter.writeIntField("interval", this.interval);
         jsonWriter.writeJsonField("schedule", this.schedule);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("startTime", this.startTime);
-        jsonWriter.writeStringField("endTime", this.endTime);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
         jsonWriter.writeStringField("timeZone", this.timeZone);
         return jsonWriter.writeEndObject();
     }
@@ -192,8 +161,8 @@ public final class RecurrenceTrigger extends Trigger {
             int interval = 0;
             RecurrenceSchedule schedule = null;
             TriggerType type = TriggerType.RECURRENCE;
-            String startTime = null;
-            String endTime = null;
+            OffsetDateTime startTime = null;
+            OffsetDateTime endTime = null;
             String timeZone = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -205,9 +174,11 @@ public final class RecurrenceTrigger extends Trigger {
                 } else if ("type".equals(fieldName)) {
                     type = TriggerType.fromString(reader.getString());
                 } else if ("startTime".equals(fieldName)) {
-                    startTime = reader.getString();
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    endTime = reader.getString();
+                    endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("timeZone".equals(fieldName)) {
                     timeZone = reader.getString();
                 } else {
@@ -221,5 +192,41 @@ public final class RecurrenceTrigger extends Trigger {
             deserializedRecurrenceTrigger.timeZone = timeZone;
             return deserializedRecurrenceTrigger;
         });
+    }
+
+    /**
+     * Creates an instance of RecurrenceTrigger class.
+     *
+     * @param interval the interval value to set.
+     * @param schedule the schedule value to set.
+     */
+    @Generated
+    public RecurrenceTrigger(int interval, RecurrenceSchedule schedule) {
+        this.interval = interval;
+        this.schedule = schedule;
+    }
+
+    /**
+     * Set the startTime property: Start time for the recurrence schedule in ISO 8601 format.
+     *
+     * @param startTime the startTime value to set.
+     * @return the RecurrenceTrigger object itself.
+     */
+    @Generated
+    public RecurrenceTrigger setStartTime(OffsetDateTime startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    /**
+     * Set the endTime property: End time for the recurrence schedule in ISO 8601 format.
+     *
+     * @param endTime the endTime value to set.
+     * @return the RecurrenceTrigger object itself.
+     */
+    @Generated
+    public RecurrenceTrigger setEndTime(OffsetDateTime endTime) {
+        this.endTime = endTime;
+        return this;
     }
 }

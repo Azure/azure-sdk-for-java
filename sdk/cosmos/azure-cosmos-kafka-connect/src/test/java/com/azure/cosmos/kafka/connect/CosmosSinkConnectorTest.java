@@ -13,6 +13,8 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAadAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
+import com.azure.cosmos.kafka.connect.implementation.CosmosSDKThroughputControlConfig;
+import com.azure.cosmos.kafka.connect.implementation.CosmosServerThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
@@ -313,14 +315,75 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConfigMap);
         assertThat(sinkConfig.getThroughputControlConfig()).isNotNull();
         assertThat(sinkConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
-        assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlAccountConfig()).isNull();
+        assertThat(sinkConfig.getThroughputControlConfig()).isInstanceOf(CosmosSDKThroughputControlConfig.class);
+        CosmosSDKThroughputControlConfig sdkConfig = (CosmosSDKThroughputControlConfig) sinkConfig.getThroughputControlConfig();
+        assertThat(sdkConfig.getThroughputControlAccountConfig()).isNull();
         assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlGroupName()).isEqualTo(throughputControlGroupName);
-        assertThat(sinkConfig.getThroughputControlConfig().getTargetThroughput()).isEqualTo(targetThroughput);
-        assertThat(sinkConfig.getThroughputControlConfig().getTargetThroughputThreshold()).isEqualTo(targetThroughputThreshold);
-        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlDatabaseName()).isEqualTo(throughputControlDatabaseName);
-        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlContainerName()).isEqualTo(throughputControlContainerName);
-        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlRenewInterval()).isNull();
-        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlExpireInterval()).isNull();
+        assertThat(sdkConfig.getTargetThroughput()).isEqualTo(targetThroughput);
+        assertThat(sdkConfig.getTargetThroughputThreshold()).isEqualTo(targetThroughputThreshold);
+        assertThat(sdkConfig.getGlobalThroughputControlDatabaseName()).isEqualTo(throughputControlDatabaseName);
+        assertThat(sdkConfig.getGlobalThroughputControlContainerName()).isEqualTo(throughputControlContainerName);
+        assertThat(sdkConfig.getGlobalThroughputControlRenewInterval()).isNull();
+        assertThat(sdkConfig.getGlobalThroughputControlExpireInterval()).isNull();
+    }
+
+    @Test(groups = { "unit" })
+    public void sinkConfigWithThroughputBucket() {
+        String throughputControlGroupName = "test-bucket-group";
+        int throughputBucket = 2;
+
+        Map<String, String> sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", throughputControlGroupName);
+        sinkConfigMap.put("azure.cosmos.throughputControl.throughputBucket", String.valueOf(throughputBucket));
+
+        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConfigMap);
+        assertThat(sinkConfig.getThroughputControlConfig()).isNotNull();
+        assertThat(sinkConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
+        assertThat(sinkConfig.getThroughputControlConfig()).isInstanceOf(CosmosServerThroughputControlConfig.class);
+        CosmosServerThroughputControlConfig serverConfig = (CosmosServerThroughputControlConfig) sinkConfig.getThroughputControlConfig();
+        assertThat(serverConfig.getThroughputBucket()).isEqualTo(throughputBucket);
+        assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlGroupName()).isEqualTo(throughputControlGroupName);
+    }
+
+    @Test(groups = { "unit" })
+    public void invalidThroughputBucketConfig() {
+        CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
+
+        // throughputBucket combined with SDK throughput control configs
+        Map<String, String> sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", "test-group");
+        sinkConfigMap.put("azure.cosmos.throughputControl.throughputBucket", "2");
+        sinkConfigMap.put("azure.cosmos.throughputControl.targetThroughput", "400");
+
+        Config config = sinkConnector.validate(sinkConfigMap);
+        Map<String, List<String>> errorMessages = config.configValues().stream()
+            .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
+        assertThat(errorMessages.get("azure.cosmos.throughputControl.throughputBucket").size()).isGreaterThan(0);
+
+        // throughputBucket combined with global control database
+        sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", "test-group");
+        sinkConfigMap.put("azure.cosmos.throughputControl.throughputBucket", "2");
+        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", "controlDb");
+
+        config = sinkConnector.validate(sinkConfigMap);
+        errorMessages = config.configValues().stream()
+            .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
+        assertThat(errorMessages.get("azure.cosmos.throughputControl.throughputBucket").size()).isGreaterThan(0);
+
+        // invalid throughput bucket value (0)
+        sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", "test-group");
+        sinkConfigMap.put("azure.cosmos.throughputControl.throughputBucket", "0");
+
+        config = sinkConnector.validate(sinkConfigMap);
+        errorMessages = config.configValues().stream()
+            .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
+        assertThat(errorMessages.get("azure.cosmos.throughputControl.throughputBucket").size()).isGreaterThan(0);
     }
 
     @Test(groups = { "unit" })
@@ -461,6 +524,7 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.targetThroughput", -1, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.targetThroughputThreshold", -1d, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.priorityLevel", "None", true),
+            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.throughputBucket", -1, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.database.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.container.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.renewIntervalInMS", -1, true),

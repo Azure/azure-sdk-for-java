@@ -23,64 +23,78 @@ import jakarta.annotation.PostConstruct;
 public class AppConfigurationProperties {
 
     /**
-     * Prefix for client configurations for connecting to configuration stores.
+     * Configuration property prefix for Azure App Configuration client settings.
      */
     public static final String CONFIG_PREFIX = "spring.cloud.azure.appconfiguration";
 
     private boolean enabled = true;
 
     /**
-     * List of Azure App Configuration stores to connect to.
+     * Azure App Configuration store connections. At least one store must be configured.
      */
     private List<ConfigStore> stores = new ArrayList<>();
 
     private Duration refreshInterval;
 
     /**
-     * @return the enabled
+     * Returns whether Azure App Configuration is enabled.
+     *
+     * @return {@code true} if enabled, {@code false} otherwise
      */
     public boolean isEnabled() {
         return enabled;
     }
 
     /**
-     * @param enabled the enabled to set
+     * Sets whether Azure App Configuration is enabled.
+     *
+     * @param enabled {@code true} to enable, {@code false} to disable
      */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
     /**
-     * @return the stores
+     * Returns the list of configured App Configuration stores.
+     *
+     * @return the list of {@link ConfigStore} instances
      */
     public List<ConfigStore> getStores() {
         return stores;
     }
 
     /**
-     * @param stores the stores to set
+     * Sets the list of App Configuration stores to connect to.
+     *
+     * @param stores the list of {@link ConfigStore} instances
      */
     public void setStores(List<ConfigStore> stores) {
         this.stores = stores;
     }
 
     /**
-     * @return the refreshInterval
+     * Returns the interval between configuration refreshes.
+     *
+     * @return the refresh interval, or {@code null} if not set
      */
     public Duration getRefreshInterval() {
         return refreshInterval;
     }
 
     /**
-     * @param refreshInterval the refreshInterval to set
+     * Sets the interval between configuration refreshes. Must be at least 1 second.
+     *
+     * @param refreshInterval the refresh interval duration
      */
     public void setRefreshInterval(Duration refreshInterval) {
         this.refreshInterval = refreshInterval;
     }
 
     /**
-     * Validates at least one store is configured for use, and that they are valid.
-     * @throws IllegalArgumentException when duplicate endpoints are configured
+     * Validates that at least one store is configured with a valid endpoint or
+     * connection string, and that no duplicate endpoints exist.
+     *
+     * @throws IllegalArgumentException if validation fails or duplicate endpoints are found
      */
     @PostConstruct
     public void validateAndInit() {

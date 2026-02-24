@@ -295,18 +295,6 @@ public final class ServerEventType extends ExpandableStringEnum<ServerEventType>
         = fromString("response.mcp_call_arguments.done");
 
     /**
-     * Static value mcp_approval_request for ServerEventType.
-     */
-    @Generated
-    public static final ServerEventType MCP_APPROVAL_REQUEST = fromString("mcp_approval_request");
-
-    /**
-     * Static value mcp_approval_response for ServerEventType.
-     */
-    @Generated
-    public static final ServerEventType MCP_APPROVAL_RESPONSE = fromString("mcp_approval_response");
-
-    /**
      * Static value response.mcp_call.in_progress for ServerEventType.
      */
     @Generated
@@ -323,4 +311,10 @@ public final class ServerEventType extends ExpandableStringEnum<ServerEventType>
      */
     @Generated
     public static final ServerEventType RESPONSE_MCP_CALL_FAILED = fromString("response.mcp_call.failed");
+
+    /**
+     * Static value warning for ServerEventType.
+     */
+    @Generated
+    public static final ServerEventType WARNING = fromString("warning");
 }
