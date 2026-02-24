@@ -30,7 +30,7 @@ public final class RegisterMosaicsSearchOptions {
      * Geographic bounding box to filter items [west, south, east, north]
      */
     @Generated
-    private Double boundingBox;
+    private List<Double> boundingBox;
 
     /*
      * GeoJSON geometry to spatially filter items by intersection
@@ -131,7 +131,7 @@ public final class RegisterMosaicsSearchOptions {
      * @return the boundingBox value.
      */
     @Generated
-    public Double getBoundingBox() {
+    public List<Double> getBoundingBox() {
         return this.boundingBox;
     }
 
@@ -142,7 +142,7 @@ public final class RegisterMosaicsSearchOptions {
      * @return the RegisterMosaicsSearchOptions object itself.
      */
     @Generated
-    public RegisterMosaicsSearchOptions setBoundingBox(Double boundingBox) {
+    public RegisterMosaicsSearchOptions setBoundingBox(List<Double> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
     }

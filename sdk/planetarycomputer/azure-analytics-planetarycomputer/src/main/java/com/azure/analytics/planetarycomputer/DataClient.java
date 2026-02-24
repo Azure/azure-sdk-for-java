@@ -760,7 +760,9 @@ public final class DataClient {
      *         }
      *     }
      *     id: String (Optional)
-     *     bbox: Double (Optional)
+     *     bbox (Optional): [
+     *         double (Optional)
+     *     ]
      * }
      * }
      * </pre>
@@ -2210,7 +2212,9 @@ public final class DataClient {
      *     ids (Optional): [
      *         String (Optional)
      *     ]
-     *     bbox: Double (Optional)
+     *     bbox (Optional): [
+     *         double (Optional)
+     *     ]
      *     intersects (Optional): {
      *         type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
      *         bbox (Optional): [

@@ -39,7 +39,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * Geographic bounding box to filter items [west, south, east, north]
      */
     @Generated
-    private Double boundingBox;
+    private List<Double> boundingBox;
 
     /*
      * GeoJSON geometry to spatially filter items by intersection
@@ -140,7 +140,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the boundingBox value.
      */
     @Generated
-    public Double getBoundingBox() {
+    public List<Double> getBoundingBox() {
         return this.boundingBox;
     }
 
@@ -151,7 +151,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the RegisterMosaicsSearchRequest object itself.
      */
     @Generated
-    public RegisterMosaicsSearchRequest setBoundingBox(Double boundingBox) {
+    public RegisterMosaicsSearchRequest setBoundingBox(List<Double> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
     }
@@ -319,7 +319,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("collections", this.collections, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("ids", this.ids, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeNumberField("bbox", this.boundingBox);
+        jsonWriter.writeArrayField("bbox", this.boundingBox, (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeJsonField("intersects", this.intersects);
         jsonWriter.writeMapField("query", this.query, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeMapField("filter", this.filter, (writer, element) -> writer.writeUntyped(element));
@@ -353,7 +353,8 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
                     List<String> ids = reader.readArray(reader1 -> reader1.getString());
                     deserializedRegisterMosaicsSearchRequest.ids = ids;
                 } else if ("bbox".equals(fieldName)) {
-                    deserializedRegisterMosaicsSearchRequest.boundingBox = reader.getNullable(JsonReader::getDouble);
+                    List<Double> boundingBox = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedRegisterMosaicsSearchRequest.boundingBox = boundingBox;
                 } else if ("intersects".equals(fieldName)) {
                     deserializedRegisterMosaicsSearchRequest.intersects = Geometry.fromJson(reader);
                 } else if ("query".equals(fieldName)) {

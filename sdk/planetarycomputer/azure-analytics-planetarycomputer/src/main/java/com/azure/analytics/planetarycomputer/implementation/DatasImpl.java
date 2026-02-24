@@ -2088,7 +2088,9 @@ public final class DatasImpl {
      *         }
      *     }
      *     id: String (Optional)
-     *     bbox: Double (Optional)
+     *     bbox (Optional): [
+     *         double (Optional)
+     *     ]
      * }
      * }
      * </pre>
@@ -2179,7 +2181,9 @@ public final class DatasImpl {
      *         }
      *     }
      *     id: String (Optional)
-     *     bbox: Double (Optional)
+     *     bbox (Optional): [
+     *         double (Optional)
+     *     ]
      * }
      * }
      * </pre>
@@ -5080,7 +5084,9 @@ public final class DatasImpl {
      *     ids (Optional): [
      *         String (Optional)
      *     ]
-     *     bbox: Double (Optional)
+     *     bbox (Optional): [
+     *         double (Optional)
+     *     ]
      *     intersects (Optional): {
      *         type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
      *         bbox (Optional): [
@@ -5180,7 +5186,9 @@ public final class DatasImpl {
      *     ids (Optional): [
      *         String (Optional)
      *     ]
-     *     bbox: Double (Optional)
+     *     bbox (Optional): [
+     *         double (Optional)
+     *     ]
      *     intersects (Optional): {
      *         type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
      *         bbox (Optional): [

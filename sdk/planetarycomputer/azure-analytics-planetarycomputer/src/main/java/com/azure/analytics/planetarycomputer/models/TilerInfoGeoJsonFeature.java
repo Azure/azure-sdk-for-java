@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,7 +47,7 @@ public final class TilerInfoGeoJsonFeature implements JsonSerializable<TilerInfo
      * Bounding box coordinates for the feature
      */
     @Generated
-    private Double boundingBox;
+    private List<Double> boundingBox;
 
     /**
      * Creates an instance of TilerInfoGeoJsonFeature class.
@@ -108,7 +109,7 @@ public final class TilerInfoGeoJsonFeature implements JsonSerializable<TilerInfo
      * @return the boundingBox value.
      */
     @Generated
-    public Double getBoundingBox() {
+    public List<Double> getBoundingBox() {
         return this.boundingBox;
     }
 
@@ -123,7 +124,7 @@ public final class TilerInfoGeoJsonFeature implements JsonSerializable<TilerInfo
         jsonWriter.writeJsonField("geometry", this.geometry);
         jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeNumberField("bbox", this.boundingBox);
+        jsonWriter.writeArrayField("bbox", this.boundingBox, (writer, element) -> writer.writeDouble(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -143,7 +144,7 @@ public final class TilerInfoGeoJsonFeature implements JsonSerializable<TilerInfo
             Geometry geometry = null;
             Map<String, TilerInfo> properties = null;
             String id = null;
-            Double boundingBox = null;
+            List<Double> boundingBox = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -157,7 +158,7 @@ public final class TilerInfoGeoJsonFeature implements JsonSerializable<TilerInfo
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("bbox".equals(fieldName)) {
-                    boundingBox = reader.getNullable(JsonReader::getDouble);
+                    boundingBox = reader.readArray(reader1 -> reader1.getDouble());
                 } else {
                     reader.skipChildren();
                 }
