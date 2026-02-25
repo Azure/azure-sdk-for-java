@@ -75,7 +75,7 @@ public class Exceptions {
         return statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR && (subStatusCode >= 20_000 && subStatusCode < 21_000);
     }
 
-    public static boolean isTransientExceptionPossiblyCausingNoisyLogs(int statusCode, int subStatusCode) {
+    public static boolean isCommonlyExpectedExceptionPossiblyCausingNoisyLogs(int statusCode, int subStatusCode) {
         if (statusCode == HttpConstants.StatusCodes.TOO_MANY_REQUESTS
             && subStatusCode == HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE) {
             return true;
