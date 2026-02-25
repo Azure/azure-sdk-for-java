@@ -54,11 +54,7 @@ public class FileSearchAgent {
         ConversationsClient conversationsClient = builder.buildConversationsClient();
 
         // Create OpenAI client for vector store and file operations
-        OpenAIClient openAIClient = OpenAIOkHttpClient.builder()
-            .baseUrl(endpoint)
-            .credential(BearerTokenCredential.create(AuthenticationUtil.getBearerTokenSupplier(
-                        credential, "https://cognitiveservices.azure.com/.default")))
-            .build();
+        OpenAIClient openAIClient = builder.buildOpenAIClient();
 
         AgentVersionDetails agent = null;
         Conversation conversation = null;
