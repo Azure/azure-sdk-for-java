@@ -42,7 +42,6 @@ import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 import java.util.function.BiPredicate
 import scala.collection.concurrent.TrieMap
-
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
@@ -713,6 +712,12 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         }
       }
 
+      // Apply custom HTTP headers (e.g., workload-id) to the builder if configured.
+      // These headers are attached to every Cosmos DB request made by this client instance.
+      if (cosmosClientConfiguration.customHeaders.isDefined) {
+        builder.customHeaders(cosmosClientConfiguration.customHeaders.get.asJava)
+      }
+
       var client = builder.buildAsyncClient()
 
     if (cosmosClientConfiguration.clientInterceptors.isDefined) {
@@ -916,7 +921,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
     clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
     sampledDiagnosticsLoggerConfig: Option[SampledDiagnosticsLoggerConfig],
-    azureMonitorConfig: Option[AzureMonitorConfig]
+    azureMonitorConfig: Option[AzureMonitorConfig],
+    // Custom HTTP headers are part of the cache key because different workload-ids
+    // should produce different CosmosAsyncClient instances
+    customHeaders: Option[Map[String, String]]
   )
 
   private[this] object ClientConfigurationWrapper {
@@ -935,7 +943,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         clientConfig.clientBuilderInterceptors,
         clientConfig.clientInterceptors,
         clientConfig.sampledDiagnosticsLoggerConfig,
-        clientConfig.azureMonitorConfig
+        clientConfig.azureMonitorConfig,
+        clientConfig.customHeaders
       )
     }
   }

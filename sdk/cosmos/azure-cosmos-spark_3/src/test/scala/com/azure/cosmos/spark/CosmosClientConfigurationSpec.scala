@@ -408,4 +408,72 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp".replace("@", " ")
     configuration.azureMonitorConfig shouldEqual None
   }
+
+  // Verifies that the spark.cosmos.customHeaders configuration option correctly parses
+  // a JSON string containing a single workload-id header into a Map[String, String] on
+  // CosmosClientConfiguration. This is the primary use case for the workload-id feature.
+  it should "parse customHeaders JSON" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.customHeaders" -> """{"x-ms-cosmos-workload-id": "15"}"""
+    )
+
+    val readConsistencyStrategy = ReadConsistencyStrategy.DEFAULT
+    val configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo = "")
+
+    configuration.customHeaders shouldBe defined
+    configuration.customHeaders.get("x-ms-cosmos-workload-id") shouldEqual "15"
+  }
+
+  // Verifies that when spark.cosmos.customHeaders is not specified in the config map,
+  // CosmosClientConfiguration.customHeaders is None. This ensures backward compatibility —
+  // existing Spark jobs that don't set customHeaders continue to work without changes.
+  it should "handle missing customHeaders" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
+      "spark.cosmos.accountKey" -> "xyz"
+    )
+
+    val readConsistencyStrategy = ReadConsistencyStrategy.DEFAULT
+    val configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo = "")
+
+    configuration.customHeaders shouldBe None
+  }
+
+  // Verifies that spark.cosmos.customHeaders correctly parses a JSON string containing
+  // multiple headers into a Map with all entries preserved. This supports use cases where
+  // multiple custom headers need to be sent alongside workload-id.
+  it should "parse multiple custom headers" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.customHeaders" -> """{"x-ms-cosmos-workload-id": "20", "x-custom-header": "value"}"""
+    )
+
+    val readConsistencyStrategy = ReadConsistencyStrategy.DEFAULT
+    val configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo = "")
+
+    configuration.customHeaders shouldBe defined
+    configuration.customHeaders.get should have size 2
+    configuration.customHeaders.get("x-ms-cosmos-workload-id") shouldEqual "20"
+    configuration.customHeaders.get("x-custom-header") shouldEqual "value"
+  }
+
+  // Verifies that spark.cosmos.customHeaders handles an empty JSON object ("{}") gracefully,
+  // resulting in a defined but empty Map. This ensures the parser doesn't fail on edge cases
+  // and that no headers are injected when the JSON object is empty.
+  it should "handle empty customHeaders JSON" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.customHeaders" -> "{}"
+    )
+
+    val readConsistencyStrategy = ReadConsistencyStrategy.DEFAULT
+    val configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo = "")
+
+    configuration.customHeaders shouldBe defined
+    configuration.customHeaders.get shouldBe empty
+  }
 }

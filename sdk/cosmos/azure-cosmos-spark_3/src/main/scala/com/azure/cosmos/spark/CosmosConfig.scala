@@ -34,6 +34,7 @@ import java.time.format.DateTimeFormatter
 import java.time.{Duration, Instant}
 import java.util
 import java.util.{Locale, ServiceLoader}
+import scala.collection.JavaConverters._ // scalastyle:ignore underscore.import
 import scala.collection.concurrent.TrieMap
 import scala.collection.immutable.{HashSet, List, Map}
 import scala.collection.mutable
@@ -150,6 +151,10 @@ private[spark] object CosmosConfigNames {
   val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
   val ThroughputControlPriorityLevel = "spark.cosmos.throughputControl.priorityLevel"
   val ThroughputControlThroughputBucket = "spark.cosmos.throughputControl.throughputBucket"
+  // Custom HTTP headers to attach to all Cosmos DB requests (e.g., workload-id for resource governance).
+  // Value is a JSON string like: {"x-ms-cosmos-workload-id": "15"}
+  // Flows through to CosmosClientBuilder.customHeaders().
+  val CustomHeaders = "spark.cosmos.customHeaders"
   val ThroughputControlGlobalControlDatabase = "spark.cosmos.throughputControl.globalControl.database"
   val ThroughputControlGlobalControlContainer = "spark.cosmos.throughputControl.globalControl.container"
   val ThroughputControlGlobalControlRenewalIntervalInMS =
@@ -295,7 +300,8 @@ private[spark] object CosmosConfigNames {
     WriteOnRetryCommitInterceptor,
     WriteFlushCloseIntervalInSeconds,
     WriteMaxNoProgressIntervalInSeconds,
-    WriteMaxRetryNoProgressIntervalInSeconds
+    WriteMaxRetryNoProgressIntervalInSeconds,
+    CustomHeaders
   )
 
   def validateConfigName(name: String): Unit = {
@@ -538,7 +544,10 @@ private case class CosmosAccountConfig(endpoint: String,
                                        resourceGroupName: Option[String],
                                        azureEnvironmentEndpoints: java.util.Map[String, String],
                                        clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
-                                       clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
+                                        clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
+                                        // Optional custom HTTP headers (e.g., workload-id) parsed from
+                                        // spark.cosmos.customHeaders JSON config, passed to CosmosClientBuilder
+                                        customHeaders: Option[Map[String, String]]
                                       )
 
 private object CosmosAccountConfig extends BasicLoggingTrait {
@@ -719,6 +728,19 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     parseFromStringFunction = clientInterceptorFQDN => clientInterceptorFQDN,
     helpMessage = "CosmosAsyncClient interceptors (comma separated) - FQDNs of the service implementing the 'CosmosClientInterceptor' trait.")
 
+  // Config entry for custom HTTP headers (e.g., workload-id). Parses a JSON string like
+  // {"x-ms-cosmos-workload-id": "15"} into a Scala Map[String, String] using Jackson.
+  // These headers are passed to CosmosClientBuilder.customHeaders() in CosmosClientCache.
+  private val CustomHeadersConfig = CosmosConfigEntry[Map[String, String]](
+    key = CosmosConfigNames.CustomHeaders,
+    mandatory = false,
+    parseFromStringFunction = headersJson => {
+      val mapper = new com.fasterxml.jackson.databind.ObjectMapper()
+      val typeRef = new com.fasterxml.jackson.core.`type`.TypeReference[java.util.Map[String, String]]() {}
+      mapper.readValue(headersJson, typeRef).asScala.toMap
+    },
+    helpMessage = "Optional custom headers as JSON map. Example: {\"x-ms-cosmos-workload-id\": \"15\"}")
+
   private[spark] def parseProactiveConnectionInitConfigs(config: String): java.util.List[CosmosContainerIdentity] = {
     val result = new java.util.ArrayList[CosmosContainerIdentity]
     try {
@@ -753,6 +775,8 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     val tenantIdOpt = CosmosConfigEntry.parse(cfg, TenantId)
     val clientBuilderInterceptors = CosmosConfigEntry.parse(cfg, ClientBuilderInterceptors)
     val clientInterceptors = CosmosConfigEntry.parse(cfg, ClientInterceptors)
+    // Parse optional custom HTTP headers from JSON config (e.g., {"x-ms-cosmos-workload-id": "15"})
+    val customHeaders = CosmosConfigEntry.parse(cfg, CustomHeadersConfig)
 
     val disableTcpConnectionEndpointRediscovery = CosmosConfigEntry.parse(cfg, DisableTcpConnectionEndpointRediscovery)
     val preferredRegionsListOpt = CosmosConfigEntry.parse(cfg, PreferredRegionsList)
@@ -864,7 +888,8 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
       resourceGroupNameOpt,
       azureEnvironmentOpt.get,
       if (clientBuilderInterceptorsList.nonEmpty) { Some(clientBuilderInterceptorsList.toList) } else { None },
-      if (clientInterceptorsList.nonEmpty) { Some(clientInterceptorsList.toList) } else { None })
+      if (clientInterceptorsList.nonEmpty) { Some(clientInterceptorsList.toList) } else { None },
+      customHeaders)
   }
 }
 
