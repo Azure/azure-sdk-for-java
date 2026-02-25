@@ -106,6 +106,11 @@ public class BenchmarkOrchestrator {
         }
         reporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
 
+                // Register SimpleMeterRegistry on Micrometer globalRegistry BEFORE clients are created
+        SimpleMeterRegistry poolMetricsRegistry = new SimpleMeterRegistry();
+        Metrics.addRegistry(poolMetricsRegistry);
+        logger.info("Reactor Netty pool metrics bridge enabled");
+
         // Optional: Result uploader
         CosmosClient resultUploaderClient = null;
         CosmosTotalResultReporter resultReporter = null;
