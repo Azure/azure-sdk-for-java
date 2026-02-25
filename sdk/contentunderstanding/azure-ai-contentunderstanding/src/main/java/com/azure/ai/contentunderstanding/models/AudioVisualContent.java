@@ -24,7 +24,7 @@ public final class AudioVisualContent extends AnalysisContent {
      * Content kind.
      */
     @Generated
-    private MediaContentKind kind = MediaContentKind.AUDIO_VISUAL;
+    private AnalysisContentKind kind = AnalysisContentKind.AUDIO_VISUAL;
 
     /*
      * Start time of the content in milliseconds.
@@ -96,7 +96,7 @@ public final class AudioVisualContent extends AnalysisContent {
      */
     @Generated
     @Override
-    public MediaContentKind getKind() {
+    public AnalysisContentKind getKind() {
         return this.kind;
     }
 
@@ -230,7 +230,7 @@ public final class AudioVisualContent extends AnalysisContent {
             Map<String, ContentField> fields = null;
             long startTimeMs = 0L;
             long endTimeMs = 0L;
-            MediaContentKind kind = MediaContentKind.AUDIO_VISUAL;
+            AnalysisContentKind kind = AnalysisContentKind.AUDIO_VISUAL;
             Integer width = null;
             Integer height = null;
             List<Long> cameraShotTimesMs = null;
@@ -257,7 +257,7 @@ public final class AudioVisualContent extends AnalysisContent {
                 } else if ("endTimeMs".equals(fieldName)) {
                     endTimeMs = reader.getLong();
                 } else if ("kind".equals(fieldName)) {
-                    kind = MediaContentKind.fromString(reader.getString());
+                    kind = AnalysisContentKind.fromString(reader.getString());
                 } else if ("width".equals(fieldName)) {
                     width = reader.getNullable(JsonReader::getInt);
                 } else if ("height".equals(fieldName)) {

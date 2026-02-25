@@ -22,7 +22,7 @@ public class AnalysisContent implements JsonSerializable<AnalysisContent> {
      * Content kind.
      */
     @Generated
-    private MediaContentKind kind = MediaContentKind.fromString("AnalysisContent");
+    private AnalysisContentKind kind = AnalysisContentKind.fromString("AnalysisContent");
 
     /*
      * Detected MIME type of the content. Ex. application/pdf, image/jpeg, etc.
@@ -76,7 +76,7 @@ public class AnalysisContent implements JsonSerializable<AnalysisContent> {
      * @return the kind value.
      */
     @Generated
-    public MediaContentKind getKind() {
+    public AnalysisContentKind getKind() {
         return this.kind;
     }
 
@@ -258,7 +258,7 @@ public class AnalysisContent implements JsonSerializable<AnalysisContent> {
     static AnalysisContent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String mimeType = null;
-            MediaContentKind kind = null;
+            AnalysisContentKind kind = null;
             String analyzerId = null;
             String category = null;
             String path = null;
@@ -271,7 +271,7 @@ public class AnalysisContent implements JsonSerializable<AnalysisContent> {
                 if ("mimeType".equals(fieldName)) {
                     mimeType = reader.getString();
                 } else if ("kind".equals(fieldName)) {
-                    kind = MediaContentKind.fromString(reader.getString());
+                    kind = AnalysisContentKind.fromString(reader.getString());
                 } else if ("analyzerId".equals(fieldName)) {
                     analyzerId = reader.getString();
                 } else if ("category".equals(fieldName)) {
