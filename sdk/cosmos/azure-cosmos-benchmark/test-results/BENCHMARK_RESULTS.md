@@ -98,24 +98,22 @@ NOT a leak -- Reactor Netty's global default event-loop pool (`LoopResources.DEF
 
 ### F2: ClientTelemetry Cleanup Opportunities
 
-`ClientTelemetry` has significant dead code. Still instantiated per-client, creating an
-IMDS `HttpClient` pool each time even though metadata is cached statically after first call.
+> **Updated Feb 2026**: Deep investigation confirmed the IMDS HttpClient is now **ephemeral** --
+> created and disposed inline during `init()`, not held as a persistent field. The metadata
+> is cached in a static `AtomicReference<AzureVMMetadata>` (one fetch per JVM). The
+> `ClientTelemetryInfo` histogram maps no longer exist -- telemetry uses Micrometer.
 
-**Active code (6)**: constructor, `init()`, `recordValue()`, `getClientTelemetryConfig()`,
-`isClientMetricsEnabled()`, `getMachineId()`
+**Original finding (R1-R5)**: `ClientTelemetry` appeared to create an IMDS `HttpClient` pool
+per-instance. Deep code review (Feb 2026) showed this was **refactored** -- the HTTP client
+is ephemeral and properly disposed.
 
-**Dead code (7)**: `close()` (was no-op with wrong log message), `blockingGetOrLoadMachineId()`,
-`DEFAULT_CLIENT_TELEMETRY_ENABLED`, 4x `TCP_NEW_CHANNEL_LATENCY_*` constants
+**Remaining cleanup opportunities**:
 
-**IMDS HttpClient should be static**: `metadataHttpClient` is per-instance but
-`azureVmMetaDataSingleton` is static -- only first call does HTTP. All subsequent instances
-create unused `ConnectionProvider` objects.
-
-| Action | Description | Complexity |
-|--------|-------------|------------|
-| A25 | Make IMDS `metadataHttpClient` a static singleton (lazy-init) | Low |
-| A26 | Remove dead code: `blockingGetOrLoadMachineId()`, `TCP_NEW_CHANNEL_LATENCY_*` constants | Low |
-| A27 | Fix `close()` log message (says "GlobalEndpointManager closed" -- copy-paste error) | Trivial |
+| Action | Description | Status |
+|--------|-------------|--------|
+| A25 | ~~Make IMDS `metadataHttpClient` a static singleton~~ | **RESOLVED** -- already ephemeral in current code |
+| A26 | Remove dead code: `blockingGetOrLoadMachineId()`, `TCP_NEW_CHANNEL_LATENCY_*` constants | Low priority |
+| A27 | ~~Fix `close()` log message~~ | **RESOLVED** -- `close()` is now intentionally a no-op with correct comment |
 
 ### F3: transport-response-bounded-elastic Thread Growth
 
@@ -135,20 +133,54 @@ The growth seen in R4/R5 was purely timing -- 5s settle was too short for the 60
 
 ### F4: A1/A2 Fix Impact Reassessment
 
+> **Updated Feb 2026**: Deep investigation confirmed A1/A2 bugs are **FIXED** in the current
+> codebase. The IMDS client is ephemeral, `close()` is properly called from
+> `RxDocumentClientImpl.close()`, and telemetry uses Micrometer (no histogram maps).
+
 **Original hypothesis**: `ClientTelemetry.close()` no-op leaked IMDS pool threads and
 GlobalEndpointManager scheduler threads per client lifecycle.
 
-**Revised understanding**:
+**Deep investigation findings (Feb 2026)**:
 
-| Resource | Actual behavior |
-|----------|----------------|
-| IMDS HttpClient pool | Created per-instance but unused after first client (metadata cached statically). Leaked `ConnectionProvider` wastes minor memory, no FDs or threads. |
-| GlobalEndpointManager scheduler | Already properly closed via `RxDocumentClientImpl.close()`. Never broken. |
-| reactor-http-epoll threads | Shared `LoopResources.DEFAULT` singleton -- same count (16) fix vs no-fix. |
-| Thread count diff (80 vs 100) | Entirely in `transport-response-bounded-elastic` (17 vs 37). Likely timing-related. |
+| Resource | Original Claim | Actual (Current Code) |
+|----------|---------------|----------------------|
+| IMDS HttpClient pool | Leaked 5-connection pool per client | **FIXED** -- ephemeral, created and disposed inline in `init()` |
+| `ClientTelemetryInfo` histograms | ~256 KB `ConcurrentDoubleHistogram` leaked per client | **FIXED** -- maps no longer exist; telemetry uses Micrometer |
+| `RxDocumentClientImpl.close()` calling `clientTelemetry.close()` | Never called | **FIXED** -- now properly called |
+| `close()` log message | Wrong: "GlobalEndpointManager closed" | **FIXED** -- correct comment, intentional no-op |
+| GlobalEndpointManager scheduler | Leaked per client | **Never broken** -- always properly closed |
+| reactor-http-epoll threads | Leaked | **Not a leak** -- shared `LoopResources.DEFAULT` singleton (16 threads) |
+| Thread count diff (80 vs 100) | A1/A2 leak | **Timing** -- `transport-response-bounded-elastic` evictor TTL (60s) |
 
-**Conclusion**: A1/A2 fix is correct for code hygiene but has minimal observable impact on
-threads, heap, or FDs in CHURN testing. Real multi-tenancy concerns are:
-- Event-loop contention at scale (A23)
-- Unnecessary per-instance IMDS client creation (A25)
-- Bounded-elastic growth during rapid churn (A28/A29)
+**Additional bugs still present**:
+- **Bug #2**: `ThinClientStoreModel` never closed in `RxDocumentClientImpl.close()`
+- **Bug #3**: `globalPartitionEndpointManagerForPerPartitionAutomaticFailover` never closed
+
+**Additional findings**:
+- Query plan cache has 5,000-entry cap with full-clear eviction (not unbounded as originally claimed)
+- `connectionSharingAcrossClientsEnabled` was silently dropped in benchmark harness (now wired)
+- Reactor Netty connection pool metrics are NOT enabled in the SDK (gap)
+- HTTP/2 stream-level metrics do NOT exist (gap)
+
+### F5: connectionSharingAcrossClientsEnabled Was Dead Config
+
+**Found during baseline matrix preparation (Feb 2026)**: The `tenants.json` field
+`connectionSharingAcrossClientsEnabled` was silently dropped -- no field, no switch case,
+no setter in `TenantWorkloadConfig`. The value hit the `default:` branch in `applyField()`
+and was discarded.
+
+**Fixed in branch `wireConnectionSharingInBenchmark`**:
+- Added field, getter, setter to `TenantWorkloadConfig`
+- Added switch case in `applyField()`
+- Added `-connectionSharingAcrossClientsEnabled` CLI parameter to `Configuration`
+- Applied on `CosmosClientBuilder` in `AsyncBenchmark`
+- Wired through `fromConfiguration()` for legacy CLI path
+
+### F6: Metrics Gaps for Multi-Tenancy
+
+| Metric | Status | What is Needed |
+|--------|--------|---------------|
+| Cosmos SDK Micrometer metrics (44 meters) | Available | `CosmosMicrometerMetricsOptions` already wired in orchestrator |
+| Reactor Netty connection pool (active/idle/pending) | **NOT enabled** | Call `.metrics(true)` on `ConnectionProvider.Builder` in `HttpClient.createFixed()` |
+| HTTP/2 stream-level (active streams, utilization) | **NOT available** | Need `.metrics(true)` on Reactor Netty HttpClient or custom Netty H2 instrumentation |
+| SharedGatewayHttpClient ref count | **NOT exposed** | Register `counter` as Micrometer Gauge |
