@@ -3,7 +3,7 @@
 ### 4.43.1 (2026-02-25)
 
 #### Other Changes
-* Reduced the log noise level for frequent transient errors - for example throttling - in Gateway mode - [PR 48111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
+* Reduced the log noise level for frequent transient errors - for example throttling - in Gateway mode - [PR 48111](https://github.com/Azure/azure-sdk-for-java/pull/48111)
 
 
 ### 4.43.0 (2026-02-10)
