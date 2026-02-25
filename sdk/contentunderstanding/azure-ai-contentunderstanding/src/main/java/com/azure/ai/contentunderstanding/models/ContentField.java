@@ -268,15 +268,16 @@ public class ContentField implements JsonSerializable<ContentField> {
     /**
      * Parses the encoded source string into typed grounding sources.
      *
-     * The returned array contains {@link DocumentSource} or {@link AudioVisualSource} instances depending on the wire
+     * The returned list contains {@link DocumentSource} or {@link AudioVisualSource} instances depending on the wire
      * format.
      * Returns {@code null} if the source string is null or empty.
      *
-     * @return an array of {@link ContentSource} instances, or null if no source is available.
-     * @see ContentSource#parseAll(String)
+     * @return an unmodifiable list of {@link ContentSource} instances, or null if no source is available.
+     * @see DocumentSource#parse(String)
+     * @see AudioVisualSource#parse(String)
      */
-    public ContentSource[] getGroundingSources() {
+    public List<ContentSource> getGroundingSources() {
         String src = getSource();
-        return (src == null || src.isEmpty()) ? null : ContentSource.parseAll(src);
+        return (src == null || src.isEmpty()) ? null : ContentSource.parseSource(src);
     }
 }

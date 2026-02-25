@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -112,7 +113,7 @@ public final class AudioVisualSource extends ContentSource {
      * @throws NullPointerException if {@code source} is null.
      * @throws IllegalArgumentException if the source string is not in the expected format.
      */
-    public static AudioVisualSource parse(String source) {
+    static AudioVisualSource parseSingle(String source) {
         Objects.requireNonNull(source, "'source' cannot be null.");
         if (source.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'source' cannot be empty."));
@@ -124,11 +125,11 @@ public final class AudioVisualSource extends ContentSource {
      * Parses a source string containing one or more audio/visual source segments separated by {@code ;}.
      *
      * @param source The source string (may contain {@code ;} delimiters).
-     * @return An array of {@link AudioVisualSource} instances.
+     * @return An unmodifiable list of {@link AudioVisualSource} instances.
      * @throws NullPointerException if {@code source} is null.
      * @throws IllegalArgumentException if any segment is not in the expected format.
      */
-    public static AudioVisualSource[] parseAll(String source) {
+    public static List<AudioVisualSource> parse(String source) {
         Objects.requireNonNull(source, "'source' cannot be null.");
         if (source.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'source' cannot be empty."));
@@ -141,6 +142,6 @@ public final class AudioVisualSource extends ContentSource {
                 results.add(new AudioVisualSource(trimmed));
             }
         }
-        return results.toArray(new AudioVisualSource[0]);
+        return Collections.unmodifiableList(results);
     }
 }

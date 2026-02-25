@@ -12,6 +12,8 @@ import com.azure.ai.contentunderstanding.models.RectangleF;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +27,10 @@ public class ContentSourceTest {
 
     @Test
     public void documentSourceParseSingleSegment() {
-        DocumentSource source = DocumentSource.parse("D(1,0.5712,1.4062,2.1087,1.4088,2.1084,1.5762,0.5709,1.5736)");
+        List<DocumentSource> sources
+            = DocumentSource.parse("D(1,0.5712,1.4062,2.1087,1.4088,2.1084,1.5762,0.5709,1.5736)");
+        assertEquals(1, sources.size());
+        DocumentSource source = sources.get(0);
 
         assertEquals(1, source.getPageNumber());
         assertEquals(4, source.getPolygon().size());
@@ -37,28 +42,28 @@ public class ContentSourceTest {
 
     @Test
     public void documentSourceParsePageNumber() {
-        DocumentSource source = DocumentSource.parse("D(3,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)");
-        assertEquals(3, source.getPageNumber());
+        List<DocumentSource> sources = DocumentSource.parse("D(3,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)");
+        assertEquals(3, sources.get(0).getPageNumber());
     }
 
     @Test
     public void documentSourceParseRawValuePreserved() {
         String raw = "D(1,0.5712,1.4062,2.1087,1.4088,2.1084,1.5762,0.5709,1.5736)";
-        DocumentSource source = DocumentSource.parse(raw);
-        assertEquals(raw, source.getRawValue());
-        assertEquals(raw, source.toString());
+        List<DocumentSource> sources = DocumentSource.parse(raw);
+        assertEquals(raw, sources.get(0).getRawValue());
+        assertEquals(raw, sources.get(0).toString());
     }
 
     @Test
-    public void documentSourceParseAllMultiRegion() {
+    public void documentSourceParseMultiRegion() {
         String input
             = "D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0);D(1,2.0,2.0,3.0,2.0,3.0,3.0,2.0,3.0);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)";
-        DocumentSource[] sources = DocumentSource.parseAll(input);
+        List<DocumentSource> sources = DocumentSource.parse(input);
 
-        assertEquals(3, sources.length);
-        assertEquals(1, sources[0].getPageNumber());
-        assertEquals(1, sources[1].getPageNumber());
-        assertEquals(2, sources[2].getPageNumber());
+        assertEquals(3, sources.size());
+        assertEquals(1, sources.get(0).getPageNumber());
+        assertEquals(1, sources.get(1).getPageNumber());
+        assertEquals(2, sources.get(2).getPageNumber());
     }
 
     @Test
@@ -83,7 +88,9 @@ public class ContentSourceTest {
 
     @Test
     public void documentSourceParseBoundingBoxComputed() {
-        DocumentSource source = DocumentSource.parse("D(1,0.5712,1.4062,2.1087,1.4088,2.1084,1.5762,0.5709,1.5736)");
+        List<DocumentSource> sources
+            = DocumentSource.parse("D(1,0.5712,1.4062,2.1087,1.4088,2.1084,1.5762,0.5709,1.5736)");
+        DocumentSource source = sources.get(0);
 
         RectangleF bbox = source.getBoundingBox();
         // Min X = 0.5709, Min Y = 1.4062, Max X = 2.1087, Max Y = 1.5762
@@ -103,7 +110,9 @@ public class ContentSourceTest {
 
     @Test
     public void audioVisualSourceParseWithBoundingBox() {
-        AudioVisualSource source = AudioVisualSource.parse("AV(5000,100,200,50,60)");
+        List<AudioVisualSource> sources = AudioVisualSource.parse("AV(5000,100,200,50,60)");
+        assertEquals(1, sources.size());
+        AudioVisualSource source = sources.get(0);
 
         assertEquals(5000, source.getTimeMs());
         assertNotNull(source.getBoundingBox());
@@ -115,7 +124,8 @@ public class ContentSourceTest {
 
     @Test
     public void audioVisualSourceParseTimeOnly() {
-        AudioVisualSource source = AudioVisualSource.parse("AV(5000)");
+        List<AudioVisualSource> sources = AudioVisualSource.parse("AV(5000)");
+        AudioVisualSource source = sources.get(0);
 
         assertEquals(5000, source.getTimeMs());
         assertNull(source.getBoundingBox());
@@ -124,9 +134,9 @@ public class ContentSourceTest {
     @Test
     public void audioVisualSourceParseRawValuePreserved() {
         String raw = "AV(5000,100,200,50,60)";
-        AudioVisualSource source = AudioVisualSource.parse(raw);
-        assertEquals(raw, source.getRawValue());
-        assertEquals(raw, source.toString());
+        List<AudioVisualSource> sources = AudioVisualSource.parse(raw);
+        assertEquals(raw, sources.get(0).getRawValue());
+        assertEquals(raw, sources.get(0).toString());
     }
 
     @Test
@@ -146,82 +156,39 @@ public class ContentSourceTest {
     }
 
     @Test
-    public void audioVisualSourceParseAllMultiSegment() {
+    public void audioVisualSourceParseMultiSegment() {
         String input = "AV(0,100,200,50,60);AV(1000,105,205,50,60)";
-        AudioVisualSource[] sources = AudioVisualSource.parseAll(input);
+        List<AudioVisualSource> sources = AudioVisualSource.parse(input);
 
-        assertEquals(2, sources.length);
-        assertEquals(0, sources[0].getTimeMs());
-        assertEquals(1000, sources[1].getTimeMs());
+        assertEquals(2, sources.size());
+        assertEquals(0, sources.get(0).getTimeMs());
+        assertEquals(1000, sources.get(1).getTimeMs());
     }
 
     @Test
     public void audioVisualSourceGetTimeDuration() {
-        AudioVisualSource source = AudioVisualSource.parse("AV(5000)");
+        AudioVisualSource source = AudioVisualSource.parse("AV(5000)").get(0);
         assertEquals(Duration.ofMillis(5000), source.getTime());
     }
 
     @Test
     public void audioVisualSourceGetTimeZero() {
-        AudioVisualSource source = AudioVisualSource.parse("AV(0)");
+        AudioVisualSource source = AudioVisualSource.parse("AV(0)").get(0);
         assertEquals(Duration.ZERO, source.getTime());
-    }
-
-    // =================== ContentSource.parse Dispatch ===================
-
-    @Test
-    public void contentSourceParseDocumentPrefix() {
-        ContentSource source = ContentSource.parse("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)");
-        assertInstanceOf(DocumentSource.class, source);
-    }
-
-    @Test
-    public void contentSourceParseAudioVisualPrefix() {
-        ContentSource source = ContentSource.parse("AV(5000,100,200,50,60)");
-        assertInstanceOf(AudioVisualSource.class, source);
-    }
-
-    @Test
-    public void contentSourceParseUnknownPrefixThrows() {
-        assertThrows(IllegalArgumentException.class, () -> ContentSource.parse("R(1,2,3)"));
-    }
-
-    @Test
-    public void contentSourceParseNullThrows() {
-        assertThrows(NullPointerException.class, () -> ContentSource.parse(null));
-    }
-
-    // =================== ContentSource.parseAll ===================
-
-    @Test
-    public void contentSourceParseAllMultiRegionDocument() {
-        String input = "D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)";
-        ContentSource[] sources = ContentSource.parseAll(input);
-
-        assertEquals(2, sources.length);
-        assertInstanceOf(DocumentSource.class, sources[0]);
-        assertInstanceOf(DocumentSource.class, sources[1]);
-    }
-
-    @Test
-    public void contentSourceParseAllSingleSegment() {
-        ContentSource[] sources = ContentSource.parseAll("AV(5000)");
-        assertEquals(1, sources.length);
-        assertInstanceOf(AudioVisualSource.class, sources[0]);
     }
 
     // =================== ContentSource.toRawString ===================
 
     @Test
     public void contentSourceToRawStringSingleElement() {
-        ContentSource[] sources = new ContentSource[] { DocumentSource.parse("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)") };
+        List<DocumentSource> sources = DocumentSource.parse("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)");
         assertEquals("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)", ContentSource.toRawString(sources));
     }
 
     @Test
     public void contentSourceToRawStringMultipleElements() {
-        ContentSource[] sources
-            = ContentSource.parseAll("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)");
+        List<DocumentSource> sources
+            = DocumentSource.parse("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)");
         String result = ContentSource.toRawString(sources);
         assertEquals("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)", result);
     }
@@ -232,8 +199,8 @@ public class ContentSourceTest {
     }
 
     @Test
-    public void contentSourceToRawStringEmptyArray() {
-        assertEquals("", ContentSource.toRawString(new ContentSource[0]));
+    public void contentSourceToRawStringEmptyList() {
+        assertEquals("", ContentSource.toRawString(Arrays.asList()));
     }
 
     // =================== Geometry Types ===================
@@ -286,7 +253,9 @@ public class ContentSourceTest {
 
     @Test
     public void documentSourceParseRealInvoiceSource() {
-        DocumentSource source = DocumentSource.parse("D(1,0.5712,1.4062,2.1087,1.4088,2.1084,1.5762,0.5709,1.5736)");
+        List<DocumentSource> sources
+            = DocumentSource.parse("D(1,0.5712,1.4062,2.1087,1.4088,2.1084,1.5762,0.5709,1.5736)");
+        DocumentSource source = sources.get(0);
 
         assertEquals(1, source.getPageNumber());
         assertEquals(4, source.getPolygon().size());

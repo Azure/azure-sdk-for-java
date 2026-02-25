@@ -116,7 +116,7 @@ public final class DocumentSource extends ContentSource {
      * @throws NullPointerException if {@code source} is null.
      * @throws IllegalArgumentException if the source string is not in the expected format.
      */
-    public static DocumentSource parse(String source) {
+    static DocumentSource parseSingle(String source) {
         Objects.requireNonNull(source, "'source' cannot be null.");
         if (source.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'source' cannot be empty."));
@@ -128,11 +128,11 @@ public final class DocumentSource extends ContentSource {
      * Parses a source string containing one or more document source segments separated by {@code ;}.
      *
      * @param source The source string (may contain {@code ;} delimiters).
-     * @return An array of {@link DocumentSource} instances.
+     * @return An unmodifiable list of {@link DocumentSource} instances.
      * @throws NullPointerException if {@code source} is null.
      * @throws IllegalArgumentException if any segment is not in the expected format.
      */
-    public static DocumentSource[] parseAll(String source) {
+    public static List<DocumentSource> parse(String source) {
         Objects.requireNonNull(source, "'source' cannot be null.");
         if (source.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'source' cannot be empty."));
@@ -145,6 +145,6 @@ public final class DocumentSource extends ContentSource {
                 results.add(new DocumentSource(trimmed));
             }
         }
-        return results.toArray(new DocumentSource[0]);
+        return Collections.unmodifiableList(results);
     }
 }

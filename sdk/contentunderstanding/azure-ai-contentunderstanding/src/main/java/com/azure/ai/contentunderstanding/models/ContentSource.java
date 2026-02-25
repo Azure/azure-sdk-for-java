@@ -6,6 +6,7 @@ package com.azure.ai.contentunderstanding.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,8 +20,8 @@ import java.util.Objects;
  * <li>{@link AudioVisualSource} &mdash; {@code AV(time[,x,y,w,h])}</li>
  * </ul>
  *
- * <p>Use {@link #parse(String)} to parse a single segment, or {@link #parseAll(String)} to parse
- * a semicolon-delimited string containing multiple segments.</p>
+ * <p>Use {@link DocumentSource#parse(String)} or {@link AudioVisualSource#parse(String)} to parse
+ * a semicolon-delimited string containing one or more segments.</p>
  *
  * @see ContentField#getGroundingSources()
  */
@@ -56,16 +57,16 @@ public abstract class ContentSource {
      * @throws NullPointerException if {@code source} is null.
      * @throws IllegalArgumentException if {@code source} is empty or has an unrecognized format.
      */
-    public static ContentSource parse(String source) {
+    static ContentSource parseSingle(String source) {
         Objects.requireNonNull(source, "'source' cannot be null.");
         if (source.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'source' cannot be empty."));
         }
         if (source.startsWith("D(")) {
-            return DocumentSource.parse(source);
+            return DocumentSource.parseSingle(source);
         }
         if (source.startsWith("AV(")) {
-            return AudioVisualSource.parse(source);
+            return AudioVisualSource.parseSingle(source);
         }
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unrecognized source format: '" + source + "'."));
     }
@@ -73,14 +74,14 @@ public abstract class ContentSource {
     /**
      * Parses a semicolon-delimited string containing one or more source segments.
      *
-     * <p>Each segment is parsed individually using {@link #parse(String)}.</p>
+     * <p>Each segment is parsed individually, detecting the source type automatically.</p>
      *
      * @param source The source string (may contain {@code ;} delimiters).
-     * @return An array of {@link ContentSource} instances.
+     * @return An unmodifiable list of {@link ContentSource} instances.
      * @throws NullPointerException if {@code source} is null.
      * @throws IllegalArgumentException if {@code source} is empty or any segment has an unrecognized format.
      */
-    public static ContentSource[] parseAll(String source) {
+    static List<ContentSource> parseSource(String source) {
         Objects.requireNonNull(source, "'source' cannot be null.");
         if (source.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'source' cannot be empty."));
@@ -90,28 +91,28 @@ public abstract class ContentSource {
         for (String segment : segments) {
             String trimmed = segment.trim();
             if (!trimmed.isEmpty()) {
-                results.add(parse(trimmed));
+                results.add(parseSingle(trimmed));
             }
         }
-        return results.toArray(new ContentSource[0]);
+        return Collections.unmodifiableList(results);
     }
 
     /**
      * Reconstructs the wire-format source string by joining each element's
      * {@link #getRawValue()} with semicolons.
      *
-     * @param sources The content source array.
+     * @param sources The content source list.
      * @return A semicolon-delimited string of raw source values.
      * @throws NullPointerException if {@code sources} is null.
      */
-    public static String toRawString(ContentSource[] sources) {
+    public static String toRawString(List<? extends ContentSource> sources) {
         Objects.requireNonNull(sources, "'sources' cannot be null.");
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < sources.length; i++) {
+        for (int i = 0; i < sources.size(); i++) {
             if (i > 0) {
                 sb.append(';');
             }
-            sb.append(sources[i].getRawValue());
+            sb.append(sources.get(i).getRawValue());
         }
         return sb.toString();
     }
