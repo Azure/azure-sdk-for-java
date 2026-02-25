@@ -159,7 +159,7 @@ public enum QueueServiceVersion implements ServiceVersion {
      */
     V2026_04_06("2026-04-06"),
 
-    /**;
+    /**
      * Service version {@code 2026-06-06}.
      */
     V2026_06_06("2026-06-06");
