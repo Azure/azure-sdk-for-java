@@ -28,7 +28,7 @@ import java.util.Map;
  * Concrete tracked resource types can be created by aliasing this type using a specific property type.
  */
 @Fluent
-public final class StaticSiteARMResourceInner extends Resource {
+public final class StaticSiteArmResourceInner extends Resource {
     /*
      * Core resource properties
      */
@@ -70,9 +70,9 @@ public final class StaticSiteARMResourceInner extends Resource {
     private String id;
 
     /**
-     * Creates an instance of StaticSiteARMResourceInner class.
+     * Creates an instance of StaticSiteArmResourceInner class.
      */
-    public StaticSiteARMResourceInner() {
+    public StaticSiteArmResourceInner() {
     }
 
     /**
@@ -97,9 +97,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * Set the kind property: Kind of resource.
      * 
      * @param kind the kind value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withKind(String kind) {
+    public StaticSiteArmResourceInner withKind(String kind) {
         this.kind = kind;
         return this;
     }
@@ -117,9 +117,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * Set the sku property: Description of a SKU for a scalable resource.
      * 
      * @param sku the sku value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withSku(SkuDescription sku) {
+    public StaticSiteArmResourceInner withSku(SkuDescription sku) {
         this.sku = sku;
         return this;
     }
@@ -137,9 +137,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * Set the identity property: Managed service identity.
      * 
      * @param identity the identity value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withIdentity(ManagedServiceIdentity identity) {
+    public StaticSiteArmResourceInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -187,7 +187,7 @@ public final class StaticSiteARMResourceInner extends Resource {
      * {@inheritDoc}
      */
     @Override
-    public StaticSiteARMResourceInner withLocation(String location) {
+    public StaticSiteArmResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
@@ -196,7 +196,7 @@ public final class StaticSiteARMResourceInner extends Resource {
      * {@inheritDoc}
      */
     @Override
-    public StaticSiteARMResourceInner withTags(Map<String, String> tags) {
+    public StaticSiteArmResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
@@ -223,9 +223,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * Set the repositoryUrl property: URL for the repository of the static site.
      * 
      * @param repositoryUrl the repositoryUrl value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withRepositoryUrl(String repositoryUrl) {
+    public StaticSiteArmResourceInner withRepositoryUrl(String repositoryUrl) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSite();
         }
@@ -246,9 +246,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * Set the branch property: The target branch in the repository.
      * 
      * @param branch the branch value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withBranch(String branch) {
+    public StaticSiteArmResourceInner withBranch(String branch) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSite();
         }
@@ -280,9 +280,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * workflow file and API secrets.
      * 
      * @param repositoryToken the repositoryToken value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withRepositoryToken(String repositoryToken) {
+    public StaticSiteArmResourceInner withRepositoryToken(String repositoryToken) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSite();
         }
@@ -303,9 +303,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * Set the buildProperties property: Build properties to configure on the repository.
      * 
      * @param buildProperties the buildProperties value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withBuildProperties(StaticSiteBuildProperties buildProperties) {
+    public StaticSiteArmResourceInner withBuildProperties(StaticSiteBuildProperties buildProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSite();
         }
@@ -337,9 +337,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * allowed for a static web app.
      * 
      * @param stagingEnvironmentPolicy the stagingEnvironmentPolicy value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withStagingEnvironmentPolicy(StagingEnvironmentPolicy stagingEnvironmentPolicy) {
+    public StaticSiteArmResourceInner withStagingEnvironmentPolicy(StagingEnvironmentPolicy stagingEnvironmentPolicy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSite();
         }
@@ -362,9 +362,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * web app; otherwise, &lt;code&gt;true&lt;/code&gt;.
      * 
      * @param allowConfigFileUpdates the allowConfigFileUpdates value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withAllowConfigFileUpdates(Boolean allowConfigFileUpdates) {
+    public StaticSiteArmResourceInner withAllowConfigFileUpdates(Boolean allowConfigFileUpdates) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSite();
         }
@@ -385,9 +385,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * Set the templateProperties property: Template options for generating a new repository.
      * 
      * @param templateProperties the templateProperties value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withTemplateProperties(StaticSiteTemplateOptions templateProperties) {
+    public StaticSiteArmResourceInner withTemplateProperties(StaticSiteTemplateOptions templateProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSite();
         }
@@ -446,9 +446,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * static site.
      * 
      * @param provider the provider value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withProvider(String provider) {
+    public StaticSiteArmResourceInner withProvider(String provider) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSite();
         }
@@ -471,9 +471,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * traffic to the static web app.
      * 
      * @param enterpriseGradeCdnStatus the enterpriseGradeCdnStatus value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withEnterpriseGradeCdnStatus(EnterpriseGradeCdnStatus enterpriseGradeCdnStatus) {
+    public StaticSiteArmResourceInner withEnterpriseGradeCdnStatus(EnterpriseGradeCdnStatus enterpriseGradeCdnStatus) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSite();
         }
@@ -496,9 +496,9 @@ public final class StaticSiteARMResourceInner extends Resource {
      * app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withPublicNetworkAccess(String publicNetworkAccess) {
+    public StaticSiteArmResourceInner withPublicNetworkAccess(String publicNetworkAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSite();
         }
@@ -548,48 +548,48 @@ public final class StaticSiteARMResourceInner extends Resource {
     }
 
     /**
-     * Reads an instance of StaticSiteARMResourceInner from the JsonReader.
+     * Reads an instance of StaticSiteArmResourceInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteARMResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of StaticSiteArmResourceInner if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StaticSiteARMResourceInner.
+     * @throws IOException If an error occurs while reading the StaticSiteArmResourceInner.
      */
-    public static StaticSiteARMResourceInner fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteArmResourceInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteARMResourceInner deserializedStaticSiteARMResourceInner = new StaticSiteARMResourceInner();
+            StaticSiteArmResourceInner deserializedStaticSiteArmResourceInner = new StaticSiteArmResourceInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedStaticSiteARMResourceInner.id = reader.getString();
+                    deserializedStaticSiteArmResourceInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedStaticSiteARMResourceInner.name = reader.getString();
+                    deserializedStaticSiteArmResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedStaticSiteARMResourceInner.type = reader.getString();
+                    deserializedStaticSiteArmResourceInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
-                    deserializedStaticSiteARMResourceInner.withLocation(reader.getString());
+                    deserializedStaticSiteArmResourceInner.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedStaticSiteARMResourceInner.withTags(tags);
+                    deserializedStaticSiteArmResourceInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedStaticSiteARMResourceInner.innerProperties = StaticSite.fromJson(reader);
+                    deserializedStaticSiteArmResourceInner.innerProperties = StaticSite.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedStaticSiteARMResourceInner.kind = reader.getString();
+                    deserializedStaticSiteArmResourceInner.kind = reader.getString();
                 } else if ("sku".equals(fieldName)) {
-                    deserializedStaticSiteARMResourceInner.sku = SkuDescription.fromJson(reader);
+                    deserializedStaticSiteArmResourceInner.sku = SkuDescription.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
-                    deserializedStaticSiteARMResourceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                    deserializedStaticSiteArmResourceInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedStaticSiteARMResourceInner.systemData = SystemData.fromJson(reader);
+                    deserializedStaticSiteArmResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteARMResourceInner;
+            return deserializedStaticSiteArmResourceInner;
         });
     }
 }

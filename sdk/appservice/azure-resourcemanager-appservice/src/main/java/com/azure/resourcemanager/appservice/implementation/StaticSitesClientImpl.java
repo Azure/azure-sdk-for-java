@@ -36,7 +36,7 @@ import com.azure.resourcemanager.appservice.fluent.StaticSitesClient;
 import com.azure.resourcemanager.appservice.fluent.models.DatabaseConnectionInner;
 import com.azure.resourcemanager.appservice.fluent.models.PrivateLinkResourcesWrapperInner;
 import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesARMResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBuildARMResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainOverviewARMResourceInner;
@@ -77,8 +77,8 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in StaticSitesClient.
  */
-public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteARMResourceInner>,
-    InnerSupportsListing<StaticSiteARMResourceInner>, InnerSupportsDelete<Void>, StaticSitesClient {
+public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteArmResourceInner>,
+    InnerSupportsListing<StaticSiteArmResourceInner>, InnerSupportsDelete<Void>, StaticSitesClient {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -154,7 +154,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteARMResourceInner>> getByResourceGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<StaticSiteArmResourceInner>> getByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @HeaderParam("Accept") String accept, Context context);
@@ -166,12 +166,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") StaticSiteARMResourceInner staticSiteEnvelope, Context context);
+            @BodyParam("application/json") StaticSiteArmResourceInner staticSiteEnvelope, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteARMResourceInner>> updateStaticSite(@HostParam("endpoint") String endpoint,
+        Mono<Response<StaticSiteArmResourceInner>> updateStaticSite(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -1922,7 +1922,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StaticSiteARMResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+    public Mono<Response<StaticSiteArmResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String name) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1963,7 +1963,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteARMResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+    private Mono<Response<StaticSiteArmResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String name, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -2001,7 +2001,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Description for Gets the details of a static site on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StaticSiteARMResourceInner> getByResourceGroupAsync(String resourceGroupName, String name) {
+    public Mono<StaticSiteArmResourceInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2022,7 +2022,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Description for Gets the details of a static site along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StaticSiteARMResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
+    public Response<StaticSiteArmResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
     }
@@ -2042,7 +2042,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Description for Gets the details of a static site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StaticSiteARMResourceInner getByResourceGroup(String resourceGroupName, String name) {
+    public StaticSiteArmResourceInner getByResourceGroup(String resourceGroupName, String name) {
         return getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
@@ -2062,7 +2062,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateStaticSiteWithResponseAsync(String resourceGroupName,
-        String name, StaticSiteARMResourceInner staticSiteEnvelope) {
+        String name, StaticSiteArmResourceInner staticSiteEnvelope) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2110,7 +2110,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateStaticSiteWithResponseAsync(String resourceGroupName,
-        String name, StaticSiteARMResourceInner staticSiteEnvelope, Context context) {
+        String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2154,13 +2154,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<StaticSiteARMResourceInner>, StaticSiteARMResourceInner>
+    public PollerFlux<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner>
         beginCreateOrUpdateStaticSiteAsync(String resourceGroupName, String name,
-            StaticSiteARMResourceInner staticSiteEnvelope) {
+            StaticSiteArmResourceInner staticSiteEnvelope) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteEnvelope);
-        return this.client.<StaticSiteARMResourceInner, StaticSiteARMResourceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), StaticSiteARMResourceInner.class, StaticSiteARMResourceInner.class,
+        return this.client.<StaticSiteArmResourceInner, StaticSiteArmResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StaticSiteArmResourceInner.class, StaticSiteArmResourceInner.class,
             this.client.getContext());
     }
 
@@ -2180,14 +2180,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<StaticSiteARMResourceInner>, StaticSiteARMResourceInner>
+    private PollerFlux<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner>
         beginCreateOrUpdateStaticSiteAsync(String resourceGroupName, String name,
-            StaticSiteARMResourceInner staticSiteEnvelope, Context context) {
+            StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteEnvelope, context);
-        return this.client.<StaticSiteARMResourceInner, StaticSiteARMResourceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), StaticSiteARMResourceInner.class, StaticSiteARMResourceInner.class, context);
+        return this.client.<StaticSiteArmResourceInner, StaticSiteArmResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StaticSiteArmResourceInner.class, StaticSiteArmResourceInner.class, context);
     }
 
     /**
@@ -2205,8 +2205,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StaticSiteARMResourceInner>, StaticSiteARMResourceInner> beginCreateOrUpdateStaticSite(
-        String resourceGroupName, String name, StaticSiteARMResourceInner staticSiteEnvelope) {
+    public SyncPoller<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSite(
+        String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope) {
         return this.beginCreateOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope).getSyncPoller();
     }
 
@@ -2226,8 +2226,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StaticSiteARMResourceInner>, StaticSiteARMResourceInner> beginCreateOrUpdateStaticSite(
-        String resourceGroupName, String name, StaticSiteARMResourceInner staticSiteEnvelope, Context context) {
+    public SyncPoller<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSite(
+        String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
         return this.beginCreateOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope, context)
             .getSyncPoller();
     }
@@ -2247,8 +2247,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StaticSiteARMResourceInner> createOrUpdateStaticSiteAsync(String resourceGroupName, String name,
-        StaticSiteARMResourceInner staticSiteEnvelope) {
+    public Mono<StaticSiteArmResourceInner> createOrUpdateStaticSiteAsync(String resourceGroupName, String name,
+        StaticSiteArmResourceInner staticSiteEnvelope) {
         return beginCreateOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2269,8 +2269,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StaticSiteARMResourceInner> createOrUpdateStaticSiteAsync(String resourceGroupName, String name,
-        StaticSiteARMResourceInner staticSiteEnvelope, Context context) {
+    private Mono<StaticSiteArmResourceInner> createOrUpdateStaticSiteAsync(String resourceGroupName, String name,
+        StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
         return beginCreateOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2289,8 +2289,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StaticSiteARMResourceInner createOrUpdateStaticSite(String resourceGroupName, String name,
-        StaticSiteARMResourceInner staticSiteEnvelope) {
+    public StaticSiteArmResourceInner createOrUpdateStaticSite(String resourceGroupName, String name,
+        StaticSiteArmResourceInner staticSiteEnvelope) {
         return createOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope).block();
     }
 
@@ -2309,8 +2309,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StaticSiteARMResourceInner createOrUpdateStaticSite(String resourceGroupName, String name,
-        StaticSiteARMResourceInner staticSiteEnvelope, Context context) {
+    public StaticSiteArmResourceInner createOrUpdateStaticSite(String resourceGroupName, String name,
+        StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
         return createOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope, context).block();
     }
 
@@ -2329,7 +2329,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StaticSiteARMResourceInner>> updateStaticSiteWithResponseAsync(String resourceGroupName,
+    public Mono<Response<StaticSiteArmResourceInner>> updateStaticSiteWithResponseAsync(String resourceGroupName,
         String name, StaticSitePatchResource staticSiteEnvelope) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -2377,7 +2377,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteARMResourceInner>> updateStaticSiteWithResponseAsync(String resourceGroupName,
+    private Mono<Response<StaticSiteArmResourceInner>> updateStaticSiteWithResponseAsync(String resourceGroupName,
         String name, StaticSitePatchResource staticSiteEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -2422,7 +2422,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StaticSiteARMResourceInner> updateStaticSiteAsync(String resourceGroupName, String name,
+    public Mono<StaticSiteArmResourceInner> updateStaticSiteAsync(String resourceGroupName, String name,
         StaticSitePatchResource staticSiteEnvelope) {
         return updateStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteEnvelope)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -2444,7 +2444,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StaticSiteARMResourceInner> updateStaticSiteWithResponse(String resourceGroupName, String name,
+    public Response<StaticSiteArmResourceInner> updateStaticSiteWithResponse(String resourceGroupName, String name,
         StaticSitePatchResource staticSiteEnvelope, Context context) {
         return updateStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteEnvelope, context).block();
     }
@@ -2463,7 +2463,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StaticSiteARMResourceInner updateStaticSite(String resourceGroupName, String name,
+    public StaticSiteArmResourceInner updateStaticSite(String resourceGroupName, String name,
         StaticSitePatchResource staticSiteEnvelope) {
         return updateStaticSiteWithResponse(resourceGroupName, name, staticSiteEnvelope, Context.NONE).getValue();
     }
@@ -2698,7 +2698,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteARMResourceInner>>
+    private Mono<PagedResponse<StaticSiteArmResourceInner>>
         listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -2716,7 +2716,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, accept, context))
-            .<PagedResponse<StaticSiteARMResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<StaticSiteArmResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -2737,7 +2737,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteARMResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+    private Mono<PagedResponse<StaticSiteArmResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -2775,7 +2775,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<StaticSiteARMResourceInner> listByResourceGroupAsync(String resourceGroupName) {
+    public PagedFlux<StaticSiteArmResourceInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> getStaticSitesByResourceGroupNextSinglePageAsync(nextLink));
     }
@@ -2796,7 +2796,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteARMResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
+    private PagedFlux<StaticSiteArmResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> getStaticSitesByResourceGroupNextSinglePageAsync(nextLink, context));
     }
@@ -2816,7 +2816,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StaticSiteARMResourceInner> listByResourceGroup(String resourceGroupName) {
+    public PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
@@ -2836,7 +2836,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StaticSiteARMResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
+    public PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
@@ -2853,7 +2853,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteARMResourceInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<StaticSiteArmResourceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2866,7 +2866,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<StaticSiteARMResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<StaticSiteArmResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -2886,7 +2886,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteARMResourceInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<StaticSiteArmResourceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2916,7 +2916,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Description for Get all Static Sites for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<StaticSiteARMResourceInner> listAsync() {
+    public PagedFlux<StaticSiteArmResourceInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -2934,7 +2934,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Description for Get all Static Sites for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteARMResourceInner> listAsync(Context context) {
+    private PagedFlux<StaticSiteArmResourceInner> listAsync(Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
@@ -2951,7 +2951,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Description for Get all Static Sites for a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StaticSiteARMResourceInner> list() {
+    public PagedIterable<StaticSiteArmResourceInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
@@ -2969,7 +2969,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Description for Get all Static Sites for a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StaticSiteARMResourceInner> list(Context context) {
+    public PagedIterable<StaticSiteArmResourceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
@@ -15064,7 +15064,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteARMResourceInner>>
+    private Mono<PagedResponse<StaticSiteArmResourceInner>>
         getStaticSitesByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -15076,7 +15076,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.getStaticSitesByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StaticSiteARMResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<StaticSiteArmResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -15097,7 +15097,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteARMResourceInner>>
+    private Mono<PagedResponse<StaticSiteArmResourceInner>>
         getStaticSitesByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -15128,7 +15128,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteARMResourceInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<StaticSiteArmResourceInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -15138,7 +15138,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StaticSiteARMResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<StaticSiteArmResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -15159,7 +15159,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteARMResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<StaticSiteArmResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

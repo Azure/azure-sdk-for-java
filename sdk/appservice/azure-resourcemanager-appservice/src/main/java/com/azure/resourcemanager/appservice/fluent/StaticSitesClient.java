@@ -16,7 +16,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appservice.fluent.models.DatabaseConnectionInner;
 import com.azure.resourcemanager.appservice.fluent.models.PrivateLinkResourcesWrapperInner;
 import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesARMResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBuildARMResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainOverviewARMResourceInner;
@@ -46,8 +46,8 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in StaticSitesClient.
  */
-public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourceInner>,
-    InnerSupportsListing<StaticSiteARMResourceInner>, InnerSupportsDelete<Void> {
+public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourceInner>,
+    InnerSupportsListing<StaticSiteArmResourceInner>, InnerSupportsDelete<Void> {
     /**
      * Gets a private endpoint connection
      * 
@@ -479,7 +479,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<StaticSiteARMResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+    Mono<Response<StaticSiteArmResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String name);
 
     /**
@@ -498,7 +498,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * Description for Gets the details of a static site on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteARMResourceInner> getByResourceGroupAsync(String resourceGroupName, String name);
+    Mono<StaticSiteArmResourceInner> getByResourceGroupAsync(String resourceGroupName, String name);
 
     /**
      * Gets the details of a static site.
@@ -517,7 +517,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * Description for Gets the details of a static site along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StaticSiteARMResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
+    Response<StaticSiteArmResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
         Context context);
 
     /**
@@ -536,7 +536,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * Description for Gets the details of a static site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteARMResourceInner getByResourceGroup(String resourceGroupName, String name);
+    StaticSiteArmResourceInner getByResourceGroup(String resourceGroupName, String name);
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
@@ -555,7 +555,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateStaticSiteWithResponseAsync(String resourceGroupName, String name,
-        StaticSiteARMResourceInner staticSiteEnvelope);
+        StaticSiteArmResourceInner staticSiteEnvelope);
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
@@ -573,8 +573,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StaticSiteARMResourceInner>, StaticSiteARMResourceInner> beginCreateOrUpdateStaticSiteAsync(
-        String resourceGroupName, String name, StaticSiteARMResourceInner staticSiteEnvelope);
+    PollerFlux<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSiteAsync(
+        String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope);
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
@@ -592,8 +592,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StaticSiteARMResourceInner>, StaticSiteARMResourceInner> beginCreateOrUpdateStaticSite(
-        String resourceGroupName, String name, StaticSiteARMResourceInner staticSiteEnvelope);
+    SyncPoller<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSite(
+        String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope);
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
@@ -612,8 +612,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StaticSiteARMResourceInner>, StaticSiteARMResourceInner> beginCreateOrUpdateStaticSite(
-        String resourceGroupName, String name, StaticSiteARMResourceInner staticSiteEnvelope, Context context);
+    SyncPoller<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSite(
+        String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context);
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
@@ -631,8 +631,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteARMResourceInner> createOrUpdateStaticSiteAsync(String resourceGroupName, String name,
-        StaticSiteARMResourceInner staticSiteEnvelope);
+    Mono<StaticSiteArmResourceInner> createOrUpdateStaticSiteAsync(String resourceGroupName, String name,
+        StaticSiteArmResourceInner staticSiteEnvelope);
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
@@ -649,8 +649,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteARMResourceInner createOrUpdateStaticSite(String resourceGroupName, String name,
-        StaticSiteARMResourceInner staticSiteEnvelope);
+    StaticSiteArmResourceInner createOrUpdateStaticSite(String resourceGroupName, String name,
+        StaticSiteArmResourceInner staticSiteEnvelope);
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
@@ -668,8 +668,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteARMResourceInner createOrUpdateStaticSite(String resourceGroupName, String name,
-        StaticSiteARMResourceInner staticSiteEnvelope, Context context);
+    StaticSiteArmResourceInner createOrUpdateStaticSite(String resourceGroupName, String name,
+        StaticSiteArmResourceInner staticSiteEnvelope, Context context);
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
@@ -687,7 +687,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<StaticSiteARMResourceInner>> updateStaticSiteWithResponseAsync(String resourceGroupName, String name,
+    Mono<Response<StaticSiteArmResourceInner>> updateStaticSiteWithResponseAsync(String resourceGroupName, String name,
         StaticSitePatchResource staticSiteEnvelope);
 
     /**
@@ -706,7 +706,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteARMResourceInner> updateStaticSiteAsync(String resourceGroupName, String name,
+    Mono<StaticSiteArmResourceInner> updateStaticSiteAsync(String resourceGroupName, String name,
         StaticSitePatchResource staticSiteEnvelope);
 
     /**
@@ -726,7 +726,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StaticSiteARMResourceInner> updateStaticSiteWithResponse(String resourceGroupName, String name,
+    Response<StaticSiteArmResourceInner> updateStaticSiteWithResponse(String resourceGroupName, String name,
         StaticSitePatchResource staticSiteEnvelope, Context context);
 
     /**
@@ -744,7 +744,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteARMResourceInner updateStaticSite(String resourceGroupName, String name,
+    StaticSiteArmResourceInner updateStaticSite(String resourceGroupName, String name,
         StaticSitePatchResource staticSiteEnvelope);
 
     /**
@@ -875,7 +875,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StaticSiteARMResourceInner> listByResourceGroupAsync(String resourceGroupName);
+    PagedFlux<StaticSiteArmResourceInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
      * Gets all static sites in the specified resource group.
@@ -893,7 +893,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteARMResourceInner> listByResourceGroup(String resourceGroupName);
+    PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets all static sites in the specified resource group.
@@ -912,7 +912,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteARMResourceInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Get all Static Sites for a subscription.
@@ -927,7 +927,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * Description for Get all Static Sites for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StaticSiteARMResourceInner> listAsync();
+    PagedFlux<StaticSiteArmResourceInner> listAsync();
 
     /**
      * Get all Static Sites for a subscription.
@@ -942,7 +942,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * Description for Get all Static Sites for a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteARMResourceInner> list();
+    PagedIterable<StaticSiteArmResourceInner> list();
 
     /**
      * Get all Static Sites for a subscription.
@@ -959,7 +959,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteARMResourc
      * Description for Get all Static Sites for a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteARMResourceInner> list(Context context);
+    PagedIterable<StaticSiteArmResourceInner> list(Context context);
 
     /**
      * Gets the list of users of a static site.

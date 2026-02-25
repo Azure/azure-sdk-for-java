@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteArmResourceInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public final class StaticSiteCollection implements JsonSerializable<StaticSiteCo
     /*
      * The StaticSiteARMResource items on this page
      */
-    private List<StaticSiteARMResourceInner> value;
+    private List<StaticSiteArmResourceInner> value;
 
     /*
      * The link to the next page of items
@@ -40,7 +40,7 @@ public final class StaticSiteCollection implements JsonSerializable<StaticSiteCo
      * 
      * @return the value value.
      */
-    public List<StaticSiteARMResourceInner> value() {
+    public List<StaticSiteArmResourceInner> value() {
         return this.value;
     }
 
@@ -97,8 +97,8 @@ public final class StaticSiteCollection implements JsonSerializable<StaticSiteCo
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<StaticSiteARMResourceInner> value
-                        = reader.readArray(reader1 -> StaticSiteARMResourceInner.fromJson(reader1));
+                    List<StaticSiteArmResourceInner> value
+                        = reader.readArray(reader1 -> StaticSiteArmResourceInner.fromJson(reader1));
                     deserializedStaticSiteCollection.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedStaticSiteCollection.nextLink = reader.getString();
