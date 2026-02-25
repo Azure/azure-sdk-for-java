@@ -4,7 +4,6 @@
 package com.azure.storage.common.implementation.structuredmessage;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -109,7 +108,9 @@ public class StructuredMessageEncoder {
         return buffer.array();
     }
 
-    private byte[] generateSegmentHeader(int segmentContentSize) {
+    private byte[] generateSegmentHeader() {
+        int segmentContentSize = Math.min(segmentSize, contentLength - currentContentOffset);
+        // 2 byte number, 8 byte size
         ByteBuffer buffer = ByteBuffer.allocate(getSegmentHeaderLength()).order(ByteOrder.LITTLE_ENDIAN);
         buffer.putShort((short) currentSegmentNumber);
         buffer.putLong(segmentContentSize);
@@ -119,9 +120,6 @@ public class StructuredMessageEncoder {
 
     /**
      * Encodes the given buffer into a structured message format as a stream of ByteBuffers.
-     * The encoder maintains mutable state and is designed for single, sequential subscription only.
-     * Callers should pre-chunk input buffers to appropriate sizes (e.g., using {@link BufferStagingArea}) to
-     * control memory usage.
      *
      * @param unencodedBuffer The buffer to be encoded.
      * @return A Flux of encoded ByteBuffers.
@@ -146,6 +144,7 @@ public class StructuredMessageEncoder {
                 return Flux.empty();
             }
 
+            // create a list of buffers to store the encoded message
             List<ByteBuffer> buffers = new ArrayList<>();
 
             // if we are at the beginning of the message, encode message header
@@ -157,9 +156,7 @@ public class StructuredMessageEncoder {
                 // if we are at the beginning of a segment's content, encode segment header
                 if (currentSegmentOffset == 0) {
                     incrementCurrentSegment();
-                    // Calculate actual segment size based on remaining content
-                    int actualSegmentSize = Math.min(segmentSize, contentLength - currentContentOffset);
-                    buffers.add(ByteBuffer.wrap(generateSegmentHeader(actualSegmentSize)));
+                    buffers.add(ByteBuffer.wrap(generateSegmentHeader()));
                 }
 
                 buffers.add(encodeSegmentContent(unencodedBuffer));
