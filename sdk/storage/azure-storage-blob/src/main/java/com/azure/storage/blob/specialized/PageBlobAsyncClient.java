@@ -490,21 +490,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * operation will fail.
      * @param pageBlobRequestConditions {@link PageBlobRequestConditions}
      * @return A reactive response containing the information of the uploaded pages.
-     *
-     * @throws IllegalArgumentException If {@code pageRange} is {@code null}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions) {
-        if (body == null) {
-            return Mono.error(new NullPointerException("'body' cannot be null."));
-        }
-        try {
-            return withContext(context -> uploadPagesWithResponseInternal(pageRange, body, contentMd5,
-                pageBlobRequestConditions, null, context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return uploadPagesWithResponse(new PageBlobUploadPagesOptions(pageRange, body)
+        .setContentMd5(contentMd5)
+        .setRequestConditions(pageBlobRequestConditions));
     }
 
     /**

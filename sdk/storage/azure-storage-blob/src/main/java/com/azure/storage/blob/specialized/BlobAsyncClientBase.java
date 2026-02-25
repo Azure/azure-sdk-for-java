@@ -1169,12 +1169,11 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
-        try {
-            return withContext(context -> downloadStreamWithResponseInternal(range, options, requestConditions,
-                getRangeContentMd5, null, context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return downloadStreamWithResponse(new BlobDownloadStreamOptions()
+        .setRange(range)
+        .setDownloadRetryOptions(options)
+        .setRequestConditions(requestConditions)
+        .setRetrieveContentRangeMd5(getRangeContentMd5));
     }
 
     /**
@@ -1226,15 +1225,9 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
-        try {
-            return withContext(
-                context -> downloadStreamWithResponseInternal(null, options, requestConditions, false, null, context)
-                    .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                        .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
-                            r.getHeaders(), data, r.getDeserializedHeaders()))));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return downloadContentWithResponse(new BlobDownloadContentOptions()
+        .setDownloadRetryOptions(options)
+        .setRequestConditions(requestConditions));
     }
 
     /**

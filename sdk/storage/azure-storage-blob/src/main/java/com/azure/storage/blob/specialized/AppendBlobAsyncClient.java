@@ -453,19 +453,15 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions) {
-        try {
-            return withContext(context -> appendBlockWithResponseInternal(data, length, contentMd5,
-                appendBlobRequestConditions, null, context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return appendBlockWithResponse(new AppendBlobAppendBlockOptions(data, length)
+        .setContentMd5(contentMd5)
+        .setRequestConditions(appendBlobRequestConditions));
     }
 
     /**
      * Commits a new block of data to the end of the existing append blob with options.
      *
-     * @param options {@link AppendBlobAppendBlockOptions} containing the block data (e.g. constructed with
-     * {@link AppendBlobAppendBlockOptions#AppendBlobAppendBlockOptions(reactor.core.publisher.Flux, long)}).
+     * @param options {@link AppendBlobAppendBlockOptions} containing the block data.
      * @return A {@link Mono} containing {@link Response} whose value contains the append blob operation.
      * @throws NullPointerException If {@code options} is null.
      * @throws IllegalArgumentException If options were not constructed with Flux (async client).

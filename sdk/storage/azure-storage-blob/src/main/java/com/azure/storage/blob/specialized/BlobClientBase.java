@@ -1171,6 +1171,33 @@ public class BlobClientBase {
     }
 
     /**
+     * Downloads the entire blob. Uploading data must be done from the {@link BlockBlobClient},
+     * {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobClient.downloadContent -->
+     * <pre>
+     * BinaryData data = client.downloadContent&#40;&#41;;
+     * System.out.printf&#40;&quot;Downloaded %s&quot;, data.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobClient.downloadContent -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
+     * use {@link #downloadStream(OutputStream)} to download larger blobs.</p>
+     *
+     * @return The content of the blob.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData downloadContent() {
+        return blockWithOptionalTimeout(client.downloadContent(), null);
+    }
+
+    /**
      * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the {@link
      * BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
@@ -1215,24 +1242,6 @@ public class BlobClientBase {
     }
 
     /**
-     * Downloads a range of bytes from a blob into an output stream with options.
-     *
-     * @param stream The output stream where the downloaded data will be written.
-     * @param options {@link BlobDownloadStreamOptions}
-     * @param timeout An optional timeout value.
-     * @param context Additional context.
-     * @return A response containing status code and HTTP headers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobDownloadStreamOptions options,
-        Duration timeout, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
-        return downloadStreamWithResponse(stream, options.getRange(), options.getDownloadRetryOptions(),
-            options.getRequestConditions(), options.isRetrieveContentRangeMd5(), options.getResponseChecksumAlgorithm(),
-            timeout, context);
-    }
-
-    /**
      * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the {@link
      * BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
@@ -1267,64 +1276,33 @@ public class BlobClientBase {
     public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
-        return downloadStreamWithResponse(stream, range, options, requestConditions, getRangeContentMd5, null, timeout,
-            context);
-    }
-
-    BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions requestConditions, boolean getRangeContentMd5,
-        StorageChecksumAlgorithm responseChecksumAlgorithm, Duration timeout, Context context) {
-        StorageImplUtils.assertNotNull("stream", stream);
-        Mono<BlobDownloadResponse> download = client
-            .downloadStreamWithResponseInternal(range, options, requestConditions, getRangeContentMd5,
-                responseChecksumAlgorithm, context)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
-                .thenReturn(new BlobDownloadResponse(response)));
-
-        return blockWithOptionalTimeout(download, timeout);
+        return downloadStreamWithResponse(stream, new BlobDownloadStreamOptions()
+            .setRange(range)
+            .setDownloadRetryOptions(options)
+            .setRequestConditions(requestConditions)
+            .setRetrieveContentRangeMd5(getRangeContentMd5), timeout, context);
     }
 
     /**
-     * Downloads the entire blob. Uploading data must be done from the {@link BlockBlobClient},
-     * {@link PageBlobClient}, or {@link AppendBlobClient}.
+     * Downloads a range of bytes from a blob into an output stream with options.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.blob.BlobClient.downloadContent -->
-     * <pre>
-     * BinaryData data = client.downloadContent&#40;&#41;;
-     * System.out.printf&#40;&quot;Downloaded %s&quot;, data.toString&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobClient.downloadContent -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
-     *
-     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
-     * use {@link #downloadStream(OutputStream)} to download larger blobs.</p>
-     *
-     * @return The content of the blob.
-     * @throws UncheckedIOException If an I/O error occurs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadContent() {
-        return blockWithOptionalTimeout(client.downloadContent(), null);
-    }
-
-    /**
-     * Downloads blob content (full blob or range) with options.
-     *
-     * @param options {@link BlobDownloadContentOptions}
+     * @param stream The output stream where the downloaded data will be written.
+     * @param options {@link BlobDownloadStreamOptions}
      * @param timeout An optional timeout value.
      * @param context Additional context.
      * @return A response containing status code and HTTP headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobDownloadContentResponse downloadContentWithResponse(BlobDownloadContentOptions options, Duration timeout,
-        Context context) {
-        StorageImplUtils.assertNotNull("options", options);
-        return downloadContentWithResponse(options.getDownloadRetryOptions(), options.getRequestConditions(),
-            options.getRange(), options.isRetrieveContentRangeMd5(), timeout, context);
+    public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobDownloadStreamOptions options,
+        Duration timeout, Context context) {
+            StorageImplUtils.assertNotNull("stream", stream);
+            options = options == null ? new BlobDownloadStreamOptions() : options;
+            Mono<BlobDownloadResponse> download = client
+                .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(), options.getRequestConditions(), options.isRetrieveContentRangeMd5(), options.getResponseChecksumAlgorithm(), context)
+                .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
+                    .thenReturn(new BlobDownloadResponse(response)));
+    
+            return blockWithOptionalTimeout(download, timeout);
     }
 
     /**
@@ -1361,7 +1339,9 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobDownloadContentResponse downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        return downloadContentWithResponse(options, requestConditions, null, false, timeout, context);
+        return downloadContentWithResponse(new BlobDownloadContentOptions()
+        .setDownloadRetryOptions(options)
+        .setRequestConditions(requestConditions), timeout, context);
     }
 
     /**
@@ -1402,14 +1382,34 @@ public class BlobClientBase {
     public BlobDownloadContentResponse downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions, BlobRange range, boolean getRangeContentMd5, Duration timeout,
         Context context) {
-        Mono<BlobDownloadContentResponse> download = client
-            .downloadStreamWithResponseInternal(range, options, requestConditions, getRangeContentMd5, null, context)
-            .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                    data, r.getDeserializedHeaders())))
-            .map(BlobDownloadContentResponse::new);
+        return downloadContentWithResponse(new BlobDownloadContentOptions()
+        .setDownloadRetryOptions(options)
+        .setRequestConditions(requestConditions)
+        .setRange(range)
+        .setRetrieveContentRangeMd5(getRangeContentMd5), timeout, context);
+    }
 
-        return blockWithOptionalTimeout(download, timeout);
+    
+    /**
+     * Downloads blob content (full blob or range) with options.
+     *
+     * @param options {@link BlobDownloadContentOptions}
+     * @param timeout An optional timeout value.
+     * @param context Additional context.
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadContentResponse downloadContentWithResponse(BlobDownloadContentOptions options, Duration timeout,
+        Context context) {
+        options = options == null ? new BlobDownloadContentOptions() : options;
+        Mono<BlobDownloadContentResponse> download = client
+        .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(), options.getRequestConditions(), options.isRetrieveContentRangeMd5(), options.getResponseChecksumAlgorithm(), context)
+        .flatMap(r -> BinaryData.fromFlux(r.getValue())
+            .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                data, r.getDeserializedHeaders())))
+        .map(BlobDownloadContentResponse::new);
+
+    return blockWithOptionalTimeout(download, timeout);
     }
 
     /**
