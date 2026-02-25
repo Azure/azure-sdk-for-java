@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestPlanetaryComputer08bCollectionLifecycleTests extends PlanetaryComputerTestBase {
 
     @Test
-    @Disabled("Missing session recording - needs to be recorded")
     @Tag("CollectionAsset")
     public void test08_04_CreateCollectionAsset() {
         StacClient stacClient = getStacClient();
@@ -62,7 +61,6 @@ public class TestPlanetaryComputer08bCollectionLifecycleTests extends PlanetaryC
     }
 
     @Test
-    @Disabled("Missing session recording - needs to be recorded")
     @Tag("CollectionAsset")
     public void test08_05_ReplaceCollectionAsset() {
         StacClient stacClient = getStacClient();
@@ -91,7 +89,6 @@ public class TestPlanetaryComputer08bCollectionLifecycleTests extends PlanetaryC
     }
 
     @Test
-    @Disabled("Missing session recording - needs to be recorded")
     @Tag("CollectionAsset")
     public void test08_06_DeleteCollectionAsset() {
         StacClient stacClient = getStacClient();

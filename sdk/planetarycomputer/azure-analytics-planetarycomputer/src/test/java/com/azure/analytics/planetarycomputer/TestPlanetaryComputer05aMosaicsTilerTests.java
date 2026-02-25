@@ -86,7 +86,6 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
      * Java method: getMosaicsSearchInfo(searchId)
      */
     @Test
-    @Disabled("Missing session recording - needs to be recorded")
     @Tag("SearchInfo")
     public void test05_02_GetMosaicsSearchInfo() {
         // Arrange
@@ -119,7 +118,6 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
      * Java method: getMosaicsTileJson(searchId, tileMatrixSetId, assets, ...)
      */
     @Test
-    @Disabled("Missing session recording - needs to be recorded")
     @Tag("TileJson")
     public void test05_03_GetMosaicsTileJson() {
         // Arrange
@@ -164,7 +162,6 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
      * Java method: getMosaicsTile(searchId, tileMatrixSetId, z, x, y, ...)
      */
     @Test
-    @Disabled("Missing session recording - needs to be recorded")
     @Tag("Tile")
     public void test05_04_GetMosaicsTile() {
         // Arrange
@@ -185,7 +182,7 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
 
         // Act - Get tile image
         GetMosaicTileOptions tileOptions = new GetMosaicTileOptions().setAssets(Arrays.asList("image"))
-            .setExpression("image|1,2,3")
+            .setAssetBandIndices("image|1,2,3")
             .setCollection(collectionId);
         BinaryData imageData = dataClient.getMosaicsTile(searchId, "WebMercatorQuad", 13.0, 2174.0, 3282.0, 1.0, "png",
             tileOptions, "image/png");
@@ -216,7 +213,6 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
      * Java method: getMosaicsWmtsCapabilities(searchId, tileMatrixSetId, ...)
      */
     @Test
-    @Disabled("Missing session recording - needs to be recorded")
     @Tag("WMTS")
     public void test05_05_GetMosaicsWmtsCapabilities() {
         // Arrange
@@ -233,15 +229,17 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
         String searchId = registerResult.getSearchId();
         System.out.println("Using search ID: " + searchId);
 
-        // Act - Get WMTS capabilities
-        GetMosaicWmtsCapabilitiesOptions wmtsOptions
-            = new GetMosaicWmtsCapabilitiesOptions().setTileFormat(TilerImageFormat.PNG)
-                .setTileScale(1)
-                .setMinZoom(7)
-                .setMaxZoom(13)
-                .setAssets(Arrays.asList("image"))
-                .setExpression("image|1,2,3");
-        byte[] xmlBytes = dataClient.getMosaicsWmtsCapabilities(searchId, "WebMercatorQuad", wmtsOptions);
+        // Act - Get WMTS capabilities using WithResponse API to bypass XML/JSON deserialization bug
+        com.azure.core.http.rest.RequestOptions requestOptions = new com.azure.core.http.rest.RequestOptions();
+        requestOptions.addQueryParam("tile_format", "png", false);
+        requestOptions.addQueryParam("tile_scale", "1", false);
+        requestOptions.addQueryParam("minzoom", "7", false);
+        requestOptions.addQueryParam("maxzoom", "13", false);
+        requestOptions.addQueryParam("assets", "image", false);
+        requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
+        byte[] xmlBytes = dataClient.getMosaicsWmtsCapabilitiesWithResponse(searchId, "WebMercatorQuad", requestOptions)
+            .getValue()
+            .toBytes();
 
         // Assert
         String xmlString = new String(xmlBytes, StandardCharsets.UTF_8);

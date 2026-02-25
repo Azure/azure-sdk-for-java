@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryComputerTestBase {
 
     @Test
-    @Disabled("No session recording exists - needs to be recorded in RECORD mode")
     @Tag("Crop")
     public void test06_11_CropGeoJsonWithDimensions() {
         DataClient dataClient = getDataClient();
@@ -30,13 +29,13 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
         Polygon polygon = new Polygon().setCoordinates(
             Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714), Arrays.asList(-84.3814, 33.6714),
                 Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714))));
-        Feature feature = new Feature(polygon, FeatureType.FEATURE);
+        Feature feature = new Feature(polygon, FeatureType.FEATURE).setProperties(new java.util.HashMap<>());
 
         CropGeoJsonOptions options
             = new CropGeoJsonOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
 
         BinaryData imageData
-            = dataClient.cropGeoJsonWithDimensions(collectionId, itemId, 512, 512, "crop.png", options, feature, null);
+            = dataClient.cropGeoJsonWithDimensions(collectionId, itemId, 512, 512, "png", options, feature, null);
 
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
@@ -47,7 +46,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("No session recording exists - needs to be recorded in RECORD mode")
+    @Disabled("Codegen bug: BandStatistics.fromJson cannot parse NaN values returned by server for statistics fields")
     @Tag("Statistics")
     public void test06_12_GetGeoJsonStatistics() {
         DataClient dataClient = getDataClient();
@@ -57,7 +56,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
         Polygon polygon = new Polygon().setCoordinates(
             Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714), Arrays.asList(-84.3814, 33.6714),
                 Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714))));
-        Feature feature = new Feature(polygon, FeatureType.FEATURE);
+        Feature feature = new Feature(polygon, FeatureType.FEATURE).setProperties(new java.util.HashMap<>());
 
         GetGeoJsonStatisticsOptions options = new GetGeoJsonStatisticsOptions().setAssets(Arrays.asList("image"));
 

@@ -93,7 +93,6 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("Missing session recording - needs to be recorded")
     @Tag("Statistics")
     public void test06_09_GetAssetStatistics() {
         DataClient dataClient = getDataClient();
@@ -116,7 +115,6 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("No session recording exists - needs to be recorded in RECORD mode")
     @Tag("Crop")
     public void test06_10_CropGeoJson() {
         DataClient dataClient = getDataClient();
@@ -127,7 +125,7 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
             = Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714), Arrays.asList(-84.3814, 33.6714),
                 Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714)));
         Polygon geometry = new Polygon().setCoordinates(coordinates);
-        Feature feature = new Feature(geometry, FeatureType.FEATURE);
+        Feature feature = new Feature(geometry, FeatureType.FEATURE).setProperties(new java.util.HashMap<>());
 
         System.out.println("Input - collection_id: " + collectionId);
         System.out.println("Input - item_id: " + itemId);
@@ -135,7 +133,7 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
         CropGeoJsonOptions options
             = new CropGeoJsonOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
 
-        BinaryData imageData = dataClient.cropGeoJson(collectionId, itemId, "crop.png", options, feature, "image/png");
+        BinaryData imageData = dataClient.cropGeoJson(collectionId, itemId, "png", options, feature, "image/png");
 
         byte[] imageBytes = imageData.toBytes();
         System.out.println("Image size: " + imageBytes.length + " bytes");

@@ -37,7 +37,6 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
      * Java method: getMosaicsAssetsForPoint(searchId, longitude, latitude, ...)
      */
     @Test
-    @Disabled("Missing session recording - needs to be recorded")
     @Tag("Assets")
     public void test05_06_GetMosaicsAssetsForPoint() {
         // Arrange
@@ -87,7 +86,6 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
      * Java method: getMosaicsAssetsForTile(searchId, tileMatrixSetId, z, x, y, collectionId)
      */
     @Test
-    @Disabled("Missing session recording - needs to be recorded")
     @Tag("Assets")
     public void test05_07_GetMosaicsAssetsForTile() {
         // Arrange
