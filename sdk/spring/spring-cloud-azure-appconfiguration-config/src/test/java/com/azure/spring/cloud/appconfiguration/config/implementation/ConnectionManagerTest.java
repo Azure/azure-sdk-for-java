@@ -277,14 +277,14 @@ public class ConnectionManagerTest {
             throw new RuntimeException("Test verification failed", e);
         }
         
-        // activeClients list should now only have the second client
+        // activeClients list should be the same size but the second client should now be first in the list
         try {
             java.lang.reflect.Field activeClientsField = ConnectionManager.class.getDeclaredField("activeClients");
             activeClientsField.setAccessible(true);
             @SuppressWarnings("unchecked")
             List<AppConfigurationReplicaClient> remainingClients = 
                 (List<AppConfigurationReplicaClient>) activeClientsField.get(manager);
-            assertEquals(1, remainingClients.size());
+            assertEquals(2, remainingClients.size());
             assertSame(replicaClient2, remainingClients.get(0));
         } catch (Exception e) {
             throw new RuntimeException("Test verification failed", e);

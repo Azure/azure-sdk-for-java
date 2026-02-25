@@ -4,7 +4,6 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,7 +114,9 @@ class ConnectionManager {
             return null;
         }
 
+        // Remove the current client and append it to the end of the list to achieve round-robin load balancing.
         AppConfigurationReplicaClient nextClient = activeClients.remove(0);
+        activeClients.add(nextClient);
         lastActiveClient = nextClient.getEndpoint();
         return nextClient;
     }

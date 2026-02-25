@@ -92,7 +92,8 @@ public class AppConfigurationRefreshUtil {
                             monitor.getRefreshInterval(), data, replicaLookUp, ctx),
                         eventData,
                         context,
-                        "configuration refresh check");
+                        "configuration refresh check",
+                        false);
                     if (result != null) {
                         return result;
                     }
@@ -111,7 +112,8 @@ public class AppConfigurationRefreshUtil {
                             monitor.getFeatureFlagRefreshInterval(), data, replicaLookUp, ctx),
                         eventData,
                         context,
-                        "feature flag refresh check");
+                        "feature flag refresh check",
+                        true);
                     if (result != null) {
                         return result;
                     }
