@@ -993,8 +993,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withHttp2ConnectionConfig(this.connectionPolicy.getHttp2ConnectionConfig());
 
         if (connectionSharingAcrossClientsEnabled) {
+            httpClientConfig.withConnectionPoolName("cosmos-shared-pool");
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);
         } else {
+            httpClientConfig.withConnectionPoolName("cosmos-pool-" + this.serviceEndpoint.getHost());
             diagnosticsClientConfig.withGatewayHttpClientConfig(httpClientConfig.toDiagnosticsString());
             return HttpClient.createFixed(httpClientConfig);
         }
