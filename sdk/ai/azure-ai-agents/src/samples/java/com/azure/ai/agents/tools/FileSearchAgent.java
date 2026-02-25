@@ -9,7 +9,11 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-import com.azure.ai.agents.*;
+import com.azure.ai.agents.AgentsClient;
+import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.AgentsServiceVersion;
+import com.azure.ai.agents.ConversationsClient;
+import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FileSearchTool;
