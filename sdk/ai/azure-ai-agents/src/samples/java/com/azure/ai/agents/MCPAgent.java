@@ -5,7 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.MCPTool;
+import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -37,7 +37,7 @@ public class MCPAgent {
 
         try {
             // Create an MCPTool that connects to a remote MCP server
-            MCPTool tool = new MCPTool("my-mcp-server")
+            McpTool tool = new McpTool("my-mcp-server")
                 .setServerUrl("https://my.mcp.server/mcp")
                 .setServerDescription("An MCP server that provides additional tools");
 

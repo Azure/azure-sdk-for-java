@@ -3,10 +3,7 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.MCPTool;
-import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.*;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.ResponseCreateParams;
@@ -39,7 +36,7 @@ public class AsyncMCPAgent {
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
         // Create an MCPTool that connects to an MCP server via project connection
-        MCPTool tool = new MCPTool("my-mcp-server")
+        McpTool tool = new McpTool("my-mcp-server")
             .setServerUrl("https://my.mcp.server/mcp")
             .setServerDescription("An MCP server that provides additional tools");
 
@@ -103,7 +100,7 @@ public class AsyncMCPAgent {
             .doOnError(error -> {
                 System.err.println("Error: " + error.getMessage());
                 error.printStackTrace();
-            }).timeout(Duration.ofSeconds(30))
+            }).timeout(Duration.ofSeconds(300))
                 .block();
     }
 }
