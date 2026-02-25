@@ -58,7 +58,7 @@ public class StateHolder {
      * @param originEndpoint the endpoint for the origin config store
      * @return the State for the specified store, or null if not found
      */
-    State getState(String originEndpoint) {
+    public State getState(String originEndpoint) {
         return state.get(originEndpoint);
     }
 
