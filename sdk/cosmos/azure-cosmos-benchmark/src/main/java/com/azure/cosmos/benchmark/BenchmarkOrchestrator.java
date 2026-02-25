@@ -176,15 +176,28 @@ public class BenchmarkOrchestrator {
             if (name.contains("reactor.netty.connection.provider")) {
                 String remoteAddr = meter.getId().getTag("remote.address");
                 String poolName = meter.getId().getTag("name");
+                String poolId = meter.getId().getTag("id");
                 double value = 0;
                 if (meter instanceof Gauge) {
                     value = ((Gauge) meter).value();
                 }
                 if (value > 0 || count < 5) { // log first 5 + any with non-zero value
-                    logger.info("[POOL_METRICS]   {} remote={} pool={} value={}",
-                        name, remoteAddr, poolName, value);
+                    logger.info("[POOL_METRICS]   {} id={} remote={} pool={} value={}",
+                        name, poolId, remoteAddr, poolName, value);
                 }
                 count++;
+            }
+        }
+                // Dump all tags for the first pool meter for debugging
+        for (Meter m : Metrics.globalRegistry.getMeters()) {
+            if (m.getId().getName().contains("reactor.netty.connection.provider.total.connections")) {
+                StringBuilder sb = new StringBuilder("[POOL_METRICS_TAGS] ");
+                sb.append(m.getId().getName()).append(" tags={");
+                m.getId().getTags().forEach(t -> sb.append(t.getKey()).append("=").append(t.getValue()).append(", "));
+                sb.append("}");
+                if (m instanceof Gauge) sb.append(" value=").append(((Gauge) m).value());
+                logger.info(sb.toString());
+                break; // just first one
             }
         }
         logger.info("[POOL_METRICS] total pool metric entries: {}", count);
