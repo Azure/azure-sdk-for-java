@@ -8,8 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.fluent.models.MSDeployCore;
+import com.azure.resourcemanager.appservice.fluent.models.MSDeployProperties;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,7 +21,7 @@ public final class MSDeploy extends ProxyOnlyResource {
     /*
      * Core resource properties
      */
-    private MSDeployCore innerProperties;
+    private MSDeployProperties innerProperties;
 
     /*
      * Resource type.
@@ -48,7 +49,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      * 
      * @return the innerProperties value.
      */
-    private MSDeployCore innerProperties() {
+    private MSDeployProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -92,6 +93,31 @@ public final class MSDeploy extends ProxyOnlyResource {
     }
 
     /**
+     * Get the addOnPackages property: List of Add-On packages. Add-On packages implicitly enable the Do Not Delete
+     * MSDeploy rule.
+     * 
+     * @return the addOnPackages value.
+     */
+    public List<MSDeployCore> addOnPackages() {
+        return this.innerProperties() == null ? null : this.innerProperties().addOnPackages();
+    }
+
+    /**
+     * Set the addOnPackages property: List of Add-On packages. Add-On packages implicitly enable the Do Not Delete
+     * MSDeploy rule.
+     * 
+     * @param addOnPackages the addOnPackages value to set.
+     * @return the MSDeploy object itself.
+     */
+    public MSDeploy withAddOnPackages(List<MSDeployCore> addOnPackages) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MSDeployProperties();
+        }
+        this.innerProperties().withAddOnPackages(addOnPackages);
+        return this;
+    }
+
+    /**
      * Get the packageUri property: Package URI.
      * 
      * @return the packageUri value.
@@ -108,7 +134,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withPackageUri(String packageUri) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployCore();
+            this.innerProperties = new MSDeployProperties();
         }
         this.innerProperties().withPackageUri(packageUri);
         return this;
@@ -131,7 +157,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withConnectionString(String connectionString) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployCore();
+            this.innerProperties = new MSDeployProperties();
         }
         this.innerProperties().withConnectionString(connectionString);
         return this;
@@ -154,7 +180,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withDbType(String dbType) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployCore();
+            this.innerProperties = new MSDeployProperties();
         }
         this.innerProperties().withDbType(dbType);
         return this;
@@ -179,7 +205,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withSetParametersXmlFileUri(String setParametersXmlFileUri) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployCore();
+            this.innerProperties = new MSDeployProperties();
         }
         this.innerProperties().withSetParametersXmlFileUri(setParametersXmlFileUri);
         return this;
@@ -202,7 +228,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withSetParameters(Map<String, String> setParameters) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployCore();
+            this.innerProperties = new MSDeployProperties();
         }
         this.innerProperties().withSetParameters(setParameters);
         return this;
@@ -231,7 +257,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withSkipAppData(Boolean skipAppData) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployCore();
+            this.innerProperties = new MSDeployProperties();
         }
         this.innerProperties().withSkipAppData(skipAppData);
         return this;
@@ -256,7 +282,7 @@ public final class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withAppOffline(Boolean appOffline) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MSDeployCore();
+            this.innerProperties = new MSDeployProperties();
         }
         this.innerProperties().withAppOffline(appOffline);
         return this;
@@ -309,7 +335,7 @@ public final class MSDeploy extends ProxyOnlyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedMSDeploy.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedMSDeploy.innerProperties = MSDeployCore.fromJson(reader);
+                    deserializedMSDeploy.innerProperties = MSDeployProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
