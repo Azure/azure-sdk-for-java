@@ -527,7 +527,11 @@ public class ChangeFeedTest extends TestSuiteBase {
     @AfterMethod(groups = { "query", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void removeCollection() {
         if (createdCollection != null) {
-            deleteCollection(client, getCollectionLink());
+            try {
+                deleteCollection(client, getCollectionLink());
+            } catch (Exception e) {
+                logger.warn("Failed to delete collection during cleanup", e);
+            }
         }
     }
 

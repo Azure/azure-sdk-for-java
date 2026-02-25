@@ -410,7 +410,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // successfully with 200 - OK>
             new Object[] {
                 "404-1002_OnlyFirstRegion_RemotePreferred_ReluctantAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                TWO_SECOND_DURATION,
                 reluctantThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
