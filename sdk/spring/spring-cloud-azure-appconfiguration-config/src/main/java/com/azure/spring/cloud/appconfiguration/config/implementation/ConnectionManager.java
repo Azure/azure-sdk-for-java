@@ -115,7 +115,7 @@ class ConnectionManager {
             return null;
         }
 
-        // Remove the current client and append it to the end of the list to achieve round-robin load balancing.
+        // Remove the current client from the list. The list will be rebuilt and rotated on the next refresh cycle by findActiveClients().
         AppConfigurationReplicaClient nextClient = activeClients.remove(0);
         lastActiveClient = nextClient.getEndpoint();
         return nextClient;
