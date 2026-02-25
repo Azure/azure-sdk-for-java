@@ -6,8 +6,14 @@ package com.azure.resourcemanager.disconnectedoperations.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.disconnectedoperations.fluent.models.DisconnectedOperationInner;
+import com.azure.resourcemanager.disconnectedoperations.models.AutoRenew;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlanStatus;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlans;
+import com.azure.resourcemanager.disconnectedoperations.models.BillingConfiguration;
+import com.azure.resourcemanager.disconnectedoperations.models.BillingPeriod;
 import com.azure.resourcemanager.disconnectedoperations.models.ConnectionIntent;
 import com.azure.resourcemanager.disconnectedoperations.models.DisconnectedOperationProperties;
+import com.azure.resourcemanager.disconnectedoperations.models.PricingModel;
 import com.azure.resourcemanager.disconnectedoperations.models.RegistrationStatus;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,28 +23,51 @@ public final class DisconnectedOperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DisconnectedOperationInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"stampId\":\"quvgjxpybczme\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Disconnected\",\"connectionStatus\":\"Connected\",\"registrationStatus\":\"Unregistered\",\"deviceVersion\":\"phrupidgsybbejhp\"},\"location\":\"ycm\",\"tags\":{\"tbmufpo\":\"obhdxbmtqioqjze\"},\"id\":\"noi\",\"name\":\"hwlrx\",\"type\":\"bqsoqijg\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"stampId\":\"quvgjxpybczme\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Disconnected\",\"connectionStatus\":\"Connected\",\"registrationStatus\":\"Unregistered\",\"deviceVersion\":\"phrupidgsybbejhp\",\"billingConfiguration\":{\"autoRenew\":\"Enabled\",\"billingStatus\":\"Disabled\",\"current\":{\"cores\":2093614540,\"pricingModel\":\"Trial\"},\"upcoming\":{\"cores\":1376980829,\"pricingModel\":\"Annual\"}},\"benefitPlans\":{\"azureHybridWindowsServerBenefit\":\"Enabled\",\"windowsServerVmCount\":589802492}},\"location\":\"qj\",\"tags\":{\"noi\":\"tbmufpo\",\"bqsoqijg\":\"hwlrx\"},\"id\":\"dmbpazlobcufpdz\",\"name\":\"rbt\",\"type\":\"qqjnqgl\"}")
             .toObject(DisconnectedOperationInner.class);
-        Assertions.assertEquals("ycm", model.location());
-        Assertions.assertEquals("obhdxbmtqioqjze", model.tags().get("tbmufpo"));
+        Assertions.assertEquals("qj", model.location());
+        Assertions.assertEquals("tbmufpo", model.tags().get("noi"));
         Assertions.assertEquals(ConnectionIntent.DISCONNECTED, model.properties().connectionIntent());
         Assertions.assertEquals(RegistrationStatus.UNREGISTERED, model.properties().registrationStatus());
         Assertions.assertEquals("phrupidgsybbejhp", model.properties().deviceVersion());
+        Assertions.assertEquals(AutoRenew.ENABLED, model.properties().billingConfiguration().autoRenew());
+        Assertions.assertEquals(2093614540, model.properties().billingConfiguration().current().cores());
+        Assertions.assertEquals(PricingModel.TRIAL, model.properties().billingConfiguration().current().pricingModel());
+        Assertions.assertEquals(1376980829, model.properties().billingConfiguration().upcoming().cores());
+        Assertions.assertEquals(PricingModel.ANNUAL,
+            model.properties().billingConfiguration().upcoming().pricingModel());
+        Assertions.assertEquals(BenefitPlanStatus.ENABLED,
+            model.properties().benefitPlans().azureHybridWindowsServerBenefit());
+        Assertions.assertEquals(589802492, model.properties().benefitPlans().windowsServerVmCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DisconnectedOperationInner model = new DisconnectedOperationInner().withLocation("ycm")
-            .withTags(mapOf("tbmufpo", "obhdxbmtqioqjze"))
+        DisconnectedOperationInner model = new DisconnectedOperationInner().withLocation("qj")
+            .withTags(mapOf("noi", "tbmufpo", "bqsoqijg", "hwlrx"))
             .withProperties(new DisconnectedOperationProperties().withConnectionIntent(ConnectionIntent.DISCONNECTED)
                 .withRegistrationStatus(RegistrationStatus.UNREGISTERED)
-                .withDeviceVersion("phrupidgsybbejhp"));
+                .withDeviceVersion("phrupidgsybbejhp")
+                .withBillingConfiguration(new BillingConfiguration().withAutoRenew(AutoRenew.ENABLED)
+                    .withCurrent(new BillingPeriod().withCores(2093614540).withPricingModel(PricingModel.TRIAL))
+                    .withUpcoming(new BillingPeriod().withCores(1376980829).withPricingModel(PricingModel.ANNUAL)))
+                .withBenefitPlans(new BenefitPlans().withAzureHybridWindowsServerBenefit(BenefitPlanStatus.ENABLED)
+                    .withWindowsServerVmCount(589802492)));
         model = BinaryData.fromObject(model).toObject(DisconnectedOperationInner.class);
-        Assertions.assertEquals("ycm", model.location());
-        Assertions.assertEquals("obhdxbmtqioqjze", model.tags().get("tbmufpo"));
+        Assertions.assertEquals("qj", model.location());
+        Assertions.assertEquals("tbmufpo", model.tags().get("noi"));
         Assertions.assertEquals(ConnectionIntent.DISCONNECTED, model.properties().connectionIntent());
         Assertions.assertEquals(RegistrationStatus.UNREGISTERED, model.properties().registrationStatus());
         Assertions.assertEquals("phrupidgsybbejhp", model.properties().deviceVersion());
+        Assertions.assertEquals(AutoRenew.ENABLED, model.properties().billingConfiguration().autoRenew());
+        Assertions.assertEquals(2093614540, model.properties().billingConfiguration().current().cores());
+        Assertions.assertEquals(PricingModel.TRIAL, model.properties().billingConfiguration().current().pricingModel());
+        Assertions.assertEquals(1376980829, model.properties().billingConfiguration().upcoming().cores());
+        Assertions.assertEquals(PricingModel.ANNUAL,
+            model.properties().billingConfiguration().upcoming().pricingModel());
+        Assertions.assertEquals(BenefitPlanStatus.ENABLED,
+            model.properties().benefitPlans().azureHybridWindowsServerBenefit());
+        Assertions.assertEquals(589802492, model.properties().benefitPlans().windowsServerVmCount());
     }
 
     // Use "Map.of" if available
