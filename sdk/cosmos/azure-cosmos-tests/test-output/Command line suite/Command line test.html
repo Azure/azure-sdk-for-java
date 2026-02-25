@@ -1,0 +1,229 @@
+<html>
+<head>
+<title>TestNG:  Command line test</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>Command line test</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>30/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Wed Feb 25 23:52:16 UTC 2026</td>
+</tr>
+<tr><td>Total time:</td><td>0 seconds (835 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td>unit </td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosItemRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosItemRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: GlobalStrong</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Eventual</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosItemRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosItemRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Default</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosItemRequestOptionsSetNullReadConsistencyStrategy()'><b>cosmosItemRequestOptionsSetNullReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosReadManyRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosReadManyRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Session</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosQueryRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosQueryRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Session</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosReadManyRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosReadManyRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Default</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosItemRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosItemRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: LatestCommitted</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosReadManyRequestOptionsSetNullReadConsistencyStrategy()'><b>cosmosReadManyRequestOptionsSetNullReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosItemRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosItemRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Eventual</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: GlobalStrong</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosChangeFeedRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosChangeFeedRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: LatestCommitted</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosRequestOptionsSetNullReadConsistencyStrategy()'><b>cosmosRequestOptionsSetNullReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosItemRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosItemRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Session</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosReadManyRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosReadManyRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: LatestCommitted</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosChangeFeedRequestOptionsSetNullReadConsistencyStrategy()'><b>cosmosChangeFeedRequestOptionsSetNullReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosQueryRequestOptionsSetNullReadConsistencyStrategy()'><b>cosmosQueryRequestOptionsSetNullReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosChangeFeedRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosChangeFeedRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Eventual</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosChangeFeedRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosChangeFeedRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: GlobalStrong</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosQueryRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosQueryRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Default</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosChangeFeedRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosChangeFeedRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Default</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Session</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosQueryRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosQueryRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Eventual</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Default</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosReadManyRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosReadManyRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: GlobalStrong</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosQueryRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosQueryRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: GlobalStrong</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosQueryRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosQueryRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: LatestCommitted</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosReadManyRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosReadManyRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Eventual</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: LatestCommitted</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+<tr>
+<td title='com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest.cosmosChangeFeedRequestOptionsSetGetReadConsistencyStrategy()'><b>cosmosChangeFeedRequestOptionsSetGetReadConsistencyStrategy</b><br>Test class: com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest<br>Parameters: Session</td>
+<td></td>
+<td>0</td>
+<td>com.azure.cosmos.models.ReadConsistencyStrategyRequestOptionsTest@c46bcd4</td></tr>
+</table><p>
+</body>
+</html>
