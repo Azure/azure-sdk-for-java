@@ -6,6 +6,7 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 
 import java.nio.channels.SeekableByteChannel;
 
@@ -18,6 +19,7 @@ public final class BlobSeekableByteChannelReadOptions {
     private BlobRequestConditions requestConditions;
     private Integer readSizeInBytes;
     private ConsistentReadControl consistentReadControl;
+    private StorageChecksumAlgorithm responseChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link BlobSeekableByteChannelReadOptions}.
@@ -106,6 +108,29 @@ public final class BlobSeekableByteChannelReadOptions {
      */
     public BlobSeekableByteChannelReadOptions setConsistentReadControl(ConsistentReadControl consistentReadControl) {
         this.consistentReadControl = consistentReadControl;
+        return this;
+    }
+
+    /**
+     * Gets the algorithm to use for response content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     *
+     * @return The response checksum algorithm.
+     */
+    public StorageChecksumAlgorithm getResponseChecksumAlgorithm() {
+        return responseChecksumAlgorithm;
+    }
+
+    /**
+     * Sets the algorithm to use for response content validation. When set to {@link StorageChecksumAlgorithm#AUTO} or
+     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will validate response payload checksums during read.
+     * Default is {@link StorageChecksumAlgorithm#NONE}.
+     *
+     * @param responseChecksumAlgorithm The response checksum algorithm.
+     * @return The updated options.
+     */
+    public BlobSeekableByteChannelReadOptions
+        setResponseChecksumAlgorithm(StorageChecksumAlgorithm responseChecksumAlgorithm) {
+        this.responseChecksumAlgorithm = responseChecksumAlgorithm;
         return this;
     }
 }
