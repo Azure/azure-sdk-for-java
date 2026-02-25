@@ -95,10 +95,7 @@ class ConnectionManager {
      * @return the next active AppConfigurationReplicaClient
      */
     AppConfigurationReplicaClient getNextActiveClient(boolean useLastActive) {
-        if (activeClients.isEmpty()) {
-            lastActiveClient = "";
-            return null;
-        } else if (useLastActive) {
+        if (useLastActive) {
             List<AppConfigurationReplicaClient> clients = getAvailableClients();
             for (AppConfigurationReplicaClient client: clients) {
                 if (client.getEndpoint().equals(lastActiveClient)) {
@@ -106,6 +103,10 @@ class ConnectionManager {
                 }
             }
         }
+        if (activeClients.isEmpty()) {
+            lastActiveClient = "";
+            return null;
+        } 
 
         if (!configStore.isLoadBalancingEnabled()) {
             if (!activeClients.isEmpty()) {
@@ -116,7 +117,6 @@ class ConnectionManager {
 
         // Remove the current client and append it to the end of the list to achieve round-robin load balancing.
         AppConfigurationReplicaClient nextClient = activeClients.remove(0);
-        activeClients.add(nextClient);
         lastActiveClient = nextClient.getEndpoint();
         return nextClient;
     }
