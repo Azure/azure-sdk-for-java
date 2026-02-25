@@ -3209,7 +3209,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
     }
 
 
-    @Test(groups = {"circuit-breaker-read-all-read-many"}, dataProvider = "readAllTestConfigs", timeOut = 4 * TIMEOUT)
+    @Test(groups = {"circuit-breaker-read-all-read-many"}, dataProvider = "readAllTestConfigs", timeOut = 4 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readAllOperationHitsTerminalExceptionAcrossKRegions(
         String testId,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,

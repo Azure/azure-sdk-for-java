@@ -143,7 +143,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         Document docDefinition = getDocumentDefinition(cnt);
 
-        int maxRetries = 5;
+        int maxRetries = 10;
         for (int retry = 0; retry <= maxRetries; retry++) {
             try {
                 return client
@@ -152,7 +152,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
                 if (e.getStatusCode() == 429 && retry < maxRetries) {
                     long retryAfterMs = e.getRetryAfterDuration().toMillis();
                     if (retryAfterMs <= 0) {
-                        retryAfterMs = 1000;
+                        retryAfterMs = 2000;
                     }
                     try {
                         TimeUnit.MILLISECONDS.sleep(retryAfterMs);
