@@ -107,9 +107,9 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
 
         ContentAnalyzer customAnalyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
             .setDescription("Custom analyzer for extracting company information")
-            .setConfig(new ContentAnalyzerConfig().setEnableOcr(true)
-                .setEnableLayout(true)
-                .setEnableFormula(true)
+            .setConfig(new ContentAnalyzerConfig().setOcrEnabled(true)
+                .setLayoutEnabled(true)
+                .setFormulaEnabled(true)
                 .setEstimateFieldSourceAndConfidence(true)
                 .setReturnDetails(true))
             .setFieldSchema(fieldSchema)
@@ -156,9 +156,9 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
 
         // Verify analyzer config
         assertNotNull(result.getConfig(), "Analyzer config should not be null");
-        assertTrue(result.getConfig().isEnableFormula(), "EnableFormula should be true");
-        assertTrue(result.getConfig().isEnableLayout(), "EnableLayout should be true");
-        assertTrue(result.getConfig().isEnableOcr(), "EnableOcr should be true");
+        assertTrue(result.getConfig().isFormulaEnabled(), "EnableFormula should be true");
+        assertTrue(result.getConfig().isLayoutEnabled(), "EnableLayout should be true");
+        assertTrue(result.getConfig().isOcrEnabled(), "EnableOcr should be true");
         assertTrue(result.getConfig().isEstimateFieldSourceAndConfidence(),
             "EstimateFieldSourceAndConfidence should be true");
         assertTrue(result.getConfig().isReturnDetails(), "ReturnDetails should be true");
@@ -286,9 +286,9 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
         fieldSchema.setFields(fields);
 
         ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-        config.setEnableFormula(true);
-        config.setEnableLayout(true);
-        config.setEnableOcr(true);
+        config.setFormulaEnabled(true);
+        config.setLayoutEnabled(true);
+        config.setOcrEnabled(true);
 
         ContentAnalyzer customAnalyzer = new ContentAnalyzer();
         customAnalyzer.setBaseAnalyzerId("prebuilt-document");

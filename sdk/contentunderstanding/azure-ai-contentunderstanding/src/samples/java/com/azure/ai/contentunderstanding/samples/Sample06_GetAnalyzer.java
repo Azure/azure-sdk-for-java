@@ -54,9 +54,9 @@ public class Sample06_GetAnalyzer {
         // Display configuration
         if (analyzer.getConfig() != null) {
             System.out.println("\nAnalyzer Configuration:");
-            System.out.println("  Enable OCR: " + analyzer.getConfig().isEnableOcr());
-            System.out.println("  Enable Layout: " + analyzer.getConfig().isEnableLayout());
-            System.out.println("  Enable Formula: " + analyzer.getConfig().isEnableFormula());
+            System.out.println("  Enable OCR: " + analyzer.getConfig().isOcrEnabled());
+            System.out.println("  Enable Layout: " + analyzer.getConfig().isLayoutEnabled());
+            System.out.println("  Enable Formula: " + analyzer.getConfig().isFormulaEnabled());
             System.out.println(
                 "  Estimate Field Source and Confidence: " + analyzer.getConfig().isEstimateFieldSourceAndConfidence());
             System.out.println("  Return Details: " + analyzer.getConfig().isReturnDetails());

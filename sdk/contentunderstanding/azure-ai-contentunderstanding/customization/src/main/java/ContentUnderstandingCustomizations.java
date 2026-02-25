@@ -935,15 +935,31 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Add setContentRange(ContentRange) overload to AnalysisInput model class.
-     * This allows users to pass a ContentRange directly instead of a raw String.
+     * Add setContentRange(ContentRange) overload to AnalysisInput and hide raw String accessors.
+     * The typed overload replaces the String-based getter/setter for a self-documenting API.
      */
     private void addContentRangeSetterToAnalyzeInput(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding setContentRange(ContentRange) overload to AnalysisInput");
+        logger.info("Adding setContentRange(ContentRange) overload and hiding String accessors on AnalysisInput");
 
         customization.getClass(MODELS_PACKAGE, "AnalysisInput").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
             ast.getClassByName("AnalysisInput").ifPresent(clazz -> {
+                // Hide getContentRange() returning String — make package-private
+                clazz.getMethodsByName("getContentRange").forEach(m -> {
+                    if (m.getType().asString().equals("String")) {
+                        m.removeModifier(Modifier.Keyword.PUBLIC);
+                    }
+                });
+
+                // Hide setContentRange(String) — make package-private
+                clazz.getMethodsByName("setContentRange").forEach(m -> {
+                    if (m.getParameters().size() == 1
+                        && m.getParameter(0).getType().asString().equals("String")) {
+                        m.removeModifier(Modifier.Keyword.PUBLIC);
+                    }
+                });
+
+                // Add typed setContentRange(ContentRange)
                 clazz.addMethod("setContentRange", Modifier.Keyword.PUBLIC)
                     .setType("AnalysisInput")
                     .addParameter("ContentRange", "contentRange")

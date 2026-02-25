@@ -56,7 +56,7 @@ public class Sample08_UpdateAnalyzerTest extends ContentUnderstandingClientTestB
 
         ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
             .setDescription("Original analyzer for update testing")
-            .setConfig(new ContentAnalyzerConfig().setEnableOcr(true).setEnableLayout(true))
+            .setConfig(new ContentAnalyzerConfig().setOcrEnabled(true).setLayoutEnabled(true))
             .setFieldSchema(fieldSchema)
             .setModels(models);
 
@@ -111,7 +111,7 @@ public class Sample08_UpdateAnalyzerTest extends ContentUnderstandingClientTestB
 
         ContentAnalyzer updatedAnalyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
             .setDescription("Updated analyzer with enhanced schema")
-            .setConfig(new ContentAnalyzerConfig().setEnableOcr(true).setEnableLayout(true).setEnableFormula(true)) // Enable formula extraction
+            .setConfig(new ContentAnalyzerConfig().setOcrEnabled(true).setLayoutEnabled(true).setFormulaEnabled(true)) // Enable formula extraction
             .setFieldSchema(updatedFieldSchema)
             .setModels(updatedModels);
 
@@ -139,7 +139,7 @@ public class Sample08_UpdateAnalyzerTest extends ContentUnderstandingClientTestB
 
         // Verify config was updated
         assertNotNull(result.getConfig(), "Config should not be null");
-        assertTrue(result.getConfig().isEnableFormula(), "EnableFormula should now be true");
+        assertTrue(result.getConfig().isFormulaEnabled(), "EnableFormula should now be true");
         System.out.println("Config update verified");
 
         System.out.println("All analyzer update properties validated successfully");

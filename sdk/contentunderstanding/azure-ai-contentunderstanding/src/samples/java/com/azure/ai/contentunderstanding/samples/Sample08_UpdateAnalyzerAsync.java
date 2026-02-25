@@ -76,8 +76,8 @@ public class Sample08_UpdateAnalyzerAsync {
             .setBaseAnalyzerId("prebuilt-document")
             .setDescription("Original analyzer for update testing")
             .setConfig(new ContentAnalyzerConfig()
-                .setEnableOcr(true)
-                .setEnableLayout(true))
+                .setOcrEnabled(true)
+                .setLayoutEnabled(true))
             .setFieldSchema(fieldSchema)
             .setModels(models);
 
@@ -136,9 +136,9 @@ public class Sample08_UpdateAnalyzerAsync {
                     .setBaseAnalyzerId("prebuilt-document")
                     .setDescription("Updated analyzer with enhanced schema")
                     .setConfig(new ContentAnalyzerConfig()
-                        .setEnableOcr(true)
-                        .setEnableLayout(true)
-                        .setEnableFormula(true)) // Enable formula extraction
+                        .setOcrEnabled(true)
+                        .setLayoutEnabled(true)
+                        .setFormulaEnabled(true)) // Enable formula extraction
                     .setFieldSchema(updatedFieldSchema)
                     .setModels(updatedModels);
 

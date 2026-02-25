@@ -54,9 +54,9 @@ public class Sample14_CopyAnalyzer {
             // BEGIN: com.azure.ai.contentunderstanding.copyAnalyzer
             // Step 1: Create the source analyzer
             ContentAnalyzerConfig sourceConfig = new ContentAnalyzerConfig();
-            sourceConfig.setEnableFormula(false);
-            sourceConfig.setEnableLayout(true);
-            sourceConfig.setEnableOcr(true);
+            sourceConfig.setFormulaEnabled(false);
+            sourceConfig.setLayoutEnabled(true);
+            sourceConfig.setOcrEnabled(true);
             sourceConfig.setEstimateFieldSourceAndConfidence(true);
             sourceConfig.setReturnDetails(true);
 
@@ -165,8 +165,8 @@ public class Sample14_CopyAnalyzer {
             System.out.println("    modelType=" + copiedAnalyzer.getTags().get("modelType"));
 
             System.out.println("  ✓ Config preserved");
-            System.out.println("    EnableLayout: " + copiedAnalyzer.getConfig().isEnableLayout());
-            System.out.println("    EnableOcr: " + copiedAnalyzer.getConfig().isEnableOcr());
+            System.out.println("    EnableLayout: " + copiedAnalyzer.getConfig().isLayoutEnabled());
+            System.out.println("    EnableOcr: " + copiedAnalyzer.getConfig().isOcrEnabled());
 
             if (copiedAnalyzer.getModels().containsKey("completion")) {
                 System.out.println("  ✓ Models preserved: " + copiedAnalyzer.getModels().size() + " model(s)");

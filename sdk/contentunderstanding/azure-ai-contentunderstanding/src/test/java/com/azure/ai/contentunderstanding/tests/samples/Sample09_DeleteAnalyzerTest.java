@@ -53,7 +53,7 @@ public class Sample09_DeleteAnalyzerTest extends ContentUnderstandingClientTestB
 
         ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
             .setDescription("Temporary analyzer for deletion demo")
-            .setConfig(new ContentAnalyzerConfig().setEnableOcr(true).setEnableLayout(true))
+            .setConfig(new ContentAnalyzerConfig().setOcrEnabled(true).setLayoutEnabled(true))
             .setFieldSchema(fieldSchema)
             .setModels(models);
 

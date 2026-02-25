@@ -92,8 +92,8 @@ public class Sample15_GrantCopyAuthTest extends ContentUnderstandingClientTestBa
         try {
             // Step 1: Create source analyzer
             ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-            config.setEnableLayout(true);
-            config.setEnableOcr(true);
+            config.setLayoutEnabled(true);
+            config.setOcrEnabled(true);
 
             Map<String, ContentFieldDefinition> fields = new HashMap<>();
             ContentFieldDefinition companyNameField = new ContentFieldDefinition();

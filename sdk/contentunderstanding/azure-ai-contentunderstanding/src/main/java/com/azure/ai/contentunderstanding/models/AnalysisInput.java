@@ -153,7 +153,7 @@ public final class AnalysisInput implements JsonSerializable<AnalysisInput> {
      * @return the contentRange value.
      */
     @Generated
-    public String getContentRange() {
+    String getContentRange() {
         return this.contentRange;
     }
 
@@ -165,7 +165,7 @@ public final class AnalysisInput implements JsonSerializable<AnalysisInput> {
      * @return the AnalysisInput object itself.
      */
     @Generated
-    public AnalysisInput setContentRange(String contentRange) {
+    AnalysisInput setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
     }

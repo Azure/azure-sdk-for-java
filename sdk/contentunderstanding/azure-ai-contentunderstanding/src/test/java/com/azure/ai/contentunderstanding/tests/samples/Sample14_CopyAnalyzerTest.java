@@ -40,9 +40,9 @@ public class Sample14_CopyAnalyzerTest extends ContentUnderstandingClientTestBas
             // BEGIN: com.azure.ai.contentunderstanding.copyAnalyzer
             // Step 1: Create the source analyzer
             ContentAnalyzerConfig sourceConfig = new ContentAnalyzerConfig();
-            sourceConfig.setEnableFormula(false);
-            sourceConfig.setEnableLayout(true);
-            sourceConfig.setEnableOcr(true);
+            sourceConfig.setFormulaEnabled(false);
+            sourceConfig.setLayoutEnabled(true);
+            sourceConfig.setOcrEnabled(true);
             sourceConfig.setEstimateFieldSourceAndConfidence(true);
             sourceConfig.setReturnDetails(true);
 
@@ -126,9 +126,9 @@ public class Sample14_CopyAnalyzerTest extends ContentUnderstandingClientTestBas
 
             // Verify source config
             assertNotNull(sourceConfig, "Source config should not be null");
-            assertEquals(false, sourceConfig.isEnableFormula(), "EnableFormula should be false");
-            assertEquals(true, sourceConfig.isEnableLayout(), "EnableLayout should be true");
-            assertEquals(true, sourceConfig.isEnableOcr(), "EnableOcr should be true");
+            assertEquals(false, sourceConfig.isFormulaEnabled(), "EnableFormula should be false");
+            assertEquals(true, sourceConfig.isLayoutEnabled(), "EnableLayout should be true");
+            assertEquals(true, sourceConfig.isOcrEnabled(), "EnableOcr should be true");
             assertEquals(true, sourceConfig.isEstimateFieldSourceAndConfidence(),
                 "EstimateFieldSourceAndConfidence should be true");
             assertEquals(true, sourceConfig.isReturnDetails(), "ReturnDetails should be true");
@@ -177,9 +177,9 @@ public class Sample14_CopyAnalyzerTest extends ContentUnderstandingClientTestBas
 
             // Verify config in result
             assertNotNull(sourceResult.getConfig(), "Config should not be null in result");
-            assertEquals(false, sourceResult.getConfig().isEnableFormula(), "EnableFormula should be preserved");
-            assertEquals(true, sourceResult.getConfig().isEnableLayout(), "EnableLayout should be preserved");
-            assertEquals(true, sourceResult.getConfig().isEnableOcr(), "EnableOcr should be preserved");
+            assertEquals(false, sourceResult.getConfig().isFormulaEnabled(), "EnableFormula should be preserved");
+            assertEquals(true, sourceResult.getConfig().isLayoutEnabled(), "EnableLayout should be preserved");
+            assertEquals(true, sourceResult.getConfig().isOcrEnabled(), "EnableOcr should be preserved");
             System.out.println("  ✓ Config preserved in result");
 
             // Verify field schema in result
@@ -290,11 +290,11 @@ public class Sample14_CopyAnalyzerTest extends ContentUnderstandingClientTestBas
 
             // Verify config was copied
             assertNotNull(copiedAnalyzer.getConfig(), "Copied analyzer should have config");
-            assertEquals(sourceResult.getConfig().isEnableFormula(), copiedAnalyzer.getConfig().isEnableFormula(),
+            assertEquals(sourceResult.getConfig().isFormulaEnabled(), copiedAnalyzer.getConfig().isFormulaEnabled(),
                 "EnableFormula should match");
-            assertEquals(sourceResult.getConfig().isEnableLayout(), copiedAnalyzer.getConfig().isEnableLayout(),
+            assertEquals(sourceResult.getConfig().isLayoutEnabled(), copiedAnalyzer.getConfig().isLayoutEnabled(),
                 "EnableLayout should match");
-            assertEquals(sourceResult.getConfig().isEnableOcr(), copiedAnalyzer.getConfig().isEnableOcr(),
+            assertEquals(sourceResult.getConfig().isOcrEnabled(), copiedAnalyzer.getConfig().isOcrEnabled(),
                 "EnableOcr should match");
             assertEquals(sourceResult.getConfig().isEstimateFieldSourceAndConfidence(),
                 copiedAnalyzer.getConfig().isEstimateFieldSourceAndConfidence(),
@@ -302,8 +302,8 @@ public class Sample14_CopyAnalyzerTest extends ContentUnderstandingClientTestBas
             assertEquals(sourceResult.getConfig().isReturnDetails(), copiedAnalyzer.getConfig().isReturnDetails(),
                 "ReturnDetails should match");
             System.out.println("  ✓ Config preserved");
-            System.out.println("    EnableLayout: " + copiedAnalyzer.getConfig().isEnableLayout());
-            System.out.println("    EnableOcr: " + copiedAnalyzer.getConfig().isEnableOcr());
+            System.out.println("    EnableLayout: " + copiedAnalyzer.getConfig().isLayoutEnabled());
+            System.out.println("    EnableOcr: " + copiedAnalyzer.getConfig().isOcrEnabled());
 
             // Verify models were copied
             assertNotNull(copiedAnalyzer.getModels(), "Copied analyzer should have models");

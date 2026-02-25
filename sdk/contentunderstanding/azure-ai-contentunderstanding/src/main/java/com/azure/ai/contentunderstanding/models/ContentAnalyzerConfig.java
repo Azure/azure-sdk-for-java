@@ -38,31 +38,31 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
      * Enable optical character recognition (OCR).
      */
     @Generated
-    private Boolean enableOcr;
+    private Boolean ocrEnabled;
 
     /*
      * Enable layout analysis.
      */
     @Generated
-    private Boolean enableLayout;
+    private Boolean layoutEnabled;
 
     /*
      * Enable generation of figure description.
      */
     @Generated
-    private Boolean enableFigureDescription;
+    private Boolean figureDescriptionEnabled;
 
     /*
      * Enable analysis of figures, such as charts and diagrams.
      */
     @Generated
-    private Boolean enableFigureAnalysis;
+    private Boolean figureAnalysisEnabled;
 
     /*
      * Enable mathematical formula detection.
      */
     @Generated
-    private Boolean enableFormula;
+    private Boolean formulaEnabled;
 
     /*
      * Representation format of tables in analyze result markdown.
@@ -86,7 +86,7 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
      * Disable the default blurring of faces for privacy while processing the content.
      */
     @Generated
-    private Boolean disableFaceBlurring;
+    private Boolean faceBlurringDisabled;
 
     /*
      * Return field grounding source and confidence.
@@ -104,7 +104,7 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
      * Enable segmentation of the input by contentCategories.
      */
     @Generated
-    private Boolean enableSegment;
+    private Boolean segmentEnabled;
 
     /*
      * Force segmentation of document content by page.
@@ -203,117 +203,117 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
     }
 
     /**
-     * Get the enableOcr property: Enable optical character recognition (OCR).
+     * Get the ocrEnabled property: Enable optical character recognition (OCR).
      * 
-     * @return the enableOcr value.
+     * @return the ocrEnabled value.
      */
     @Generated
-    public Boolean isEnableOcr() {
-        return this.enableOcr;
+    public Boolean isOcrEnabled() {
+        return this.ocrEnabled;
     }
 
     /**
-     * Set the enableOcr property: Enable optical character recognition (OCR).
+     * Set the ocrEnabled property: Enable optical character recognition (OCR).
      * 
-     * @param enableOcr the enableOcr value to set.
+     * @param ocrEnabled the ocrEnabled value to set.
      * @return the ContentAnalyzerConfig object itself.
      */
     @Generated
-    public ContentAnalyzerConfig setEnableOcr(Boolean enableOcr) {
-        this.enableOcr = enableOcr;
-        this.updatedProperties.add("enableOcr");
+    public ContentAnalyzerConfig setOcrEnabled(Boolean ocrEnabled) {
+        this.ocrEnabled = ocrEnabled;
+        this.updatedProperties.add("ocrEnabled");
         return this;
     }
 
     /**
-     * Get the enableLayout property: Enable layout analysis.
+     * Get the layoutEnabled property: Enable layout analysis.
      * 
-     * @return the enableLayout value.
+     * @return the layoutEnabled value.
      */
     @Generated
-    public Boolean isEnableLayout() {
-        return this.enableLayout;
+    public Boolean isLayoutEnabled() {
+        return this.layoutEnabled;
     }
 
     /**
-     * Set the enableLayout property: Enable layout analysis.
+     * Set the layoutEnabled property: Enable layout analysis.
      * 
-     * @param enableLayout the enableLayout value to set.
+     * @param layoutEnabled the layoutEnabled value to set.
      * @return the ContentAnalyzerConfig object itself.
      */
     @Generated
-    public ContentAnalyzerConfig setEnableLayout(Boolean enableLayout) {
-        this.enableLayout = enableLayout;
-        this.updatedProperties.add("enableLayout");
+    public ContentAnalyzerConfig setLayoutEnabled(Boolean layoutEnabled) {
+        this.layoutEnabled = layoutEnabled;
+        this.updatedProperties.add("layoutEnabled");
         return this;
     }
 
     /**
-     * Get the enableFigureDescription property: Enable generation of figure description.
+     * Get the figureDescriptionEnabled property: Enable generation of figure description.
      * 
-     * @return the enableFigureDescription value.
+     * @return the figureDescriptionEnabled value.
      */
     @Generated
-    public Boolean isEnableFigureDescription() {
-        return this.enableFigureDescription;
+    public Boolean isFigureDescriptionEnabled() {
+        return this.figureDescriptionEnabled;
     }
 
     /**
-     * Set the enableFigureDescription property: Enable generation of figure description.
+     * Set the figureDescriptionEnabled property: Enable generation of figure description.
      * 
-     * @param enableFigureDescription the enableFigureDescription value to set.
+     * @param figureDescriptionEnabled the figureDescriptionEnabled value to set.
      * @return the ContentAnalyzerConfig object itself.
      */
     @Generated
-    public ContentAnalyzerConfig setEnableFigureDescription(Boolean enableFigureDescription) {
-        this.enableFigureDescription = enableFigureDescription;
-        this.updatedProperties.add("enableFigureDescription");
+    public ContentAnalyzerConfig setFigureDescriptionEnabled(Boolean figureDescriptionEnabled) {
+        this.figureDescriptionEnabled = figureDescriptionEnabled;
+        this.updatedProperties.add("figureDescriptionEnabled");
         return this;
     }
 
     /**
-     * Get the enableFigureAnalysis property: Enable analysis of figures, such as charts and diagrams.
+     * Get the figureAnalysisEnabled property: Enable analysis of figures, such as charts and diagrams.
      * 
-     * @return the enableFigureAnalysis value.
+     * @return the figureAnalysisEnabled value.
      */
     @Generated
-    public Boolean isEnableFigureAnalysis() {
-        return this.enableFigureAnalysis;
+    public Boolean isFigureAnalysisEnabled() {
+        return this.figureAnalysisEnabled;
     }
 
     /**
-     * Set the enableFigureAnalysis property: Enable analysis of figures, such as charts and diagrams.
+     * Set the figureAnalysisEnabled property: Enable analysis of figures, such as charts and diagrams.
      * 
-     * @param enableFigureAnalysis the enableFigureAnalysis value to set.
+     * @param figureAnalysisEnabled the figureAnalysisEnabled value to set.
      * @return the ContentAnalyzerConfig object itself.
      */
     @Generated
-    public ContentAnalyzerConfig setEnableFigureAnalysis(Boolean enableFigureAnalysis) {
-        this.enableFigureAnalysis = enableFigureAnalysis;
-        this.updatedProperties.add("enableFigureAnalysis");
+    public ContentAnalyzerConfig setFigureAnalysisEnabled(Boolean figureAnalysisEnabled) {
+        this.figureAnalysisEnabled = figureAnalysisEnabled;
+        this.updatedProperties.add("figureAnalysisEnabled");
         return this;
     }
 
     /**
-     * Get the enableFormula property: Enable mathematical formula detection.
+     * Get the formulaEnabled property: Enable mathematical formula detection.
      * 
-     * @return the enableFormula value.
+     * @return the formulaEnabled value.
      */
     @Generated
-    public Boolean isEnableFormula() {
-        return this.enableFormula;
+    public Boolean isFormulaEnabled() {
+        return this.formulaEnabled;
     }
 
     /**
-     * Set the enableFormula property: Enable mathematical formula detection.
+     * Set the formulaEnabled property: Enable mathematical formula detection.
      * 
-     * @param enableFormula the enableFormula value to set.
+     * @param formulaEnabled the formulaEnabled value to set.
      * @return the ContentAnalyzerConfig object itself.
      */
     @Generated
-    public ContentAnalyzerConfig setEnableFormula(Boolean enableFormula) {
-        this.enableFormula = enableFormula;
-        this.updatedProperties.add("enableFormula");
+    public ContentAnalyzerConfig setFormulaEnabled(Boolean formulaEnabled) {
+        this.formulaEnabled = formulaEnabled;
+        this.updatedProperties.add("formulaEnabled");
         return this;
     }
 
@@ -387,27 +387,27 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
     }
 
     /**
-     * Get the disableFaceBlurring property: Disable the default blurring of faces for privacy while processing the
+     * Get the faceBlurringDisabled property: Disable the default blurring of faces for privacy while processing the
      * content.
      * 
-     * @return the disableFaceBlurring value.
+     * @return the faceBlurringDisabled value.
      */
     @Generated
-    public Boolean isDisableFaceBlurring() {
-        return this.disableFaceBlurring;
+    public Boolean isFaceBlurringDisabled() {
+        return this.faceBlurringDisabled;
     }
 
     /**
-     * Set the disableFaceBlurring property: Disable the default blurring of faces for privacy while processing the
+     * Set the faceBlurringDisabled property: Disable the default blurring of faces for privacy while processing the
      * content.
      * 
-     * @param disableFaceBlurring the disableFaceBlurring value to set.
+     * @param faceBlurringDisabled the faceBlurringDisabled value to set.
      * @return the ContentAnalyzerConfig object itself.
      */
     @Generated
-    public ContentAnalyzerConfig setDisableFaceBlurring(Boolean disableFaceBlurring) {
-        this.disableFaceBlurring = disableFaceBlurring;
-        this.updatedProperties.add("disableFaceBlurring");
+    public ContentAnalyzerConfig setFaceBlurringDisabled(Boolean faceBlurringDisabled) {
+        this.faceBlurringDisabled = faceBlurringDisabled;
+        this.updatedProperties.add("faceBlurringDisabled");
         return this;
     }
 
@@ -458,25 +458,25 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
     }
 
     /**
-     * Get the enableSegment property: Enable segmentation of the input by contentCategories.
+     * Get the segmentEnabled property: Enable segmentation of the input by contentCategories.
      * 
-     * @return the enableSegment value.
+     * @return the segmentEnabled value.
      */
     @Generated
-    public Boolean isEnableSegment() {
-        return this.enableSegment;
+    public Boolean isSegmentEnabled() {
+        return this.segmentEnabled;
     }
 
     /**
-     * Set the enableSegment property: Enable segmentation of the input by contentCategories.
+     * Set the segmentEnabled property: Enable segmentation of the input by contentCategories.
      * 
-     * @param enableSegment the enableSegment value to set.
+     * @param segmentEnabled the segmentEnabled value to set.
      * @return the ContentAnalyzerConfig object itself.
      */
     @Generated
-    public ContentAnalyzerConfig setEnableSegment(Boolean enableSegment) {
-        this.enableSegment = enableSegment;
-        this.updatedProperties.add("enableSegment");
+    public ContentAnalyzerConfig setSegmentEnabled(Boolean segmentEnabled) {
+        this.segmentEnabled = segmentEnabled;
+        this.updatedProperties.add("segmentEnabled");
         return this;
     }
 
@@ -540,20 +540,20 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
             jsonWriter.writeStartObject();
             jsonWriter.writeBooleanField("returnDetails", this.returnDetails);
             jsonWriter.writeArrayField("locales", this.locales, (writer, element) -> writer.writeString(element));
-            jsonWriter.writeBooleanField("enableOcr", this.enableOcr);
-            jsonWriter.writeBooleanField("enableLayout", this.enableLayout);
-            jsonWriter.writeBooleanField("enableFigureDescription", this.enableFigureDescription);
-            jsonWriter.writeBooleanField("enableFigureAnalysis", this.enableFigureAnalysis);
-            jsonWriter.writeBooleanField("enableFormula", this.enableFormula);
+            jsonWriter.writeBooleanField("enableOcr", this.ocrEnabled);
+            jsonWriter.writeBooleanField("enableLayout", this.layoutEnabled);
+            jsonWriter.writeBooleanField("enableFigureDescription", this.figureDescriptionEnabled);
+            jsonWriter.writeBooleanField("enableFigureAnalysis", this.figureAnalysisEnabled);
+            jsonWriter.writeBooleanField("enableFormula", this.formulaEnabled);
             jsonWriter.writeStringField("tableFormat", this.tableFormat == null ? null : this.tableFormat.toString());
             jsonWriter.writeStringField("chartFormat", this.chartFormat == null ? null : this.chartFormat.toString());
             jsonWriter.writeStringField("annotationFormat",
                 this.annotationFormat == null ? null : this.annotationFormat.toString());
-            jsonWriter.writeBooleanField("disableFaceBlurring", this.disableFaceBlurring);
+            jsonWriter.writeBooleanField("disableFaceBlurring", this.faceBlurringDisabled);
             jsonWriter.writeBooleanField("estimateFieldSourceAndConfidence", this.estimateFieldSourceAndConfidence);
             jsonWriter.writeMapField("contentCategories", this.contentCategories,
                 (writer, element) -> writer.writeJson(element));
-            jsonWriter.writeBooleanField("enableSegment", this.enableSegment);
+            jsonWriter.writeBooleanField("enableSegment", this.segmentEnabled);
             jsonWriter.writeBooleanField("segmentPerPage", this.segmentPerPage);
             jsonWriter.writeBooleanField("omitContent", this.omitContent);
             return jsonWriter.writeEndObject();
@@ -577,39 +577,39 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
                 jsonWriter.writeArrayField("locales", this.locales, (writer, element) -> writer.writeString(element));
             }
         }
-        if (updatedProperties.contains("enableOcr")) {
-            if (this.enableOcr == null) {
+        if (updatedProperties.contains("ocrEnabled")) {
+            if (this.ocrEnabled == null) {
                 jsonWriter.writeNullField("enableOcr");
             } else {
-                jsonWriter.writeBooleanField("enableOcr", this.enableOcr);
+                jsonWriter.writeBooleanField("enableOcr", this.ocrEnabled);
             }
         }
-        if (updatedProperties.contains("enableLayout")) {
-            if (this.enableLayout == null) {
+        if (updatedProperties.contains("layoutEnabled")) {
+            if (this.layoutEnabled == null) {
                 jsonWriter.writeNullField("enableLayout");
             } else {
-                jsonWriter.writeBooleanField("enableLayout", this.enableLayout);
+                jsonWriter.writeBooleanField("enableLayout", this.layoutEnabled);
             }
         }
-        if (updatedProperties.contains("enableFigureDescription")) {
-            if (this.enableFigureDescription == null) {
+        if (updatedProperties.contains("figureDescriptionEnabled")) {
+            if (this.figureDescriptionEnabled == null) {
                 jsonWriter.writeNullField("enableFigureDescription");
             } else {
-                jsonWriter.writeBooleanField("enableFigureDescription", this.enableFigureDescription);
+                jsonWriter.writeBooleanField("enableFigureDescription", this.figureDescriptionEnabled);
             }
         }
-        if (updatedProperties.contains("enableFigureAnalysis")) {
-            if (this.enableFigureAnalysis == null) {
+        if (updatedProperties.contains("figureAnalysisEnabled")) {
+            if (this.figureAnalysisEnabled == null) {
                 jsonWriter.writeNullField("enableFigureAnalysis");
             } else {
-                jsonWriter.writeBooleanField("enableFigureAnalysis", this.enableFigureAnalysis);
+                jsonWriter.writeBooleanField("enableFigureAnalysis", this.figureAnalysisEnabled);
             }
         }
-        if (updatedProperties.contains("enableFormula")) {
-            if (this.enableFormula == null) {
+        if (updatedProperties.contains("formulaEnabled")) {
+            if (this.formulaEnabled == null) {
                 jsonWriter.writeNullField("enableFormula");
             } else {
-                jsonWriter.writeBooleanField("enableFormula", this.enableFormula);
+                jsonWriter.writeBooleanField("enableFormula", this.formulaEnabled);
             }
         }
         if (updatedProperties.contains("tableFormat")) {
@@ -633,11 +633,11 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
                 jsonWriter.writeStringField("annotationFormat", this.annotationFormat.toString());
             }
         }
-        if (updatedProperties.contains("disableFaceBlurring")) {
-            if (this.disableFaceBlurring == null) {
+        if (updatedProperties.contains("faceBlurringDisabled")) {
+            if (this.faceBlurringDisabled == null) {
                 jsonWriter.writeNullField("disableFaceBlurring");
             } else {
-                jsonWriter.writeBooleanField("disableFaceBlurring", this.disableFaceBlurring);
+                jsonWriter.writeBooleanField("disableFaceBlurring", this.faceBlurringDisabled);
             }
         }
         if (updatedProperties.contains("estimateFieldSourceAndConfidence")) {
@@ -664,11 +664,11 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
                 });
             }
         }
-        if (updatedProperties.contains("enableSegment")) {
-            if (this.enableSegment == null) {
+        if (updatedProperties.contains("segmentEnabled")) {
+            if (this.segmentEnabled == null) {
                 jsonWriter.writeNullField("enableSegment");
             } else {
-                jsonWriter.writeBooleanField("enableSegment", this.enableSegment);
+                jsonWriter.writeBooleanField("enableSegment", this.segmentEnabled);
             }
         }
         if (updatedProperties.contains("segmentPerPage")) {
@@ -710,16 +710,17 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
                     List<String> locales = reader.readArray(reader1 -> reader1.getString());
                     deserializedContentAnalyzerConfig.locales = locales;
                 } else if ("enableOcr".equals(fieldName)) {
-                    deserializedContentAnalyzerConfig.enableOcr = reader.getNullable(JsonReader::getBoolean);
+                    deserializedContentAnalyzerConfig.ocrEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableLayout".equals(fieldName)) {
-                    deserializedContentAnalyzerConfig.enableLayout = reader.getNullable(JsonReader::getBoolean);
+                    deserializedContentAnalyzerConfig.layoutEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableFigureDescription".equals(fieldName)) {
-                    deserializedContentAnalyzerConfig.enableFigureDescription
+                    deserializedContentAnalyzerConfig.figureDescriptionEnabled
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableFigureAnalysis".equals(fieldName)) {
-                    deserializedContentAnalyzerConfig.enableFigureAnalysis = reader.getNullable(JsonReader::getBoolean);
+                    deserializedContentAnalyzerConfig.figureAnalysisEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableFormula".equals(fieldName)) {
-                    deserializedContentAnalyzerConfig.enableFormula = reader.getNullable(JsonReader::getBoolean);
+                    deserializedContentAnalyzerConfig.formulaEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("tableFormat".equals(fieldName)) {
                     deserializedContentAnalyzerConfig.tableFormat = TableFormat.fromString(reader.getString());
                 } else if ("chartFormat".equals(fieldName)) {
@@ -728,7 +729,7 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
                     deserializedContentAnalyzerConfig.annotationFormat
                         = AnnotationFormat.fromString(reader.getString());
                 } else if ("disableFaceBlurring".equals(fieldName)) {
-                    deserializedContentAnalyzerConfig.disableFaceBlurring = reader.getNullable(JsonReader::getBoolean);
+                    deserializedContentAnalyzerConfig.faceBlurringDisabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("estimateFieldSourceAndConfidence".equals(fieldName)) {
                     deserializedContentAnalyzerConfig.estimateFieldSourceAndConfidence
                         = reader.getNullable(JsonReader::getBoolean);
@@ -737,7 +738,7 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
                         = reader.readMap(reader1 -> ContentCategoryDefinition.fromJson(reader1));
                     deserializedContentAnalyzerConfig.contentCategories = contentCategories;
                 } else if ("enableSegment".equals(fieldName)) {
-                    deserializedContentAnalyzerConfig.enableSegment = reader.getNullable(JsonReader::getBoolean);
+                    deserializedContentAnalyzerConfig.segmentEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("segmentPerPage".equals(fieldName)) {
                     deserializedContentAnalyzerConfig.segmentPerPage = reader.getNullable(JsonReader::getBoolean);
                 } else if ("omitContent".equals(fieldName)) {

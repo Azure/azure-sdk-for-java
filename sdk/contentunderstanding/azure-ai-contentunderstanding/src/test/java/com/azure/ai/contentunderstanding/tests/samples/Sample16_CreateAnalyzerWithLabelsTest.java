@@ -166,7 +166,7 @@ public class Sample16_CreateAnalyzerWithLabelsTest extends ContentUnderstandingC
 
             ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
                 .setDescription("Receipt analyzer with labeled training data")
-                .setConfig(new ContentAnalyzerConfig().setEnableLayout(true).setEnableOcr(true))
+                .setConfig(new ContentAnalyzerConfig().setLayoutEnabled(true).setOcrEnabled(true))
                 .setFieldSchema(fieldSchema)
                 .setModels(models);
 
