@@ -154,6 +154,14 @@ public class BenchmarkOrchestrator {
                 config.getResultUploadDatabase(), config.getResultUploadContainer());
         }
 
+        // Netty HTTP connection pool metrics reporter (only when enabled)
+        NettyHttpMetricsReporter nettyMetricsReporter = null;
+        if (config.isEnableNettyHttpMetrics() && config.getReportingDirectory() != null) {
+            Path nettyMetricsDir = Paths.get(config.getReportingDirectory());
+            nettyMetricsReporter = new NettyHttpMetricsReporter(Metrics.globalRegistry, nettyMetricsDir);
+            nettyMetricsReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+        }
+
         reporter.report();
         logger.info("[LIFECYCLE] PRE_CREATE timestamp={}", Instant.now());
         logger.info("BenchmarkConfig: {}", config);
