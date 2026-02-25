@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Log probability
+ *
  * The log probability of a token.
  */
 @Immutable
@@ -28,7 +30,7 @@ public final class LogProb implements JsonSerializable<LogProb> {
      * The bytes property.
      */
     @Generated
-    private final List<Integer> bytes;
+    private final List<Long> bytes;
 
     /*
      * The top_logprobs property.
@@ -45,7 +47,7 @@ public final class LogProb implements JsonSerializable<LogProb> {
      * @param topLogprobs the topLogprobs value to set.
      */
     @Generated
-    public LogProb(String token, double logProb, List<Integer> bytes, List<TopLogProb> topLogprobs) {
+    public LogProb(String token, double logProb, List<Long> bytes, List<TopLogProb> topLogprobs) {
         this.token = token;
         this.logProb = logProb;
         this.bytes = bytes;
@@ -68,7 +70,7 @@ public final class LogProb implements JsonSerializable<LogProb> {
      * @return the bytes value.
      */
     @Generated
-    public List<Integer> getBytes() {
+    public List<Long> getBytes() {
         return this.bytes;
     }
 
@@ -91,7 +93,7 @@ public final class LogProb implements JsonSerializable<LogProb> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("token", this.token);
         jsonWriter.writeDoubleField("logprob", this.logProb);
-        jsonWriter.writeArrayField("bytes", this.bytes, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("bytes", this.bytes, (writer, element) -> writer.writeLong(element));
         jsonWriter.writeArrayField("top_logprobs", this.topLogprobs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -110,7 +112,7 @@ public final class LogProb implements JsonSerializable<LogProb> {
         return jsonReader.readObject(reader -> {
             String token = null;
             double logProb = 0.0;
-            List<Integer> bytes = null;
+            List<Long> bytes = null;
             List<TopLogProb> topLogprobs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -120,7 +122,7 @@ public final class LogProb implements JsonSerializable<LogProb> {
                 } else if ("logprob".equals(fieldName)) {
                     logProb = reader.getDouble();
                 } else if ("bytes".equals(fieldName)) {
-                    bytes = reader.readArray(reader1 -> reader1.getInt());
+                    bytes = reader.readArray(reader1 -> reader1.getLong());
                 } else if ("top_logprobs".equals(fieldName)) {
                     topLogprobs = reader.readArray(reader1 -> TopLogProb.fromJson(reader1));
                 } else {

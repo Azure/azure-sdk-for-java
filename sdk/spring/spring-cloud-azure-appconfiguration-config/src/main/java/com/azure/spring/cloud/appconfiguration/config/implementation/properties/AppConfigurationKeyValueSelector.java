@@ -13,6 +13,8 @@ import org.springframework.util.StringUtils;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
 
+import com.azure.spring.cloud.appconfiguration.config.implementation.ValidationUtil;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.NotNull;
 
@@ -33,41 +35,49 @@ public final class AppConfigurationKeyValueSelector {
      */
     private static final String LABEL_SEPARATOR = ",";
 
-    @NotNull
+
     /**
-     * Key filter to use when loading configurations. The default value is
-     * "/application/". The key filter is used to filter configurations by key.
-     * The key filter must be a non-null string that does not contain an asterisk.
+     * Filters configurations by key prefix. Defaults to {@code /application/} when
+     * not explicitly set. Must not be {@code null} or contain asterisks ({@code *}).
      */
+    @NotNull
     private String keyFilter = "";
 
     /**
-     * Label filter to use when loading configurations. The label filter is used to
-     * filter configurations by label. If the label filter is not set, the default
-     * value is the current active Spring profiles. If no active profiles are set,
-     * then all configurations with no label are loaded. The label filter must be a
-     * non-null string that does not contain an asterisk.
+     * Filters configurations by label. When unset, defaults to the active Spring
+     * profiles; if no profiles are active, only configurations with no label are
+     * loaded. Multiple labels can be specified as a comma-separated string. Must
+     * not contain asterisks ({@code *}).
      */
     private String labelFilter;
 
     /**
-     * Snapshot name to use when loading configurations. The snapshot name is used
-     * to load configurations from a snapshot. If the snapshot name is set, the key
-     * and label filters must not be set. The snapshot name must be a non-null
-     * string that does not contain an asterisk.
+     * Filters configurations by tags. Each entry is interpreted as a tag-based filter,
+     * typically in the {@code tagName=tagValue} format. When multiple entries are
+     * provided, they are combined using AND logic.
+     */
+    private List<String> tagsFilter;
+
+    /**
+     * Loads configurations from a named snapshot. Cannot be used together with
+     * key, label, or tag filters.
      */
     private String snapshotName = "";
 
     /**
-     * @return the keyFilter
+     * Returns the key filter, defaulting to {@code /application/} when not explicitly set.
+     *
+     * @return the key filter string
      */
     public String getKeyFilter() {
         return StringUtils.hasText(keyFilter) ? keyFilter : APPLICATION_SETTING_DEFAULT_KEY_FILTER;
     }
 
     /**
-     * @param keyFilter the keyFilter to set
-     * @return AppConfigurationStoreSelects
+     * Sets the key filter used to select configurations by key prefix.
+     *
+     * @param keyFilter the key prefix to filter by
+     * @return this {@link AppConfigurationKeyValueSelector} for chaining
      */
     public AppConfigurationKeyValueSelector setKeyFilter(String keyFilter) {
         this.keyFilter = keyFilter;
@@ -75,10 +85,22 @@ public final class AppConfigurationKeyValueSelector {
     }
 
     /**
-     * @param profiles List of current Spring profiles to default to using is null
-     *                 label is set.
-     * @return List of reversed label values, which are split by the separator, the
-     *         latter label has higher priority
+     * Returns the raw label filter string, or {@code null} if not set.
+     *
+     * @return the label filter
+     */
+    public String getLabelFilter() {
+        return labelFilter;
+    }
+
+    /**
+     * Resolves the label filter into an array of labels. When no label filter is set,
+     * falls back to the active Spring profiles (in reverse priority order). If neither
+     * is available, returns the empty-label sentinel. Returns an empty array when a
+     * snapshot is configured.
+     *
+     * @param profiles the active Spring profiles to use as a fallback
+     * @return an array of resolved labels, ordered from lowest to highest priority
      */
     public String[] getLabelFilter(List<String> profiles) {
         if (StringUtils.hasText(snapshotName)) {
@@ -110,8 +132,10 @@ public final class AppConfigurationKeyValueSelector {
     }
 
     /**
-     * @param labelFilter the labelFilter to set
-     * @return AppConfigurationStoreSelects
+     * Sets the label filter used to select configurations by label.
+     *
+     * @param labelFilter a comma-separated string of labels to filter by
+     * @return this {@link AppConfigurationKeyValueSelector} for chaining
      */
     public AppConfigurationKeyValueSelector setLabelFilter(String labelFilter) {
         this.labelFilter = labelFilter;
@@ -119,21 +143,49 @@ public final class AppConfigurationKeyValueSelector {
     }
 
     /**
-     * @return the snapshot
+     * Returns the list of tag filters, or {@code null} if not set.
+     *
+     * @return the tag filter list
+     */
+    public List<String> getTagsFilter() {
+        return tagsFilter;
+    }
+
+    /**
+     * Sets the tag filters used to select configurations by tags. Each entry is
+     * interpreted as a tag-based filter, typically in the {@code tagName=tagValue}
+     * format. When multiple entries are provided, they are combined using AND logic.
+     *
+     * @param tagsFilter list of tag expressions, typically in {@code tagName=tagValue} format
+     * @return this {@link AppConfigurationKeyValueSelector} for chaining
+     */
+    public AppConfigurationKeyValueSelector setTagsFilter(List<String> tagsFilter) {
+        this.tagsFilter = tagsFilter;
+        return this;
+    }
+
+    /**
+     * Returns the snapshot name, or an empty string if not set.
+     *
+     * @return the snapshot name
      */
     public String getSnapshotName() {
         return snapshotName;
     }
 
     /**
-     * @param snapshot the snapshot to set
+     * Sets the snapshot name to load configurations from.
+     *
+     * @param snapshotName the snapshot name
      */
     public void setSnapshotName(String snapshotName) {
         this.snapshotName = snapshotName;
     }
     
     /**
-     * Validates key-filter and label-filter are valid.
+     * Validates that key, label, tag, and snapshot filters are well-formed and
+     * mutually compatible. Asterisks are not allowed in key or label filters,
+     * and snapshots cannot be combined with any other filter type.
      */
     @PostConstruct
     void validateAndInit() {
@@ -145,6 +197,9 @@ public final class AppConfigurationKeyValueSelector {
             "Snapshots can't use key filters");
         Assert.isTrue(!(StringUtils.hasText(labelFilter) && StringUtils.hasText(snapshotName)),
             "Snapshots can't use label filters");
+        Assert.isTrue(!(tagsFilter != null && !tagsFilter.isEmpty() && StringUtils.hasText(snapshotName)),
+            "Snapshots can't use tag filters");
+        ValidationUtil.validateTagsFilter(tagsFilter);
     }
 
     private String mapLabel(String label) {
