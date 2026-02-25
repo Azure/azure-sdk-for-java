@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.models.ApiKVReferencePropertiesSource;
+import com.azure.resourcemanager.appservice.models.ConfigReferenceSource;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ResolveStatus;
 import java.io.IOException;
@@ -290,7 +290,7 @@ public final class ApiKVReferenceInner extends ProxyResource {
      * 
      * @return the source value.
      */
-    public ApiKVReferencePropertiesSource source() {
+    public ConfigReferenceSource source() {
         return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
@@ -300,7 +300,7 @@ public final class ApiKVReferenceInner extends ProxyResource {
      * @param source the source value to set.
      * @return the ApiKVReferenceInner object itself.
      */
-    public ApiKVReferenceInner withSource(ApiKVReferencePropertiesSource source) {
+    public ApiKVReferenceInner withSource(ConfigReferenceSource source) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiKVReferenceProperties();
         }

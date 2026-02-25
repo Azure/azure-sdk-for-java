@@ -7,33 +7,33 @@ package com.azure.resourcemanager.appservice.models;
 /**
  * The method that should be used to authenticate the user.
  */
-public enum OpenIdConnectClientCredentialMethod {
+public enum ClientCredentialMethod {
     /**
      * Enum value ClientSecretPost.
      */
     CLIENT_SECRET_POST("ClientSecretPost");
 
     /**
-     * The actual serialized value for a OpenIdConnectClientCredentialMethod instance.
+     * The actual serialized value for a ClientCredentialMethod instance.
      */
     private final String value;
 
-    OpenIdConnectClientCredentialMethod(String value) {
+    ClientCredentialMethod(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a OpenIdConnectClientCredentialMethod instance.
+     * Parses a serialized value to a ClientCredentialMethod instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed OpenIdConnectClientCredentialMethod object, or null if unable to parse.
+     * @return the parsed ClientCredentialMethod object, or null if unable to parse.
      */
-    public static OpenIdConnectClientCredentialMethod fromString(String value) {
+    public static ClientCredentialMethod fromString(String value) {
         if (value == null) {
             return null;
         }
-        OpenIdConnectClientCredentialMethod[] items = OpenIdConnectClientCredentialMethod.values();
-        for (OpenIdConnectClientCredentialMethod item : items) {
+        ClientCredentialMethod[] items = ClientCredentialMethod.values();
+        for (ClientCredentialMethod item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
