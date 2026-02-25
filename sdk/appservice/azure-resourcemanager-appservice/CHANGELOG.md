@@ -1,6 +1,19 @@
 # Release History
 
-## 2.55.0 (2026-02-11)
+## 2.55.0 (2026-02-26)
+
+### Breaking Changes
+
+- Removed `withPassword` method from `CertificatePatchResource` class. The password property is read-only.
+
+#### Changes to `WebSiteManagementClient` Class
+
+- Moved `AppServiceManager.serviceClient().getCertificateRegistrationProviders()` to `AppServiceManager.certificateRegistrationClient().getCertificateRegistrationProviders()`.
+- Moved `AppServiceManager.serviceClient().getAppServiceCertificateOrders()` to `AppServiceManager.certificateRegistrationClient().getAppServiceCertificateOrders()`.
+- Moved `AppServiceManager.serviceClient().getCertificateOrdersDiagnostics()` to `AppServiceManager.certificateRegistrationClient().getCertificateOrdersDiagnostics()`.
+- Moved `AppServiceManager.serviceClient().getDomainRegistrationProviders()` to `AppServiceManager.domainRegistrationClient().getDomainRegistrationProviders()`.
+- Moved `AppServiceManager.serviceClient().getDomains()` to `AppServiceManager.domainRegistrationClient().getDomains()`.
+- Moved `AppServiceManager.serviceClient().getTopLevelDomains()` to `AppServiceManager.domainRegistrationClient().getTopLevelDomains()`.
 
 ### Other Changes
 
