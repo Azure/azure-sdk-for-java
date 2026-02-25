@@ -8,7 +8,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed Remote Code Execution (RCE) vulnerability via unsafe Java deserialization in `CosmosClientMetadataCachesSnapshot`, `AsyncCache`, and `DocumentCollection`. Added `SafeObjectInputStream` with class allowlisting to prevent deserialization of unauthorized classes. - [PR 47971](https://github.com/Azure/azure-sdk-for-java/pull/47971)
+* Fixed Remote Code Execution (RCE) vulnerability (CWE-502) by replacing Java deserialization with JSON-based serialization in `CosmosClientMetadataCachesSnapshot`, `AsyncCache`, and `DocumentCollection`. The metadata cache snapshot now uses Jackson for serialization/deserialization, eliminating the entire class of Java deserialization attacks. - [PR 47971](https://github.com/Azure/azure-sdk-for-java/pull/47971)
 
 #### Other Changes
 

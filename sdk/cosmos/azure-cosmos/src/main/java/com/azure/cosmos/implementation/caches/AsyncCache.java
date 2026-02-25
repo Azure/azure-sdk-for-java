@@ -2,17 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
-import com.azure.cosmos.implementation.DocumentCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -129,6 +123,32 @@ public class AsyncCache<TKey, TValue> {
     }
 
     /**
+     * Returns a snapshot of the current cache entries that have completed successfully.
+     */
+    public Map<TKey, TValue> getEntries() {
+        Map<TKey, TValue> result = new HashMap<>();
+        for (Map.Entry<TKey, AsyncLazy<TValue>> entry : values.entrySet()) {
+            Optional<TValue> value = entry.getValue().tryGet();
+            if (value.isPresent()) {
+                result.put(entry.getKey(), value.get());
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Creates an AsyncCache pre-populated with the given entries.
+     */
+    public static <TKey, TValue> AsyncCache<TKey, TValue> fromMap(
+            IEqualityComparer<TValue> equalityComparer, Map<TKey, TValue> entries) {
+        ConcurrentHashMap<TKey, AsyncLazy<TValue>> values = new ConcurrentHashMap<>();
+        for (Map.Entry<TKey, TValue> entry : entries.entrySet()) {
+            values.put(entry.getKey(), new AsyncLazy<>(entry.getValue()));
+        }
+        return new AsyncCache<>(equalityComparer, values);
+    }
+
+    /**
      * Forces refresh of the cached item if it is not being refreshed at the moment.
      * @param key
      * @param singleValueInitFunc
@@ -144,141 +164,6 @@ public class AsyncCache<TKey, TValue> {
             // UPDATE the new task in the cache,
             values.merge(key, newLazyValue,
                     (lazyValue1, lazyValu2) -> lazyValue1 == initialLazyValue ? lazyValu2 : lazyValue1);
-        }
-    }
-
-    public abstract static class SerializableAsyncCache<TKey, TValue> implements Serializable {
-        private static final long serialVersionUID = 2l;
-        private static transient Logger logger = LoggerFactory.getLogger(SerializableAsyncCache.class);
-        protected transient AsyncCache<TKey, TValue> cache;
-
-        protected SerializableAsyncCache() {}
-
-        /**
-         * Returns the default equality comparer for this cache type.
-         * Used as a fallback when the serialized comparer cannot be deserialized safely.
-         */
-        protected abstract IEqualityComparer<TValue> getDefaultEqualityComparer();
-
-        public static class SerializableAsyncCollectionCache extends SerializableAsyncCache<String, DocumentCollection> {
-            private static final long serialVersionUID = 2l;
-            private SerializableAsyncCollectionCache() {}
-
-            @Override
-            protected IEqualityComparer<DocumentCollection> getDefaultEqualityComparer() {
-                return new RxCollectionCache.CollectionRidComparer();
-            }
-
-            @Override
-            protected void serializeKey(ObjectOutputStream oos, String s) throws IOException {
-                oos.writeUTF(s);
-            }
-
-            @Override
-            protected void serializeValue(ObjectOutputStream oos, DocumentCollection documentCollection) throws IOException {
-                oos.writeObject(DocumentCollection.SerializableDocumentCollection.from(documentCollection));
-            }
-
-            @Override
-            protected String deserializeKey(ObjectInputStream ois) throws IOException {
-                return ois.readUTF();
-            }
-
-            @Override
-            protected DocumentCollection deserializeValue(ObjectInputStream ois) throws IOException,
-                ClassNotFoundException {
-                Object obj = ois.readObject();
-                // Security fix: Validate that the deserialized object is the expected type
-                if (!(obj instanceof DocumentCollection.SerializableDocumentCollection)) {
-                    throw new InvalidClassException(
-                        "Expected SerializableDocumentCollection but got " + 
-                        (obj == null ? "null" : obj.getClass().getName())
-                    );
-                }
-                return ((DocumentCollection.SerializableDocumentCollection) obj).getWrappedItem();
-            }
-        }
-
-        @SuppressWarnings("unchecked")
-        public static <TKey, TValue> SerializableAsyncCache<TKey, TValue> from(AsyncCache<TKey,
-            TValue> cache, Class<TKey> keyClass, Class<TValue> valueClass) {
-            if (keyClass == String.class && valueClass == DocumentCollection.class) {
-                SerializableAsyncCollectionCache sacc = new SerializableAsyncCollectionCache();
-                sacc.cache = (AsyncCache<String, DocumentCollection>) cache;
-                return (SerializableAsyncCache<TKey, TValue>) sacc;
-            } else {
-                throw new RuntimeException("not supported");
-            }
-        }
-
-        protected abstract void serializeKey(ObjectOutputStream oos, TKey key) throws IOException;
-
-        protected abstract void serializeValue(ObjectOutputStream oos, TValue value) throws IOException;
-
-        protected abstract TKey deserializeKey(ObjectInputStream oos) throws IOException;
-
-        protected abstract TValue deserializeValue(ObjectInputStream oos) throws IOException, ClassNotFoundException;
-
-        public AsyncCache<TKey, TValue> toAsyncCache() {
-            return this.cache;
-        }
-
-        private void writeObject(ObjectOutputStream oos)
-            throws IOException {
-            logger.info("Serializing {}", this.getClass());
-
-            Map<TKey, TValue> paris = new HashMap<>();
-            for (Map.Entry<TKey, AsyncLazy<TValue>> entry : cache.values.entrySet()) {
-                TKey key = entry.getKey();
-                Optional<TValue> value = entry.getValue().tryGet();
-                if (value.isPresent()) {
-                    paris.put(key, value.get());
-                }
-            }
-
-            oos.writeInt(paris.size());
-
-            for (Map.Entry<TKey, TValue> entry : paris.entrySet()) {
-                serializeKey(oos, entry.getKey());
-                serializeValue(oos, entry.getValue());
-            }
-
-            oos.writeObject(cache.equalityComparer);
-        }
-
-        private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
-            logger.info("Deserializing {}", this.getClass());
-
-            int size = ois.readInt();
-            ConcurrentHashMap<TKey, AsyncLazy<TValue>> pairs = new ConcurrentHashMap<>();
-            for (int i = 0; i < size; i++) {
-                TKey key = deserializeKey(ois);
-                TValue value = deserializeValue(ois);
-                pairs.put(key, new AsyncLazy<>(value));
-            }
-
-            // Attempt to use the deserialized IEqualityComparer if it is a known safe type
-            // (i.e., it passed the SafeObjectInputStream allowlist). Fall back to the
-            // subclass-provided default comparer if deserialization fails.
-            IEqualityComparer<TValue> equalityComparer;
-            try {
-                Object comparerObj = ois.readObject();
-                if (comparerObj instanceof IEqualityComparer) {
-                    @SuppressWarnings("unchecked")
-                    IEqualityComparer<TValue> deserializedComparer = (IEqualityComparer<TValue>) comparerObj;
-                    equalityComparer = deserializedComparer;
-                } else {
-                    logger.warn("Deserialized comparer is not an IEqualityComparer (was {}), using default",
-                        comparerObj == null ? "null" : comparerObj.getClass().getName());
-                    equalityComparer = getDefaultEqualityComparer();
-                }
-            } catch (ClassNotFoundException | IOException e) {
-                // The comparer's class is not in SafeObjectInputStream's allowlist
-                // or could not be deserialized. Fall back to the subclass-provided default.
-                logger.debug("Comparer class not in allowlist, using default: {}", e.getMessage());
-                equalityComparer = getDefaultEqualityComparer();
-            }
-            this.cache = new AsyncCache<>(equalityComparer, pairs);
         }
     }
 }
