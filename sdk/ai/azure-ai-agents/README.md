@@ -80,7 +80,12 @@ ResponsesClient responsesClient = builder.buildResponsesClient();
 ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
 ```
 
-The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can be accessed from either the `ResponsesClient` or the `ConversationsClient` using the `getOpenAIClient()` method.
+The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can be accessed from either the `ResponsesClient` or the `ConversationsClient` using the `getOpenAIClient()` method. Alternatively, you can build an `OpenAIClient` or `OpenAIClientAsync` directly from the `AgentsClientBuilder`:
+
+```java
+OpenAIClient openAIClient = builder.buildOpenAIClient();
+OpenAIClientAsync openAIAsyncClient = builder.buildOpenAIAsyncClient();
+```
 
 ### Agent tools
 
