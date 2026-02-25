@@ -511,7 +511,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
         if (options.getBodyFlux() == null) {
-            return monoError(LOGGER, new IllegalArgumentException("'options.getBodyFlux()' cannot be null."));
+            return monoError(LOGGER, new IllegalArgumentException("PageBlobUploadPagesOptions must be constructed with Flux for async client."));
         }
         try {
             return withContext(context -> uploadPagesWithResponseInternal(options.getPageRange(), options.getBodyFlux(),
