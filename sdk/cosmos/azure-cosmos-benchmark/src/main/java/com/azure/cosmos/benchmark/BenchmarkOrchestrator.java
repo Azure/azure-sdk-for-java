@@ -73,8 +73,15 @@ public class BenchmarkOrchestrator {
             logger.info("JVM stats enabled (gc, threads, memory, threadPrefix)");
         }
 
+        // Build Cosmos micrometer registry (App Insights / Graphite) once, reuse everywhere
+        MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
+        if (cosmosMicrometerRegistry != null) {
+            Metrics.addRegistry(cosmosMicrometerRegistry);
+            logger.info("Cosmos + Reactor Netty metrics will export to: {}", cosmosMicrometerRegistry.getClass().getSimpleName());
+        }
+
         // Prepare all tenants (inject shared state, set defaults)
-        prepareTenants(config);
+        prepareTenants(config, cosmosMicrometerRegistry);
 
         // Reporter selection: Graphite > CSV > Console (same pattern as original AsyncBenchmark)
         ScheduledReporter reporter;
@@ -106,10 +113,13 @@ public class BenchmarkOrchestrator {
         }
         reporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
 
-                // Register SimpleMeterRegistry on Micrometer globalRegistry BEFORE clients are created
+        // Register on Micrometer globalRegistry BEFORE clients are created,
+        // so Reactor Netty ConnectionProvider.metrics(true) gauges are captured.
+        // 1) SimpleMeterRegistry for local logPoolMetrics() queries
         SimpleMeterRegistry poolMetricsRegistry = new SimpleMeterRegistry();
         Metrics.addRegistry(poolMetricsRegistry);
-        logger.info("Reactor Netty pool metrics bridge enabled");
+
+        logger.info("Reactor Netty pool metrics bridge enabled (SimpleMeterRegistry + App Insights)");
 
         // Optional: Result uploader
         CosmosClient resultUploaderClient = null;
@@ -304,8 +314,8 @@ public class BenchmarkOrchestrator {
      * Centralizes all tenant mutation: suppressCleanup, applicationName suffix,
      * micrometer registry injection.
      */
-    private void prepareTenants(BenchmarkConfig config) {
-        MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
+    private void prepareTenants(BenchmarkConfig config, MeterRegistry cosmosMicrometerRegistry) {
+        // cosmosMicrometerRegistry passed as parameter
         if (cosmosMicrometerRegistry != null) {
             logger.info("Cosmos micrometer registry: {}", cosmosMicrometerRegistry.getClass().getSimpleName());
         }
