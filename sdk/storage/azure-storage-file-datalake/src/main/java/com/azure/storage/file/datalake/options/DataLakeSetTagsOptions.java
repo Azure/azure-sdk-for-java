@@ -14,7 +14,7 @@ import java.util.Map;
  * Extended options that may be passed when setting tags for a path.
  */
 @Fluent
-public class DataLakeSetTagsOptions {
+public final class DataLakeSetTagsOptions {
     private final Map<String, String> tags;
     private DataLakeRequestConditions requestConditions;
 

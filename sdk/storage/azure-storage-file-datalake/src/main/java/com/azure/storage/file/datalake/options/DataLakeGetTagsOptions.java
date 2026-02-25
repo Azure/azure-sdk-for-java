@@ -10,7 +10,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
  * Extended options that may be passed when getting tags for a path.
  */
 @Fluent
-public class DataLakeGetTagsOptions {
+public final class DataLakeGetTagsOptions {
     private DataLakeRequestConditions requestConditions;
 
     /**
