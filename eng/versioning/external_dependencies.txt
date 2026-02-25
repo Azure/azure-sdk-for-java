@@ -43,7 +43,6 @@ commons-net:commons-net;3.9.0
 io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
 io.fabric8:kubernetes-client;6.12.1
-io.netty:netty-bom;4.1.130.Final
 io.netty:netty-buffer;4.1.130.Final
 io.netty:netty-common;4.1.130.Final
 io.netty:netty-codec;4.1.130.Final
@@ -58,7 +57,6 @@ io.netty:netty-transport;4.1.130.Final
 io.netty:netty-transport-native-epoll;4.1.130.Final
 io.netty:netty-transport-native-unix-common;4.1.130.Final
 io.netty:netty-transport-native-kqueue;4.1.130.Final
-io.projectreactor:reactor-bom;2024.0.9
 io.projectreactor.netty:reactor-netty-http;1.2.13
 io.projectreactor:reactor-core;3.7.14
 io.vertx:vertx-codegen;4.5.23
@@ -302,7 +300,7 @@ springboot4_com.fasterxml.jackson.module:jackson-module-parameter-names;2.20.2
 springboot4_com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
 springboot4_com.google.code.findbugs:jsr305;3.0.2
 springboot4_com.mysql:mysql-connector-j;9.5.0
-springboot4_com.nimbusds:nimbus-jose-jwt;9.37.3
+springboot4_com.nimbusds:nimbus-jose-jwt;10.8
 springboot4_io.lettuce:lettuce-core;6.8.2.RELEASE
 springboot4_io.micrometer:micrometer-core;1.16.2
 springboot4_io.netty:netty-buffer;4.2.9.Final

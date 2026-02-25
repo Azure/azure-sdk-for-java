@@ -1,5 +1,16 @@
 ## Release History
 
+### 4.79.0-beta.1 (Unreleased)
+
+#### Features Added
+* Added support for N-Region synchronous commit feature - See [PR 47757](https://github.com/Azure/azure-sdk-for-java/pull/47757)
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.78.0 (2026-02-10)
 
 #### Features Added

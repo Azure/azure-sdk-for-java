@@ -52,7 +52,7 @@ public final class Connection implements JsonSerializable<Connection> {
      * The credentials used by the connection
      */
     @Generated
-    private BaseCredentials credentials;
+    private BaseCredential credentials;
 
     /*
      * Metadata of the connection
@@ -123,7 +123,7 @@ public final class Connection implements JsonSerializable<Connection> {
      * @return the credentials value.
      */
     @Generated
-    public BaseCredentials getCredentials() {
+    public BaseCredential getCredentials() {
         return this.credentials;
     }
 
@@ -174,7 +174,7 @@ public final class Connection implements JsonSerializable<Connection> {
                 } else if ("isDefault".equals(fieldName)) {
                     deserializedConnection.isDefault = reader.getBoolean();
                 } else if ("credentials".equals(fieldName)) {
-                    deserializedConnection.credentials = BaseCredentials.fromJson(reader);
+                    deserializedConnection.credentials = BaseCredential.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
                     Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
                     deserializedConnection.metadata = metadata;

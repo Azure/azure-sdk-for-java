@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class PrivateEndpointsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/PrivateEndpointCreateWithASG.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/PrivateEndpointCreateWithASG.
      * json
      */
     /**
@@ -47,7 +47,7 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/PrivateEndpointCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/PrivateEndpointCreate.json
      */
     /**
      * Sample code: Create private endpoint.
@@ -76,7 +76,7 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/
      * PrivateEndpointCreateForManualApproval.json
      */
     /**

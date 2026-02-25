@@ -9,6 +9,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### New Features
 
 - Add ConnectionDetails for ServiceBus. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add ConnectionDetails for EventHubs. [#47926](https://github.com/Azure/azure-sdk-for-java/pull/47926).
 
 ### Spring Cloud Azure Docker Compose
 
@@ -17,6 +18,7 @@ This section includes changes in `spring-cloud-azure-docker-compose` module.
 #### New Features
 
 - Add ServiceBusDockerComposeConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add EventHubsDockerComposeConnectionDetailsFactory. [#47926](https://github.com/Azure/azure-sdk-for-java/pull/47926).
 
 ### Spring Cloud Azure Test Containers
 
@@ -25,6 +27,7 @@ This section includes changes in `spring-cloud-azure-testcontainers` module.
 #### New Features
 
 - Add ServiceBusContainerConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add EventHubsContainerConnectionDetailsFactory. [#47926](https://github.com/Azure/azure-sdk-for-java/pull/47926).
 
 ### Spring Cloud Azure Starter Monitor
 
