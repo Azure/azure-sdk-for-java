@@ -15,7 +15,11 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,6 +161,30 @@ public class BenchmarkOrchestrator {
         clearGlobalSystemProperties();
     }
 
+    // ======== Pool metrics logging ========
+
+    private void logPoolMetrics(String phase) {
+        logger.info("[POOL_METRICS] phase={} timestamp={}", phase, Instant.now());
+        int count = 0;
+        for (Meter meter : Metrics.globalRegistry.getMeters()) {
+            String name = meter.getId().getName();
+            if (name.contains("reactor.netty.connection.provider")) {
+                String remoteAddr = meter.getId().getTag("remote.address");
+                String poolName = meter.getId().getTag("name");
+                double value = 0;
+                if (meter instanceof Gauge) {
+                    value = ((Gauge) meter).value();
+                }
+                if (value > 0 || count < 5) { // log first 5 + any with non-zero value
+                    logger.info("[POOL_METRICS]   {} remote={} pool={} value={}",
+                        name, remoteAddr, poolName, value);
+                }
+                count++;
+            }
+        }
+        logger.info("[POOL_METRICS] total pool metric entries: {}", count);
+    }
+
     // ======== Lifecycle loop (create -> run -> close -> settle x N) ========
 
     private void runLifecycleLoop(BenchmarkConfig config, MetricRegistry registry,
@@ -176,11 +204,13 @@ public class BenchmarkOrchestrator {
             reporter.report();
             logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
                 cycle, benchmarks.size(), Instant.now());
+            logPoolMetrics("POST_CREATE");
 
             // 2. Run workload in parallel
             runWorkload(benchmarks, cycle);
             reporter.report();
             logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
+            logPoolMetrics("POST_WORKLOAD");
 
             // 3. Close all clients
             shutdownBenchmarks(benchmarks, cycle);
