@@ -874,6 +874,12 @@
             "match": "class com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*ListResult"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.appservice\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
         }
       ]
     }
