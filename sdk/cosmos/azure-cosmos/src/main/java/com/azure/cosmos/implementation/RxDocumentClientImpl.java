@@ -293,6 +293,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
     private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
     private Consumer<DatabaseAccount> perPartitionFailoverConfigModifier;
+    private Map<String, String> customHeaders;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -374,6 +375,60 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 consistencyLevel,
                 readConsistencyStrategy,
                 configs,
+                cosmosAuthorizationTokenResolver,
+                credential,
+                tokenCredential,
+                sessionCapturingOverride,
+                connectionSharingAcrossClientsEnabled,
+                contentResponseOnWriteEnabled,
+                metadataCachesSnapshot,
+                apiType,
+                clientTelemetryConfig,
+                clientCorrelationId,
+                cosmosEndToEndOperationLatencyPolicyConfig,
+                sessionRetryOptions,
+                containerProactiveInitConfig,
+                defaultCustomSerializer,
+                isRegionScopedSessionCapturingEnabled,
+                operationPolicies,
+                isPerPartitionAutomaticFailoverEnabled,
+                null
+        );
+    }
+
+    public RxDocumentClientImpl(URI serviceEndpoint,
+                                String masterKeyOrResourceToken,
+                                List<Permission> permissionFeed,
+                                ConnectionPolicy connectionPolicy,
+                                ConsistencyLevel consistencyLevel,
+                                ReadConsistencyStrategy readConsistencyStrategy,
+                                Configs configs,
+                                CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver,
+                                AzureKeyCredential credential,
+                                TokenCredential tokenCredential,
+                                boolean sessionCapturingOverride,
+                                boolean connectionSharingAcrossClientsEnabled,
+                                boolean contentResponseOnWriteEnabled,
+                                CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
+                                ApiType apiType,
+                                CosmosClientTelemetryConfig clientTelemetryConfig,
+                                String clientCorrelationId,
+                                CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
+                                SessionRetryOptions sessionRetryOptions,
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                CosmosItemSerializer defaultCustomSerializer,
+                                boolean isRegionScopedSessionCapturingEnabled,
+                                List<CosmosOperationPolicy> operationPolicies,
+                                boolean isPerPartitionAutomaticFailoverEnabled,
+                                Map<String, String> customHeaders) {
+        this(
+                serviceEndpoint,
+                masterKeyOrResourceToken,
+                permissionFeed,
+                connectionPolicy,
+                consistencyLevel,
+                readConsistencyStrategy,
+                configs,
                 credential,
                 tokenCredential,
                 sessionCapturingOverride,
@@ -392,6 +447,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         this.operationPolicies = operationPolicies;
+        this.customHeaders = customHeaders;
     }
 
     private RxDocumentClientImpl(URI serviceEndpoint,
@@ -1883,6 +1939,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Map<String, String> getRequestHeaders(RequestOptions options, ResourceType resourceType, OperationType operationType) {
         Map<String, String> headers = new HashMap<>();
+
+        // Apply client-level custom headers first (e.g., workload-id from CosmosClientBuilder.customHeaders())
+        if (this.customHeaders != null && !this.customHeaders.isEmpty()) {
+            headers.putAll(this.customHeaders);
+        }
 
         if (this.useMultipleWriteLocations) {
             headers.put(HttpConstants.HttpHeaders.ALLOW_TENTATIVE_WRITES, Boolean.TRUE.toString());

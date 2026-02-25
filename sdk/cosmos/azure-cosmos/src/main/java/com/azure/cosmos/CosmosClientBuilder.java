@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
@@ -155,6 +156,7 @@ public class CosmosClientBuilder implements
     private boolean serverCertValidationDisabled = false;
 
     private Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory = null;
+    private Map<String, String> customHeaders;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -732,6 +734,33 @@ public class CosmosClientBuilder implements
     public CosmosClientBuilder userAgentSuffix(String userAgentSuffix) {
         this.userAgentSuffix = userAgentSuffix;
         return this;
+    }
+
+    /**
+     * Sets custom HTTP headers that will be included with every request from this client.
+     * <p>
+     * These headers are sent with all requests. For Direct/RNTBD mode, only known headers
+     * (like {@code x-ms-cosmos-workload-id}) will be encoded and sent. Unknown headers
+     * work only in Gateway mode.
+     * <p>
+     * If the same header is also set on request options (e.g.,
+     * {@code CosmosItemRequestOptions.setHeader(String, String)}),
+     * the request-level value takes precedence over the client-level value.
+     *
+     * @param customHeaders map of header name to value
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder customHeaders(Map<String, String> customHeaders) {
+        this.customHeaders = customHeaders;
+        return this;
+    }
+
+    /**
+     * Gets the custom headers configured on this builder.
+     * @return the custom headers map, or null if not set
+     */
+    Map<String, String> getCustomHeaders() {
+        return this.customHeaders;
     }
 
     /**
