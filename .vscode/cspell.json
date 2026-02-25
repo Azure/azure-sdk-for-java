@@ -361,6 +361,7 @@
     "Mordor",
     "mosca",
     "mpga",
+    "mpkjc",
     "msal",
     "msix",
     "MSRC",
@@ -460,6 +461,16 @@
         "VMGUEST",
         "imds",
         "confidentialvm"
+      ]
+    },
+    {
+      "filename": "sdk/ai/**",
+      "words": [
+        "oneg",
+        "fourg",
+        "sixg",
+        "okio",
+        "xhigh"
       ]
     },
     {
