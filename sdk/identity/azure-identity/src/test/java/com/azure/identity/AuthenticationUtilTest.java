@@ -9,7 +9,6 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 
-import org.apache.tools.ant.taskdefs.condition.Http;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
