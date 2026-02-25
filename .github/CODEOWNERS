@@ -98,7 +98,7 @@
 /sdk/ai/azure-ai-inference/                                        @Azure/azure-java-sdk @dargilco @glharper @trrwilson
 
 # PRLabel: %App Configuration
-/sdk/appconfiguration/                                             @alzimmermsft @avanigupta @Azure/azure-java-sdk @mrm9084 @rossgrambo
+/sdk/appconfiguration/                                             @alzimmermsft @avanigupta @Azure/azure-java-sdk @mrm9084 @rossgrambo @nroutray
 
 # AzureSdkOwners:                                                  @mrm9084
 # ServiceLabel: %App Configuration
