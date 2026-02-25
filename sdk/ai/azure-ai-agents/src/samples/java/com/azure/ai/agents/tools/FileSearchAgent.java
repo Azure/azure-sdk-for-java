@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents;
+package com.azure.ai.agents.tools;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -9,17 +9,15 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
+import com.azure.ai.agents.*;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
-import com.openai.client.okhttp.OpenAIOkHttpClient;
-import com.openai.credential.BearerTokenCredential;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.files.FileCreateParams;
 import com.openai.models.files.FileObject;
