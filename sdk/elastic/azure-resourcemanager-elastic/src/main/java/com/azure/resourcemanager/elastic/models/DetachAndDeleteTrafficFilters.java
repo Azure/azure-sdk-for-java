@@ -12,7 +12,8 @@ import com.azure.core.util.Context;
  */
 public interface DetachAndDeleteTrafficFilters {
     /**
-     * Detach and Delete traffic filter from the given deployment.
+     * Detach and delete an existing traffic filter from your Elastic monitor resource, removing its network traffic
+     * control capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -26,7 +27,8 @@ public interface DetachAndDeleteTrafficFilters {
     Response<Void> deleteWithResponse(String resourceGroupName, String monitorName, String rulesetId, Context context);
 
     /**
-     * Detach and Delete traffic filter from the given deployment.
+     * Detach and delete an existing traffic filter from your Elastic monitor resource, removing its network traffic
+     * control capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

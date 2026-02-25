@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.workloadorchestration.generated;
 
 import com.azure.resourcemanager.workloadorchestration.models.Schema;
-import com.azure.resourcemanager.workloadorchestration.models.SchemaProperties;
+import com.azure.resourcemanager.workloadorchestration.models.SchemaUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public final class SchemasUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key6760", "fakeTokenPlaceholder"))
-            .withProperties(new SchemaProperties())
+            .withProperties(new SchemaUpdateProperties())
             .apply();
     }
 

@@ -224,8 +224,9 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
      * {@inheritDoc}
      */
     @Override
-    public AutonomousDatabaseProperties withScheduledOperations(ScheduledOperationsType scheduledOperations) {
-        super.withScheduledOperations(scheduledOperations);
+    public AutonomousDatabaseProperties
+        withScheduledOperationsList(List<ScheduledOperationsType> scheduledOperationsList) {
+        super.withScheduledOperationsList(scheduledOperationsList);
         return this;
     }
 
@@ -349,39 +350,6 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (customerContacts() != null) {
-            customerContacts().forEach(e -> e.validate());
-        }
-        if (remoteDisasterRecoveryConfiguration() != null) {
-            remoteDisasterRecoveryConfiguration().validate();
-        }
-        if (localStandbyDb() != null) {
-            localStandbyDb().validate();
-        }
-        if (scheduledOperations() != null) {
-            scheduledOperations().validate();
-        }
-        if (apexDetails() != null) {
-            apexDetails().validate();
-        }
-        if (connectionStrings() != null) {
-            connectionStrings().validate();
-        }
-        if (connectionUrls() != null) {
-            connectionUrls().validate();
-        }
-        if (longTermBackupSchedule() != null) {
-            longTermBackupSchedule().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -410,7 +378,8 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
             isPreviewVersionWithServiceTermsAccepted());
         jsonWriter.writeStringField("licenseModel", licenseModel() == null ? null : licenseModel().toString());
         jsonWriter.writeStringField("ncharacterSet", ncharacterSet());
-        jsonWriter.writeJsonField("scheduledOperations", scheduledOperations());
+        jsonWriter.writeArrayField("scheduledOperationsList", scheduledOperationsList(),
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("privateEndpointIp", privateEndpointIp());
         jsonWriter.writeStringField("privateEndpointLabel", privateEndpointLabel());
         jsonWriter.writeStringField("subnetId", subnetId());
@@ -527,9 +496,10 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
                 } else if ("lifecycleState".equals(fieldName)) {
                     deserializedAutonomousDatabaseProperties
                         .withLifecycleState(AutonomousDatabaseLifecycleState.fromString(reader.getString()));
-                } else if ("scheduledOperations".equals(fieldName)) {
-                    deserializedAutonomousDatabaseProperties
-                        .withScheduledOperations(ScheduledOperationsType.fromJson(reader));
+                } else if ("scheduledOperationsList".equals(fieldName)) {
+                    List<ScheduledOperationsType> scheduledOperationsList
+                        = reader.readArray(reader1 -> ScheduledOperationsType.fromJson(reader1));
+                    deserializedAutonomousDatabaseProperties.withScheduledOperationsList(scheduledOperationsList);
                 } else if ("privateEndpointIp".equals(fieldName)) {
                     deserializedAutonomousDatabaseProperties.withPrivateEndpointIp(reader.getString());
                 } else if ("privateEndpointLabel".equals(fieldName)) {

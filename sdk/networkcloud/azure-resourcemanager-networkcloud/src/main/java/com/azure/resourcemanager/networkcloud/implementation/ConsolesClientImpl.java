@@ -81,8 +81,8 @@ public final class ConsolesClientImpl implements ConsolesClient {
         Mono<Response<ConsoleList>> listByVirtualMachine(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualMachineName") String virtualMachineName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualMachineName") String virtualMachineName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/consoles")
@@ -91,8 +91,8 @@ public final class ConsolesClientImpl implements ConsolesClient {
         Response<ConsoleList> listByVirtualMachineSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualMachineName") String virtualMachineName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualMachineName") String virtualMachineName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/consoles/{consoleName}")
@@ -208,6 +208,9 @@ public final class ConsolesClientImpl implements ConsolesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -216,7 +219,7 @@ public final class ConsolesClientImpl implements ConsolesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConsoleInner>> listByVirtualMachineSinglePageAsync(String resourceGroupName,
-        String virtualMachineName) {
+        String virtualMachineName, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -236,10 +239,34 @@ public final class ConsolesClientImpl implements ConsolesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByVirtualMachine(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, virtualMachineName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, virtualMachineName, top, skipToken, accept,
+                context))
             .<PagedResponse<ConsoleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List consoles of the virtual machine.
+     * 
+     * Get a list of consoles for the provided virtual machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineName The name of the virtual machine.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of consoles for the provided virtual machine as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ConsoleInner> listByVirtualMachineAsync(String resourceGroupName, String virtualMachineName,
+        Integer top, String skipToken) {
+        return new PagedFlux<>(
+            () -> listByVirtualMachineSinglePageAsync(resourceGroupName, virtualMachineName, top, skipToken),
+            nextLink -> listByVirtualMachineNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -256,7 +283,10 @@ public final class ConsolesClientImpl implements ConsolesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConsoleInner> listByVirtualMachineAsync(String resourceGroupName, String virtualMachineName) {
-        return new PagedFlux<>(() -> listByVirtualMachineSinglePageAsync(resourceGroupName, virtualMachineName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(
+            () -> listByVirtualMachineSinglePageAsync(resourceGroupName, virtualMachineName, top, skipToken),
             nextLink -> listByVirtualMachineNextSinglePageAsync(nextLink));
     }
 
@@ -267,6 +297,9 @@ public final class ConsolesClientImpl implements ConsolesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -274,7 +307,7 @@ public final class ConsolesClientImpl implements ConsolesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConsoleInner> listByVirtualMachineSinglePage(String resourceGroupName,
-        String virtualMachineName) {
+        String virtualMachineName, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -294,9 +327,9 @@ public final class ConsolesClientImpl implements ConsolesClient {
                 .log(new IllegalArgumentException("Parameter virtualMachineName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ConsoleList> res
-            = service.listByVirtualMachineSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, virtualMachineName, accept, Context.NONE);
+        Response<ConsoleList> res = service.listByVirtualMachineSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, virtualMachineName, top,
+            skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -308,6 +341,9 @@ public final class ConsolesClientImpl implements ConsolesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -316,7 +352,7 @@ public final class ConsolesClientImpl implements ConsolesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConsoleInner> listByVirtualMachineSinglePage(String resourceGroupName,
-        String virtualMachineName, Context context) {
+        String virtualMachineName, Integer top, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -336,9 +372,9 @@ public final class ConsolesClientImpl implements ConsolesClient {
                 .log(new IllegalArgumentException("Parameter virtualMachineName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ConsoleList> res
-            = service.listByVirtualMachineSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, virtualMachineName, accept, context);
+        Response<ConsoleList> res = service.listByVirtualMachineSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, virtualMachineName, top,
+            skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -357,7 +393,10 @@ public final class ConsolesClientImpl implements ConsolesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConsoleInner> listByVirtualMachine(String resourceGroupName, String virtualMachineName) {
-        return new PagedIterable<>(() -> listByVirtualMachineSinglePage(resourceGroupName, virtualMachineName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(
+            () -> listByVirtualMachineSinglePage(resourceGroupName, virtualMachineName, top, skipToken),
             nextLink -> listByVirtualMachineNextSinglePage(nextLink));
     }
 
@@ -368,6 +407,9 @@ public final class ConsolesClientImpl implements ConsolesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -376,8 +418,9 @@ public final class ConsolesClientImpl implements ConsolesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConsoleInner> listByVirtualMachine(String resourceGroupName, String virtualMachineName,
-        Context context) {
-        return new PagedIterable<>(() -> listByVirtualMachineSinglePage(resourceGroupName, virtualMachineName, context),
+        Integer top, String skipToken, Context context) {
+        return new PagedIterable<>(
+            () -> listByVirtualMachineSinglePage(resourceGroupName, virtualMachineName, top, skipToken, context),
             nextLink -> listByVirtualMachineNextSinglePage(nextLink, context));
     }
 
@@ -1690,13 +1733,15 @@ public final class ConsolesClientImpl implements ConsolesClient {
     }
 
     /**
+     * List consoles of the virtual machine.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return consoleList represents a list of virtual machine consoles along with {@link PagedResponse} on successful
+     * @return a list of consoles for the provided virtual machine along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1718,13 +1763,15 @@ public final class ConsolesClientImpl implements ConsolesClient {
     }
 
     /**
+     * List consoles of the virtual machine.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return consoleList represents a list of virtual machine consoles along with {@link PagedResponse}.
+     * @return a list of consoles for the provided virtual machine along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConsoleInner> listByVirtualMachineNextSinglePage(String nextLink) {
@@ -1745,6 +1792,8 @@ public final class ConsolesClientImpl implements ConsolesClient {
     }
 
     /**
+     * List consoles of the virtual machine.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1752,7 +1801,7 @@ public final class ConsolesClientImpl implements ConsolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return consoleList represents a list of virtual machine consoles along with {@link PagedResponse}.
+     * @return a list of consoles for the provided virtual machine along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConsoleInner> listByVirtualMachineNextSinglePage(String nextLink, Context context) {

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ManagedDashboardsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Dashboard_Update.json
+     * x-ms-original-file: 2025-08-01/Dashboard_Update.json
      */
     /**
      * Sample code: Dashboard_Update.

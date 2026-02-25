@@ -90,7 +90,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
     }
 
     @BeforeSuite(groups = { "kafka", "kafka-integration" }, timeOut = SUITE_SETUP_TIMEOUT)
-    public static void beforeSuite() {
+    public void beforeSuite() {
 
         logger.info("beforeSuite Started");
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
@@ -122,7 +122,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
     }
 
     @BeforeSuite(groups = { "kafka-emulator" }, timeOut = SUITE_SETUP_TIMEOUT)
-    public static void beforeSuite_emulator() {
+    public void beforeSuite_emulator() {
 
         logger.info("beforeSuite Started");
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
@@ -154,7 +154,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
     }
 
     @BeforeSuite(groups = { "unit" }, timeOut = SUITE_SETUP_TIMEOUT)
-    public static void beforeSuite_unit() {
+    public void beforeSuite_unit() {
         logger.info("beforeSuite for unit tests started");
 
         databaseName =
@@ -166,7 +166,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
     }
 
     @AfterSuite(groups = { "kafka", "kafka-integration", "kafka-emulator" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
-    public static void afterSuite() {
+    public void afterSuite() {
 
         logger.info("afterSuite Started");
 

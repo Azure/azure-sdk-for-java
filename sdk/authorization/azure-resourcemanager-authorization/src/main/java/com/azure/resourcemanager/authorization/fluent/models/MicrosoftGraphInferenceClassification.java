@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * inferenceClassification.
+ * Represents an inference classification.
  */
 @Fluent
 public final class MicrosoftGraphInferenceClassification extends MicrosoftGraphEntity {

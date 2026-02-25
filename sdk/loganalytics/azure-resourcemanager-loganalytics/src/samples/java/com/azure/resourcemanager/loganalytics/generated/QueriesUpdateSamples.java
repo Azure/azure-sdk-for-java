@@ -16,8 +16,8 @@ import java.util.Map;
 public final class QueriesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPackQueriesUpdate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPackQueriesUpdate.json
      */
     /**
      * Sample code: QueryPatch.

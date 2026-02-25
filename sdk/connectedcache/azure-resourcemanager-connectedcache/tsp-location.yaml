@@ -1,4 +1,4 @@
 directory: specification/connectedcache/ConnectedCache.Management
-commit: 6f175c9c006269a1d0f1928fbc768cacc6ac379a
+commit: be46becafeb29aa993898709e35759d3643b2809
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

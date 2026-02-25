@@ -11,7 +11,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel model = BinaryData.fromString(
-            "{\"resultType\":\"TableLevelOutput\",\"tableName\":\"rpfbcunezz\",\"databaseName\":\"zelfwyfwl\",\"cdcInsertCounter\":\"jwetnpsihcla\",\"cdcUpdateCounter\":\"va\",\"cdcDeleteCounter\":\"pt\",\"fullLoadEstFinishTime\":\"2021-01-27T06:49:32Z\",\"fullLoadStartedOn\":\"2021-10-26T12:31:30Z\",\"fullLoadEndedOn\":\"2021-07-31T17:09:35Z\",\"fullLoadTotalRows\":4446933465331970389,\"state\":\"ERROR\",\"totalChangesApplied\":4464323029866194499,\"dataErrorsCounter\":1825722132494562073,\"lastModifiedTime\":\"2021-03-27T13:01:29Z\",\"id\":\"w\"}")
+            "{\"resultType\":\"TableLevelOutput\",\"tableName\":\"snptfujgicgaao\",\"databaseName\":\"ttaqutdew\",\"cdcInsertCounter\":\"xswvru\",\"cdcUpdateCounter\":\"zzjgehkfki\",\"cdcDeleteCounter\":\"tixo\",\"fullLoadEstFinishTime\":\"2021-03-25T04:51:39Z\",\"fullLoadStartedOn\":\"2021-03-14T18:41:32Z\",\"fullLoadEndedOn\":\"2021-02-15T23:36:52Z\",\"fullLoadTotalRows\":8622143095824704559,\"state\":\"ERROR\",\"totalChangesApplied\":3436112259701675172,\"dataErrorsCounter\":504884331017838699,\"lastModifiedTime\":\"2021-11-10T00:22:24Z\",\"id\":\"tshi\"}")
             .toObject(MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.class);
     }
 

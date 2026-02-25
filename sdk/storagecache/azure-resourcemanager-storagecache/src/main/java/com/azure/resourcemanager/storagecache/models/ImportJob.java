@@ -66,6 +66,14 @@ public interface ImportJob {
     ImportJobProvisioningStateType provisioningState();
 
     /**
+     * Gets the adminStatus property: The administrative status of the import job. Possible values: 'Active', 'Cancel'.
+     * Passing in a value of 'Cancel' will cancel the current active import job. By default it is set to 'Active'.
+     * 
+     * @return the adminStatus value.
+     */
+    ImportJobAdminStatus adminStatus();
+
+    /**
      * Gets the importPrefixes property: An array of blob paths/prefixes that get imported into the cluster namespace.
      * It has '/' as the default value.
      * 
@@ -96,11 +104,11 @@ public interface ImportJob {
     Integer maximumErrors();
 
     /**
-     * Gets the state property: The state of the import job. InProgress indicates the import is still running. Canceled
-     * indicates it has been canceled by the user. Completed indicates import finished, successfully importing all
-     * discovered blobs into the Lustre namespace. CompletedPartial indicates the import finished but some blobs either
-     * were found to be conflicting and could not be imported or other errors were encountered. Failed means the import
-     * was unable to complete due to a fatal error.
+     * Gets the state property: The operational state of the import job. InProgress indicates the import is still
+     * running. Canceled indicates it has been canceled by the user. Completed indicates import finished, successfully
+     * importing all discovered blobs into the Lustre namespace. CompletedPartial indicates the import finished but some
+     * blobs either were found to be conflicting and could not be imported or other errors were encountered. Failed
+     * means the import was unable to complete due to a fatal error.
      * 
      * @return the state value.
      */
@@ -135,6 +143,50 @@ public interface ImportJob {
     Long totalBlobsImported();
 
     /**
+     * Gets the importedFiles property: New or modified files that have been imported into the filesystem.
+     * 
+     * @return the importedFiles value.
+     */
+    Long importedFiles();
+
+    /**
+     * Gets the importedDirectories property: New or modified directories that have been imported into the filesystem.
+     * 
+     * @return the importedDirectories value.
+     */
+    Long importedDirectories();
+
+    /**
+     * Gets the importedSymlinks property: Newly added symbolic links into the filesystem.
+     * 
+     * @return the importedSymlinks value.
+     */
+    Long importedSymlinks();
+
+    /**
+     * Gets the preexistingFiles property: Files that already exist in the filesystem and have not been modified.
+     * 
+     * @return the preexistingFiles value.
+     */
+    Long preexistingFiles();
+
+    /**
+     * Gets the preexistingDirectories property: Directories that already exist in the filesystem and have not been
+     * modified.
+     * 
+     * @return the preexistingDirectories value.
+     */
+    Long preexistingDirectories();
+
+    /**
+     * Gets the preexistingSymlinks property: Symbolic links that already exist in the filesystem and have not been
+     * modified.
+     * 
+     * @return the preexistingSymlinks value.
+     */
+    Long preexistingSymlinks();
+
+    /**
      * Gets the blobsImportedPerSecond property: A recent and frequently updated rate of total files, directories, and
      * symlinks imported per second.
      * 
@@ -143,14 +195,14 @@ public interface ImportJob {
     Long blobsImportedPerSecond();
 
     /**
-     * Gets the lastCompletionTime property: The time of the last completed archive operation.
+     * Gets the lastCompletionTime property: The time (in UTC) of the last completed import job.
      * 
      * @return the lastCompletionTime value.
      */
     OffsetDateTime lastCompletionTime();
 
     /**
-     * Gets the lastStartedTime property: The time the latest archive operation started.
+     * Gets the lastStartedTime property: The time (in UTC) the latest import job started.
      * 
      * @return the lastStartedTime value.
      */
@@ -255,7 +307,8 @@ public interface ImportJob {
          * The stage of the ImportJob definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithImportPrefixes,
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithAdminStatus, DefinitionStages.WithImportPrefixes,
             DefinitionStages.WithConflictResolutionMode, DefinitionStages.WithMaximumErrors {
             /**
              * Executes the create request.
@@ -284,6 +337,23 @@ public interface ImportJob {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the ImportJob definition allowing to specify adminStatus.
+         */
+        interface WithAdminStatus {
+            /**
+             * Specifies the adminStatus property: The administrative status of the import job. Possible values:
+             * 'Active', 'Cancel'. Passing in a value of 'Cancel' will cancel the current active import job. By default
+             * it is set to 'Active'..
+             * 
+             * @param adminStatus The administrative status of the import job. Possible values: 'Active', 'Cancel'.
+             * Passing in a value of 'Cancel' will cancel the current active import job. By default it is set to
+             * 'Active'.
+             * @return the next definition stage.
+             */
+            WithCreate withAdminStatus(ImportJobAdminStatus adminStatus);
         }
 
         /**
@@ -354,7 +424,7 @@ public interface ImportJob {
     /**
      * The template for ImportJob update.
      */
-    interface Update extends UpdateStages.WithTags {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithAdminStatus {
         /**
          * Executes the update request.
          * 
@@ -386,6 +456,21 @@ public interface ImportJob {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the ImportJob update allowing to specify adminStatus.
+         */
+        interface WithAdminStatus {
+            /**
+             * Specifies the adminStatus property: The administrative status of the import job. Possible values:
+             * 'Active', 'Cancel'. Passing in a value of 'Cancel' will cancel the current active import job..
+             * 
+             * @param adminStatus The administrative status of the import job. Possible values: 'Active', 'Cancel'.
+             * Passing in a value of 'Cancel' will cancel the current active import job.
+             * @return the next definition stage.
+             */
+            Update withAdminStatus(ImportJobAdminStatus adminStatus);
         }
     }
 

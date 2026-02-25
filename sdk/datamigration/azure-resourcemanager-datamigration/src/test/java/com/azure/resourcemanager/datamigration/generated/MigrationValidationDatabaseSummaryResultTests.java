@@ -11,7 +11,7 @@ public final class MigrationValidationDatabaseSummaryResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationValidationDatabaseSummaryResult model = BinaryData.fromString(
-            "{\"id\":\"ympqanxrjkixtwb\",\"migrationId\":\"oypnyg\",\"sourceDatabaseName\":\"hxcylhkgm\",\"targetDatabaseName\":\"ghpxycphdr\",\"startedOn\":\"2021-09-17T16:52:25Z\",\"endedOn\":\"2021-11-05T12:31:42Z\",\"status\":\"Stopped\"}")
+            "{\"id\":\"c\",\"migrationId\":\"nbkkjanurnnq\",\"sourceDatabaseName\":\"q\",\"targetDatabaseName\":\"izxqltgrd\",\"startedOn\":\"2021-08-08T02:29:28Z\",\"endedOn\":\"2021-03-28T12:05:51Z\",\"status\":\"Default\"}")
             .toObject(MigrationValidationDatabaseSummaryResult.class);
     }
 

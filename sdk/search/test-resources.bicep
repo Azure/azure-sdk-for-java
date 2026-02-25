@@ -33,11 +33,11 @@ var storageAccountName = 'search${unique}'
 // Static resource group name for TME tenant
 var staticResourceGroupName = 'static-test-resources'
 
-// Is this deployment to the TME tenant
-var isTmeTenant = tenantId == '70a036f6-8e4d-4615-bad6-149c02e7720d'
+// Can this deployment access known static resources
+var canUseStatic = tenantId == '70a036f6-8e4d-4615-bad6-149c02e7720d' && subscription().subscriptionId == '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
 
 // Deployed OpenAI resource for non-TME tenants
-resource openai 'Microsoft.CognitiveServices/accounts@2025-06-01' = if (!isTmeTenant) {
+resource openai 'Microsoft.CognitiveServices/accounts@2025-06-01' = if (!canUseStatic) {
   name: toLower(baseName)
   location: location
   kind: 'OpenAI'
@@ -66,7 +66,7 @@ resource openai 'Microsoft.CognitiveServices/accounts@2025-06-01' = if (!isTmeTe
 }
 
 // Static OpenAI resource for TME tenant
-resource openaiStatic 'Microsoft.CognitiveServices/accounts@2025-06-01' existing = if (isTmeTenant) {
+resource openaiStatic 'Microsoft.CognitiveServices/accounts@2025-06-01' existing = if (canUseStatic) {
   name: 'azsdk-openai-shared-test'
   scope: resourceGroup(staticResourceGroupName)
   // Static model deployment
@@ -76,12 +76,12 @@ resource openaiStatic 'Microsoft.CognitiveServices/accounts@2025-06-01' existing
 }
 
 // Managed identity to place on the search service
-resource searchServiceIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = if (!isTmeTenant) {
+resource searchServiceIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = if (!canUseStatic) {
   name: '${baseName}-search-service-identity'
   location: location
 }
 
-resource staticSearchServiceIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (isTmeTenant) {
+resource staticSearchServiceIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (canUseStatic) {
   name: 'azsdk-search-service-identity'
   scope: resourceGroup(staticResourceGroupName)
 }
@@ -109,7 +109,7 @@ resource search 'Microsoft.Search/searchServices@2025-05-01' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${tenantId != '70a036f6-8e4d-4615-bad6-149c02e7720d' ? searchServiceIdentity.id : staticSearchServiceIdentity.id}': {}
+      '${canUseStatic ? staticSearchServiceIdentity.id : searchServiceIdentity.id}': {}
     }
   }
 }
@@ -186,9 +186,9 @@ resource search_Storage_RoleAssignment 'Microsoft.Authorization/roleAssignments@
   name: guid(storageBlobDataReaderRoleDefinition.id, search.id, storageAccount.id)
   scope: storageAccount
   properties: {
-    principalId: tenantId != '70a036f6-8e4d-4615-bad6-149c02e7720d'
-      ? searchServiceIdentity.properties.principalId
-      : staticSearchServiceIdentity.properties.principalId
+    principalId: canUseStatic
+      ? staticSearchServiceIdentity.properties.principalId
+      : searchServiceIdentity.properties.principalId
     roleDefinitionId: storageBlobDataReaderRoleDefinition.id
   }
 }
@@ -232,7 +232,7 @@ resource openaiContributorRoleDefinition 'Microsoft.Authorization/roleDefinition
 }
 
 // Assign Cognitive Services OpenAI Contributor role to the search resource's identity if we created the OpenAI resource
-resource search_openAi_roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!isTmeTenant) {
+resource search_openAi_roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!canUseStatic) {
   name: guid(openaiContributorRoleDefinition.id, searchServiceIdentity.id, openai.id)
   scope: openai
   properties: {
@@ -245,13 +245,13 @@ resource search_openAi_roleAssignment 'Microsoft.Authorization/roleAssignments@2
 output SEARCH_SERVICE_ENDPOINT string = search.properties.endpoint
 output SEARCH_STORAGE_ACCOUNT_NAME string = storageAccount.name
 output SEARCH_STORAGE_CONTAINER_NAME string = storageAccount::blobServices::blobContainer.name
-output SEARCH_OPENAI_ENDPOINT string = isTmeTenant ? openaiStatic.properties.endpoint : openai.properties.endpoint
-output SEARCH_OPENAI_DEPLOYMENT_NAME string = isTmeTenant
+output SEARCH_OPENAI_ENDPOINT string = canUseStatic ? openaiStatic.properties.endpoint : openai.properties.endpoint
+output SEARCH_OPENAI_DEPLOYMENT_NAME string = canUseStatic
   ? openaiStatic::openaiStaticDeployment.name
   : openai::openaiDeployment.name
-output SEARCH_OPENAI_MODEL_NAME string = isTmeTenant
+output SEARCH_OPENAI_MODEL_NAME string = canUseStatic
   ? openaiStatic::openaiStaticDeployment.properties.model.name
   : openai::openaiDeployment.properties.model.name
-output SEARCH_USER_ASSIGNED_IDENTITY string = isTmeTenant
+output SEARCH_USER_ASSIGNED_IDENTITY string = canUseStatic
   ? '/subscriptions/${subscription().subscriptionId}/resourceGroups/${staticResourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${staticSearchServiceIdentity.name}'
   : '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${searchServiceIdentity.name}'

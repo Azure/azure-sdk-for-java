@@ -23,6 +23,7 @@ import com.azure.resourcemanager.containerservice.models.GpuProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
+import com.azure.resourcemanager.containerservice.models.LocalDnsProfile;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
@@ -104,7 +105,7 @@ public final class AgentPoolInner extends SubResource {
     /**
      * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
      * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
-     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * subsequent request to enable optimistic concurrency per the normal eTag convention.
      * 
      * @return the etag value.
      */
@@ -1388,6 +1389,33 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withStatus(status);
+        return this;
+    }
+
+    /**
+     * Get the localDnsProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
+     * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
+     * aka.ms/aks/localdns.
+     * 
+     * @return the localDnsProfile value.
+     */
+    public LocalDnsProfile localDnsProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().localDnsProfile();
+    }
+
+    /**
+     * Set the localDnsProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
+     * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
+     * aka.ms/aks/localdns.
+     * 
+     * @param localDnsProfile the localDnsProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withLocalDnsProfile(LocalDnsProfile localDnsProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withLocalDnsProfile(localDnsProfile);
         return this;
     }
 

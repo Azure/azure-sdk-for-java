@@ -14,24 +14,24 @@ public final class VmssDataDiskTests {
     public void testDeserialize() throws Exception {
         VmssDataDisk model = BinaryData
             .fromString(
-                "{\"lun\":366208637,\"diskSizeGB\":2107533163,\"diskType\":\"Standard_LRS\",\"diskLetter\":\"olvrw\"}")
+                "{\"lun\":1845240712,\"diskSizeGB\":1128027174,\"diskType\":\"PremiumV2_LRS\",\"diskLetter\":\"ywub\"}")
             .toObject(VmssDataDisk.class);
-        Assertions.assertEquals(366208637, model.lun());
-        Assertions.assertEquals(2107533163, model.diskSizeGB());
-        Assertions.assertEquals(DiskType.STANDARD_LRS, model.diskType());
-        Assertions.assertEquals("olvrw", model.diskLetter());
+        Assertions.assertEquals(1845240712, model.lun());
+        Assertions.assertEquals(1128027174, model.diskSizeGB());
+        Assertions.assertEquals(DiskType.PREMIUM_V2_LRS, model.diskType());
+        Assertions.assertEquals("ywub", model.diskLetter());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmssDataDisk model = new VmssDataDisk().withLun(366208637)
-            .withDiskSizeGB(2107533163)
-            .withDiskType(DiskType.STANDARD_LRS)
-            .withDiskLetter("olvrw");
+        VmssDataDisk model = new VmssDataDisk().withLun(1845240712)
+            .withDiskSizeGB(1128027174)
+            .withDiskType(DiskType.PREMIUM_V2_LRS)
+            .withDiskLetter("ywub");
         model = BinaryData.fromObject(model).toObject(VmssDataDisk.class);
-        Assertions.assertEquals(366208637, model.lun());
-        Assertions.assertEquals(2107533163, model.diskSizeGB());
-        Assertions.assertEquals(DiskType.STANDARD_LRS, model.diskType());
-        Assertions.assertEquals("olvrw", model.diskLetter());
+        Assertions.assertEquals(1845240712, model.lun());
+        Assertions.assertEquals(1128027174, model.diskSizeGB());
+        Assertions.assertEquals(DiskType.PREMIUM_V2_LRS, model.diskType());
+        Assertions.assertEquals("ywub", model.diskLetter());
     }
 }

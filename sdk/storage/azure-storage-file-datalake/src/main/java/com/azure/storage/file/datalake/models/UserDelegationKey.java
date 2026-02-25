@@ -41,6 +41,11 @@ public final class UserDelegationKey {
     private String signedVersion;
 
     /*
+     * The delegated user tenant id in Azure AD.
+     */
+    private String signedDelegatedUserTenantId;
+
+    /*
      * The key as a base64 string
      */
     private String value;
@@ -172,9 +177,29 @@ public final class UserDelegationKey {
     }
 
     /**
+     * Get the signedDelegatedUserTenantId property: The delegated user tenant id in Azure AD.
+     *
+     * @return the signedDelegatedUserTenantId value.
+     */
+    public String getSignedDelegatedUserTenantId() {
+        return this.signedDelegatedUserTenantId;
+    }
+
+    /**
+     * Set the signedDelegatedUserTenantId property: The delegated user tenant id in Azure AD.
+     *
+     * @param signedDelegatedUserTenantId the signedDelegatedUserTenantId value to set.
+     * @return the UserDelegationKey object itself.
+     */
+    public UserDelegationKey setSignedDelegatedUserTenantId(String signedDelegatedUserTenantId) {
+        this.signedDelegatedUserTenantId = signedDelegatedUserTenantId;
+        return this;
+    }
+
+    /**
      * Get the value property: The key as a base64 string.
      *
-     * @return the value value.
+     * @return the key as a base64 string.
      */
     public String getValue() {
         return this.value;
@@ -183,7 +208,7 @@ public final class UserDelegationKey {
     /**
      * Set the value property: The key as a base64 string.
      *
-     * @param value the value value to set.
+     * @param value the key as a base64 string to set.
      * @return the UserDelegationKey object itself.
      */
     public UserDelegationKey setValue(String value) {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dependencymap.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -45,22 +44,6 @@ public final class OffAzureDiscoverySourceResourceProperties extends DiscoverySo
         super.withSourceId(sourceId);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (sourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sourceId in model OffAzureDiscoverySourceResourceProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(OffAzureDiscoverySourceResourceProperties.class);
 
     /**
      * {@inheritDoc}

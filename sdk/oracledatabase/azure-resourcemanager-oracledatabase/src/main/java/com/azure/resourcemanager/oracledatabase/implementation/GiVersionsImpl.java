@@ -52,8 +52,10 @@ public final class GiVersionsImpl implements GiVersions {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new GiVersionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<GiVersion> listByLocation(String location, SystemShapes shape, String zone, Context context) {
-        PagedIterable<GiVersionInner> inner = this.serviceClient().listByLocation(location, shape, zone, context);
+    public PagedIterable<GiVersion> listByLocation(String location, SystemShapes shape, String zone,
+        String shapeAttribute, Context context) {
+        PagedIterable<GiVersionInner> inner
+            = this.serviceClient().listByLocation(location, shape, zone, shapeAttribute, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new GiVersionImpl(inner1, this.manager()));
     }
 

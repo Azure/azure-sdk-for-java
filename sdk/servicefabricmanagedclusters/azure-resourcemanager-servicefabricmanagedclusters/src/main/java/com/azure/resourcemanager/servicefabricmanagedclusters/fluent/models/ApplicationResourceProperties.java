@@ -151,20 +151,6 @@ public final class ApplicationResourceProperties implements JsonSerializable<App
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (managedIdentities() != null) {
-            managedIdentities().forEach(e -> e.validate());
-        }
-        if (upgradePolicy() != null) {
-            upgradePolicy().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

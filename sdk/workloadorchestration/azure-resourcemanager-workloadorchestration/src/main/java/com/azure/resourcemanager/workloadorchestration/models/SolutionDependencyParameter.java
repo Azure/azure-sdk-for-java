@@ -174,17 +174,6 @@ public final class SolutionDependencyParameter implements JsonSerializable<Solut
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (dependencies() != null) {
-            dependencies().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

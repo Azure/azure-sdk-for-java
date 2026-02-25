@@ -13,17 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ElasticMonitorResourceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticMonitorResourceUpdateParameters model = BinaryData.fromString("{\"tags\":{\"mjthjqkwp\":\"fcyddg\"}}")
+        ElasticMonitorResourceUpdateParameters model = BinaryData.fromString("{\"tags\":{\"uhrzayvvt\":\"m\"}}")
             .toObject(ElasticMonitorResourceUpdateParameters.class);
-        Assertions.assertEquals("fcyddg", model.tags().get("mjthjqkwp"));
+        Assertions.assertEquals("m", model.tags().get("uhrzayvvt"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticMonitorResourceUpdateParameters model
-            = new ElasticMonitorResourceUpdateParameters().withTags(mapOf("mjthjqkwp", "fcyddg"));
+            = new ElasticMonitorResourceUpdateParameters().withTags(mapOf("uhrzayvvt", "m"));
         model = BinaryData.fromObject(model).toObject(ElasticMonitorResourceUpdateParameters.class);
-        Assertions.assertEquals("fcyddg", model.tags().get("mjthjqkwp"));
+        Assertions.assertEquals("m", model.tags().get("uhrzayvvt"));
     }
 
     // Use "Map.of" if available

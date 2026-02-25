@@ -49,14 +49,6 @@ public final class ConnectedCachePatchResource implements JsonSerializable<Conne
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

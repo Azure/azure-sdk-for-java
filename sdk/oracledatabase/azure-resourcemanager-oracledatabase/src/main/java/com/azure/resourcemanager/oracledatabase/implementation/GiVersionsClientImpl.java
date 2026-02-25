@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.oracledatabase.fluent.GiVersionsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.models.GiVersionInner;
 import com.azure.resourcemanager.oracledatabase.implementation.models.GiVersionListResult;
@@ -89,7 +88,8 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
         Mono<Response<GiVersionListResult>> listByLocation(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @QueryParam("shape") SystemShapes shape,
-            @QueryParam("zone") String zone, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("zone") String zone, @QueryParam("shapeAttribute") String shapeAttribute,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/giVersions")
@@ -98,7 +98,8 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
         Response<GiVersionListResult> listByLocationSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @QueryParam("shape") SystemShapes shape,
-            @QueryParam("zone") String zone, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("zone") String zone, @QueryParam("shapeAttribute") String shapeAttribute,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -129,20 +130,6 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GiVersionInner>> getWithResponseAsync(String location, String giversionname) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (giversionname == null) {
-            return Mono.error(new IllegalArgumentException("Parameter giversionname is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -178,24 +165,6 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GiVersionInner> getWithResponse(String location, String giversionname, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (giversionname == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter giversionname is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             location, giversionname, accept, context);
@@ -222,6 +191,7 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      * @param location The name of the Azure region.
      * @param shape If provided, filters the results for the given shape.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shapeAttribute Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -230,22 +200,11 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GiVersionInner>> listByLocationSinglePageAsync(String location, SystemShapes shape,
-        String zone) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
+        String zone, String shapeAttribute) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, shape, zone, accept, context))
+                this.client.getSubscriptionId(), location, shape, zone, shapeAttribute, accept, context))
             .<PagedResponse<GiVersionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -257,14 +216,16 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      * @param location The name of the Azure region.
      * @param shape If provided, filters the results for the given shape.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shapeAttribute Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a GiVersion list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GiVersionInner> listByLocationAsync(String location, SystemShapes shape, String zone) {
-        return new PagedFlux<>(() -> listByLocationSinglePageAsync(location, shape, zone),
+    private PagedFlux<GiVersionInner> listByLocationAsync(String location, SystemShapes shape, String zone,
+        String shapeAttribute) {
+        return new PagedFlux<>(() -> listByLocationSinglePageAsync(location, shape, zone, shapeAttribute),
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
 
@@ -281,7 +242,8 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
     private PagedFlux<GiVersionInner> listByLocationAsync(String location) {
         final SystemShapes shape = null;
         final String zone = null;
-        return new PagedFlux<>(() -> listByLocationSinglePageAsync(location, shape, zone),
+        final String shapeAttribute = null;
+        return new PagedFlux<>(() -> listByLocationSinglePageAsync(location, shape, zone, shapeAttribute),
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
 
@@ -291,30 +253,19 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      * @param location The name of the Azure region.
      * @param shape If provided, filters the results for the given shape.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shapeAttribute Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a GiVersion list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<GiVersionInner> listByLocationSinglePage(String location, SystemShapes shape, String zone) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
+    private PagedResponse<GiVersionInner> listByLocationSinglePage(String location, SystemShapes shape, String zone,
+        String shapeAttribute) {
         final String accept = "application/json";
-        Response<GiVersionListResult> res = service.listByLocationSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, shape, zone, accept, Context.NONE);
+        Response<GiVersionListResult> res
+            = service.listByLocationSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, shape, zone, shapeAttribute, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -325,6 +276,7 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      * @param location The name of the Azure region.
      * @param shape If provided, filters the results for the given shape.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shapeAttribute Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -333,24 +285,11 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiVersionInner> listByLocationSinglePage(String location, SystemShapes shape, String zone,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
+        String shapeAttribute, Context context) {
         final String accept = "application/json";
-        Response<GiVersionListResult> res = service.listByLocationSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, shape, zone, accept, context);
+        Response<GiVersionListResult> res
+            = service.listByLocationSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, shape, zone, shapeAttribute, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -368,7 +307,8 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
     public PagedIterable<GiVersionInner> listByLocation(String location) {
         final SystemShapes shape = null;
         final String zone = null;
-        return new PagedIterable<>(() -> listByLocationSinglePage(location, shape, zone),
+        final String shapeAttribute = null;
+        return new PagedIterable<>(() -> listByLocationSinglePage(location, shape, zone, shapeAttribute),
             nextLink -> listByLocationNextSinglePage(nextLink));
     }
 
@@ -378,6 +318,7 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      * @param location The name of the Azure region.
      * @param shape If provided, filters the results for the given shape.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shapeAttribute Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -386,8 +327,8 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GiVersionInner> listByLocation(String location, SystemShapes shape, String zone,
-        Context context) {
-        return new PagedIterable<>(() -> listByLocationSinglePage(location, shape, zone, context),
+        String shapeAttribute, Context context) {
+        return new PagedIterable<>(() -> listByLocationSinglePage(location, shape, zone, shapeAttribute, context),
             nextLink -> listByLocationNextSinglePage(nextLink, context));
     }
 
@@ -403,13 +344,6 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GiVersionInner>> listByLocationNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocationNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -429,15 +363,6 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiVersionInner> listByLocationNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<GiVersionListResult> res
             = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -457,21 +382,10 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiVersionInner> listByLocationNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<GiVersionListResult> res
             = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(GiVersionsClientImpl.class);
 }

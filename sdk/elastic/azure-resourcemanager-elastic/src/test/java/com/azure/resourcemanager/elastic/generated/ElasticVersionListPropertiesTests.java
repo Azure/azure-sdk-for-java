@@ -12,14 +12,14 @@ public final class ElasticVersionListPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticVersionListProperties model
-            = BinaryData.fromString("{\"version\":\"oqvuhr\"}").toObject(ElasticVersionListProperties.class);
-        Assertions.assertEquals("oqvuhr", model.version());
+            = BinaryData.fromString("{\"version\":\"e\"}").toObject(ElasticVersionListProperties.class);
+        Assertions.assertEquals("e", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticVersionListProperties model = new ElasticVersionListProperties().withVersion("oqvuhr");
+        ElasticVersionListProperties model = new ElasticVersionListProperties().withVersion("e");
         model = BinaryData.fromObject(model).toObject(ElasticVersionListProperties.class);
-        Assertions.assertEquals("oqvuhr", model.version());
+        Assertions.assertEquals("e", model.version());
     }
 }

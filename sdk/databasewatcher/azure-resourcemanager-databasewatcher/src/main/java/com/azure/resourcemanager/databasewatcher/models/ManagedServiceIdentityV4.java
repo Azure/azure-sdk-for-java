@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -106,27 +105,6 @@ public final class ManagedServiceIdentityV4 implements JsonSerializable<ManagedS
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (type() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property type in model ManagedServiceIdentityV4"));
-        }
-        if (userAssignedIdentities() != null) {
-            userAssignedIdentities().values().forEach(e -> {
-                if (e != null) {
-                    e.validate();
-                }
-            });
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedServiceIdentityV4.class);
 
     /**
      * {@inheritDoc}

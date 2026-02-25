@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookOperation.
+ * Represents a workbook operation.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity {

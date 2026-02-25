@@ -45,6 +45,12 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
      */
     private HostEndpointSettings imds;
 
+    /*
+     * Specify whether to implicitly install the ProxyAgent Extension. This option is currently applicable only for
+     * Linux Os.
+     */
+    private Boolean addProxyAgentExtension;
+
     /**
      * Creates an instance of ProxyAgentSettings class.
      */
@@ -162,6 +168,28 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
     }
 
     /**
+     * Get the addProxyAgentExtension property: Specify whether to implicitly install the ProxyAgent Extension. This
+     * option is currently applicable only for Linux Os.
+     * 
+     * @return the addProxyAgentExtension value.
+     */
+    public Boolean addProxyAgentExtension() {
+        return this.addProxyAgentExtension;
+    }
+
+    /**
+     * Set the addProxyAgentExtension property: Specify whether to implicitly install the ProxyAgent Extension. This
+     * option is currently applicable only for Linux Os.
+     * 
+     * @param addProxyAgentExtension the addProxyAgentExtension value to set.
+     * @return the ProxyAgentSettings object itself.
+     */
+    public ProxyAgentSettings withAddProxyAgentExtension(Boolean addProxyAgentExtension) {
+        this.addProxyAgentExtension = addProxyAgentExtension;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -186,6 +214,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
         jsonWriter.writeNumberField("keyIncarnationId", this.keyIncarnationId);
         jsonWriter.writeJsonField("wireServer", this.wireServer);
         jsonWriter.writeJsonField("imds", this.imds);
+        jsonWriter.writeBooleanField("addProxyAgentExtension", this.addProxyAgentExtension);
         return jsonWriter.writeEndObject();
     }
 
@@ -214,6 +243,8 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
                     deserializedProxyAgentSettings.wireServer = HostEndpointSettings.fromJson(reader);
                 } else if ("imds".equals(fieldName)) {
                     deserializedProxyAgentSettings.imds = HostEndpointSettings.fromJson(reader);
+                } else if ("addProxyAgentExtension".equals(fieldName)) {
+                    deserializedProxyAgentSettings.addProxyAgentExtension = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

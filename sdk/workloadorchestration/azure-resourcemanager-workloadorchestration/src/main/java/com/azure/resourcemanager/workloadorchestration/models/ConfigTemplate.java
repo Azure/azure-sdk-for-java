@@ -256,7 +256,7 @@ public interface ConfigTemplate {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(ConfigTemplateProperties properties);
+            Update withProperties(ConfigTemplateUpdateProperties properties);
         }
     }
 

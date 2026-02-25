@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databasewatcher.fluent.SharedPrivateLinkResourcesClient;
@@ -179,25 +178,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedPrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName,
         String watcherName, String sharedPrivateLinkResourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (sharedPrivateLinkResourceName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -239,29 +219,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedPrivateLinkResourceInner> getWithResponse(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, watcherName, sharedPrivateLinkResourceName, accept, context);
@@ -300,30 +257,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (sharedPrivateLinkResourceName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -349,35 +282,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -402,35 +306,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -581,25 +456,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (sharedPrivateLinkResourceName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
-        }
         return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, watcherName, sharedPrivateLinkResourceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -619,29 +475,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, watcherName, sharedPrivateLinkResourceName,
             Context.NONE);
@@ -662,29 +495,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, watcherName, sharedPrivateLinkResourceName, context);
     }
@@ -811,21 +621,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listByWatcherSinglePageAsync(String resourceGroupName,
         String watcherName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWatcher(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -864,24 +659,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SharedPrivateLinkResourceInner> listByWatcherSinglePage(String resourceGroupName,
         String watcherName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SharedPrivateLinkResourceListResult> res
             = service.listByWatcherSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -904,24 +681,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SharedPrivateLinkResourceInner> listByWatcherSinglePage(String resourceGroupName,
         String watcherName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SharedPrivateLinkResourceListResult> res
             = service.listByWatcherSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -978,13 +737,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listByWatcherNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWatcherNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -1004,15 +756,6 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SharedPrivateLinkResourceInner> listByWatcherNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SharedPrivateLinkResourceListResult> res
             = service.listByWatcherNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1033,21 +776,10 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SharedPrivateLinkResourceInner> listByWatcherNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SharedPrivateLinkResourceListResult> res
             = service.listByWatcherNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SharedPrivateLinkResourcesClientImpl.class);
 }

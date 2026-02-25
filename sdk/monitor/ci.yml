@@ -18,6 +18,7 @@ trigger:
       - sdk/monitor/azure-monitor-query-logs/pom.xml
       - sdk/monitor/azure-monitor-query-metrics/pom.xml
       - sdk/monitor/azure-monitor-query-perf/pom.xml
+      - sdk/monitor/azure-resourcemanager-monitor/pom.xml
 
 pr:
   branches:
@@ -38,6 +39,7 @@ pr:
       - sdk/monitor/azure-monitor-query-logs/pom.xml
       - sdk/monitor/azure-monitor-query-metrics/pom.xml
       - sdk/monitor/azure-monitor-query-perf/pom.xml
+      - sdk/monitor/azure-resourcemanager-monitor/pom.xml
 
 parameters:
 - name: release_dependsonlivetests
@@ -68,6 +70,10 @@ parameters:
   displayName: 'azure-monitor-query-metrics'
   type: boolean
   default: true
+- name: release_azureresourcemanagermonitor
+  displayName: 'azure-resourcemanager-monitor'
+  type: boolean
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -98,6 +104,10 @@ extends:
         groupId: com.azure
         safeName: azuremonitorquerymetrics
         releaseInBatch: ${{ parameters.release_azuremonitorquerymetrics }}
+      - name: azure-resourcemanager-monitor
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermonitor
+        releaseInBatch: ${{ parameters.release_azureresourcemanagermonitor }}
     AdditionalModules:
       - name: azure-monitor-query-perf
         groupId: com.azure

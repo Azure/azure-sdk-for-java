@@ -29,8 +29,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storagecache.fluent.CachesClient;
@@ -73,13 +75,21 @@ public final class CachesClientImpl implements CachesClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageCacheManageme")
+    @ServiceInterface(name = "StorageCacheManagementClientCaches")
     public interface CachesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/caches")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CachesListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/caches")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CachesListResult> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -92,10 +102,27 @@ public final class CachesClientImpl implements CachesClient {
             @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CachesListResult> listByResourceGroupSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("cacheName") String cacheName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("cacheName") String cacheName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
@@ -110,10 +137,28 @@ public final class CachesClientImpl implements CachesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CacheInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("cacheName") String cacheName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
+            @BodyParam("application/json") CacheInner cache, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
             @BodyParam("application/json") CacheInner cache, @HeaderParam("Accept") String accept, Context context);
@@ -128,10 +173,28 @@ public final class CachesClientImpl implements CachesClient {
             @BodyParam("application/json") CacheInner cache, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
+            @BodyParam("application/json") CacheInner cache, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/debugInfo")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> debugInfo(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/debugInfo")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> debugInfoSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
             @HeaderParam("Accept") String accept, Context context);
@@ -146,10 +209,28 @@ public final class CachesClientImpl implements CachesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/flush")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> flushSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/start")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/start")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> startSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
             @HeaderParam("Accept") String accept, Context context);
@@ -164,10 +245,29 @@ public final class CachesClientImpl implements CachesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/stop")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> stopSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/startPrimingJob")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> startPrimingJob(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
+            @BodyParam("application/json") PrimingJob primingjob, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/startPrimingJob")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> startPrimingJobSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
             @BodyParam("application/json") PrimingJob primingjob, @HeaderParam("Accept") String accept,
@@ -184,10 +284,30 @@ public final class CachesClientImpl implements CachesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/stopPrimingJob")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> stopPrimingJobSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("cacheName") String cacheName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") PrimingJobIdParameter primingJobId, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/pausePrimingJob")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> pausePrimingJob(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("cacheName") String cacheName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") PrimingJobIdParameter primingJobId, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/pausePrimingJob")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> pausePrimingJobSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("cacheName") String cacheName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") PrimingJobIdParameter primingJobId, @HeaderParam("Accept") String accept,
@@ -204,6 +324,16 @@ public final class CachesClientImpl implements CachesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/resumePrimingJob")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> resumePrimingJobSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("cacheName") String cacheName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") PrimingJobIdParameter primingJobId, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/upgrade")
         @ExpectedResponses({ 201, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -213,10 +343,29 @@ public final class CachesClientImpl implements CachesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/upgrade")
+        @ExpectedResponses({ 201, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> upgradeFirmwareSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/spaceAllocation")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> spaceAllocation(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
+            @BodyParam("application/json") List<StorageTargetSpaceAllocation> spaceAllocation,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/spaceAllocation")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> spaceAllocationSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("cacheName") String cacheName,
             @BodyParam("application/json") List<StorageTargetSpaceAllocation> spaceAllocation,
@@ -233,7 +382,22 @@ public final class CachesClientImpl implements CachesClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CachesListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CachesListResult>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CachesListResult> listByResourceGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -268,35 +432,6 @@ public final class CachesClientImpl implements CachesClient {
     /**
      * Returns all caches the user has access to under a subscription.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list caches along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CacheInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns all caches the user has access to under a subscription.
-     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list caches as paginated response with {@link PagedFlux}.
@@ -309,16 +444,55 @@ public final class CachesClientImpl implements CachesClient {
     /**
      * Returns all caches the user has access to under a subscription.
      * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list caches along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheInner> listSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CachesListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns all caches the user has access to under a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list caches as paginated response with {@link PagedFlux}.
+     * @return result of the request to list caches along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CacheInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheInner> listSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CachesListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -330,7 +504,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -344,7 +518,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -384,41 +558,6 @@ public final class CachesClientImpl implements CachesClient {
      * Returns all caches the user has access to under a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list caches along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CacheInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
-                this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns all caches the user has access to under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -434,16 +573,65 @@ public final class CachesClientImpl implements CachesClient {
      * Returns all caches the user has access to under a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list caches along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CachesListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(), resourceGroupName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns all caches the user has access to under a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list caches as paginated response with {@link PagedFlux}.
+     * @return result of the request to list caches along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CacheInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheInner> listByResourceGroupSinglePage(String resourceGroupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CachesListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(), resourceGroupName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -457,7 +645,8 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -472,7 +661,8 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -516,33 +706,70 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cacheName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, cacheName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, Context.NONE);
+    }
+
+    /**
+     * Schedules a cache for deletion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String cacheName,
-        Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cacheName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, cacheName, this.client.getApiVersion(),
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, cacheName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), accept, context);
     }
 
@@ -570,27 +797,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String cacheName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, cacheName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Schedules a cache for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -598,7 +804,8 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cacheName) {
-        return this.beginDeleteAsync(resourceGroupName, cacheName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, cacheName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -615,7 +822,8 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cacheName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, cacheName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, cacheName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -640,31 +848,13 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String cacheName, Context context) {
-        return beginDeleteAsync(resourceGroupName, cacheName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Schedules a cache for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cacheName) {
-        deleteAsync(resourceGroupName, cacheName).block();
+        beginDelete(resourceGroupName, cacheName).getFinalResult();
     }
 
     /**
@@ -680,7 +870,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cacheName, Context context) {
-        deleteAsync(resourceGroupName, cacheName, context).block();
+        beginDelete(resourceGroupName, cacheName, context).getFinalResult();
     }
 
     /**
@@ -724,42 +914,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cache instance along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CacheInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String cacheName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, cacheName,
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
-    }
-
-    /**
-     * Returns a cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -786,7 +940,27 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CacheInner> getByResourceGroupWithResponse(String resourceGroupName, String cacheName,
         Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, cacheName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), resourceGroupName, cacheName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -856,38 +1030,84 @@ public final class CachesClientImpl implements CachesClient {
      * [-0-9a-zA-Z_] char class.
      * @param cache Object containing the user-selectable properties of the new cache. If read-only properties are
      * included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cache instance along with {@link Response} on successful completion of {@link Mono}.
+     * @return a cache instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String cacheName,
-        CacheInner cache, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String cacheName,
+        CacheInner cache) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         if (cache == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cache is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter cache is required and cannot be null."));
         } else {
             cache.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.createOrUpdateSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), cacheName, cache, accept, Context.NONE);
+    }
+
+    /**
+     * Create or update a cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
+     * @param cache Object containing the user-selectable properties of the new cache. If read-only properties are
+     * included, they must match the existing values of those properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a cache instance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String cacheName,
+        CacheInner cache, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (cache == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter cache is required and cannot be null."));
+        } else {
+            cache.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), cacheName, cache, accept, context);
     }
 
@@ -920,30 +1140,6 @@ public final class CachesClientImpl implements CachesClient {
      * [-0-9a-zA-Z_] char class.
      * @param cache Object containing the user-selectable properties of the new cache. If read-only properties are
      * included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a cache instance.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CacheInner>, CacheInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String cacheName, CacheInner cache, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, cacheName, cache, context);
-        return this.client.<CacheInner, CacheInner>getLroResult(mono, this.client.getHttpPipeline(), CacheInner.class,
-            CacheInner.class, context);
-    }
-
-    /**
-     * Create or update a cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param cache Object containing the user-selectable properties of the new cache. If read-only properties are
-     * included, they must match the existing values of those properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -952,7 +1148,9 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginCreateOrUpdate(String resourceGroupName,
         String cacheName, CacheInner cache) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, cacheName, cache).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, cacheName, cache);
+        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class,
+            Context.NONE);
     }
 
     /**
@@ -972,7 +1170,8 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginCreateOrUpdate(String resourceGroupName,
         String cacheName, CacheInner cache, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, cacheName, cache, context).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, cacheName, cache, context);
+        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class, context);
     }
 
     /**
@@ -1002,27 +1201,6 @@ public final class CachesClientImpl implements CachesClient {
      * [-0-9a-zA-Z_] char class.
      * @param cache Object containing the user-selectable properties of the new cache. If read-only properties are
      * included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cache instance on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CacheInner> createOrUpdateAsync(String resourceGroupName, String cacheName, CacheInner cache,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, cacheName, cache, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update a cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
-     * @param cache Object containing the user-selectable properties of the new cache. If read-only properties are
-     * included, they must match the existing values of those properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1030,7 +1208,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner createOrUpdate(String resourceGroupName, String cacheName, CacheInner cache) {
-        return createOrUpdateAsync(resourceGroupName, cacheName, cache).block();
+        return beginCreateOrUpdate(resourceGroupName, cacheName, cache).getFinalResult();
     }
 
     /**
@@ -1049,7 +1227,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner createOrUpdate(String resourceGroupName, String cacheName, CacheInner cache, Context context) {
-        return createOrUpdateAsync(resourceGroupName, cacheName, cache, context).block();
+        return beginCreateOrUpdate(resourceGroupName, cacheName, cache, context).getFinalResult();
     }
 
     /**
@@ -1101,36 +1279,79 @@ public final class CachesClientImpl implements CachesClient {
      * [-0-9a-zA-Z_] char class.
      * @param cache Object containing the user-selectable properties of the cache. If read-only properties are included,
      * they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cache instance along with {@link Response} on successful completion of {@link Mono}.
+     * @return a cache instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String cacheName,
-        CacheInner cache, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String cacheName, CacheInner cache) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         if (cache != null) {
             cache.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.updateSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), cacheName, cache, accept, Context.NONE);
+    }
+
+    /**
+     * Update a cache instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
+     * @param cache Object containing the user-selectable properties of the cache. If read-only properties are included,
+     * they must match the existing values of those properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a cache instance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String cacheName, CacheInner cache,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (cache != null) {
+            cache.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), cacheName, cache, accept, context);
     }
 
@@ -1183,19 +1404,17 @@ public final class CachesClientImpl implements CachesClient {
      * [-0-9a-zA-Z_] char class.
      * @param cache Object containing the user-selectable properties of the cache. If read-only properties are included,
      * they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a cache instance.
+     * @return the {@link SyncPoller} for polling of a cache instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CacheInner>, CacheInner> beginUpdateAsync(String resourceGroupName, String cacheName,
-        CacheInner cache, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, cacheName, cache, context);
-        return this.client.<CacheInner, CacheInner>getLroResult(mono, this.client.getHttpPipeline(), CacheInner.class,
-            CacheInner.class, context);
+    public SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(String resourceGroupName, String cacheName,
+        CacheInner cache) {
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, cacheName, cache);
+        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class,
+            Context.NONE);
     }
 
     /**
@@ -1212,7 +1431,9 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(String resourceGroupName, String cacheName) {
         final CacheInner cache = null;
-        return this.beginUpdateAsync(resourceGroupName, cacheName, cache).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, cacheName, cache);
+        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class,
+            Context.NONE);
     }
 
     /**
@@ -1232,7 +1453,8 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(String resourceGroupName, String cacheName,
         CacheInner cache, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, cacheName, cache, context).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, cacheName, cache, context);
+        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class, context);
     }
 
     /**
@@ -1278,27 +1500,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param cache Object containing the user-selectable properties of the cache. If read-only properties are included,
-     * they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cache instance on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CacheInner> updateAsync(String resourceGroupName, String cacheName, CacheInner cache,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, cacheName, cache, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a cache instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1307,7 +1508,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner update(String resourceGroupName, String cacheName) {
         final CacheInner cache = null;
-        return updateAsync(resourceGroupName, cacheName, cache).block();
+        return beginUpdate(resourceGroupName, cacheName, cache).getFinalResult();
     }
 
     /**
@@ -1326,7 +1527,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheInner update(String resourceGroupName, String cacheName, CacheInner cache, Context context) {
-        return updateAsync(resourceGroupName, cacheName, cache, context).block();
+        return beginUpdate(resourceGroupName, cacheName, cache, context).getFinalResult();
     }
 
     /**
@@ -1370,33 +1571,70 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> debugInfoWithResponse(String resourceGroupName, String cacheName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.debugInfoSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), cacheName, accept, Context.NONE);
+    }
+
+    /**
+     * Tells a cache to write generate debug info for support to process.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> debugInfoWithResponseAsync(String resourceGroupName, String cacheName,
-        Context context) {
+    private Response<BinaryData> debugInfoWithResponse(String resourceGroupName, String cacheName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.debugInfo(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.debugInfoSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), cacheName, accept, context);
     }
 
@@ -1424,27 +1662,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDebugInfoAsync(String resourceGroupName, String cacheName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = debugInfoWithResponseAsync(resourceGroupName, cacheName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Tells a cache to write generate debug info for support to process.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1452,7 +1669,8 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDebugInfo(String resourceGroupName, String cacheName) {
-        return this.beginDebugInfoAsync(resourceGroupName, cacheName).getSyncPoller();
+        Response<BinaryData> response = debugInfoWithResponse(resourceGroupName, cacheName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1470,7 +1688,8 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDebugInfo(String resourceGroupName, String cacheName,
         Context context) {
-        return this.beginDebugInfoAsync(resourceGroupName, cacheName, context).getSyncPoller();
+        Response<BinaryData> response = debugInfoWithResponse(resourceGroupName, cacheName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1495,31 +1714,13 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> debugInfoAsync(String resourceGroupName, String cacheName, Context context) {
-        return beginDebugInfoAsync(resourceGroupName, cacheName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Tells a cache to write generate debug info for support to process.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void debugInfo(String resourceGroupName, String cacheName) {
-        debugInfoAsync(resourceGroupName, cacheName).block();
+        beginDebugInfo(resourceGroupName, cacheName).getFinalResult();
     }
 
     /**
@@ -1535,7 +1736,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void debugInfo(String resourceGroupName, String cacheName, Context context) {
-        debugInfoAsync(resourceGroupName, cacheName, context).block();
+        beginDebugInfo(resourceGroupName, cacheName, context).getFinalResult();
     }
 
     /**
@@ -1581,33 +1782,71 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> flushWithResponse(String resourceGroupName, String cacheName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.flushSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), cacheName, accept, Context.NONE);
+    }
+
+    /**
+     * Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
+     * returned until the flush is complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> flushWithResponseAsync(String resourceGroupName, String cacheName,
-        Context context) {
+    private Response<BinaryData> flushWithResponse(String resourceGroupName, String cacheName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.flush(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.flushSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), cacheName, accept, context);
     }
 
@@ -1637,28 +1876,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginFlushAsync(String resourceGroupName, String cacheName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = flushWithResponseAsync(resourceGroupName, cacheName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
-     * returned until the flush is complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1666,7 +1883,8 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String cacheName) {
-        return this.beginFlushAsync(resourceGroupName, cacheName).getSyncPoller();
+        Response<BinaryData> response = flushWithResponse(resourceGroupName, cacheName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1684,7 +1902,8 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String cacheName, Context context) {
-        return this.beginFlushAsync(resourceGroupName, cacheName, context).getSyncPoller();
+        Response<BinaryData> response = flushWithResponse(resourceGroupName, cacheName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1711,32 +1930,13 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> flushAsync(String resourceGroupName, String cacheName, Context context) {
-        return beginFlushAsync(resourceGroupName, cacheName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
-     * returned until the flush is complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void flush(String resourceGroupName, String cacheName) {
-        flushAsync(resourceGroupName, cacheName).block();
+        beginFlush(resourceGroupName, cacheName).getFinalResult();
     }
 
     /**
@@ -1753,7 +1953,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void flush(String resourceGroupName, String cacheName, Context context) {
-        flushAsync(resourceGroupName, cacheName, context).block();
+        beginFlush(resourceGroupName, cacheName, context).getFinalResult();
     }
 
     /**
@@ -1797,33 +1997,70 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> startWithResponse(String resourceGroupName, String cacheName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.startSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), cacheName, accept, Context.NONE);
+    }
+
+    /**
+     * Tells a Stopped state cache to transition to Active state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String cacheName,
-        Context context) {
+    private Response<BinaryData> startWithResponse(String resourceGroupName, String cacheName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.start(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.startSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), cacheName, accept, context);
     }
 
@@ -1851,27 +2088,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String cacheName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, cacheName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Tells a Stopped state cache to transition to Active state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1879,7 +2095,8 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String cacheName) {
-        return this.beginStartAsync(resourceGroupName, cacheName).getSyncPoller();
+        Response<BinaryData> response = startWithResponse(resourceGroupName, cacheName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1896,7 +2113,8 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String cacheName, Context context) {
-        return this.beginStartAsync(resourceGroupName, cacheName, context).getSyncPoller();
+        Response<BinaryData> response = startWithResponse(resourceGroupName, cacheName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1921,31 +2139,13 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startAsync(String resourceGroupName, String cacheName, Context context) {
-        return beginStartAsync(resourceGroupName, cacheName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Tells a Stopped state cache to transition to Active state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String cacheName) {
-        startAsync(resourceGroupName, cacheName).block();
+        beginStart(resourceGroupName, cacheName).getFinalResult();
     }
 
     /**
@@ -1961,7 +2161,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String cacheName, Context context) {
-        startAsync(resourceGroupName, cacheName, context).block();
+        beginStart(resourceGroupName, cacheName, context).getFinalResult();
     }
 
     /**
@@ -2005,33 +2205,70 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> stopWithResponse(String resourceGroupName, String cacheName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.stopSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), cacheName, accept, Context.NONE);
+    }
+
+    /**
+     * Tells an Active cache to transition to Stopped state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String cacheName,
-        Context context) {
+    private Response<BinaryData> stopWithResponse(String resourceGroupName, String cacheName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.stop(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.stopSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), cacheName, accept, context);
     }
 
@@ -2059,27 +2296,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String cacheName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, cacheName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Tells an Active cache to transition to Stopped state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2087,7 +2303,8 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String cacheName) {
-        return this.beginStopAsync(resourceGroupName, cacheName).getSyncPoller();
+        Response<BinaryData> response = stopWithResponse(resourceGroupName, cacheName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2104,7 +2321,8 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String cacheName, Context context) {
-        return this.beginStopAsync(resourceGroupName, cacheName, context).getSyncPoller();
+        Response<BinaryData> response = stopWithResponse(resourceGroupName, cacheName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -2129,31 +2347,13 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopAsync(String resourceGroupName, String cacheName, Context context) {
-        return beginStopAsync(resourceGroupName, cacheName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Tells an Active cache to transition to Stopped state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String cacheName) {
-        stopAsync(resourceGroupName, cacheName).block();
+        beginStop(resourceGroupName, cacheName).getFinalResult();
     }
 
     /**
@@ -2169,7 +2369,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String cacheName, Context context) {
-        stopAsync(resourceGroupName, cacheName, context).block();
+        beginStop(resourceGroupName, cacheName, context).getFinalResult();
     }
 
     /**
@@ -2219,36 +2419,79 @@ public final class CachesClientImpl implements CachesClient {
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
      * @param primingjob Object containing the definition of a priming job.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startPrimingJobWithResponseAsync(String resourceGroupName,
-        String cacheName, PrimingJob primingjob, Context context) {
+    private Response<BinaryData> startPrimingJobWithResponse(String resourceGroupName, String cacheName,
+        PrimingJob primingjob) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         if (primingjob != null) {
             primingjob.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.startPrimingJob(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.startPrimingJobSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), cacheName, primingjob, accept, Context.NONE);
+    }
+
+    /**
+     * Create a priming job. This operation is only allowed when the cache is healthy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
+     * @param primingjob Object containing the definition of a priming job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> startPrimingJobWithResponse(String resourceGroupName, String cacheName,
+        PrimingJob primingjob, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (primingjob != null) {
+            primingjob.validate();
+        }
+        final String accept = "application/json";
+        return service.startPrimingJobSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), cacheName, primingjob, accept, context);
     }
 
@@ -2300,20 +2543,16 @@ public final class CachesClientImpl implements CachesClient {
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
      * @param primingjob Object containing the definition of a priming job.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartPrimingJobAsync(String resourceGroupName, String cacheName,
-        PrimingJob primingjob, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = startPrimingJobWithResponseAsync(resourceGroupName, cacheName, primingjob, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    public SyncPoller<PollResult<Void>, Void> beginStartPrimingJob(String resourceGroupName, String cacheName,
+        PrimingJob primingjob) {
+        Response<BinaryData> response = startPrimingJobWithResponse(resourceGroupName, cacheName, primingjob);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2330,7 +2569,8 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartPrimingJob(String resourceGroupName, String cacheName) {
         final PrimingJob primingjob = null;
-        return this.beginStartPrimingJobAsync(resourceGroupName, cacheName, primingjob).getSyncPoller();
+        Response<BinaryData> response = startPrimingJobWithResponse(resourceGroupName, cacheName, primingjob);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2349,7 +2589,8 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartPrimingJob(String resourceGroupName, String cacheName,
         PrimingJob primingjob, Context context) {
-        return this.beginStartPrimingJobAsync(resourceGroupName, cacheName, primingjob, context).getSyncPoller();
+        Response<BinaryData> response = startPrimingJobWithResponse(resourceGroupName, cacheName, primingjob, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -2394,26 +2635,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param primingjob Object containing the definition of a priming job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startPrimingJobAsync(String resourceGroupName, String cacheName, PrimingJob primingjob,
-        Context context) {
-        return beginStartPrimingJobAsync(resourceGroupName, cacheName, primingjob, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a priming job. This operation is only allowed when the cache is healthy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2421,7 +2642,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void startPrimingJob(String resourceGroupName, String cacheName) {
         final PrimingJob primingjob = null;
-        startPrimingJobAsync(resourceGroupName, cacheName, primingjob).block();
+        beginStartPrimingJob(resourceGroupName, cacheName, primingjob).getFinalResult();
     }
 
     /**
@@ -2438,7 +2659,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void startPrimingJob(String resourceGroupName, String cacheName, PrimingJob primingjob, Context context) {
-        startPrimingJobAsync(resourceGroupName, cacheName, primingjob, context).block();
+        beginStartPrimingJob(resourceGroupName, cacheName, primingjob, context).getFinalResult();
     }
 
     /**
@@ -2488,36 +2709,79 @@ public final class CachesClientImpl implements CachesClient {
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopPrimingJobWithResponseAsync(String resourceGroupName, String cacheName,
-        PrimingJobIdParameter primingJobId, Context context) {
+    private Response<BinaryData> stopPrimingJobWithResponse(String resourceGroupName, String cacheName,
+        PrimingJobIdParameter primingJobId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (primingJobId != null) {
             primingJobId.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.stopPrimingJob(this.client.getEndpoint(), resourceGroupName, cacheName,
+        return service.stopPrimingJobSync(this.client.getEndpoint(), resourceGroupName, cacheName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), primingJobId, accept, Context.NONE);
+    }
+
+    /**
+     * Schedule a priming job for deletion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
+     * @param primingJobId Object containing the priming job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> stopPrimingJobWithResponse(String resourceGroupName, String cacheName,
+        PrimingJobIdParameter primingJobId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (primingJobId != null) {
+            primingJobId.validate();
+        }
+        final String accept = "application/json";
+        return service.stopPrimingJobSync(this.client.getEndpoint(), resourceGroupName, cacheName,
             this.client.getApiVersion(), this.client.getSubscriptionId(), primingJobId, accept, context);
     }
 
@@ -2569,20 +2833,16 @@ public final class CachesClientImpl implements CachesClient {
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopPrimingJobAsync(String resourceGroupName, String cacheName,
-        PrimingJobIdParameter primingJobId, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = stopPrimingJobWithResponseAsync(resourceGroupName, cacheName, primingJobId, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    public SyncPoller<PollResult<Void>, Void> beginStopPrimingJob(String resourceGroupName, String cacheName,
+        PrimingJobIdParameter primingJobId) {
+        Response<BinaryData> response = stopPrimingJobWithResponse(resourceGroupName, cacheName, primingJobId);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2599,7 +2859,8 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStopPrimingJob(String resourceGroupName, String cacheName) {
         final PrimingJobIdParameter primingJobId = null;
-        return this.beginStopPrimingJobAsync(resourceGroupName, cacheName, primingJobId).getSyncPoller();
+        Response<BinaryData> response = stopPrimingJobWithResponse(resourceGroupName, cacheName, primingJobId);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2618,7 +2879,8 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStopPrimingJob(String resourceGroupName, String cacheName,
         PrimingJobIdParameter primingJobId, Context context) {
-        return this.beginStopPrimingJobAsync(resourceGroupName, cacheName, primingJobId, context).getSyncPoller();
+        Response<BinaryData> response = stopPrimingJobWithResponse(resourceGroupName, cacheName, primingJobId, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -2664,26 +2926,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param primingJobId Object containing the priming job ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopPrimingJobAsync(String resourceGroupName, String cacheName,
-        PrimingJobIdParameter primingJobId, Context context) {
-        return beginStopPrimingJobAsync(resourceGroupName, cacheName, primingJobId, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Schedule a priming job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2691,7 +2933,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopPrimingJob(String resourceGroupName, String cacheName) {
         final PrimingJobIdParameter primingJobId = null;
-        stopPrimingJobAsync(resourceGroupName, cacheName, primingJobId).block();
+        beginStopPrimingJob(resourceGroupName, cacheName, primingJobId).getFinalResult();
     }
 
     /**
@@ -2709,7 +2951,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopPrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId,
         Context context) {
-        stopPrimingJobAsync(resourceGroupName, cacheName, primingJobId, context).block();
+        beginStopPrimingJob(resourceGroupName, cacheName, primingJobId, context).getFinalResult();
     }
 
     /**
@@ -2759,36 +3001,79 @@ public final class CachesClientImpl implements CachesClient {
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> pausePrimingJobWithResponseAsync(String resourceGroupName,
-        String cacheName, PrimingJobIdParameter primingJobId, Context context) {
+    private Response<BinaryData> pausePrimingJobWithResponse(String resourceGroupName, String cacheName,
+        PrimingJobIdParameter primingJobId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (primingJobId != null) {
             primingJobId.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.pausePrimingJob(this.client.getEndpoint(), resourceGroupName, cacheName,
+        return service.pausePrimingJobSync(this.client.getEndpoint(), resourceGroupName, cacheName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), primingJobId, accept, Context.NONE);
+    }
+
+    /**
+     * Schedule a priming job to be paused.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
+     * @param primingJobId Object containing the priming job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> pausePrimingJobWithResponse(String resourceGroupName, String cacheName,
+        PrimingJobIdParameter primingJobId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (primingJobId != null) {
+            primingJobId.validate();
+        }
+        final String accept = "application/json";
+        return service.pausePrimingJobSync(this.client.getEndpoint(), resourceGroupName, cacheName,
             this.client.getApiVersion(), this.client.getSubscriptionId(), primingJobId, accept, context);
     }
 
@@ -2840,20 +3125,16 @@ public final class CachesClientImpl implements CachesClient {
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPausePrimingJobAsync(String resourceGroupName, String cacheName,
-        PrimingJobIdParameter primingJobId, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = pausePrimingJobWithResponseAsync(resourceGroupName, cacheName, primingJobId, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    public SyncPoller<PollResult<Void>, Void> beginPausePrimingJob(String resourceGroupName, String cacheName,
+        PrimingJobIdParameter primingJobId) {
+        Response<BinaryData> response = pausePrimingJobWithResponse(resourceGroupName, cacheName, primingJobId);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2870,7 +3151,8 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPausePrimingJob(String resourceGroupName, String cacheName) {
         final PrimingJobIdParameter primingJobId = null;
-        return this.beginPausePrimingJobAsync(resourceGroupName, cacheName, primingJobId).getSyncPoller();
+        Response<BinaryData> response = pausePrimingJobWithResponse(resourceGroupName, cacheName, primingJobId);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2889,7 +3171,9 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPausePrimingJob(String resourceGroupName, String cacheName,
         PrimingJobIdParameter primingJobId, Context context) {
-        return this.beginPausePrimingJobAsync(resourceGroupName, cacheName, primingJobId, context).getSyncPoller();
+        Response<BinaryData> response
+            = pausePrimingJobWithResponse(resourceGroupName, cacheName, primingJobId, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -2935,26 +3219,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param primingJobId Object containing the priming job ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> pausePrimingJobAsync(String resourceGroupName, String cacheName,
-        PrimingJobIdParameter primingJobId, Context context) {
-        return beginPausePrimingJobAsync(resourceGroupName, cacheName, primingJobId, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Schedule a priming job to be paused.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2962,7 +3226,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void pausePrimingJob(String resourceGroupName, String cacheName) {
         final PrimingJobIdParameter primingJobId = null;
-        pausePrimingJobAsync(resourceGroupName, cacheName, primingJobId).block();
+        beginPausePrimingJob(resourceGroupName, cacheName, primingJobId).getFinalResult();
     }
 
     /**
@@ -2980,7 +3244,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void pausePrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId,
         Context context) {
-        pausePrimingJobAsync(resourceGroupName, cacheName, primingJobId, context).block();
+        beginPausePrimingJob(resourceGroupName, cacheName, primingJobId, context).getFinalResult();
     }
 
     /**
@@ -3030,36 +3294,79 @@ public final class CachesClientImpl implements CachesClient {
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumePrimingJobWithResponseAsync(String resourceGroupName,
-        String cacheName, PrimingJobIdParameter primingJobId, Context context) {
+    private Response<BinaryData> resumePrimingJobWithResponse(String resourceGroupName, String cacheName,
+        PrimingJobIdParameter primingJobId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (primingJobId != null) {
             primingJobId.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.resumePrimingJob(this.client.getEndpoint(), resourceGroupName, cacheName,
+        return service.resumePrimingJobSync(this.client.getEndpoint(), resourceGroupName, cacheName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), primingJobId, accept, Context.NONE);
+    }
+
+    /**
+     * Resumes a paused priming job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
+     * @param primingJobId Object containing the priming job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> resumePrimingJobWithResponse(String resourceGroupName, String cacheName,
+        PrimingJobIdParameter primingJobId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (primingJobId != null) {
+            primingJobId.validate();
+        }
+        final String accept = "application/json";
+        return service.resumePrimingJobSync(this.client.getEndpoint(), resourceGroupName, cacheName,
             this.client.getApiVersion(), this.client.getSubscriptionId(), primingJobId, accept, context);
     }
 
@@ -3111,20 +3418,16 @@ public final class CachesClientImpl implements CachesClient {
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginResumePrimingJobAsync(String resourceGroupName, String cacheName,
-        PrimingJobIdParameter primingJobId, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = resumePrimingJobWithResponseAsync(resourceGroupName, cacheName, primingJobId, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    public SyncPoller<PollResult<Void>, Void> beginResumePrimingJob(String resourceGroupName, String cacheName,
+        PrimingJobIdParameter primingJobId) {
+        Response<BinaryData> response = resumePrimingJobWithResponse(resourceGroupName, cacheName, primingJobId);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3141,7 +3444,8 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResumePrimingJob(String resourceGroupName, String cacheName) {
         final PrimingJobIdParameter primingJobId = null;
-        return this.beginResumePrimingJobAsync(resourceGroupName, cacheName, primingJobId).getSyncPoller();
+        Response<BinaryData> response = resumePrimingJobWithResponse(resourceGroupName, cacheName, primingJobId);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3160,7 +3464,9 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResumePrimingJob(String resourceGroupName, String cacheName,
         PrimingJobIdParameter primingJobId, Context context) {
-        return this.beginResumePrimingJobAsync(resourceGroupName, cacheName, primingJobId, context).getSyncPoller();
+        Response<BinaryData> response
+            = resumePrimingJobWithResponse(resourceGroupName, cacheName, primingJobId, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -3206,26 +3512,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param primingJobId Object containing the priming job ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> resumePrimingJobAsync(String resourceGroupName, String cacheName,
-        PrimingJobIdParameter primingJobId, Context context) {
-        return beginResumePrimingJobAsync(resourceGroupName, cacheName, primingJobId, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Resumes a paused priming job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3233,7 +3519,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumePrimingJob(String resourceGroupName, String cacheName) {
         final PrimingJobIdParameter primingJobId = null;
-        resumePrimingJobAsync(resourceGroupName, cacheName, primingJobId).block();
+        beginResumePrimingJob(resourceGroupName, cacheName, primingJobId).getFinalResult();
     }
 
     /**
@@ -3251,7 +3537,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumePrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId,
         Context context) {
-        resumePrimingJobAsync(resourceGroupName, cacheName, primingJobId, context).block();
+        beginResumePrimingJob(resourceGroupName, cacheName, primingJobId, context).getFinalResult();
     }
 
     /**
@@ -3296,33 +3582,71 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> upgradeFirmwareWithResponse(String resourceGroupName, String cacheName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.upgradeFirmwareSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), cacheName, accept, Context.NONE);
+    }
+
+    /**
+     * Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> upgradeFirmwareWithResponseAsync(String resourceGroupName,
-        String cacheName, Context context) {
+    private Response<BinaryData> upgradeFirmwareWithResponse(String resourceGroupName, String cacheName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.upgradeFirmware(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.upgradeFirmwareSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), cacheName, accept, context);
     }
 
@@ -3350,27 +3674,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpgradeFirmwareAsync(String resourceGroupName, String cacheName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = upgradeFirmwareWithResponseAsync(resourceGroupName, cacheName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3378,7 +3681,8 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeFirmware(String resourceGroupName, String cacheName) {
-        return this.beginUpgradeFirmwareAsync(resourceGroupName, cacheName).getSyncPoller();
+        Response<BinaryData> response = upgradeFirmwareWithResponse(resourceGroupName, cacheName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3396,7 +3700,8 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeFirmware(String resourceGroupName, String cacheName,
         Context context) {
-        return this.beginUpgradeFirmwareAsync(resourceGroupName, cacheName, context).getSyncPoller();
+        Response<BinaryData> response = upgradeFirmwareWithResponse(resourceGroupName, cacheName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -3422,31 +3727,13 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> upgradeFirmwareAsync(String resourceGroupName, String cacheName, Context context) {
-        return beginUpgradeFirmwareAsync(resourceGroupName, cacheName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upgradeFirmware(String resourceGroupName, String cacheName) {
-        upgradeFirmwareAsync(resourceGroupName, cacheName).block();
+        beginUpgradeFirmware(resourceGroupName, cacheName).getFinalResult();
     }
 
     /**
@@ -3462,7 +3749,7 @@ public final class CachesClientImpl implements CachesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upgradeFirmware(String resourceGroupName, String cacheName, Context context) {
-        upgradeFirmwareAsync(resourceGroupName, cacheName, context).block();
+        beginUpgradeFirmware(resourceGroupName, cacheName, context).getFinalResult();
     }
 
     /**
@@ -3511,36 +3798,79 @@ public final class CachesClientImpl implements CachesClient {
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
      * @param spaceAllocation List containing storage target cache space percentage allocations.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> spaceAllocationWithResponseAsync(String resourceGroupName,
-        String cacheName, List<StorageTargetSpaceAllocation> spaceAllocation, Context context) {
+    private Response<BinaryData> spaceAllocationWithResponse(String resourceGroupName, String cacheName,
+        List<StorageTargetSpaceAllocation> spaceAllocation) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (cacheName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         if (spaceAllocation != null) {
             spaceAllocation.forEach(e -> e.validate());
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.spaceAllocation(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.spaceAllocationSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), cacheName, spaceAllocation, accept, Context.NONE);
+    }
+
+    /**
+     * Update cache space allocation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     * [-0-9a-zA-Z_] char class.
+     * @param spaceAllocation List containing storage target cache space percentage allocations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> spaceAllocationWithResponse(String resourceGroupName, String cacheName,
+        List<StorageTargetSpaceAllocation> spaceAllocation, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (spaceAllocation != null) {
+            spaceAllocation.forEach(e -> e.validate());
+        }
+        final String accept = "application/json";
+        return service.spaceAllocationSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), cacheName, spaceAllocation, accept, context);
     }
 
@@ -3592,20 +3922,16 @@ public final class CachesClientImpl implements CachesClient {
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
      * @param spaceAllocation List containing storage target cache space percentage allocations.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginSpaceAllocationAsync(String resourceGroupName, String cacheName,
-        List<StorageTargetSpaceAllocation> spaceAllocation, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = spaceAllocationWithResponseAsync(resourceGroupName, cacheName, spaceAllocation, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    public SyncPoller<PollResult<Void>, Void> beginSpaceAllocation(String resourceGroupName, String cacheName,
+        List<StorageTargetSpaceAllocation> spaceAllocation) {
+        Response<BinaryData> response = spaceAllocationWithResponse(resourceGroupName, cacheName, spaceAllocation);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3622,7 +3948,8 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSpaceAllocation(String resourceGroupName, String cacheName) {
         final List<StorageTargetSpaceAllocation> spaceAllocation = null;
-        return this.beginSpaceAllocationAsync(resourceGroupName, cacheName, spaceAllocation).getSyncPoller();
+        Response<BinaryData> response = spaceAllocationWithResponse(resourceGroupName, cacheName, spaceAllocation);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3641,7 +3968,9 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSpaceAllocation(String resourceGroupName, String cacheName,
         List<StorageTargetSpaceAllocation> spaceAllocation, Context context) {
-        return this.beginSpaceAllocationAsync(resourceGroupName, cacheName, spaceAllocation, context).getSyncPoller();
+        Response<BinaryData> response
+            = spaceAllocationWithResponse(resourceGroupName, cacheName, spaceAllocation, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -3687,26 +4016,6 @@ public final class CachesClientImpl implements CachesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      * [-0-9a-zA-Z_] char class.
-     * @param spaceAllocation List containing storage target cache space percentage allocations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> spaceAllocationAsync(String resourceGroupName, String cacheName,
-        List<StorageTargetSpaceAllocation> spaceAllocation, Context context) {
-        return beginSpaceAllocationAsync(resourceGroupName, cacheName, spaceAllocation, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update cache space allocation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3714,7 +4023,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void spaceAllocation(String resourceGroupName, String cacheName) {
         final List<StorageTargetSpaceAllocation> spaceAllocation = null;
-        spaceAllocationAsync(resourceGroupName, cacheName, spaceAllocation).block();
+        beginSpaceAllocation(resourceGroupName, cacheName, spaceAllocation).getFinalResult();
     }
 
     /**
@@ -3732,7 +4041,7 @@ public final class CachesClientImpl implements CachesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void spaceAllocation(String resourceGroupName, String cacheName,
         List<StorageTargetSpaceAllocation> spaceAllocation, Context context) {
-        spaceAllocationAsync(resourceGroupName, cacheName, spaceAllocation, context).block();
+        beginSpaceAllocation(resourceGroupName, cacheName, spaceAllocation, context).getFinalResult();
     }
 
     /**
@@ -3765,27 +4074,54 @@ public final class CachesClientImpl implements CachesClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list caches along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CachesListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list caches along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return result of the request to list caches along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CacheInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<CacheInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<CachesListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -3820,26 +4156,56 @@ public final class CachesClientImpl implements CachesClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list caches along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CacheInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CachesListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list caches along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return result of the request to list caches along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CacheInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<CacheInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<CachesListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CachesClientImpl.class);
 }

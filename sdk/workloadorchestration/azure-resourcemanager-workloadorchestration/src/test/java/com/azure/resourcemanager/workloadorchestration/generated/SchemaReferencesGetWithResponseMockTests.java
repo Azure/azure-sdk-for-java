@@ -21,7 +21,7 @@ public final class SchemaReferencesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"schemaId\":\"flgbhgau\",\"provisioningState\":\"Canceled\"},\"eTag\":\"xmxufrsryjqgdk\",\"id\":\"ozo\",\"name\":\"oqbvjhvefgwbmqj\",\"type\":\"hntasfaymx\"}";
+            = "{\"properties\":{\"schemaId\":\"iecafygzmxi\",\"provisioningState\":\"InProgress\"},\"eTag\":\"smaklixqcahy\",\"id\":\"alybxawoijpo\",\"name\":\"tblxpkkwjdjodqhy\",\"type\":\"incnr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class SchemaReferencesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaReference response = manager.schemaReferences()
-            .getWithResponse("v", "hulrtywikdmhla", com.azure.core.util.Context.NONE)
+            .getWithResponse("ueqfrojsyd", "rhydkygywez", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("flgbhgau", response.properties().schemaId());
+        Assertions.assertEquals("iecafygzmxi", response.properties().schemaId());
     }
 }

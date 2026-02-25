@@ -3,11 +3,14 @@
 package com.azure.storage.common.test.shared;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -43,9 +46,13 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.CRC32;
 
+import static java.util.Base64.getUrlDecoder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This class contains utility methods for Storage tests.
@@ -388,5 +395,73 @@ public final class StorageCommonTestUtils {
 
             return builder.build();
         }
+    }
+
+    /**
+     * Extracts the OID (Object ID) from a token.
+     *
+     * @param credential The TokenCredential to extract the OID from.
+     * @return The OID extracted from the token.
+     */
+    public static String getOidFromToken(TokenCredential credential) {
+        AccessToken accessToken
+            = credential.getTokenSync(new TokenRequestContext().addScopes("https://storage.azure.com/.default"));
+        String[] chunks = accessToken.getToken().split("\\.");
+        if (chunks.length < 2) {
+            throw new RuntimeException("Malformed JWT: expected at least 2 parts, got " + chunks.length);
+        }
+        String payload;
+        try {
+            payload = new String(getUrlDecoder().decode(chunks[1]), StandardCharsets.UTF_8);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Malformed JWT: payload is not valid base64url", e);
+        }
+
+        Pattern pattern = Pattern.compile("\"oid\":\"(.*?)\"");
+        Matcher matcher = pattern.matcher(payload);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        throw new RuntimeException("Could not find oid in token");
+    }
+
+    /**
+     * Extracts the TID (Tenant ID) from a token.
+     *
+     * @param credential The TokenCredential to extract the TID from.
+     * @return The TID extracted from the token.
+     */
+    public static String getTidFromToken(TokenCredential credential) {
+        AccessToken accessToken
+            = credential.getTokenSync(new TokenRequestContext().addScopes("https://storage.azure.com/.default"));
+        String[] chunks = accessToken.getToken().split("\\.");
+        if (chunks.length < 2) {
+            throw new RuntimeException("Malformed JWT: expected at least 2 parts, got " + chunks.length);
+        }
+        String payload;
+        try {
+            payload = new String(getUrlDecoder().decode(chunks[1]), StandardCharsets.UTF_8);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Malformed JWT: payload is not valid base64url", e);
+        }
+
+        Pattern pattern = Pattern.compile("\"tid\":\"(.*?)\"");
+        Matcher matcher = pattern.matcher(payload);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        throw new RuntimeException("Could not find tid in token");
+    }
+
+    public static <T> void verifySasAndTokenInRequest(Response<T> response) {
+        assertResponseStatusCode(response, 200);
+        //assert sas token exists in URL + auth header exists
+        assertTrue(response.getRequest().getHeaders().stream().anyMatch(h -> h.getName().equals("Authorization")));
+        assertTrue(response.getRequest().getUrl().toString().contains("sv=" + Constants.SAS_SERVICE_VERSION));
+    }
+
+    public static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        return response;
     }
 }

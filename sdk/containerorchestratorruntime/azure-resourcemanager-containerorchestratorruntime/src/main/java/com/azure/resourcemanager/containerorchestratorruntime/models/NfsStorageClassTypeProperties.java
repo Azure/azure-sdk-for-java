@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -163,27 +162,6 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
         this.onDelete = onDelete;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (server() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property server in model NfsStorageClassTypeProperties"));
-        }
-        if (share() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property share in model NfsStorageClassTypeProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(NfsStorageClassTypeProperties.class);
 
     /**
      * {@inheritDoc}

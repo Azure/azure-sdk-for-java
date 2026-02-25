@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * managedDeviceOwnerType.
+ * Represents a managed device owner type.
  */
 public final class MicrosoftGraphManagedDeviceOwnerType
     extends ExpandableStringEnum<MicrosoftGraphManagedDeviceOwnerType> {

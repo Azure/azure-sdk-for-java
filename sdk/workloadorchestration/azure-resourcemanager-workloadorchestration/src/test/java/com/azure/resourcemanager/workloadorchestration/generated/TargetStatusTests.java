@@ -12,11 +12,11 @@ public final class TargetStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetStatus model = BinaryData.fromString(
-            "{\"name\":\"fudwpznt\",\"status\":\"dzhlrq\",\"componentStatuses\":[{\"name\":\"kfrlhrxsbky\",\"status\":\"ycanuzbpzkafku\"},{\"name\":\"crnwbmeh\",\"status\":\"eyvjusrtslhspkde\"},{\"name\":\"aofmxagkvtme\",\"status\":\"qkrhahvljua\"}]}")
+            "{\"name\":\"rzdzucerscdnt\",\"status\":\"vfiwjmygtdss\",\"componentStatuses\":[{\"name\":\"mweriofzpy\",\"status\":\"emwabnet\"},{\"name\":\"hszhedplvwiwu\",\"status\":\"wmbesldnkw\"}]}")
             .toObject(TargetStatus.class);
-        Assertions.assertEquals("fudwpznt", model.name());
-        Assertions.assertEquals("dzhlrq", model.status());
-        Assertions.assertEquals("kfrlhrxsbky", model.componentStatuses().get(0).name());
-        Assertions.assertEquals("ycanuzbpzkafku", model.componentStatuses().get(0).status());
+        Assertions.assertEquals("rzdzucerscdnt", model.name());
+        Assertions.assertEquals("vfiwjmygtdss", model.status());
+        Assertions.assertEquals("mweriofzpy", model.componentStatuses().get(0).name());
+        Assertions.assertEquals("emwabnet", model.componentStatuses().get(0).status());
     }
 }

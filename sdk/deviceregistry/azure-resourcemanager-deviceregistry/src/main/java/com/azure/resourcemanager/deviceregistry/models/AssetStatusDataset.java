@@ -53,17 +53,6 @@ public final class AssetStatusDataset implements JsonSerializable<AssetStatusDat
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (messageSchemaReference() != null) {
-            messageSchemaReference().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

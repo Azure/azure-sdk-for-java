@@ -79,17 +79,6 @@ public final class VirtualMachineInstanceStatus implements JsonSerializable<Virt
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (provisioningStatus() != null) {
-            provisioningStatus().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

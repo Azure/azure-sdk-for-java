@@ -21,6 +21,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elastic.fluent.VMIngestionsClient;
 import com.azure.resourcemanager.elastic.fluent.models.VMIngestionDetailsResponseInner;
 import reactor.core.publisher.Mono;
@@ -55,7 +56,7 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ElasticManagementCli")
+    @ServiceInterface(name = "ElasticManagementClientVMIngestions")
     public interface VMIngestionsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/vmIngestionDetails")
@@ -65,10 +66,20 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/vmIngestionDetails")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<VMIngestionDetailsResponseInner> detailsSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * List the vm ingestion details that will be monitored by the Elastic monitor resource.
+     * List detailed information about VM ingestion that will be monitored by the Elastic monitor resource, ensuring
+     * optimal observability and performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -104,43 +115,8 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
     }
 
     /**
-     * List the vm ingestion details that will be monitored by the Elastic monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vm ingestion details to install an agent along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VMIngestionDetailsResponseInner>> detailsWithResponseAsync(String resourceGroupName,
-        String monitorName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.details(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, monitorName, accept, context);
-    }
-
-    /**
-     * List the vm ingestion details that will be monitored by the Elastic monitor resource.
+     * List detailed information about VM ingestion that will be monitored by the Elastic monitor resource, ensuring
+     * optimal observability and performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -156,7 +132,8 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
     }
 
     /**
-     * List the vm ingestion details that will be monitored by the Elastic monitor resource.
+     * List detailed information about VM ingestion that will be monitored by the Elastic monitor resource, ensuring
+     * optimal observability and performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -169,11 +146,32 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VMIngestionDetailsResponseInner> detailsWithResponse(String resourceGroupName, String monitorName,
         Context context) {
-        return detailsWithResponseAsync(resourceGroupName, monitorName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.detailsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
     /**
-     * List the vm ingestion details that will be monitored by the Elastic monitor resource.
+     * List detailed information about VM ingestion that will be monitored by the Elastic monitor resource, ensuring
+     * optimal observability and performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -186,4 +184,6 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
     public VMIngestionDetailsResponseInner details(String resourceGroupName, String monitorName) {
         return detailsWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VMIngestionsClientImpl.class);
 }

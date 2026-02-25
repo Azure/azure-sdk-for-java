@@ -144,27 +144,6 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (centralServer() != null) {
-            centralServer().validate();
-        }
-        if (applicationServer() != null) {
-            applicationServer().validate();
-        }
-        if (databaseServer() != null) {
-            databaseServer().validate();
-        }
-        if (sharedStorage() != null) {
-            sharedStorage().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

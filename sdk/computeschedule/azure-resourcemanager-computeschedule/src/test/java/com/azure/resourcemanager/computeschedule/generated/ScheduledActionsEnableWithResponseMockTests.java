@@ -27,7 +27,8 @@ public final class ScheduledActionsEnableWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.scheduledActions().enableWithResponse("eptra", "xje", com.azure.core.util.Context.NONE);
+        manager.scheduledActions()
+            .enableWithResponse("ztppriolxorjalto", "mncwsobqwcsdb", com.azure.core.util.Context.NONE);
 
     }
 }

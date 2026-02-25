@@ -11,7 +11,7 @@ public final class SyncMigrationDatabaseErrorEventTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SyncMigrationDatabaseErrorEvent model = BinaryData
-            .fromString("{\"timestampString\":\"czznvfbycjsxj\",\"eventTypeString\":\"i\",\"eventText\":\"vumwmxqh\"}")
+            .fromString("{\"timestampString\":\"lzok\",\"eventTypeString\":\"ox\",\"eventText\":\"lnjetaglt\"}")
             .toObject(SyncMigrationDatabaseErrorEvent.class);
     }
 

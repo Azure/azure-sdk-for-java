@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sitemanager.fluent.SitesByServiceGroupsClient;
@@ -185,14 +184,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SiteInner>> listByServiceGroupSinglePageAsync(String servicegroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServiceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -228,15 +219,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SiteInner> listByServiceGroupSinglePage(String servicegroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SiteListResult> res = service.listByServiceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), servicegroupName, accept, Context.NONE);
@@ -256,15 +238,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SiteInner> listByServiceGroupSinglePage(String servicegroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SiteListResult> res = service.listByServiceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), servicegroupName, accept, context);
@@ -315,17 +288,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SiteInner>> getWithResponseAsync(String servicegroupName, String siteName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -361,19 +323,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SiteInner> getWithResponse(String servicegroupName, String siteName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), servicegroupName, siteName,
             accept, context);
@@ -408,22 +357,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String servicegroupName, String siteName,
         SiteInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -446,25 +379,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String servicegroupName, String siteName,
         SiteInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), servicegroupName,
@@ -486,25 +400,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String servicegroupName, String siteName,
         SiteInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), servicegroupName,
@@ -631,22 +526,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SiteInner>> updateWithResponseAsync(String servicegroupName, String siteName,
         SiteUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -687,25 +566,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SiteInner> updateWithResponse(String servicegroupName, String siteName, SiteUpdate properties,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), servicegroupName, siteName,
@@ -740,17 +600,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String servicegroupName, String siteName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 servicegroupName, siteName, context))
@@ -785,19 +634,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String servicegroupName, String siteName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (servicegroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter servicegroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), servicegroupName, siteName,
             context);
     }
@@ -828,13 +664,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SiteInner>> listByServiceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -855,15 +684,6 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SiteInner> listByServiceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SiteListResult> res
             = service.listByServiceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -883,21 +703,10 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SiteInner> listByServiceGroupNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SiteListResult> res
             = service.listByServiceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SitesByServiceGroupsClientImpl.class);
 }

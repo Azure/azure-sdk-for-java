@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"gylgqgitxmedjvcs\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"wwncwzzhxgk\",\"actionsRequired\":\"mgucna\"},\"provisioningState\":\"Succeeded\"},\"id\":\"eoellwptfdygp\",\"name\":\"qbuaceopzfqr\",\"type\":\"huaoppp\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"pcqeqx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ahzxctobgbk\",\"actionsRequired\":\"oizpostmgrcfbun\"},\"provisioningState\":\"Failed\"},\"id\":\"qjhhkxbpv\",\"name\":\"ymjhxxjyngudivkr\",\"type\":\"swbxqz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("hb", "xknalaulppg", "dtpnapnyiropuhp", com.azure.core.util.Context.NONE)
+            .getWithResponse("oellwp", "fdygpfqbuaceopz", "qrhhu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("wwncwzzhxgk", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("mgucna", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("ahzxctobgbk", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("oizpostmgrcfbun", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

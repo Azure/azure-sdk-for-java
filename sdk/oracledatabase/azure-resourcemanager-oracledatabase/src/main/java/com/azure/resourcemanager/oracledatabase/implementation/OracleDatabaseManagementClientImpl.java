@@ -36,6 +36,8 @@ import com.azure.resourcemanager.oracledatabase.fluent.CloudVmClustersClient;
 import com.azure.resourcemanager.oracledatabase.fluent.DbNodesClient;
 import com.azure.resourcemanager.oracledatabase.fluent.DbServersClient;
 import com.azure.resourcemanager.oracledatabase.fluent.DbSystemShapesClient;
+import com.azure.resourcemanager.oracledatabase.fluent.DbSystemsClient;
+import com.azure.resourcemanager.oracledatabase.fluent.DbVersionsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.DnsPrivateViewsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.DnsPrivateZonesClient;
 import com.azure.resourcemanager.oracledatabase.fluent.ExadbVmClustersClient;
@@ -44,9 +46,11 @@ import com.azure.resourcemanager.oracledatabase.fluent.ExascaleDbStorageVaultsCl
 import com.azure.resourcemanager.oracledatabase.fluent.FlexComponentsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.GiMinorVersionsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.GiVersionsClient;
+import com.azure.resourcemanager.oracledatabase.fluent.NetworkAnchorsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.OperationsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.OracleDatabaseManagementClient;
 import com.azure.resourcemanager.oracledatabase.fluent.OracleSubscriptionsClient;
+import com.azure.resourcemanager.oracledatabase.fluent.ResourceAnchorsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.SystemVersionsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.VirtualNetworkAddressesClient;
 import java.io.IOException;
@@ -456,6 +460,62 @@ public final class OracleDatabaseManagementClientImpl implements OracleDatabaseM
     }
 
     /**
+     * The NetworkAnchorsClient object to access its operations.
+     */
+    private final NetworkAnchorsClient networkAnchors;
+
+    /**
+     * Gets the NetworkAnchorsClient object to access its operations.
+     * 
+     * @return the NetworkAnchorsClient object.
+     */
+    public NetworkAnchorsClient getNetworkAnchors() {
+        return this.networkAnchors;
+    }
+
+    /**
+     * The ResourceAnchorsClient object to access its operations.
+     */
+    private final ResourceAnchorsClient resourceAnchors;
+
+    /**
+     * Gets the ResourceAnchorsClient object to access its operations.
+     * 
+     * @return the ResourceAnchorsClient object.
+     */
+    public ResourceAnchorsClient getResourceAnchors() {
+        return this.resourceAnchors;
+    }
+
+    /**
+     * The DbSystemsClient object to access its operations.
+     */
+    private final DbSystemsClient dbSystems;
+
+    /**
+     * Gets the DbSystemsClient object to access its operations.
+     * 
+     * @return the DbSystemsClient object.
+     */
+    public DbSystemsClient getDbSystems() {
+        return this.dbSystems;
+    }
+
+    /**
+     * The DbVersionsClient object to access its operations.
+     */
+    private final DbVersionsClient dbVersions;
+
+    /**
+     * Gets the DbVersionsClient object to access its operations.
+     * 
+     * @return the DbVersionsClient object.
+     */
+    public DbVersionsClient getDbVersions() {
+        return this.dbVersions;
+    }
+
+    /**
      * Initializes an instance of OracleDatabaseManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -472,7 +532,7 @@ public final class OracleDatabaseManagementClientImpl implements OracleDatabaseM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-03-01";
+        this.apiVersion = "2025-09-01";
         this.operations = new OperationsClientImpl(this);
         this.cloudExadataInfrastructures = new CloudExadataInfrastructuresClientImpl(this);
         this.dbServers = new DbServersClientImpl(this);
@@ -495,6 +555,10 @@ public final class OracleDatabaseManagementClientImpl implements OracleDatabaseM
         this.exadbVmClusters = new ExadbVmClustersClientImpl(this);
         this.exascaleDbNodes = new ExascaleDbNodesClientImpl(this);
         this.exascaleDbStorageVaults = new ExascaleDbStorageVaultsClientImpl(this);
+        this.networkAnchors = new NetworkAnchorsClientImpl(this);
+        this.resourceAnchors = new ResourceAnchorsClientImpl(this);
+        this.dbSystems = new DbSystemsClientImpl(this);
+        this.dbVersions = new DbVersionsClientImpl(this);
     }
 
     /**

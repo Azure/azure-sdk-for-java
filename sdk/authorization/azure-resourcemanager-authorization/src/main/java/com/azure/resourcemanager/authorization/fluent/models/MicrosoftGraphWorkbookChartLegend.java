@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookChartLegend.
+ * Represents a workbook chart legend.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntity {

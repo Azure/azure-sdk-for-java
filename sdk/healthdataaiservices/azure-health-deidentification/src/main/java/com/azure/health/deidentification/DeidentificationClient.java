@@ -51,7 +51,7 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -67,6 +67,7 @@ public final class DeidentificationClient {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -121,7 +122,7 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -137,6 +138,7 @@ public final class DeidentificationClient {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -171,7 +173,7 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -187,6 +189,7 @@ public final class DeidentificationClient {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -249,7 +252,7 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -265,6 +268,7 @@ public final class DeidentificationClient {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -376,7 +380,7 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -392,6 +396,7 @@ public final class DeidentificationClient {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -463,10 +468,22 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     inputText: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
+     *     taggedEntities (Optional): {
+     *         encoding: String(Utf8/Utf16/CodePoint) (Required)
+     *         entities (Required): [
+     *              (Required){
+     *                 category: String(Unknown/Account/Age/BioID/City/CountryOrRegion/Date/Device/Doctor/Email/Fax/HealthPlan/Hospital/IDNum/IPAddress/License/LocationOther/MedicalRecord/Organization/Patient/Phone/Profession/SocialSecurity/State/Street/Url/Username/Vehicle/Zip) (Required)
+     *                 offset: int (Required)
+     *                 length: int (Required)
+     *                 text: String (Optional)
+     *             }
+     *         ]
+     *     }
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      * }
      * }

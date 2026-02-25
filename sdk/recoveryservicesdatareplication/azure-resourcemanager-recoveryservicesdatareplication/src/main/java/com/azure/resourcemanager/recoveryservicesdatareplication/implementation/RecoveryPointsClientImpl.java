@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.RecoveryPointsClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.RecoveryPointModelInner;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.models.RecoveryPointModelListResult;
@@ -138,29 +137,6 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoveryPointModelInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
         String protectedItemName, String recoveryPointName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (protectedItemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter protectedItemName is required and cannot be null."));
-        }
-        if (recoveryPointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter recoveryPointName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -204,32 +180,6 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoveryPointModelInner> getWithResponse(String resourceGroupName, String vaultName,
         String protectedItemName, String recoveryPointName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (protectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectedItemName is required and cannot be null."));
-        }
-        if (recoveryPointName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter recoveryPointName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, vaultName, protectedItemName, recoveryPointName, accept, context);
@@ -269,25 +219,6 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointModelInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
         String protectedItemName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (protectedItemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter protectedItemName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -329,28 +260,6 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPointModelInner> listSinglePage(String resourceGroupName, String vaultName,
         String protectedItemName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (protectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectedItemName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<RecoveryPointModelListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -374,28 +283,6 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPointModelInner> listSinglePage(String resourceGroupName, String vaultName,
         String protectedItemName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (protectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectedItemName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<RecoveryPointModelListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -453,13 +340,6 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointModelInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RecoveryPointModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -478,15 +358,6 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPointModelInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<RecoveryPointModelListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -506,21 +377,10 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPointModelInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<RecoveryPointModelListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(RecoveryPointsClientImpl.class);
 }

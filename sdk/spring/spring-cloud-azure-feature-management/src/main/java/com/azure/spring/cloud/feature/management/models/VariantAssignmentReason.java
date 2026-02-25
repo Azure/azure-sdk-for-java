@@ -39,15 +39,15 @@ public enum VariantAssignmentReason {
      */
     PERCENTILE("Percentile");
 
-    private final String type;
+    private final String value;
 
     /**
-     * Creates a new instance of the VariantAssignmentReason enum with the specified type.
+     * Creates a new instance of the VariantAssignmentReason enum with the specified value.
      *
-     * @param type The string representation of the variant assignment reason
+     * @param value The string representation of the variant assignment reason
      */
-    VariantAssignmentReason(final String type) {
-        this.type = type;
+    VariantAssignmentReason(final String value) {
+        this.value = value;
     }
 
     /**
@@ -55,8 +55,8 @@ public enum VariantAssignmentReason {
      *
      * @return the string representation of this variant assignment reason
      */
-    public String getType() {
-        return type;
+    public String getValue() {
+        return value;
     }
 
 }

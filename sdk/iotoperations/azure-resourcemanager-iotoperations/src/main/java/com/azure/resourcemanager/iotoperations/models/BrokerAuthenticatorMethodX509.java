@@ -27,6 +27,11 @@ public final class BrokerAuthenticatorMethodX509 implements JsonSerializable<Bro
      */
     private String trustedClientCaCert;
 
+    /*
+     * X509 authentication attributes properties.
+     */
+    private BrokerAuthenticatorValidationMethods additionalValidation;
+
     /**
      * Creates an instance of BrokerAuthenticatorMethodX509 class.
      */
@@ -75,18 +80,24 @@ public final class BrokerAuthenticatorMethodX509 implements JsonSerializable<Bro
     }
 
     /**
-     * Validates the instance.
+     * Get the additionalValidation property: X509 authentication attributes properties.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the additionalValidation value.
      */
-    public void validate() {
-        if (authorizationAttributes() != null) {
-            authorizationAttributes().values().forEach(e -> {
-                if (e != null) {
-                    e.validate();
-                }
-            });
-        }
+    public BrokerAuthenticatorValidationMethods additionalValidation() {
+        return this.additionalValidation;
+    }
+
+    /**
+     * Set the additionalValidation property: X509 authentication attributes properties.
+     * 
+     * @param additionalValidation the additionalValidation value to set.
+     * @return the BrokerAuthenticatorMethodX509 object itself.
+     */
+    public BrokerAuthenticatorMethodX509
+        withAdditionalValidation(BrokerAuthenticatorValidationMethods additionalValidation) {
+        this.additionalValidation = additionalValidation;
+        return this;
     }
 
     /**
@@ -98,6 +109,8 @@ public final class BrokerAuthenticatorMethodX509 implements JsonSerializable<Bro
         jsonWriter.writeMapField("authorizationAttributes", this.authorizationAttributes,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("trustedClientCaCert", this.trustedClientCaCert);
+        jsonWriter.writeStringField("additionalValidation",
+            this.additionalValidation == null ? null : this.additionalValidation.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -123,6 +136,9 @@ public final class BrokerAuthenticatorMethodX509 implements JsonSerializable<Bro
                     deserializedBrokerAuthenticatorMethodX509.authorizationAttributes = authorizationAttributes;
                 } else if ("trustedClientCaCert".equals(fieldName)) {
                     deserializedBrokerAuthenticatorMethodX509.trustedClientCaCert = reader.getString();
+                } else if ("additionalValidation".equals(fieldName)) {
+                    deserializedBrokerAuthenticatorMethodX509.additionalValidation
+                        = BrokerAuthenticatorValidationMethods.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

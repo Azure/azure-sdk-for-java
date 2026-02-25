@@ -45,10 +45,12 @@ import com.azure.resourcemanager.cognitiveservices.implementation.PrivateLinkRes
 import com.azure.resourcemanager.cognitiveservices.implementation.ProjectCapabilityHostsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ProjectConnectionsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ProjectsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.QuotaTiersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiBlocklistItemsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiBlocklistsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiContentFiltersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiPoliciesImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.RaiTopicsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ResourceSkusImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.UsagesImpl;
@@ -71,10 +73,12 @@ import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResources;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectCapabilityHosts;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectConnections;
 import com.azure.resourcemanager.cognitiveservices.models.Projects;
+import com.azure.resourcemanager.cognitiveservices.models.QuotaTiers;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklistItems;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklists;
 import com.azure.resourcemanager.cognitiveservices.models.RaiContentFilters;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicies;
+import com.azure.resourcemanager.cognitiveservices.models.RaiTopics;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceProviders;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceSkus;
 import com.azure.resourcemanager.cognitiveservices.models.Usages;
@@ -127,6 +131,8 @@ public final class CognitiveServicesManager {
 
     private RaiBlocklistItems raiBlocklistItems;
 
+    private RaiTopics raiTopics;
+
     private RaiContentFilters raiContentFilters;
 
     private NetworkSecurityPerimeterConfigurations networkSecurityPerimeterConfigurations;
@@ -142,6 +148,8 @@ public final class CognitiveServicesManager {
     private AccountCapabilityHosts accountCapabilityHosts;
 
     private ProjectCapabilityHosts projectCapabilityHosts;
+
+    private QuotaTiers quotaTiers;
 
     private final CognitiveServicesManagementClient clientObject;
 
@@ -577,6 +585,18 @@ public final class CognitiveServicesManager {
     }
 
     /**
+     * Gets the resource collection API of RaiTopics. It manages RaiTopic.
+     * 
+     * @return Resource collection API of RaiTopics.
+     */
+    public RaiTopics raiTopics() {
+        if (this.raiTopics == null) {
+            this.raiTopics = new RaiTopicsImpl(clientObject.getRaiTopics(), this);
+        }
+        return raiTopics;
+    }
+
+    /**
      * Gets the resource collection API of RaiContentFilters.
      * 
      * @return Resource collection API of RaiContentFilters.
@@ -673,6 +693,18 @@ public final class CognitiveServicesManager {
                 = new ProjectCapabilityHostsImpl(clientObject.getProjectCapabilityHosts(), this);
         }
         return projectCapabilityHosts;
+    }
+
+    /**
+     * Gets the resource collection API of QuotaTiers. It manages QuotaTier.
+     * 
+     * @return Resource collection API of QuotaTiers.
+     */
+    public QuotaTiers quotaTiers() {
+        if (this.quotaTiers == null) {
+            this.quotaTiers = new QuotaTiersImpl(clientObject.getQuotaTiers(), this);
+        }
+        return quotaTiers;
     }
 
     /**

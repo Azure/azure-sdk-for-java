@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.SplitTestsRetryAnalyzer;
 import com.azure.cosmos.SplitTimeoutException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
@@ -1003,7 +1004,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                                     docDefList.add(getDocumentDefinition());
                                 }
 
-                                return bulkInsert(createdFeedCollection, docDefList, FEED_COUNT)
+                                return bulkInsert(createdFeedCollection, docDefList)
                                     .last()
                                     .delayElement(Duration.ofMillis(1000))
                                     .flatMap(cosmosItemResponse -> {
@@ -1089,7 +1090,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     docDefList.add(getDocumentDefinition());
                 }
 
-                bulkInsert(createdFeedCollection, docDefList, FEED_COUNT)
+                bulkInsert(createdFeedCollection, docDefList)
                     .last()
                     .flatMap(cosmosItemResponse -> {
                         log.info("Start first Change feed processor");
@@ -1142,7 +1143,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                                             docDefList1.add(getDocumentDefinition());
                                         }
 
-                                        return bulkInsert(createdFeedCollection, docDefList1, FEED_COUNT)
+                                        return bulkInsert(createdFeedCollection, docDefList1)
                                             .last();
                                     });
                             }))
@@ -1687,7 +1688,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "long-emulator" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "long-emulator" }, timeOut = 3 * TIMEOUT)
     public void readFeedDocumentsWithThroughputControl() throws InterruptedException {
         // Create a separate client as throughput control group will be applied to it
         CosmosAsyncClient clientWithThroughputControl =
@@ -1711,12 +1712,15 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
 
             int maxItemCount = 100; // force the RU usage per requests > 1
-            int feedCount = maxItemCount * 2; // force to do two fetches
+            // force to do two fetches
             // using the original client to create the docs to isolate possible throttling
-            setupReadFeedDocuments(
-                createdDocuments,
-                this.createdDatabase.getContainer(createdFeedCollection.getId()),
-                feedCount);
+            for (int i = 0; i < 2; i++) {
+                setupReadFeedDocuments(
+                    createdDocuments,
+                    this.createdDatabase.getContainer(createdFeedCollection.getId()),
+                    maxItemCount,
+                    true);
+            }
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
@@ -2207,64 +2211,47 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             log.info("LEASES processing from thread {}", Thread.currentThread().getId());
         };
     }
+    @BeforeMethod(groups = {  "long-emulator", "cfp-split", "multi-master", "query" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
+    public void beforeMethod() throws Exception {
+        // add a cool off time
+        CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
+    }
 
-    @BeforeMethod(groups = { "long-emulator", "cfp-split" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
-     public void beforeMethod() {
-     }
+    @AfterMethod(groups = { "long-emulator", "cfp-split", "multi-master", "query" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    public void afterMethod() throws Exception {
+        logger.info("captureNettyLeaks: {}", captureNettyLeaks());
+    }
 
-    @BeforeClass(groups = { "long-emulator", "cfp-split" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "long-emulator", "cfp-split", "multi-master", "query" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void before_ChangeFeedProcessorTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
-
-        // Following is code that when enabled locally it allows for a predicted database/collection name that can be
-        // checked in the Azure Portal
-//        try {
-//            client.getDatabase(databaseId).read()
-//                .map(cosmosDatabaseResponse -> cosmosDatabaseResponse.getDatabase())
-//                .flatMap(database -> database.delete())
-//                .onErrorResume(throwable -> {
-//                    if (throwable instanceof com.azure.cosmos.CosmosClientException) {
-//                        com.azure.cosmos.CosmosClientException clientException = (com.azure.cosmos.CosmosClientException) throwable;
-//                        if (clientException.getStatusCode() == 404) {
-//                            return Mono.empty();
-//                        }
-//                    }
-//                    return Mono.error(throwable);
-//                }).block();
-//            Thread.sleep(500);
-//        } catch (Exception e){
-//            log.warn("Database delete", e);
-//        }
-//        createdDatabase = createDatabase(client, databaseId);
     }
-
-    @AfterMethod(groups = { "long-emulator", "cfp-split" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
-    public void afterMethod() {
-    }
-
-    @AfterClass(groups = { "long-emulator", "cfp-split" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "long-emulator", "cfp-split", "multi-master", "query" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-//        try {
-//            client.readAllDatabases()
-//                .flatMap(cosmosDatabaseProperties -> {
-//                    CosmosAsyncDatabase cosmosDatabase = client.getDatabase(cosmosDatabaseProperties.getId());
-//                    return cosmosDatabase.delete();
-//                }).blockLast();
-//            Thread.sleep(500);
-//        } catch (Exception e){ }
-
         safeClose(client);
     }
 
-    private void setupReadFeedDocuments(List<InternalObjectNode> createdDocuments, CosmosAsyncContainer feedCollection, long count) {
+    private void setupReadFeedDocuments(
+        List<InternalObjectNode> createdDocuments,
+        CosmosAsyncContainer feedCollection,
+        long count) {
+        setupReadFeedDocuments(createdDocuments, feedCollection, count, false);
+    }
+
+    private void setupReadFeedDocuments(
+        List<InternalObjectNode> createdDocuments,
+        CosmosAsyncContainer feedCollection,
+        long count,
+        boolean bulkEnabled) {
         List<InternalObjectNode> docDefList = new ArrayList<>();
 
         for(int i = 0; i < count; i++) {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, bulkEnabled));
+
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
@@ -2275,7 +2262,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
@@ -2287,7 +2274,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

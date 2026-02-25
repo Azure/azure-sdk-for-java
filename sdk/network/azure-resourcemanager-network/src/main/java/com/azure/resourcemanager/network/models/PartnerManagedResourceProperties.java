@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties of the partner managed resource.
+ * Properties of the partner managed resource. Only appliable for SaaS NVA.
  */
 @Immutable
 public final class PartnerManagedResourceProperties implements JsonSerializable<PartnerManagedResourceProperties> {

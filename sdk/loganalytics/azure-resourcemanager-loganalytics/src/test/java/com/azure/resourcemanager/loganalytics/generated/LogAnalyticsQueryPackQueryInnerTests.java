@@ -16,35 +16,37 @@ public final class LogAnalyticsQueryPackQueryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogAnalyticsQueryPackQueryInner model = BinaryData.fromString(
-            "{\"properties\":{\"id\":\"qwpgrjbzn\",\"displayName\":\"rcjxvsnbyxqabn\",\"timeCreated\":\"2021-06-16T16:14:14Z\",\"timeModified\":\"2020-12-28T20:56:17Z\",\"author\":\"shurzafbljjgpbto\",\"description\":\"jmkljavbqidtqajz\",\"body\":\"ulpkudjkrl\",\"related\":{\"categories\":[\"hfepgzgqex\"],\"resourceTypes\":[\"c\",\"scpai\",\"rhhbcs\",\"l\"],\"solutions\":[\"a\",\"tjaodxobnb\"]},\"tags\":{\"mexgstxgcp\":[\"pxokajionp\"]},\"properties\":\"datagmaajrm\"},\"id\":\"jwzrl\",\"name\":\"mcl\",\"type\":\"ijcoejctb\"}")
+            "{\"properties\":{\"id\":\"bebrjcxerfuwuttt\",\"displayName\":\"fvjrbirphxepcy\",\"timeCreated\":\"2021-11-07T03:18:20Z\",\"timeModified\":\"2021-05-23T19:09:39Z\",\"author\":\"jky\",\"description\":\"j\",\"body\":\"uujqgidokgjljyo\",\"related\":{\"categories\":[\"ltbgsncghkj\",\"szzhbijhtxfvgxbf\",\"mxnehmp\",\"ec\"],\"resourceTypes\":[\"debfqkkrbmpukgri\",\"flz\",\"fbxzpuzycisp\",\"qzahmgkbrp\"],\"solutions\":[\"hibnuqqkpika\",\"rgvtqag\"]},\"tags\":{\"ttdbhrbnl\":[\"nhijggmebfsi\",\"rbu\",\"rcvpnazzmhjrunmp\"],\"czfc\":[\"kx\",\"yskpbhen\",\"tkcxywnytnrsy\",\"lqidyby\"]},\"properties\":\"dataaaxdbabphlwrq\"},\"id\":\"ktsthsucocmny\",\"name\":\"azt\",\"type\":\"bt\"}")
             .toObject(LogAnalyticsQueryPackQueryInner.class);
-        Assertions.assertEquals("rcjxvsnbyxqabn", model.displayName());
-        Assertions.assertEquals("jmkljavbqidtqajz", model.description());
-        Assertions.assertEquals("ulpkudjkrl", model.body());
-        Assertions.assertEquals("hfepgzgqex", model.related().categories().get(0));
-        Assertions.assertEquals("c", model.related().resourceTypes().get(0));
-        Assertions.assertEquals("a", model.related().solutions().get(0));
-        Assertions.assertEquals("pxokajionp", model.tags().get("mexgstxgcp").get(0));
+        Assertions.assertEquals("fvjrbirphxepcy", model.displayName());
+        Assertions.assertEquals("j", model.description());
+        Assertions.assertEquals("uujqgidokgjljyo", model.body());
+        Assertions.assertEquals("ltbgsncghkj", model.related().categories().get(0));
+        Assertions.assertEquals("debfqkkrbmpukgri", model.related().resourceTypes().get(0));
+        Assertions.assertEquals("hibnuqqkpika", model.related().solutions().get(0));
+        Assertions.assertEquals("nhijggmebfsi", model.tags().get("ttdbhrbnl").get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogAnalyticsQueryPackQueryInner model = new LogAnalyticsQueryPackQueryInner().withDisplayName("rcjxvsnbyxqabn")
-            .withDescription("jmkljavbqidtqajz")
-            .withBody("ulpkudjkrl")
-            .withRelated(new LogAnalyticsQueryPackQueryPropertiesRelated().withCategories(Arrays.asList("hfepgzgqex"))
-                .withResourceTypes(Arrays.asList("c", "scpai", "rhhbcs", "l"))
-                .withSolutions(Arrays.asList("a", "tjaodxobnb")))
-            .withTags(mapOf("mexgstxgcp", Arrays.asList("pxokajionp")))
-            .withProperties("datagmaajrm");
+        LogAnalyticsQueryPackQueryInner model = new LogAnalyticsQueryPackQueryInner().withDisplayName("fvjrbirphxepcy")
+            .withDescription("j")
+            .withBody("uujqgidokgjljyo")
+            .withRelated(new LogAnalyticsQueryPackQueryPropertiesRelated()
+                .withCategories(Arrays.asList("ltbgsncghkj", "szzhbijhtxfvgxbf", "mxnehmp", "ec"))
+                .withResourceTypes(Arrays.asList("debfqkkrbmpukgri", "flz", "fbxzpuzycisp", "qzahmgkbrp"))
+                .withSolutions(Arrays.asList("hibnuqqkpika", "rgvtqag")))
+            .withTags(mapOf("ttdbhrbnl", Arrays.asList("nhijggmebfsi", "rbu", "rcvpnazzmhjrunmp"), "czfc",
+                Arrays.asList("kx", "yskpbhen", "tkcxywnytnrsy", "lqidyby")))
+            .withProperties("dataaaxdbabphlwrq");
         model = BinaryData.fromObject(model).toObject(LogAnalyticsQueryPackQueryInner.class);
-        Assertions.assertEquals("rcjxvsnbyxqabn", model.displayName());
-        Assertions.assertEquals("jmkljavbqidtqajz", model.description());
-        Assertions.assertEquals("ulpkudjkrl", model.body());
-        Assertions.assertEquals("hfepgzgqex", model.related().categories().get(0));
-        Assertions.assertEquals("c", model.related().resourceTypes().get(0));
-        Assertions.assertEquals("a", model.related().solutions().get(0));
-        Assertions.assertEquals("pxokajionp", model.tags().get("mexgstxgcp").get(0));
+        Assertions.assertEquals("fvjrbirphxepcy", model.displayName());
+        Assertions.assertEquals("j", model.description());
+        Assertions.assertEquals("uujqgidokgjljyo", model.body());
+        Assertions.assertEquals("ltbgsncghkj", model.related().categories().get(0));
+        Assertions.assertEquals("debfqkkrbmpukgri", model.related().resourceTypes().get(0));
+        Assertions.assertEquals("hibnuqqkpika", model.related().solutions().get(0));
+        Assertions.assertEquals("nhijggmebfsi", model.tags().get("ttdbhrbnl").get(0));
     }
 
     // Use "Map.of" if available

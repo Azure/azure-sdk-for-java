@@ -10,7 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dependencymap.fluent.MapsClient;
+import com.azure.resourcemanager.dependencymap.fluent.models.ExportDependenciesOperationResultInner;
 import com.azure.resourcemanager.dependencymap.fluent.models.MapsResourceInner;
+import com.azure.resourcemanager.dependencymap.models.ExportDependenciesOperationResult;
 import com.azure.resourcemanager.dependencymap.models.ExportDependenciesRequest;
 import com.azure.resourcemanager.dependencymap.models.GetConnectionsForProcessOnFocusedMachineRequest;
 import com.azure.resourcemanager.dependencymap.models.GetConnectionsWithConnectedMachineForFocusedMachineRequest;
@@ -111,13 +113,26 @@ public final class MapsImpl implements Maps {
         this.serviceClient().getConnectionsForProcessOnFocusedMachine(resourceGroupName, mapName, body, context);
     }
 
-    public void exportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body) {
-        this.serviceClient().exportDependencies(resourceGroupName, mapName, body);
+    public ExportDependenciesOperationResult exportDependencies(String resourceGroupName, String mapName,
+        ExportDependenciesRequest body) {
+        ExportDependenciesOperationResultInner inner
+            = this.serviceClient().exportDependencies(resourceGroupName, mapName, body);
+        if (inner != null) {
+            return new ExportDependenciesOperationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void exportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body,
-        Context context) {
-        this.serviceClient().exportDependencies(resourceGroupName, mapName, body, context);
+    public ExportDependenciesOperationResult exportDependencies(String resourceGroupName, String mapName,
+        ExportDependenciesRequest body, Context context) {
+        ExportDependenciesOperationResultInner inner
+            = this.serviceClient().exportDependencies(resourceGroupName, mapName, body, context);
+        if (inner != null) {
+            return new ExportDependenciesOperationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public MapsResource getById(String id) {

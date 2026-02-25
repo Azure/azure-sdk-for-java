@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * domain.
+ * Represents a domain.
  */
 @Fluent
 public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {

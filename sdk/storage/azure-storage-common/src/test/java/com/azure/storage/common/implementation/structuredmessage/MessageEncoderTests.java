@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -26,10 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MessageEncoderTests {
-
-    private static final int V1_HEADER_LENGTH = 13;
-    private static final int V1_SEGMENT_HEADER_LENGTH = 10;
-    private static final int CRC64_LENGTH = 8;
 
     private static byte[] getRandomData(int size) {
         byte[] result = new byte[size];

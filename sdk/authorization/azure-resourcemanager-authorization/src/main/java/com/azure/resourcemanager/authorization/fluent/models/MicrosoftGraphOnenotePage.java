@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * onenotePage.
+ * Represents an onenote page.
  */
 @Fluent
 public final class MicrosoftGraphOnenotePage extends MicrosoftGraphOnenoteEntitySchemaObjectModel {

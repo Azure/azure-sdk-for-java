@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.properties;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +10,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.NotNull;
@@ -80,12 +81,18 @@ public final class AppConfigurationKeyValueSelector {
      *         latter label has higher priority
      */
     public String[] getLabelFilter(List<String> profiles) {
-        if (labelFilter == null && profiles.size() > 0) {
-            Collections.reverse(profiles);
-            return profiles.toArray(new String[profiles.size()]);
-        } else if (StringUtils.hasText(snapshotName)) {
+        if (StringUtils.hasText(snapshotName)) {
             return new String[0];
-        } else if (!StringUtils.hasText(labelFilter)) {
+        }
+        if (labelFilter == null && !profiles.isEmpty()) {
+            List<String> mutableProfiles = new ArrayList<>(profiles);
+            // Defensive copy: profiles may be immutable when provided by certain Spring Boot contexts,
+            // such as when obtained from Environment.getActiveProfiles(). See
+            // https://github.com/Azure/azure-sdk-for-java/issues/32708 for details.
+            Collections.reverse(mutableProfiles);
+            return mutableProfiles.toArray(new String[mutableProfiles.size()]);
+        } 
+        if (!StringUtils.hasText(labelFilter)) {
             return EMPTY_LABEL_ARRAY;
         }
 

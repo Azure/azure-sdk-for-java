@@ -32,6 +32,11 @@ public final class WebApplicationFirewallAction extends ExpandableStringEnum<Web
     public static final WebApplicationFirewallAction JSCHALLENGE = fromString("JSChallenge");
 
     /**
+     * Static value CAPTCHA for WebApplicationFirewallAction.
+     */
+    public static final WebApplicationFirewallAction CAPTCHA = fromString("CAPTCHA");
+
+    /**
      * Creates a new instance of WebApplicationFirewallAction value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

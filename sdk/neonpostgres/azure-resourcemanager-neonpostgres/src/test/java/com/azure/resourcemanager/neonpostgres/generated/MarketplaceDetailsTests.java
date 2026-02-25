@@ -14,36 +14,36 @@ public final class MarketplaceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MarketplaceDetails model = BinaryData.fromString(
-            "{\"subscriptionId\":\"flcxoga\",\"subscriptionStatus\":\"PendingFulfillmentStart\",\"offerDetails\":{\"publisherId\":\"nzmnsikvm\",\"offerId\":\"qzeqqkdltfzxm\",\"planId\":\"hvhgureod\",\"planName\":\"obdagxtibqdxb\",\"termUnit\":\"akbogqxndlkzgxh\",\"termId\":\"iplbpodxunkbebxm\"}}")
+            "{\"subscriptionId\":\"nuj\",\"subscriptionStatus\":\"Unsubscribed\",\"offerDetails\":{\"publisherId\":\"msbvdkcrodtjinf\",\"offerId\":\"jlfltkacjvefkdlf\",\"planId\":\"akggkfpag\",\"planName\":\"wpu\",\"termUnit\":\"qblylsyxkqj\",\"termId\":\"jervtia\"}}")
             .toObject(MarketplaceDetails.class);
-        Assertions.assertEquals("flcxoga", model.subscriptionId());
-        Assertions.assertEquals(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START, model.subscriptionStatus());
-        Assertions.assertEquals("nzmnsikvm", model.offerDetails().publisherId());
-        Assertions.assertEquals("qzeqqkdltfzxm", model.offerDetails().offerId());
-        Assertions.assertEquals("hvhgureod", model.offerDetails().planId());
-        Assertions.assertEquals("obdagxtibqdxb", model.offerDetails().planName());
-        Assertions.assertEquals("akbogqxndlkzgxh", model.offerDetails().termUnit());
-        Assertions.assertEquals("iplbpodxunkbebxm", model.offerDetails().termId());
+        Assertions.assertEquals("nuj", model.subscriptionId());
+        Assertions.assertEquals(MarketplaceSubscriptionStatus.UNSUBSCRIBED, model.subscriptionStatus());
+        Assertions.assertEquals("msbvdkcrodtjinf", model.offerDetails().publisherId());
+        Assertions.assertEquals("jlfltkacjvefkdlf", model.offerDetails().offerId());
+        Assertions.assertEquals("akggkfpag", model.offerDetails().planId());
+        Assertions.assertEquals("wpu", model.offerDetails().planName());
+        Assertions.assertEquals("qblylsyxkqj", model.offerDetails().termUnit());
+        Assertions.assertEquals("jervtia", model.offerDetails().termId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarketplaceDetails model = new MarketplaceDetails().withSubscriptionId("flcxoga")
-            .withSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)
-            .withOfferDetails(new OfferDetails().withPublisherId("nzmnsikvm")
-                .withOfferId("qzeqqkdltfzxm")
-                .withPlanId("hvhgureod")
-                .withPlanName("obdagxtibqdxb")
-                .withTermUnit("akbogqxndlkzgxh")
-                .withTermId("iplbpodxunkbebxm"));
+        MarketplaceDetails model = new MarketplaceDetails().withSubscriptionId("nuj")
+            .withSubscriptionStatus(MarketplaceSubscriptionStatus.UNSUBSCRIBED)
+            .withOfferDetails(new OfferDetails().withPublisherId("msbvdkcrodtjinf")
+                .withOfferId("jlfltkacjvefkdlf")
+                .withPlanId("akggkfpag")
+                .withPlanName("wpu")
+                .withTermUnit("qblylsyxkqj")
+                .withTermId("jervtia"));
         model = BinaryData.fromObject(model).toObject(MarketplaceDetails.class);
-        Assertions.assertEquals("flcxoga", model.subscriptionId());
-        Assertions.assertEquals(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START, model.subscriptionStatus());
-        Assertions.assertEquals("nzmnsikvm", model.offerDetails().publisherId());
-        Assertions.assertEquals("qzeqqkdltfzxm", model.offerDetails().offerId());
-        Assertions.assertEquals("hvhgureod", model.offerDetails().planId());
-        Assertions.assertEquals("obdagxtibqdxb", model.offerDetails().planName());
-        Assertions.assertEquals("akbogqxndlkzgxh", model.offerDetails().termUnit());
-        Assertions.assertEquals("iplbpodxunkbebxm", model.offerDetails().termId());
+        Assertions.assertEquals("nuj", model.subscriptionId());
+        Assertions.assertEquals(MarketplaceSubscriptionStatus.UNSUBSCRIBED, model.subscriptionStatus());
+        Assertions.assertEquals("msbvdkcrodtjinf", model.offerDetails().publisherId());
+        Assertions.assertEquals("jlfltkacjvefkdlf", model.offerDetails().offerId());
+        Assertions.assertEquals("akggkfpag", model.offerDetails().planId());
+        Assertions.assertEquals("wpu", model.offerDetails().planName());
+        Assertions.assertEquals("qblylsyxkqj", model.offerDetails().termUnit());
+        Assertions.assertEquals("jervtia", model.offerDetails().termId());
     }
 }

@@ -22,7 +22,7 @@ public final class MigrationServicesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"integrationRuntimeState\":\"edvbiabvnsrge\"},\"location\":\"yqxadyfhbmw\",\"tags\":{\"glaqjsg\":\"jqttbspvk\",\"zx\":\"zstuj\"},\"id\":\"kn\",\"name\":\"fdrld\",\"type\":\"yehi\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"integrationRuntimeState\":\"ryfmxmdu\"},\"location\":\"fkgilnoudccgnd\",\"tags\":{\"qyeqfcbuulpyuflq\":\"prigg\",\"ujcyohigimwdc\":\"fsh\"},\"id\":\"klkqnqvkixnmb\",\"name\":\"mecuyrzwim\",\"type\":\"zayspzvriet\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class MigrationServicesListMockTests {
 
         PagedIterable<MigrationService> response = manager.migrationServices().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yqxadyfhbmw", response.iterator().next().location());
-        Assertions.assertEquals("jqttbspvk", response.iterator().next().tags().get("glaqjsg"));
+        Assertions.assertEquals("fkgilnoudccgnd", response.iterator().next().location());
+        Assertions.assertEquals("prigg", response.iterator().next().tags().get("qyeqfcbuulpyuflq"));
     }
 }

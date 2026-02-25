@@ -3,12 +3,12 @@
 
 package com.azure.resourcemanager.containerinstance;
 
+import com.azure.core.management.Region;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerAttachResult;
 import com.azure.resourcemanager.containerinstance.models.ContainerExec;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
 import com.azure.resourcemanager.containerinstance.models.ContainerHttpGet;
 import com.azure.resourcemanager.containerinstance.models.ContainerProbe;
@@ -19,6 +19,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -210,8 +211,11 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
     }
 
     // test contains a data-plane call
+    // Azure Storage doesn't support SMB mounting of file share using managed identity
+    // https://learn.microsoft.com/azure/container-instances/container-instances-volume-azure-files
     @DoNotRecord(skipInPlayback = true)
     @Test
+    @Disabled("This request was denied due to internal policy. Container Group requires that Storage Accounts is authenticated with managed identity, but Azure Storage doesn't support SMB mounting of file share using managed identity. ")
     public void testBeginCreateWithFileShareVolume() {
         String containerGroupName = generateRandomResourceName("container", 20);
         Region region = Region.US_WEST3;
@@ -225,6 +229,27 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
             .withPublicImageRegistryOnly()
             // definition step only allow creating one file share volume
             .withNewAzureFileShareVolume("vol1", "share1")
+            .withContainerInstance("nginx", 80)
+            .withNewVirtualNetwork("10.0.0.0/24")
+            .beginCreate();
+        ContainerGroup containerGroup = acceptedContainerGroup.getSyncPoller().getFinalResult();
+        Assertions.assertEquals(1, containerGroup.volumes().size());
+    }
+
+    @DoNotRecord(skipInPlayback = true)
+    @Test
+    public void testBeginCreateWithEmptyDirectoryVolume() {
+        String containerGroupName = generateRandomResourceName("container", 20);
+        Region region = Region.US_WEST3;
+
+        // create virtual network before creating container group
+        Accepted<ContainerGroup> acceptedContainerGroup = containerInstanceManager.containerGroups()
+            .define(containerGroupName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withLinux()
+            .withPublicImageRegistryOnly()
+            .withEmptyDirectoryVolume("vol2")
             .withContainerInstance("nginx", 80)
             .withNewVirtualNetwork("10.0.0.0/24")
             .beginCreate();

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.durabletask.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.durabletask.models.SchedulerProperties;
 import com.azure.resourcemanager.durabletask.models.SchedulerSku;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,21 +15,21 @@ public final class SchedulerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchedulerProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Accepted\",\"endpoint\":\"htnapczwlokjyem\",\"ipAllowlist\":[\"vnipjox\",\"jnchgej\",\"podmailzydehojwy\"],\"sku\":{\"name\":\"huxinpmqnj\",\"capacity\":956745772,\"redundancyState\":\"None\"}}")
+            "{\"provisioningState\":\"Updating\",\"endpoint\":\"s\",\"ipAllowlist\":[\"nyejhkryhtnap\",\"zw\",\"okjye\",\"kkvnipjox\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":296898162,\"redundancyState\":\"Zone\"}}")
             .toObject(SchedulerProperties.class);
-        Assertions.assertEquals("vnipjox", model.ipAllowlist().get(0));
-        Assertions.assertEquals("huxinpmqnj", model.sku().name());
-        Assertions.assertEquals(956745772, model.sku().capacity());
+        Assertions.assertEquals("nyejhkryhtnap", model.ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.DEDICATED, model.sku().name());
+        Assertions.assertEquals(296898162, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchedulerProperties model
-            = new SchedulerProperties().withIpAllowlist(Arrays.asList("vnipjox", "jnchgej", "podmailzydehojwy"))
-                .withSku(new SchedulerSku().withName("huxinpmqnj").withCapacity(956745772));
+            = new SchedulerProperties().withIpAllowlist(Arrays.asList("nyejhkryhtnap", "zw", "okjye", "kkvnipjox"))
+                .withSku(new SchedulerSku().withName(SchedulerSkuName.DEDICATED).withCapacity(296898162));
         model = BinaryData.fromObject(model).toObject(SchedulerProperties.class);
-        Assertions.assertEquals("vnipjox", model.ipAllowlist().get(0));
-        Assertions.assertEquals("huxinpmqnj", model.sku().name());
-        Assertions.assertEquals(956745772, model.sku().capacity());
+        Assertions.assertEquals("nyejhkryhtnap", model.ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.DEDICATED, model.sku().name());
+        Assertions.assertEquals(296898162, model.sku().capacity());
     }
 }

@@ -262,7 +262,7 @@ public final class NeonPostgresManagementClientImpl implements NeonPostgresManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-03-01";
+        this.apiVersion = "2025-06-23-preview";
         this.operations = new OperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
         this.projects = new ProjectsClientImpl(this);

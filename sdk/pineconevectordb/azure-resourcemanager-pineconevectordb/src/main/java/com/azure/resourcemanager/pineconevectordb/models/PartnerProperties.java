@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.pineconevectordb.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -47,20 +46,6 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
         this.displayName = displayName;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (displayName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property displayName in model PartnerProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PartnerProperties.class);
 
     /**
      * {@inheritDoc}

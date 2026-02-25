@@ -7,7 +7,10 @@ package com.azure.resourcemanager.neonpostgres.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.neonpostgres.fluent.models.NeonRoleInner;
 
 /**
@@ -46,4 +49,113 @@ public interface NeonRolesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NeonRoleInner> list(String resourceGroupName, String organizationName, String projectName,
         String branchName, Context context);
+
+    /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Neon Role resource type.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<NeonRoleInner>, NeonRoleInner> beginCreateOrUpdate(String resourceGroupName,
+        String organizationName, String projectName, String branchName, String neonRoleName, NeonRoleInner resource);
+
+    /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Neon Role resource type.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<NeonRoleInner>, NeonRoleInner> beginCreateOrUpdate(String resourceGroupName,
+        String organizationName, String projectName, String branchName, String neonRoleName, NeonRoleInner resource,
+        Context context);
+
+    /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon Role resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NeonRoleInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String neonRoleName, NeonRoleInner resource);
+
+    /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon Role resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NeonRoleInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String neonRoleName, NeonRoleInner resource, Context context);
+
+    /**
+     * Delete a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String neonRoleName, Context context);
+
+    /**
+     * Delete a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String organizationName, String projectName, String branchName,
+        String neonRoleName);
 }

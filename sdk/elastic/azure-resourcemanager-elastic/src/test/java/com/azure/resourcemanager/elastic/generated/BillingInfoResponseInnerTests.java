@@ -15,41 +15,47 @@ public final class BillingInfoResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BillingInfoResponseInner model = BinaryData.fromString(
-            "{\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"lwtgrhpdj\"},\"marketplaceName\":\"umasxazjpq\",\"marketplaceResourceId\":\"gual\",\"marketplaceStatus\":\"xxhejjzzvd\",\"billedAzureSubscriptionId\":\"gwdslfhotwm\",\"subscribed\":true},\"partnerBillingEntity\":{\"id\":\"lbjnpgacftadehx\",\"name\":\"tyfsoppusuesn\",\"partnerEntityUri\":\"dejbavo\"}}")
+            "{\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"mmqhgyxzkonocuk\",\"publisherId\":\"lyaxuc\",\"offerId\":\"uqszfk\"},\"marketplaceName\":\"ypewrmjmwvvjekt\",\"marketplaceResourceId\":\"senhwlrs\",\"marketplaceStatus\":\"rzpwvlqdqgbiq\",\"billedAzureSubscriptionId\":\"ihkaetcktvfc\",\"subscribed\":true},\"partnerBillingEntity\":{\"id\":\"kymuctqhjfbebr\",\"name\":\"xerf\",\"partnerEntityUri\":\"utttxfvjrbirp\"}}")
             .toObject(BillingInfoResponseInner.class);
-        Assertions.assertEquals("lwtgrhpdj", model.marketplaceSaasInfo().marketplaceSubscription().id());
-        Assertions.assertEquals("umasxazjpq", model.marketplaceSaasInfo().marketplaceName());
-        Assertions.assertEquals("gual", model.marketplaceSaasInfo().marketplaceResourceId());
-        Assertions.assertEquals("xxhejjzzvd", model.marketplaceSaasInfo().marketplaceStatus());
-        Assertions.assertEquals("gwdslfhotwm", model.marketplaceSaasInfo().billedAzureSubscriptionId());
-        Assertions.assertEquals(true, model.marketplaceSaasInfo().subscribed());
-        Assertions.assertEquals("lbjnpgacftadehx", model.partnerBillingEntity().id());
-        Assertions.assertEquals("tyfsoppusuesn", model.partnerBillingEntity().name());
-        Assertions.assertEquals("dejbavo", model.partnerBillingEntity().partnerEntityUri());
+        Assertions.assertEquals("mmqhgyxzkonocuk", model.marketplaceSaasInfo().marketplaceSubscription().id());
+        Assertions.assertEquals("lyaxuc", model.marketplaceSaasInfo().marketplaceSubscription().publisherId());
+        Assertions.assertEquals("uqszfk", model.marketplaceSaasInfo().marketplaceSubscription().offerId());
+        Assertions.assertEquals("ypewrmjmwvvjekt", model.marketplaceSaasInfo().marketplaceName());
+        Assertions.assertEquals("senhwlrs", model.marketplaceSaasInfo().marketplaceResourceId());
+        Assertions.assertEquals("rzpwvlqdqgbiq", model.marketplaceSaasInfo().marketplaceStatus());
+        Assertions.assertEquals("ihkaetcktvfc", model.marketplaceSaasInfo().billedAzureSubscriptionId());
+        Assertions.assertTrue(model.marketplaceSaasInfo().subscribed());
+        Assertions.assertEquals("kymuctqhjfbebr", model.partnerBillingEntity().id());
+        Assertions.assertEquals("xerf", model.partnerBillingEntity().name());
+        Assertions.assertEquals("utttxfvjrbirp", model.partnerBillingEntity().partnerEntityUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BillingInfoResponseInner model = new BillingInfoResponseInner()
             .withMarketplaceSaasInfo(new MarketplaceSaaSInfo()
-                .withMarketplaceSubscription(new MarketplaceSaaSInfoMarketplaceSubscription().withId("lwtgrhpdj"))
-                .withMarketplaceName("umasxazjpq")
-                .withMarketplaceResourceId("gual")
-                .withMarketplaceStatus("xxhejjzzvd")
-                .withBilledAzureSubscriptionId("gwdslfhotwm")
+                .withMarketplaceSubscription(new MarketplaceSaaSInfoMarketplaceSubscription().withId("mmqhgyxzkonocuk")
+                    .withPublisherId("lyaxuc")
+                    .withOfferId("uqszfk"))
+                .withMarketplaceName("ypewrmjmwvvjekt")
+                .withMarketplaceResourceId("senhwlrs")
+                .withMarketplaceStatus("rzpwvlqdqgbiq")
+                .withBilledAzureSubscriptionId("ihkaetcktvfc")
                 .withSubscribed(true))
-            .withPartnerBillingEntity(new PartnerBillingEntity().withId("lbjnpgacftadehx")
-                .withName("tyfsoppusuesn")
-                .withPartnerEntityUri("dejbavo"));
+            .withPartnerBillingEntity(new PartnerBillingEntity().withId("kymuctqhjfbebr")
+                .withName("xerf")
+                .withPartnerEntityUri("utttxfvjrbirp"));
         model = BinaryData.fromObject(model).toObject(BillingInfoResponseInner.class);
-        Assertions.assertEquals("lwtgrhpdj", model.marketplaceSaasInfo().marketplaceSubscription().id());
-        Assertions.assertEquals("umasxazjpq", model.marketplaceSaasInfo().marketplaceName());
-        Assertions.assertEquals("gual", model.marketplaceSaasInfo().marketplaceResourceId());
-        Assertions.assertEquals("xxhejjzzvd", model.marketplaceSaasInfo().marketplaceStatus());
-        Assertions.assertEquals("gwdslfhotwm", model.marketplaceSaasInfo().billedAzureSubscriptionId());
-        Assertions.assertEquals(true, model.marketplaceSaasInfo().subscribed());
-        Assertions.assertEquals("lbjnpgacftadehx", model.partnerBillingEntity().id());
-        Assertions.assertEquals("tyfsoppusuesn", model.partnerBillingEntity().name());
-        Assertions.assertEquals("dejbavo", model.partnerBillingEntity().partnerEntityUri());
+        Assertions.assertEquals("mmqhgyxzkonocuk", model.marketplaceSaasInfo().marketplaceSubscription().id());
+        Assertions.assertEquals("lyaxuc", model.marketplaceSaasInfo().marketplaceSubscription().publisherId());
+        Assertions.assertEquals("uqszfk", model.marketplaceSaasInfo().marketplaceSubscription().offerId());
+        Assertions.assertEquals("ypewrmjmwvvjekt", model.marketplaceSaasInfo().marketplaceName());
+        Assertions.assertEquals("senhwlrs", model.marketplaceSaasInfo().marketplaceResourceId());
+        Assertions.assertEquals("rzpwvlqdqgbiq", model.marketplaceSaasInfo().marketplaceStatus());
+        Assertions.assertEquals("ihkaetcktvfc", model.marketplaceSaasInfo().billedAzureSubscriptionId());
+        Assertions.assertTrue(model.marketplaceSaasInfo().subscribed());
+        Assertions.assertEquals("kymuctqhjfbebr", model.partnerBillingEntity().id());
+        Assertions.assertEquals("xerf", model.partnerBillingEntity().name());
+        Assertions.assertEquals("utttxfvjrbirp", model.partnerBillingEntity().partnerEntityUri());
     }
 }

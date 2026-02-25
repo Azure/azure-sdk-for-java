@@ -10,6 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ContextInner;
 import com.azure.resourcemanager.workloadorchestration.models.ContextModel;
 import com.azure.resourcemanager.workloadorchestration.models.ContextProperties;
+import com.azure.resourcemanager.workloadorchestration.models.ContextUpdate;
+import com.azure.resourcemanager.workloadorchestration.models.ContextUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -75,6 +77,8 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
 
     private String contextName;
 
+    private ContextUpdate updateProperties;
+
     public ContextModelImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -102,20 +106,21 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
     }
 
     public ContextModelImpl update() {
+        this.updateProperties = new ContextUpdate();
         return this;
     }
 
     public ContextModel apply() {
         this.innerObject = serviceManager.serviceClient()
             .getContexts()
-            .update(resourceGroupName, contextName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, contextName, updateProperties, Context.NONE);
         return this;
     }
 
     public ContextModel apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getContexts()
-            .update(resourceGroupName, contextName, this.innerModel(), context);
+            .update(resourceGroupName, contextName, updateProperties, context);
         return this;
     }
 
@@ -154,12 +159,26 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
     }
 
     public ContextModelImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public ContextModelImpl withProperties(ContextProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public ContextModelImpl withProperties(ContextUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

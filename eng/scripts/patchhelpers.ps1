@@ -73,7 +73,7 @@ function UpdateDependencies($ArtifactInfos) {
         $sdkVersion = $ArtifactInfos[$artifactId].LatestGAOrPatchVersion
         $groupPath = $ArtifactInfos[$artifactId].GroupId -replace '\.', '/'
         $pomFileUri = "https://repo1.maven.org/maven2/$groupPath/$artifactId/$sdkVersion/$artifactId-$sdkVersion.pom"
-        $webResponseObj = Invoke-WebRequest -Uri $pomFileUri
+        $webResponseObj = Invoke-WebRequest -Uri $pomFileUri -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
         $dependencies = ([xml]$webResponseObj.Content).project.dependencies.dependency | Where-Object { (([String]::IsNullOrWhiteSpace($_.scope)) -or ($_.scope -eq 'compile')) }
         $dependencies | ForEach-Object { $deps[$_.artifactId] = $_.version }
         $ArtifactInfos[$artifactId].Dependencies = $deps
@@ -89,7 +89,7 @@ function UpdateCIInformation($ArtifactInfos) {
         $serviceDirectory = $arInfo.ServiceDirectoryName
 
         if (!$serviceDirectory) {
-            $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectory)
+            $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectory -GroupId $arInfo.GroupId)
             $arInfo.ServiceDirectoryName = $pkgProperties.ServiceDirectory
             $arInfo.ArtifactDirPath = $pkgProperties.DirectoryPath
             $arInfo.CurrentPomFileVersion = $pkgProperties.Version
@@ -130,6 +130,9 @@ function CreateForwardLookingVersions($ArtifactInfos) {
 }
 
 # Find all the artifacts that will need to be patched based on the dependency analysis.
+# Artifacts will be processed in the same order as defined in patch_release_client.txt (libraries that depend on other
+# libraries will appear later in the file).
+# This guarantees that if dependency libraries are going to be patched, dependent ones will be included as well.
 function FindAllArtifactsThatNeedPatching($ArtifactInfos, $AllDependenciesWithVersion) {
     foreach($arId in $ArtifactInfos.Keys) {
         $arInfo = $ArtifactInfos[$arId]
@@ -185,7 +188,7 @@ function UpdateDependenciesInVersionClient([hashtable]$ArtifactInfos) {
 
 # Get the release version for the next bom artifact.
 function GetNextBomVersion() {
-    $pkgProperties = [PackageProps](Get-PkgProperties -PackageName "azure-sdk-bom")
+    $pkgProperties = [PackageProps](Get-PkgProperties -PackageName "azure-sdk-bom" -GroupId "com.azure")
     $currentVersion = $pkgProperties.Version
 
     $patchVersion = GetPatchVersion -ReleaseVersion $currentVersion

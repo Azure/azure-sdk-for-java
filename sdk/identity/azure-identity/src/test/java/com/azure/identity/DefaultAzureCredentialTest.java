@@ -128,7 +128,8 @@ public class DefaultAzureCredentialTest {
         try (MockedConstruction<IdentityClient> mocked
             = mockConstruction(IdentityClient.class, (identityClient, context) -> {
                 when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(Mono.empty());
-                when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request))
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
                     .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             });
             MockedConstruction<IntelliJCredential> ijcredential
@@ -164,7 +165,8 @@ public class DefaultAzureCredentialTest {
         // mock
         try (MockedConstruction<IdentityClient> mocked
             = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-                when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request))
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
                     .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             })) {
             // test

@@ -53,27 +53,4 @@ public final class EmailClient {
     public SyncPoller<EmailSendResult, EmailSendResult> beginSend(EmailMessage message, Context context) {
         return client.beginSend(message, context).getSyncPoller();
     }
-
-    /**
-     * Creates a poller from an existing operation id.
-     *
-     * @param operationId The operation id of a previous send email operation.
-     * @return A poller that can be used to poll for the status of the email.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<EmailSendResult, EmailSendResult> beginSend(String operationId) {
-        return beginSend(operationId, Context.NONE);
-    }
-
-    /**
-     * Creates a poller from an existing operation id.
-     *
-     * @param operationId The operation id of a previous send email operation.
-     * @param context The context to associate with this operation.
-     * @return A poller that can be used to poll for the status of the email.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<EmailSendResult, EmailSendResult> beginSend(String operationId, Context context) {
-        return client.beginSend(operationId, context).getSyncPoller();
-    }
 }

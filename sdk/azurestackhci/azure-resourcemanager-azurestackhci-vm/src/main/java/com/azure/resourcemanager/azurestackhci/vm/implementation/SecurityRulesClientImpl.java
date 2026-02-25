@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.SecurityRulesClient;
@@ -187,26 +186,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityRuleInner>> getWithResponseAsync(String resourceGroupName,
         String networkSecurityGroupName, String securityRuleName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkSecurityGroupName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
-        }
-        if (securityRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter securityRuleName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -248,29 +227,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityRuleInner> getWithResponse(String resourceGroupName, String networkSecurityGroupName,
         String securityRuleName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkSecurityGroupName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
-        }
-        if (securityRuleName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter securityRuleName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, networkSecurityGroupName, securityRuleName, accept, context);
@@ -307,31 +263,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkSecurityGroupName, String securityRuleName, SecurityRuleInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkSecurityGroupName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
-        }
-        if (securityRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter securityRuleName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -356,35 +287,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String networkSecurityGroupName,
         String securityRuleName, SecurityRuleInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkSecurityGroupName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
-        }
-        if (securityRuleName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter securityRuleName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -408,35 +310,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String networkSecurityGroupName,
         String securityRuleName, SecurityRuleInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkSecurityGroupName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
-        }
-        if (securityRuleName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter securityRuleName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -581,26 +454,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String networkSecurityGroupName, String securityRuleName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkSecurityGroupName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
-        }
-        if (securityRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter securityRuleName is required and cannot be null."));
-        }
         return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, networkSecurityGroupName, securityRuleName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -620,29 +473,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkSecurityGroupName,
         String securityRuleName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkSecurityGroupName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
-        }
-        if (securityRuleName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter securityRuleName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, networkSecurityGroupName, securityRuleName,
             Context.NONE);
@@ -663,29 +493,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkSecurityGroupName,
         String securityRuleName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkSecurityGroupName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
-        }
-        if (securityRuleName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter securityRuleName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, networkSecurityGroupName, securityRuleName, context);
     }
@@ -812,22 +619,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityRuleInner>> listByNetworkSecurityGroupSinglePageAsync(String resourceGroupName,
         String networkSecurityGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkSecurityGroupName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -869,25 +660,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityRuleInner> listByNetworkSecurityGroupSinglePage(String resourceGroupName,
         String networkSecurityGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkSecurityGroupName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SecurityRuleListResult> res
             = service.listByNetworkSecurityGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -910,25 +682,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityRuleInner> listByNetworkSecurityGroupSinglePage(String resourceGroupName,
         String networkSecurityGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkSecurityGroupName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SecurityRuleListResult> res
             = service.listByNetworkSecurityGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -986,13 +739,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityRuleInner>> listByNetworkSecurityGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1013,15 +759,6 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityRuleInner> listByNetworkSecurityGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SecurityRuleListResult> res
             = service.listByNetworkSecurityGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1042,21 +779,10 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityRuleInner> listByNetworkSecurityGroupNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SecurityRuleListResult> res
             = service.listByNetworkSecurityGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SecurityRulesClientImpl.class);
 }

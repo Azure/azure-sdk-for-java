@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookTableColumn.
+ * Represents a workbook table column.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntity {

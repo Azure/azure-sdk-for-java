@@ -14,7 +14,7 @@ import com.azure.resourcemanager.containerservicesafeguards.models.PodSecuritySt
  */
 public final class DeploymentSafeguardsCreateSamples {
     /*
-     * x-ms-original-file: 2025-05-02-preview/DeploymentSafeguards_Create.json
+     * x-ms-original-file: 2025-07-01/DeploymentSafeguards_Create.json
      */
     /**
      * Sample code: Creates a DeploymentSafeguards resource with a long running operation.

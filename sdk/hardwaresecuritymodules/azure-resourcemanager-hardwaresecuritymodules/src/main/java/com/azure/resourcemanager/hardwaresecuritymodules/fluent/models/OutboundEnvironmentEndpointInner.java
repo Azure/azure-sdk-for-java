@@ -54,17 +54,6 @@ public final class OutboundEnvironmentEndpointInner implements JsonSerializable<
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (endpoints() != null) {
-            endpoints().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

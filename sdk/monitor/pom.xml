@@ -18,5 +18,6 @@
       <module>azure-monitor-query-logs</module>
       <module>azure-monitor-query-metrics</module>
       <module>azure-monitor-query-perf</module>
+      <module>azure-resourcemanager-monitor</module>
   </modules>
 </project>

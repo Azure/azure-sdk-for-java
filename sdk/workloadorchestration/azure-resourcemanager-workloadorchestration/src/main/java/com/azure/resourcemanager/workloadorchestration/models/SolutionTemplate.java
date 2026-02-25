@@ -255,7 +255,7 @@ public interface SolutionTemplate {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(SolutionTemplateProperties properties);
+            Update withProperties(SolutionTemplateUpdateProperties properties);
         }
     }
 

@@ -33,8 +33,6 @@ import com.azure.resourcemanager.appcontainers.fluent.LogicAppsClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.LogicAppInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.WorkflowEnvelopeInner;
 import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
-import com.azure.resourcemanager.appcontainers.models.LogicAppsProxyMethod;
-import com.azure.resourcemanager.appcontainers.models.WorkflowArtifacts;
 import com.azure.resourcemanager.appcontainers.models.WorkflowEnvelopeCollection;
 import reactor.core.publisher.Mono;
 
@@ -175,30 +173,6 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/deployWorkflowArtifacts")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> deployWorkflowArtifacts(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") WorkflowArtifacts workflowArtifacts, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/deployWorkflowArtifacts")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Response<Void> deployWorkflowArtifactsSync(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") WorkflowArtifacts workflowArtifacts, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/listWorkflowsConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -216,30 +190,6 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/invoke")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Object>> invoke(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
-            @HeaderParam("x-ms-logicApps-proxy-path") String xMsLogicAppsProxyPath,
-            @HeaderParam("x-ms-logicApps-proxy-method") LogicAppsProxyMethod xMsLogicAppsProxyMethod,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/invoke")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Response<Object> invokeSync(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
-            @HeaderParam("x-ms-logicApps-proxy-path") String xMsLogicAppsProxyPath,
-            @HeaderParam("x-ms-logicApps-proxy-method") LogicAppsProxyMethod xMsLogicAppsProxyMethod,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -264,7 +214,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -304,7 +254,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -321,7 +271,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -363,7 +313,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -379,7 +329,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param resource Logic app resource properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -408,9 +358,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
         if (logicAppName == null) {
             return Mono.error(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
         }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
+        if (resource != null) {
             resource.validate();
         }
         final String accept = "application/json";
@@ -426,8 +374,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param resource Logic app resource properties.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -435,7 +382,8 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogicAppInner> createOrUpdateAsync(String resourceGroupName, String containerAppName,
-        String logicAppName, LogicAppInner resource) {
+        String logicAppName) {
+        final LogicAppInner resource = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, containerAppName, logicAppName, resource)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -445,7 +393,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param resource Logic app resource properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -478,10 +426,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
         }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
+        if (resource != null) {
             resource.validate();
         }
         final String accept = "application/json";
@@ -494,16 +439,15 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param resource Logic app resource properties.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a logic app extension resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogicAppInner createOrUpdate(String resourceGroupName, String containerAppName, String logicAppName,
-        LogicAppInner resource) {
+    public LogicAppInner createOrUpdate(String resourceGroupName, String containerAppName, String logicAppName) {
+        final LogicAppInner resource = null;
         return createOrUpdateWithResponse(resourceGroupName, containerAppName, logicAppName, resource, Context.NONE)
             .getValue();
     }
@@ -513,7 +457,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -553,7 +497,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -570,7 +514,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -612,7 +556,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -627,7 +571,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -670,7 +614,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -688,7 +632,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -732,7 +676,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -777,7 +721,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -795,7 +739,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -815,7 +759,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param workflowName Workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -860,7 +804,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param workflowName Workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -879,7 +823,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param workflowName Workflow name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -926,7 +870,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param workflowName Workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -941,139 +885,11 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     }
 
     /**
-     * Creates or updates the artifacts for the logic app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param workflowArtifacts Application settings and files of the workflow.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deployWorkflowArtifactsWithResponseAsync(String resourceGroupName,
-        String containerAppName, String logicAppName, WorkflowArtifacts workflowArtifacts) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (logicAppName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
-        }
-        if (workflowArtifacts != null) {
-            workflowArtifacts.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.deployWorkflowArtifacts(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, containerAppName, logicAppName,
-                this.client.getApiVersion(), workflowArtifacts, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Creates or updates the artifacts for the logic app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deployWorkflowArtifactsAsync(String resourceGroupName, String containerAppName,
-        String logicAppName) {
-        final WorkflowArtifacts workflowArtifacts = null;
-        return deployWorkflowArtifactsWithResponseAsync(resourceGroupName, containerAppName, logicAppName,
-            workflowArtifacts).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Creates or updates the artifacts for the logic app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param workflowArtifacts Application settings and files of the workflow.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deployWorkflowArtifactsWithResponse(String resourceGroupName, String containerAppName,
-        String logicAppName, WorkflowArtifacts workflowArtifacts, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (logicAppName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
-        }
-        if (workflowArtifacts != null) {
-            workflowArtifacts.validate();
-        }
-        final String accept = "application/json";
-        return service.deployWorkflowArtifactsSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, containerAppName, logicAppName, this.client.getApiVersion(), workflowArtifacts, accept,
-            context);
-    }
-
-    /**
-     * Creates or updates the artifacts for the logic app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deployWorkflowArtifacts(String resourceGroupName, String containerAppName, String logicAppName) {
-        final WorkflowArtifacts workflowArtifacts = null;
-        deployWorkflowArtifactsWithResponse(resourceGroupName, containerAppName, logicAppName, workflowArtifacts,
-            Context.NONE);
-    }
-
-    /**
      * Gets logic app's connections.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1114,7 +930,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1132,7 +948,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1174,7 +990,7 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1185,150 +1001,6 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
         String logicAppName) {
         return listWorkflowsConnectionsWithResponse(resourceGroupName, containerAppName, logicAppName, Context.NONE)
             .getValue();
-    }
-
-    /**
-     * Proxies a the API call to the logic app backed by the container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the LogicApp App, the extension resource.
-     * @param xMsLogicAppsProxyPath The proxy path for the API call.
-     * @param xMsLogicAppsProxyMethod The proxy method for the API call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Object>> invokeWithResponseAsync(String resourceGroupName, String containerAppName,
-        String logicAppName, String xMsLogicAppsProxyPath, LogicAppsProxyMethod xMsLogicAppsProxyMethod) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (logicAppName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
-        }
-        if (xMsLogicAppsProxyPath == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter xMsLogicAppsProxyPath is required and cannot be null."));
-        }
-        if (xMsLogicAppsProxyMethod == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter xMsLogicAppsProxyMethod is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.invoke(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, containerAppName, logicAppName, xMsLogicAppsProxyPath, xMsLogicAppsProxyMethod,
-                this.client.getApiVersion(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Proxies a the API call to the logic app backed by the container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the LogicApp App, the extension resource.
-     * @param xMsLogicAppsProxyPath The proxy path for the API call.
-     * @param xMsLogicAppsProxyMethod The proxy method for the API call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Object> invokeAsync(String resourceGroupName, String containerAppName, String logicAppName,
-        String xMsLogicAppsProxyPath, LogicAppsProxyMethod xMsLogicAppsProxyMethod) {
-        return invokeWithResponseAsync(resourceGroupName, containerAppName, logicAppName, xMsLogicAppsProxyPath,
-            xMsLogicAppsProxyMethod).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Proxies a the API call to the logic app backed by the container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the LogicApp App, the extension resource.
-     * @param xMsLogicAppsProxyPath The proxy path for the API call.
-     * @param xMsLogicAppsProxyMethod The proxy method for the API call.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> invokeWithResponse(String resourceGroupName, String containerAppName, String logicAppName,
-        String xMsLogicAppsProxyPath, LogicAppsProxyMethod xMsLogicAppsProxyMethod, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (logicAppName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
-        }
-        if (xMsLogicAppsProxyPath == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter xMsLogicAppsProxyPath is required and cannot be null."));
-        }
-        if (xMsLogicAppsProxyMethod == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter xMsLogicAppsProxyMethod is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.invokeSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            containerAppName, logicAppName, xMsLogicAppsProxyPath, xMsLogicAppsProxyMethod, this.client.getApiVersion(),
-            accept, context);
-    }
-
-    /**
-     * Proxies a the API call to the logic app backed by the container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the LogicApp App, the extension resource.
-     * @param xMsLogicAppsProxyPath The proxy path for the API call.
-     * @param xMsLogicAppsProxyMethod The proxy method for the API call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object invoke(String resourceGroupName, String containerAppName, String logicAppName,
-        String xMsLogicAppsProxyPath, LogicAppsProxyMethod xMsLogicAppsProxyMethod) {
-        return invokeWithResponse(resourceGroupName, containerAppName, logicAppName, xMsLogicAppsProxyPath,
-            xMsLogicAppsProxyMethod, Context.NONE).getValue();
     }
 
     /**

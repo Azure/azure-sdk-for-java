@@ -20,6 +20,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.ResourceProviderCommonsClient;
 import com.azure.resourcemanager.iothub.fluent.models.UserSubscriptionQuotaListResultInner;
 import com.azure.resourcemanager.iothub.models.ErrorDetailsException;
@@ -55,13 +56,21 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "IotHubClientResource")
+    @ServiceInterface(name = "IotHubClientResourceProviderCommons")
     public interface ResourceProviderCommonsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Devices/usages")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
         Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuota(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Devices/usages")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorDetailsException.class)
+        Response<UserSubscriptionQuotaListResultInner> getSubscriptionQuotaSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -98,35 +107,6 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      * 
      * Get the number of free and paid iot hubs in the subscription.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of free and paid iot hubs in the subscription along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UserSubscriptionQuotaListResultInner>>
-        getSubscriptionQuotaWithResponseAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getSubscriptionQuota(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get the number of iot hubs in the subscription
-     * 
-     * Get the number of free and paid iot hubs in the subscription.
-     * 
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of free and paid iot hubs in the subscription on successful completion of {@link Mono}.
@@ -149,7 +129,19 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserSubscriptionQuotaListResultInner> getSubscriptionQuotaWithResponse(Context context) {
-        return getSubscriptionQuotaWithResponseAsync(context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSubscriptionQuotaSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -165,4 +157,6 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
     public UserSubscriptionQuotaListResultInner getSubscriptionQuota() {
         return getSubscriptionQuotaWithResponse(Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProviderCommonsClientImpl.class);
 }

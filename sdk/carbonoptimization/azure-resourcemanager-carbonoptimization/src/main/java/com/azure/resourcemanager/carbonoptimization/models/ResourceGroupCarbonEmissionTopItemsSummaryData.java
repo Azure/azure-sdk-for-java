@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.carbonoptimization.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -93,37 +92,6 @@ public final class ResourceGroupCarbonEmissionTopItemsSummaryData extends Carbon
     public String resourceGroupUrl() {
         return this.resourceGroupUrl;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (itemName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property itemName in model ResourceGroupCarbonEmissionTopItemsSummaryData"));
-        }
-        if (categoryType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property categoryType in model ResourceGroupCarbonEmissionTopItemsSummaryData"));
-        }
-        if (subscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property subscriptionId in model ResourceGroupCarbonEmissionTopItemsSummaryData"));
-        }
-        if (resourceGroupUrl() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property resourceGroupUrl in model ResourceGroupCarbonEmissionTopItemsSummaryData"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceGroupCarbonEmissionTopItemsSummaryData.class);
 
     /**
      * {@inheritDoc}

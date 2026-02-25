@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * sizeRange.
+ * Represents a size range.
  */
 @Fluent
 public final class MicrosoftGraphSizeRange implements JsonSerializable<MicrosoftGraphSizeRange> {

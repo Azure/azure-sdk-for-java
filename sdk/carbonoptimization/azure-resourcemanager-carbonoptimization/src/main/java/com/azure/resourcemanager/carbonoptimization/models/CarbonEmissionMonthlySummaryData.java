@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.carbonoptimization.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -67,22 +66,6 @@ public final class CarbonEmissionMonthlySummaryData extends CarbonEmissionData {
     public double carbonIntensity() {
         return this.carbonIntensity;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (date() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property date in model CarbonEmissionMonthlySummaryData"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CarbonEmissionMonthlySummaryData.class);
 
     /**
      * {@inheritDoc}

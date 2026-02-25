@@ -12,9 +12,9 @@ public final class WorkloadNetworkVirtualMachinesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVirtualMachinesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"pchwa\",\"vmType\":\"EDGE\"},\"id\":\"usnfepgfewet\",\"name\":\"l\",\"type\":\"xgncxyk\"}],\"nextLink\":\"djhlimm\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"ojlvfhrbbpneqvc\",\"vmType\":\"REGULAR\"},\"id\":\"urmochpprprs\",\"name\":\"mo\",\"type\":\"ayzejnhlbkpbz\"},{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"jh\",\"vmType\":\"SERVICE\"},\"id\":\"echndbnwieholew\",\"name\":\"wiuub\",\"type\":\"efqsfapaqtferrqw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"fxapjwogqqnobpu\",\"vmType\":\"EDGE\"},\"id\":\"btqwpwyawbzas\",\"name\":\"bucljgkyexaogu\",\"type\":\"aipidsdaultxi\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"qwazlnqnmcjngzq\",\"vmType\":\"REGULAR\"},\"id\":\"bjwgnyfus\",\"name\":\"zsvtuikzhajqgl\",\"type\":\"fh\"}],\"nextLink\":\"rqryxynqn\"}")
             .toObject(WorkloadNetworkVirtualMachinesList.class);
-        Assertions.assertEquals("pchwa", model.value().get(0).displayName());
-        Assertions.assertEquals("djhlimm", model.nextLink());
+        Assertions.assertEquals("ojlvfhrbbpneqvc", model.value().get(0).displayName());
+        Assertions.assertEquals("rqryxynqn", model.nextLink());
     }
 }

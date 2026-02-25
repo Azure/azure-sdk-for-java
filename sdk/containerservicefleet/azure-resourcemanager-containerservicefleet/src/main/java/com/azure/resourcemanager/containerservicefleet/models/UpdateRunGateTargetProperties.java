@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -78,21 +77,6 @@ public final class UpdateRunGateTargetProperties implements JsonSerializable<Upd
     public Timing timing() {
         return this.timing;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (timing() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property timing in model UpdateRunGateTargetProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(UpdateRunGateTargetProperties.class);
 
     /**
      * {@inheritDoc}

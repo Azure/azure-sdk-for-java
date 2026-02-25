@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptActionDetail;
@@ -21,22 +21,22 @@ public final class ScriptActionsGetExecutionDetailWithResponseMockTests {
     @Test
     public void testGetExecutionDetailWithResponse() throws Exception {
         String responseStr
-            = "{\"scriptExecutionId\":3671581328871244489,\"startTime\":\"atbwbqam\",\"endTime\":\"uliyslpkcv\",\"status\":\"f\",\"operation\":\"xxe\",\"executionSummary\":[{\"status\":\"bormcqmiciijqpkz\",\"instanceCount\":1276736582}],\"debugInformation\":\"xjmcsmyqwixvcpw\",\"name\":\"kwywzwofalic\",\"uri\":\"duoiqt\",\"parameters\":\"t\",\"roles\":[\"sknxrwzawnvsbcf\",\"zagxnvhycvdi\",\"wrzregzgyufu\"],\"applicationName\":\"wpwerye\"}";
+            = "{\"scriptExecutionId\":1560135897050065266,\"startTime\":\"rmgjfbpkuwx\",\"endTime\":\"iojfizfavkjzwfbc\",\"status\":\"y\",\"operation\":\"mfzsbf\",\"executionSummary\":[{\"status\":\"xmdewsrsxkrplbj\",\"instanceCount\":785597151}],\"debugInformation\":\"wwviyo\",\"name\":\"ps\",\"uri\":\"hbrnnhjx\",\"parameters\":\"wjh\",\"roles\":[\"biwetpo\",\"ycyqiqyhgfsetzl\",\"xbsfledynoj\"],\"applicationName\":\"iuwfbzkkdtnhqsy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HDInsightManager manager = HDInsightManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RuntimeScriptActionDetail response = manager.scriptActions()
-            .getExecutionDetailWithResponse("yzjdnrqjbt", "jeaoqaqbz", "yh", com.azure.core.util.Context.NONE)
+            .getExecutionDetailWithResponse("vkzykjtjknsxf", "us", "cdp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kwywzwofalic", response.name());
-        Assertions.assertEquals("duoiqt", response.uri());
-        Assertions.assertEquals("t", response.parameters());
-        Assertions.assertEquals("sknxrwzawnvsbcf", response.roles().get(0));
+        Assertions.assertEquals("ps", response.name());
+        Assertions.assertEquals("hbrnnhjx", response.uri());
+        Assertions.assertEquals("wjh", response.parameters());
+        Assertions.assertEquals("biwetpo", response.roles().get(0));
     }
 }

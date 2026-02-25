@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -330,6 +331,7 @@ public interface AsyncDocumentClient {
                     isPerPartitionAutomaticFailoverEnabled);
 
             client.init(state, null);
+
             return client;
         }
 
@@ -935,13 +937,15 @@ public interface AsyncDocumentClient {
      * @param options                      the request options.
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
      * @param disableStaledResourceExceptionHandling the flag for disabling staled resource exception handling. For bulk executor, the exception should bubbled up so to be retried correctly.
+     * @param disableRetryForThrottledBatchRequest the flag for disabling 429 retry for batch request. For bulk executor and transactional bulk executor, the exception need to be bubbled up.
      * @return a {@link Mono} containing the transactionalBatchResponse response which results of all operations.
      */
     Mono<CosmosBatchResponse> executeBatchRequest(String collectionLink,
                                                   ServerBatchRequest serverBatchRequest,
                                                   RequestOptions options,
                                                   boolean disableAutomaticIdGeneration,
-                                                  boolean disableStaledResourceExceptionHandling);
+                                                  boolean disableStaledResourceExceptionHandling,
+                                                  boolean disableRetryForThrottledBatchRequest);
 
     /**
      * Creates a trigger.
@@ -1678,5 +1682,7 @@ public interface AsyncDocumentClient {
      */
     void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 
-    public String getMasterKeyOrResourceToken();
+    String getMasterKeyOrResourceToken();
+
+    void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor);
 }

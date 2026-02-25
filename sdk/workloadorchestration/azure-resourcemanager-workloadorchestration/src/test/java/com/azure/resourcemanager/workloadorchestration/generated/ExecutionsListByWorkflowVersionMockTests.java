@@ -23,7 +23,7 @@ public final class ExecutionsListByWorkflowVersionMockTests {
     @Test
     public void testListByWorkflowVersion() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"workflowVersionId\":\"kiwrsiw\",\"specification\":{},\"status\":{\"updateTime\":\"2021-09-30T22:56:34Z\",\"status\":980511476,\"statusMessage\":\"rra\",\"stageHistory\":[{\"status\":742764824,\"statusMessage\":\"uehogdd\",\"stage\":\"bcbgydlqidywmhm\",\"nextstage\":\"yrilkfb\",\"errorMessage\":\"qqxvztpbn\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}},{\"status\":222029368,\"statusMessage\":\"lswbnf\",\"stage\":\"epl\",\"nextstage\":\"qjn\",\"errorMessage\":\"zygleexahvm\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"csjjzyvoaqajuve\",\"type\":\"CustomLocation\"},\"eTag\":\"tdmkrrbhmpful\",\"id\":\"efgybpmfbfununmp\",\"name\":\"krvfyifkdschl\",\"type\":\"vfictnkjjwgcwn\"}]}";
+            = "{\"value\":[{\"properties\":{\"workflowVersionId\":\"ev\",\"specification\":{},\"status\":{\"updateTime\":\"2021-03-02T22:20:35Z\",\"status\":1201304569,\"statusMessage\":\"slpuxgcbdsva\",\"stageHistory\":[{\"status\":763116826,\"statusMessage\":\"trkxgpazwu\",\"stage\":\"yqvnjobfe\",\"nextstage\":\"ldiuhzzgqlm\",\"errorMessage\":\"ewzgiud\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Initialized\"},\"extendedLocation\":{\"name\":\"nmhkrezsd\",\"type\":\"EdgeZone\"},\"eTag\":\"heqdgcru\",\"id\":\"pinymmqgwokmikp\",\"name\":\"zfbmjxuv\",\"type\":\"ipfdvhaxdvwzaehp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,10 @@ public final class ExecutionsListByWorkflowVersionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Execution> response = manager.executions()
-            .listByWorkflowVersion("yckzex", "xak", "kywymxgaabj", "dtfohfaog", com.azure.core.util.Context.NONE);
+            .listByWorkflowVersion("ynwlslrcigtzjcv", "xqlaps", "ssov", "xpavid", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kiwrsiw", response.iterator().next().properties().workflowVersionId());
-        Assertions.assertEquals("csjjzyvoaqajuve", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
-            response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("ev", response.iterator().next().properties().workflowVersionId());
+        Assertions.assertEquals("nmhkrezsd", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
     }
 }

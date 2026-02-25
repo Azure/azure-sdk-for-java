@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SchemaVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SchemaVersionProperties model = BinaryData.fromString("{\"value\":\"a\",\"provisioningState\":\"Canceled\"}")
-            .toObject(SchemaVersionProperties.class);
-        Assertions.assertEquals("a", model.value());
+        SchemaVersionProperties model
+            = BinaryData.fromString("{\"value\":\"gaudcc\",\"provisioningState\":\"Initialized\"}")
+                .toObject(SchemaVersionProperties.class);
+        Assertions.assertEquals("gaudcc", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaVersionProperties model = new SchemaVersionProperties().withValue("a");
+        SchemaVersionProperties model = new SchemaVersionProperties().withValue("gaudcc");
         model = BinaryData.fromObject(model).toObject(SchemaVersionProperties.class);
-        Assertions.assertEquals("a", model.value());
+        Assertions.assertEquals("gaudcc", model.value());
     }
 }

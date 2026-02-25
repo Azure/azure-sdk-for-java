@@ -11,7 +11,7 @@ public final class ConnectToTargetSqlMITaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectToTargetSqlMITaskOutput model = BinaryData.fromString(
-            "{\"id\":\"hnfhqlyvijouwi\",\"targetServerVersion\":\"xoyzunbix\",\"targetServerBrandVersion\":\"ti\",\"logins\":[\"pwpgclrci\",\"tso\"],\"agentJobs\":[\"kenx\",\"m\"],\"validationErrors\":[{\"message\":\"rpmpdnqqskaw\",\"actionableMessage\":\"qvmmbn\",\"filePath\":\"fr\",\"lineNumber\":\"lkzmegnitgvkxl\",\"hResult\":1806013013,\"stackTrace\":\"rfe\"}]}")
+            "{\"id\":\"hvjhhnakzyb\",\"targetServerVersion\":\"jid\",\"targetServerBrandVersion\":\"syxkyxvxevblb\",\"logins\":[\"nljlageuaulx\"],\"agentJobs\":[\"mjbnk\",\"pxynenlsvxeizzg\",\"klnsrmffey\"],\"validationErrors\":[{\"message\":\"tpiymerteea\",\"actionableMessage\":\"xqiekkkzddrtk\",\"filePath\":\"ojbmxv\",\"lineNumber\":\"refdee\",\"hResult\":506699302,\"stackTrace\":\"uij\"}]}")
             .toObject(ConnectToTargetSqlMITaskOutput.class);
     }
 

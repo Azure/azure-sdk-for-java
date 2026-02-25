@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.neonpostgres.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * The Neon compute endpoint resource type.
  */
-@Immutable
+@Fluent
 public final class EndpointInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
@@ -46,7 +46,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Creates an instance of EndpointInner class.
      */
-    private EndpointInner() {
+    public EndpointInner() {
     }
 
     /**
@@ -56,6 +56,17 @@ public final class EndpointInner extends ProxyResource {
      */
     public EndpointProperties properties() {
         return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withProperties(EndpointProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -95,17 +106,6 @@ public final class EndpointInner extends ProxyResource {
     @Override
     public String id() {
         return this.id;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
     }
 
     /**

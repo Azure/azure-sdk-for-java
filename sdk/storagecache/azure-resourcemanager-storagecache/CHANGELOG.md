@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,90 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2025-09-25)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. Azure Managed Lustre provides a fully managed Lustre® file system, integrated with Blob storage, for use on demand. These operations create and manage Azure Managed Lustre file systems. Package tag package-2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.AutoImportJobUpdatePropertiesAdminStatus` was added
+
+* `models.AutoExportJob$Update` was added
+
+* `models.AutoExportJobUpdate` was added
+
+* `models.AutoImportJobPropertiesProvisioningState` was added
+
+* `models.AutoImportJob$Definition` was added
+
+* `models.AutoImportJobPropertiesAdminStatus` was added
+
+* `models.AutoImportJobState` was added
+
+* `models.AutoExportStatusType` was added
+
+* `models.AutoExportJob$UpdateStages` was added
+
+* `models.ImportJobAdminStatus` was added
+
+* `models.AutoExportJob$Definition` was added
+
+* `models.AutoImportJob$UpdateStages` was added
+
+* `models.AutoExportJob` was added
+
+* `models.AutoImportJob$DefinitionStages` was added
+
+* `models.AutoExportJobAdminStatus` was added
+
+* `models.AutoImportJobs` was added
+
+* `models.AutoImportJobUpdate` was added
+
+* `models.AutoExportJobProvisioningStateType` was added
+
+* `models.AutoExportJob$DefinitionStages` was added
+
+* `models.AutoImportJobPropertiesStatusBlobSyncEvents` was added
+
+* `models.AutoExportJobs` was added
+
+* `models.AutoImportJob$Update` was added
+
+* `models.AutoImportJobsListResult` was added
+
+* `models.AutoExportJobsListResult` was added
+
+* `models.AutoImportJob` was added
+
+#### `models.ImportJob$Update` was modified
+
+* `withAdminStatus(models.ImportJobAdminStatus)` was added
+
+#### `models.ImportJobUpdate` was modified
+
+* `adminStatus()` was added
+* `withAdminStatus(models.ImportJobAdminStatus)` was added
+
+#### `models.ImportJob` was modified
+
+* `importedDirectories()` was added
+* `importedSymlinks()` was added
+* `importedFiles()` was added
+* `preexistingDirectories()` was added
+* `preexistingFiles()` was added
+* `adminStatus()` was added
+* `preexistingSymlinks()` was added
+
+#### `models.ImportJob$Definition` was modified
+
+* `withAdminStatus(models.ImportJobAdminStatus)` was added
+
+#### `StorageCacheManager` was modified
+
+* `autoImportJobs()` was added
+* `autoExportJobs()` was added
 
 ## 1.0.0 (2024-12-23)
 

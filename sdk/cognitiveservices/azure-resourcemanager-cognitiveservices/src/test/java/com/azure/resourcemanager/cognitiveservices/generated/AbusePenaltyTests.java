@@ -15,21 +15,21 @@ public final class AbusePenaltyTests {
     public void testDeserialize() throws Exception {
         AbusePenalty model = BinaryData
             .fromString(
-                "{\"action\":\"Block\",\"rateLimitPercentage\":99.249115,\"expiration\":\"2021-01-11T19:42:09Z\"}")
+                "{\"action\":\"Throttle\",\"rateLimitPercentage\":54.34138,\"expiration\":\"2021-10-06T03:29:57Z\"}")
             .toObject(AbusePenalty.class);
-        Assertions.assertEquals(AbusePenaltyAction.BLOCK, model.action());
-        Assertions.assertEquals(99.249115F, model.rateLimitPercentage());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T19:42:09Z"), model.expiration());
+        Assertions.assertEquals(AbusePenaltyAction.THROTTLE, model.action());
+        Assertions.assertEquals(54.34138F, model.rateLimitPercentage());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T03:29:57Z"), model.expiration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AbusePenalty model = new AbusePenalty().withAction(AbusePenaltyAction.BLOCK)
-            .withRateLimitPercentage(99.249115F)
-            .withExpiration(OffsetDateTime.parse("2021-01-11T19:42:09Z"));
+        AbusePenalty model = new AbusePenalty().withAction(AbusePenaltyAction.THROTTLE)
+            .withRateLimitPercentage(54.34138F)
+            .withExpiration(OffsetDateTime.parse("2021-10-06T03:29:57Z"));
         model = BinaryData.fromObject(model).toObject(AbusePenalty.class);
-        Assertions.assertEquals(AbusePenaltyAction.BLOCK, model.action());
-        Assertions.assertEquals(99.249115F, model.rateLimitPercentage());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T19:42:09Z"), model.expiration());
+        Assertions.assertEquals(AbusePenaltyAction.THROTTLE, model.action());
+        Assertions.assertEquals(54.34138F, model.rateLimitPercentage());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T03:29:57Z"), model.expiration());
     }
 }

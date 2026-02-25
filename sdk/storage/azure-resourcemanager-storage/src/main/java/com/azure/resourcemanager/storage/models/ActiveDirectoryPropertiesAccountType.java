@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specifies the Active Directory account type for Azure Storage.
+ * Specifies the Active Directory account type for Azure Storage. If directoryServiceOptions is set to AD (AD DS
+ * authentication), this property is optional. If provided, samAccountName should also be provided. For
+ * directoryServiceOptions AADDS (Entra DS authentication) or AADKERB (Entra authentication), this property can be
+ * omitted.
  */
 public final class ActiveDirectoryPropertiesAccountType
     extends ExpandableStringEnum<ActiveDirectoryPropertiesAccountType> {

@@ -1,16 +1,101 @@
 # Release History
 
-## 12.28.0-beta.2 (Unreleased)
+## 12.30.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 12.30.0-beta.1 (2026-02-19)
+
+### Features Added
+- Added support for improved error handling for file share provisioning.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+## 12.29.2 (2026-02-05)
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-storage-blob` from `12.33.1` to `12.33.2` in `azure-storage-blob`.
+- updated `azure-storage-common` from `12.32.1` to `12.32.2` in `azure-storage-common`.
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
+
+  This is a _potentially breaking_ change if users were incorrectly applying multiple credentials
+
+## 12.29.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-storage-common` from `12.32.0` to version `12.32.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 12.29.0 (2026-01-15)
+
+### Features Added
+- Added support for User Delegation SAS.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for the `ShareServiceProperties.Protocol.SMB.EncryptionInTransit` parameter on `ShareServiceClient.setProperties()` APIs.
+- Added support for service version 2026-02-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.31.0` to version `12.32.0`.
+
+## 12.29.0-beta.1 (2025-12-03)
+
+### Features Added
+- Added support for User Delegation SAS.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for the `ShareServiceProperties.Protocol.SMB.EncryptionInTransit` parameter on `ShareServiceClient.setProperties()` APIs. 
+- Added support for service version 2026-02-06.
+
+## 12.28.0 (2025-10-21)
+
+### Features Added
+- Added support for bearer token challenges.
+- Added `ShareErrorCode.ShareSnapshotNotFound`.
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
+- Added support for service version 2025-11-05.
+
+### Bugs Fixed
 - Fixed a bug where `ShareDirectoryClient.exists` and `ShareFileClient.exists` did not properly handle 404's with the error
   code `ParentNotFound`.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.30.0` to version `12.31.0`.
+- Upgraded `azure-core` from `1.55.5` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.2`.
+
+## 12.27.3 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+- Upgraded `azure-storage-common` from `12.30.2` to version `12.30.3`.
 
 ## 12.27.2 (2025-08-21)
 
@@ -22,7 +107,6 @@
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
 - Upgraded `azure-storage-common` from `12.30.1` to version `12.30.2`.
 
-
 ## 12.27.1 (2025-07-29)
 
 ### Other Changes
@@ -32,7 +116,6 @@
 - Upgraded `azure-core` from `1.55.3` to version `1.55.5`.
 - Upgraded `azure-storage-common` from `12.30.0` to version `12.31.0-beta.2`.
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.13`.
-
 
 ## 12.27.0 (2025-07-16)
 
@@ -52,7 +135,7 @@
 ### Features Added
 - Added support for bearer token challenges.
 - Added `ShareErrorCode.ShareSnapshotNotFound`.
-- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
 - Added support for service version 2025-11-05.
 
 ## 12.26.1 (2025-06-19)
@@ -216,7 +299,6 @@ ShareFileAsyncClient.beginCopy
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
 - Upgraded `azure-storage-common` from `12.25.0-beta.2` to version `12.25.0`.
 
-
 ## 12.21.4 (2024-04-23)
 
 ### Other Changes
@@ -226,7 +308,6 @@ ShareFileAsyncClient.beginCopy
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
 - Upgraded `azure-storage-common` from `12.24.3` to version `12.25.0-beta.2`.
-
 
 ## 12.22.0-beta.1 (2024-04-15)
 
@@ -245,7 +326,6 @@ ShareFileAsyncClient.beginCopy
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 
-
 ## 12.21.2 (2024-02-22)
 
 ### Other Changes
@@ -255,7 +335,6 @@ ShareFileAsyncClient.beginCopy
 - Upgraded `azure-storage-common` from `12.24.1` to version `12.24.2`.
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
-
 
 ## 12.21.1 (2023-12-04)
 
@@ -522,7 +601,6 @@ made from that client. `allowSourceTrailingDot` will apply this same rule to sou
 - Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
 - Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
 - Upgraded `azure-storage-common` from `12.14.2` to version `12.14.3`.
-
 
 ## 12.12.0-beta.3 (2022-02-09)
 

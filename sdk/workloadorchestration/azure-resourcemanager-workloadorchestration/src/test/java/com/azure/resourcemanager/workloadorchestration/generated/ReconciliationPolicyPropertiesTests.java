@@ -13,18 +13,18 @@ public final class ReconciliationPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReconciliationPolicyProperties model
-            = BinaryData.fromString("{\"state\":\"inactive\",\"interval\":\"gnyhmossxkkg\"}")
+            = BinaryData.fromString("{\"state\":\"inactive\",\"interval\":\"okkqfqjbvleo\"}")
                 .toObject(ReconciliationPolicyProperties.class);
         Assertions.assertEquals(ReconciliationState.INACTIVE, model.state());
-        Assertions.assertEquals("gnyhmossxkkg", model.interval());
+        Assertions.assertEquals("okkqfqjbvleo", model.interval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReconciliationPolicyProperties model
-            = new ReconciliationPolicyProperties().withState(ReconciliationState.INACTIVE).withInterval("gnyhmossxkkg");
+            = new ReconciliationPolicyProperties().withState(ReconciliationState.INACTIVE).withInterval("okkqfqjbvleo");
         model = BinaryData.fromObject(model).toObject(ReconciliationPolicyProperties.class);
         Assertions.assertEquals(ReconciliationState.INACTIVE, model.state());
-        Assertions.assertEquals("gnyhmossxkkg", model.interval());
+        Assertions.assertEquals("okkqfqjbvleo", model.interval());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ManagedClustersListSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ManagedClusterListBySubscriptionOperation_example.json
+     * x-ms-original-file: 2025-10-01-preview/ManagedClusterListBySubscriptionOperation_example.json
      */
     /**
      * Sample code: List managed clusters.

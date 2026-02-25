@@ -13,16 +13,16 @@ public final class ConfigTemplateVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigTemplateVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"configurations\":\"loazuruocbgoo\",\"provisioningState\":\"Deleting\"},\"eTag\":\"oybfhjxakvvj\",\"id\":\"lordilmywwtkgkxn\",\"name\":\"edabgyvudtjue\",\"type\":\"bcihxuuwhc\"}")
+            "{\"properties\":{\"configurations\":\"zkvyklx\",\"provisioningState\":\"Failed\"},\"eTag\":\"affmmfblcqc\",\"id\":\"bgq\",\"name\":\"brta\",\"type\":\"metttwgd\"}")
             .toObject(ConfigTemplateVersionInner.class);
-        Assertions.assertEquals("loazuruocbgoo", model.properties().configurations());
+        Assertions.assertEquals("zkvyklx", model.properties().configurations());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfigTemplateVersionInner model = new ConfigTemplateVersionInner()
-            .withProperties(new ConfigTemplateVersionProperties().withConfigurations("loazuruocbgoo"));
+            .withProperties(new ConfigTemplateVersionProperties().withConfigurations("zkvyklx"));
         model = BinaryData.fromObject(model).toObject(ConfigTemplateVersionInner.class);
-        Assertions.assertEquals("loazuruocbgoo", model.properties().configurations());
+        Assertions.assertEquals("zkvyklx", model.properties().configurations());
     }
 }

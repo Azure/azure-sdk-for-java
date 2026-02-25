@@ -23,7 +23,7 @@ public final class CommitmentPlansCreateOrUpdateAssociationMockTests {
     @Test
     public void testCreateOrUpdateAssociation() throws Exception {
         String responseStr
-            = "{\"etag\":\"tjrrlkmds\",\"tags\":{\"xcxscvslxlh\":\"hxdlajf\"},\"properties\":{\"accountId\":\"krmukmyjmkxett\"},\"id\":\"slojfkqidnqt\",\"name\":\"qxjhqxcsqhtkbtnq\",\"type\":\"rngl\"}";
+            = "{\"etag\":\"cvbiiftksdw\",\"tags\":{\"uvczldbgl\":\"kefgmwdhce\",\"clyzgs\":\"outbaaqgzeka\",\"nzjotvmr\":\"orbjg\",\"ayfluiyuosnu\":\"khlobvvjbhvhdi\"},\"properties\":{\"accountId\":\"elvhyibdrqrswh\"},\"id\":\"ubpyrow\",\"name\":\"joxztfwfqchvczev\",\"type\":\"nnctagfyvrt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class CommitmentPlansCreateOrUpdateAssociationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CommitmentPlanAccountAssociation response = manager.commitmentPlans()
-            .defineAssociation("n")
-            .withExistingCommitmentPlan("qwtygevgwmseharx", "fv")
-            .withTags(mapOf("btpakftngatw", "dqpx", "pycvjqdvdwkqpldr", "ykyutrymdwmfj", "taoutnpdct", "efgnaavuagnt",
-                "yeuyldph", "hspfefyihd"))
-            .withAccountId("bkcgsuthhllnm")
+            .defineAssociation("qrgxf")
+            .withExistingCommitmentPlan("bdgzpagsecnad", "u")
+            .withTags(mapOf("vmtumxpym", "ellnkkii", "canlduwzorxs", "jfuaxroqvqpilrgu", "kqv", "mxaqklxym", "ltuubw",
+                "qepdx"))
+            .withAccountId("jbowcpj")
             .create();
 
-        Assertions.assertEquals("hxdlajf", response.tags().get("xcxscvslxlh"));
-        Assertions.assertEquals("krmukmyjmkxett", response.accountId());
+        Assertions.assertEquals("kefgmwdhce", response.tags().get("uvczldbgl"));
+        Assertions.assertEquals("elvhyibdrqrswh", response.accountId());
     }
 
     // Use "Map.of" if available

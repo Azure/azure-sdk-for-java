@@ -56,14 +56,6 @@ public final class VmManagedIdentity implements JsonSerializable<VmManagedIdenti
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

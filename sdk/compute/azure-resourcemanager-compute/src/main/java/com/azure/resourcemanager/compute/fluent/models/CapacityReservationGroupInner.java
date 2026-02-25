@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.CapacityReservationGroupInstanceView;
+import com.azure.resourcemanager.compute.models.ReservationType;
 import com.azure.resourcemanager.compute.models.ResourceSharingProfile;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import java.io.IOException;
@@ -178,10 +179,10 @@ public final class CapacityReservationGroupInner extends Resource {
 
     /**
      * Get the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
-     * reservation group resource. Pls. keep in mind the capacity reservation group resource generally can be shared
-     * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
-     * established between the AAD tenants. **Note:** Minimum api-version: 2023-09-01. Please refer to
-     * https://aka.ms/computereservationsharing for more details.
+     * reservation group resource. The capacity reservation group resource can generally be shared across subscriptions
+     * belonging to a single Azure AAD tenant or across AAD tenants if there is a trust relationship established between
+     * the tenants. Block capacity reservation does not support sharing across subscriptions. **Note:** Minimum
+     * api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
      * 
      * @return the sharingProfile value.
      */
@@ -191,10 +192,10 @@ public final class CapacityReservationGroupInner extends Resource {
 
     /**
      * Set the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
-     * reservation group resource. Pls. keep in mind the capacity reservation group resource generally can be shared
-     * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
-     * established between the AAD tenants. **Note:** Minimum api-version: 2023-09-01. Please refer to
-     * https://aka.ms/computereservationsharing for more details.
+     * reservation group resource. The capacity reservation group resource can generally be shared across subscriptions
+     * belonging to a single Azure AAD tenant or across AAD tenants if there is a trust relationship established between
+     * the tenants. Block capacity reservation does not support sharing across subscriptions. **Note:** Minimum
+     * api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
      * 
      * @param sharingProfile the sharingProfile value to set.
      * @return the CapacityReservationGroupInner object itself.
@@ -204,6 +205,35 @@ public final class CapacityReservationGroupInner extends Resource {
             this.innerProperties = new CapacityReservationGroupProperties();
         }
         this.innerProperties().withSharingProfile(sharingProfile);
+        return this;
+    }
+
+    /**
+     * Get the reservationType property: Indicates the type of capacity reservation. Allowed values are 'Block' for
+     * block capacity reservations and 'Targeted' for reservations that enable a VM to consume a specific capacity
+     * reservation when a capacity reservation group is provided. The reservation type is immutable and cannot be
+     * changed after it is assigned.
+     * 
+     * @return the reservationType value.
+     */
+    public ReservationType reservationType() {
+        return this.innerProperties() == null ? null : this.innerProperties().reservationType();
+    }
+
+    /**
+     * Set the reservationType property: Indicates the type of capacity reservation. Allowed values are 'Block' for
+     * block capacity reservations and 'Targeted' for reservations that enable a VM to consume a specific capacity
+     * reservation when a capacity reservation group is provided. The reservation type is immutable and cannot be
+     * changed after it is assigned.
+     * 
+     * @param reservationType the reservationType value to set.
+     * @return the CapacityReservationGroupInner object itself.
+     */
+    public CapacityReservationGroupInner withReservationType(ReservationType reservationType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CapacityReservationGroupProperties();
+        }
+        this.innerProperties().withReservationType(reservationType);
         return this;
     }
 

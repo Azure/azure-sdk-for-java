@@ -20,11 +20,6 @@ import java.util.Map;
 @Fluent
 public final class RaiPolicyInner extends ProxyResource {
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    private SystemData systemData;
-
-    /*
      * Resource Etag.
      */
     private String etag;
@@ -38,6 +33,11 @@ public final class RaiPolicyInner extends ProxyResource {
      * Properties of Cognitive Services RaiPolicy.
      */
     private RaiPolicyProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -58,15 +58,6 @@ public final class RaiPolicyInner extends ProxyResource {
      * Creates an instance of RaiPolicyInner class.
      */
     public RaiPolicyInner() {
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -116,6 +107,15 @@ public final class RaiPolicyInner extends ProxyResource {
     public RaiPolicyInner withProperties(RaiPolicyProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -192,8 +192,6 @@ public final class RaiPolicyInner extends ProxyResource {
                     deserializedRaiPolicyInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedRaiPolicyInner.type = reader.getString();
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedRaiPolicyInner.systemData = SystemData.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedRaiPolicyInner.etag = reader.getString();
                 } else if ("tags".equals(fieldName)) {
@@ -201,6 +199,8 @@ public final class RaiPolicyInner extends ProxyResource {
                     deserializedRaiPolicyInner.tags = tags;
                 } else if ("properties".equals(fieldName)) {
                     deserializedRaiPolicyInner.properties = RaiPolicyProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRaiPolicyInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

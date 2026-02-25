@@ -4,121 +4,37 @@
 
 package com.azure.resourcemanager.subscription.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.resourcemanager.subscription.fluent.models.OperationInner;
 
 /**
- * REST API operation.
+ * An immutable client-side representation of Operation.
  */
-@Fluent
-public final class Operation implements JsonSerializable<Operation> {
-    /*
-     * Operation name: {provider}/{resource}/{operation}
-     */
-    private String name;
-
-    /*
-     * The object that represents the operation.
-     */
-    private OperationDisplay display;
-
+public interface Operation {
     /**
-     * Creates an instance of Operation class.
-     */
-    public Operation() {
-    }
-
-    /**
-     * Get the name property: Operation name: {provider}/{resource}/{operation}.
+     * Gets the name property: Operation name: {provider}/{resource}/{operation}.
      * 
      * @return the name value.
      */
-    public String name() {
-        return this.name;
-    }
+    String name();
 
     /**
-     * Set the name property: Operation name: {provider}/{resource}/{operation}.
+     * Gets the isDataAction property: Indicates whether the operation is a data action.
      * 
-     * @param name the name value to set.
-     * @return the Operation object itself.
+     * @return the isDataAction value.
      */
-    public Operation withName(String name) {
-        this.name = name;
-        return this;
-    }
+    Boolean isDataAction();
 
     /**
-     * Get the display property: The object that represents the operation.
+     * Gets the display property: The object that represents the operation.
      * 
      * @return the display value.
      */
-    public OperationDisplay display() {
-        return this.display;
-    }
+    OperationDisplay display();
 
     /**
-     * Set the display property: The object that represents the operation.
+     * Gets the inner com.azure.resourcemanager.subscription.fluent.models.OperationInner object.
      * 
-     * @param display the display value to set.
-     * @return the Operation object itself.
+     * @return the inner object.
      */
-    public Operation withDisplay(OperationDisplay display) {
-        this.display = display;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (display() != null) {
-            display().validate();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeJsonField("display", this.display);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Operation from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Operation if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IOException If an error occurs while reading the Operation.
-     */
-    public static Operation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            Operation deserializedOperation = new Operation();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("name".equals(fieldName)) {
-                    deserializedOperation.name = reader.getString();
-                } else if ("display".equals(fieldName)) {
-                    deserializedOperation.display = OperationDisplay.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedOperation;
-        });
-    }
+    OperationInner innerModel();
 }

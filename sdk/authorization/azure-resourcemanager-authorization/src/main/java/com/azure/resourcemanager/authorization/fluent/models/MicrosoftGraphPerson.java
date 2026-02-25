@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * person.
+ * Represents a person.
  */
 @Fluent
 public final class MicrosoftGraphPerson extends MicrosoftGraphEntity {

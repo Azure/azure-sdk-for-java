@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class HttpRouteActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HttpRouteAction model
-            = BinaryData.fromString("{\"prefixRewrite\":\"jevdyznf\"}").toObject(HttpRouteAction.class);
-        Assertions.assertEquals("jevdyznf", model.prefixRewrite());
+        HttpRouteAction model = BinaryData.fromString("{\"prefixRewrite\":\"vuqd\"}").toObject(HttpRouteAction.class);
+        Assertions.assertEquals("vuqd", model.prefixRewrite());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpRouteAction model = new HttpRouteAction().withPrefixRewrite("jevdyznf");
+        HttpRouteAction model = new HttpRouteAction().withPrefixRewrite("vuqd");
         model = BinaryData.fromObject(model).toObject(HttpRouteAction.class);
-        Assertions.assertEquals("jevdyznf", model.prefixRewrite());
+        Assertions.assertEquals("vuqd", model.prefixRewrite());
     }
 }

@@ -21,7 +21,12 @@ public enum KnownWindowsVirtualMachineImage {
         "2019-Datacenter-with-Containers"),
     /** Windows Server 2016 Data center. */
     WINDOWS_SERVER_2016_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2016-Datacenter"),
-    /** Windows Server 2012 R2 Data center. */
+    /**
+     * Windows Server 2012 R2 Data center.
+     * @deprecated The image for Windows Server 2012 R2 DataCenter has been removed form Azure image gallery.
+     *             See <a href="https://www.microsoft.com/windows-server/blog/2023/07/18/new-options-for-windows-server-2012-r2-end-of-support-from-azure/">New options for Windows Server 2012/R2 end of support from Azure</a>
+     */
+    @Deprecated
     WINDOWS_SERVER_2012_R2_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter"),
     /** Windows Server 2019 Data center gen2. */
     WINDOWS_SERVER_2019_DATACENTER_GEN2("MicrosoftWindowsServer", "WindowsServer", "2019-datacenter-gensecond"),

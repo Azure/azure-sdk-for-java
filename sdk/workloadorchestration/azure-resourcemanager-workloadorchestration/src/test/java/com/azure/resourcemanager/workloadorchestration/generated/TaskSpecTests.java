@@ -13,20 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class TaskSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TaskSpec model
-            = BinaryData.fromString("{\"name\":\"nzjvusfzldm\",\"targetId\":\"uxylfsbtkadpy\",\"specification\":{}}")
-                .toObject(TaskSpec.class);
-        Assertions.assertEquals("nzjvusfzldm", model.name());
-        Assertions.assertEquals("uxylfsbtkadpy", model.targetId());
+        TaskSpec model = BinaryData.fromString("{\"name\":\"e\",\"targetId\":\"dhgbjkvre\",\"specification\":{}}")
+            .toObject(TaskSpec.class);
+        Assertions.assertEquals("e", model.name());
+        Assertions.assertEquals("dhgbjkvre", model.targetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TaskSpec model
-            = new TaskSpec().withName("nzjvusfzldm").withTargetId("uxylfsbtkadpy").withSpecification(mapOf());
+        TaskSpec model = new TaskSpec().withName("e").withTargetId("dhgbjkvre").withSpecification(mapOf());
         model = BinaryData.fromObject(model).toObject(TaskSpec.class);
-        Assertions.assertEquals("nzjvusfzldm", model.name());
-        Assertions.assertEquals("uxylfsbtkadpy", model.targetId());
+        Assertions.assertEquals("e", model.name());
+        Assertions.assertEquals("dhgbjkvre", model.targetId());
     }
 
     // Use "Map.of" if available

@@ -16,37 +16,38 @@ public final class CapabilityHostPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapabilityHostProperties model = BinaryData.fromString(
-            "{\"aiServicesConnections\":[\"bfjkw\",\"u\"],\"capabilityHostKind\":\"Agents\",\"customerSubnet\":\"bhsy\",\"provisioningState\":\"Succeeded\",\"storageConnections\":[\"qhd\",\"nxaulk\"],\"threadStorageConnections\":[\"d\"],\"vectorStoreConnections\":[\"mjnnawtq\",\"bpxuckpggqoweyi\",\"dhlisngwflqqmpi\"],\"description\":\"uwnpqxpxiwfcng\",\"tags\":{\"xtmkzjvkviir\":\"asi\"}}")
+            "{\"aiServicesConnections\":[\"aswlp\",\"ugmrmf\",\"lrxw\"],\"capabilityHostKind\":\"Agents\",\"customerSubnet\":\"khfkvcisi\",\"provisioningState\":\"Succeeded\",\"storageConnections\":[\"dsxjwuivedw\"],\"threadStorageConnections\":[\"eewxeiqbpsmg\"],\"vectorStoreConnections\":[\"u\",\"mljdlrgmsplzga\"],\"description\":\"cshhv\",\"tags\":{\"rjkixtw\":\"gnxkympqan\",\"lhkgmnsghp\":\"taoypnyghshxc\",\"ac\":\"ycphdrwjjkhvyo\",\"vxnqmhrpqpd\":\"u\"}}")
             .toObject(CapabilityHostProperties.class);
-        Assertions.assertEquals("uwnpqxpxiwfcng", model.description());
-        Assertions.assertEquals("asi", model.tags().get("xtmkzjvkviir"));
-        Assertions.assertEquals("bfjkw", model.aiServicesConnections().get(0));
+        Assertions.assertEquals("cshhv", model.description());
+        Assertions.assertEquals("gnxkympqan", model.tags().get("rjkixtw"));
+        Assertions.assertEquals("aswlp", model.aiServicesConnections().get(0));
         Assertions.assertEquals(CapabilityHostKind.AGENTS, model.capabilityHostKind());
-        Assertions.assertEquals("bhsy", model.customerSubnet());
-        Assertions.assertEquals("qhd", model.storageConnections().get(0));
-        Assertions.assertEquals("d", model.threadStorageConnections().get(0));
-        Assertions.assertEquals("mjnnawtq", model.vectorStoreConnections().get(0));
+        Assertions.assertEquals("khfkvcisi", model.customerSubnet());
+        Assertions.assertEquals("dsxjwuivedw", model.storageConnections().get(0));
+        Assertions.assertEquals("eewxeiqbpsmg", model.threadStorageConnections().get(0));
+        Assertions.assertEquals("u", model.vectorStoreConnections().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CapabilityHostProperties model = new CapabilityHostProperties().withDescription("uwnpqxpxiwfcng")
-            .withTags(mapOf("xtmkzjvkviir", "asi"))
-            .withAiServicesConnections(Arrays.asList("bfjkw", "u"))
+        CapabilityHostProperties model = new CapabilityHostProperties().withDescription("cshhv")
+            .withTags(mapOf("rjkixtw", "gnxkympqan", "lhkgmnsghp", "taoypnyghshxc", "ac", "ycphdrwjjkhvyo",
+                "vxnqmhrpqpd", "u"))
+            .withAiServicesConnections(Arrays.asList("aswlp", "ugmrmf", "lrxw"))
             .withCapabilityHostKind(CapabilityHostKind.AGENTS)
-            .withCustomerSubnet("bhsy")
-            .withStorageConnections(Arrays.asList("qhd", "nxaulk"))
-            .withThreadStorageConnections(Arrays.asList("d"))
-            .withVectorStoreConnections(Arrays.asList("mjnnawtq", "bpxuckpggqoweyi", "dhlisngwflqqmpi"));
+            .withCustomerSubnet("khfkvcisi")
+            .withStorageConnections(Arrays.asList("dsxjwuivedw"))
+            .withThreadStorageConnections(Arrays.asList("eewxeiqbpsmg"))
+            .withVectorStoreConnections(Arrays.asList("u", "mljdlrgmsplzga"));
         model = BinaryData.fromObject(model).toObject(CapabilityHostProperties.class);
-        Assertions.assertEquals("uwnpqxpxiwfcng", model.description());
-        Assertions.assertEquals("asi", model.tags().get("xtmkzjvkviir"));
-        Assertions.assertEquals("bfjkw", model.aiServicesConnections().get(0));
+        Assertions.assertEquals("cshhv", model.description());
+        Assertions.assertEquals("gnxkympqan", model.tags().get("rjkixtw"));
+        Assertions.assertEquals("aswlp", model.aiServicesConnections().get(0));
         Assertions.assertEquals(CapabilityHostKind.AGENTS, model.capabilityHostKind());
-        Assertions.assertEquals("bhsy", model.customerSubnet());
-        Assertions.assertEquals("qhd", model.storageConnections().get(0));
-        Assertions.assertEquals("d", model.threadStorageConnections().get(0));
-        Assertions.assertEquals("mjnnawtq", model.vectorStoreConnections().get(0));
+        Assertions.assertEquals("khfkvcisi", model.customerSubnet());
+        Assertions.assertEquals("dsxjwuivedw", model.storageConnections().get(0));
+        Assertions.assertEquals("eewxeiqbpsmg", model.threadStorageConnections().get(0));
+        Assertions.assertEquals("u", model.vectorStoreConnections().get(0));
     }
 
     // Use "Map.of" if available

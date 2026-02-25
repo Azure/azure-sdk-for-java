@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -1122,56 +1121,6 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         this.enableOutboundOnlyNodeTypes = enableOutboundOnlyNodeTypes;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (dnsName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property dnsName in model ManagedClusterProperties"));
-        }
-        if (adminUsername() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property adminUsername in model ManagedClusterProperties"));
-        }
-        if (loadBalancingRules() != null) {
-            loadBalancingRules().forEach(e -> e.validate());
-        }
-        if (networkSecurityRules() != null) {
-            networkSecurityRules().forEach(e -> e.validate());
-        }
-        if (clients() != null) {
-            clients().forEach(e -> e.validate());
-        }
-        if (azureActiveDirectory() != null) {
-            azureActiveDirectory().validate();
-        }
-        if (fabricSettings() != null) {
-            fabricSettings().forEach(e -> e.validate());
-        }
-        if (applicationTypeVersionsCleanupPolicy() != null) {
-            applicationTypeVersionsCleanupPolicy().validate();
-        }
-        if (ipTags() != null) {
-            ipTags().forEach(e -> e.validate());
-        }
-        if (auxiliarySubnets() != null) {
-            auxiliarySubnets().forEach(e -> e.validate());
-        }
-        if (serviceEndpoints() != null) {
-            serviceEndpoints().forEach(e -> e.validate());
-        }
-        if (upgradeDescription() != null) {
-            upgradeDescription().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterProperties.class);
 
     /**
      * {@inheritDoc}

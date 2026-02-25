@@ -1497,50 +1497,6 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (applicationPorts() != null) {
-            applicationPorts().validate();
-        }
-        if (ephemeralPorts() != null) {
-            ephemeralPorts().validate();
-        }
-        if (vmSecrets() != null) {
-            vmSecrets().forEach(e -> e.validate());
-        }
-        if (vmExtensions() != null) {
-            vmExtensions().forEach(e -> e.validate());
-        }
-        if (vmManagedIdentity() != null) {
-            vmManagedIdentity().validate();
-        }
-        if (frontendConfigurations() != null) {
-            frontendConfigurations().forEach(e -> e.validate());
-        }
-        if (networkSecurityRules() != null) {
-            networkSecurityRules().forEach(e -> e.validate());
-        }
-        if (additionalDataDisks() != null) {
-            additionalDataDisks().forEach(e -> e.validate());
-        }
-        if (natConfigurations() != null) {
-            natConfigurations().forEach(e -> e.validate());
-        }
-        if (vmImagePlan() != null) {
-            vmImagePlan().validate();
-        }
-        if (additionalNetworkInterfaceConfigurations() != null) {
-            additionalNetworkInterfaceConfigurations().forEach(e -> e.validate());
-        }
-        if (vmApplications() != null) {
-            vmApplications().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

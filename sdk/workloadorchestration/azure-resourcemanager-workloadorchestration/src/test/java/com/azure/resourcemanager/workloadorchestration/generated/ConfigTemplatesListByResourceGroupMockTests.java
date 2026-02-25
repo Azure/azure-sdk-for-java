@@ -22,7 +22,7 @@ public final class ConfigTemplatesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"p\",\"latestVersion\":\"xqcsehch\",\"provisioningState\":\"Failed\"},\"eTag\":\"mpqu\",\"location\":\"yjgyd\",\"tags\":{\"sfnhsenwphp\":\"odsaeuzan\"},\"id\":\"fngq\",\"name\":\"clid\",\"type\":\"tujwjju\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"cleqioulndhzyo\",\"latestVersion\":\"jhtollh\",\"provisioningState\":\"Deleting\"},\"eTag\":\"mytzln\",\"location\":\"xpno\",\"tags\":{\"wqagy\":\"anfbc\",\"tpgaeukya\":\"vtxigvjr\",\"csklhsidsjt\":\"ohpmwhqn\",\"gazlsvbz\":\"lpbnin\"},\"id\":\"cpuo\",\"name\":\"e\",\"type\":\"wjcciklhsy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class ConfigTemplatesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ConfigTemplate> response
-            = manager.configTemplates().listByResourceGroup("ygspnbonhpczykm", com.azure.core.util.Context.NONE);
+            = manager.configTemplates().listByResourceGroup("wwa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yjgyd", response.iterator().next().location());
-        Assertions.assertEquals("odsaeuzan", response.iterator().next().tags().get("sfnhsenwphp"));
-        Assertions.assertEquals("p", response.iterator().next().properties().description());
+        Assertions.assertEquals("xpno", response.iterator().next().location());
+        Assertions.assertEquals("anfbc", response.iterator().next().tags().get("wqagy"));
+        Assertions.assertEquals("cleqioulndhzyo", response.iterator().next().properties().description());
     }
 }

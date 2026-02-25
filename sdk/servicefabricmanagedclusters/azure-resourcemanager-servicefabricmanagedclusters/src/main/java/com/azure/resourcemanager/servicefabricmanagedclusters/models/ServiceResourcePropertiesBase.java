@@ -185,26 +185,6 @@ public class ServiceResourcePropertiesBase implements JsonSerializable<ServiceRe
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (correlationScheme() != null) {
-            correlationScheme().forEach(e -> e.validate());
-        }
-        if (serviceLoadMetrics() != null) {
-            serviceLoadMetrics().forEach(e -> e.validate());
-        }
-        if (servicePlacementPolicies() != null) {
-            servicePlacementPolicies().forEach(e -> e.validate());
-        }
-        if (scalingPolicies() != null) {
-            scalingPolicies().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

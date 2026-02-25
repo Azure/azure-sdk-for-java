@@ -72,6 +72,14 @@ public interface BareMetalMachine {
     SystemData systemData();
 
     /**
+     * Gets the actionStates property: The current state of any in progress or completed actions. The most recent known
+     * instance of each action type is shown.
+     * 
+     * @return the actionStates value.
+     */
+    List<ActionState> actionStates();
+
+    /**
      * Gets the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
      * that have attached this network.
      * 
@@ -108,6 +116,15 @@ public interface BareMetalMachine {
      * @return the bootMacAddress value.
      */
     String bootMacAddress();
+
+    /**
+     * Gets the caCertificate property: The CA certificate information issued by the platform for connecting to TLS
+     * interfaces for the bare metal machine. Callers add this certificate to the trusted CA store on the Kubernetes
+     * control plane nodes to allow secure communication with the bare metal machine.
+     * 
+     * @return the caCertificate value.
+     */
+    CertificateInfo caCertificate();
 
     /**
      * Gets the clusterId property: The resource ID of the cluster this bare metal machine is associated with.
@@ -672,11 +689,10 @@ public interface BareMetalMachine {
         interface WithMachineDetails {
             /**
              * Specifies the machineDetails property: The details provided by the customer during the creation of rack
-             * manifests
-             * that allows for custom data to be associated with this machine..
+             * manifests that allows for custom data to be associated with this machine..
              * 
-             * @param machineDetails The details provided by the customer during the creation of rack manifests
-             * that allows for custom data to be associated with this machine.
+             * @param machineDetails The details provided by the customer during the creation of rack manifests that
+             * allows for custom data to be associated with this machine.
              * @return the next definition stage.
              */
             Update withMachineDetails(String machineDetails);
@@ -913,6 +929,39 @@ public interface BareMetalMachine {
      */
     OperationStatusResult runDataExtracts(
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters, Context context);
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult runDataExtractsRestricted(
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters);
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult runDataExtractsRestricted(
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters, Context context);
 
     /**
      * Run read-only commands against a bare metal machine.

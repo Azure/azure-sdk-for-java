@@ -126,26 +126,6 @@ public final class SignalGroup implements JsonSerializable<SignalGroup> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (azureResource() != null) {
-            azureResource().validate();
-        }
-        if (azureLogAnalytics() != null) {
-            azureLogAnalytics().validate();
-        }
-        if (azureMonitorWorkspace() != null) {
-            azureMonitorWorkspace().validate();
-        }
-        if (dependencies() != null) {
-            dependencies().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

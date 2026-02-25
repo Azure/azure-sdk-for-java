@@ -97,6 +97,7 @@ public class FaultInjectionConnectionErrorRuleTests extends FaultInjectionTestBa
                 .contentResponseOnWriteEnabled(true)
                 .directMode()
                 .buildAsyncClient();
+        FaultInjectionRule connectionErrorRule = null;
 
         try {
             // using single partition here so that all write operations will be on the same physical partitions
@@ -113,7 +114,7 @@ public class FaultInjectionConnectionErrorRuleTests extends FaultInjectionTestBa
 
             // now enable the connection error rule which expected to close the connections
             String ruleId = "connectionErrorRule-close-" + UUID.randomUUID();
-            FaultInjectionRule connectionErrorRule =
+            connectionErrorRule =
                     new FaultInjectionRuleBuilder(ruleId)
                             .condition(
                                     new FaultInjectionConditionBuilder()
@@ -158,6 +159,10 @@ public class FaultInjectionConnectionErrorRuleTests extends FaultInjectionTestBa
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         } finally {
+            if (connectionErrorRule != null) {
+                connectionErrorRule.disable();
+            }
+
             safeClose(client);
         }
     }

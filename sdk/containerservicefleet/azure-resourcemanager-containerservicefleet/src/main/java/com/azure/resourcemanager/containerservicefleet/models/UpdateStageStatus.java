@@ -108,29 +108,6 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (status() != null) {
-            status().validate();
-        }
-        if (groups() != null) {
-            groups().forEach(e -> e.validate());
-        }
-        if (beforeGates() != null) {
-            beforeGates().forEach(e -> e.validate());
-        }
-        if (afterGates() != null) {
-            afterGates().forEach(e -> e.validate());
-        }
-        if (afterStageWaitStatus() != null) {
-            afterStageWaitStatus().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

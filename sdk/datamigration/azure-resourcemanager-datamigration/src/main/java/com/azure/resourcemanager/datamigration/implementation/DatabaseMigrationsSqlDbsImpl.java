@@ -69,6 +69,28 @@ public final class DatabaseMigrationsSqlDbsImpl implements DatabaseMigrationsSql
         this.serviceClient().cancel(resourceGroupName, sqlDbInstanceName, targetDbName, parameters, context);
     }
 
+    public DatabaseMigrationSqlDb retry(String resourceGroupName, String sqlDbInstanceName, String targetDbName,
+        MigrationOperationInput migrationOperationInput) {
+        DatabaseMigrationSqlDbInner inner
+            = this.serviceClient().retry(resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput);
+        if (inner != null) {
+            return new DatabaseMigrationSqlDbImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public DatabaseMigrationSqlDb retry(String resourceGroupName, String sqlDbInstanceName, String targetDbName,
+        MigrationOperationInput migrationOperationInput, Context context) {
+        DatabaseMigrationSqlDbInner inner = this.serviceClient()
+            .retry(resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput, context);
+        if (inner != null) {
+            return new DatabaseMigrationSqlDbImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public DatabaseMigrationSqlDb getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

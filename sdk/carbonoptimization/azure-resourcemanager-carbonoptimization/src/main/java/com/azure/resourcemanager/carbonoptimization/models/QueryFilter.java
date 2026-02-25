@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.carbonoptimization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -220,30 +219,6 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
         this.carbonScopeList = carbonScopeList;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (dateRange() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property dateRange in model QueryFilter"));
-        } else {
-            dateRange().validate();
-        }
-        if (subscriptionList() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property subscriptionList in model QueryFilter"));
-        }
-        if (carbonScopeList() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property carbonScopeList in model QueryFilter"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(QueryFilter.class);
 
     /**
      * {@inheritDoc}

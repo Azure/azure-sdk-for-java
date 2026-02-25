@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * uploadSession.
+ * Represents an upload session.
  */
 @Fluent
 public final class MicrosoftGraphUploadSession implements JsonSerializable<MicrosoftGraphUploadSession> {

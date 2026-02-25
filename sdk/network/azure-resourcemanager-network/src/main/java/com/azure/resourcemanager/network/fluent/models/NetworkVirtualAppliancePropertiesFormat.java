@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.DelegationProperties;
 import com.azure.resourcemanager.network.models.InternetIngressPublicIpsProperties;
 import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePropertiesFormatNetworkProfile;
+import com.azure.resourcemanager.network.models.NvaInterfaceConfigurationsProperties;
 import com.azure.resourcemanager.network.models.PartnerManagedResourceProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties;
@@ -78,7 +79,8 @@ public final class NetworkVirtualAppliancePropertiesFormat
     private NetworkVirtualAppliancePropertiesFormatNetworkProfile networkProfile;
 
     /*
-     * Details required for Additional Network Interface.
+     * Details required for Additional Network Interface. This property is not compatible with the NVA deployed in
+     * VNets.
      */
     private List<VirtualApplianceAdditionalNicProperties> additionalNics;
 
@@ -113,7 +115,7 @@ public final class NetworkVirtualAppliancePropertiesFormat
     private String deploymentType;
 
     /*
-     * The delegation for the Virtual Appliance
+     * The delegation for the Virtual Appliance. Only appliable for SaaS NVA.
      */
     private DelegationProperties delegation;
 
@@ -121,6 +123,17 @@ public final class NetworkVirtualAppliancePropertiesFormat
      * The delegation for the Virtual Appliance
      */
     private PartnerManagedResourceProperties partnerManagedResource;
+
+    /*
+     * The NVA in VNet interface configurations
+     */
+    private List<NvaInterfaceConfigurationsProperties> nvaInterfaceConfigurations;
+
+    /*
+     * A Internal Load Balancer's HA port frontend IP address. Can be used to set routes & UDR to load balance traffic
+     * between NVA instances
+     */
+    private String privateIpAddress;
 
     /**
      * Creates an instance of NetworkVirtualAppliancePropertiesFormat class.
@@ -312,7 +325,8 @@ public final class NetworkVirtualAppliancePropertiesFormat
     }
 
     /**
-     * Get the additionalNics property: Details required for Additional Network Interface.
+     * Get the additionalNics property: Details required for Additional Network Interface. This property is not
+     * compatible with the NVA deployed in VNets.
      * 
      * @return the additionalNics value.
      */
@@ -321,7 +335,8 @@ public final class NetworkVirtualAppliancePropertiesFormat
     }
 
     /**
-     * Set the additionalNics property: Details required for Additional Network Interface.
+     * Set the additionalNics property: Details required for Additional Network Interface. This property is not
+     * compatible with the NVA deployed in VNets.
      * 
      * @param additionalNics the additionalNics value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
@@ -399,7 +414,7 @@ public final class NetworkVirtualAppliancePropertiesFormat
     }
 
     /**
-     * Get the delegation property: The delegation for the Virtual Appliance.
+     * Get the delegation property: The delegation for the Virtual Appliance. Only appliable for SaaS NVA.
      * 
      * @return the delegation value.
      */
@@ -408,7 +423,7 @@ public final class NetworkVirtualAppliancePropertiesFormat
     }
 
     /**
-     * Set the delegation property: The delegation for the Virtual Appliance.
+     * Set the delegation property: The delegation for the Virtual Appliance. Only appliable for SaaS NVA.
      * 
      * @param delegation the delegation value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
@@ -440,6 +455,37 @@ public final class NetworkVirtualAppliancePropertiesFormat
     }
 
     /**
+     * Get the nvaInterfaceConfigurations property: The NVA in VNet interface configurations.
+     * 
+     * @return the nvaInterfaceConfigurations value.
+     */
+    public List<NvaInterfaceConfigurationsProperties> nvaInterfaceConfigurations() {
+        return this.nvaInterfaceConfigurations;
+    }
+
+    /**
+     * Set the nvaInterfaceConfigurations property: The NVA in VNet interface configurations.
+     * 
+     * @param nvaInterfaceConfigurations the nvaInterfaceConfigurations value to set.
+     * @return the NetworkVirtualAppliancePropertiesFormat object itself.
+     */
+    public NetworkVirtualAppliancePropertiesFormat
+        withNvaInterfaceConfigurations(List<NvaInterfaceConfigurationsProperties> nvaInterfaceConfigurations) {
+        this.nvaInterfaceConfigurations = nvaInterfaceConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the privateIpAddress property: A Internal Load Balancer's HA port frontend IP address. Can be used to set
+     * routes &amp; UDR to load balance traffic between NVA instances.
+     * 
+     * @return the privateIpAddress value.
+     */
+    public String privateIpAddress() {
+        return this.privateIpAddress;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -466,6 +512,9 @@ public final class NetworkVirtualAppliancePropertiesFormat
         if (partnerManagedResource() != null) {
             partnerManagedResource().validate();
         }
+        if (nvaInterfaceConfigurations() != null) {
+            nvaInterfaceConfigurations().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -490,6 +539,8 @@ public final class NetworkVirtualAppliancePropertiesFormat
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("delegation", this.delegation);
         jsonWriter.writeJsonField("partnerManagedResource", this.partnerManagedResource);
+        jsonWriter.writeArrayField("nvaInterfaceConfigurations", this.nvaInterfaceConfigurations,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -570,6 +621,13 @@ public final class NetworkVirtualAppliancePropertiesFormat
                 } else if ("partnerManagedResource".equals(fieldName)) {
                     deserializedNetworkVirtualAppliancePropertiesFormat.partnerManagedResource
                         = PartnerManagedResourceProperties.fromJson(reader);
+                } else if ("nvaInterfaceConfigurations".equals(fieldName)) {
+                    List<NvaInterfaceConfigurationsProperties> nvaInterfaceConfigurations
+                        = reader.readArray(reader1 -> NvaInterfaceConfigurationsProperties.fromJson(reader1));
+                    deserializedNetworkVirtualAppliancePropertiesFormat.nvaInterfaceConfigurations
+                        = nvaInterfaceConfigurations;
+                } else if ("privateIpAddress".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.privateIpAddress = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.durabletask.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.durabletask.models.SchedulerPropertiesUpdate;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuUpdate;
 import com.azure.resourcemanager.durabletask.models.SchedulerUpdate;
 import java.util.Arrays;
@@ -17,27 +18,25 @@ public final class SchedulerUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchedulerUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Provisioning\",\"endpoint\":\"scmdvpjhulsuu\",\"ipAllowlist\":[\"jozkrwfndiod\",\"pslwejdpvw\",\"yoqpsoaccta\"],\"sku\":{\"name\":\"ljlahbcryf\",\"capacity\":1389039399,\"redundancyState\":\"None\"}},\"tags\":{\"hcrzevd\":\"gexpaojakhmsbz\",\"qjbpfzfsin\":\"hlxaolthqtr\",\"wzo\":\"gvfcj\",\"np\":\"xjtfelluwfzit\"}}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"endpoint\":\"lzydehojwyahux\",\"ipAllowlist\":[\"mqnjaqw\",\"xj\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":2136786806,\"redundancyState\":\"Zone\"}},\"tags\":{\"vwmf\":\"eg\",\"pjhulsuuvmkj\":\"atscmd\"}}")
             .toObject(SchedulerUpdate.class);
-        Assertions.assertEquals("jozkrwfndiod", model.properties().ipAllowlist().get(0));
-        Assertions.assertEquals("ljlahbcryf", model.properties().sku().name());
-        Assertions.assertEquals(1389039399, model.properties().sku().capacity());
-        Assertions.assertEquals("gexpaojakhmsbz", model.tags().get("hcrzevd"));
+        Assertions.assertEquals("mqnjaqw", model.properties().ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.DEDICATED, model.properties().sku().name());
+        Assertions.assertEquals(2136786806, model.properties().sku().capacity());
+        Assertions.assertEquals("eg", model.tags().get("vwmf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchedulerUpdate model = new SchedulerUpdate()
-            .withProperties(new SchedulerPropertiesUpdate()
-                .withIpAllowlist(Arrays.asList("jozkrwfndiod", "pslwejdpvw", "yoqpsoaccta"))
-                .withSku(new SchedulerSkuUpdate().withName("ljlahbcryf").withCapacity(1389039399)))
-            .withTags(
-                mapOf("hcrzevd", "gexpaojakhmsbz", "qjbpfzfsin", "hlxaolthqtr", "wzo", "gvfcj", "np", "xjtfelluwfzit"));
+            .withProperties(new SchedulerPropertiesUpdate().withIpAllowlist(Arrays.asList("mqnjaqw", "xj"))
+                .withSku(new SchedulerSkuUpdate().withName(SchedulerSkuName.DEDICATED).withCapacity(2136786806)))
+            .withTags(mapOf("vwmf", "eg", "pjhulsuuvmkj", "atscmd"));
         model = BinaryData.fromObject(model).toObject(SchedulerUpdate.class);
-        Assertions.assertEquals("jozkrwfndiod", model.properties().ipAllowlist().get(0));
-        Assertions.assertEquals("ljlahbcryf", model.properties().sku().name());
-        Assertions.assertEquals(1389039399, model.properties().sku().capacity());
-        Assertions.assertEquals("gexpaojakhmsbz", model.tags().get("hcrzevd"));
+        Assertions.assertEquals("mqnjaqw", model.properties().ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.DEDICATED, model.properties().sku().name());
+        Assertions.assertEquals(2136786806, model.properties().sku().capacity());
+        Assertions.assertEquals("eg", model.tags().get("vwmf"));
     }
 
     // Use "Map.of" if available

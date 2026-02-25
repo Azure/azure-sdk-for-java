@@ -21,7 +21,7 @@ public final class DiscoverySourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Canceled\",\"sourceId\":\"m\"},\"location\":\"hrzayvvtpgvdf\",\"tags\":{\"efgugnxk\":\"tkftutqxlngx\",\"hjybigehoqfbo\":\"xdqmidtthzrvqdra\",\"zlcuiywgqywgndrv\":\"skanyk\",\"ocpecfvmmco\":\"nhzgpphrcgyn\"},\"id\":\"fsxlzevgbmqjqa\",\"name\":\"c\",\"type\":\"pmivkwlzu\"}";
+            = "{\"properties\":{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Failed\",\"sourceId\":\"jeyp\"},\"location\":\"ezrkgqhcjrefo\",\"tags\":{\"jpkcattpng\":\"kqsleyyvxy\",\"czsqpjhvm\":\"cr\",\"a\":\"ajvnysounqe\"},\"id\":\"oaeupfhyhltrpmo\",\"name\":\"jmcmatuokthfu\",\"type\":\"uaodsfcpk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class DiscoverySourcesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DiscoverySourceResource response = manager.discoverySources()
-            .getWithResponse("igdtopbob", "og", "m", com.azure.core.util.Context.NONE)
+            .getWithResponse("dcsi", "ynnaam", "ectehf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hrzayvvtpgvdf", response.location());
-        Assertions.assertEquals("tkftutqxlngx", response.tags().get("efgugnxk"));
-        Assertions.assertEquals("m", response.properties().sourceId());
+        Assertions.assertEquals("ezrkgqhcjrefo", response.location());
+        Assertions.assertEquals("kqsleyyvxy", response.tags().get("jpkcattpng"));
+        Assertions.assertEquals("jeyp", response.properties().sourceId());
     }
 }

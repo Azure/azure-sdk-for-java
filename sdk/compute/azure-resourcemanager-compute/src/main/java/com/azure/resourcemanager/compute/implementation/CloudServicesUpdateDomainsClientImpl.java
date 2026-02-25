@@ -694,7 +694,8 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all update domains in a cloud service along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UpdateDomainInner>> listUpdateDomainsNextSinglePageAsync(String nextLink) {
@@ -721,7 +722,8 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all update domains in a cloud service along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UpdateDomainInner>> listUpdateDomainsNextSinglePageAsync(String nextLink,

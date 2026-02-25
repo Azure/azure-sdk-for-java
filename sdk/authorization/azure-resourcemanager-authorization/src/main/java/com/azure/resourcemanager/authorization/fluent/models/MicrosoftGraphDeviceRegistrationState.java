@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * deviceRegistrationState.
+ * Represents a device registration state.
  */
 public final class MicrosoftGraphDeviceRegistrationState
     extends ExpandableStringEnum<MicrosoftGraphDeviceRegistrationState> {

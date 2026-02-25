@@ -7,8 +7,8 @@ package com.azure.resourcemanager.storagecache.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.models.UsageModel;
@@ -22,19 +22,19 @@ public final class UsageModelsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"display\":{\"description\":\"uqypfcvle\"},\"modelName\":\"hp\",\"targetType\":\"mfpjbabw\"}]}";
+            = "{\"value\":[{\"display\":{\"description\":\"prafwgckhoc\"},\"modelName\":\"d\",\"targetType\":\"fwafqrouda\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StorageCacheManager manager = StorageCacheManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<UsageModel> response = manager.usageModels().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uqypfcvle", response.iterator().next().display().description());
-        Assertions.assertEquals("hp", response.iterator().next().modelName());
-        Assertions.assertEquals("mfpjbabw", response.iterator().next().targetType());
+        Assertions.assertEquals("prafwgckhoc", response.iterator().next().display().description());
+        Assertions.assertEquals("d", response.iterator().next().modelName());
+        Assertions.assertEquals("fwafqrouda", response.iterator().next().targetType());
     }
 }

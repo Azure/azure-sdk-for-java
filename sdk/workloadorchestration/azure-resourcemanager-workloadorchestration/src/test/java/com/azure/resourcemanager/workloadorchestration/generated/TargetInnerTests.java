@@ -19,47 +19,47 @@ public final class TargetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"zz\",\"displayName\":\"bijhtxfvgxbf\",\"contextId\":\"mxnehmp\",\"targetSpecification\":{},\"capabilities\":[\"xgodebfqkkrbmp\",\"kgriwflzlfbx\"],\"hierarchyLevel\":\"puz\",\"status\":{\"lastModified\":\"2021-03-03T14:03:42Z\",\"deployed\":1593715454,\"expectedRunningJobId\":2125725117,\"runningJobId\":64383308,\"status\":\"gkbrpyyd\",\"statusDetails\":\"bnuqqkpik\",\"generation\":1684029730,\"targetStatuses\":[{\"name\":\"qagnbuyn\",\"status\":\"jggmebfsiarbu\",\"componentStatuses\":[{},{},{},{}]}]},\"solutionScope\":\"pnazzm\",\"state\":\"active\",\"provisioningState\":\"Canceled\"},\"eTag\":\"pxtt\",\"extendedLocation\":{\"name\":\"hrbnlankxmyskpbh\",\"type\":\"CustomLocation\"},\"location\":\"tkcxywnytnrsy\",\"tags\":{\"lhaaxdbabp\":\"idybyxczf\",\"fkts\":\"lwrq\"},\"id\":\"hsucoc\",\"name\":\"nyyazttbtwwrqpue\",\"type\":\"ckzywbiexzfeyue\"}")
+            "{\"properties\":{\"description\":\"rbpbewtghfgblcg\",\"displayName\":\"xzvlvqhjkbegib\",\"contextId\":\"nmxiebwwaloayqc\",\"targetSpecification\":{},\"capabilities\":[\"tzjuzgwyzmhtxo\",\"gmtsavjcbpwxqpsr\"],\"hierarchyLevel\":\"nftguvriuhpr\",\"status\":{\"lastModified\":\"2021-05-29T19:52:45Z\",\"deployed\":628006410,\"expectedRunningJobId\":1392355180,\"runningJobId\":473809520,\"status\":\"iwwroyqbexrmc\",\"statusDetails\":\"bycnojvkn\",\"generation\":841332893,\"targetStatuses\":[{\"name\":\"zvahapjy\",\"status\":\"pvgqzcjrvxdjzlm\",\"componentStatuses\":[{},{},{}]},{\"name\":\"vu\",\"status\":\"hzovawjvzunlut\",\"componentStatuses\":[{}]},{\"name\":\"rnxipei\",\"status\":\"jzuaejxdultskzbb\",\"componentStatuses\":[{},{},{}]},{\"name\":\"mv\",\"status\":\"kgpwoz\",\"componentStatuses\":[{},{}]}]},\"solutionScope\":\"p\",\"state\":\"inactive\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"dxluu\",\"extendedLocation\":{\"name\":\"ttouwaboekqvkel\",\"type\":\"EdgeZone\"},\"location\":\"vbxwyjsflhh\",\"tags\":{\"joya\":\"lnjixisxya\"},\"id\":\"cslyjpk\",\"name\":\"idzyexznelixhnr\",\"type\":\"tfolhbnx\"}")
             .toObject(TargetInner.class);
-        Assertions.assertEquals("tkcxywnytnrsy", model.location());
-        Assertions.assertEquals("idybyxczf", model.tags().get("lhaaxdbabp"));
-        Assertions.assertEquals("zz", model.properties().description());
-        Assertions.assertEquals("bijhtxfvgxbf", model.properties().displayName());
-        Assertions.assertEquals("mxnehmp", model.properties().contextId());
-        Assertions.assertEquals("xgodebfqkkrbmp", model.properties().capabilities().get(0));
-        Assertions.assertEquals("puz", model.properties().hierarchyLevel());
-        Assertions.assertEquals("pnazzm", model.properties().solutionScope());
-        Assertions.assertEquals(ResourceState.ACTIVE, model.properties().state());
-        Assertions.assertEquals("hrbnlankxmyskpbh", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
+        Assertions.assertEquals("vbxwyjsflhh", model.location());
+        Assertions.assertEquals("lnjixisxya", model.tags().get("joya"));
+        Assertions.assertEquals("rbpbewtghfgblcg", model.properties().description());
+        Assertions.assertEquals("xzvlvqhjkbegib", model.properties().displayName());
+        Assertions.assertEquals("nmxiebwwaloayqc", model.properties().contextId());
+        Assertions.assertEquals("tzjuzgwyzmhtxo", model.properties().capabilities().get(0));
+        Assertions.assertEquals("nftguvriuhpr", model.properties().hierarchyLevel());
+        Assertions.assertEquals("p", model.properties().solutionScope());
+        Assertions.assertEquals(ResourceState.INACTIVE, model.properties().state());
+        Assertions.assertEquals("ttouwaboekqvkel", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetInner model = new TargetInner().withLocation("tkcxywnytnrsy")
-            .withTags(mapOf("lhaaxdbabp", "idybyxczf", "fkts", "lwrq"))
-            .withProperties(new TargetProperties().withDescription("zz")
-                .withDisplayName("bijhtxfvgxbf")
-                .withContextId("mxnehmp")
+        TargetInner model = new TargetInner().withLocation("vbxwyjsflhh")
+            .withTags(mapOf("joya", "lnjixisxya"))
+            .withProperties(new TargetProperties().withDescription("rbpbewtghfgblcg")
+                .withDisplayName("xzvlvqhjkbegib")
+                .withContextId("nmxiebwwaloayqc")
                 .withTargetSpecification(mapOf())
-                .withCapabilities(Arrays.asList("xgodebfqkkrbmp", "kgriwflzlfbx"))
-                .withHierarchyLevel("puz")
-                .withSolutionScope("pnazzm")
-                .withState(ResourceState.ACTIVE))
+                .withCapabilities(Arrays.asList("tzjuzgwyzmhtxo", "gmtsavjcbpwxqpsr"))
+                .withHierarchyLevel("nftguvriuhpr")
+                .withSolutionScope("p")
+                .withState(ResourceState.INACTIVE))
             .withExtendedLocation(
-                new ExtendedLocation().withName("hrbnlankxmyskpbh").withType(ExtendedLocationType.CUSTOM_LOCATION));
+                new ExtendedLocation().withName("ttouwaboekqvkel").withType(ExtendedLocationType.EDGE_ZONE));
         model = BinaryData.fromObject(model).toObject(TargetInner.class);
-        Assertions.assertEquals("tkcxywnytnrsy", model.location());
-        Assertions.assertEquals("idybyxczf", model.tags().get("lhaaxdbabp"));
-        Assertions.assertEquals("zz", model.properties().description());
-        Assertions.assertEquals("bijhtxfvgxbf", model.properties().displayName());
-        Assertions.assertEquals("mxnehmp", model.properties().contextId());
-        Assertions.assertEquals("xgodebfqkkrbmp", model.properties().capabilities().get(0));
-        Assertions.assertEquals("puz", model.properties().hierarchyLevel());
-        Assertions.assertEquals("pnazzm", model.properties().solutionScope());
-        Assertions.assertEquals(ResourceState.ACTIVE, model.properties().state());
-        Assertions.assertEquals("hrbnlankxmyskpbh", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
+        Assertions.assertEquals("vbxwyjsflhh", model.location());
+        Assertions.assertEquals("lnjixisxya", model.tags().get("joya"));
+        Assertions.assertEquals("rbpbewtghfgblcg", model.properties().description());
+        Assertions.assertEquals("xzvlvqhjkbegib", model.properties().displayName());
+        Assertions.assertEquals("nmxiebwwaloayqc", model.properties().contextId());
+        Assertions.assertEquals("tzjuzgwyzmhtxo", model.properties().capabilities().get(0));
+        Assertions.assertEquals("nftguvriuhpr", model.properties().hierarchyLevel());
+        Assertions.assertEquals("p", model.properties().solutionScope());
+        Assertions.assertEquals(ResourceState.INACTIVE, model.properties().state());
+        Assertions.assertEquals("ttouwaboekqvkel", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
     }
 
     // Use "Map.of" if available

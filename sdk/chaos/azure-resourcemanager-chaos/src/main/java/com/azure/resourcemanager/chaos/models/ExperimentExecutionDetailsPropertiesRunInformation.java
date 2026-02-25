@@ -39,17 +39,6 @@ public final class ExperimentExecutionDetailsPropertiesRunInformation
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (steps() != null) {
-            steps().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * patternedRecurrence.
+ * Represents a patterned recurrence.
  */
 @Fluent
 public final class MicrosoftGraphPatternedRecurrence implements JsonSerializable<MicrosoftGraphPatternedRecurrence> {

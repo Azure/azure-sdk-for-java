@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.purestorageblock.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -50,30 +49,6 @@ public final class ProtectionPolicyLimits implements JsonSerializable<Protection
     public RangeLimits retention() {
         return this.retention;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (frequency() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property frequency in model ProtectionPolicyLimits"));
-        } else {
-            frequency().validate();
-        }
-        if (retention() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property retention in model ProtectionPolicyLimits"));
-        } else {
-            retention().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ProtectionPolicyLimits.class);
 
     /**
      * {@inheritDoc}

@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * message.
+ * Represents a message.
  */
 @Fluent
 public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {

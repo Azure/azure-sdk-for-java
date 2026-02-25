@@ -43,6 +43,7 @@ import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.LeaseStateType;
@@ -56,6 +57,7 @@ import com.azure.storage.blob.specialized.BlobLeaseClient;
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
@@ -85,6 +87,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.Callable;
@@ -199,7 +202,8 @@ public class BlobTestBase extends TestProxyTestBase {
         interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
             .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
                 "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since",
-                "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256"))
+                "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256",
+                "x-ms-blob-if-modified-since", "x-ms-blob-if-unmodified-since"))
             .setQueryOrderingIgnored(true)
             .setIgnoredQueryParameters(Collections.singletonList("sv"))));
 
@@ -772,15 +776,19 @@ public class BlobTestBase extends TestProxyTestBase {
         }
 
         int retry = 0;
-        while (retry < 5) {
+
+        // Try up to 5 times (4 retries + 1 final attempt)
+        while (retry < 4) {
             try {
                 runnable.run();
-                break;
+                return; // success
             } catch (Exception ex) {
                 retry++;
                 sleepIfRunningAgainstService(5000);
             }
         }
+        // Final attempt (5th try)
+        runnable.run();
     }
 
     protected HttpPipelinePolicy getPerCallVersionPolicy() {
@@ -1236,5 +1244,72 @@ public class BlobTestBase extends TestProxyTestBase {
             int requestDelaySeconds = 4;
             return Mono.delay(Duration.ofSeconds(requestDelaySeconds)).then(Mono.just(response));
         }
+    }
+
+    protected static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {
+        validatePropsSet(sent, received, true);
+    }
+
+    protected static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received,
+        boolean isStaticWebsite) {
+        assertEquals(sent.getLogging().isRead(), received.getLogging().isRead());
+        assertEquals(sent.getLogging().isWrite(), received.getLogging().isWrite());
+        assertEquals(sent.getLogging().isDelete(), received.getLogging().isDelete());
+        assertEquals(sent.getLogging().getVersion(), received.getLogging().getVersion());
+        assertEquals(sent.getLogging().getRetentionPolicy().isEnabled(),
+            received.getLogging().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getLogging().getRetentionPolicy().getDays(),
+            received.getLogging().getRetentionPolicy().getDays());
+        assertEquals(sent.getCors().size(), received.getCors().size());
+        assertEquals(sent.getCors().get(0).getAllowedMethods(), received.getCors().get(0).getAllowedMethods());
+        assertEquals(sent.getCors().get(0).getAllowedHeaders(), received.getCors().get(0).getAllowedHeaders());
+        assertEquals(sent.getCors().get(0).getAllowedOrigins(), received.getCors().get(0).getAllowedOrigins());
+        assertEquals(sent.getCors().get(0).getExposedHeaders(), received.getCors().get(0).getExposedHeaders());
+        assertEquals(sent.getCors().get(0).getMaxAgeInSeconds(), received.getCors().get(0).getMaxAgeInSeconds());
+        assertEquals(sent.getDefaultServiceVersion(), received.getDefaultServiceVersion());
+        assertEquals(sent.getHourMetrics().isEnabled(), received.getHourMetrics().isEnabled());
+        assertEquals(sent.getHourMetrics().isIncludeApis(), received.getHourMetrics().isIncludeApis());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().isEnabled(),
+            received.getHourMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().getDays(),
+            received.getHourMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getHourMetrics().getVersion(), received.getHourMetrics().getVersion());
+        assertEquals(sent.getMinuteMetrics().isEnabled(), received.getMinuteMetrics().isEnabled());
+        assertEquals(sent.getMinuteMetrics().isIncludeApis(), received.getMinuteMetrics().isIncludeApis());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().isEnabled(),
+            received.getMinuteMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().getDays(),
+            received.getMinuteMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getMinuteMetrics().getVersion(), received.getMinuteMetrics().getVersion());
+        assertEquals(sent.getDeleteRetentionPolicy().isEnabled(), received.getDeleteRetentionPolicy().isEnabled());
+        assertEquals(sent.getDeleteRetentionPolicy().getDays(), received.getDeleteRetentionPolicy().getDays());
+        if (isStaticWebsite) {
+            assertEquals(sent.getStaticWebsite().isEnabled(), received.getStaticWebsite().isEnabled());
+            assertEquals(sent.getStaticWebsite().getIndexDocument(), received.getStaticWebsite().getIndexDocument());
+            assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
+                received.getStaticWebsite().getErrorDocument404Path());
+        }
+    }
+
+    public static HttpPipelinePolicy getAddHeadersAndQueryPolicy(Map<String, String> requestHeaders,
+        Map<String, String> requestQueryParams) {
+        // Create policy to add headers and query params to request
+        return (context, next) -> {
+            // Add request headers
+            for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
+                context.getHttpRequest().setHeader(HttpHeaderName.fromString(entry.getKey()), entry.getValue());
+            }
+
+            // Add query parameters
+            String extraQuery = requestQueryParams.entrySet()
+                .stream()
+                .map(e -> Utility.urlEncode(e.getKey()) + "=" + Utility.urlEncode(e.getValue()))
+                .collect(Collectors.joining("&"));
+
+            String currentUrl = context.getHttpRequest().getUrl().toString();
+            context.getHttpRequest().setUrl(currentUrl + "&" + extraQuery);
+
+            return next.process();
+        };
     }
 }

@@ -3,14 +3,18 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceId;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -25,6 +29,9 @@ import java.util.Map;
  * This is meant to be internally used only by our sdk.
  */
 public abstract class RxCollectionCache {
+
+    private final static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
+        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
 
     private final AsyncCache<String, DocumentCollection> collectionInfoByNameCache;
     private final AsyncCache<String, DocumentCollection> collectionInfoByIdCache;
@@ -85,9 +92,10 @@ public abstract class RxCollectionCache {
                         request.requestContext.resolvedCollectionRid = collection.getResourceId();
                         return Mono.just(new Utils.ValueHolder<>(collection));
 
-                    });
+                    }).onErrorMap(throwable -> transformThrowableIfRequired(throwable, request));
                 } else {
-                    return this.resolveByRidAsync(metaDataDiagnosticsContext, request.requestContext.resolvedCollectionRid, request.properties);
+                    return this.resolveByRidAsync(metaDataDiagnosticsContext, request.requestContext.resolvedCollectionRid, request.properties)
+                        .onErrorMap(throwable -> transformThrowableIfRequired(throwable, request));
                 }
             });
         } else {
@@ -99,7 +107,8 @@ public abstract class RxCollectionCache {
                     }
 
                     return this.resolveByRidAsync(metaDataDiagnosticsContext, request.getResourceAddress(), request.properties);
-                });
+                })
+                .onErrorMap(throwable -> transformThrowableIfRequired(throwable, request));
         }
     }
 
@@ -170,7 +179,8 @@ public abstract class RxCollectionCache {
         MetadataDiagnosticsContext metaDataDiagnosticsContext,
         String resourceAddress,
         Map<String, Object> properties,
-        DocumentCollection obsoleteValue) {
+        DocumentCollection obsoleteValue,
+        ResourceType encapsulatingOperationResourceType) {
 
         String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);
 
@@ -179,11 +189,41 @@ public abstract class RxCollectionCache {
             obsoleteValue,
             () -> {
                 Mono<DocumentCollection> collectionObs = this.getByNameAsync(
-                    metaDataDiagnosticsContext, resourceFullName, properties);
+                    metaDataDiagnosticsContext, resourceFullName, properties)
+                    .onErrorMap(throwable -> {
+
+                        if (throwable instanceof CosmosException) {
+
+                            CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+
+                            if (encapsulatingOperationResourceType != null &&
+                                !ResourceType.DocumentCollection.equals(encapsulatingOperationResourceType) &&
+                                com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException) &&
+                                com.azure.cosmos.implementation.Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
+
+                                cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+
+                                return cosmosException;
+                            }
+
+                            return cosmosException;
+                        }
+
+                        return throwable;
+                    });
                 return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(
                     collection.getResourceId(),
                     collection));
             });
+    }
+
+    public Mono<DocumentCollection> resolveByNameAsync(
+        MetadataDiagnosticsContext metaDataDiagnosticsContext,
+        String resourceAddress,
+        Map<String, Object> properties,
+        DocumentCollection obsoleteValue) {
+
+        return this.resolveByNameAsync(metaDataDiagnosticsContext, resourceAddress, properties, obsoleteValue, null);
     }
 
     public Mono<Void> refreshAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {
@@ -227,6 +267,25 @@ public abstract class RxCollectionCache {
             }
 
             return StringUtils.equals(left.getResourceId(), right.getResourceId());
+        }
+    }
+
+    private static Throwable transformThrowableIfRequired(Throwable throwable, RxDocumentServiceRequest request) {
+        {
+            if (throwable instanceof CosmosException) {
+
+                CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+
+                if (!ResourceType.DocumentCollection.equals(request.getResourceType()) &&
+                    com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException) &&
+                    com.azure.cosmos.implementation.Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
+                    cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                }
+
+                return cosmosException;
+            }
+
+            return throwable;
         }
     }
 }

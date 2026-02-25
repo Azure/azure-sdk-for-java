@@ -6,7 +6,6 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -277,29 +276,6 @@ public final class JobModelProperties implements JsonSerializable<JobModelProper
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (tasks() != null) {
-            tasks().forEach(e -> e.validate());
-        }
-        if (errors() != null) {
-            errors().forEach(e -> e.validate());
-        }
-        if (customProperties() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property customProperties in model JobModelProperties"));
-        } else {
-            customProperties().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(JobModelProperties.class);
 
     /**
      * {@inheritDoc}

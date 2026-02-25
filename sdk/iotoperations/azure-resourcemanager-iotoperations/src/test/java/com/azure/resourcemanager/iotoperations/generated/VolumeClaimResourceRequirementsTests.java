@@ -6,6 +6,8 @@ package com.azure.resourcemanager.iotoperations.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iotoperations.models.VolumeClaimResourceRequirements;
+import com.azure.resourcemanager.iotoperations.models.VolumeClaimResourceRequirementsClaims;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -14,20 +16,27 @@ public final class VolumeClaimResourceRequirementsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeClaimResourceRequirements model = BinaryData.fromString(
-            "{\"limits\":{\"vf\":\"hkaetcktvfc\",\"xerf\":\"nkymuctqhjfbebrj\",\"phxepcyvahf\":\"wutttxfvjrbi\"},\"requests\":{\"ljyoxgvcltb\":\"kyqxjvuujqgidokg\"}}")
+            "{\"limits\":{\"hd\":\"hvpmoue\",\"bzv\":\"xibqeojnx\"},\"requests\":{\"ndei\":\"t\",\"cyddglmjthjqk\":\"btwnpzaoqvuhrhcf\",\"ciwqvhk\":\"pyeicxm\",\"ghmewuam\":\"ixuigdtopbobj\"},\"claims\":[{\"name\":\"rzayv\"},{\"name\":\"t\"},{\"name\":\"gvdfgiotkftutq\"},{\"name\":\"ln\"}]}")
             .toObject(VolumeClaimResourceRequirements.class);
-        Assertions.assertEquals("hkaetcktvfc", model.limits().get("vf"));
-        Assertions.assertEquals("kyqxjvuujqgidokg", model.requests().get("ljyoxgvcltb"));
+        Assertions.assertEquals("hvpmoue", model.limits().get("hd"));
+        Assertions.assertEquals("t", model.requests().get("ndei"));
+        Assertions.assertEquals("rzayv", model.claims().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeClaimResourceRequirements model = new VolumeClaimResourceRequirements()
-            .withLimits(mapOf("vf", "hkaetcktvfc", "xerf", "nkymuctqhjfbebrj", "phxepcyvahf", "wutttxfvjrbi"))
-            .withRequests(mapOf("ljyoxgvcltb", "kyqxjvuujqgidokg"));
+        VolumeClaimResourceRequirements model
+            = new VolumeClaimResourceRequirements().withLimits(mapOf("hd", "hvpmoue", "bzv", "xibqeojnx"))
+                .withRequests(mapOf("ndei", "t", "cyddglmjthjqk", "btwnpzaoqvuhrhcf", "ciwqvhk", "pyeicxm", "ghmewuam",
+                    "ixuigdtopbobj"))
+                .withClaims(Arrays.asList(new VolumeClaimResourceRequirementsClaims().withName("rzayv"),
+                    new VolumeClaimResourceRequirementsClaims().withName("t"),
+                    new VolumeClaimResourceRequirementsClaims().withName("gvdfgiotkftutq"),
+                    new VolumeClaimResourceRequirementsClaims().withName("ln")));
         model = BinaryData.fromObject(model).toObject(VolumeClaimResourceRequirements.class);
-        Assertions.assertEquals("hkaetcktvfc", model.limits().get("vf"));
-        Assertions.assertEquals("kyqxjvuujqgidokg", model.requests().get("ljyoxgvcltb"));
+        Assertions.assertEquals("hvpmoue", model.limits().get("hd"));
+        Assertions.assertEquals("t", model.requests().get("ndei"));
+        Assertions.assertEquals("rzayv", model.claims().get(0).name());
     }
 
     // Use "Map.of" if available

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * textColumn.
+ * Represents a text column.
  */
 @Fluent
 public final class MicrosoftGraphTextColumn implements JsonSerializable<MicrosoftGraphTextColumn> {

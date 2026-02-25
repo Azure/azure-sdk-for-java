@@ -10,8 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsDiagnosticsGetRootSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
-     * ContainerApps_Get.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ContainerApps_Get.json
      */
     /**
      * Sample code: Get Container App.
@@ -20,6 +19,6 @@ public final class ContainerAppsDiagnosticsGetRootSamples {
      */
     public static void getContainerApp(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.containerAppsDiagnostics()
-            .getRootWithResponse("rg", "testcontainerApp0", com.azure.core.util.Context.NONE);
+            .getRootWithResponse("rg", "testcontainerapp0", com.azure.core.util.Context.NONE);
     }
 }

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClusterPrivateLinkResourcesClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.models.PrivateLinkResourceListResult;
@@ -116,22 +115,6 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByCloudHsmClusterSinglePageAsync(String resourceGroupName,
         String cloudHsmClusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -175,24 +158,6 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByCloudHsmClusterSinglePage(String resourceGroupName,
         String cloudHsmClusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateLinkResourceListResult> res
             = service.listByCloudHsmClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -216,24 +181,6 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByCloudHsmClusterSinglePage(String resourceGroupName,
         String cloudHsmClusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateLinkResourceListResult> res
             = service.listByCloudHsmClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -294,13 +241,6 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByCloudHsmClusterNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -321,15 +261,6 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByCloudHsmClusterNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateLinkResourceListResult> res
             = service.listByCloudHsmClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -350,21 +281,10 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByCloudHsmClusterNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateLinkResourceListResult> res
             = service.listByCloudHsmClusterNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CloudHsmClusterPrivateLinkResourcesClientImpl.class);
 }

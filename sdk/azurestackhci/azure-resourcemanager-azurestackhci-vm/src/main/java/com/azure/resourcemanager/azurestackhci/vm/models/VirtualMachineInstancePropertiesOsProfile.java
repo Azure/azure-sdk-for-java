@@ -153,20 +153,6 @@ public final class VirtualMachineInstancePropertiesOsProfile
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (linuxConfiguration() != null) {
-            linuxConfiguration().validate();
-        }
-        if (windowsConfiguration() != null) {
-            windowsConfiguration().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

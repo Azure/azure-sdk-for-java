@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class GateConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GateConfiguration model = BinaryData.fromString("{\"displayName\":\"koklya\",\"type\":\"Approval\"}")
+        GateConfiguration model = BinaryData.fromString("{\"displayName\":\"bxvwv\",\"type\":\"Approval\"}")
             .toObject(GateConfiguration.class);
-        Assertions.assertEquals("koklya", model.displayName());
+        Assertions.assertEquals("bxvwv", model.displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GateConfiguration model = new GateConfiguration().withDisplayName("koklya").withType(GateType.APPROVAL);
+        GateConfiguration model = new GateConfiguration().withDisplayName("bxvwv").withType(GateType.APPROVAL);
         model = BinaryData.fromObject(model).toObject(GateConfiguration.class);
-        Assertions.assertEquals("koklya", model.displayName());
+        Assertions.assertEquals("bxvwv", model.displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.type());
     }
 }

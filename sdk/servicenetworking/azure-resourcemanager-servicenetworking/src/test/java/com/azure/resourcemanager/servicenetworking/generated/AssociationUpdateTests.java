@@ -8,7 +8,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 import com.azure.resourcemanager.servicenetworking.models.AssociationUpdate;
-import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -20,19 +19,19 @@ public final class AssociationUpdateTests {
             "{\"tags\":{\"fp\":\"c\"},\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"cqqjnqglhqgn\"}}}")
             .toObject(AssociationUpdate.class);
         Assertions.assertEquals("c", model.tags().get("fp"));
-        Assertions.assertEquals(AssociationType.SUBNETS, model.properties().associationType());
-        Assertions.assertEquals("cqqjnqglhqgn", model.properties().subnet().id());
+        Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
+        Assertions.assertEquals("cqqjnqglhqgn", model.subnet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AssociationUpdate model = new AssociationUpdate().withTags(mapOf("fp", "c"))
-            .withProperties(new AssociationUpdateProperties().withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnetUpdate().withId("cqqjnqglhqgn")));
+            .withAssociationType(AssociationType.SUBNETS)
+            .withSubnet(new AssociationSubnetUpdate().withId("cqqjnqglhqgn"));
         model = BinaryData.fromObject(model).toObject(AssociationUpdate.class);
         Assertions.assertEquals("c", model.tags().get("fp"));
-        Assertions.assertEquals(AssociationType.SUBNETS, model.properties().associationType());
-        Assertions.assertEquals("cqqjnqglhqgn", model.properties().subnet().id());
+        Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
+        Assertions.assertEquals("cqqjnqglhqgn", model.subnet().id());
     }
 
     // Use "Map.of" if available

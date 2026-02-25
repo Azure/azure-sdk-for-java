@@ -52,14 +52,6 @@ public final class FleetMemberStatus implements JsonSerializable<FleetMemberStat
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

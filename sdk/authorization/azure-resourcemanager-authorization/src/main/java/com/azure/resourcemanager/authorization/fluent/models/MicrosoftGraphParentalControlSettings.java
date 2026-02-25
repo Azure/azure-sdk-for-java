@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * parentalControlSettings.
+ * Represents a parental control settings.
  */
 @Fluent
 public final class MicrosoftGraphParentalControlSettings

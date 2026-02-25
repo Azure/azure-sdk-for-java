@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cloudhealth.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -235,44 +234,6 @@ public final class ResourceMetricSignalDefinitionProperties extends SignalDefini
         super.withEvaluationRules(evaluationRules);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (metricNamespace() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property metricNamespace in model ResourceMetricSignalDefinitionProperties"));
-        }
-        if (metricName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property metricName in model ResourceMetricSignalDefinitionProperties"));
-        }
-        if (timeGrain() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property timeGrain in model ResourceMetricSignalDefinitionProperties"));
-        }
-        if (aggregationType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property aggregationType in model ResourceMetricSignalDefinitionProperties"));
-        }
-        if (evaluationRules() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property evaluationRules in model ResourceMetricSignalDefinitionProperties"));
-        } else {
-            evaluationRules().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceMetricSignalDefinitionProperties.class);
 
     /**
      * {@inheritDoc}

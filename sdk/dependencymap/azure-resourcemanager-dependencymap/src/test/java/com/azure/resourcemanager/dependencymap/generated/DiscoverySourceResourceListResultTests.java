@@ -12,11 +12,11 @@ public final class DiscoverySourceResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoverySourceResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Provisioning\",\"sourceId\":\"ujitcjcz\"},\"location\":\"evndh\",\"tags\":{\"dkvwrwjfe\":\"pdappds\",\"je\":\"snhu\",\"hocdgeab\":\"tmrldhugjzzdatq\"},\"id\":\"gphuticndvka\",\"name\":\"zwyiftyhxhur\",\"type\":\"k\"},{\"properties\":{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Deleting\",\"sourceId\":\"olniwpwcukjf\"},\"location\":\"iawxklry\",\"tags\":{\"sgcbac\":\"ckbasyypndd\",\"zndlikwy\":\"hejkotynqgou\",\"bmadgak\":\"kgfg\"},\"id\":\"qsrxybzqqed\",\"name\":\"ytb\",\"type\":\"iqfouflmmnkz\"}],\"nextLink\":\"odmgl\"}")
+            "{\"value\":[{\"properties\":{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Succeeded\",\"sourceId\":\"wyqkgfgibm\"},\"location\":\"gakeqsr\",\"tags\":{\"tbciqfouflmm\":\"zqqedq\",\"lougpbkw\":\"kzsmodm\",\"wgcu\":\"mutduqktaps\",\"hbmdgbbjfdd\":\"rtumkdosvq\"},\"id\":\"mbmbexppbh\",\"name\":\"q\",\"type\":\"rolfpfp\"},{\"properties\":{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Accepted\",\"sourceId\":\"bquxigjy\"},\"location\":\"zjaoyfhrtxil\",\"tags\":{\"wrlyxwjkcprb\":\"kujysvlejuvfq\",\"vpys\":\"wbxgjvt\"},\"id\":\"zdn\",\"name\":\"uj\",\"type\":\"guhmuouqfpr\"},{\"properties\":{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Updating\",\"sourceId\":\"nguitnwuizgazxu\"},\"location\":\"zuckyfi\",\"tags\":{\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"},{\"properties\":{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Provisioning\",\"sourceId\":\"sne\"},\"location\":\"dwzjeiach\",\"tags\":{\"eeh\":\"sflnrosfqp\",\"swjdkirso\":\"zvypyqrimzinp\"},\"id\":\"dqxhcrmnohjtckwh\",\"name\":\"soifiyipjxsqw\",\"type\":\"gr\"}],\"nextLink\":\"znorcj\"}")
             .toObject(DiscoverySourceResourceListResult.class);
-        Assertions.assertEquals("evndh", model.value().get(0).location());
-        Assertions.assertEquals("pdappds", model.value().get(0).tags().get("dkvwrwjfe"));
-        Assertions.assertEquals("ujitcjcz", model.value().get(0).properties().sourceId());
-        Assertions.assertEquals("odmgl", model.nextLink());
+        Assertions.assertEquals("gakeqsr", model.value().get(0).location());
+        Assertions.assertEquals("zqqedq", model.value().get(0).tags().get("tbciqfouflmm"));
+        Assertions.assertEquals("wyqkgfgibm", model.value().get(0).properties().sourceId());
+        Assertions.assertEquals("znorcj", model.nextLink());
     }
 }

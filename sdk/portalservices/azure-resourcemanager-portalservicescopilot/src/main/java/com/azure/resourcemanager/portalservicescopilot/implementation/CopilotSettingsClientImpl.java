@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.portalservicescopilot.fluent.CopilotSettingsClient;
 import com.azure.resourcemanager.portalservicescopilot.fluent.models.CopilotSettingsResourceInner;
 import com.azure.resourcemanager.portalservicescopilot.models.CopilotSettingsResourceUpdate;
@@ -132,10 +131,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CopilotSettingsResourceInner>> getWithResponseAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -166,11 +161,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopilotSettingsResourceInner> getWithResponse(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
@@ -200,15 +190,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CopilotSettingsResourceInner>>
         createOrUpdateWithResponseAsync(CopilotSettingsResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -244,17 +225,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopilotSettingsResourceInner> createOrUpdateWithResponse(CopilotSettingsResourceInner resource,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), contentType, accept,
@@ -288,15 +258,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CopilotSettingsResourceInner>>
         updateWithResponseAsync(CopilotSettingsResourceUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -332,17 +293,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopilotSettingsResourceInner> updateWithResponse(CopilotSettingsResourceUpdate properties,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), contentType, accept,
@@ -372,10 +322,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -404,11 +350,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), context);
     }
 
@@ -422,6 +363,4 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
     public void delete() {
         deleteWithResponse(Context.NONE);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CopilotSettingsClientImpl.class);
 }

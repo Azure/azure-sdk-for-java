@@ -4,29 +4,16 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.resourcemanager.appcontainers.models.AppInsightsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
-import com.azure.resourcemanager.appcontainers.models.DataDogConfiguration;
-import com.azure.resourcemanager.appcontainers.models.DestinationsConfiguration;
-import com.azure.resourcemanager.appcontainers.models.DiskEncryptionConfiguration;
-import com.azure.resourcemanager.appcontainers.models.DiskEncryptionConfigurationKeyVaultConfiguration;
-import com.azure.resourcemanager.appcontainers.models.DiskEncryptionConfigurationKeyVaultConfigurationAuth;
-import com.azure.resourcemanager.appcontainers.models.Header;
 import com.azure.resourcemanager.appcontainers.models.IngressConfiguration;
-import com.azure.resourcemanager.appcontainers.models.IngressConfigurationScale;
 import com.azure.resourcemanager.appcontainers.models.LogAnalyticsConfiguration;
-import com.azure.resourcemanager.appcontainers.models.LogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.appcontainers.models.MetricsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.Mtls;
-import com.azure.resourcemanager.appcontainers.models.OpenTelemetryConfiguration;
-import com.azure.resourcemanager.appcontainers.models.OtlpConfiguration;
-import com.azure.resourcemanager.appcontainers.models.TracesConfiguration;
 import com.azure.resourcemanager.appcontainers.models.UserAssignedIdentity;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
@@ -39,8 +26,7 @@ import java.util.Map;
  */
 public final class ManagedEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * ManagedEnvironments_CustomInfrastructureResourceGroup_Create.json
      */
     /**
@@ -61,13 +47,11 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
             .withAppLogsConfiguration(new AppLogsConfiguration().withLogAnalyticsConfiguration(
                 new LogAnalyticsConfiguration().withCustomerId("string").withSharedKey("fakeTokenPlaceholder")))
             .withZoneRedundant(true)
-            .withAvailabilityZones(Arrays.asList("1", "2", "3"))
             .withCustomDomainConfiguration(new CustomDomainConfiguration().withDnsSuffix("www.my-name.com")
                 .withCertificateValue("Y2VydA==".getBytes())
                 .withCertificatePassword("fakeTokenPlaceholder"))
             .withWorkloadProfiles(Arrays.asList(
                 new WorkloadProfile().withName("My-GP-01")
-                    .withEnableFips(true)
                     .withWorkloadProfileType("GeneralPurpose")
                     .withMinimumCount(3)
                     .withMaximumCount(12),
@@ -85,8 +69,7 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * ManagedEnvironments_CreateOrUpdate.json
      */
     /**
@@ -108,36 +91,14 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
                 "InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/")
             .withVnetConfiguration(new VnetConfiguration().withInfrastructureSubnetId(
                 "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"))
-            .withAppLogsConfiguration(new AppLogsConfiguration()
-                .withLogAnalyticsConfiguration(new LogAnalyticsConfiguration().withCustomerId("string")
-                    .withSharedKey("fakeTokenPlaceholder")
-                    .withDynamicJsonColumns(true)))
-            .withAppInsightsConfiguration(new AppInsightsConfiguration().withConnectionString(
-                "InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/"))
-            .withOpenTelemetryConfiguration(
-                new OpenTelemetryConfiguration()
-                    .withDestinationsConfiguration(
-                        new DestinationsConfiguration()
-                            .withDataDogConfiguration(
-                                new DataDogConfiguration().withSite("string").withKey("fakeTokenPlaceholder"))
-                            .withOtlpConfigurations(Arrays.asList(new OtlpConfiguration().withName("dashboard")
-                                .withEndpoint("dashboard.k8s.region.azurecontainerapps.io:80")
-                                .withInsecure(true)
-                                .withHeaders(Arrays
-                                    .asList(new Header().withKey("fakeTokenPlaceholder").withValue("xxxxxxxxxxx"))))))
-                    .withTracesConfiguration(
-                        new TracesConfiguration().withIncludeDapr(true).withDestinations(Arrays.asList("appInsights")))
-                    .withLogsConfiguration(new LogsConfiguration().withDestinations(Arrays.asList("appInsights")))
-                    .withMetricsConfiguration(
-                        new MetricsConfiguration().withIncludeKeda(true).withDestinations(Arrays.asList("dataDog"))))
+            .withAppLogsConfiguration(new AppLogsConfiguration().withLogAnalyticsConfiguration(
+                new LogAnalyticsConfiguration().withCustomerId("string").withSharedKey("fakeTokenPlaceholder")))
             .withZoneRedundant(true)
-            .withAvailabilityZones(Arrays.asList("1", "2", "3"))
             .withCustomDomainConfiguration(new CustomDomainConfiguration().withDnsSuffix("www.my-name.com")
                 .withCertificateValue("Y2VydA==".getBytes())
                 .withCertificatePassword("fakeTokenPlaceholder"))
             .withWorkloadProfiles(Arrays.asList(
                 new WorkloadProfile().withName("My-GP-01")
-                    .withEnableFips(true)
                     .withWorkloadProfileType("GeneralPurpose")
                     .withMinimumCount(3)
                     .withMaximumCount(12),
@@ -155,14 +116,9 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
             .withPeerTrafficConfiguration(new ManagedEnvironmentPropertiesPeerTrafficConfiguration()
                 .withEncryption(new ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption().withEnabled(true)))
             .withIngressConfiguration(new IngressConfiguration().withWorkloadProfileName("My-CO-01")
-                .withScale(new IngressConfigurationScale().withMinReplicas(2).withMaxReplicas(4))
                 .withTerminationGracePeriodSeconds(3600)
                 .withHeaderCountLimit(30)
                 .withRequestIdleTimeout(5))
-            .withDiskEncryptionConfiguration(new DiskEncryptionConfiguration().withKeyVaultConfiguration(
-                new DiskEncryptionConfigurationKeyVaultConfiguration().withKeyUrl("fakeTokenPlaceholder")
-                    .withAuth(new DiskEncryptionConfigurationKeyVaultConfigurationAuth().withIdentity(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/contoso-identity"))))
             .create();
     }
 

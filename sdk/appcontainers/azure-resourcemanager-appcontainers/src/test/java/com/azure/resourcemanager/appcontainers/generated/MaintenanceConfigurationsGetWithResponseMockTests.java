@@ -22,7 +22,7 @@ public final class MaintenanceConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"scheduledEntries\":[{\"weekDay\":\"Wednesday\",\"startHourUtc\":1035003467,\"durationHours\":1989895147}]},\"id\":\"xwvegenlrj\",\"name\":\"s\",\"type\":\"wevguy\"}";
+            = "{\"properties\":{\"scheduledEntries\":[{\"weekDay\":\"Tuesday\",\"startHourUtc\":1714439660,\"durationHours\":411525724},{\"weekDay\":\"Wednesday\",\"startHourUtc\":1637733291,\"durationHours\":1962986932},{\"weekDay\":\"Wednesday\",\"startHourUtc\":67847643,\"durationHours\":477006043}]},\"id\":\"slwhdmcvhtbb\",\"name\":\"jhfv\",\"type\":\"uwzb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class MaintenanceConfigurationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MaintenanceConfigurationResource response = manager.maintenanceConfigurations()
-            .getWithResponse("kwwnq", "qlq", "pwxtvc", com.azure.core.util.Context.NONE)
+            .getWithResponse("agttpufpb", "g", "rholhujbfwxi", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(WeekDay.WEDNESDAY, response.scheduledEntries().get(0).weekDay());
-        Assertions.assertEquals(1035003467, response.scheduledEntries().get(0).startHourUtc());
-        Assertions.assertEquals(1989895147, response.scheduledEntries().get(0).durationHours());
+        Assertions.assertEquals(WeekDay.TUESDAY, response.scheduledEntries().get(0).weekDay());
+        Assertions.assertEquals(1714439660, response.scheduledEntries().get(0).startHourUtc());
+        Assertions.assertEquals(411525724, response.scheduledEntries().get(0).durationHours());
     }
 }

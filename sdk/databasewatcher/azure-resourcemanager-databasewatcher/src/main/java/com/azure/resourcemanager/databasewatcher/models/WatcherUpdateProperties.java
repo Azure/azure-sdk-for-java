@@ -75,17 +75,6 @@ public final class WatcherUpdateProperties implements JsonSerializable<WatcherUp
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (datastore() != null) {
-            datastore().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

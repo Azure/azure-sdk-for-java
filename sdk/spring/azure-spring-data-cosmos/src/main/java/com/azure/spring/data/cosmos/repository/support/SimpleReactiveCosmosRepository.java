@@ -30,6 +30,7 @@ import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompare
  * @param <T> the type of the domain class managed by this repository.
  * @param <K> the type of the id of the domain class managed by this repository.
  */
+@SuppressWarnings("deprecation")
 public class SimpleReactiveCosmosRepository<T, K extends Serializable> implements ReactiveCosmosRepository<T, K> {
 
     private final CosmosEntityInformation<T, K> entityInformation;

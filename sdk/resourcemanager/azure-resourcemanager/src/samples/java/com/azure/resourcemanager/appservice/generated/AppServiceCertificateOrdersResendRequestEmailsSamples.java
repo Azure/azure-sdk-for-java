@@ -12,8 +12,8 @@ import com.azure.resourcemanager.appservice.fluent.models.NameIdentifierInner;
 public final class AppServiceCertificateOrdersResendRequestEmailsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/
-     * ResendDomainOwnershipVerificationEmail.json
+     * specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/
+     * stable/2024-11-01/examples/ResendDomainOwnershipVerificationEmail.json
      */
     /**
      * Sample code: Resend Domain Ownership verification email.

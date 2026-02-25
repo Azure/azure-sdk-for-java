@@ -22,24 +22,19 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
      * Sip Headers for incoming call
      */
     @Generated
-    private final Map<String, String> sipHeaders;
+    private Map<String, String> sipHeaders;
 
     /*
      * Voip Headers for incoming call
      */
     @Generated
-    private final Map<String, String> voipHeaders;
+    private Map<String, String> voipHeaders;
 
     /**
      * Creates an instance of AcsIncomingCallCustomContext class.
-     * 
-     * @param sipHeaders the sipHeaders value to set.
-     * @param voipHeaders the voipHeaders value to set.
      */
     @Generated
-    private AcsIncomingCallCustomContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
-        this.sipHeaders = sipHeaders;
-        this.voipHeaders = voipHeaders;
+    private AcsIncomingCallCustomContext() {
     }
 
     /**
@@ -69,8 +64,6 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("sipHeaders", this.sipHeaders, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("voipHeaders", this.voipHeaders, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -86,21 +79,23 @@ public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsI
     @Generated
     public static AcsIncomingCallCustomContext fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, String> sipHeaders = null;
-            Map<String, String> voipHeaders = null;
+            AcsIncomingCallCustomContext deserializedAcsIncomingCallCustomContext = new AcsIncomingCallCustomContext();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("sipHeaders".equals(fieldName)) {
-                    sipHeaders = reader.readMap(reader1 -> reader1.getString());
+                    Map<String, String> sipHeaders = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsIncomingCallCustomContext.sipHeaders = sipHeaders;
                 } else if ("voipHeaders".equals(fieldName)) {
-                    voipHeaders = reader.readMap(reader1 -> reader1.getString());
+                    Map<String, String> voipHeaders = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsIncomingCallCustomContext.voipHeaders = voipHeaders;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new AcsIncomingCallCustomContext(sipHeaders, voipHeaders);
+
+            return deserializedAcsIncomingCallCustomContext;
         });
     }
 }

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput model = BinaryData.fromString("{\"name\":\"lbau\"}")
+        MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput model = BinaryData.fromString("{\"name\":\"d\"}")
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput.class);
-        Assertions.assertEquals("lbau", model.name());
+        Assertions.assertEquals("d", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput model
-            = new MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput().withName("lbau");
+            = new MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput().withName("d");
         model
             = BinaryData.fromObject(model).toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput.class);
-        Assertions.assertEquals("lbau", model.name());
+        Assertions.assertEquals("d", model.name());
     }
 }

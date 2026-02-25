@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dashboard.generated;
  */
 public final class GrafanaListSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Grafana_List.json
+     * x-ms-original-file: 2025-08-01/Grafana_List.json
      */
     /**
      * Sample code: Grafana_List.

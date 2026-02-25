@@ -50,6 +50,13 @@ public interface ElasticMonitorResource {
     Map<String, String> tags();
 
     /**
+     * Gets the kind property: The kind of the Elastic resource - observability, security, search etc.
+     * 
+     * @return the kind value.
+     */
+    String kind();
+
+    /**
      * Gets the sku property: SKU of the monitor resource.
      * 
      * @return the sku value.
@@ -160,7 +167,7 @@ public interface ElasticMonitorResource {
          * The stage of the ElasticMonitorResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithKind, DefinitionStages.WithSku,
             DefinitionStages.WithProperties, DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
@@ -189,6 +196,19 @@ public interface ElasticMonitorResource {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the ElasticMonitorResource definition allowing to specify kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies the kind property: The kind of the Elastic resource - observability, security, search etc..
+             * 
+             * @param kind The kind of the Elastic resource - observability, security, search etc.
+             * @return the next definition stage.
+             */
+            WithCreate withKind(String kind);
         }
 
         /**

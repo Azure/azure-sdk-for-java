@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * preAuthorizedApplication.
+ * Represents a pre authorized application.
  */
 @Fluent
 public final class MicrosoftGraphPreAuthorizedApplication

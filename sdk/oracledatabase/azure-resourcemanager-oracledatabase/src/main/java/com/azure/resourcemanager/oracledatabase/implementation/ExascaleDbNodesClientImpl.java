@@ -29,7 +29,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.oracledatabase.fluent.ExascaleDbNodesClient;
@@ -166,26 +165,6 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExascaleDbNodeInner>> getWithResponseAsync(String resourceGroupName,
         String exadbVmClusterName, String exascaleDbNodeName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (exadbVmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter exadbVmClusterName is required and cannot be null."));
-        }
-        if (exascaleDbNodeName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter exascaleDbNodeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -227,28 +206,6 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExascaleDbNodeInner> getWithResponse(String resourceGroupName, String exadbVmClusterName,
         String exascaleDbNodeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (exadbVmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter exadbVmClusterName is required and cannot be null."));
-        }
-        if (exascaleDbNodeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter exascaleDbNodeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, exadbVmClusterName, exascaleDbNodeName, accept, context);
@@ -284,22 +241,6 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExascaleDbNodeInner>> listByParentSinglePageAsync(String resourceGroupName,
         String exadbVmClusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (exadbVmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter exadbVmClusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParent(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -338,24 +279,6 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExascaleDbNodeInner> listByParentSinglePage(String resourceGroupName,
         String exadbVmClusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (exadbVmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter exadbVmClusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ExascaleDbNodeListResult> res
             = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -378,24 +301,6 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExascaleDbNodeInner> listByParentSinglePage(String resourceGroupName,
         String exadbVmClusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (exadbVmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter exadbVmClusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ExascaleDbNodeListResult> res
             = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -453,31 +358,6 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> actionWithResponseAsync(String resourceGroupName,
         String exadbVmClusterName, String exascaleDbNodeName, DbNodeAction body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (exadbVmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter exadbVmClusterName is required and cannot be null."));
-        }
-        if (exascaleDbNodeName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter exascaleDbNodeName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -502,33 +382,6 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> actionWithResponse(String resourceGroupName, String exadbVmClusterName,
         String exascaleDbNodeName, DbNodeAction body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (exadbVmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter exadbVmClusterName is required and cannot be null."));
-        }
-        if (exascaleDbNodeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter exascaleDbNodeName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.actionSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -552,33 +405,6 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> actionWithResponse(String resourceGroupName, String exadbVmClusterName,
         String exascaleDbNodeName, DbNodeAction body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (exadbVmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter exadbVmClusterName is required and cannot be null."));
-        }
-        if (exascaleDbNodeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter exascaleDbNodeName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.actionSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -719,13 +545,6 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExascaleDbNodeInner>> listByParentNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParentNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -745,15 +564,6 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExascaleDbNodeInner> listByParentNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ExascaleDbNodeListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -773,21 +583,10 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExascaleDbNodeInner> listByParentNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ExascaleDbNodeListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ExascaleDbNodesClientImpl.class);
 }

@@ -34,6 +34,13 @@ public final class OnlineExperimentationWorkspacePatchProperties
      */
     private ResourceEncryptionConfiguration encryption;
 
+    /*
+     * Public Network Access Control for the online experimentation resource. Defaults to Enabled if set to null.
+     * - Enabled: The resource can be accessed from the public internet.
+     * - Disabled: The resource can only be accessed from a private endpoint.
+     */
+    private PublicNetworkAccessType publicNetworkAccess;
+
     /**
      * Creates an instance of OnlineExperimentationWorkspacePatchProperties class.
      */
@@ -109,14 +116,30 @@ public final class OnlineExperimentationWorkspacePatchProperties
     }
 
     /**
-     * Validates the instance.
+     * Get the publicNetworkAccess property: Public Network Access Control for the online experimentation resource.
+     * Defaults to Enabled if set to null.
+     * - Enabled: The resource can be accessed from the public internet.
+     * - Disabled: The resource can only be accessed from a private endpoint.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the publicNetworkAccess value.
      */
-    public void validate() {
-        if (encryption() != null) {
-            encryption().validate();
-        }
+    public PublicNetworkAccessType publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Public Network Access Control for the online experimentation resource.
+     * Defaults to Enabled if set to null.
+     * - Enabled: The resource can be accessed from the public internet.
+     * - Disabled: The resource can only be accessed from a private endpoint.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the OnlineExperimentationWorkspacePatchProperties object itself.
+     */
+    public OnlineExperimentationWorkspacePatchProperties
+        withPublicNetworkAccess(PublicNetworkAccessType publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
     }
 
     /**
@@ -128,6 +151,8 @@ public final class OnlineExperimentationWorkspacePatchProperties
         jsonWriter.writeStringField("logAnalyticsWorkspaceResourceId", this.logAnalyticsWorkspaceResourceId);
         jsonWriter.writeStringField("logsExporterStorageAccountResourceId", this.logsExporterStorageAccountResourceId);
         jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -156,6 +181,9 @@ public final class OnlineExperimentationWorkspacePatchProperties
                 } else if ("encryption".equals(fieldName)) {
                     deserializedOnlineExperimentationWorkspacePatchProperties.encryption
                         = ResourceEncryptionConfiguration.fromJson(reader);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedOnlineExperimentationWorkspacePatchProperties.publicNetworkAccess
+                        = PublicNetworkAccessType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

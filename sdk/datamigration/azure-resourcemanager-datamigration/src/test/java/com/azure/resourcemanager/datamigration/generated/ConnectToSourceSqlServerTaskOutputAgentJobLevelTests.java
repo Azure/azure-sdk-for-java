@@ -11,7 +11,7 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectToSourceSqlServerTaskOutputAgentJobLevel model = BinaryData.fromString(
-            "{\"resultType\":\"AgentJobLevelOutput\",\"name\":\"nhdwdigumbnra\",\"jobCategory\":\"zzp\",\"isEnabled\":false,\"jobOwner\":\"ysdzhez\",\"lastExecutedOn\":\"2021-07-03T03:06:30Z\",\"validationErrors\":[{\"message\":\"yuvvfonkp\",\"actionableMessage\":\"qyikvy\",\"filePath\":\"uyav\",\"lineNumber\":\"wmn\",\"hResult\":1373594000,\"stackTrace\":\"ijf\"},{\"message\":\"vpo\",\"actionableMessage\":\"rsg\",\"filePath\":\"b\",\"lineNumber\":\"uzqgnjdgkynsc\",\"hResult\":727930780,\"stackTrace\":\"zvhxnk\"}],\"migrationEligibility\":{\"isEligibleForMigration\":true,\"validationMessages\":[\"otppnv\"]},\"id\":\"zxhi\"}")
+            "{\"resultType\":\"AgentJobLevelOutput\",\"name\":\"qfby\",\"jobCategory\":\"rfgi\",\"isEnabled\":true,\"jobOwner\":\"ojocqwogf\",\"lastExecutedOn\":\"2021-01-10T04:16:53Z\",\"validationErrors\":[{\"message\":\"fzldmozu\",\"actionableMessage\":\"lfsbtkadpysow\",\"filePath\":\"tgkbugrjqctojc\",\"lineNumber\":\"sofieypefojyqd\",\"hResult\":219137261,\"stackTrace\":\"lcplc\"},{\"message\":\"hihihlhzdsqtzbsr\",\"actionableMessage\":\"o\",\"filePath\":\"jhf\",\"lineNumber\":\"vecactx\",\"hResult\":1768165976,\"stackTrace\":\"e\"}],\"migrationEligibility\":{\"isEligibleForMigration\":true,\"validationMessages\":[\"qovekqvgqou\",\"ifzmpjwyivqi\",\"f\",\"cvhrfsp\"]},\"id\":\"agr\"}")
             .toObject(ConnectToSourceSqlServerTaskOutputAgentJobLevel.class);
     }
 

@@ -270,7 +270,7 @@ public final class AzureCommunicationEmailServiceImplBuilder implements
     public AzureCommunicationEmailServiceImpl buildClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-07-01-preview";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2025-09-01";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureCommunicationEmailServiceImpl client = new AzureCommunicationEmailServiceImpl(localPipeline,

@@ -22,7 +22,7 @@ public final class ImportDevicesRequestTests {
         Assertions.assertEquals("wfluszdt", model.outputBlobName());
         Assertions.assertEquals(AuthenticationType.IDENTITY_BASED, model.authenticationType());
         Assertions.assertEquals("ofyyvoqacpi", model.identity().userAssignedIdentity());
-        Assertions.assertEquals(false, model.includeConfigurations());
+        Assertions.assertFalse(model.includeConfigurations());
         Assertions.assertEquals("tg", model.configurationsBlobName());
     }
 
@@ -43,7 +43,7 @@ public final class ImportDevicesRequestTests {
         Assertions.assertEquals("wfluszdt", model.outputBlobName());
         Assertions.assertEquals(AuthenticationType.IDENTITY_BASED, model.authenticationType());
         Assertions.assertEquals("ofyyvoqacpi", model.identity().userAssignedIdentity());
-        Assertions.assertEquals(false, model.includeConfigurations());
+        Assertions.assertFalse(model.includeConfigurations());
         Assertions.assertEquals("tg", model.configurationsBlobName());
     }
 }

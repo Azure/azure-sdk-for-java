@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.NodeTypeSkusClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.NodeTypeAvailableSkuInner;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.models.NodeTypeListSkuResult;
@@ -111,24 +110,6 @@ public final class NodeTypeSkusClientImpl implements NodeTypeSkusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NodeTypeAvailableSkuInner>> listSinglePageAsync(String resourceGroupName,
         String clusterName, String nodeTypeName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -170,28 +151,6 @@ public final class NodeTypeSkusClientImpl implements NodeTypeSkusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeAvailableSkuInner> listSinglePage(String resourceGroupName, String clusterName,
         String nodeTypeName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<NodeTypeListSkuResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, accept, Context.NONE);
@@ -214,28 +173,6 @@ public final class NodeTypeSkusClientImpl implements NodeTypeSkusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeAvailableSkuInner> listSinglePage(String resourceGroupName, String clusterName,
         String nodeTypeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<NodeTypeListSkuResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, accept, context);
@@ -292,13 +229,6 @@ public final class NodeTypeSkusClientImpl implements NodeTypeSkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NodeTypeAvailableSkuInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<NodeTypeAvailableSkuInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -317,15 +247,6 @@ public final class NodeTypeSkusClientImpl implements NodeTypeSkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeAvailableSkuInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<NodeTypeListSkuResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -345,21 +266,10 @@ public final class NodeTypeSkusClientImpl implements NodeTypeSkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeAvailableSkuInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<NodeTypeListSkuResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(NodeTypeSkusClientImpl.class);
 }

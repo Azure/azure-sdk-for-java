@@ -13,12 +13,12 @@ public final class DiagnosticListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"smjqfrddgam\",\"type\":\"CustomLocation\"},\"eTag\":\"iosrsjuivfcdis\",\"location\":\"rnxzh\",\"tags\":{\"qvwre\":\"xrxzbujrtr\",\"nzonzl\":\"khgn\",\"jtszcof\":\"piqywnc\",\"k\":\"zehtdhgb\"},\"id\":\"reljeamur\",\"name\":\"zmlovuanash\",\"type\":\"xlpm\"}],\"nextLink\":\"rbdkelvidiz\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"ptfujgicgaaoept\",\"type\":\"CustomLocation\"},\"eTag\":\"utdewemxs\",\"location\":\"ruunzzjgehkf\",\"tags\":{\"yinljqe\":\"rtixokff\"},\"id\":\"qwhix\",\"name\":\"onsts\",\"type\":\"i\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"lfcldu\",\"type\":\"EdgeZone\"},\"eTag\":\"irdsvuwcob\",\"location\":\"gstmninwjizciln\",\"tags\":{\"luxlxqzvnersby\":\"shejjtbxqm\",\"ze\":\"ucrwnami\",\"fuhok\":\"rqbsmswziq\",\"czznvfbycjsxj\":\"ruswhv\"},\"id\":\"wix\",\"name\":\"vumwmxqh\",\"type\":\"dvnoamldsehaohdj\"},{\"properties\":{\"provisioningState\":\"Initialized\"},\"extendedLocation\":{\"name\":\"okxcoxp\",\"type\":\"CustomLocation\"},\"eTag\":\"jetagltsxoatft\",\"location\":\"pnpbswveflocc\",\"tags\":{\"xp\":\"ozihmipgawt\"},\"id\":\"y\",\"name\":\"cxcjxgry\",\"type\":\"fmpcycilrmca\"}],\"nextLink\":\"ggn\"}")
             .toObject(DiagnosticListResult.class);
-        Assertions.assertEquals("rnxzh", model.value().get(0).location());
-        Assertions.assertEquals("xrxzbujrtr", model.value().get(0).tags().get("qvwre"));
-        Assertions.assertEquals("smjqfrddgam", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("ruunzzjgehkf", model.value().get(0).location());
+        Assertions.assertEquals("rtixokff", model.value().get(0).tags().get("yinljqe"));
+        Assertions.assertEquals("ptfujgicgaaoept", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("rbdkelvidiz", model.nextLink());
+        Assertions.assertEquals("ggn", model.nextLink());
     }
 }

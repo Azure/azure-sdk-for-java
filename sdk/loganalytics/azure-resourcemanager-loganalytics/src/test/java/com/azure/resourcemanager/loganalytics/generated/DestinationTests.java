@@ -12,18 +12,17 @@ public final class DestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Destination model = BinaryData
-            .fromString(
-                "{\"resourceId\":\"xwburvjxxjns\",\"type\":\"EventHub\",\"metaData\":{\"eventHubName\":\"koen\"}}")
+            .fromString("{\"resourceId\":\"urokft\",\"type\":\"EventHub\",\"metaData\":{\"eventHubName\":\"iwpwcuk\"}}")
             .toObject(Destination.class);
-        Assertions.assertEquals("xwburvjxxjns", model.resourceId());
-        Assertions.assertEquals("koen", model.eventHubName());
+        Assertions.assertEquals("urokft", model.resourceId());
+        Assertions.assertEquals("iwpwcuk", model.eventHubName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Destination model = new Destination().withResourceId("xwburvjxxjns").withEventHubName("koen");
+        Destination model = new Destination().withResourceId("urokft").withEventHubName("iwpwcuk");
         model = BinaryData.fromObject(model).toObject(Destination.class);
-        Assertions.assertEquals("xwburvjxxjns", model.resourceId());
-        Assertions.assertEquals("koen", model.eventHubName());
+        Assertions.assertEquals("urokft", model.resourceId());
+        Assertions.assertEquals("iwpwcuk", model.eventHubName());
     }
 }

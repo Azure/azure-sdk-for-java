@@ -51,17 +51,6 @@ public final class GrafanaIntegrations implements JsonSerializable<GrafanaIntegr
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (azureMonitorWorkspaceIntegrations() != null) {
-            azureMonitorWorkspaceIntegrations().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

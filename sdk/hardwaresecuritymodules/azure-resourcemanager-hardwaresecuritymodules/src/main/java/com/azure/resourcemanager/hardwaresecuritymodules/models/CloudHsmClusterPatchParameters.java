@@ -74,17 +74,6 @@ public final class CloudHsmClusterPatchParameters implements JsonSerializable<Cl
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

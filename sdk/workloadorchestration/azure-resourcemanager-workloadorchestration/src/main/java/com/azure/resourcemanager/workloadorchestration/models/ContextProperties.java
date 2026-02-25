@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadorchestration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -87,28 +86,6 @@ public final class ContextProperties implements JsonSerializable<ContextProperti
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (capabilities() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property capabilities in model ContextProperties"));
-        } else {
-            capabilities().forEach(e -> e.validate());
-        }
-        if (hierarchies() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property hierarchies in model ContextProperties"));
-        } else {
-            hierarchies().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ContextProperties.class);
 
     /**
      * {@inheritDoc}

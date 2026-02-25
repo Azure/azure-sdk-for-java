@@ -142,17 +142,6 @@ public final class StorageTaskUpdateProperties implements JsonSerializable<Stora
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (action() != null) {
-            action().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -21,7 +21,7 @@ public final class InsightsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"category\":\"pqsxvnmicy\",\"status\":\"ceoveilovno\",\"eventId\":\"fj\",\"groupId\":\"njbkcnxdhbttkph\",\"content\":{\"title\":\"wpn\",\"description\":\"jtoqne\"},\"eventTime\":\"2021-01-17T17:58:48Z\",\"insightUniqueId\":\"lfplp\",\"impact\":{\"impactedResourceId\":\"oxuscrpabgyepsbj\",\"startTime\":\"2021-01-26T13:24:27Z\",\"endTime\":\"2021-02-16T09:59:01Z\",\"impactId\":\"ugxywpmueef\"},\"additionalDetails\":{}},\"id\":\"fqkquj\",\"name\":\"dsuyonobgla\",\"type\":\"cq\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"category\":\"myskpbhenbtkcxy\",\"status\":\"y\",\"eventId\":\"rsyn\",\"groupId\":\"idybyxczf\",\"content\":{\"title\":\"lhaaxdbabp\",\"description\":\"lwrq\"},\"eventTime\":\"2021-09-07T10:16:41Z\",\"insightUniqueId\":\"tsthsucocm\",\"impact\":{\"impactedResourceId\":\"yyazttbt\",\"startTime\":\"2021-08-28T10:19:16Z\",\"endTime\":\"2021-09-21T11:54:29Z\",\"impactId\":\"puedckzywbiexzf\"},\"additionalDetails\":{}},\"id\":\"eaxib\",\"name\":\"ujwb\",\"type\":\"qwalmuzyoxaepd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,20 +31,20 @@ public final class InsightsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Insight response
-            = manager.insights().getWithResponse("uutkncw", "cwsvlxotog", com.azure.core.util.Context.NONE).getValue();
+            = manager.insights().getWithResponse("zmhjrunmp", "ttdbhrbnl", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("pqsxvnmicy", response.properties().category());
-        Assertions.assertEquals("ceoveilovno", response.properties().status());
-        Assertions.assertEquals("fj", response.properties().eventId());
-        Assertions.assertEquals("njbkcnxdhbttkph", response.properties().groupId());
-        Assertions.assertEquals("wpn", response.properties().content().title());
-        Assertions.assertEquals("jtoqne", response.properties().content().description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-17T17:58:48Z"), response.properties().eventTime());
-        Assertions.assertEquals("lfplp", response.properties().insightUniqueId());
-        Assertions.assertEquals("oxuscrpabgyepsbj", response.properties().impact().impactedResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-26T13:24:27Z"),
+        Assertions.assertEquals("myskpbhenbtkcxy", response.properties().category());
+        Assertions.assertEquals("y", response.properties().status());
+        Assertions.assertEquals("rsyn", response.properties().eventId());
+        Assertions.assertEquals("idybyxczf", response.properties().groupId());
+        Assertions.assertEquals("lhaaxdbabp", response.properties().content().title());
+        Assertions.assertEquals("lwrq", response.properties().content().description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T10:16:41Z"), response.properties().eventTime());
+        Assertions.assertEquals("tsthsucocm", response.properties().insightUniqueId());
+        Assertions.assertEquals("yyazttbt", response.properties().impact().impactedResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T10:19:16Z"),
             response.properties().impact().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T09:59:01Z"), response.properties().impact().endTime());
-        Assertions.assertEquals("ugxywpmueef", response.properties().impact().impactId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-21T11:54:29Z"), response.properties().impact().endTime());
+        Assertions.assertEquals("puedckzywbiexzf", response.properties().impact().impactId());
     }
 }

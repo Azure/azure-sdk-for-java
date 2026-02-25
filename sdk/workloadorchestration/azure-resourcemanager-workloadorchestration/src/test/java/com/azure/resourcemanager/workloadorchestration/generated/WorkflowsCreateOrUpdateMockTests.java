@@ -24,7 +24,7 @@ public final class WorkflowsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"workflowTemplateId\":\"xhmw\",\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"ky\",\"type\":\"CustomLocation\"},\"eTag\":\"xkxhnegknjzrbhtm\",\"id\":\"lvukaobrlb\",\"name\":\"gsnbagnchjh\",\"type\":\"emuowakyw\"}";
+            = "{\"properties\":{\"workflowTemplateId\":\"yrle\",\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"stbvtqig\",\"type\":\"CustomLocation\"},\"eTag\":\"vsgeafgf\",\"id\":\"ehxlzsxezppk\",\"name\":\"waaeskyfjl\",\"type\":\"zeqtoyrplixlajml\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,14 @@ public final class WorkflowsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Workflow response = manager.workflows()
-            .define("vxhmtfhocnxzcmj")
-            .withExistingContext("lbnwtpcpahp", "z")
+            .define("vgmfalkzazmgok")
+            .withExistingContext("tfjmskdchmaiub", "vlzw")
             .withProperties(new WorkflowProperties())
-            .withExtendedLocation(new ExtendedLocation().withName("d").withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .withExtendedLocation(
+                new ExtendedLocation().withName("hqet").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
 
-        Assertions.assertEquals("ky", response.extendedLocation().name());
+        Assertions.assertEquals("stbvtqig", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

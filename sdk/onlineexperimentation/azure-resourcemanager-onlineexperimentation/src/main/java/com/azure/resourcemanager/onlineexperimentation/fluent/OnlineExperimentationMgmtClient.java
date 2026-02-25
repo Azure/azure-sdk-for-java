@@ -59,4 +59,18 @@ public interface OnlineExperimentationMgmtClient {
      * @return the OnlineExperimentationWorkspacesClient object.
      */
     OnlineExperimentationWorkspacesClient getOnlineExperimentationWorkspaces();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     * 
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     * 
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
 }

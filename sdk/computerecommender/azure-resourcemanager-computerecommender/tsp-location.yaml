@@ -1,4 +1,0 @@
-directory: specification/compute/resource-manager/Microsoft.Compute/RecommenderRP
-commit: 222af3670e36c5083cb0dc8a9c2677a8f77f8958
-repo: Azure/azure-rest-api-specs
-additionalDirectories: 

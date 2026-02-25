@@ -139,6 +139,7 @@
     "com.azure.resourcemanager.computeschedule.models.ScheduledActionType": "Microsoft.ComputeSchedule.ActionType",
     "com.azure.resourcemanager.computeschedule.models.ScheduledActionUpdate": "Azure.ResourceManager.Foundations.ResourceUpdateModel",
     "com.azure.resourcemanager.computeschedule.models.ScheduledActionUpdateProperties": "Azure.ResourceManager.Foundations.ResourceUpdateModelProperties",
+    "com.azure.resourcemanager.computeschedule.models.ScheduledActionsExtensionProperties": "Microsoft.ComputeSchedule.ScheduledActionsExtensionProperties",
     "com.azure.resourcemanager.computeschedule.models.ScheduledActionsSchedule": "Microsoft.ComputeSchedule.ScheduledActionsSchedule",
     "com.azure.resourcemanager.computeschedule.models.SubmitDeallocateRequest": "Microsoft.ComputeSchedule.SubmitDeallocateRequest",
     "com.azure.resourcemanager.computeschedule.models.SubmitHibernateRequest": "Microsoft.ComputeSchedule.SubmitHibernateRequest",

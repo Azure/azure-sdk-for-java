@@ -12,20 +12,20 @@ public final class BillingMeterInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BillingMeterInfo model
-            = BinaryData.fromString("{\"name\":\"ijggmebfsiar\",\"meterId\":\"trcvpnazzmh\",\"unit\":\"unmpxttd\"}")
+            = BinaryData.fromString("{\"name\":\"skpbhenbtkcxywn\",\"meterId\":\"nrs\",\"unit\":\"lqidyby\"}")
                 .toObject(BillingMeterInfo.class);
-        Assertions.assertEquals("ijggmebfsiar", model.name());
-        Assertions.assertEquals("trcvpnazzmh", model.meterId());
-        Assertions.assertEquals("unmpxttd", model.unit());
+        Assertions.assertEquals("skpbhenbtkcxywn", model.name());
+        Assertions.assertEquals("nrs", model.meterId());
+        Assertions.assertEquals("lqidyby", model.unit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BillingMeterInfo model
-            = new BillingMeterInfo().withName("ijggmebfsiar").withMeterId("trcvpnazzmh").withUnit("unmpxttd");
+            = new BillingMeterInfo().withName("skpbhenbtkcxywn").withMeterId("nrs").withUnit("lqidyby");
         model = BinaryData.fromObject(model).toObject(BillingMeterInfo.class);
-        Assertions.assertEquals("ijggmebfsiar", model.name());
-        Assertions.assertEquals("trcvpnazzmh", model.meterId());
-        Assertions.assertEquals("unmpxttd", model.unit());
+        Assertions.assertEquals("skpbhenbtkcxywn", model.name());
+        Assertions.assertEquals("nrs", model.meterId());
+        Assertions.assertEquals("lqidyby", model.unit());
     }
 }

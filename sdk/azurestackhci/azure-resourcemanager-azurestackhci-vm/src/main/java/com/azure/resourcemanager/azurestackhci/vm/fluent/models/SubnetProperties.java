@@ -234,26 +234,6 @@ public final class SubnetProperties implements JsonSerializable<SubnetProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (ipConfigurationReferences() != null) {
-            ipConfigurationReferences().forEach(e -> e.validate());
-        }
-        if (networkSecurityGroup() != null) {
-            networkSecurityGroup().validate();
-        }
-        if (routeTable() != null) {
-            routeTable().validate();
-        }
-        if (ipPools() != null) {
-            ipPools().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

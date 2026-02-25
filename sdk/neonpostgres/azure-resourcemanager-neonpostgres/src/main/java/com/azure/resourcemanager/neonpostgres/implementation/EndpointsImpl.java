@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.neonpostgres.fluent.EndpointsClient;
@@ -39,11 +40,86 @@ public final class EndpointsImpl implements Endpoints {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new EndpointImpl(inner1, this.manager()));
     }
 
+    public Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String endpointName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, organizationName, projectName, branchName, endpointName, context);
+    }
+
+    public void delete(String resourceGroupName, String organizationName, String projectName, String branchName,
+        String endpointName) {
+        this.serviceClient().delete(resourceGroupName, organizationName, projectName, branchName, endpointName);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
+        if (organizationName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
+        }
+        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
+        if (projectName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
+        }
+        String branchName = ResourceManagerUtils.getValueFromIdByName(id, "branches");
+        if (branchName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'branches'.", id)));
+        }
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
+        if (endpointName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
+        }
+        this.deleteWithResponse(resourceGroupName, organizationName, projectName, branchName, endpointName,
+            Context.NONE);
+    }
+
+    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
+        if (organizationName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
+        }
+        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
+        if (projectName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
+        }
+        String branchName = ResourceManagerUtils.getValueFromIdByName(id, "branches");
+        if (branchName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'branches'.", id)));
+        }
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
+        if (endpointName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
+        }
+        return this.deleteWithResponse(resourceGroupName, organizationName, projectName, branchName, endpointName,
+            context);
+    }
+
     private EndpointsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager() {
         return this.serviceManager;
+    }
+
+    public EndpointImpl define(String name) {
+        return new EndpointImpl(name, this.manager());
     }
 }

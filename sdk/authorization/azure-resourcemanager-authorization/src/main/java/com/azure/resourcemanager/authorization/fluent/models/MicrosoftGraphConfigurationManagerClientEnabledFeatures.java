@@ -14,9 +14,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * configurationManagerClientEnabledFeatures
- * 
- * configuration Manager client enabled features.
+ * Represents configuration Manager client enabled features.
+ * <p>
+ * Configuration Manager client enabled features.
  */
 @Fluent
 public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures

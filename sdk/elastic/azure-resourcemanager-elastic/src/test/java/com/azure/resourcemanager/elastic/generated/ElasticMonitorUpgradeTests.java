@@ -12,14 +12,14 @@ public final class ElasticMonitorUpgradeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticMonitorUpgrade model
-            = BinaryData.fromString("{\"version\":\"fbebrjcxer\"}").toObject(ElasticMonitorUpgrade.class);
-        Assertions.assertEquals("fbebrjcxer", model.version());
+            = BinaryData.fromString("{\"version\":\"ldawkzbaliourqha\"}").toObject(ElasticMonitorUpgrade.class);
+        Assertions.assertEquals("ldawkzbaliourqha", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticMonitorUpgrade model = new ElasticMonitorUpgrade().withVersion("fbebrjcxer");
+        ElasticMonitorUpgrade model = new ElasticMonitorUpgrade().withVersion("ldawkzbaliourqha");
         model = BinaryData.fromObject(model).toObject(ElasticMonitorUpgrade.class);
-        Assertions.assertEquals("fbebrjcxer", model.version());
+        Assertions.assertEquals("ldawkzbaliourqha", model.version());
     }
 }

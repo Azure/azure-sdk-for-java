@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * Summary for an orchestration service of a virtual machine scale set.
@@ -25,6 +27,16 @@ public final class OrchestrationServiceSummary implements JsonSerializable<Orche
      * The current state of the service.
      */
     private OrchestrationServiceState serviceState;
+
+    /*
+     * The latest operation status of the service. Minimum API version for this property is 2025-04-01.
+     */
+    private OrchestrationServiceOperationStatus latestOperationStatus;
+
+    /*
+     * The last UTC time when the operation status changed. Minimum API version for this property is 2025-04-01.
+     */
+    private OffsetDateTime lastStatusChangeTime;
 
     /**
      * Creates an instance of OrchestrationServiceSummary class.
@@ -48,6 +60,26 @@ public final class OrchestrationServiceSummary implements JsonSerializable<Orche
      */
     public OrchestrationServiceState serviceState() {
         return this.serviceState;
+    }
+
+    /**
+     * Get the latestOperationStatus property: The latest operation status of the service. Minimum API version for this
+     * property is 2025-04-01.
+     * 
+     * @return the latestOperationStatus value.
+     */
+    public OrchestrationServiceOperationStatus latestOperationStatus() {
+        return this.latestOperationStatus;
+    }
+
+    /**
+     * Get the lastStatusChangeTime property: The last UTC time when the operation status changed. Minimum API version
+     * for this property is 2025-04-01.
+     * 
+     * @return the lastStatusChangeTime value.
+     */
+    public OffsetDateTime lastStatusChangeTime() {
+        return this.lastStatusChangeTime;
     }
 
     /**
@@ -88,6 +120,12 @@ public final class OrchestrationServiceSummary implements JsonSerializable<Orche
                 } else if ("serviceState".equals(fieldName)) {
                     deserializedOrchestrationServiceSummary.serviceState
                         = OrchestrationServiceState.fromString(reader.getString());
+                } else if ("latestOperationStatus".equals(fieldName)) {
+                    deserializedOrchestrationServiceSummary.latestOperationStatus
+                        = OrchestrationServiceOperationStatus.fromString(reader.getString());
+                } else if ("lastStatusChangeTime".equals(fieldName)) {
+                    deserializedOrchestrationServiceSummary.lastStatusChangeTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

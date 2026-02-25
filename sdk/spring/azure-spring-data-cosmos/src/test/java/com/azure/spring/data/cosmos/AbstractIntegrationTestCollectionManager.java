@@ -6,9 +6,6 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
-public abstract class AbstractIntegrationTestCollectionManager<T> implements TestRule {
+public abstract class AbstractIntegrationTestCollectionManager<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractIntegrationTestCollectionManager.class);
     private static final Duration LEASE_DURATION = Duration.ofSeconds(5 * 60);
@@ -113,19 +110,6 @@ public abstract class AbstractIntegrationTestCollectionManager<T> implements Tes
                 LOGGER.info("Failed to delete lock for container=" + containerRef.getContainerName());
             }
         }
-    }
-
-    @Override
-    public Statement apply(Statement base, Description description) {
-        return new Statement() {
-            public void evaluate() throws Throwable {
-                try {
-                    base.evaluate();
-                } finally {
-                    releaseLocks();
-                }
-            }
-        };
     }
 
     private static class ContainerRefs {

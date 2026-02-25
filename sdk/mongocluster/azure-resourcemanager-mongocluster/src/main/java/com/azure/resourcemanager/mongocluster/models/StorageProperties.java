@@ -27,16 +27,6 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
      */
     private StorageType type;
 
-    /*
-     * The IOPs of the storage assigned to each server. Only applicable if the type is 'PremiumSSDv2'.
-     */
-    private Long iops;
-
-    /*
-     * The throughput of the storage assigned to each server. Only applicable if the type is 'PremiumSSDv2'.
-     */
-    private Long throughput;
-
     /**
      * Creates an instance of StorageProperties class.
      */
@@ -84,58 +74,6 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
     }
 
     /**
-     * Get the iops property: The IOPs of the storage assigned to each server. Only applicable if the type is
-     * 'PremiumSSDv2'.
-     * 
-     * @return the iops value.
-     */
-    public Long iops() {
-        return this.iops;
-    }
-
-    /**
-     * Set the iops property: The IOPs of the storage assigned to each server. Only applicable if the type is
-     * 'PremiumSSDv2'.
-     * 
-     * @param iops the iops value to set.
-     * @return the StorageProperties object itself.
-     */
-    public StorageProperties withIops(Long iops) {
-        this.iops = iops;
-        return this;
-    }
-
-    /**
-     * Get the throughput property: The throughput of the storage assigned to each server. Only applicable if the type
-     * is 'PremiumSSDv2'.
-     * 
-     * @return the throughput value.
-     */
-    public Long throughput() {
-        return this.throughput;
-    }
-
-    /**
-     * Set the throughput property: The throughput of the storage assigned to each server. Only applicable if the type
-     * is 'PremiumSSDv2'.
-     * 
-     * @param throughput the throughput value to set.
-     * @return the StorageProperties object itself.
-     */
-    public StorageProperties withThroughput(Long throughput) {
-        this.throughput = throughput;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -143,8 +81,6 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("sizeGb", this.sizeGb);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeNumberField("iops", this.iops);
-        jsonWriter.writeNumberField("throughput", this.throughput);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,10 +103,6 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
                     deserializedStorageProperties.sizeGb = reader.getNullable(JsonReader::getLong);
                 } else if ("type".equals(fieldName)) {
                     deserializedStorageProperties.type = StorageType.fromString(reader.getString());
-                } else if ("iops".equals(fieldName)) {
-                    deserializedStorageProperties.iops = reader.getNullable(JsonReader::getLong);
-                } else if ("throughput".equals(fieldName)) {
-                    deserializedStorageProperties.throughput = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

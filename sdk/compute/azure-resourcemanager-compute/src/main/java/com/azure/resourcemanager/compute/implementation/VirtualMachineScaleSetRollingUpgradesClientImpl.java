@@ -131,7 +131,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startExtensionUpgrade(this.client.getEndpoint(), apiVersion,
@@ -169,7 +169,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startExtensionUpgrade(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -348,7 +348,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startOSUpgrade(this.client.getEndpoint(), apiVersion,
@@ -386,7 +386,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startOSUpgrade(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -561,7 +561,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.cancel(this.client.getEndpoint(), apiVersion,
@@ -598,7 +598,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.cancel(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -765,7 +765,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getLatest(this.client.getEndpoint(), apiVersion,
@@ -803,7 +803,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getLatest(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),

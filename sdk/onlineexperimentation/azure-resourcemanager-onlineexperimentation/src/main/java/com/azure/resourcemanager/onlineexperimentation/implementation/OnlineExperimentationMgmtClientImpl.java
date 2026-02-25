@@ -29,6 +29,8 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.onlineexperimentation.fluent.OnlineExperimentationMgmtClient;
 import com.azure.resourcemanager.onlineexperimentation.fluent.OnlineExperimentationWorkspacesClient;
 import com.azure.resourcemanager.onlineexperimentation.fluent.OperationsClient;
+import com.azure.resourcemanager.onlineexperimentation.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.onlineexperimentation.fluent.PrivateLinkResourcesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -156,6 +158,34 @@ public final class OnlineExperimentationMgmtClientImpl implements OnlineExperime
     }
 
     /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     * 
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * The PrivateLinkResourcesClient object to access its operations.
+     */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     * 
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /**
      * Initializes an instance of OnlineExperimentationMgmtClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -172,9 +202,11 @@ public final class OnlineExperimentationMgmtClientImpl implements OnlineExperime
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-05-31-preview";
+        this.apiVersion = "2025-08-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.onlineExperimentationWorkspaces = new OnlineExperimentationWorkspacesClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
     }
 
     /**

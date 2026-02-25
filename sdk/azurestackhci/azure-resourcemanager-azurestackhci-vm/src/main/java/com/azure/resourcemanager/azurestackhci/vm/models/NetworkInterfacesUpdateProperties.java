@@ -76,20 +76,6 @@ public final class NetworkInterfacesUpdateProperties implements JsonSerializable
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (networkSecurityGroup() != null) {
-            networkSecurityGroup().validate();
-        }
-        if (dnsSettings() != null) {
-            dnsSettings().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

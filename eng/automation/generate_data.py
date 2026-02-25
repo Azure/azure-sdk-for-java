@@ -38,7 +38,9 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
 
     # the fallback logic is only enabled when this automation is run for specs PR validation
     # we do not want to delete code from user for SDK generation
-    fallback_generate_from_clean_folder_enabled = "runMode" in config and config["runMode"] == "spec-pull-request"
+    fallback_generate_from_clean_folder_enabled = "runMode" in config and (
+        config["runMode"] == "spec-pull-request" or config["runMode"] == "batch"
+    )
     clean_sdk_folder_succeeded = False
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(

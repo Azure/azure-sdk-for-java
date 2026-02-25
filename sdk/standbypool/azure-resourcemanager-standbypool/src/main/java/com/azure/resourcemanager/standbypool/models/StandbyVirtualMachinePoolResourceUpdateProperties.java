@@ -104,17 +104,6 @@ public final class StandbyVirtualMachinePoolResourceUpdateProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (elasticityProfile() != null) {
-            elasticityProfile().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -329,7 +329,8 @@ def get_beta_version_to_use(group_id: str, artifact_id: str, major_version: int,
     # Pull version information from Maven central to determine which beta version to use.
     # If beta.1 exists then use beta.2, etc. If beta.1 doesn't exist then use beta.1
     url = 'https://repo1.maven.org/maven2/{}/{}/maven-metadata.xml'.format(group_id.replace('.', '/'), artifact_id)
-    with urllib.request.urlopen(urllib.request.Request(url = url, method='GET')) as f:
+    headers = { "Content-signal": "search=yes,ai-train=no", "User-Agent": "azure-sdk-for-java" }
+    with urllib.request.urlopen(urllib.request.Request(url=url, method='GET', headers=headers)) as f:
         if (f.status != 200):
             raise ValueError('Unable to get maven-metadata.xml for groupId {} and artifactId {}. The status code was {}'.format(group_id, artifact_id, f.status))
 

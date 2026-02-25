@@ -12,9 +12,9 @@ public final class DynamicSchemaVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicSchemaVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"qacpiex\",\"provisioningState\":\"Failed\"},\"eTag\":\"iwbwoenwashrtdtk\",\"id\":\"qxwbpokulpiu\",\"name\":\"waasip\",\"type\":\"i\"},{\"properties\":{\"value\":\"byuqerpqlp\",\"provisioningState\":\"Canceled\"},\"eTag\":\"iuqgbdbutauv\",\"id\":\"tkuwhhmhykojo\",\"name\":\"afnn\",\"type\":\"lpichk\"},{\"properties\":{\"value\":\"mkcdyhbpkkpwdre\",\"provisioningState\":\"Initialized\"},\"eTag\":\"vq\",\"id\":\"vljxywsu\",\"name\":\"syrsndsytgadgvra\",\"type\":\"aeneqnzarrwl\"}],\"nextLink\":\"uijfqk\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"ffimrzrtuzqogsex\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"dnw\",\"id\":\"mewzsyyc\",\"name\":\"uzsoi\",\"type\":\"judpfrxt\"},{\"properties\":{\"value\":\"hzv\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"wkqbrqu\",\"id\":\"axhexiilivp\",\"name\":\"tiirqtdqoa\",\"type\":\"oruzfgsquyfxrxx\"}],\"nextLink\":\"ptramxj\"}")
             .toObject(DynamicSchemaVersionListResult.class);
-        Assertions.assertEquals("qacpiex", model.value().get(0).properties().value());
-        Assertions.assertEquals("uijfqk", model.nextLink());
+        Assertions.assertEquals("ffimrzrtuzqogsex", model.value().get(0).properties().value());
+        Assertions.assertEquals("ptramxj", model.nextLink());
     }
 }

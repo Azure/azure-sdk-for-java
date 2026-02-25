@@ -70,7 +70,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientDiagnostics")
     public interface DiagnosticsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/detectors")
@@ -401,10 +401,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listHostingEnvironmentDetectorResponses(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DetectorResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -442,11 +443,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listHostingEnvironmentDetectorResponses(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -567,11 +569,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getHostingEnvironmentDetectorResponse(this.client.getEndpoint(),
                 resourceGroupName, name, detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -615,11 +618,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getHostingEnvironmentDetectorResponse(this.client.getEndpoint(), resourceGroupName, name,
-            detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
+            detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -724,10 +727,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSiteDetectorResponses(this.client.getEndpoint(), resourceGroupName,
-                siteName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                siteName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DetectorResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -765,11 +769,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listSiteDetectorResponses(this.client.getEndpoint(), resourceGroupName, siteName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -886,11 +891,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSiteDetectorResponse(this.client.getEndpoint(), resourceGroupName,
-                siteName, detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                siteName, detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -934,11 +940,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSiteDetectorResponse(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
-            startTime, endTime, timeGrain, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-            context);
+            startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1043,10 +1049,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSiteDiagnosticCategories(this.client.getEndpoint(), resourceGroupName,
-                siteName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                siteName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DiagnosticCategoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1084,11 +1091,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listSiteDiagnosticCategories(this.client.getEndpoint(), resourceGroupName, siteName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1205,11 +1213,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.getSiteDiagnosticCategory(this.client.getEndpoint(), resourceGroupName, siteName,
-                    diagnosticCategory, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.getSiteDiagnosticCategory(this.client.getEndpoint(), resourceGroupName,
+                siteName, diagnosticCategory, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1250,10 +1258,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSiteDiagnosticCategory(this.client.getEndpoint(), resourceGroupName, siteName,
-            diagnosticCategory, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            diagnosticCategory, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1353,10 +1362,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSiteAnalyses(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                diagnosticCategory, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<AnalysisDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1399,11 +1409,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listSiteAnalyses(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1528,11 +1539,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSiteAnalysis(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, analysisName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context))
+                diagnosticCategory, analysisName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1576,10 +1587,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSiteAnalysis(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            analysisName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            analysisName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1690,11 +1702,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.executeSiteAnalysis(this.client.getEndpoint(), resourceGroupName, siteName,
                 diagnosticCategory, analysisName, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1743,11 +1756,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.executeSiteAnalysis(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            analysisName, startTime, endTime, timeGrain, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
+            analysisName, startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1860,10 +1873,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSiteDetectors(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                diagnosticCategory, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DetectorDefinitionResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1906,11 +1920,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listSiteDetectors(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2036,11 +2051,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSiteDetector(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, detectorName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context))
+                diagnosticCategory, detectorName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2085,10 +2100,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSiteDetector(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            detectorName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            detectorName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2199,11 +2215,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.executeSiteDetector(this.client.getEndpoint(), resourceGroupName, siteName,
                 detectorName, diagnosticCategory, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2252,11 +2269,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.executeSiteDetector(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
-            diagnosticCategory, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            diagnosticCategory, startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion, accept,
+            context);
     }
 
     /**
@@ -2368,10 +2386,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSiteDetectorResponsesSlot(this.client.getEndpoint(), resourceGroupName,
-                siteName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                siteName, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DetectorResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2413,11 +2432,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listSiteDetectorResponsesSlot(this.client.getEndpoint(), resourceGroupName, siteName, slot,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2546,11 +2566,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSiteDetectorResponseSlot(this.client.getEndpoint(), resourceGroupName,
                 siteName, detectorName, slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2598,11 +2619,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSiteDetectorResponseSlot(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
-            slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-            context);
+            slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2714,11 +2735,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listSiteDiagnosticCategoriesSlot(this.client.getEndpoint(), resourceGroupName,
-                    siteName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.listSiteDiagnosticCategoriesSlot(this.client.getEndpoint(),
+                resourceGroupName, siteName, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DiagnosticCategoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2760,11 +2781,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listSiteDiagnosticCategoriesSlot(this.client.getEndpoint(), resourceGroupName, siteName, slot,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2890,11 +2912,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSiteDiagnosticCategorySlot(this.client.getEndpoint(), resourceGroupName,
-                siteName, diagnosticCategory, slot, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                siteName, diagnosticCategory, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2939,10 +2961,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSiteDiagnosticCategorySlot(this.client.getEndpoint(), resourceGroupName, siteName,
-            diagnosticCategory, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            diagnosticCategory, slot, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -3049,11 +3072,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSiteAnalysesSlot(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context))
+                diagnosticCategory, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<AnalysisDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3100,11 +3123,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listSiteAnalysesSlot(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory, slot,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3239,11 +3263,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSiteAnalysisSlot(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, analysisName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                diagnosticCategory, analysisName, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3291,10 +3315,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSiteAnalysisSlot(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            analysisName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            analysisName, slot, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -3412,11 +3437,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.executeSiteAnalysisSlot(this.client.getEndpoint(), resourceGroupName,
                 siteName, diagnosticCategory, analysisName, slot, startTime, endTime, timeGrain,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3469,11 +3495,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.executeSiteAnalysisSlot(this.client.getEndpoint(), resourceGroupName, siteName,
             diagnosticCategory, analysisName, slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -3593,11 +3620,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSiteDetectorsSlot(this.client.getEndpoint(), resourceGroupName,
-                siteName, diagnosticCategory, slot, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                siteName, diagnosticCategory, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DetectorDefinitionResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3644,11 +3671,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listSiteDetectorsSlot(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory, slot,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3784,11 +3812,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSiteDetectorSlot(this.client.getEndpoint(), resourceGroupName, siteName,
-                diagnosticCategory, detectorName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                diagnosticCategory, detectorName, slot, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3838,10 +3866,11 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSiteDetectorSlot(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            detectorName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            detectorName, slot, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -3959,11 +3988,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.executeSiteDetectorSlot(this.client.getEndpoint(), resourceGroupName,
                 siteName, detectorName, diagnosticCategory, slot, startTime, endTime, timeGrain,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4016,11 +4046,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.executeSiteDetectorSlot(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
-            diagnosticCategory, slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            diagnosticCategory, slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(), apiVersion,
+            accept, context);
     }
 
     /**
@@ -4101,6 +4132,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * List Hosting Environment Detector Responses
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4130,6 +4163,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * List Hosting Environment Detector Responses
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4158,6 +4193,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * List Site Detector Responses
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4186,6 +4223,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * List Site Detector Responses
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4214,6 +4253,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * Get Diagnostics Categories
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4242,6 +4283,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * Get Diagnostics Categories
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4270,6 +4313,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * Get Site Analyses
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4297,6 +4342,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * Get Site Analyses
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4325,6 +4372,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * Get Detectors
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4352,6 +4401,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * Get Detectors
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4380,6 +4431,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * List Site Detector Responses
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4408,6 +4461,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * List Site Detector Responses
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4436,6 +4491,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * Get Diagnostics Categories
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4465,6 +4522,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * Get Diagnostics Categories
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4493,6 +4552,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * Get Site Analyses
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4521,6 +4582,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * Get Site Analyses
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4549,6 +4612,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * Get Detectors
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4578,6 +4643,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
+     * Get Detectors
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

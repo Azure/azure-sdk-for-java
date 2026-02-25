@@ -37,17 +37,6 @@ public final class VirtualMachineInstanceView implements JsonSerializable<Virtua
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (vmAgent() != null) {
-            vmAgent().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

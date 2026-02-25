@@ -52,6 +52,18 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
     private String failureReason;
 
     /*
+     * Router Jobs events Tags
+     */
+    @Generated
+    private Map<String, String> tags;
+
+    /*
+     * Router Job events Labels
+     */
+    @Generated
+    private Map<String, String> labels;
+
+    /*
      * Router Job events Queue Id
      */
     @Generated
@@ -73,15 +85,12 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
      * Creates an instance of AcsRouterJobSchedulingFailedEventData class.
      *
      * @param jobId the jobId value to set.
-     * @param labels the labels value to set.
-     * @param tags the tags value to set.
      * @param priority the priority value to set.
      * @param scheduledOn the scheduledOn value to set.
      */
     @Generated
-    private AcsRouterJobSchedulingFailedEventData(String jobId, Map<String, String> labels, Map<String, String> tags,
-        int priority, OffsetDateTime scheduledOn) {
-        super(jobId, labels, tags);
+    private AcsRouterJobSchedulingFailedEventData(String jobId, int priority, OffsetDateTime scheduledOn) {
+        super(jobId);
         this.priority = priority;
         this.scheduledOn = scheduledOn;
     }
@@ -137,6 +146,28 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
     }
 
     /**
+     * Get the tags property: Router Jobs events Tags.
+     *
+     * @return the tags value.
+     */
+    @Generated
+    @Override
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Get the labels property: Router Job events Labels.
+     *
+     * @return the labels value.
+     */
+    @Generated
+    @Override
+    public Map<String, String> getLabels() {
+        return this.labels;
+    }
+
+    /**
      * Get the queueId property: Router Job events Queue Id.
      *
      * @return the queueId value.
@@ -177,8 +208,6 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("jobId", getJobId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
@@ -245,7 +274,9 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
                 }
             }
             AcsRouterJobSchedulingFailedEventData deserializedAcsRouterJobSchedulingFailedEventData
-                = new AcsRouterJobSchedulingFailedEventData(jobId, labels, tags, priority, scheduledOn);
+                = new AcsRouterJobSchedulingFailedEventData(jobId, priority, scheduledOn);
+            deserializedAcsRouterJobSchedulingFailedEventData.labels = labels;
+            deserializedAcsRouterJobSchedulingFailedEventData.tags = tags;
             deserializedAcsRouterJobSchedulingFailedEventData.channelReference = channelReference;
             deserializedAcsRouterJobSchedulingFailedEventData.channelId = channelId;
             deserializedAcsRouterJobSchedulingFailedEventData.queueId = queueId;

@@ -64,6 +64,7 @@ public class CosmosQueryMethod extends QueryMethod {
      *
      * @return the query string or null
      */
+    @SuppressWarnings("deprecation")
     @Nullable
     public String getQueryAnnotation() {
         return annotatedQueryValue;

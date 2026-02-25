@@ -44,7 +44,7 @@ public class DatasetsAsyncSample {
         Path filePath = getPath("product_info.md");
 
         return datasetsAsyncClient.createDatasetWithFile(datasetName, datasetVersionString, filePath)
-            .doOnNext(createdDatasetVersion -> 
+            .doOnNext(createdDatasetVersion ->
                 System.out.println("Created dataset version: " + createdDatasetVersion.getId()));
 
         // END:com.azure.ai.projects.DatasetsAsyncSample.createDatasetWithFile
@@ -54,7 +54,7 @@ public class DatasetsAsyncSample {
         // BEGIN:com.azure.ai.projects.DatasetsAsyncSample.listDatasets
 
         System.out.println("Listing all datasets (latest versions):");
-        return datasetsAsyncClient.listLatestDatasetVersions()
+        return datasetsAsyncClient.listLatestVersion()
             .doOnNext(dataset -> {
                 System.out.println("\nDataset name: " + dataset.getName());
                 System.out.println("Dataset Id: " + dataset.getId());
@@ -74,7 +74,7 @@ public class DatasetsAsyncSample {
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "test");
 
         System.out.println("Listing all versions of dataset: " + datasetName);
-        return datasetsAsyncClient.listDatasetVersions(datasetName)
+        return datasetsAsyncClient.listVersions(datasetName)
             .doOnNext(version -> {
                 System.out.println("\nDataset name: " + version.getName());
                 System.out.println("Dataset version: " + version.getVersion());
@@ -117,8 +117,8 @@ public class DatasetsAsyncSample {
         String datasetVersion = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
 
         // Delete the specific version of the dataset
-        return datasetsAsyncClient.deleteDatasetVersion(datasetName, datasetVersion)
-            .doOnSuccess(unused -> 
+        return datasetsAsyncClient.deleteVersion(datasetName, datasetVersion)
+            .doOnSuccess(unused ->
                 System.out.println("Deleted dataset: " + datasetName + ", version: " + datasetVersion));
 
         // END:com.azure.ai.projects.DatasetsAsyncSample.deleteDataset
@@ -137,9 +137,9 @@ public class DatasetsAsyncSample {
             .setDescription("Sample dataset created via SDK");
 
         // Create or update the dataset
-        return datasetsAsyncClient.createOrUpdateDatasetVersion(
-            datasetName, 
-            datasetVersion, 
+        return datasetsAsyncClient.createOrUpdateVersion(
+            datasetName,
+            datasetVersion,
             fileDataset
         ).doOnNext(createdDataset -> {
             FileDatasetVersion fileDatasetVersion = (FileDatasetVersion) createdDataset;
@@ -160,12 +160,12 @@ public class DatasetsAsyncSample {
 
         // Create a pending upload request for the dataset
         PendingUploadRequest request = new PendingUploadRequest();
-        
+
         // Get the pending upload response with blob reference
         return datasetsAsyncClient.pendingUpload(datasetName, datasetVersion, request)
             .doOnNext(response -> {
                 System.out.println("Pending upload initiated with ID: " + response.getPendingUploadId());
-                System.out.println("Blob URI: " + response.getBlobReference().getBlobUri());
+                System.out.println("Blob URI: " + response.getBlobReference().getBlobUrl());
             });
 
         // END:com.azure.ai.projects.DatasetsAsyncSample.pendingUploadSample

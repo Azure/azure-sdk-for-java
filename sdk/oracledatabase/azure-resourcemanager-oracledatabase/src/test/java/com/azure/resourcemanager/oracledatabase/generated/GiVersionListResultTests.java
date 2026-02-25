@@ -12,9 +12,9 @@ public final class GiVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GiVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"twaenuuzko\"},\"id\":\"minrfdw\",\"name\":\"yuhhziu\",\"type\":\"efozbhdms\"},{\"properties\":{\"version\":\"mzqhoftrmaequi\"},\"id\":\"xicslfao\",\"name\":\"z\",\"type\":\"iyylhalnswhccsp\"}],\"nextLink\":\"aivwitqscywu\"}")
+            "{\"value\":[{\"properties\":{\"version\":\"lmkk\"},\"id\":\"vdlhewpusdsttwv\",\"name\":\"gvbbejdcng\",\"type\":\"qmoa\"},{\"properties\":{\"version\":\"fgmjzrwrdgrt\"},\"id\":\"enuuzkopbm\",\"name\":\"nrfdw\",\"type\":\"yuhhziu\"},{\"properties\":{\"version\":\"fozbhdmsmlmzqhof\"},\"id\":\"maequiahxicslfa\",\"name\":\"qzpiyyl\",\"type\":\"alnswhccsphk\"}],\"nextLink\":\"vwitqscyw\"}")
             .toObject(GiVersionListResult.class);
-        Assertions.assertEquals("twaenuuzko", model.value().get(0).properties().version());
-        Assertions.assertEquals("aivwitqscywu", model.nextLink());
+        Assertions.assertEquals("lmkk", model.value().get(0).properties().version());
+        Assertions.assertEquals("vwitqscyw", model.nextLink());
     }
 }

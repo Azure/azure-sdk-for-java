@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadorchestration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -100,23 +99,6 @@ public final class ConfigTemplateVersionWithUpdateTypeInner
         this.configTemplateVersion = configTemplateVersion;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (configTemplateVersion() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property configTemplateVersion in model ConfigTemplateVersionWithUpdateTypeInner"));
-        } else {
-            configTemplateVersion().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ConfigTemplateVersionWithUpdateTypeInner.class);
 
     /**
      * {@inheritDoc}

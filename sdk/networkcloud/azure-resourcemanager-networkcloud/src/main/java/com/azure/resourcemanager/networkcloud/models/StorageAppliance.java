@@ -80,6 +80,15 @@ public interface StorageAppliance {
     AdministrativeCredentials administratorCredentials();
 
     /**
+     * Gets the caCertificate property: The CA certificate information issued by the platform for connecting to TLS
+     * interfaces for the storage appliance. Callers add this certificate to their trusted CA store to allow secure
+     * communication with the storage appliance.
+     * 
+     * @return the caCertificate value.
+     */
+    CertificateInfo caCertificate();
+
+    /**
      * Gets the capacity property: The total capacity of the storage appliance. Measured in GiB.
      * 
      * @return the capacity value.
@@ -87,15 +96,14 @@ public interface StorageAppliance {
     Long capacity();
 
     /**
-     * Gets the capacityUsed property: The amount of storage consumed.
+     * Gets the capacityUsed property: The amount of storage consumed. Measured in GiB.
      * 
      * @return the capacityUsed value.
      */
     Long capacityUsed();
 
     /**
-     * Gets the clusterId property: The resource ID of the cluster this storage appliance is associated with. Measured
-     * in GiB.
+     * Gets the clusterId property: The resource ID of the cluster this storage appliance is associated with.
      * 
      * @return the clusterId value.
      */
@@ -586,4 +594,33 @@ public interface StorageAppliance {
     OperationStatusResult enableRemoteVendorManagement(
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context);
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult
+        runReadCommands(StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters);
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult runReadCommands(
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context);
 }

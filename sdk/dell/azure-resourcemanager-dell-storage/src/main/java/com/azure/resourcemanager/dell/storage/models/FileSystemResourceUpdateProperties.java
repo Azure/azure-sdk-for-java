@@ -98,20 +98,6 @@ public final class FileSystemResourceUpdateProperties implements JsonSerializabl
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (capacity() != null) {
-            capacity().validate();
-        }
-        if (encryption() != null) {
-            encryption().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

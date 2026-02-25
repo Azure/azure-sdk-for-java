@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * The Capacity Reservation properties.
@@ -19,7 +21,7 @@ public final class CapacityReservationProperties implements JsonSerializable<Cap
     /*
      * The last time Sku was updated.
      */
-    private String lastSkuUpdate;
+    private OffsetDateTime lastSkuUpdate;
 
     /*
      * Minimum CapacityReservation value in Gigabytes.
@@ -37,7 +39,7 @@ public final class CapacityReservationProperties implements JsonSerializable<Cap
      * 
      * @return the lastSkuUpdate value.
      */
-    public String lastSkuUpdate() {
+    public OffsetDateTime lastSkuUpdate() {
         return this.lastSkuUpdate;
     }
 
@@ -84,7 +86,8 @@ public final class CapacityReservationProperties implements JsonSerializable<Cap
                 reader.nextToken();
 
                 if ("lastSkuUpdate".equals(fieldName)) {
-                    deserializedCapacityReservationProperties.lastSkuUpdate = reader.getString();
+                    deserializedCapacityReservationProperties.lastSkuUpdate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("minCapacity".equals(fieldName)) {
                     deserializedCapacityReservationProperties.minCapacity = reader.getNullable(JsonReader::getLong);
                 } else {

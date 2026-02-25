@@ -6,6 +6,7 @@ package com.azure.resourcemanager.durabletask.generated;
 
 import com.azure.resourcemanager.durabletask.models.Scheduler;
 import com.azure.resourcemanager.durabletask.models.SchedulerPropertiesUpdate;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuUpdate;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public final class SchedulersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_Update.json
+     * x-ms-original-file: 2025-11-01/Schedulers_Update.json
      */
     /**
      * Sample code: Schedulers_Update.
@@ -30,7 +31,7 @@ public final class SchedulersUpdateSamples {
         resource.update()
             .withTags(mapOf("hello", "world"))
             .withProperties(new SchedulerPropertiesUpdate().withIpAllowlist(Arrays.asList("10.0.0.0/8"))
-                .withSku(new SchedulerSkuUpdate().withName("Dedicated").withCapacity(3)))
+                .withSku(new SchedulerSkuUpdate().withName(SchedulerSkuName.DEDICATED).withCapacity(3)))
             .apply();
     }
 

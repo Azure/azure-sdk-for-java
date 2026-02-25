@@ -136,13 +136,13 @@ public final class BrokerAuthorizationResourceImpl
         return this;
     }
 
-    public BrokerAuthorizationResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.innerModel().withExtendedLocation(extendedLocation);
+    public BrokerAuthorizationResourceImpl withProperties(BrokerAuthorizationProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public BrokerAuthorizationResourceImpl withProperties(BrokerAuthorizationProperties properties) {
-        this.innerModel().withProperties(properties);
+    public BrokerAuthorizationResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.innerModel().withExtendedLocation(extendedLocation);
         return this;
     }
 }

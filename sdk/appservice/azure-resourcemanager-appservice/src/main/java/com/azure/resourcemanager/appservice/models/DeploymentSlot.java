@@ -22,6 +22,8 @@ public interface DeploymentSlot
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code deploymentSlot.deploy(DeployType.WAR, warFile, new DeployOptions().withPath("webapps/ROOT"))}
      *
      * @param warFile the WAR file to upload
      */
@@ -29,6 +31,8 @@ public interface DeploymentSlot
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code deploymentSlot.deployAsync(DeployType.WAR, warFile, new DeployOptions().withPath("webapps/ROOT"))}
      *
      * @param warFile the WAR file to upload
      * @return a completable of the operation
@@ -37,6 +41,8 @@ public interface DeploymentSlot
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code deploymentSlot.deploy(DeployType.WAR, warFile, length, new DeployOptions().withPath("webapps/ROOT"))}
      *
      * @param warFile the WAR file to upload
      * @param length the length of the file
@@ -45,6 +51,8 @@ public interface DeploymentSlot
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code deploymentSlot.deployAsync(DeployType.WAR, warFile, length, new DeployOptions().withPath("webapps/ROOT"))}
      *
      * @param warFile the WAR file to upload
      * @param length the length of the file
@@ -54,6 +62,8 @@ public interface DeploymentSlot
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code deploymentSlot.deploy(DeployType.WAR, warFile, new DeployOptions().withPath("webapps/<appName>"))}
      *
      * @param warFile the WAR file to upload
      * @param appName the name of the app, default to "ROOT" when not provided
@@ -62,6 +72,8 @@ public interface DeploymentSlot
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code deploymentSlot.deployAsync(DeployType.WAR, warFile, new DeployOptions().withPath("webapps/<appName>"))}
      *
      * @param warFile the WAR file to upload
      * @param appName the name of the app, default to "ROOT" when not provided
@@ -71,6 +83,8 @@ public interface DeploymentSlot
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code deploymentSlot.deploy(DeployType.WAR, warFile, length, new DeployOptions().withPath("webapps/<appName>"))}
      *
      * @param warFile the WAR file to upload
      * @param length the length of the file
@@ -80,6 +94,8 @@ public interface DeploymentSlot
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code deploymentSlot.deployAsync(DeployType.WAR, warFile, length, new DeployOptions().withPath("webapps/<appName>"))}
      *
      * @param warFile the WAR file to upload
      * @param length the length of the file

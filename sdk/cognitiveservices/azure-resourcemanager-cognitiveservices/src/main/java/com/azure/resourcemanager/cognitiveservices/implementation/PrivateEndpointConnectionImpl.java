@@ -33,12 +33,12 @@ public final class PrivateEndpointConnectionImpl
         return this.innerModel().etag();
     }
 
-    public PrivateEndpointConnectionProperties properties() {
-        return this.innerModel().properties();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public PrivateEndpointConnectionProperties properties() {
+        return this.innerModel().properties();
     }
 
     public String location() {

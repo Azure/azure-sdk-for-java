@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * identity.
+ * Represents an identity.
  */
 @Fluent
 public final class MicrosoftGraphIdentity implements JsonSerializable<MicrosoftGraphIdentity> {

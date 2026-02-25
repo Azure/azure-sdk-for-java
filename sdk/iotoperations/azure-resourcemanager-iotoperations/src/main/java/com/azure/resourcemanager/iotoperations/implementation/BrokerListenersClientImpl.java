@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.iotoperations.fluent.BrokerListenersClient;
@@ -182,27 +181,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BrokerListenerResourceInner>> getWithResponseAsync(String resourceGroupName,
         String instanceName, String brokerName, String listenerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        if (brokerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
-        }
-        if (listenerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter listenerName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -246,32 +224,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BrokerListenerResourceInner> getWithResponse(String resourceGroupName, String instanceName,
         String brokerName, String listenerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        if (brokerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
-        }
-        if (listenerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter listenerName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, instanceName, brokerName, listenerName, accept, context);
@@ -311,32 +263,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String instanceName, String brokerName, String listenerName, BrokerListenerResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        if (brokerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
-        }
-        if (listenerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter listenerName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -362,38 +288,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String instanceName,
         String brokerName, String listenerName, BrokerListenerResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        if (brokerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
-        }
-        if (listenerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter listenerName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -418,38 +312,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String instanceName,
         String brokerName, String listenerName, BrokerListenerResourceInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        if (brokerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
-        }
-        if (listenerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter listenerName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -604,27 +466,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String instanceName,
         String brokerName, String listenerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        if (brokerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
-        }
-        if (listenerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter listenerName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, listenerName, context))
@@ -646,32 +487,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String instanceName, String brokerName,
         String listenerName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        if (brokerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
-        }
-        if (listenerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter listenerName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, listenerName, Context.NONE);
     }
@@ -692,32 +507,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String instanceName, String brokerName,
         String listenerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        if (brokerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
-        }
-        if (listenerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter listenerName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, listenerName, context);
     }
@@ -851,24 +640,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BrokerListenerResourceInner>>
         listByResourceGroupSinglePageAsync(String resourceGroupName, String instanceName, String brokerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        if (brokerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -910,28 +681,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BrokerListenerResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
         String instanceName, String brokerName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        if (brokerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<BrokerListenerResourceListResult> res
             = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -955,28 +704,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BrokerListenerResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
         String instanceName, String brokerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        if (brokerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter brokerName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<BrokerListenerResourceListResult> res
             = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1035,13 +762,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BrokerListenerResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1062,15 +782,6 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BrokerListenerResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<BrokerListenerResourceListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1091,21 +802,10 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BrokerListenerResourceInner> listByResourceGroupNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<BrokerListenerResourceListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(BrokerListenersClientImpl.class);
 }

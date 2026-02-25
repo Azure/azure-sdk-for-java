@@ -21,7 +21,7 @@ public final class BillingMetersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"sdsu\",\"name\":\"eqdgcruxsp\",\"type\":\"ymmqgwokmikp\",\"location\":\"bmjxuvjipf\",\"properties\":{\"category\":\"axdvwzaehp\",\"meterType\":\"thd\",\"displayName\":\"mvetatlakfq\"}},{\"id\":\"xwgiks\",\"name\":\"vtooxrpo\",\"type\":\"phchgjtnhtukfaci\",\"location\":\"fntumeezbxvqx\",\"properties\":{\"category\":\"vwcga\",\"meterType\":\"omtmjzwxuqgov\",\"displayName\":\"pwwztjfmkkhtgf\"}},{\"id\":\"dmlsc\",\"name\":\"ll\",\"type\":\"na\",\"location\":\"owazhpabacom\",\"properties\":{\"category\":\"t\",\"meterType\":\"wsxnsrqor\",\"displayName\":\"enmvcebxeetq\"}}]}";
+            = "{\"value\":[{\"location\":\"ycsxzu\",\"properties\":{\"category\":\"rlsmdesqplpvmjc\",\"meterType\":\"ewbidyvteowxv\",\"displayName\":\"iudeu\"},\"id\":\"sxze\",\"name\":\"paxwkufyk\",\"type\":\"vuhx\"},{\"location\":\"mrutznabaobnsluj\",\"properties\":{\"category\":\"tymkmvguihywart\",\"meterType\":\"phkixkykxdssjpe\",\"displayName\":\"ucfx\"},\"id\":\"kkflrmymyincqlhr\",\"name\":\"s\",\"type\":\"sl\"},{\"location\":\"iiovgqcgxu\",\"properties\":{\"category\":\"kctotiowlxteq\",\"meterType\":\"tjgwdtguk\",\"displayName\":\"nblwphqlkcc\"},\"id\":\"gygqwah\",\"name\":\"iul\",\"type\":\"gniiprglvaw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class BillingMetersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BillingMeterCollection response
-            = manager.billingMeters().getWithResponse("qhnmhk", com.azure.core.util.Context.NONE).getValue();
+            = manager.billingMeters().getWithResponse("ukklelss", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("bmjxuvjipf", response.value().get(0).location());
-        Assertions.assertEquals("axdvwzaehp", response.value().get(0).properties().category());
-        Assertions.assertEquals("thd", response.value().get(0).properties().meterType());
-        Assertions.assertEquals("mvetatlakfq", response.value().get(0).properties().displayName());
+        Assertions.assertEquals("ycsxzu", response.value().get(0).location());
+        Assertions.assertEquals("rlsmdesqplpvmjc", response.value().get(0).properties().category());
+        Assertions.assertEquals("ewbidyvteowxv", response.value().get(0).properties().meterType());
+        Assertions.assertEquals("iudeu", response.value().get(0).properties().displayName());
     }
 }

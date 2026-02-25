@@ -14,6 +14,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetNetworkConfigurationProperties;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Describes a virtual machine scale set network profile's network configurations.
@@ -30,6 +31,11 @@ public final class VirtualMachineScaleSetNetworkConfiguration
      * Describes a virtual machine scale set network profile's IP configuration.
      */
     private VirtualMachineScaleSetNetworkConfigurationProperties innerProperties;
+
+    /*
+     * Resource tags applied to the networkInterface address created by this NetworkInterfaceConfiguration
+     */
+    private Map<String, String> tags;
 
     /**
      * Creates an instance of VirtualMachineScaleSetNetworkConfiguration class.
@@ -64,6 +70,28 @@ public final class VirtualMachineScaleSetNetworkConfiguration
      */
     private VirtualMachineScaleSetNetworkConfigurationProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the tags property: Resource tags applied to the networkInterface address created by this
+     * NetworkInterfaceConfiguration.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags applied to the networkInterface address created by this
+     * NetworkInterfaceConfiguration.
+     * 
+     * @param tags the tags value to set.
+     * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfiguration withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     /**
@@ -356,6 +384,7 @@ public final class VirtualMachineScaleSetNetworkConfiguration
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -381,6 +410,9 @@ public final class VirtualMachineScaleSetNetworkConfiguration
                 } else if ("properties".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetNetworkConfiguration.innerProperties
                         = VirtualMachineScaleSetNetworkConfigurationProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetNetworkConfiguration.tags = tags;
                 } else {
                     reader.skipChildren();
                 }

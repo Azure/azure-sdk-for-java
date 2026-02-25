@@ -11,7 +11,7 @@ public final class MigrationServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationServiceProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Updating\",\"integrationRuntimeState\":\"i\"}")
+            = BinaryData.fromString("{\"provisioningState\":\"Canceled\",\"integrationRuntimeState\":\"iftohqkvpu\"}")
                 .toObject(MigrationServiceProperties.class);
     }
 

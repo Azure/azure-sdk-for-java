@@ -81,7 +81,7 @@ public class AdditionalPropertiesSerializerTests {
         Assertions.assertEquals("baz", deserialized.additionalProperties().get("bar"));
         Assertions.assertEquals("c.d", deserialized.additionalProperties().get("a.b"));
         Assertions.assertEquals("barbar", deserialized.additionalProperties().get("properties.bar"));
-        Assertions.assertTrue(deserialized instanceof FooChild);
+        Assertions.assertInstanceOf(FooChild.class, deserialized);
         // Check typed properties are populated
         Assertions.assertEquals("hello.world", deserialized.bar());
         Assertions.assertNotNull(deserialized.baz());

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.playwright.fluent.PlaywrightQuotasClient;
 import com.azure.resourcemanager.playwright.fluent.models.PlaywrightQuotaInner;
 import com.azure.resourcemanager.playwright.implementation.models.PlaywrightQuotaListResult;
@@ -128,21 +127,6 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PlaywrightQuotaInner>> getWithResponseAsync(String location, QuotaName playwrightQuotaName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (playwrightQuotaName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter playwrightQuotaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -180,24 +164,6 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlaywrightQuotaInner> getWithResponse(String location, QuotaName playwrightQuotaName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (playwrightQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter playwrightQuotaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             location, playwrightQuotaName, accept, context);
@@ -230,17 +196,6 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PlaywrightQuotaInner>> listBySubscriptionSinglePageAsync(String location) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBySubscription(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -276,20 +231,6 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightQuotaInner> listBySubscriptionSinglePage(String location) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PlaywrightQuotaListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
@@ -309,20 +250,6 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightQuotaInner> listBySubscriptionSinglePage(String location, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PlaywrightQuotaListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, context);
@@ -373,13 +300,6 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PlaywrightQuotaInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -400,15 +320,6 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightQuotaInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PlaywrightQuotaListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -428,21 +339,10 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightQuotaInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PlaywrightQuotaListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PlaywrightQuotasClientImpl.class);
 }

@@ -51,12 +51,4 @@ public final class CloudHsmClusterBackupStatusGetHeaders {
     public String location() {
         return this.location;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
 }

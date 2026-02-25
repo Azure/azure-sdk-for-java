@@ -9,7 +9,7 @@ package com.azure.resourcemanager.connectedcache.generated;
  */
 public final class EnterpriseMccCacheNodesOperationsGetSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseMccCacheNodesOperations_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Gets enterpriseMccCacheNode resource information of an enterprise mcc customer parent resource -

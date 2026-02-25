@@ -14,7 +14,9 @@ import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.DnsEndpointType;
+import com.azure.resourcemanager.storage.models.DualStackEndpointPreference;
 import com.azure.resourcemanager.storage.models.Encryption;
+import com.azure.resourcemanager.storage.models.GeoPriorityReplicationStatus;
 import com.azure.resourcemanager.storage.models.ImmutableStorageAccount;
 import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
@@ -118,6 +120,11 @@ public final class StorageAccountPropertiesCreateParameters
     private RoutingPreference routingPreference;
 
     /*
+     * Maintains information about the Internet protocol opted by the user.
+     */
+    private DualStackEndpointPreference dualStackEndpointPreference;
+
+    /*
      * Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is
      * false for this property.
      */
@@ -166,6 +173,11 @@ public final class StorageAccountPropertiesCreateParameters
      * DNS Zone identifier.
      */
     private DnsEndpointType dnsEndpointType;
+
+    /*
+     * Status indicating whether Geo Priority Replication is enabled for the account.
+     */
+    private GeoPriorityReplicationStatus geoPriorityReplicationStatus;
 
     /**
      * Creates an instance of StorageAccountPropertiesCreateParameters class.
@@ -518,6 +530,29 @@ public final class StorageAccountPropertiesCreateParameters
     }
 
     /**
+     * Get the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @return the dualStackEndpointPreference value.
+     */
+    public DualStackEndpointPreference dualStackEndpointPreference() {
+        return this.dualStackEndpointPreference;
+    }
+
+    /**
+     * Set the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @param dualStackEndpointPreference the dualStackEndpointPreference value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters
+        withDualStackEndpointPreference(DualStackEndpointPreference dualStackEndpointPreference) {
+        this.dualStackEndpointPreference = dualStackEndpointPreference;
+        return this;
+    }
+
+    /**
      * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
      * account. The default interpretation is false for this property.
      * 
@@ -705,6 +740,29 @@ public final class StorageAccountPropertiesCreateParameters
     }
 
     /**
+     * Get the geoPriorityReplicationStatus property: Status indicating whether Geo Priority Replication is enabled for
+     * the account.
+     * 
+     * @return the geoPriorityReplicationStatus value.
+     */
+    public GeoPriorityReplicationStatus geoPriorityReplicationStatus() {
+        return this.geoPriorityReplicationStatus;
+    }
+
+    /**
+     * Set the geoPriorityReplicationStatus property: Status indicating whether Geo Priority Replication is enabled for
+     * the account.
+     * 
+     * @param geoPriorityReplicationStatus the geoPriorityReplicationStatus value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters
+        withGeoPriorityReplicationStatus(GeoPriorityReplicationStatus geoPriorityReplicationStatus) {
+        this.geoPriorityReplicationStatus = geoPriorityReplicationStatus;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -731,8 +789,14 @@ public final class StorageAccountPropertiesCreateParameters
         if (routingPreference() != null) {
             routingPreference().validate();
         }
+        if (dualStackEndpointPreference() != null) {
+            dualStackEndpointPreference().validate();
+        }
         if (immutableStorageWithVersioning() != null) {
             immutableStorageWithVersioning().validate();
+        }
+        if (geoPriorityReplicationStatus() != null) {
+            geoPriorityReplicationStatus().validate();
         }
     }
 
@@ -761,6 +825,7 @@ public final class StorageAccountPropertiesCreateParameters
         jsonWriter.writeStringField("largeFileSharesState",
             this.largeFileSharesState == null ? null : this.largeFileSharesState.toString());
         jsonWriter.writeJsonField("routingPreference", this.routingPreference);
+        jsonWriter.writeJsonField("dualStackEndpointPreference", this.dualStackEndpointPreference);
         jsonWriter.writeBooleanField("allowBlobPublicAccess", this.allowBlobPublicAccess);
         jsonWriter.writeStringField("minimumTlsVersion",
             this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
@@ -771,6 +836,7 @@ public final class StorageAccountPropertiesCreateParameters
         jsonWriter.writeJsonField("immutableStorageWithVersioning", this.immutableStorageWithVersioning);
         jsonWriter.writeStringField("dnsEndpointType",
             this.dnsEndpointType == null ? null : this.dnsEndpointType.toString());
+        jsonWriter.writeJsonField("geoPriorityReplicationStatus", this.geoPriorityReplicationStatus);
         return jsonWriter.writeEndObject();
     }
 
@@ -834,6 +900,9 @@ public final class StorageAccountPropertiesCreateParameters
                 } else if ("routingPreference".equals(fieldName)) {
                     deserializedStorageAccountPropertiesCreateParameters.routingPreference
                         = RoutingPreference.fromJson(reader);
+                } else if ("dualStackEndpointPreference".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesCreateParameters.dualStackEndpointPreference
+                        = DualStackEndpointPreference.fromJson(reader);
                 } else if ("allowBlobPublicAccess".equals(fieldName)) {
                     deserializedStorageAccountPropertiesCreateParameters.allowBlobPublicAccess
                         = reader.getNullable(JsonReader::getBoolean);
@@ -858,6 +927,9 @@ public final class StorageAccountPropertiesCreateParameters
                 } else if ("dnsEndpointType".equals(fieldName)) {
                     deserializedStorageAccountPropertiesCreateParameters.dnsEndpointType
                         = DnsEndpointType.fromString(reader.getString());
+                } else if ("geoPriorityReplicationStatus".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesCreateParameters.geoPriorityReplicationStatus
+                        = GeoPriorityReplicationStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

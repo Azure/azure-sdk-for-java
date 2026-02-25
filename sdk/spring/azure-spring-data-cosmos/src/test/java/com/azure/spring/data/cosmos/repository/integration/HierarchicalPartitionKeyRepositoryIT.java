@@ -11,15 +11,14 @@ import com.azure.spring.data.cosmos.domain.HierarchicalPartitionKeyEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.HierarchicalPartitionKeyRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class HierarchicalPartitionKeyRepositoryIT {
 
@@ -37,7 +36,7 @@ public class HierarchicalPartitionKeyRepositoryIT {
     private static final HierarchicalPartitionKeyEntity HIERARCHICAL_ENTITY_2 =
             new HierarchicalPartitionKeyEntity("id_2", "Michael", "Smith", "23456");
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     private static CosmosEntityInformation<HierarchicalPartitionKeyEntity, String> hierarchicalPartitionKeyEntityInformation
@@ -49,15 +48,15 @@ public class HierarchicalPartitionKeyRepositoryIT {
     @Autowired
     HierarchicalPartitionKeyRepository repository;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() { }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, HierarchicalPartitionKeyEntity.class);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanUp() {
         collectionManager.deleteContainer(hierarchicalPartitionKeyEntityInformation);
     }

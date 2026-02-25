@@ -28,6 +28,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.communication.fluent.SenderUsernamesClient;
 import com.azure.resourcemanager.communication.fluent.models.SenderUsernameResourceInner;
 import com.azure.resourcemanager.communication.models.SenderUsernameResourceCollection;
@@ -63,7 +64,7 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CommunicationService")
+    @ServiceInterface(name = "CommunicationServiceManagementClientSenderUsernames")
     public interface SenderUsernamesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames")
@@ -76,10 +77,30 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SenderUsernameResourceCollection> listByDomainsSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames/{senderUsername}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SenderUsernameResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
+            @PathParam("senderUsername") String senderUsername, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames/{senderUsername}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SenderUsernameResourceInner> getSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
@@ -98,6 +119,18 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames/{senderUsername}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SenderUsernameResourceInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
+            @PathParam("senderUsername") String senderUsername,
+            @BodyParam("application/json") SenderUsernameResourceInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames/{senderUsername}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -108,10 +141,28 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
             @PathParam("senderUsername") String senderUsername, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames/{senderUsername}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("emailServiceName") String emailServiceName, @PathParam("domainName") String domainName,
+            @PathParam("senderUsername") String senderUsername, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SenderUsernameResourceCollection>> listByDomainsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SenderUsernameResourceCollection> listByDomainsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -169,52 +220,6 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a Domains SenderUsernames collection along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SenderUsernameResourceInner>> listByDomainsSinglePageAsync(String resourceGroupName,
-        String emailServiceName, String domainName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (emailServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByDomains(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, emailServiceName, domainName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * ListBy_Domains
-     * 
-     * List all valid sender usernames for a domains resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -235,18 +240,89 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a class representing a Domains SenderUsernames collection along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SenderUsernameResourceInner> listByDomainsSinglePage(String resourceGroupName,
+        String emailServiceName, String domainName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SenderUsernameResourceCollection> res
+            = service.listByDomainsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * ListBy_Domains
+     * 
+     * List all valid sender usernames for a domains resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param emailServiceName The name of the EmailService resource.
+     * @param domainName The name of the Domains resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a Domains SenderUsernames collection as paginated response with {@link PagedFlux}.
+     * @return a class representing a Domains SenderUsernames collection along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SenderUsernameResourceInner> listByDomainsAsync(String resourceGroupName, String emailServiceName,
-        String domainName, Context context) {
-        return new PagedFlux<>(
-            () -> listByDomainsSinglePageAsync(resourceGroupName, emailServiceName, domainName, context),
-            nextLink -> listByDomainsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SenderUsernameResourceInner> listByDomainsSinglePage(String resourceGroupName,
+        String emailServiceName, String domainName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SenderUsernameResourceCollection> res
+            = service.listByDomainsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -266,7 +342,8 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SenderUsernameResourceInner> listByDomains(String resourceGroupName, String emailServiceName,
         String domainName) {
-        return new PagedIterable<>(listByDomainsAsync(resourceGroupName, emailServiceName, domainName));
+        return new PagedIterable<>(() -> listByDomainsSinglePage(resourceGroupName, emailServiceName, domainName),
+            nextLink -> listByDomainsNextSinglePage(nextLink));
     }
 
     /**
@@ -287,7 +364,9 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SenderUsernameResourceInner> listByDomains(String resourceGroupName, String emailServiceName,
         String domainName, Context context) {
-        return new PagedIterable<>(listByDomainsAsync(resourceGroupName, emailServiceName, domainName, context));
+        return new PagedIterable<>(
+            () -> listByDomainsSinglePage(resourceGroupName, emailServiceName, domainName, context),
+            nextLink -> listByDomainsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -347,53 +426,6 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param senderUsername The valid sender Username.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a valid sender username for a domains resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SenderUsernameResourceInner>> getWithResponseAsync(String resourceGroupName,
-        String emailServiceName, String domainName, String senderUsername, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (emailServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (senderUsername == null) {
-            return Mono.error(new IllegalArgumentException("Parameter senderUsername is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, emailServiceName, domainName, senderUsername, accept, context);
-    }
-
-    /**
-     * Get
-     * 
-     * Get a valid sender username for a domains resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
-     * @param senderUsername The valid sender Username.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -424,7 +456,35 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SenderUsernameResourceInner> getWithResponse(String resourceGroupName, String emailServiceName,
         String domainName, String senderUsername, Context context) {
-        return getWithResponseAsync(resourceGroupName, emailServiceName, domainName, senderUsername, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (senderUsername == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter senderUsername is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, emailServiceName, domainName, senderUsername, accept, context);
     }
 
     /**
@@ -514,62 +574,6 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
      * @param domainName The name of the Domains resource.
      * @param senderUsername The valid sender Username.
      * @param parameters Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a SenderUsername resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SenderUsernameResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String emailServiceName, String domainName, String senderUsername, SenderUsernameResourceInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (emailServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (senderUsername == null) {
-            return Mono.error(new IllegalArgumentException("Parameter senderUsername is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, senderUsername,
-            parameters, accept, context);
-    }
-
-    /**
-     * Create Or Update
-     * 
-     * Add a new SenderUsername resource under the parent Domains resource or update an existing SenderUsername
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
-     * @param senderUsername The valid sender Username.
-     * @param parameters Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -603,8 +607,42 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
     public Response<SenderUsernameResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String emailServiceName, String domainName, String senderUsername, SenderUsernameResourceInner parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, emailServiceName, domainName, senderUsername,
-            parameters, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (senderUsername == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter senderUsername is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, senderUsername,
+            parameters, accept, context);
     }
 
     /**
@@ -686,52 +724,6 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @param senderUsername The valid sender Username.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String emailServiceName,
-        String domainName, String senderUsername, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (emailServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (senderUsername == null) {
-            return Mono.error(new IllegalArgumentException("Parameter senderUsername is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, emailServiceName, domainName, senderUsername, accept, context);
-    }
-
-    /**
-     * Delete
-     * 
-     * Operation to delete a SenderUsernames resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
-     * @param senderUsername The valid sender Username.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -762,8 +754,36 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String emailServiceName, String domainName,
         String senderUsername, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, emailServiceName, domainName, senderUsername, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (emailServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter emailServiceName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (senderUsername == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter senderUsername is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, emailServiceName, domainName, senderUsername, accept,
+            context);
     }
 
     /**
@@ -785,6 +805,8 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
     }
 
     /**
+     * ListBy_Domains
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -812,6 +834,37 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
     }
 
     /**
+     * ListBy_Domains
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a class representing a Domains SenderUsernames collection along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SenderUsernameResourceInner> listByDomainsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SenderUsernameResourceCollection> res
+            = service.listByDomainsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * ListBy_Domains
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -819,23 +872,25 @@ public final class SenderUsernamesClientImpl implements SenderUsernamesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a Domains SenderUsernames collection along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a class representing a Domains SenderUsernames collection along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SenderUsernameResourceInner>> listByDomainsNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<SenderUsernameResourceInner> listByDomainsNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByDomainsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<SenderUsernameResourceCollection> res
+            = service.listByDomainsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SenderUsernamesClientImpl.class);
 }

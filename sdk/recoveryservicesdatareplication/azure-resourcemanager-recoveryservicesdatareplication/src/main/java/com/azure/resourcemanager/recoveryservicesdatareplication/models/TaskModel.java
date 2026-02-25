@@ -111,20 +111,6 @@ public final class TaskModel implements JsonSerializable<TaskModel> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (customProperties() != null) {
-            customProperties().validate();
-        }
-        if (childrenJobs() != null) {
-            childrenJobs().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

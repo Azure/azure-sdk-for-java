@@ -80,17 +80,6 @@ public final class ExadataIormConfig implements JsonSerializable<ExadataIormConf
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (dbPlans() != null) {
-            dbPlans().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

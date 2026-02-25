@@ -37,7 +37,7 @@ public final class FabricCapacitiesCheckNameAvailabilityWithResponseMockTests {
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertTrue(response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
         Assertions.assertEquals("lnwsubisn", response.message());
     }

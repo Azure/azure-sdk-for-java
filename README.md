@@ -13,7 +13,7 @@ For tutorials, samples, quick starts and other documentation, visit [Azure for J
 
 ### Prerequisites
 
-All libraries are baselined on Java 8, with testing and forward support up until the latest Java long-term support release (currently Java 21).
+All libraries baseline on Java 8, with testing and forward support up until the latest Java long-term support release.
 
 ## Available packages
 
@@ -24,7 +24,7 @@ Each service can have both 'client' and 'management' libraries. 'Client' librari
 Our client libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/), and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](https://docs.microsoft.com/azure/developer/java/sdk/overview).
 These libraries can be easily identified by folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
-You can find the **[most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/index.html#java)**. This list includes the most recent releases: both stable and beta.
+You can find the **[most up-to-date list of new packages on our page](https://azure.github.io/azure-sdk/releases/latest/index.html#java)**. This list includes the most recent releases: both stable and beta.
 
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-beta libraries.
 
@@ -48,8 +48,8 @@ The Azure SDKs for Java do not provide support for Android. While we attempt to 
 
 - For reference documentation visit the [Azure SDK for Java documentation](https://aka.ms/java-docs).
 - For tutorials, samples, quick starts and other documentation, visit [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
-- For build reports on code quality, test coverage, etc, visit [Azure Java SDK](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html).
-- File an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose).
+- For build reports on code quality, test coverage, etc., visit [Azure Java SDK](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html).
+- File an issue via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose).
 - Check [previous questions](https://stackoverflow.com/questions/tagged/azure-java-sdk) or ask new ones on StackOverflow using `azure-java-sdk` tag.
 
 ## Navigating the repository

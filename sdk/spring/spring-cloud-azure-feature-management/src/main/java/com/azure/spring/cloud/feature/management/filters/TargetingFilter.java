@@ -36,17 +36,17 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
     /**
      * users field in the filter
      */
-    protected static final String USERS = "Users";
+    private static final String USERS = "Users";
 
     /**
      * groups field in the filter
      */
-    protected static final String GROUPS = "Groups";
+    private static final String GROUPS = "Groups";
 
     /**
      * Audience in the filter
      */
-    protected static final String AUDIENCE = "Audience";
+    private static final String AUDIENCE = "Audience";
 
     /**
      * Audience that always returns false
@@ -56,7 +56,7 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
     /**
      * Error message for when the total Audience value is greater than 100 percent.
      */
-    protected static final String OUT_OF_RANGE = "The value is out of the accepted range.";
+    private static final String OUT_OF_RANGE = "The value is out of the accepted range.";
 
     private static final String REQUIRED_PARAMETER = "Value cannot be null.";
 
@@ -69,12 +69,12 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
     /**
      * Accessor for identifying the current user/group when evaluating
      */
-    protected final TargetingContextAccessor contextAccessor;
+    private final TargetingContextAccessor contextAccessor;
 
     /**
      * Options for evaluating the filter
      */
-    protected final TargetingEvaluationOptions options;
+    private final TargetingEvaluationOptions options;
 
     /**
      * Filter for targeting a user/group/percentage of users.

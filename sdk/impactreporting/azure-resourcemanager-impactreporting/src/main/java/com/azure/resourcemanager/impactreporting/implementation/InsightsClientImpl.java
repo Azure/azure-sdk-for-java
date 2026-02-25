@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.impactreporting.fluent.InsightsClient;
 import com.azure.resourcemanager.impactreporting.fluent.models.InsightInner;
 import com.azure.resourcemanager.impactreporting.implementation.models.InsightListResult;
@@ -167,21 +166,6 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InsightInner>> getWithResponseAsync(String workloadImpactName, String insightName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
-        if (insightName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -217,24 +201,6 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InsightInner> getWithResponse(String workloadImpactName, String insightName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
-        if (insightName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             workloadImpactName, insightName, accept, context);
@@ -267,18 +233,6 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InsightInner>> listBySubscriptionSinglePageAsync(String workloadImpactName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBySubscription(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -314,20 +268,6 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InsightInner> listBySubscriptionSinglePage(String workloadImpactName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<InsightListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), workloadImpactName, accept, Context.NONE);
@@ -347,20 +287,6 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InsightInner> listBySubscriptionSinglePage(String workloadImpactName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<InsightListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), workloadImpactName, accept, context);
@@ -413,26 +339,6 @@ public final class InsightsClientImpl implements InsightsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InsightInner>> createWithResponseAsync(String workloadImpactName, String insightName,
         InsightInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
-        if (insightName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -472,30 +378,6 @@ public final class InsightsClientImpl implements InsightsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InsightInner> createWithResponse(String workloadImpactName, String insightName,
         InsightInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
-        if (insightName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -530,21 +412,6 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String workloadImpactName, String insightName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
-        if (insightName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), workloadImpactName, insightName, context))
@@ -579,24 +446,6 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String workloadImpactName, String insightName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
-        if (insightName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), workloadImpactName, insightName, context);
     }
@@ -627,13 +476,6 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InsightInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -654,15 +496,6 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InsightInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<InsightListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -682,21 +515,10 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InsightInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<InsightListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(InsightsClientImpl.class);
 }

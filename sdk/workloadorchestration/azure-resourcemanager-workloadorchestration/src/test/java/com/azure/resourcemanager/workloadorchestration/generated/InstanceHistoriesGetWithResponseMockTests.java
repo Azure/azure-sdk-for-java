@@ -23,7 +23,7 @@ public final class InstanceHistoriesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"solutionVersion\":{\"solutionVersionId\":\"xe\",\"specification\":{}},\"target\":{\"targetId\":\"bormcqmiciijqpkz\",\"targetSpecification\":{},\"solutionScope\":\"xjmcsmyqwixvcpw\"},\"solutionScope\":\"wy\",\"activeState\":\"active\",\"reconciliationPolicy\":{\"state\":\"active\",\"interval\":\"alickduoi\"},\"status\":{\"lastModified\":\"2021-02-12T08:45:06Z\",\"deployed\":947599262,\"expectedRunningJobId\":1704599538,\"runningJobId\":384634481,\"status\":\"rwzawnvs\",\"statusDetails\":\"fhzag\",\"generation\":2116581743,\"targetStatuses\":[{\"name\":\"vdimwrzregzgy\",\"status\":\"utrwpweryekz\",\"componentStatuses\":[{},{}]},{\"name\":\"eotta\",\"status\":\"yos\",\"componentStatuses\":[{},{}]}]},\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"jtfvpndpmiljpn\",\"type\":\"CustomLocation\"},\"eTag\":\"udqll\",\"id\":\"auzpjlx\",\"name\":\"ehuxiqhzlraym\",\"type\":\"zxlskihmxr\"}";
+            = "{\"properties\":{\"solutionVersion\":{\"solutionVersionId\":\"kkfmkmfdjxyxgb\",\"specification\":{}},\"target\":{\"targetId\":\"jcteoedlrsl\",\"targetSpecification\":{},\"solutionScope\":\"pxvjnzd\"},\"solutionScope\":\"o\",\"activeState\":\"active\",\"reconciliationPolicy\":{\"state\":\"inactive\",\"interval\":\"cnabxzf\"},\"status\":{\"lastModified\":\"2021-12-04T05:54:44Z\",\"deployed\":1093614468,\"expectedRunningJobId\":293937341,\"runningJobId\":794895367,\"status\":\"lmhivzkwwwnc\",\"statusDetails\":\"rzd\",\"generation\":273437626,\"targetStatuses\":[{\"name\":\"ptjxulweuc\",\"status\":\"t\",\"componentStatuses\":[{},{},{},{}]},{\"name\":\"ehmcgcje\",\"status\":\"ue\",\"componentStatuses\":[{},{}]},{\"name\":\"mvfejvqnttmbqd\",\"status\":\"zfivfokpysthhzag\",\"componentStatuses\":[{}]}]},\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"lhgenuzejgvkv\",\"type\":\"CustomLocation\"},\"eTag\":\"qszllrz\",\"id\":\"mmdqgmihzpimc\",\"name\":\"rh\",\"type\":\"xtminklogxsvtzar\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,12 @@ public final class InstanceHistoriesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         InstanceHistory response = manager.instanceHistories()
-            .getWithResponse("v", "atbwbqam", "e", "liys", "pkcvmwf", com.azure.core.util.Context.NONE)
+            .getWithResponse("ygg", "pmcrdcuelj", "iahxmfqryarvs", "zqbglcjkays", "thzodubtlmjtgbl",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(ActiveState.ACTIVE, response.properties().activeState());
-        Assertions.assertEquals("jtfvpndpmiljpn", response.extendedLocation().name());
+        Assertions.assertEquals("lhgenuzejgvkv", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

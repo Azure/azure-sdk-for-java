@@ -125,17 +125,6 @@ public final class HardwareProfileUpdate implements JsonSerializable<HardwarePro
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (virtualMachineGPUs() != null) {
-            virtualMachineGPUs().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

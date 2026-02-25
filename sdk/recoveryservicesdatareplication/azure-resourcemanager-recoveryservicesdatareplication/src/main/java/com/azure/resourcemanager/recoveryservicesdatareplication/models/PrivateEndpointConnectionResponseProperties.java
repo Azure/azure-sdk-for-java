@@ -91,20 +91,6 @@ public final class PrivateEndpointConnectionResponseProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (privateEndpoint() != null) {
-            privateEndpoint().validate();
-        }
-        if (privateLinkServiceConnectionState() != null) {
-            privateLinkServiceConnectionState().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

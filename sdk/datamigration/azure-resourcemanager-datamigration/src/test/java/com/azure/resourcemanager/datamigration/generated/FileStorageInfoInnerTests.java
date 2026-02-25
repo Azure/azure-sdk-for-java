@@ -13,21 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class FileStorageInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileStorageInfoInner model = BinaryData
-            .fromString(
-                "{\"uri\":\"hcrat\",\"headers\":{\"zq\":\"ronasxift\",\"tw\":\"zh\",\"lgnyhmo\":\"sgogczhonnxk\"}}")
+        FileStorageInfoInner model = BinaryData.fromString(
+            "{\"uri\":\"ye\",\"headers\":{\"mwn\":\"msgaoj\",\"tymoxoftp\":\"otmrfhir\",\"h\":\"piwyczuhxacpqjl\"}}")
             .toObject(FileStorageInfoInner.class);
-        Assertions.assertEquals("hcrat", model.uri());
-        Assertions.assertEquals("ronasxift", model.headers().get("zq"));
+        Assertions.assertEquals("ye", model.uri());
+        Assertions.assertEquals("msgaoj", model.headers().get("mwn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileStorageInfoInner model = new FileStorageInfoInner().withUri("hcrat")
-            .withHeaders(mapOf("zq", "ronasxift", "tw", "zh", "lgnyhmo", "sgogczhonnxk"));
+        FileStorageInfoInner model = new FileStorageInfoInner().withUri("ye")
+            .withHeaders(mapOf("mwn", "msgaoj", "tymoxoftp", "otmrfhir", "h", "piwyczuhxacpqjl"));
         model = BinaryData.fromObject(model).toObject(FileStorageInfoInner.class);
-        Assertions.assertEquals("hcrat", model.uri());
-        Assertions.assertEquals("ronasxift", model.headers().get("zq"));
+        Assertions.assertEquals("ye", model.uri());
+        Assertions.assertEquals("msgaoj", model.headers().get("mwn"));
     }
 
     // Use "Map.of" if available

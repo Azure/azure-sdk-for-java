@@ -32,6 +32,12 @@ public class HDInsightLinkedService extends LinkedService {
     private Object clusterUri;
 
     /*
+     * HDInsight cluster authentication type.
+     */
+    @Generated
+    private HDInsightClusterAuthenticationType clusterAuthType;
+
+    /*
      * HDInsight cluster user name. Type: string (or Expression with resultType string).
      */
     @Generated
@@ -75,6 +81,12 @@ public class HDInsightLinkedService extends LinkedService {
     @Generated
     private Object fileSystem;
 
+    /*
+     * The credential reference containing MI authentication information for the HDInsight cluster.
+     */
+    @Generated
+    private CredentialReference credential;
+
     /**
      * Creates an instance of HDInsightLinkedService class.
      */
@@ -112,6 +124,28 @@ public class HDInsightLinkedService extends LinkedService {
     @Generated
     public HDInsightLinkedService setClusterUri(Object clusterUri) {
         this.clusterUri = clusterUri;
+        return this;
+    }
+
+    /**
+     * Get the clusterAuthType property: HDInsight cluster authentication type.
+     * 
+     * @return the clusterAuthType value.
+     */
+    @Generated
+    public HDInsightClusterAuthenticationType getClusterAuthType() {
+        return this.clusterAuthType;
+    }
+
+    /**
+     * Set the clusterAuthType property: HDInsight cluster authentication type.
+     * 
+     * @param clusterAuthType the clusterAuthType value to set.
+     * @return the HDInsightLinkedService object itself.
+     */
+    @Generated
+    public HDInsightLinkedService setClusterAuthType(HDInsightClusterAuthenticationType clusterAuthType) {
+        this.clusterAuthType = clusterAuthType;
         return this;
     }
 
@@ -278,6 +312,30 @@ public class HDInsightLinkedService extends LinkedService {
     }
 
     /**
+     * Get the credential property: The credential reference containing MI authentication information for the HDInsight
+     * cluster.
+     * 
+     * @return the credential value.
+     */
+    @Generated
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing MI authentication information for the HDInsight
+     * cluster.
+     * 
+     * @param credential the credential value to set.
+     * @return the HDInsightLinkedService object itself.
+     */
+    @Generated
+    public HDInsightLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -341,15 +399,19 @@ public class HDInsightLinkedService extends LinkedService {
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("type", this.type);
         if (clusterUri != null
+            || clusterAuthType != null
             || userName != null
             || password != null
             || linkedServiceName != null
             || hcatalogLinkedServiceName != null
             || encryptedCredential != null
             || isEspEnabled != null
-            || fileSystem != null) {
+            || fileSystem != null
+            || credential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("clusterUri", this.clusterUri);
+            jsonWriter.writeStringField("clusterAuthType",
+                this.clusterAuthType == null ? null : this.clusterAuthType.toString());
             if (this.userName != null) {
                 jsonWriter.writeUntypedField("userName", this.userName);
             }
@@ -365,6 +427,7 @@ public class HDInsightLinkedService extends LinkedService {
             if (this.fileSystem != null) {
                 jsonWriter.writeUntypedField("fileSystem", this.fileSystem);
             }
+            jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -415,6 +478,9 @@ public class HDInsightLinkedService extends LinkedService {
 
                         if ("clusterUri".equals(fieldName)) {
                             deserializedHDInsightLinkedService.clusterUri = reader.readUntyped();
+                        } else if ("clusterAuthType".equals(fieldName)) {
+                            deserializedHDInsightLinkedService.clusterAuthType
+                                = HDInsightClusterAuthenticationType.fromString(reader.getString());
                         } else if ("userName".equals(fieldName)) {
                             deserializedHDInsightLinkedService.userName = reader.readUntyped();
                         } else if ("password".equals(fieldName)) {
@@ -431,6 +497,8 @@ public class HDInsightLinkedService extends LinkedService {
                             deserializedHDInsightLinkedService.isEspEnabled = reader.readUntyped();
                         } else if ("fileSystem".equals(fieldName)) {
                             deserializedHDInsightLinkedService.fileSystem = reader.readUntyped();
+                        } else if ("credential".equals(fieldName)) {
+                            deserializedHDInsightLinkedService.credential = CredentialReference.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

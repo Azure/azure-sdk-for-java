@@ -12,21 +12,21 @@ public final class ProjectFilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectFileProperties model = BinaryData.fromString(
-            "{\"extension\":\"iufxqknpir\",\"filePath\":\"epttwqmsniff\",\"lastModified\":\"2021-10-31T18:45:45Z\",\"mediaType\":\"nrojlpijnkr\",\"size\":4496945956998841579}")
+            "{\"extension\":\"zdgiruj\",\"filePath\":\"bomvzzbtdcqv\",\"lastModified\":\"2021-05-17T04:02:41Z\",\"mediaType\":\"ujviylwdshfs\",\"size\":9196123884907355895}")
             .toObject(ProjectFileProperties.class);
-        Assertions.assertEquals("iufxqknpir", model.extension());
-        Assertions.assertEquals("epttwqmsniff", model.filePath());
-        Assertions.assertEquals("nrojlpijnkr", model.mediaType());
+        Assertions.assertEquals("zdgiruj", model.extension());
+        Assertions.assertEquals("bomvzzbtdcqv", model.filePath());
+        Assertions.assertEquals("ujviylwdshfs", model.mediaType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectFileProperties model = new ProjectFileProperties().withExtension("iufxqknpir")
-            .withFilePath("epttwqmsniff")
-            .withMediaType("nrojlpijnkr");
+        ProjectFileProperties model = new ProjectFileProperties().withExtension("zdgiruj")
+            .withFilePath("bomvzzbtdcqv")
+            .withMediaType("ujviylwdshfs");
         model = BinaryData.fromObject(model).toObject(ProjectFileProperties.class);
-        Assertions.assertEquals("iufxqknpir", model.extension());
-        Assertions.assertEquals("epttwqmsniff", model.filePath());
-        Assertions.assertEquals("nrojlpijnkr", model.mediaType());
+        Assertions.assertEquals("zdgiruj", model.extension());
+        Assertions.assertEquals("bomvzzbtdcqv", model.filePath());
+        Assertions.assertEquals("ujviylwdshfs", model.mediaType());
     }
 }

@@ -5,6 +5,7 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.kafka.connect.InMemoryStorageReader;
 import com.azure.cosmos.kafka.connect.KafkaCosmosTestConfigurations;
 import com.azure.cosmos.kafka.connect.KafkaCosmosTestSuiteBase;
 import com.azure.cosmos.kafka.connect.TestItem;
@@ -18,6 +19,8 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.source.SourceRecord;
+import org.apache.kafka.connect.source.SourceTaskContext;
+import org.apache.kafka.connect.storage.OffsetStorageReader;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -97,6 +100,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
             CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
 
             // first creating few items in the container
@@ -199,6 +203,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
             CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
 
             // first creating few items in the container
@@ -263,6 +268,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
             CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
 
             // first creating few items in the container
@@ -344,6 +350,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
             CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
 
             // first creating few items in the container
@@ -408,6 +415,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
             CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
             sourceTask.poll();
 
@@ -503,5 +511,25 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         }
 
         return testItems;
+    }
+
+    public static class TestSourceTaskContext implements SourceTaskContext {
+        private final Map<String, String> map;
+        private final OffsetStorageReader offsetStorageReader;
+
+        public TestSourceTaskContext(Map<String, String> map) {
+            this.map = map;
+            this.offsetStorageReader = new InMemoryStorageReader();
+        }
+
+        @Override
+        public Map<String, String> configs() {
+            return this.map;
+        }
+
+        @Override
+        public OffsetStorageReader offsetStorageReader() {
+            return this.offsetStorageReader;
+        }
     }
 }

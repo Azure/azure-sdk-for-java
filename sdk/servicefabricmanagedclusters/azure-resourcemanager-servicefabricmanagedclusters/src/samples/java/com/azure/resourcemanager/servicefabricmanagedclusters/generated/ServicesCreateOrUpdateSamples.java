@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public final class ServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ServicePutOperation_example_min.json
+     * x-ms-original-file: 2025-10-01-preview/ServicePutOperation_example_min.json
      */
     /**
      * Sample code: Put a service with minimum parameters.
@@ -45,7 +45,7 @@ public final class ServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ServicePutOperation_example_max.json
+     * x-ms-original-file: 2025-10-01-preview/ServicePutOperation_example_max.json
      */
     /**
      * Sample code: Put a service with maximum parameters.

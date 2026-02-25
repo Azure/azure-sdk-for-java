@@ -23,7 +23,7 @@ public final class TrunkedNetworksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"vsgeafgf\",\"extendedLocation\":{\"name\":\"sehxlzsxezp\",\"type\":\"kkwa\"},\"properties\":{\"associatedResourceIds\":[\"k\",\"fjlpze\",\"toyrplixlajml\"],\"clusterId\":\"quevham\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"w\",\"hybridAksClustersAssociatedIds\":[\"kek\",\"pkzwa\",\"xofqovchi\",\"bplvfidu\"],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"kxbyjg\",\"isolationDomainIds\":[\"fepxyihpqadag\",\"hrdicxdwyjfo\",\"xwyovcxjsgbip\"],\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"eksbuhoduchvls\",\"rdpibfd\",\"jdusspyszekb\",\"wlkaaggkrehbfrnu\"],\"vlans\":[1758633002381935946,7779694451225050050,3989575096946526035,6996182405918804337]},\"location\":\"eoagsqta\",\"tags\":{\"wudohzilfm\":\"srexxfavs\",\"kpsimsfeypofqp\":\"l\"},\"id\":\"bh\",\"name\":\"qgsdr\",\"type\":\"mttjxophgerh\"}]}";
+            = "{\"value\":[{\"etag\":\"vitmdmuqohhih\",\"extendedLocation\":{\"name\":\"a\",\"type\":\"quddrwjclj\"},\"properties\":{\"associatedResourceIds\":[\"lhpv\",\"adbwe\",\"ninafhxrz\"],\"clusterId\":\"m\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"ucwviqllukhkrcq\",\"hybridAksClustersAssociatedIds\":[\"bvzarmq\",\"bpoksts\",\"nvago\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"d\",\"isolationDomainIds\":[\"brdvce\",\"qwh\",\"txnmxgnmguz\"],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"rbalkjnb\",\"bdhlltq\"],\"vlans\":[5165185335468616668,1776299933017387749,217833730888954029,4190381666651264959]},\"location\":\"necova\",\"tags\":{\"anlxunpq\":\"heu\",\"aslgacizuxlrarwp\":\"ckqiawzlzk\",\"ytnkqb\":\"wsaudoejtighsxj\"},\"id\":\"lahovuuwx\",\"name\":\"mehjnhjioti\",\"type\":\"fbbcngkegxcypxbb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,16 @@ public final class TrunkedNetworksListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<TrunkedNetwork> response = manager.trunkedNetworks().list(com.azure.core.util.Context.NONE);
+        PagedIterable<TrunkedNetwork> response
+            = manager.trunkedNetworks().list(89327285, "xwnujvqyn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("eoagsqta", response.iterator().next().location());
-        Assertions.assertEquals("srexxfavs", response.iterator().next().tags().get("wudohzilfm"));
-        Assertions.assertEquals("sehxlzsxezp", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("kkwa", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.SRIOV, response.iterator().next().hybridAksPluginType());
-        Assertions.assertEquals("kxbyjg", response.iterator().next().interfaceName());
-        Assertions.assertEquals("fepxyihpqadag", response.iterator().next().isolationDomainIds().get(0));
-        Assertions.assertEquals(1758633002381935946L, response.iterator().next().vlans().get(0));
+        Assertions.assertEquals("necova", response.iterator().next().location());
+        Assertions.assertEquals("heu", response.iterator().next().tags().get("anlxunpq"));
+        Assertions.assertEquals("a", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("quddrwjclj", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.iterator().next().hybridAksPluginType());
+        Assertions.assertEquals("d", response.iterator().next().interfaceName());
+        Assertions.assertEquals("brdvce", response.iterator().next().isolationDomainIds().get(0));
+        Assertions.assertEquals(5165185335468616668L, response.iterator().next().vlans().get(0));
     }
 }

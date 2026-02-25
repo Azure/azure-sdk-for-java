@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -257,27 +256,6 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
         this.longTermSupport = longTermSupport;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (channel() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property channel in model AutoUpgradeProfileProperties"));
-        }
-        if (nodeImageSelection() != null) {
-            nodeImageSelection().validate();
-        }
-        if (autoUpgradeProfileStatus() != null) {
-            autoUpgradeProfileStatus().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AutoUpgradeProfileProperties.class);
 
     /**
      * {@inheritDoc}

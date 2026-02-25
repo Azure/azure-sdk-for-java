@@ -68,20 +68,6 @@ public final class NodeTypeAvailableSkuInner implements JsonSerializable<NodeTyp
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
-        if (capacity() != null) {
-            capacity().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

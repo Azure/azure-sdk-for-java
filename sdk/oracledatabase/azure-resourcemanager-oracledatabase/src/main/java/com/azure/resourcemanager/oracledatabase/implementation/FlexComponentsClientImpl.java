@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.oracledatabase.fluent.FlexComponentsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.models.FlexComponentInner;
 import com.azure.resourcemanager.oracledatabase.implementation.models.FlexComponentListResult;
@@ -129,21 +128,6 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FlexComponentInner>> getWithResponseAsync(String location, String flexComponentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (flexComponentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter flexComponentName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -179,24 +163,6 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FlexComponentInner> getWithResponse(String location, String flexComponentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (flexComponentName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter flexComponentName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             location, flexComponentName, accept, context);
@@ -230,17 +196,6 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FlexComponentInner>> listByParentSinglePageAsync(String location, SystemShapes shape) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParent(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -294,20 +249,6 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FlexComponentInner> listByParentSinglePage(String location, SystemShapes shape) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FlexComponentListResult> res = service.listByParentSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), location, shape, accept, Context.NONE);
@@ -329,20 +270,6 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FlexComponentInner> listByParentSinglePage(String location, SystemShapes shape,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FlexComponentListResult> res = service.listByParentSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), location, shape, accept, context);
@@ -395,13 +322,6 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FlexComponentInner>> listByParentNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParentNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -421,15 +341,6 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FlexComponentInner> listByParentNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FlexComponentListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -449,21 +360,10 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FlexComponentInner> listByParentNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FlexComponentListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(FlexComponentsClientImpl.class);
 }

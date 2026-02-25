@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Specifies information about the capacity reservation. Only tags and sku.capacity can be updated.
+ * Specifies information about the capacity reservation. sku.capacity cannot be updated for Block Capacity Reservation.
+ * Tags can be update for all Capacity Reservation Types.
  */
 @Fluent
 public final class CapacityReservationUpdate extends UpdateResource {
@@ -26,9 +27,12 @@ public final class CapacityReservationUpdate extends UpdateResource {
 
     /*
      * SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set.
-     * Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are supported. Refer to
-     * List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for
-     * supported values.
+     * Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are supported. When
+     * 'CapacityReservationSupported' is true, the SKU capability also specifies the
+     * 'SupportedCapacityReservationTypes', which lists the types of capacity reservations (such as Targeted or Block)
+     * that the SKU supports. Refer to List Microsoft.Compute SKUs in a region
+     * (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for supported values. **Note:** The SKU name and
+     * capacity cannot be updated for Block capacity reservations.
      */
     private Sku sku;
 
@@ -50,8 +54,11 @@ public final class CapacityReservationUpdate extends UpdateResource {
     /**
      * Get the sku property: SKU of the resource for which capacity needs be reserved. The SKU name and capacity is
      * required to be set. Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are
-     * supported. Refer to List Microsoft.Compute SKUs in a region
-     * (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for supported values.
+     * supported. When 'CapacityReservationSupported' is true, the SKU capability also specifies the
+     * 'SupportedCapacityReservationTypes', which lists the types of capacity reservations (such as Targeted or Block)
+     * that the SKU supports. Refer to List Microsoft.Compute SKUs in a region
+     * (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for supported values. **Note:** The SKU name and
+     * capacity cannot be updated for Block capacity reservations.
      * 
      * @return the sku value.
      */
@@ -62,8 +69,11 @@ public final class CapacityReservationUpdate extends UpdateResource {
     /**
      * Set the sku property: SKU of the resource for which capacity needs be reserved. The SKU name and capacity is
      * required to be set. Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are
-     * supported. Refer to List Microsoft.Compute SKUs in a region
-     * (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for supported values.
+     * supported. When 'CapacityReservationSupported' is true, the SKU capability also specifies the
+     * 'SupportedCapacityReservationTypes', which lists the types of capacity reservations (such as Targeted or Block)
+     * that the SKU supports. Refer to List Microsoft.Compute SKUs in a region
+     * (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for supported values. **Note:** The SKU name and
+     * capacity cannot be updated for Block capacity reservations.
      * 
      * @param sku the sku value to set.
      * @return the CapacityReservationUpdate object itself.
@@ -149,6 +159,37 @@ public final class CapacityReservationUpdate extends UpdateResource {
      */
     public OffsetDateTime timeCreated() {
         return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
+    }
+
+    /**
+     * Get the scheduleProfile property: Defines the schedule for Block-type capacity reservations. Specifies the
+     * schedule during which capacity reservation is active and VM or VMSS resource can be allocated using reservation.
+     * This property is required and only supported when the capacity reservation group type is 'Block'. The
+     * scheduleProfile, start, and end fields are immutable after creation. Minimum API version: 2025-04-01. Please
+     * refer to https://aka.ms/blockcapacityreservation for more details.
+     * 
+     * @return the scheduleProfile value.
+     */
+    public ScheduleProfile scheduleProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduleProfile();
+    }
+
+    /**
+     * Set the scheduleProfile property: Defines the schedule for Block-type capacity reservations. Specifies the
+     * schedule during which capacity reservation is active and VM or VMSS resource can be allocated using reservation.
+     * This property is required and only supported when the capacity reservation group type is 'Block'. The
+     * scheduleProfile, start, and end fields are immutable after creation. Minimum API version: 2025-04-01. Please
+     * refer to https://aka.ms/blockcapacityreservation for more details.
+     * 
+     * @param scheduleProfile the scheduleProfile value to set.
+     * @return the CapacityReservationUpdate object itself.
+     */
+    public CapacityReservationUpdate withScheduleProfile(ScheduleProfile scheduleProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CapacityReservationProperties();
+        }
+        this.innerProperties().withScheduleProfile(scheduleProfile);
+        return this;
     }
 
     /**

@@ -71,6 +71,10 @@ foreach ($packageDetail in $packageDetails) {
 
   if ($packageDetail.AssociatedArtifacts.Length -ne 1) {
     $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and (($_.Type -eq "jar") -or ($_.Type -eq "aar")) }
+    # If no JAR/AAR found, use POM as the main file artifact for POM-only packages
+    if (-not $fileAssociatedArtifact) {
+      $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and ($_.Type -eq "pom") }
+    }
   } else {
     $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts[0]
   }

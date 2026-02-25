@@ -41,29 +41,29 @@ public class WebAppsWebDeployTests extends AppServiceTest {
         // Create with new app service plan
         WebApp webApp1 = appServiceManager.webApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .withNewWindowsPlan(PricingTier.BASIC_B1)
             .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
             .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
             .create();
         Assertions.assertNotNull(webApp1);
-        Assertions.assertEquals(Region.US_WEST, webApp1.region());
+        Assertions.assertEquals(Region.US_WEST3, webApp1.region());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
-        Assertions.assertEquals(Region.US_WEST, plan1.region());
+        Assertions.assertEquals(Region.US_WEST3, plan1.region());
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
 
         WebDeployment deployment = webApp1.deploy()
             .withPackageUri(
-                "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/webapps.zip")
+                "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/appservice/azure-resourcemanager-appservice/src/test/resources/webapps.zip")
             .withExistingDeploymentsDeleted(true)
             .execute();
 
         Assertions.assertNotNull(deployment);
         if (!isPlaybackMode()) {
-            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
-            Response<String> response = curl("http://" + webApp1.defaultHostname() + "/helloworld/");
+            ResourceManagerUtils.sleep(Duration.ofSeconds(60));
+            Response<String> response = curl("https://" + webApp1.defaultHostname() + "/helloworld/");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);

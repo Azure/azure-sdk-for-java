@@ -129,13 +129,13 @@ public final class DataflowEndpointResourceImpl
         return this;
     }
 
-    public DataflowEndpointResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.innerModel().withExtendedLocation(extendedLocation);
+    public DataflowEndpointResourceImpl withProperties(DataflowEndpointProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public DataflowEndpointResourceImpl withProperties(DataflowEndpointProperties properties) {
-        this.innerModel().withProperties(properties);
+    public DataflowEndpointResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.innerModel().withExtendedLocation(extendedLocation);
         return this;
     }
 }

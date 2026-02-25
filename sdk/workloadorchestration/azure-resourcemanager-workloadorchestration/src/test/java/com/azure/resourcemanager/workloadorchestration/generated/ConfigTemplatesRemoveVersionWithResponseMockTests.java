@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class ConfigTemplatesRemoveVersionWithResponseMockTests {
     @Test
     public void testRemoveVersionWithResponse() throws Exception {
-        String responseStr = "{\"status\":\"gqgdminictteajoh\"}";
+        String responseStr = "{\"status\":\"wmwwmjswen\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ConfigTemplatesRemoveVersionWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RemoveVersionResponse response = manager.configTemplates()
-            .removeVersionWithResponse("h", "alehpav", new VersionParameter().withVersion("wugiqjti"),
+            .removeVersionWithResponse("hyhlwcjsqg", "jhffbxrqrkij", new VersionParameter().withVersion("euqlsdxeqztv"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gqgdminictteajoh", response.status());
+        Assertions.assertEquals("wmwwmjswen", response.status());
     }
 }

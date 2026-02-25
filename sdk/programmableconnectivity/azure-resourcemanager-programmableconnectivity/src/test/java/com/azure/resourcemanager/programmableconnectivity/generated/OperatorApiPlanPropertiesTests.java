@@ -12,18 +12,16 @@ public final class OperatorApiPlanPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperatorApiPlanProperties model = BinaryData.fromString(
-            "{\"operatorName\":\"gmaajrm\",\"camaraApiName\":\"jwzrl\",\"supportedLocations\":[\"clwhijcoejctbz\"],\"operatorRegions\":[\"qsycbkbfkgu\"],\"markets\":[\"exxppofmxaxcfjp\",\"ddtocjjxhvp\"],\"limits\":\"uexhdzx\",\"marketplaceProperties\":{\"offerId\":\"eojnxqbzvddn\",\"legacyOfferId\":\"ndei\",\"publisherId\":\"twnpzaoqvuhrhcf\",\"planId\":\"yd\",\"termId\":\"lmjthjq\"},\"provisioningState\":\"Deleting\"}")
+            "{\"operatorName\":\"bpxjmfl\",\"camaraApiName\":\"vnchrkcci\",\"supportedLocations\":[\"juqk\",\"rsa\",\"iwkuofos\"],\"operatorRegions\":[\"sauuimj\",\"vxieduugidyj\",\"rfbyaosvexcso\",\"pclhocohslk\"],\"markets\":[\"eggzfb\",\"hfmvfaxkffe\"],\"limits\":\"th\",\"marketplaceProperties\":{\"offerId\":\"ez\",\"publisherId\":\"shxmzsbbzoggigrx\",\"planId\":\"ur\",\"planTermsAndConditionsLinks\":[\"xxjnspydptk\"]},\"provisioningState\":\"Updating\"}")
             .toObject(OperatorApiPlanProperties.class);
-        Assertions.assertEquals("gmaajrm", model.operatorName());
-        Assertions.assertEquals("jwzrl", model.camaraApiName());
-        Assertions.assertEquals("clwhijcoejctbz", model.supportedLocations().get(0));
-        Assertions.assertEquals("qsycbkbfkgu", model.operatorRegions().get(0));
-        Assertions.assertEquals("exxppofmxaxcfjp", model.markets().get(0));
-        Assertions.assertEquals("uexhdzx", model.limits());
-        Assertions.assertEquals("eojnxqbzvddn", model.marketplaceProperties().offerId());
-        Assertions.assertEquals("ndei", model.marketplaceProperties().legacyOfferId());
-        Assertions.assertEquals("twnpzaoqvuhrhcf", model.marketplaceProperties().publisherId());
-        Assertions.assertEquals("yd", model.marketplaceProperties().planId());
-        Assertions.assertEquals("lmjthjq", model.marketplaceProperties().termId());
+        Assertions.assertEquals("bpxjmfl", model.operatorName());
+        Assertions.assertEquals("vnchrkcci", model.camaraApiName());
+        Assertions.assertEquals("juqk", model.supportedLocations().get(0));
+        Assertions.assertEquals("sauuimj", model.operatorRegions().get(0));
+        Assertions.assertEquals("eggzfb", model.markets().get(0));
+        Assertions.assertEquals("th", model.limits());
+        Assertions.assertEquals("ez", model.marketplaceProperties().offerId());
+        Assertions.assertEquals("shxmzsbbzoggigrx", model.marketplaceProperties().publisherId());
+        Assertions.assertEquals("ur", model.marketplaceProperties().planId());
     }
 }

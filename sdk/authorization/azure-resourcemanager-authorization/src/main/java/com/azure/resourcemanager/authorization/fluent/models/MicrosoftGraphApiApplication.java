@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * apiApplication.
+ * Represents an API application.
  */
 @Fluent
 public final class MicrosoftGraphApiApplication implements JsonSerializable<MicrosoftGraphApiApplication> {

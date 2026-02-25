@@ -413,6 +413,106 @@ public final class ApplicationGatewayBackendHttpSettings extends SubResource {
     }
 
     /**
+     * Get the dedicatedBackendConnection property: Enable or disable dedicated connection per backend server. Default
+     * is set to false.
+     * 
+     * @return the dedicatedBackendConnection value.
+     */
+    public Boolean dedicatedBackendConnection() {
+        return this.innerProperties() == null ? null : this.innerProperties().dedicatedBackendConnection();
+    }
+
+    /**
+     * Set the dedicatedBackendConnection property: Enable or disable dedicated connection per backend server. Default
+     * is set to false.
+     * 
+     * @param dedicatedBackendConnection the dedicatedBackendConnection value to set.
+     * @return the ApplicationGatewayBackendHttpSettings object itself.
+     */
+    public ApplicationGatewayBackendHttpSettings withDedicatedBackendConnection(Boolean dedicatedBackendConnection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withDedicatedBackendConnection(dedicatedBackendConnection);
+        return this;
+    }
+
+    /**
+     * Get the validateCertChainAndExpiry property: Verify or skip both chain and expiry validations of the certificate
+     * on the backend server. Default is set to true.
+     * 
+     * @return the validateCertChainAndExpiry value.
+     */
+    public Boolean validateCertChainAndExpiry() {
+        return this.innerProperties() == null ? null : this.innerProperties().validateCertChainAndExpiry();
+    }
+
+    /**
+     * Set the validateCertChainAndExpiry property: Verify or skip both chain and expiry validations of the certificate
+     * on the backend server. Default is set to true.
+     * 
+     * @param validateCertChainAndExpiry the validateCertChainAndExpiry value to set.
+     * @return the ApplicationGatewayBackendHttpSettings object itself.
+     */
+    public ApplicationGatewayBackendHttpSettings withValidateCertChainAndExpiry(Boolean validateCertChainAndExpiry) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withValidateCertChainAndExpiry(validateCertChainAndExpiry);
+        return this;
+    }
+
+    /**
+     * Get the validateSni property: When enabled, verifies if the Common Name of the certificate provided by the
+     * backend server matches the Server Name Indication (SNI) value. Default value is true.
+     * 
+     * @return the validateSni value.
+     */
+    public Boolean validateSni() {
+        return this.innerProperties() == null ? null : this.innerProperties().validateSni();
+    }
+
+    /**
+     * Set the validateSni property: When enabled, verifies if the Common Name of the certificate provided by the
+     * backend server matches the Server Name Indication (SNI) value. Default value is true.
+     * 
+     * @param validateSni the validateSni value to set.
+     * @return the ApplicationGatewayBackendHttpSettings object itself.
+     */
+    public ApplicationGatewayBackendHttpSettings withValidateSni(Boolean validateSni) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withValidateSni(validateSni);
+        return this;
+    }
+
+    /**
+     * Get the sniName property: Specify an SNI value to match the common name of the certificate on the backend. By
+     * default, the application gateway uses the incoming request’s host header as the SNI. Default value is null.
+     * 
+     * @return the sniName value.
+     */
+    public String sniName() {
+        return this.innerProperties() == null ? null : this.innerProperties().sniName();
+    }
+
+    /**
+     * Set the sniName property: Specify an SNI value to match the common name of the certificate on the backend. By
+     * default, the application gateway uses the incoming request’s host header as the SNI. Default value is null.
+     * 
+     * @param sniName the sniName value to set.
+     * @return the ApplicationGatewayBackendHttpSettings object itself.
+     */
+    public ApplicationGatewayBackendHttpSettings withSniName(String sniName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withSniName(sniName);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the backend HTTP settings resource.
      * 
      * @return the provisioningState value.

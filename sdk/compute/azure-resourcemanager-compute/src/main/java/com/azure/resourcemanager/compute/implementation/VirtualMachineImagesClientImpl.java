@@ -156,7 +156,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         if (edgeZone == null) {
             return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByEdgeZone(this.client.getEndpoint(), apiVersion,
@@ -193,7 +193,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         if (edgeZone == null) {
             return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listByEdgeZone(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -271,7 +271,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listPublishers(this.client.getEndpoint(), apiVersion,
@@ -304,7 +304,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listPublishers(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -384,7 +384,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         if (publisherName == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listOffers(this.client.getEndpoint(), apiVersion,
@@ -421,7 +421,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         if (publisherName == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listOffers(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -509,7 +509,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         if (offer == null) {
             return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSkus(this.client.getEndpoint(), apiVersion,
@@ -550,7 +550,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         if (offer == null) {
             return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listSkus(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -650,7 +650,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         if (skus == null) {
             return Mono.error(new IllegalArgumentException("Parameter skus is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -698,7 +698,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         if (skus == null) {
             return Mono.error(new IllegalArgumentException("Parameter skus is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -811,7 +811,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, location, publisherName, offer,
@@ -859,7 +859,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, location, publisherName, offer, skus, version,
@@ -966,7 +966,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         if (expand == null) {
             return Mono.error(new IllegalArgumentException("Parameter expand is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listWithProperties(this.client.getEndpoint(), apiVersion,
@@ -1017,7 +1017,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         if (expand == null) {
             return Mono.error(new IllegalArgumentException("Parameter expand is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listWithProperties(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),

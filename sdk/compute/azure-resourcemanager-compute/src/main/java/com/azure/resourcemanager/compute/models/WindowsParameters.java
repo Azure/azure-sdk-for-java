@@ -45,6 +45,20 @@ public final class WindowsParameters implements JsonSerializable<WindowsParamete
      */
     private OffsetDateTime maxPatchPublishDate;
 
+    /*
+     * This is used to include patches that match the given patch name masks. Alphanumeric strings and wildcard
+     * expressions consisting of * and ? are only supported as input values in the list. Null, empty and only
+     * whitespaces strings as inputs values are not supported.
+     */
+    private List<String> patchNameMasksToInclude;
+
+    /*
+     * This is used to exclude patches that match the given patch name masks. Alphanumeric strings and wildcard
+     * expressions consisting of * and ? are only supported as input values in the list. Null, empty and only
+     * whitespaces strings as inputs values are not supported.
+     */
+    private List<String> patchNameMasksToExclude;
+
     /**
      * Creates an instance of WindowsParameters class.
      */
@@ -159,6 +173,54 @@ public final class WindowsParameters implements JsonSerializable<WindowsParamete
     }
 
     /**
+     * Get the patchNameMasksToInclude property: This is used to include patches that match the given patch name masks.
+     * Alphanumeric strings and wildcard expressions consisting of * and ? are only supported as input values in the
+     * list. Null, empty and only whitespaces strings as inputs values are not supported.
+     * 
+     * @return the patchNameMasksToInclude value.
+     */
+    public List<String> patchNameMasksToInclude() {
+        return this.patchNameMasksToInclude;
+    }
+
+    /**
+     * Set the patchNameMasksToInclude property: This is used to include patches that match the given patch name masks.
+     * Alphanumeric strings and wildcard expressions consisting of * and ? are only supported as input values in the
+     * list. Null, empty and only whitespaces strings as inputs values are not supported.
+     * 
+     * @param patchNameMasksToInclude the patchNameMasksToInclude value to set.
+     * @return the WindowsParameters object itself.
+     */
+    public WindowsParameters withPatchNameMasksToInclude(List<String> patchNameMasksToInclude) {
+        this.patchNameMasksToInclude = patchNameMasksToInclude;
+        return this;
+    }
+
+    /**
+     * Get the patchNameMasksToExclude property: This is used to exclude patches that match the given patch name masks.
+     * Alphanumeric strings and wildcard expressions consisting of * and ? are only supported as input values in the
+     * list. Null, empty and only whitespaces strings as inputs values are not supported.
+     * 
+     * @return the patchNameMasksToExclude value.
+     */
+    public List<String> patchNameMasksToExclude() {
+        return this.patchNameMasksToExclude;
+    }
+
+    /**
+     * Set the patchNameMasksToExclude property: This is used to exclude patches that match the given patch name masks.
+     * Alphanumeric strings and wildcard expressions consisting of * and ? are only supported as input values in the
+     * list. Null, empty and only whitespaces strings as inputs values are not supported.
+     * 
+     * @param patchNameMasksToExclude the patchNameMasksToExclude value to set.
+     * @return the WindowsParameters object itself.
+     */
+    public WindowsParameters withPatchNameMasksToExclude(List<String> patchNameMasksToExclude) {
+        this.patchNameMasksToExclude = patchNameMasksToExclude;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -183,6 +245,10 @@ public final class WindowsParameters implements JsonSerializable<WindowsParamete
             this.maxPatchPublishDate == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.maxPatchPublishDate));
+        jsonWriter.writeArrayField("patchNameMasksToInclude", this.patchNameMasksToInclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("patchNameMasksToExclude", this.patchNameMasksToExclude,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -217,6 +283,12 @@ public final class WindowsParameters implements JsonSerializable<WindowsParamete
                 } else if ("maxPatchPublishDate".equals(fieldName)) {
                     deserializedWindowsParameters.maxPatchPublishDate = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("patchNameMasksToInclude".equals(fieldName)) {
+                    List<String> patchNameMasksToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWindowsParameters.patchNameMasksToInclude = patchNameMasksToInclude;
+                } else if ("patchNameMasksToExclude".equals(fieldName)) {
+                    List<String> patchNameMasksToExclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWindowsParameters.patchNameMasksToExclude = patchNameMasksToExclude;
                 } else {
                     reader.skipChildren();
                 }

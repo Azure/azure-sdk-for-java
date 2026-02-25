@@ -120,7 +120,7 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
         if (artifactName == null) {
             return Mono.error(new IllegalArgumentException("Parameter artifactName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByArtifactName(this.client.getEndpoint(), apiVersion,
@@ -171,7 +171,7 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
         if (artifactName == null) {
             return Mono.error(new IllegalArgumentException("Parameter artifactName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

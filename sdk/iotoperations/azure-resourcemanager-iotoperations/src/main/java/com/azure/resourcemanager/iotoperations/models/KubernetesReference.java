@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -128,24 +127,6 @@ public final class KubernetesReference implements JsonSerializable<KubernetesRef
         this.namespace = namespace;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (kind() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property kind in model KubernetesReference"));
-        }
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model KubernetesReference"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(KubernetesReference.class);
 
     /**
      * {@inheritDoc}

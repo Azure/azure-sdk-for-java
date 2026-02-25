@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.computeschedule.fluent.OccurrenceExtensionsClient;
 import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceExtensionResourceInner;
 import com.azure.resourcemanager.computeschedule.implementation.models.OccurrenceExtensionResourceListResult;
@@ -111,13 +110,6 @@ public final class OccurrenceExtensionsClientImpl implements OccurrenceExtension
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OccurrenceExtensionResourceInner>>
         listOccurrenceByVmsSinglePageAsync(String resourceUri) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listOccurrenceByVms(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -154,15 +146,6 @@ public final class OccurrenceExtensionsClientImpl implements OccurrenceExtension
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceExtensionResourceInner> listOccurrenceByVmsSinglePage(String resourceUri) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OccurrenceExtensionResourceListResult> res = service.listOccurrenceByVmsSync(this.client.getEndpoint(),
             this.client.getApiVersion(), resourceUri, accept, Context.NONE);
@@ -183,15 +166,6 @@ public final class OccurrenceExtensionsClientImpl implements OccurrenceExtension
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceExtensionResourceInner> listOccurrenceByVmsSinglePage(String resourceUri,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OccurrenceExtensionResourceListResult> res = service.listOccurrenceByVmsSync(this.client.getEndpoint(),
             this.client.getApiVersion(), resourceUri, accept, context);
@@ -245,13 +219,6 @@ public final class OccurrenceExtensionsClientImpl implements OccurrenceExtension
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OccurrenceExtensionResourceInner>>
         listOccurrenceByVmsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -272,15 +239,6 @@ public final class OccurrenceExtensionsClientImpl implements OccurrenceExtension
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceExtensionResourceInner> listOccurrenceByVmsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OccurrenceExtensionResourceListResult> res
             = service.listOccurrenceByVmsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -301,21 +259,10 @@ public final class OccurrenceExtensionsClientImpl implements OccurrenceExtension
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceExtensionResourceInner> listOccurrenceByVmsNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OccurrenceExtensionResourceListResult> res
             = service.listOccurrenceByVmsNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(OccurrenceExtensionsClientImpl.class);
 }

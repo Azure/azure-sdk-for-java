@@ -6,8 +6,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
@@ -24,23 +24,23 @@ public final class MonitoredSubscriptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"patchOperation\":\"AddComplete\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"kfpagao\",\"status\":\"Deleting\",\"error\":\"pqblylsyxkqjnsj\",\"tagRules\":{\"provisioningState\":\"Updating\",\"logRules\":{},\"metricRules\":{}}},{\"subscriptionId\":\"xsdszuempsb\",\"status\":\"InProgress\",\"error\":\"beyvpnqicvinvkjj\",\"tagRules\":{\"provisioningState\":\"Canceled\",\"logRules\":{},\"metricRules\":{}}},{\"subscriptionId\":\"kzclewyh\",\"status\":\"InProgress\",\"error\":\"aztz\",\"tagRules\":{\"provisioningState\":\"Creating\",\"logRules\":{},\"metricRules\":{}}},{\"subscriptionId\":\"wyfzqwhxxbuyqa\",\"status\":\"Failed\",\"error\":\"qztpp\",\"tagRules\":{\"provisioningState\":\"Updating\",\"logRules\":{},\"metricRules\":{}}}],\"provisioningState\":\"NotSpecified\"},\"id\":\"altol\",\"name\":\"ncwsob\",\"type\":\"wcsdbnwdcfhucq\"}";
+            = "{\"properties\":{\"patchOperation\":\"DeleteComplete\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"ygaeqidbqfatpxl\",\"status\":\"Deleting\",\"error\":\"yjmoadsu\",\"tagRules\":{\"provisioningState\":\"NotSpecified\",\"logRules\":{},\"metricRules\":{}}},{\"subscriptionId\":\"mjsjqb\",\"status\":\"Deleting\",\"error\":\"x\",\"tagRules\":{\"provisioningState\":\"NotSpecified\",\"logRules\":{},\"metricRules\":{}}},{\"subscriptionId\":\"duhpk\",\"status\":\"Active\",\"error\":\"mareqnajxqugj\",\"tagRules\":{\"provisioningState\":\"NotSpecified\",\"logRules\":{},\"metricRules\":{}}}],\"provisioningState\":\"Failed\"},\"id\":\"gssofwq\",\"name\":\"zqalkrmnjijpx\",\"type\":\"cqqudf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MonitoredSubscriptionProperties response = manager.monitoredSubscriptions()
-            .getWithResponse("vdkcrodtj", "nfwjlfltkacjvefk", ConfigurationName.DEFAULT,
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("zikhl", "fjhdg", ConfigurationName.DEFAULT, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PatchOperation.ADD_COMPLETE, response.properties().patchOperation());
-        Assertions.assertEquals("kfpagao", response.properties().monitoredSubscriptionList().get(0).subscriptionId());
+        Assertions.assertEquals(PatchOperation.DELETE_COMPLETE, response.properties().patchOperation());
+        Assertions.assertEquals("ygaeqidbqfatpxl",
+            response.properties().monitoredSubscriptionList().get(0).subscriptionId());
         Assertions.assertEquals(Status.DELETING, response.properties().monitoredSubscriptionList().get(0).status());
-        Assertions.assertEquals("pqblylsyxkqjnsj", response.properties().monitoredSubscriptionList().get(0).error());
+        Assertions.assertEquals("yjmoadsu", response.properties().monitoredSubscriptionList().get(0).error());
     }
 }

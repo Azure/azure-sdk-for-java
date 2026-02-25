@@ -11,25 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class CacheNodeDriveConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CacheNodeDriveConfiguration model = BinaryData.fromString(
-            "{\"physicalPath\":\"bdlwtgrhpdjpj\",\"sizeInGb\":1984471736,\"cacheNumber\":1012728769,\"nginxMapping\":\"zj\"}")
+        CacheNodeDriveConfiguration model = BinaryData
+            .fromString(
+                "{\"physicalPath\":\"c\",\"sizeInGb\":1616487247,\"cacheNumber\":1971484471,\"nginxMapping\":\"pyd\"}")
             .toObject(CacheNodeDriveConfiguration.class);
-        Assertions.assertEquals("bdlwtgrhpdjpj", model.physicalPath());
-        Assertions.assertEquals(1984471736, model.sizeInGb());
-        Assertions.assertEquals(1012728769, model.cacheNumber());
-        Assertions.assertEquals("zj", model.nginxMapping());
+        Assertions.assertEquals("c", model.physicalPath());
+        Assertions.assertEquals(1616487247, model.sizeInGb());
+        Assertions.assertEquals(1971484471, model.cacheNumber());
+        Assertions.assertEquals("pyd", model.nginxMapping());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheNodeDriveConfiguration model = new CacheNodeDriveConfiguration().withPhysicalPath("bdlwtgrhpdjpj")
-            .withSizeInGb(1984471736)
-            .withCacheNumber(1012728769)
-            .withNginxMapping("zj");
+        CacheNodeDriveConfiguration model = new CacheNodeDriveConfiguration().withPhysicalPath("c")
+            .withSizeInGb(1616487247)
+            .withCacheNumber(1971484471)
+            .withNginxMapping("pyd");
         model = BinaryData.fromObject(model).toObject(CacheNodeDriveConfiguration.class);
-        Assertions.assertEquals("bdlwtgrhpdjpj", model.physicalPath());
-        Assertions.assertEquals(1984471736, model.sizeInGb());
-        Assertions.assertEquals(1012728769, model.cacheNumber());
-        Assertions.assertEquals("zj", model.nginxMapping());
+        Assertions.assertEquals("c", model.physicalPath());
+        Assertions.assertEquals(1616487247, model.sizeInGb());
+        Assertions.assertEquals(1971484471, model.cacheNumber());
+        Assertions.assertEquals("pyd", model.nginxMapping());
     }
 }

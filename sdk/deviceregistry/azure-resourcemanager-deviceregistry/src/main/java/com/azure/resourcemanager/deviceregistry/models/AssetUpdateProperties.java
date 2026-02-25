@@ -461,23 +461,6 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (defaultTopic() != null) {
-            defaultTopic().validate();
-        }
-        if (datasets() != null) {
-            datasets().forEach(e -> e.validate());
-        }
-        if (events() != null) {
-            events().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -494,8 +477,13 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
         jsonWriter.writeStringField("softwareRevision", this.softwareRevision);
         jsonWriter.writeStringField("documentationUri", this.documentationUri);
         jsonWriter.writeStringField("serialNumber", this.serialNumber);
-        jsonWriter.writeMapField("attributes", this.attributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("defaultDatasetsConfiguration", this.defaultDatasetsConfiguration);
         jsonWriter.writeStringField("defaultEventsConfiguration", this.defaultEventsConfiguration);
         jsonWriter.writeJsonField("defaultTopic", this.defaultTopic);

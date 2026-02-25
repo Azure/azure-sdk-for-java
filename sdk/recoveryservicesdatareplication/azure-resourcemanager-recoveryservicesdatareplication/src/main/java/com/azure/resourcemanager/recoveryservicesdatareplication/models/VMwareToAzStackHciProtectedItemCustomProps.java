@@ -6,7 +6,6 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -913,90 +912,6 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
     public OffsetDateTime lastReplicationUpdateTime() {
         return this.lastReplicationUpdateTime;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (targetHciClusterId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetHciClusterId in model VMwareToAzStackHciProtectedItemCustomProps"));
-        }
-        if (targetArcClusterCustomLocationId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetArcClusterCustomLocationId in model VMwareToAzStackHciProtectedItemCustomProps"));
-        }
-        if (storageContainerId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property storageContainerId in model VMwareToAzStackHciProtectedItemCustomProps"));
-        }
-        if (targetResourceGroupId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetResourceGroupId in model VMwareToAzStackHciProtectedItemCustomProps"));
-        }
-        if (customLocationRegion() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property customLocationRegion in model VMwareToAzStackHciProtectedItemCustomProps"));
-        }
-        if (disksToInclude() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property disksToInclude in model VMwareToAzStackHciProtectedItemCustomProps"));
-        } else {
-            disksToInclude().forEach(e -> e.validate());
-        }
-        if (nicsToInclude() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property nicsToInclude in model VMwareToAzStackHciProtectedItemCustomProps"));
-        } else {
-            nicsToInclude().forEach(e -> e.validate());
-        }
-        if (protectedDisks() != null) {
-            protectedDisks().forEach(e -> e.validate());
-        }
-        if (protectedNics() != null) {
-            protectedNics().forEach(e -> e.validate());
-        }
-        if (hyperVGeneration() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property hyperVGeneration in model VMwareToAzStackHciProtectedItemCustomProps"));
-        }
-        if (dynamicMemoryConfig() != null) {
-            dynamicMemoryConfig().validate();
-        }
-        if (fabricDiscoveryMachineId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property fabricDiscoveryMachineId in model VMwareToAzStackHciProtectedItemCustomProps"));
-        }
-        if (runAsAccountId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property runAsAccountId in model VMwareToAzStackHciProtectedItemCustomProps"));
-        }
-        if (sourceFabricAgentName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sourceFabricAgentName in model VMwareToAzStackHciProtectedItemCustomProps"));
-        }
-        if (targetFabricAgentName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetFabricAgentName in model VMwareToAzStackHciProtectedItemCustomProps"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VMwareToAzStackHciProtectedItemCustomProps.class);
 
     /**
      * {@inheritDoc}

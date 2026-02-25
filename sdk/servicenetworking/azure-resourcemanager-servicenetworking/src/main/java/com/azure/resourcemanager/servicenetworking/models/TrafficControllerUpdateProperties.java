@@ -49,17 +49,6 @@ public final class TrafficControllerUpdateProperties implements JsonSerializable
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (securityPolicyConfigurations() != null) {
-            securityPolicyConfigurations().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

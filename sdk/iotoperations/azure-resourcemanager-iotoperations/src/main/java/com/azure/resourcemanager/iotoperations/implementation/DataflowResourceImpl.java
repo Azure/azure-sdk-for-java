@@ -137,13 +137,13 @@ public final class DataflowResourceImpl
         return this;
     }
 
-    public DataflowResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.innerModel().withExtendedLocation(extendedLocation);
+    public DataflowResourceImpl withProperties(DataflowProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public DataflowResourceImpl withProperties(DataflowProperties properties) {
-        this.innerModel().withProperties(properties);
+    public DataflowResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.innerModel().withExtendedLocation(extendedLocation);
         return this;
     }
 }

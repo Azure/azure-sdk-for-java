@@ -11,7 +11,7 @@ public final class MigrateSchemaSqlServerSqlDbTaskOutputMigrationLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSchemaSqlServerSqlDbTaskOutputMigrationLevel model = BinaryData.fromString(
-            "{\"resultType\":\"MigrationLevelOutput\",\"state\":\"InProgress\",\"startedOn\":\"2021-03-09T16:27:44Z\",\"endedOn\":\"2021-04-26T05:03:28Z\",\"sourceServerVersion\":\"oguyaip\",\"sourceServerBrandVersion\":\"sdaultxij\",\"targetServerVersion\":\"mfqwa\",\"targetServerBrandVersion\":\"nqnm\",\"id\":\"ngz\"}")
+            "{\"resultType\":\"MigrationLevelOutput\",\"state\":\"Stopped\",\"startedOn\":\"2021-06-23T04:09:23Z\",\"endedOn\":\"2021-02-22T05:27:57Z\",\"sourceServerVersion\":\"hv\",\"sourceServerBrandVersion\":\"lkvn\",\"targetServerVersion\":\"lrigjkskyri\",\"targetServerBrandVersion\":\"vzidsxwaab\",\"id\":\"ifrygzn\"}")
             .toObject(MigrateSchemaSqlServerSqlDbTaskOutputMigrationLevel.class);
     }
 

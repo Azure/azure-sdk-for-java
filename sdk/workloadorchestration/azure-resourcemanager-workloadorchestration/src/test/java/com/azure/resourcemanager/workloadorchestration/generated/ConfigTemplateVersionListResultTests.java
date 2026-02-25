@@ -12,9 +12,9 @@ public final class ConfigTemplateVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigTemplateVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"configurations\":\"jvlpjxxkzbr\",\"provisioningState\":\"Canceled\"},\"eTag\":\"ivsiy\",\"id\":\"kdncj\",\"name\":\"xonbzoggculapz\",\"type\":\"y\"},{\"properties\":{\"configurations\":\"gogtqxepnylbf\",\"provisioningState\":\"InProgress\"},\"eTag\":\"yjt\",\"id\":\"of\",\"name\":\"zhvfcibyfmowuxr\",\"type\":\"jpvd\"}],\"nextLink\":\"fzwiivwzjbhyz\"}")
+            "{\"value\":[{\"properties\":{\"configurations\":\"ypoh\",\"provisioningState\":\"InProgress\"},\"eTag\":\"slynsqyrpfoo\",\"id\":\"lttymsjn\",\"name\":\"gqdnfwqzd\",\"type\":\"gtilax\"},{\"properties\":{\"configurations\":\"fhqlyvi\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"iv\",\"id\":\"oyzunbixxr\",\"name\":\"ikvcpwp\",\"type\":\"clrcivtsox\"},{\"properties\":{\"configurations\":\"kenx\",\"provisioningState\":\"Canceled\"},\"eTag\":\"efrp\",\"id\":\"dnqqskawaoqvmmb\",\"name\":\"pqfrtqlkz\",\"type\":\"egnitg\"}],\"nextLink\":\"xlzyqd\"}")
             .toObject(ConfigTemplateVersionListResult.class);
-        Assertions.assertEquals("jvlpjxxkzbr", model.value().get(0).properties().configurations());
-        Assertions.assertEquals("fzwiivwzjbhyz", model.nextLink());
+        Assertions.assertEquals("ypoh", model.value().get(0).properties().configurations());
+        Assertions.assertEquals("xlzyqd", model.nextLink());
     }
 }

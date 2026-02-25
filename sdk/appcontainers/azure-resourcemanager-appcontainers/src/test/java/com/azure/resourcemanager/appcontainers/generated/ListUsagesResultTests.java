@@ -15,34 +15,34 @@ public final class ListUsagesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListUsagesResult model = BinaryData.fromString(
-            "{\"value\":[{\"currentValue\":55.136757,\"limit\":65.378006,\"name\":{\"value\":\"yfoeb\",\"localizedValue\":\"tjpp\"}},{\"currentValue\":49.864525,\"limit\":63.19597,\"name\":{\"value\":\"h\",\"localizedValue\":\"kpjtnqjilaywk\"}},{\"currentValue\":17.043554,\"limit\":7.3441863,\"name\":{\"value\":\"qsyrilmhxdqao\",\"localizedValue\":\"ylnkkbjpjvlywltm\"}}],\"nextLink\":\"obbjwhlwy\"}")
+            "{\"value\":[{\"currentValue\":62.789894,\"limit\":86.50556,\"name\":{\"value\":\"gapyyrmfsv\",\"localizedValue\":\"avbopfp\"}},{\"currentValue\":29.759396,\"limit\":84.622314,\"name\":{\"value\":\"nupgahxku\",\"localizedValue\":\"sjcaacfdmmcpugm\"}},{\"currentValue\":92.74943,\"limit\":65.175865,\"name\":{\"value\":\"pvufhbze\",\"localizedValue\":\"whoqhnlbqnbldxe\"}}],\"nextLink\":\"lgsc\"}")
             .toObject(ListUsagesResult.class);
-        Assertions.assertEquals(55.136757f, model.value().get(0).currentValue());
-        Assertions.assertEquals(65.378006f, model.value().get(0).limit());
-        Assertions.assertEquals("yfoeb", model.value().get(0).name().value());
-        Assertions.assertEquals("tjpp", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("obbjwhlwy", model.nextLink());
+        Assertions.assertEquals(62.789894f, model.value().get(0).currentValue());
+        Assertions.assertEquals(86.50556f, model.value().get(0).limit());
+        Assertions.assertEquals("gapyyrmfsv", model.value().get(0).name().value());
+        Assertions.assertEquals("avbopfp", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("lgsc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ListUsagesResult model = new ListUsagesResult()
             .withValue(Arrays.asList(
-                new UsageInner().withCurrentValue(55.136757f)
-                    .withLimit(65.378006f)
-                    .withName(new UsageName().withValue("yfoeb").withLocalizedValue("tjpp")),
-                new UsageInner().withCurrentValue(49.864525f)
-                    .withLimit(63.19597f)
-                    .withName(new UsageName().withValue("h").withLocalizedValue("kpjtnqjilaywk")),
-                new UsageInner().withCurrentValue(17.043554f)
-                    .withLimit(7.3441863f)
-                    .withName(new UsageName().withValue("qsyrilmhxdqao").withLocalizedValue("ylnkkbjpjvlywltm"))))
-            .withNextLink("obbjwhlwy");
+                new UsageInner().withCurrentValue(62.789894f)
+                    .withLimit(86.50556f)
+                    .withName(new UsageName().withValue("gapyyrmfsv").withLocalizedValue("avbopfp")),
+                new UsageInner().withCurrentValue(29.759396f)
+                    .withLimit(84.622314f)
+                    .withName(new UsageName().withValue("nupgahxku").withLocalizedValue("sjcaacfdmmcpugm")),
+                new UsageInner().withCurrentValue(92.74943f)
+                    .withLimit(65.175865f)
+                    .withName(new UsageName().withValue("pvufhbze").withLocalizedValue("whoqhnlbqnbldxe"))))
+            .withNextLink("lgsc");
         model = BinaryData.fromObject(model).toObject(ListUsagesResult.class);
-        Assertions.assertEquals(55.136757f, model.value().get(0).currentValue());
-        Assertions.assertEquals(65.378006f, model.value().get(0).limit());
-        Assertions.assertEquals("yfoeb", model.value().get(0).name().value());
-        Assertions.assertEquals("tjpp", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("obbjwhlwy", model.nextLink());
+        Assertions.assertEquals(62.789894f, model.value().get(0).currentValue());
+        Assertions.assertEquals(86.50556f, model.value().get(0).limit());
+        Assertions.assertEquals("gapyyrmfsv", model.value().get(0).name().value());
+        Assertions.assertEquals("avbopfp", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("lgsc", model.nextLink());
     }
 }

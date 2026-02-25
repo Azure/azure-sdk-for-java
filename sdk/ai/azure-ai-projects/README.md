@@ -1,8 +1,14 @@
 # Azure Projects client library for Java
 
-Azure Projects client library for Java.
+The AI Projects client library is part of the Azure AI Foundry SDK and provides easy access to resources in your Azure AI Foundry Project. Use it to:
 
-This package contains Microsoft Azure Projects client library.
+* **Create and run Agents** using the separate package `com.azure.azure-ai-agents`.
+* **Enumerate AI Models** deployed to your Foundry Project using the `Deployments` operations.
+* **Enumerate connected Azure resources** in your Foundry project using the `Connections` operations.
+* **Upload documents and create Datasets** to reference them using the `Datasets` operations.
+* **Create and enumerate Search Indexes** using the `Indexes` operations.
+
+The client library uses version `v1` of the AI Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects/ga-rest-api-reference).
 
 ## Documentation
 
@@ -25,7 +31,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-projects</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -36,9 +42,108 @@ Various documentation is available to help you get started
 
 ## Key concepts
 
+The Azure AI Foundry provides a centralized spot to manage your AI Foundry resources. In order to access each feature you need to initialize your builder and access the corresponding sub-client like it's shown in the following code snippet:
+
+```java com.azure.ai.projects.clientInitialization
+AIProjectClientBuilder builder = new AIProjectClientBuilder();
+
+ConnectionsClient connectionsClient = builder.buildConnectionsClient();
+DatasetsClient datasetsClient = builder.buildDatasetsClient();
+DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
+EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
+EvaluationsClient evaluationsClient = builder.buildEvaluationsClient();
+EvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.buildEvaluationTaxonomiesClient();
+EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
+IndexesClient indexesClient = builder.buildIndexesClient();
+InsightsClient insightsClient = builder.buildInsightsClient();
+RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
+SchedulesClient schedulesClient = builder.buildSchedulesClient();
+```
+
+In the particular case of the `EvaluationsClient`, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
+
+```java com.azure.ai.projects.evaluationsClientInit
+EvalService evalService = evaluationsClient.getEvalService();
+```
+
+For the Agents operation, you can use the `azure-ai-agents` package which is available as transitive dependency:
+
+```java com.azure.ai.projects.agentsSubClients
+AgentsClientBuilder agentsClientBuilder = new AgentsClientBuilder();
+
+AgentsClient agentsClient = agentsClientBuilder.buildAgentsClient();
+ConversationsClient conversationsClient = agentsClientBuilder.buildConversationsClient();
+MemoryStoresClient memoryStoresClient = agentsClientBuilder.buildMemoryStoresClient();
+ResponsesClient responsesClient = agentsClientBuilder.buildResponsesClient();
+```
+
+If you need a full OpenAI client as well, you can use the `AIProjectClientBuilder` to obtain one:
+
+```java com.azure.ai.projects.openAIClient
+OpenAIClient openAIClient = builder.buildOpenAIClient();
+OpenAIClientAsync openAIClientAsync = builder.buildOpenAIAsyncClient();
+```
+
+### Preview operation groups and opt-in flags
+
+Several operation groups in the AI Projects client library are in **preview** and require the `Foundry-Features` HTTP header for opt-in. The SDK automatically sets this header on every request for the following sub-clients:
+
+| Sub-client | Opt-in flag |
+|---|---|
+| `EvaluatorsClient` | `Evaluations=V1Preview` |
+| `EvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
+| `InsightsClient` | `Insights=V1Preview` |
+| `RedTeamsClient` | `RedTeams=V1Preview` |
+| `SchedulesClient` | `Schedules=V1Preview` |
+
+The `EvaluationRulesClient` also supports the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling `createOrUpdateEvaluationRule()`.
+
+The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `CONTAINER_AGENTS_V1_PREVIEW`, `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
+
 ## Examples
 
-```java com.azure.ai.projects.readme
+### Connections operations
+
+The code below shows some Connection operations, which allow you to enumerate the Azure Resources connected to your AI Foundry Projects. These connections can be seen in the "Management Center", in the "Connected resources" tab in your AI Foundry Project. For more samples see the [package samples][package_samples].
+
+```java com.azure.ai.projects.ConnectionsSample.listConnections
+PagedIterable<Connection> connections = connectionsClient.listConnections();
+for (Connection connection : connections) {
+    System.out.println("Connection name: " + connection.getName());
+    System.out.println("Connection type: " + connection.getType());
+    System.out.println("Connection credential type: " + connection.getCredentials().getType());
+    System.out.println("-------------------------------------------------");
+}
+```
+
+### Indexes
+
+The code below shows some Indexes operations to list and create indexes. For more samples see the [package samples][package_samples].
+
+```java com.azure.ai.projects.IndexesListSample.listIndexes
+indexesClient.listLatest().forEach(index -> {
+    System.out.println("Index name: " + index.getName());
+    System.out.println("Index version: " + index.getVersion());
+    System.out.println("Index description: " + index.getDescription());
+    System.out.println("-------------------------------------------------");
+});
+```
+
+```java com.azure.ai.projects.IndexesGetSample.createOrUpdateIndex
+String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
+String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "2.0");
+String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
+String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "");
+
+Index index = indexesClient.createOrUpdateVersion(
+    indexName,
+    indexVersion,
+    new AzureAISearchIndex()
+        .setConnectionName(aiSearchConnectionName)
+        .setIndexName(aiSearchIndexName)
+);
+
+System.out.println("Index created: " + index.getName());
 ```
 
 ### Service API versions
@@ -71,8 +176,11 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[product_documentation]: https://azure.microsoft.com/services/
-[docs]: https://azure.github.io/azure-sdk-for-java/
+[product_documentation]: https://learn.microsoft.com/azure/ai-studio/
+[docs]: https://learn.microsoft.com/rest/api/aifoundry/aiprojects/
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[package_samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects
+[openai_java_sdk]: https://github.com/openai/openai-java
+[openai_api_docs]: https://platform.openai.com/docs/overview

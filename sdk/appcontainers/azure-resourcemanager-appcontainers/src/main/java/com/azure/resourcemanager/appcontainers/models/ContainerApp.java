@@ -76,9 +76,8 @@ public interface ContainerApp {
     String managedBy();
 
     /**
-     * Gets the kind property: Metadata used to render different experiences for resources of the same type; e.g.
-     * WorkflowApp is a kind of Microsoft.App/ContainerApps type. If supported, the resource provider must validate and
-     * persist this value.
+     * Gets the kind property: Metadata to represent the container app kind, representing if a container app is
+     * workflowapp or functionapp.
      * 
      * @return the kind value.
      */
@@ -106,13 +105,6 @@ public interface ContainerApp {
     ContainerAppRunningStatus runningStatus();
 
     /**
-     * Gets the deploymentErrors property: Any errors that occurred during deployment.
-     * 
-     * @return the deploymentErrors value.
-     */
-    String deploymentErrors();
-
-    /**
      * Gets the managedEnvironmentId property: Deprecated. Resource ID of the Container App's environment.
      * 
      * @return the managedEnvironmentId value.
@@ -132,13 +124,6 @@ public interface ContainerApp {
      * @return the workloadProfileName value.
      */
     String workloadProfileName();
-
-    /**
-     * Gets the patchingConfiguration property: Container App auto patch configuration.
-     * 
-     * @return the patchingConfiguration value.
-     */
-    ContainerAppPropertiesPatchingConfiguration patchingConfiguration();
 
     /**
      * Gets the latestRevisionName property: Name of the latest revision of the Container App.
@@ -279,10 +264,10 @@ public interface ContainerApp {
          * The stage of the ContainerApp definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithIdentity, DefinitionStages.WithManagedBy, DefinitionStages.WithKind,
-            DefinitionStages.WithManagedEnvironmentId, DefinitionStages.WithEnvironmentId,
-            DefinitionStages.WithWorkloadProfileName, DefinitionStages.WithPatchingConfiguration,
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation, DefinitionStages.WithIdentity,
+            DefinitionStages.WithManagedBy, DefinitionStages.WithKind, DefinitionStages.WithManagedEnvironmentId,
+            DefinitionStages.WithEnvironmentId, DefinitionStages.WithWorkloadProfileName,
             DefinitionStages.WithConfiguration, DefinitionStages.WithTemplate {
             /**
              * Executes the create request.
@@ -364,13 +349,11 @@ public interface ContainerApp {
          */
         interface WithKind {
             /**
-             * Specifies the kind property: Metadata used to render different experiences for resources of the same
-             * type; e.g. WorkflowApp is a kind of Microsoft.App/ContainerApps type. If supported, the resource provider
-             * must validate and persist this value..
+             * Specifies the kind property: Metadata to represent the container app kind, representing if a container
+             * app is workflowapp or functionapp..
              * 
-             * @param kind Metadata used to render different experiences for resources of the same type; e.g.
-             * WorkflowApp is a kind of Microsoft.App/ContainerApps type. If supported, the resource provider must
-             * validate and persist this value.
+             * @param kind Metadata to represent the container app kind, representing if a container app is workflowapp
+             * or functionapp.
              * @return the next definition stage.
              */
             WithCreate withKind(Kind kind);
@@ -416,19 +399,6 @@ public interface ContainerApp {
         }
 
         /**
-         * The stage of the ContainerApp definition allowing to specify patchingConfiguration.
-         */
-        interface WithPatchingConfiguration {
-            /**
-             * Specifies the patchingConfiguration property: Container App auto patch configuration..
-             * 
-             * @param patchingConfiguration Container App auto patch configuration.
-             * @return the next definition stage.
-             */
-            WithCreate withPatchingConfiguration(ContainerAppPropertiesPatchingConfiguration patchingConfiguration);
-        }
-
-        /**
          * The stage of the ContainerApp definition allowing to specify configuration.
          */
         interface WithConfiguration {
@@ -466,8 +436,8 @@ public interface ContainerApp {
      * The template for ContainerApp update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithExtendedLocation, UpdateStages.WithIdentity,
-        UpdateStages.WithManagedBy, UpdateStages.WithWorkloadProfileName, UpdateStages.WithPatchingConfiguration,
-        UpdateStages.WithConfiguration, UpdateStages.WithTemplate {
+        UpdateStages.WithManagedBy, UpdateStages.WithWorkloadProfileName, UpdateStages.WithConfiguration,
+        UpdateStages.WithTemplate {
         /**
          * Executes the update request.
          * 
@@ -561,19 +531,6 @@ public interface ContainerApp {
         }
 
         /**
-         * The stage of the ContainerApp update allowing to specify patchingConfiguration.
-         */
-        interface WithPatchingConfiguration {
-            /**
-             * Specifies the patchingConfiguration property: Container App auto patch configuration..
-             * 
-             * @param patchingConfiguration Container App auto patch configuration.
-             * @return the next definition stage.
-             */
-            Update withPatchingConfiguration(ContainerAppPropertiesPatchingConfiguration patchingConfiguration);
-        }
-
-        /**
          * The stage of the ContainerApp update allowing to specify configuration.
          */
         interface WithConfiguration {
@@ -621,8 +578,7 @@ public interface ContainerApp {
      * @param customHostname Custom hostname.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain analysis along with {@link Response}.
      */
@@ -632,8 +588,7 @@ public interface ContainerApp {
     /**
      * Analyzes a custom hostname for a Container App.
      * 
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain analysis.
      */
@@ -644,8 +599,7 @@ public interface ContainerApp {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App Secrets Collection ARM resource along with {@link Response}.
      */
@@ -654,8 +608,7 @@ public interface ContainerApp {
     /**
      * List secrets for a container app.
      * 
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App Secrets Collection ARM resource.
      */
@@ -666,8 +619,7 @@ public interface ContainerApp {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
      * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -678,8 +630,7 @@ public interface ContainerApp {
     /**
      * Get auth token for a container app.
      * 
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
      * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -690,8 +641,7 @@ public interface ContainerApp {
     /**
      * Start a container app.
      * 
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -702,8 +652,7 @@ public interface ContainerApp {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -712,8 +661,7 @@ public interface ContainerApp {
     /**
      * Stop a container app.
      * 
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -724,8 +672,7 @@ public interface ContainerApp {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */

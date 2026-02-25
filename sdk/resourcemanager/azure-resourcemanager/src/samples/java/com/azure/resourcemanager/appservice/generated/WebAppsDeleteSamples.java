@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsDeleteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/DeleteWebApp.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/DeleteWebApp.json
      */
     /**
      * Sample code: Delete Web app.

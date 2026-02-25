@@ -37,9 +37,11 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Allocation;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.FeatureTelemetry;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Variant;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.FeatureFlagTracing;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -76,9 +78,9 @@ class FeatureFlagClient {
      * </p>
      *
      */
-    List<FeatureFlags> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
+    List<WatchedConfigurationSettings> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
         String[] labelFilter, Context context) {
-        List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
+        List<WatchedConfigurationSettings> loadedFeatureFlags = new ArrayList<>();
 
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
 
@@ -93,18 +95,15 @@ class FeatureFlagClient {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
             context.addData("FeatureFlagTracing", tracing);
 
-            FeatureFlags features = replicaClient.listFeatureFlags(settingSelector, context);
-            loadedFeatureFlags.addAll(proccessFeatureFlags(features, replicaClient.getOriginClient()));
+            WatchedConfigurationSettings features = replicaClient.listFeatureFlags(settingSelector, context);
+            loadedFeatureFlags.add(proccessFeatureFlags(features, replicaClient.getOriginClient()));
         }
         return loadedFeatureFlags;
     }
 
-    List<FeatureFlags> proccessFeatureFlags(FeatureFlags features, String endpoint) {
-        List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
-        loadedFeatureFlags.add(features);
-
+    WatchedConfigurationSettings proccessFeatureFlags(WatchedConfigurationSettings features, String endpoint) {
         // Reading In Features
-        for (ConfigurationSetting setting : features.getFeatureFlags()) {
+        for (ConfigurationSetting setting : features.getConfigurationSettings()) {
             if (setting instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                 FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
@@ -112,7 +111,7 @@ class FeatureFlagClient {
                 properties.put(featureFlag.getKey(), createFeature(featureFlag, endpoint));
             }
         }
-        return loadedFeatureFlags;
+        return features;
     }
 
     /**
@@ -139,6 +138,24 @@ class FeatureFlagClient {
             }
 
             feature = new Feature(item, requirementType, featureTelemetry);
+
+            // Parse variants if present
+            JsonNode variantsNode = node.get("variants");
+            if (variantsNode != null && variantsNode.isArray()) {
+                List<Variant> variants = new ArrayList<>();
+                for (JsonNode variantNode : variantsNode) {
+                    Variant variant = CASE_INSENSITIVE_MAPPER.convertValue(variantNode, Variant.class);
+                    variants.add(variant);
+                }
+                feature.setVariants(variants);
+            }
+
+            // Parse allocation if present
+            JsonNode allocationNode = node.get("allocation");
+            if (allocationNode != null && !allocationNode.isNull()) {
+                Allocation allocation = CASE_INSENSITIVE_MAPPER.convertValue(allocationNode, Allocation.class);
+                feature.setAllocation(allocation);
+            }
 
             if (feature.getTelemetry() != null) {
                 final FeatureTelemetry telemetry = feature.getTelemetry();

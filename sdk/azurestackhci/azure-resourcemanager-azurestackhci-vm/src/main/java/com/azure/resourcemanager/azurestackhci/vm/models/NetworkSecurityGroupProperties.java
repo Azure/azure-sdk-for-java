@@ -81,23 +81,6 @@ public final class NetworkSecurityGroupProperties implements JsonSerializable<Ne
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (networkInterfaces() != null) {
-            networkInterfaces().forEach(e -> e.validate());
-        }
-        if (subnets() != null) {
-            subnets().forEach(e -> e.validate());
-        }
-        if (status() != null) {
-            status().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

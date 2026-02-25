@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -44,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -742,27 +742,31 @@ public class Utils {
                 cosmosChangeFeedRequestRequestOptions, pagedFluxOptions);
     }
 
-    static String escapeNonAscii(String partitionKeyJson) {
+    public static String escapeNonAscii(String value) {
+        if (StringUtils.isEmpty(value)) {
+            return value;
+        }
+
         // if all are ascii original string will be returned, and avoids copying data.
         StringBuilder sb = null;
-        for (int i = 0; i < partitionKeyJson.length(); i++) {
-            int val = partitionKeyJson.charAt(i);
+        for (int i = 0; i < value.length(); i++) {
+            int val = value.charAt(i);
             if (val > 127) {
                 if (sb == null) {
-                    sb = new StringBuilder(partitionKeyJson.length());
-                    sb.append(partitionKeyJson, 0, i);
+                    sb = new StringBuilder(value.length());
+                    sb.append(value, 0, i);
                 }
                 sb.append("\\u").append(String.format("%04X", val));
             } else {
                 if (sb != null) {
-                    sb.append(partitionKeyJson.charAt(i));
+                    sb.append(value.charAt(i));
                 }
             }
         }
 
         if (sb == null) {
             // all are ascii character
-            return partitionKeyJson;
+            return value;
         } else {
             return sb.toString();
         }
@@ -813,5 +817,20 @@ public class Utils {
         } else {
             return duration1.compareTo(duration2) < 0 ? duration1 : duration2;
         }
+    }
+
+    public static CosmosException createCosmosException(int statusCode, int substatusCode, Exception nestedException, Map<String, String> responseHeaders) {
+
+        // TODO: Review adding resource address
+        CosmosException exceptionToThrow = BridgeInternal.createCosmosException(
+            nestedException.getMessage(),
+            nestedException,
+            responseHeaders,
+            statusCode,
+            Strings.Emtpy);
+
+        BridgeInternal.setSubStatusCode(exceptionToThrow, substatusCode);
+
+        return exceptionToThrow;
     }
 }

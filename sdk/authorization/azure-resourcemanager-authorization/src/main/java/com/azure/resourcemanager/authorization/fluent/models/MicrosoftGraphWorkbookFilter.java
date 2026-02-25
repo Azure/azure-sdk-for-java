@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookFilter.
+ * Represents a workbook filter.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookFilter extends MicrosoftGraphEntity {

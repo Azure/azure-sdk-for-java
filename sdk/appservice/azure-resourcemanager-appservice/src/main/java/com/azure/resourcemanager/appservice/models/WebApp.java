@@ -31,6 +31,8 @@ public interface WebApp
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code webApp.deploy(DeployType.WAR, warFile, new DeployOptions().withPath("webapps/ROOT"))}
      *
      * @param warFile the WAR file to upload
      */
@@ -38,6 +40,8 @@ public interface WebApp
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code webApp.deployAsync(DeployType.WAR, warFile, new DeployOptions().withPath("webapps/ROOT"))}
      *
      * @param warFile the WAR file to upload
      * @return a completable of the operation
@@ -46,6 +50,8 @@ public interface WebApp
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code webApp.deploy(DeployType.WAR, warFile, length, new DeployOptions().withPath("webapps/ROOT"))}
      * <p>
      * Retry by client is required if error happens, due to nature of the stream.
      *
@@ -57,6 +63,8 @@ public interface WebApp
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
      * <p>
+     * It is recommended to call {@code webApp.deployAsync(DeployType.WAR, warFile, length, new DeployOptions().withPath("webapps/ROOT"))}
+     * <p>
      * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
@@ -67,6 +75,8 @@ public interface WebApp
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code webApp.deploy(DeployType.WAR, warFile, new DeployOptions().withPath("webapps/<appName>"))}
      *
      * @param warFile the WAR file to upload
      * @param appName the name of the app, default to "ROOT" when not provided
@@ -75,6 +85,8 @@ public interface WebApp
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code webApp.deployAsync(DeployType.WAR, warFile, new DeployOptions().withPath("webapps/<appName>"))}
      *
      * @param warFile the WAR file to upload
      * @param appName the name of the app, default to "ROOT" when not provided
@@ -84,6 +96,8 @@ public interface WebApp
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code webApp.deploy(DeployType.WAR, warFile, length, new DeployOptions().withPath("webapps/<appName>"))}
      * <p>
      * Retry by client is required if error happens, due to nature of the stream.
      *
@@ -95,6 +109,8 @@ public interface WebApp
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * It is recommended to call {@code webApp.deployAsync(DeployType.WAR, warFile, length, new DeployOptions().withPath("webapps/<appName>"))}
      * <p>
      * Retry by client is required if error happens, due to nature of the stream.
      *

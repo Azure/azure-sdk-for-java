@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterInner;
+import com.azure.resourcemanager.networkcloud.models.ActionState;
 import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.Cluster;
 import com.azure.resourcemanager.networkcloud.models.ClusterAvailableUpgradeVersion;
@@ -84,6 +85,15 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public List<ActionState> actionStates() {
+        List<ActionState> inner = this.innerModel().actionStates();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public RackDefinition aggregatorOrSingleRackDefinition() {

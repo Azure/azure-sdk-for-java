@@ -426,17 +426,6 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (error() != null) {
-            error().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -4,7 +4,7 @@
       "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
       "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" }
     },
-    "JavaTestVersion": [ "1.8", "1.21" ],
+    "JavaTestVersion": [ "1.8", "1.25" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
     "TestGoals": "surefire:test",
     "AZURE_LIVE_TEST_SERVICE_VERSION": [

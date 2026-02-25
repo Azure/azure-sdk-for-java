@@ -13,20 +13,20 @@ public final class CapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Capability model
-            = BinaryData.fromString("{\"name\":\"ojhp\",\"description\":\"tfnmdx\",\"state\":\"inactive\"}")
+            = BinaryData.fromString("{\"name\":\"asi\",\"description\":\"xtmkzjvkviir\",\"state\":\"inactive\"}")
                 .toObject(Capability.class);
-        Assertions.assertEquals("ojhp", model.name());
-        Assertions.assertEquals("tfnmdx", model.description());
+        Assertions.assertEquals("asi", model.name());
+        Assertions.assertEquals("xtmkzjvkviir", model.description());
         Assertions.assertEquals(ResourceState.INACTIVE, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Capability model
-            = new Capability().withName("ojhp").withDescription("tfnmdx").withState(ResourceState.INACTIVE);
+            = new Capability().withName("asi").withDescription("xtmkzjvkviir").withState(ResourceState.INACTIVE);
         model = BinaryData.fromObject(model).toObject(Capability.class);
-        Assertions.assertEquals("ojhp", model.name());
-        Assertions.assertEquals("tfnmdx", model.description());
+        Assertions.assertEquals("asi", model.name());
+        Assertions.assertEquals("xtmkzjvkviir", model.description());
         Assertions.assertEquals(ResourceState.INACTIVE, model.state());
     }
 }

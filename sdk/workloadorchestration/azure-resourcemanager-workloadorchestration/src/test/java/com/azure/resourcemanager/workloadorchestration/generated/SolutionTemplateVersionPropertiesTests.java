@@ -15,19 +15,19 @@ public final class SolutionTemplateVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateVersionProperties model = BinaryData.fromString(
-            "{\"configurations\":\"mewzsyyc\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Canceled\"}")
+            "{\"configurations\":\"zrncsdt\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"InProgress\"}")
             .toObject(SolutionTemplateVersionProperties.class);
-        Assertions.assertEquals("mewzsyyc", model.configurations());
+        Assertions.assertEquals("zrncsdt", model.configurations());
         Assertions.assertEquals(OrchestratorType.TO, model.orchestratorType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionTemplateVersionProperties model = new SolutionTemplateVersionProperties().withConfigurations("mewzsyyc")
+        SolutionTemplateVersionProperties model = new SolutionTemplateVersionProperties().withConfigurations("zrncsdt")
             .withSpecification(mapOf())
             .withOrchestratorType(OrchestratorType.TO);
         model = BinaryData.fromObject(model).toObject(SolutionTemplateVersionProperties.class);
-        Assertions.assertEquals("mewzsyyc", model.configurations());
+        Assertions.assertEquals("zrncsdt", model.configurations());
         Assertions.assertEquals(OrchestratorType.TO, model.orchestratorType());
     }
 

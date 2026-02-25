@@ -38,14 +38,6 @@ public final class ManagedDashboardProperties implements JsonSerializable<Manage
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

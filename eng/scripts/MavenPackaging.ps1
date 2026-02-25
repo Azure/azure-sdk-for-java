@@ -141,12 +141,12 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
     }
     $baseUrl = $RepositoryUrl
     $algorithm = "sha256"
-    $headers = @{ Authorization="BEARER $BearerToken" }
+    $headers = @{ Authorization="BEARER $BearerToken"; "Content-signal" = "search=yes,ai-train=no" }
   }
   elseif ($RepositoryUrl -match "^https://oss.sonatype.org/service/local/staging/deploy/maven2") {
     $baseUrl = "https://repo1.maven.org/maven2"
     $algorithm = "sha1"
-    $headers = @{ }
+    $headers = @{ "Content-signal" = "search=yes,ai-train=no" }
   }
   else {
     throw "Repository URL must be either an Azure Artifacts feed, or a SonaType Nexus feed."
@@ -166,7 +166,7 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
 
     Write-Information "Comparing local and remote hashes for $localFileName"
     Write-Information "  Getting remote hash"
-    $response = Invoke-WebRequest -Method GET -Uri $remoteHashUrl -Headers $headers -MaximumRetryCount 3 -SkipHttpErrorCheck
+    $response = Invoke-WebRequest -Method GET -Uri $remoteHashUrl -UserAgent "azure-sdk-for-java" -Headers $headers -MaximumRetryCount 3 -SkipHttpErrorCheck
 
     if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) {
       $remoteCount++

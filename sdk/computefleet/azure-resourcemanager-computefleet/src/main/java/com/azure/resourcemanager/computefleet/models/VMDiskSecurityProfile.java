@@ -94,17 +94,6 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (diskEncryptionSet() != null) {
-            diskEncryptionSet().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

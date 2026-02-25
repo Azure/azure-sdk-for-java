@@ -2652,6 +2652,8 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
+     * Get compatible SKUs
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2678,6 +2680,8 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
+     * Get compatible SKUs
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2705,6 +2709,8 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
+     * Get compatible SKUs
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2732,6 +2738,8 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
+     * Get services in resource group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2759,6 +2767,8 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
+     * Get services in resource group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2786,6 +2796,8 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
+     * Get services in resource group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2815,6 +2827,8 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
+     * Get services in subscription
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2840,6 +2854,8 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
+     * Get services in subscription
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2867,6 +2883,8 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
+     * Get services in subscription
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

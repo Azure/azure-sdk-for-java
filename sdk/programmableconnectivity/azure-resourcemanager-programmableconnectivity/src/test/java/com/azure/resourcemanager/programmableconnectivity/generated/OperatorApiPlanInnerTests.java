@@ -12,18 +12,16 @@ public final class OperatorApiPlanInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperatorApiPlanInner model = BinaryData.fromString(
-            "{\"properties\":{\"operatorName\":\"abnmocpcyshu\",\"camaraApiName\":\"afbljjgpbtoqcjmk\",\"supportedLocations\":[\"vbqid\"],\"operatorRegions\":[\"jzyulpk\",\"dj\"],\"markets\":[\"khbzhfepgzg\",\"e\"],\"limits\":\"locx\",\"marketplaceProperties\":{\"offerId\":\"aierhhb\",\"legacyOfferId\":\"glu\",\"publisherId\":\"a\",\"planId\":\"j\",\"termId\":\"dxob\"},\"provisioningState\":\"Failed\"},\"id\":\"k\",\"name\":\"pxokajionp\",\"type\":\"mexgstxgcp\"}")
+            "{\"properties\":{\"operatorName\":\"ajvnysounqe\",\"camaraApiName\":\"noae\",\"supportedLocations\":[\"hy\",\"ltrpmopj\",\"cma\",\"u\"],\"operatorRegions\":[\"hfuiuaodsfc\",\"kvxod\",\"uozmyzydagfua\",\"bezy\"],\"markets\":[\"kktwhrdxw\",\"ywqsmbsurexim\",\"ryocfsfksymdd\"],\"limits\":\"tki\",\"marketplaceProperties\":{\"offerId\":\"hqyudxorrqnbpoc\",\"publisherId\":\"yifqrvkdvjsllrmv\",\"planId\":\"f\",\"planTermsAndConditionsLinks\":[\"t\",\"pnpulexxbczwtru\"]},\"provisioningState\":\"Canceled\"},\"id\":\"bq\",\"name\":\"vsovmyokac\",\"type\":\"pkwlhz\"}")
             .toObject(OperatorApiPlanInner.class);
-        Assertions.assertEquals("abnmocpcyshu", model.properties().operatorName());
-        Assertions.assertEquals("afbljjgpbtoqcjmk", model.properties().camaraApiName());
-        Assertions.assertEquals("vbqid", model.properties().supportedLocations().get(0));
-        Assertions.assertEquals("jzyulpk", model.properties().operatorRegions().get(0));
-        Assertions.assertEquals("khbzhfepgzg", model.properties().markets().get(0));
-        Assertions.assertEquals("locx", model.properties().limits());
-        Assertions.assertEquals("aierhhb", model.properties().marketplaceProperties().offerId());
-        Assertions.assertEquals("glu", model.properties().marketplaceProperties().legacyOfferId());
-        Assertions.assertEquals("a", model.properties().marketplaceProperties().publisherId());
-        Assertions.assertEquals("j", model.properties().marketplaceProperties().planId());
-        Assertions.assertEquals("dxob", model.properties().marketplaceProperties().termId());
+        Assertions.assertEquals("ajvnysounqe", model.properties().operatorName());
+        Assertions.assertEquals("noae", model.properties().camaraApiName());
+        Assertions.assertEquals("hy", model.properties().supportedLocations().get(0));
+        Assertions.assertEquals("hfuiuaodsfc", model.properties().operatorRegions().get(0));
+        Assertions.assertEquals("kktwhrdxw", model.properties().markets().get(0));
+        Assertions.assertEquals("tki", model.properties().limits());
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.properties().marketplaceProperties().offerId());
+        Assertions.assertEquals("yifqrvkdvjsllrmv", model.properties().marketplaceProperties().publisherId());
+        Assertions.assertEquals("f", model.properties().marketplaceProperties().planId());
     }
 }

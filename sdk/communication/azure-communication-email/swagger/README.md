@@ -1,7 +1,7 @@
 ## Generate autorest code
 
 ```yaml
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e64ad693df24b47d4009eece6663c8d95cf94be6/specification/communication/data-plane/Email/readme.md
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/83327afe471d7a2eb923de58b163658d45e0e5a7/specification/communication/data-plane/Email/readme.md
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 title: Azure Communication Email Service
@@ -22,7 +22,7 @@ required-fields-as-ctor-args: true
 generate-client-as-impl: true
 url-as-string: true
 service-versions:
-- 2024-07-01-preview
+- 2025-09-01
 polling:
   default:
     intermediate-type: EmailSendResult

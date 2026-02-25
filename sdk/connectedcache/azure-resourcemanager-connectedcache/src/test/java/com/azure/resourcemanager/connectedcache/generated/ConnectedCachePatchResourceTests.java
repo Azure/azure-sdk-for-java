@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectedCachePatchResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectedCachePatchResource model
-            = BinaryData.fromString("{\"tags\":{\"ifpikxwczby\":\"fcbjysagithxqha\",\"rkxvdum\":\"cnpqxuhivyqniwby\"}}")
-                .toObject(ConnectedCachePatchResource.class);
-        Assertions.assertEquals("fcbjysagithxqha", model.tags().get("ifpikxwczby"));
+        ConnectedCachePatchResource model = BinaryData.fromString(
+            "{\"tags\":{\"qfpjk\":\"np\",\"nmayhuybb\":\"lxofpdvhpfxxypin\",\"inuvamiheogn\":\"podepoo\",\"usivye\":\"rxzxtheo\"}}")
+            .toObject(ConnectedCachePatchResource.class);
+        Assertions.assertEquals("np", model.tags().get("qfpjk"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectedCachePatchResource model = new ConnectedCachePatchResource()
-            .withTags(mapOf("ifpikxwczby", "fcbjysagithxqha", "rkxvdum", "cnpqxuhivyqniwby"));
+        ConnectedCachePatchResource model = new ConnectedCachePatchResource().withTags(
+            mapOf("qfpjk", "np", "nmayhuybb", "lxofpdvhpfxxypin", "inuvamiheogn", "podepoo", "usivye", "rxzxtheo"));
         model = BinaryData.fromObject(model).toObject(ConnectedCachePatchResource.class);
-        Assertions.assertEquals("fcbjysagithxqha", model.tags().get("ifpikxwczby"));
+        Assertions.assertEquals("np", model.tags().get("qfpjk"));
     }
 
     // Use "Map.of" if available

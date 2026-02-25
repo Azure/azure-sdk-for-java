@@ -73,8 +73,40 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listIndexVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listIndexVersionsAsync(name, requestOptions);
+    public PagedFlux<BinaryData> listVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listVersionsAsync(name, requestOptions);
+    }
+
+    /**
+     * List all versions of the given Index.
+     *
+     * @param name The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Index items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Index> listVersions(String name) {
+        // Generated convenience method for listVersions
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listVersions(name, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Index>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Index.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -105,12 +137,12 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listLatestIndexVersions(RequestOptions requestOptions) {
-        return this.serviceClient.listLatestIndexVersionsAsync(requestOptions);
+    public PagedFlux<BinaryData> listLatest(RequestOptions requestOptions) {
+        return this.serviceClient.listLatestAsync(requestOptions);
     }
 
     /**
-     * Get the specific version of the Index.
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -139,13 +171,14 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getIndexVersionWithResponse(String name, String version,
+    public Mono<Response<BinaryData>> getVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        return this.serviceClient.getIndexVersionWithResponseAsync(name, version, requestOptions);
+        return this.serviceClient.getVersionWithResponseAsync(name, version, requestOptions);
     }
 
     /**
-     * Delete the specific version of the Index.
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the Index to delete.
@@ -158,9 +191,82 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIndexVersionWithResponse(String name, String version,
-        RequestOptions requestOptions) {
-        return this.serviceClient.deleteIndexVersionWithResponseAsync(name, version, requestOptions);
+    public Mono<Response<Void>> deleteVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.deleteVersionWithResponseAsync(name, version, requestOptions);
+    }
+
+    /**
+     * List the latest version of each Index.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Index items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Index> listLatest() {
+        // Generated convenience method for listLatest
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listLatest(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Index>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Index.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the Index to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specific version of the Index on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Index> getVersion(String name, String version) {
+        // Generated convenience method for getVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Index.class));
+    }
+
+    /**
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
+     *
+     * @param name The name of the resource.
+     * @param version The version of the Index to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteVersion(String name, String version) {
+        // Generated convenience method for deleteVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -211,114 +317,9 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateIndexVersionWithResponse(String name, String version,
-        BinaryData index, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateIndexVersionWithResponseAsync(name, version, index, requestOptions);
-    }
-
-    /**
-     * List all versions of the given Index.
-     *
-     * @param name The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Index items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Index> listIndexVersions(String name) {
-        // Generated convenience method for listIndexVersions
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listIndexVersions(name, requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Index>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Index.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * List the latest version of each Index.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Index items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Index> listLatestIndexVersions() {
-        // Generated convenience method for listLatestIndexVersions
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listLatestIndexVersions(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Index>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Index.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Get the specific version of the Index.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the Index to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific version of the Index on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Index> getIndexVersion(String name, String version) {
-        // Generated convenience method for getIndexVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getIndexVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Index.class));
-    }
-
-    /**
-     * Delete the specific version of the Index.
-     *
-     * @param name The name of the resource.
-     * @param version The version of the Index to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteIndexVersion(String name, String version) {
-        // Generated convenience method for deleteIndexVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteIndexVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
+    public Mono<Response<BinaryData>> createOrUpdateVersionWithResponse(String name, String version, BinaryData index,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateVersionWithResponseAsync(name, version, index, requestOptions);
     }
 
     /**
@@ -337,15 +338,15 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Index> createOrUpdateIndexVersion(String name, String version, Index index) {
-        // Generated convenience method for createOrUpdateIndexVersionWithResponse
+    public Mono<Index> createOrUpdateVersion(String name, String version, Index index) {
+        // Generated convenience method for createOrUpdateVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, true);
         BinaryData indexInBinaryData = BinaryData.fromObject(index);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         indexInBinaryData.getLength();
         JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, false);
-        return createOrUpdateIndexVersionWithResponse(name, version, indexInBinaryData, requestOptions)
+        return createOrUpdateVersionWithResponse(name, version, indexInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Index.class));
     }

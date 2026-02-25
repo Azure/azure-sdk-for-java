@@ -1828,4 +1828,50 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertEquals(ShareErrorCode.PARENT_NOT_FOUND.getValue(),
             response.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
     }
+
+    /* PULLED FROM RELEASE
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
+    public void createDirectoryFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
+        ShareDirectoryCreateOptions options
+            = new ShareDirectoryCreateOptions().setFilePropertySemantics(filePropertySemantics);
+    
+        // For Create File and Directory with FilePropertySemantics == Restore,
+        // the File Permission property must be provided, otherwise FilePropertySemantics will default to new.
+        if (filePropertySemantics == FilePropertySemantics.RESTORE) {
+            options.setFilePermission(FILE_PERMISSION);
+        }
+    
+        Response<ShareDirectoryInfo> response = primaryDirectoryClient.createWithResponse(options, null, Context.NONE);
+        HttpHeader retrievedHeader = response.getRequest().getHeaders().get(X_MS_FILE_PROPERTY_SEMANTICS);
+        if (filePropertySemantics != null) {
+            assertEquals(filePropertySemantics.toString(), retrievedHeader.getValue());
+        } else {
+            assertNull(retrievedHeader);
+        }
+    }
+    
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
+    public void createDirectoryIfNotExistsFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
+        ShareDirectoryCreateOptions options
+            = new ShareDirectoryCreateOptions().setFilePropertySemantics(filePropertySemantics);
+    
+        // For Create File and Directory with FilePropertySemantics == Restore,
+        // the File Permission property must be provided, otherwise FilePropertySemantics will default to new.
+        if (filePropertySemantics == FilePropertySemantics.RESTORE) {
+            options.setFilePermission(FILE_PERMISSION);
+        }
+    
+        Response<ShareDirectoryInfo> response
+            = primaryDirectoryClient.createIfNotExistsWithResponse(options, null, Context.NONE);
+        HttpHeader retrievedHeader = response.getRequest().getHeaders().get(X_MS_FILE_PROPERTY_SEMANTICS);
+        if (filePropertySemantics != null) {
+            assertEquals(filePropertySemantics.toString(), retrievedHeader.getValue());
+        } else {
+            assertNull(retrievedHeader);
+        }
+    } */
 }

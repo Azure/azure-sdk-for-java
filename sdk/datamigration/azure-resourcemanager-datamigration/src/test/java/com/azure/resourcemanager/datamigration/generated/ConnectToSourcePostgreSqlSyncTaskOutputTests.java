@@ -11,7 +11,7 @@ public final class ConnectToSourcePostgreSqlSyncTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectToSourcePostgreSqlSyncTaskOutput model = BinaryData.fromString(
-            "{\"id\":\"cxgkmoyxcdyui\",\"sourceServerVersion\":\"mfdn\",\"databases\":[\"dvfvfcjnaeoi\",\"rvhmgor\",\"fukiscvwmzhw\"],\"sourceServerBrandVersion\":\"efaxvxilc\",\"validationErrors\":[{\"message\":\"hnze\",\"actionableMessage\":\"xtjjfzqlqhycav\",\"filePath\":\"ggxdb\",\"lineNumber\":\"smieknlra\",\"hResult\":1280466557,\"stackTrace\":\"wiuagydwqf\"},{\"message\":\"lyr\",\"actionableMessage\":\"iagtc\",\"filePath\":\"ocqwogfnzjvus\",\"lineNumber\":\"ld\",\"hResult\":1956453984,\"stackTrace\":\"xylfsb\"}]}")
+            "{\"id\":\"etoge\",\"sourceServerVersion\":\"oxslh\",\"databases\":[\"labrqnkkzjcjbtr\",\"aehvvibrxjjstoq\"],\"sourceServerBrandVersion\":\"it\",\"validationErrors\":[{\"message\":\"tmo\",\"actionableMessage\":\"klf\",\"filePath\":\"dgfcwqmp\",\"lineNumber\":\"aqxzhemjyho\",\"hResult\":633481749,\"stackTrace\":\"wtwko\"},{\"message\":\"wculkbaw\",\"actionableMessage\":\"ajnjwltlwtjj\",\"filePath\":\"ktalhsnvkcdmxz\",\"lineNumber\":\"oaimlnw\",\"hResult\":1941541836,\"stackTrace\":\"mylweazulc\"}]}")
             .toObject(ConnectToSourcePostgreSqlSyncTaskOutput.class);
     }
 

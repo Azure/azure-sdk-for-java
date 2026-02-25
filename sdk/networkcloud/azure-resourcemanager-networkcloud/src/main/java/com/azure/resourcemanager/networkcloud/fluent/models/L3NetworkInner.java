@@ -311,8 +311,7 @@ public final class L3NetworkInner extends Resource {
 
     /**
      * Get the ipv4ConnectedPrefix property: The IPV4 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV4 or DualStack.
+     * allocation type is IPV4 or DualStack.
      * 
      * @return the ipv4ConnectedPrefix value.
      */
@@ -322,8 +321,7 @@ public final class L3NetworkInner extends Resource {
 
     /**
      * Set the ipv4ConnectedPrefix property: The IPV4 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV4 or DualStack.
+     * allocation type is IPV4 or DualStack.
      * 
      * @param ipv4ConnectedPrefix the ipv4ConnectedPrefix value to set.
      * @return the L3NetworkInner object itself.
@@ -338,8 +336,7 @@ public final class L3NetworkInner extends Resource {
 
     /**
      * Get the ipv6ConnectedPrefix property: The IPV6 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV6 or DualStack.
+     * allocation type is IPV6 or DualStack.
      * 
      * @return the ipv6ConnectedPrefix value.
      */
@@ -349,8 +346,7 @@ public final class L3NetworkInner extends Resource {
 
     /**
      * Set the ipv6ConnectedPrefix property: The IPV6 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV6 or DualStack.
+     * allocation type is IPV6 or DualStack.
      * 
      * @param ipv6ConnectedPrefix the ipv6ConnectedPrefix value to set.
      * @return the L3NetworkInner object itself.

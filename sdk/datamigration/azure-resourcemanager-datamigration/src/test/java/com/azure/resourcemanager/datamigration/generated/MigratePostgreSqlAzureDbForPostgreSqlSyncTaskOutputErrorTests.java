@@ -13,7 +13,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputErrorTests
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError model = BinaryData.fromString(
-            "{\"resultType\":\"ErrorOutput\",\"error\":{\"message\":\"eqyj\",\"actionableMessage\":\"zi\",\"filePath\":\"jxdfzantkwcegya\",\"lineNumber\":\"bnseqacjjvpilg\",\"hResult\":471177437,\"stackTrace\":\"jagmdi\"},\"events\":[{\"timestampString\":\"iookjbsah\",\"eventTypeString\":\"dt\",\"eventText\":\"elqacslmot\"}],\"id\":\"bnfxofvc\"}")
+            "{\"resultType\":\"ErrorOutput\",\"error\":{\"message\":\"gplucfotangcfhny\",\"actionableMessage\":\"cugswvxwlmzqw\",\"filePath\":\"tx\",\"lineNumber\":\"mxmcuqudtcvclxy\",\"hResult\":1944925015,\"stackTrace\":\"vgfab\"},\"events\":[{\"timestampString\":\"ibuz\",\"eventTypeString\":\"dugneiknp\",\"eventText\":\"xgjiuqh\"},{\"timestampString\":\"tozipqwj\",\"eventTypeString\":\"mur\",\"eventText\":\"x\"},{\"timestampString\":\"wpktvqylkmqpzoyh\",\"eventTypeString\":\"bcg\",\"eventText\":\"cloxo\"},{\"timestampString\":\"qinjipnwjf\",\"eventTypeString\":\"qlafcbahhpzpofoi\",\"eventText\":\"w\"}],\"id\":\"ilkmk\"}")
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError.class);
     }
 
@@ -21,7 +21,8 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputErrorTests
     public void testSerialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError model
             = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError()
-                .withEvents(Arrays.asList(new SyncMigrationDatabaseErrorEvent()));
+                .withEvents(Arrays.asList(new SyncMigrationDatabaseErrorEvent(), new SyncMigrationDatabaseErrorEvent(),
+                    new SyncMigrationDatabaseErrorEvent(), new SyncMigrationDatabaseErrorEvent()));
         model = BinaryData.fromObject(model).toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError.class);
     }
 }

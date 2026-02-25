@@ -131,13 +131,11 @@ public abstract class TestTemplate<ResourceT extends GroupableResource<? extends
         print(this.resource);
 
         boolean failedUpdate = false;
-        String message = "Update Failed";
         // Verify update
         try {
             this.resource = updateResource(this.resource);
             Assertions.assertNotNull(this.resource);
             LOGGER.log(LogLevel.VERBOSE, () -> "\n------------\nUpdated resource:\n");
-            message = "Print failed";
             print(this.resource);
         } catch (Exception e) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Update failed", e);
@@ -147,13 +145,12 @@ public abstract class TestTemplate<ResourceT extends GroupableResource<? extends
         // Verify deletion
         boolean failedDelete = false;
         try {
-            message = "Delete failed";
             verifyDeleting();
         } catch (Exception e) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Delete failed", e);
             failedDelete = true;
         }
-        Assertions.assertFalse(failedUpdate, message);
-        Assertions.assertFalse(failedDelete, message);
+        Assertions.assertFalse(failedUpdate, "Update Failed");
+        Assertions.assertFalse(failedDelete, "Delete failed");
     }
 }

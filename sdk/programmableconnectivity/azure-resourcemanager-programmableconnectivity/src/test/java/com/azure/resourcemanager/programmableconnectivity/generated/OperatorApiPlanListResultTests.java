@@ -12,20 +12,17 @@ public final class OperatorApiPlanListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperatorApiPlanListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"operatorName\":\"ugnxkrxdqmi\",\"camaraApiName\":\"thz\",\"supportedLocations\":[\"drabhjybige\",\"oqfbowskanyk\",\"zlcuiywgqywgndrv\",\"nhzgpphrcgyn\"],\"operatorRegions\":[\"pec\",\"vmmcoofs\",\"lzevgbmqjqab\",\"y\"],\"markets\":[\"vkwlzuvccfwnf\",\"bacfionlebxetq\",\"tzxdpnqbqqwx\",\"jfeallnwsub\"],\"limits\":\"njampm\",\"marketplaceProperties\":{\"offerId\":\"zscxaqwo\",\"legacyOfferId\":\"hcbonqvpkvlr\",\"publisherId\":\"jease\",\"planId\":\"heoflokeyyienjbd\",\"termId\":\"tgrhpdjpjumas\"},\"provisioningState\":\"Deleting\"},\"id\":\"pqyegualhbxxh\",\"name\":\"jj\",\"type\":\"zvdudgwdslfhotwm\"},{\"properties\":{\"operatorName\":\"pwlbjnpg\",\"camaraApiName\":\"ftadehxnltyfs\",\"supportedLocations\":[\"usue\",\"nzwdejba\"],\"operatorRegions\":[\"xzdmohctb\",\"vudwx\",\"ndnvo\",\"gujjugwdkcglh\"],\"markets\":[\"zj\",\"yggdtjixh\"],\"limits\":\"uofqwe\",\"marketplaceProperties\":{\"offerId\":\"menevfyexfwh\",\"legacyOfferId\":\"cibvyvdcsitynn\",\"publisherId\":\"mdectehfiqscjey\",\"planId\":\"hezrkgq\",\"termId\":\"jrefovgmkqsle\"},\"provisioningState\":\"Deleting\"},\"id\":\"yqjpkcatt\",\"name\":\"ngj\",\"type\":\"rcczsqpjhvmd\"}],\"nextLink\":\"v\"}")
+            "{\"value\":[{\"properties\":{\"operatorName\":\"ucgygevqz\",\"camaraApiName\":\"yp\",\"supportedLocations\":[\"p\",\"zcdrqjsdpydnfyhx\",\"eoejzic\",\"ifsjttgzfbishcb\"],\"operatorRegions\":[\"jdeyeamdpha\",\"alpbuxwgipwhon\",\"wkgshwa\",\"kix\"],\"markets\":[\"njeputtmrywn\",\"zoqftiyqzrnkcqvy\"],\"limits\":\"whzlsicohoq\",\"marketplaceProperties\":{\"offerId\":\"vlryavwhheunmmq\",\"publisherId\":\"yxzk\",\"planId\":\"ocukoklyax\",\"planTermsAndConditionsLinks\":[\"onuq\",\"zf\",\"beypewrmjmw\",\"vjektcxsenh\"]},\"provisioningState\":\"Succeeded\"},\"id\":\"ffrzpwvlqdqgbiqy\",\"name\":\"ihkaetcktvfc\",\"type\":\"vf\"},{\"properties\":{\"operatorName\":\"ymuctqhjfbebrj\",\"camaraApiName\":\"erfuwuttt\",\"supportedLocations\":[\"jrbirphxepcyv\",\"hfnljkyq\",\"j\",\"uujqgidokgjljyo\"],\"operatorRegions\":[\"cltbgsncghkjesz\",\"hbijhtxfvgxb\",\"smx\"],\"markets\":[\"mpvecxgodebfqk\",\"rbmpukgri\"],\"limits\":\"lzlfbxzpuz\",\"marketplaceProperties\":{\"offerId\":\"spnqzahmgkb\",\"publisherId\":\"yydhibnuqqk\",\"planId\":\"kadrgvt\",\"planTermsAndConditionsLinks\":[\"gnbuy\"]},\"provisioningState\":\"Provisioning\"},\"id\":\"gg\",\"name\":\"ebf\",\"type\":\"iarbutrcvpna\"},{\"properties\":{\"operatorName\":\"hj\",\"camaraApiName\":\"nmpxttdb\",\"supportedLocations\":[\"nlankxmyskpb\",\"enbtkcxywny\",\"nrs\",\"nlqidybyxczf\"],\"operatorRegions\":[\"aaxdbabphlwrq\",\"fkts\",\"hsucoc\"],\"markets\":[\"yazttbtwwrqpue\",\"ckzywbiexzfeyue\"],\"limits\":\"ibx\",\"marketplaceProperties\":{\"offerId\":\"bhqwalmuzyoxa\",\"publisherId\":\"dkzjancuxrh\",\"planId\":\"bavxbniwdjswzt\",\"planTermsAndConditionsLinks\":[\"bpg\",\"xytxhpzxbz\",\"fzab\"]},\"provisioningState\":\"Failed\"},\"id\":\"hxw\",\"name\":\"ctyqik\",\"type\":\"bbovplwzbhvgyugu\"},{\"properties\":{\"operatorName\":\"mkfssxqukkfplgm\",\"camaraApiName\":\"xnkjzkdesl\",\"supportedLocations\":[\"opwi\",\"ighxpk\"],\"operatorRegions\":[\"baiuebbaumny\"],\"markets\":[\"edeojnabc\"],\"limits\":\"smtxpsieb\",\"marketplaceProperties\":{\"offerId\":\"vpesapskrdqmhjjd\",\"publisherId\":\"ldwkyzxuutkn\",\"planId\":\"scwsv\",\"planTermsAndConditionsLinks\":[\"otogtwrupqs\",\"vnm\",\"cykvceo\",\"eil\"]},\"provisioningState\":\"Accepted\"},\"id\":\"tyfjfcnjbkcnxdhb\",\"name\":\"tkphywpnvjtoqn\",\"type\":\"rmclfplphoxu\"}],\"nextLink\":\"rpabg\"}")
             .toObject(OperatorApiPlanListResult.class);
-        Assertions.assertEquals("ugnxkrxdqmi", model.value().get(0).properties().operatorName());
-        Assertions.assertEquals("thz", model.value().get(0).properties().camaraApiName());
-        Assertions.assertEquals("drabhjybige", model.value().get(0).properties().supportedLocations().get(0));
-        Assertions.assertEquals("pec", model.value().get(0).properties().operatorRegions().get(0));
-        Assertions.assertEquals("vkwlzuvccfwnf", model.value().get(0).properties().markets().get(0));
-        Assertions.assertEquals("njampm", model.value().get(0).properties().limits());
-        Assertions.assertEquals("zscxaqwo", model.value().get(0).properties().marketplaceProperties().offerId());
-        Assertions.assertEquals("hcbonqvpkvlr",
-            model.value().get(0).properties().marketplaceProperties().legacyOfferId());
-        Assertions.assertEquals("jease", model.value().get(0).properties().marketplaceProperties().publisherId());
-        Assertions.assertEquals("heoflokeyyienjbd", model.value().get(0).properties().marketplaceProperties().planId());
-        Assertions.assertEquals("tgrhpdjpjumas", model.value().get(0).properties().marketplaceProperties().termId());
-        Assertions.assertEquals("v", model.nextLink());
+        Assertions.assertEquals("ucgygevqz", model.value().get(0).properties().operatorName());
+        Assertions.assertEquals("yp", model.value().get(0).properties().camaraApiName());
+        Assertions.assertEquals("p", model.value().get(0).properties().supportedLocations().get(0));
+        Assertions.assertEquals("jdeyeamdpha", model.value().get(0).properties().operatorRegions().get(0));
+        Assertions.assertEquals("njeputtmrywn", model.value().get(0).properties().markets().get(0));
+        Assertions.assertEquals("whzlsicohoq", model.value().get(0).properties().limits());
+        Assertions.assertEquals("vlryavwhheunmmq", model.value().get(0).properties().marketplaceProperties().offerId());
+        Assertions.assertEquals("yxzk", model.value().get(0).properties().marketplaceProperties().publisherId());
+        Assertions.assertEquals("ocukoklyax", model.value().get(0).properties().marketplaceProperties().planId());
+        Assertions.assertEquals("rpabg", model.nextLink());
     }
 }

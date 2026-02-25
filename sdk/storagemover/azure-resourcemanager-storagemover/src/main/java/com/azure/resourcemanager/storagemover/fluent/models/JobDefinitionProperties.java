@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -355,34 +354,6 @@ public final class JobDefinitionProperties implements JsonSerializable<JobDefini
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (copyMode() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property copyMode in model JobDefinitionProperties"));
-        }
-        if (sourceName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sourceName in model JobDefinitionProperties"));
-        }
-        if (targetName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetName in model JobDefinitionProperties"));
-        }
-        if (sourceTargetMap() != null) {
-            sourceTargetMap().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(JobDefinitionProperties.class);
 
     /**
      * {@inheritDoc}

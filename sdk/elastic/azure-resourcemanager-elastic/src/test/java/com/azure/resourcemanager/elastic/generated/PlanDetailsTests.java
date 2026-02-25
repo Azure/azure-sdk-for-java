@@ -12,27 +12,27 @@ public final class PlanDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlanDetails model = BinaryData.fromString(
-            "{\"offerID\":\"bnbdxkqpxokajion\",\"publisherID\":\"mexgstxgcp\",\"termID\":\"gmaajrm\",\"planID\":\"jwzrl\",\"planName\":\"mcl\"}")
+            "{\"offerID\":\"ctbzaq\",\"publisherID\":\"sycbkbfk\",\"termID\":\"kdkexxp\",\"planID\":\"fmxa\",\"planName\":\"fjpgddtocjjxhvp\"}")
             .toObject(PlanDetails.class);
-        Assertions.assertEquals("bnbdxkqpxokajion", model.offerId());
-        Assertions.assertEquals("mexgstxgcp", model.publisherId());
-        Assertions.assertEquals("gmaajrm", model.termId());
-        Assertions.assertEquals("jwzrl", model.planId());
-        Assertions.assertEquals("mcl", model.planName());
+        Assertions.assertEquals("ctbzaq", model.offerId());
+        Assertions.assertEquals("sycbkbfk", model.publisherId());
+        Assertions.assertEquals("kdkexxp", model.termId());
+        Assertions.assertEquals("fmxa", model.planId());
+        Assertions.assertEquals("fjpgddtocjjxhvp", model.planName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlanDetails model = new PlanDetails().withOfferId("bnbdxkqpxokajion")
-            .withPublisherId("mexgstxgcp")
-            .withTermId("gmaajrm")
-            .withPlanId("jwzrl")
-            .withPlanName("mcl");
+        PlanDetails model = new PlanDetails().withOfferId("ctbzaq")
+            .withPublisherId("sycbkbfk")
+            .withTermId("kdkexxp")
+            .withPlanId("fmxa")
+            .withPlanName("fjpgddtocjjxhvp");
         model = BinaryData.fromObject(model).toObject(PlanDetails.class);
-        Assertions.assertEquals("bnbdxkqpxokajion", model.offerId());
-        Assertions.assertEquals("mexgstxgcp", model.publisherId());
-        Assertions.assertEquals("gmaajrm", model.termId());
-        Assertions.assertEquals("jwzrl", model.planId());
-        Assertions.assertEquals("mcl", model.planName());
+        Assertions.assertEquals("ctbzaq", model.offerId());
+        Assertions.assertEquals("sycbkbfk", model.publisherId());
+        Assertions.assertEquals("kdkexxp", model.termId());
+        Assertions.assertEquals("fmxa", model.planId());
+        Assertions.assertEquals("fjpgddtocjjxhvp", model.planName());
     }
 }

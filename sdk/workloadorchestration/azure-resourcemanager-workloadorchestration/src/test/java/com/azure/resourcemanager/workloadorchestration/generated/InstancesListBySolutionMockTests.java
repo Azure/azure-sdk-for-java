@@ -25,7 +25,7 @@ public final class InstancesListBySolutionMockTests {
     @Test
     public void testListBySolution() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"solutionVersionId\":\"luqw\",\"targetId\":\"ulsutrjbhxy\",\"activeState\":\"active\",\"reconciliationPolicy\":{\"state\":\"inactive\",\"interval\":\"ezvqq\"},\"solutionScope\":\"drftbcvexreuquo\",\"status\":{\"lastModified\":\"2021-01-27T00:09:21Z\",\"deployed\":1013930183,\"expectedRunningJobId\":1432269012,\"runningJobId\":949120362,\"status\":\"gkhyxvrqtvbczsu\",\"statusDetails\":\"dgglmepjpfs\",\"generation\":557010764,\"targetStatuses\":[{\"name\":\"ngpszngafpg\",\"status\":\"kvec\",\"componentStatuses\":[{},{},{}]}]},\"deploymentTimestampEpoch\":2612565558576892207,\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"name\":\"yedmzrgj\",\"type\":\"EdgeZone\"},\"eTag\":\"nub\",\"id\":\"itpkpztrgdg\",\"name\":\"vcoqraswugyxpqi\",\"type\":\"we\"}]}";
+            = "{\"value\":[{\"properties\":{\"solutionVersionId\":\"hlzvfictnkjj\",\"targetId\":\"gcwn\",\"activeState\":\"inactive\",\"reconciliationPolicy\":{\"state\":\"active\",\"interval\":\"fyrtogmhmjp\"},\"solutionScope\":\"cdf\",\"status\":{\"lastModified\":\"2021-09-25T01:25:06Z\",\"deployed\":1104557547,\"expectedRunningJobId\":495145104,\"runningJobId\":806895875,\"status\":\"mseharx\",\"statusDetails\":\"vqnrxtmbpj\",\"generation\":1341207363,\"targetStatuses\":[{\"name\":\"hrsidq\",\"status\":\"l\",\"componentStatuses\":[{},{},{}]},{\"name\":\"kft\",\"status\":\"atw\",\"componentStatuses\":[{},{},{},{}]},{\"name\":\"u\",\"status\":\"ym\",\"componentStatuses\":[{},{},{},{}]},{\"name\":\"jhp\",\"status\":\"vjqdvdwkq\",\"componentStatuses\":[{},{},{},{}]}]},\"deploymentTimestampEpoch\":5810045625940459054,\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"aavuagntetaout\",\"type\":\"CustomLocation\"},\"eTag\":\"ctuhspfefyihduye\",\"id\":\"ldphmtybkcgs\",\"name\":\"thhllnmwyne\",\"type\":\"x\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,18 @@ public final class InstancesListBySolutionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Instance> response
-            = manager.instances().listBySolution("nmgzvyfijdkzuqnw", "it", "uqoly", com.azure.core.util.Context.NONE);
+            = manager.instances().listBySolution("fununmpzk", "vfy", "fkd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("luqw", response.iterator().next().properties().solutionVersionId());
-        Assertions.assertEquals("ulsutrjbhxy", response.iterator().next().properties().targetId());
-        Assertions.assertEquals(ActiveState.ACTIVE, response.iterator().next().properties().activeState());
-        Assertions.assertEquals(ReconciliationState.INACTIVE,
+        Assertions.assertEquals("hlzvfictnkjj", response.iterator().next().properties().solutionVersionId());
+        Assertions.assertEquals("gcwn", response.iterator().next().properties().targetId());
+        Assertions.assertEquals(ActiveState.INACTIVE, response.iterator().next().properties().activeState());
+        Assertions.assertEquals(ReconciliationState.ACTIVE,
             response.iterator().next().properties().reconciliationPolicy().state());
-        Assertions.assertEquals("ezvqq", response.iterator().next().properties().reconciliationPolicy().interval());
-        Assertions.assertEquals("drftbcvexreuquo", response.iterator().next().properties().solutionScope());
-        Assertions.assertEquals("yedmzrgj", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("fyrtogmhmjp",
+            response.iterator().next().properties().reconciliationPolicy().interval());
+        Assertions.assertEquals("cdf", response.iterator().next().properties().solutionScope());
+        Assertions.assertEquals("aavuagntetaout", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
+            response.iterator().next().extendedLocation().type());
     }
 }

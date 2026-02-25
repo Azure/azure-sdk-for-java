@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cloudhealth.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -163,29 +162,6 @@ public final class LogAnalyticsQuerySignalDefinitionProperties extends SignalDef
         super.withEvaluationRules(evaluationRules);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (queryText() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property queryText in model LogAnalyticsQuerySignalDefinitionProperties"));
-        }
-        if (evaluationRules() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property evaluationRules in model LogAnalyticsQuerySignalDefinitionProperties"));
-        } else {
-            evaluationRules().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(LogAnalyticsQuerySignalDefinitionProperties.class);
 
     /**
      * {@inheritDoc}

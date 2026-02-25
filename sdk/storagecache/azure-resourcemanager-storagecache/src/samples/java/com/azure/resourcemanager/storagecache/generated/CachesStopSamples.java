@@ -10,7 +10,7 @@ package com.azure.resourcemanager.storagecache.generated;
 public final class CachesStopSamples {
     /*
      * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/Caches_Stop.json
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/Caches_Stop.json
      */
     /**
      * Sample code: Caches_Stop.

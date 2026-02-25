@@ -88,6 +88,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -238,6 +239,107 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
             safeStopChangeFeedProcessor(changeFeedProcessor);
+
+            for (InternalObjectNode item : createdDocuments) {
+                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            }
+
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = { "query" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void verifyConsistentTimestamps() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .handleLatestVersionChanges((List<ChangeFeedProcessorItem> docs) -> {
+                    logger.info("START processing from thread {}", Thread.currentThread().getId());
+                    for (ChangeFeedProcessorItem item : docs) {
+                        processItem(item, receivedDocuments);
+                    }
+                    logger.info("END processing from thread {}", Thread.currentThread().getId());
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeaseRenewInterval(Duration.ofSeconds(20))
+                    .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                    .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                    .setFeedPollDelay(Duration.ofSeconds(1))
+                    .setLeasePrefix("TEST")
+                    .setMaxItemCount(10)
+                    .setMinScaleCount(1)
+                    .setMaxScaleCount(3)
+                )
+                .buildChangeFeedProcessor();
+            AtomicReference<String> initialTimestamp = new AtomicReference<>();
+
+            startChangeFeedProcessor(changeFeedProcessor);
+
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+            safeStopChangeFeedProcessor(changeFeedProcessor);
+
+            createdLeaseCollection.queryItems("SELECT * FROM c", new CosmosQueryRequestOptions(), JsonNode.class)
+                .byPage()
+                .flatMap(feedResponse -> {
+                    for (JsonNode item : feedResponse.getResults()) {
+                        if (item.get("timestamp") != null) {
+                            initialTimestamp.set(item.get("timestamp").asText());
+                            logger.info("Found timestamp: %s", initialTimestamp);
+                        }
+                    }
+                    return Mono.empty();
+                }).blockLast();
+
+
+
+            startChangeFeedProcessor(changeFeedProcessor);
+
+            // create a gap between previously written documents
+            Thread.sleep(3000);
+
+            // process some documents after the CFP is started and stopped
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
+
+            // Wait for the feed processor to receive and process the documents.
+            waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
+            safeStopChangeFeedProcessor(changeFeedProcessor);
+
+            logger.info("After processing documents");
+
+            AtomicReference<String> newTimestamp = new AtomicReference<>();
+
+
+            createdLeaseCollection.queryItems("SELECT * FROM c", new CosmosQueryRequestOptions(), JsonNode.class)
+                .byPage()
+                .flatMap(feedResponse -> {
+                    for (JsonNode item : feedResponse.getResults()) {
+                        if (item.get("timestamp") != null) {
+                            newTimestamp.set(item.get("timestamp").asText());
+                            logger.info("Found timestamp: %s", newTimestamp);
+                        }
+                    }
+                    return Mono.empty();
+                }).blockLast();
+
+
+            assertThat(newTimestamp.get()).doesNotContain("[UTC]");
+            assertThat(initialTimestamp.get()).doesNotContain("[UTC]");
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -885,7 +987,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                                     docDefList.add(getDocumentDefinition());
                                 }
 
-                                return bulkInsert(createdFeedCollection, docDefList, FEED_COUNT)
+                                return bulkInsert(createdFeedCollection, docDefList)
                                     .last()
                                     .delayElement(Duration.ofMillis(1000))
                                     .flatMap(cosmosItemResponse -> {
@@ -972,7 +1074,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     docDefList.add(getDocumentDefinition());
                 }
 
-                bulkInsert(createdFeedCollection, docDefList, FEED_COUNT)
+                bulkInsert(createdFeedCollection, docDefList)
                     .last()
                     .flatMap(cosmosItemResponse -> {
                         logger.info("Start first Change feed processor");
@@ -1024,7 +1126,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                                             docDefList1.add(getDocumentDefinition());
                                         }
 
-                                        return bulkInsert(createdFeedCollection, docDefList1, FEED_COUNT)
+                                        return bulkInsert(createdFeedCollection, docDefList1)
                                             .last();
                                     });
                             }))
@@ -1693,7 +1795,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"query" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = {"query" }, timeOut = 3 * TIMEOUT)
     public void readFeedDocumentsWithThroughputControl() throws InterruptedException {
         // Create a separate client as throughput control group will be applied to it
         CosmosAsyncClient clientWithThroughputControl =
@@ -1717,8 +1819,15 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
 
             int maxItemCount = 100; // force the RU usage per requests > 1
-            int feedCount = maxItemCount * 2; // force to do two fetches
-            setupReadFeedDocuments(createdDocuments, createdFeedCollection, feedCount);
+
+            // force to do two fetches
+            for (int i = 0; i < 2; i++) {
+                setupReadFeedDocuments(
+                    createdDocuments,
+                    this.createdDatabase.getContainer(createdFeedCollection.getId()),
+                    maxItemCount,
+                    true);
+            }
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
@@ -2242,13 +2351,23 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         List<InternalObjectNode> createdDocuments,
         CosmosAsyncContainer feedCollection,
         long count) {
+
+        setupReadFeedDocuments(createdDocuments, feedCollection, count, false);
+    }
+
+    private void setupReadFeedDocuments(
+        List<InternalObjectNode> createdDocuments,
+        CosmosAsyncContainer feedCollection,
+        long count,
+        boolean bulkEnabled) {
         List<InternalObjectNode> docDefList = new ArrayList<>();
 
         for(int i = 0; i < count; i++) {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, bulkEnabled));
+
         for (InternalObjectNode current : createdDocuments) {
             try {
                 logger.info("CREATED {}", OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(current));
@@ -2266,7 +2385,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

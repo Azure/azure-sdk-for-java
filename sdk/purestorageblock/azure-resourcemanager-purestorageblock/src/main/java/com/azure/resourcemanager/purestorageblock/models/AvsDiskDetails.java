@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.purestorageblock.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -121,45 +120,6 @@ public final class AvsDiskDetails implements JsonSerializable<AvsDiskDetails> {
     public String avsStorageContainerResourceId() {
         return this.avsStorageContainerResourceId;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (diskId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property diskId in model AvsDiskDetails"));
-        }
-        if (diskName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property diskName in model AvsDiskDetails"));
-        }
-        if (folder() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property folder in model AvsDiskDetails"));
-        }
-        if (avsVmInternalId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property avsVmInternalId in model AvsDiskDetails"));
-        }
-        if (avsVmResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property avsVmResourceId in model AvsDiskDetails"));
-        }
-        if (avsVmName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property avsVmName in model AvsDiskDetails"));
-        }
-        if (avsStorageContainerResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property avsStorageContainerResourceId in model AvsDiskDetails"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AvsDiskDetails.class);
 
     /**
      * {@inheritDoc}

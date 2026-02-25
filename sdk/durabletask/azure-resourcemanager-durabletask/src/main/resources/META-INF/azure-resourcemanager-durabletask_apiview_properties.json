@@ -53,6 +53,7 @@
     "com.azure.resourcemanager.durabletask.models.SchedulerProperties": "Microsoft.DurableTask.SchedulerProperties",
     "com.azure.resourcemanager.durabletask.models.SchedulerPropertiesUpdate": "Microsoft.DurableTask.SchedulerPropertiesUpdate",
     "com.azure.resourcemanager.durabletask.models.SchedulerSku": "Microsoft.DurableTask.SchedulerSku",
+    "com.azure.resourcemanager.durabletask.models.SchedulerSkuName": "Microsoft.DurableTask.SchedulerSkuName",
     "com.azure.resourcemanager.durabletask.models.SchedulerSkuUpdate": "Microsoft.DurableTask.SchedulerSkuUpdate",
     "com.azure.resourcemanager.durabletask.models.SchedulerUpdate": "Microsoft.DurableTask.SchedulerUpdate",
     "com.azure.resourcemanager.durabletask.models.TaskHubProperties": "Microsoft.DurableTask.TaskHubProperties"

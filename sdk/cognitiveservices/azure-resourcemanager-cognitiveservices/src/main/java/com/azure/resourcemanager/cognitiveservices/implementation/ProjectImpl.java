@@ -35,12 +35,12 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
         return this.innerModel().etag();
     }
 
-    public Identity identity() {
-        return this.innerModel().identity();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public Identity identity() {
+        return this.innerModel().identity();
     }
 
     public Map<String, String> tags() {

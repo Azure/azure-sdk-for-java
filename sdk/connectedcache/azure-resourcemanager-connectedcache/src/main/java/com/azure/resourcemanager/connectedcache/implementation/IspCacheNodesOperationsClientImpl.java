@@ -32,13 +32,14 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.connectedcache.fluent.IspCacheNodesOperationsClient;
 import com.azure.resourcemanager.connectedcache.fluent.models.IspCacheNodeResourceInner;
+import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeAutoUpdateHistoryInner;
 import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeBgpCidrDetailsInner;
 import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeInstallDetailsInner;
+import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeIssueHistoryInner;
 import com.azure.resourcemanager.connectedcache.implementation.models.IspCacheNodeResourceListResult;
 import com.azure.resourcemanager.connectedcache.models.ConnectedCachePatchResource;
 import java.nio.ByteBuffer;
@@ -229,6 +230,54 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}/getCacheNodeAutoUpdateHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MccCacheNodeAutoUpdateHistoryInner>> getCacheNodeAutoUpdateHistory(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}/getCacheNodeAutoUpdateHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MccCacheNodeAutoUpdateHistoryInner> getCacheNodeAutoUpdateHistorySync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}/getCacheNodeMccIssueDetailsHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MccCacheNodeIssueHistoryInner>> getCacheNodeMccIssueDetailsHistory(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}/getCacheNodeMccIssueDetailsHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MccCacheNodeIssueHistoryInner> getCacheNodeMccIssueDetailsHistorySync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -260,26 +309,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IspCacheNodeResourceInner>> getWithResponseAsync(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -322,28 +351,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IspCacheNodeResourceInner> getWithResponse(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, customerResourceName, cacheNodeResourceName, accept, context);
@@ -382,31 +389,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName, IspCacheNodeResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -431,34 +413,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, IspCacheNodeResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -482,34 +436,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, IspCacheNodeResourceInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -663,31 +589,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IspCacheNodeResourceInner>> updateWithResponseAsync(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName, ConnectedCachePatchResource properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -733,34 +634,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IspCacheNodeResourceInner> updateWithResponse(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, ConnectedCachePatchResource properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -801,26 +674,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
         return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -840,28 +693,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName,
             Context.NONE);
@@ -882,28 +713,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, context);
     }
@@ -1031,22 +840,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IspCacheNodeResourceInner>>
         listByIspCustomerResourceSinglePageAsync(String resourceGroupName, String customerResourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1087,24 +880,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IspCacheNodeResourceInner> listByIspCustomerResourceSinglePage(String resourceGroupName,
         String customerResourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<IspCacheNodeResourceListResult> res
             = service.listByIspCustomerResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1127,24 +902,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IspCacheNodeResourceInner> listByIspCustomerResourceSinglePage(String resourceGroupName,
         String customerResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<IspCacheNodeResourceListResult> res
             = service.listByIspCustomerResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1204,26 +961,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MccCacheNodeBgpCidrDetailsInner>> getBgpCidrsWithResponseAsync(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBgpCidrs(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1267,28 +1004,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MccCacheNodeBgpCidrDetailsInner> getBgpCidrsWithResponse(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getBgpCidrsSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, accept,
@@ -1328,26 +1043,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MccCacheNodeInstallDetailsInner>> getCacheNodeInstallDetailsWithResponseAsync(
         String resourceGroupName, String customerResourceName, String cacheNodeResourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCacheNodeInstallDetails(this.client.getEndpoint(),
@@ -1389,28 +1084,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MccCacheNodeInstallDetailsInner> getCacheNodeInstallDetailsWithResponse(String resourceGroupName,
         String customerResourceName, String cacheNodeResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (cacheNodeResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cacheNodeResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getCacheNodeInstallDetailsSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, accept,
@@ -1436,6 +1109,166 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     }
 
     /**
+     * This api gets ispCacheNode resource auto update histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource auto update history along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MccCacheNodeAutoUpdateHistoryInner>> getCacheNodeAutoUpdateHistoryWithResponseAsync(
+        String resourceGroupName, String customerResourceName, String cacheNodeResourceName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getCacheNodeAutoUpdateHistory(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, customerResourceName,
+                cacheNodeResourceName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This api gets ispCacheNode resource auto update histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource auto update history on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MccCacheNodeAutoUpdateHistoryInner> getCacheNodeAutoUpdateHistoryAsync(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName) {
+        return getCacheNodeAutoUpdateHistoryWithResponseAsync(resourceGroupName, customerResourceName,
+            cacheNodeResourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * This api gets ispCacheNode resource auto update histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource auto update history along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MccCacheNodeAutoUpdateHistoryInner> getCacheNodeAutoUpdateHistoryWithResponse(
+        String resourceGroupName, String customerResourceName, String cacheNodeResourceName, Context context) {
+        final String accept = "application/json";
+        return service.getCacheNodeAutoUpdateHistorySync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, accept,
+            context);
+    }
+
+    /**
+     * This api gets ispCacheNode resource auto update histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource auto update history.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MccCacheNodeAutoUpdateHistoryInner getCacheNodeAutoUpdateHistory(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName) {
+        return getCacheNodeAutoUpdateHistoryWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * This api gets ispCacheNode resource issues details histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource issue history along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MccCacheNodeIssueHistoryInner>> getCacheNodeMccIssueDetailsHistoryWithResponseAsync(
+        String resourceGroupName, String customerResourceName, String cacheNodeResourceName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getCacheNodeMccIssueDetailsHistory(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, customerResourceName,
+                cacheNodeResourceName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This api gets ispCacheNode resource issues details histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource issue history on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MccCacheNodeIssueHistoryInner> getCacheNodeMccIssueDetailsHistoryAsync(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName) {
+        return getCacheNodeMccIssueDetailsHistoryWithResponseAsync(resourceGroupName, customerResourceName,
+            cacheNodeResourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * This api gets ispCacheNode resource issues details histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource issue history along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MccCacheNodeIssueHistoryInner> getCacheNodeMccIssueDetailsHistoryWithResponse(
+        String resourceGroupName, String customerResourceName, String cacheNodeResourceName, Context context) {
+        final String accept = "application/json";
+        return service.getCacheNodeMccIssueDetailsHistorySync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, accept,
+            context);
+    }
+
+    /**
+     * This api gets ispCacheNode resource issues details histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource issue history.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MccCacheNodeIssueHistoryInner getCacheNodeMccIssueDetailsHistory(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName) {
+        return getCacheNodeMccIssueDetailsHistoryWithResponse(resourceGroupName, customerResourceName,
+            cacheNodeResourceName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1448,13 +1281,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IspCacheNodeResourceInner>>
         listByIspCustomerResourceNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1475,15 +1301,6 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IspCacheNodeResourceInner> listByIspCustomerResourceNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<IspCacheNodeResourceListResult> res
             = service.listByIspCustomerResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1504,21 +1321,10 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IspCacheNodeResourceInner> listByIspCustomerResourceNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<IspCacheNodeResourceListResult> res
             = service.listByIspCustomerResourceNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(IspCacheNodesOperationsClientImpl.class);
 }

@@ -626,7 +626,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
 
         FaultInjectionServerErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-            .delay(Duration.ofMillis(1500))
+            .delay(Duration.ofMillis(6000))
             .times(1);
 
         if (suppressServiceRequests != null) {

@@ -13,6 +13,7 @@ import com.azure.resourcemanager.hdinsight.models.AutoscaleTimeAndCapacity;
 import com.azure.resourcemanager.hdinsight.models.ClientGroupInfo;
 import com.azure.resourcemanager.hdinsight.models.ClusterCreateProperties;
 import com.azure.resourcemanager.hdinsight.models.ClusterDefinition;
+import com.azure.resourcemanager.hdinsight.models.ClusterIdentity;
 import com.azure.resourcemanager.hdinsight.models.ComputeIsolationProperties;
 import com.azure.resourcemanager.hdinsight.models.ComputeProfile;
 import com.azure.resourcemanager.hdinsight.models.DataDisksGroups;
@@ -25,9 +26,10 @@ import com.azure.resourcemanager.hdinsight.models.IpTag;
 import com.azure.resourcemanager.hdinsight.models.KafkaRestProperties;
 import com.azure.resourcemanager.hdinsight.models.LinuxOperatingSystemProfile;
 import com.azure.resourcemanager.hdinsight.models.NetworkProperties;
-import com.azure.resourcemanager.hdinsight.models.OsProfile;
 import com.azure.resourcemanager.hdinsight.models.OSType;
+import com.azure.resourcemanager.hdinsight.models.OsProfile;
 import com.azure.resourcemanager.hdinsight.models.PrivateLink;
+import com.azure.resourcemanager.hdinsight.models.ResourceIdentityType;
 import com.azure.resourcemanager.hdinsight.models.ResourceProviderConnection;
 import com.azure.resourcemanager.hdinsight.models.Role;
 import com.azure.resourcemanager.hdinsight.models.SecurityProfile;
@@ -36,6 +38,7 @@ import com.azure.resourcemanager.hdinsight.models.SshPublicKey;
 import com.azure.resourcemanager.hdinsight.models.StorageAccount;
 import com.azure.resourcemanager.hdinsight.models.StorageProfile;
 import com.azure.resourcemanager.hdinsight.models.Tier;
+import com.azure.resourcemanager.hdinsight.models.UserAssignedIdentity;
 import com.azure.resourcemanager.hdinsight.models.VirtualNetworkProfile;
 import java.io.IOException;
 import java.util.Arrays;
@@ -48,7 +51,7 @@ import java.util.Map;
 public final class ClustersCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateLinuxHadoopSshPassword.json
      */
     /**
@@ -103,7 +106,81 @@ public final class ClustersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
+     * CreateHDInsightClusterWithADLSGen2Msi.json
+     */
+    /**
+     * Sample code: Create cluster with storage ADLSGen2 + MSI.
+     * 
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void createClusterWithStorageADLSGen2MSI(com.azure.resourcemanager.hdinsight.HDInsightManager manager)
+        throws IOException {
+        manager.clusters()
+            .define("cluster1")
+            .withExistingResourceGroup("rg1")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withProperties(new ClusterCreateProperties().withClusterVersion("5.1")
+                .withOsType(OSType.LINUX)
+                .withTier(Tier.STANDARD)
+                .withClusterDefinition(new ClusterDefinition().withKind("Hadoop")
+                    .withConfigurations(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize(
+                            "{\"gateway\":{\"restAuthCredential.isEnabled\":true,\"restAuthCredential.password\":\"**********\",\"restAuthCredential.username\":\"admin\"}}",
+                            Object.class, SerializerEncoding.JSON)))
+                .withComputeProfile(new ComputeProfile().withRoles(Arrays.asList(new Role().withName("headnode")
+                    .withMinInstanceCount(1)
+                    .withTargetInstanceCount(2)
+                    .withHardwareProfile(new HardwareProfile().withVmSize("Standard_E8_V3"))
+                    .withOsProfile(new OsProfile().withLinuxOperatingSystemProfile(
+                        new LinuxOperatingSystemProfile().withUsername("sshuser").withPassword("fakeTokenPlaceholder")))
+                    .withVirtualNetworkProfile(new VirtualNetworkProfile().withId(
+                        "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetname")
+                        .withSubnet(
+                            "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetname/subnets/vnetsubnet"))
+                    .withScriptActions(Arrays.asList()),
+                    new Role().withName("workernode")
+                        .withMinInstanceCount(1)
+                        .withTargetInstanceCount(3)
+                        .withHardwareProfile(new HardwareProfile().withVmSize("Standard_E8_V3"))
+                        .withOsProfile(new OsProfile()
+                            .withLinuxOperatingSystemProfile(new LinuxOperatingSystemProfile().withUsername("sshuser")
+                                .withPassword("fakeTokenPlaceholder")))
+                        .withVirtualNetworkProfile(new VirtualNetworkProfile().withId(
+                            "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetname")
+                            .withSubnet(
+                                "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetname/subnets/vnetsubnet"))
+                        .withScriptActions(Arrays.asList()),
+                    new Role().withName("zookeepernode")
+                        .withMinInstanceCount(1)
+                        .withTargetInstanceCount(3)
+                        .withHardwareProfile(new HardwareProfile().withVmSize("Standard_E8_V3"))
+                        .withOsProfile(new OsProfile()
+                            .withLinuxOperatingSystemProfile(new LinuxOperatingSystemProfile().withUsername("sshuser")
+                                .withPassword("fakeTokenPlaceholder")))
+                        .withVirtualNetworkProfile(new VirtualNetworkProfile().withId(
+                            "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetname")
+                            .withSubnet(
+                                "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetname/subnets/vnetsubnet"))
+                        .withScriptActions(Arrays.asList()))))
+                .withStorageProfile(new StorageProfile().withStorageaccounts(Arrays.asList(new StorageAccount()
+                    .withName("mystorage.blob.core.windows.net")
+                    .withIsDefault(true)
+                    .withFileSystem("default")
+                    .withResourceId(
+                        "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/mystorage")
+                    .withMsiResourceId(
+                        "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi")))))
+            .withIdentity(new ClusterIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi",
+                    new UserAssignedIdentity())))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateKafkaClusterWithKafkaRestProxy.json
      */
     /**
@@ -165,7 +242,7 @@ public final class ClustersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateHDInsightClusterWithAutoscaleConfig.json
      */
     /**
@@ -233,7 +310,7 @@ public final class ClustersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateLinuxHadoopSshPublicKey.json
      */
     /**
@@ -293,7 +370,7 @@ public final class ClustersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateHDInsightClusterWithAvailabilityZones.json
      */
     /**
@@ -350,7 +427,58 @@ public final class ClustersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
+     * CreateHDInsightClusterWithEntraUser.json
+     */
+    /**
+     * Sample code: Create cluster with Entra User.
+     * 
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void createClusterWithEntraUser(com.azure.resourcemanager.hdinsight.HDInsightManager manager)
+        throws IOException {
+        manager.clusters()
+            .define("cluster1")
+            .withExistingResourceGroup("rg1")
+            .withProperties(new ClusterCreateProperties().withClusterVersion("5.1")
+                .withOsType(OSType.LINUX)
+                .withTier(Tier.STANDARD)
+                .withClusterDefinition(new ClusterDefinition().withKind("Hadoop")
+                    .withConfigurations(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize(
+                            "{\"gateway\":{\"restAuthCredential.isEnabled\":false,\"restAuthEntraUsers\":[{\"displayName\":\"displayName\",\"objectId\":\"00000000-0000-0000-0000-000000000000\",\"upn\":\"user@microsoft.com\"}]}}",
+                            Object.class, SerializerEncoding.JSON)))
+                .withComputeProfile(new ComputeProfile().withRoles(Arrays.asList(
+                    new Role().withName("headnode")
+                        .withTargetInstanceCount(2)
+                        .withHardwareProfile(new HardwareProfile().withVmSize("Standard_E8_V3"))
+                        .withOsProfile(new OsProfile()
+                            .withLinuxOperatingSystemProfile(new LinuxOperatingSystemProfile().withUsername("sshuser")
+                                .withPassword("fakeTokenPlaceholder"))),
+                    new Role().withName("workernode")
+                        .withTargetInstanceCount(3)
+                        .withHardwareProfile(new HardwareProfile().withVmSize("Standard_E8_V3"))
+                        .withOsProfile(new OsProfile()
+                            .withLinuxOperatingSystemProfile(new LinuxOperatingSystemProfile().withUsername("sshuser")
+                                .withPassword("fakeTokenPlaceholder"))),
+                    new Role().withName("zookeepernode")
+                        .withTargetInstanceCount(3)
+                        .withHardwareProfile(new HardwareProfile().withVmSize("Standard_E8_V3"))
+                        .withOsProfile(new OsProfile()
+                            .withLinuxOperatingSystemProfile(new LinuxOperatingSystemProfile().withUsername("sshuser")
+                                .withPassword("fakeTokenPlaceholder"))))))
+                .withStorageProfile(new StorageProfile()
+                    .withStorageaccounts(Arrays.asList(new StorageAccount().withName("mystorage.blob.core.windows.net")
+                        .withIsDefault(true)
+                        .withContainer("containername")
+                        .withKey("fakeTokenPlaceholder")
+                        .withEnableSecureChannel(true)))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateLinuxHadoopAdlsGen2.json
      */
     /**
@@ -405,7 +533,7 @@ public final class ClustersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateLinuxHadoopSecureHadoop.json
      */
     /**
@@ -488,7 +616,81 @@ public final class ClustersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
+     * CreateHDInsightClusterWithWasbMsi.json
+     */
+    /**
+     * Sample code: Create cluster with storage WASB + MSI.
+     * 
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void createClusterWithStorageWASBMSI(com.azure.resourcemanager.hdinsight.HDInsightManager manager)
+        throws IOException {
+        manager.clusters()
+            .define("cluster1")
+            .withExistingResourceGroup("rg1")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withProperties(new ClusterCreateProperties().withClusterVersion("5.1")
+                .withOsType(OSType.LINUX)
+                .withTier(Tier.STANDARD)
+                .withClusterDefinition(new ClusterDefinition().withKind("Hadoop")
+                    .withConfigurations(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize(
+                            "{\"gateway\":{\"restAuthCredential.isEnabled\":true,\"restAuthCredential.password\":\"**********\",\"restAuthCredential.username\":\"admin\"}}",
+                            Object.class, SerializerEncoding.JSON)))
+                .withComputeProfile(new ComputeProfile().withRoles(Arrays.asList(new Role().withName("headnode")
+                    .withMinInstanceCount(1)
+                    .withTargetInstanceCount(2)
+                    .withHardwareProfile(new HardwareProfile().withVmSize("Standard_E8_V3"))
+                    .withOsProfile(new OsProfile().withLinuxOperatingSystemProfile(
+                        new LinuxOperatingSystemProfile().withUsername("sshuser").withPassword("fakeTokenPlaceholder")))
+                    .withVirtualNetworkProfile(new VirtualNetworkProfile().withId(
+                        "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetname")
+                        .withSubnet(
+                            "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetname/subnets/vnetsubnet"))
+                    .withScriptActions(Arrays.asList()),
+                    new Role().withName("workernode")
+                        .withMinInstanceCount(1)
+                        .withTargetInstanceCount(3)
+                        .withHardwareProfile(new HardwareProfile().withVmSize("Standard_E8_V3"))
+                        .withOsProfile(new OsProfile()
+                            .withLinuxOperatingSystemProfile(new LinuxOperatingSystemProfile().withUsername("sshuser")
+                                .withPassword("fakeTokenPlaceholder")))
+                        .withVirtualNetworkProfile(new VirtualNetworkProfile().withId(
+                            "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetname")
+                            .withSubnet(
+                                "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetname/subnets/vnetsubnet"))
+                        .withScriptActions(Arrays.asList()),
+                    new Role().withName("zookeepernode")
+                        .withMinInstanceCount(1)
+                        .withTargetInstanceCount(3)
+                        .withHardwareProfile(new HardwareProfile().withVmSize("Standard_E8_V3"))
+                        .withOsProfile(new OsProfile()
+                            .withLinuxOperatingSystemProfile(new LinuxOperatingSystemProfile().withUsername("sshuser")
+                                .withPassword("fakeTokenPlaceholder")))
+                        .withVirtualNetworkProfile(new VirtualNetworkProfile().withId(
+                            "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetname")
+                            .withSubnet(
+                                "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetname/subnets/vnetsubnet"))
+                        .withScriptActions(Arrays.asList()))))
+                .withStorageProfile(new StorageProfile().withStorageaccounts(Arrays.asList(new StorageAccount()
+                    .withName("mystorage.blob.core.windows.net")
+                    .withIsDefault(true)
+                    .withContainer("containername")
+                    .withResourceId(
+                        "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/mystorage")
+                    .withMsiResourceId(
+                        "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi")))))
+            .withIdentity(new ClusterIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi",
+                    new UserAssignedIdentity())))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateLinuxSparkSshPassword.json
      */
     /**
@@ -537,7 +739,7 @@ public final class ClustersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateHDInsightClusterWithCustomNetworkProperties.json
      */
     /**
@@ -597,7 +799,7 @@ public final class ClustersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateHDInsightClusterWithTLS12.json
      */
     /**
@@ -649,7 +851,7 @@ public final class ClustersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateHDInsightClusterWithEncryptionAtHost.json
      */
     /**
@@ -701,7 +903,7 @@ public final class ClustersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateHDInsightClusterWithEncryptionInTransit.json
      */
     /**
@@ -754,7 +956,7 @@ public final class ClustersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * CreateHDInsightClusterWithComputeIsolationProperties.json
      */
     /**

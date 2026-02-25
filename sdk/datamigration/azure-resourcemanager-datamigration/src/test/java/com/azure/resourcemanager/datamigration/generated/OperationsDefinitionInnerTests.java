@@ -12,15 +12,15 @@ public final class OperationsDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationsDefinitionInner model = BinaryData.fromString(
-            "{\"name\":\"tkcnqxwb\",\"isDataAction\":true,\"display\":{\"provider\":\"pi\",\"resource\":\"waasip\",\"operation\":\"iobyu\",\"description\":\"rpqlp\"},\"origin\":\"system\",\"properties\":{\"uwhhmhykojoxafn\":\"datauqgbdbutauvfbt\",\"kkpwdreqnovvq\":\"datadlpichkoymkcdyhb\",\"syrsndsytgadgvra\":\"dataovljxywsu\"}}")
+            "{\"name\":\"apvhelxprgly\",\"isDataAction\":false,\"display\":{\"provider\":\"kcbcue\",\"resource\":\"jxgciqibrh\",\"operation\":\"xsdqrhzoymibmrqy\",\"description\":\"ahwfluszdtmhrk\"},\"origin\":\"user\",\"properties\":{\"iwbwoenwashrtdtk\":\"datavoqacpiexpbt\",\"kulpiujwaasi\":\"datanqxwbp\"}}")
             .toObject(OperationsDefinitionInner.class);
-        Assertions.assertTrue(model.isDataAction());
+        Assertions.assertFalse(model.isDataAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationsDefinitionInner model = new OperationsDefinitionInner().withIsDataAction(true);
+        OperationsDefinitionInner model = new OperationsDefinitionInner().withIsDataAction(false);
         model = BinaryData.fromObject(model).toObject(OperationsDefinitionInner.class);
-        Assertions.assertTrue(model.isDataAction());
+        Assertions.assertFalse(model.isDataAction());
     }
 }

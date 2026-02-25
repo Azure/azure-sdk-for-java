@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.PrivateEndpointIpConfiguration;
+import com.azure.resourcemanager.network.models.PrivateEndpointIpVersionType;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
@@ -195,6 +196,31 @@ public final class PrivateEndpointInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the ipVersionType property: Specifies the IP version type for the private IPs of the private endpoint. If not
+     * defined, this defaults to IPv4.
+     * 
+     * @return the ipVersionType value.
+     */
+    public PrivateEndpointIpVersionType ipVersionType() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipVersionType();
+    }
+
+    /**
+     * Set the ipVersionType property: Specifies the IP version type for the private IPs of the private endpoint. If not
+     * defined, this defaults to IPv4.
+     * 
+     * @param ipVersionType the ipVersionType value to set.
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withIpVersionType(PrivateEndpointIpVersionType ipVersionType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointPropertiesInner();
+        }
+        this.innerProperties().withIpVersionType(ipVersionType);
+        return this;
     }
 
     /**

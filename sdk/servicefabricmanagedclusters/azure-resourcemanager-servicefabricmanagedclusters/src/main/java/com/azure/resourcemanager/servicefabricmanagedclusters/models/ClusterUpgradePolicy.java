@@ -174,23 +174,6 @@ public final class ClusterUpgradePolicy implements JsonSerializable<ClusterUpgra
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (healthPolicy() != null) {
-            healthPolicy().validate();
-        }
-        if (deltaHealthPolicy() != null) {
-            deltaHealthPolicy().validate();
-        }
-        if (monitoringPolicy() != null) {
-            monitoringPolicy().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

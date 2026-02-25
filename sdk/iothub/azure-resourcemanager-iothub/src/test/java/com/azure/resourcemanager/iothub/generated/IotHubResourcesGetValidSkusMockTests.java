@@ -7,8 +7,8 @@ package com.azure.resourcemanager.iothub.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.models.IotHubSku;
@@ -23,14 +23,14 @@ public final class IotHubResourcesGetValidSkusMockTests {
     @Test
     public void testGetValidSkus() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"rjaltolmncw\",\"sku\":{\"name\":\"B3\",\"tier\":\"Free\",\"capacity\":4217034770382613848},\"capacity\":{\"minimum\":8022967239645365882,\"maximum\":1537965460429529227,\"default\":1827389196157237043,\"scaleType\":\"Manual\"}}]}";
+            = "{\"value\":[{\"resourceType\":\"rjaltolmncw\",\"sku\":{\"name\":\"B3\",\"tier\":\"Generation2\",\"capacity\":4217034770382613848},\"capacity\":{\"minimum\":8022967239645365882,\"maximum\":1537965460429529227,\"default\":1827389196157237043,\"scaleType\":\"Manual\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         IotHubManager manager = IotHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<IotHubSkuDescription> response
             = manager.iotHubResources().getValidSkus("qwhxxbuyqaxzfeqz", "ppriol", com.azure.core.util.Context.NONE);

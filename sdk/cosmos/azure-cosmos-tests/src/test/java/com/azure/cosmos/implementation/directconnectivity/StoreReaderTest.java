@@ -29,7 +29,6 @@ import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.VectorSessionToken;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -37,7 +36,10 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+import reactor.test.subscriber.TestSubscriber;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -189,12 +191,7 @@ public class StoreReaderTest {
                 .subStatusCode(expectedSubStatusCode)
                 .build();
 
-        TestSubscriber<List<StoreResult>> subscriber = new TestSubscriber<>();
-        res.subscribe(subscriber);
-        subscriber.awaitTerminalEvent();
-        subscriber.assertNotComplete();
-        assertThat(subscriber.errorCount()).isEqualTo(1);
-        failureValidator.validate(subscriber.errors().get(0));
+        StepVerifier.create(res).verifyErrorSatisfies(failureValidator::validate);
 
         if (expectedStatusCode == 410) {
             assertThat(dsr.requestContext.getFailedEndpoints().size()).isEqualTo(1);
@@ -970,14 +967,10 @@ public class StoreReaderTest {
 
     public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator, long timeout) {
-        TestSubscriber<List<StoreResult>> testSubscriber = new TestSubscriber<>();
-
-        single.flux().subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(single)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     public static void validateSuccess(Mono<StoreResult> single,
@@ -987,26 +980,17 @@ public class StoreReaderTest {
 
     public static void validateSuccess(Mono<StoreResult> single,
                                        StoreResultValidator validator, long timeout) {
-        TestSubscriber<StoreResult> testSubscriber = new TestSubscriber<>();
-
-        single.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(single)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     public static <T> void validateException(Mono<T> single,
                                              FailureValidator validator, long timeout) {
-        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
-
-        single.flux().subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
-        assertThat(testSubscriber.errorCount()).isEqualTo(1);
-        validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
+        StepVerifier.create(single)
+            .expectErrorSatisfies(validator::validate)
+            .verify(Duration.ofMillis(timeout));
     }
 
     public static <T> void validateException(Mono<T> single,
@@ -1016,10 +1000,8 @@ public class StoreReaderTest {
 
     public static <T> void validateError(Mono<T> single,
                                              FailureValidator validator) {
-        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
-
         try {
-            single.flux().subscribe(testSubscriber);
+            single.flux().subscribe(TestSubscriber.create());
         } catch (Throwable throwable) {
             assertThat(throwable).isInstanceOf(Error.class);
             validator.validate(throwable);

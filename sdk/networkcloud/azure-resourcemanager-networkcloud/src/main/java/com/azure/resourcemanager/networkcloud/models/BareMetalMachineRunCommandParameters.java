@@ -26,9 +26,9 @@ public final class BareMetalMachineRunCommandParameters
     private List<String> arguments;
 
     /*
-     * The maximum time the script is allowed to run.
-     * If the execution time exceeds the maximum, the script will be stopped, any output produced until then will be
-     * captured, and the exit code matching a timeout will be returned (252).
+     * The maximum time the script is allowed to run. If the execution time exceeds the maximum, the script will be
+     * stopped, any output produced until then will be captured, and the exit code matching a timeout will be returned
+     * (252).
      */
     private long limitTimeSeconds;
 
@@ -66,9 +66,9 @@ public final class BareMetalMachineRunCommandParameters
     }
 
     /**
-     * Get the limitTimeSeconds property: The maximum time the script is allowed to run.
-     * If the execution time exceeds the maximum, the script will be stopped, any output produced until then will be
-     * captured, and the exit code matching a timeout will be returned (252).
+     * Get the limitTimeSeconds property: The maximum time the script is allowed to run. If the execution time exceeds
+     * the maximum, the script will be stopped, any output produced until then will be captured, and the exit code
+     * matching a timeout will be returned (252).
      * 
      * @return the limitTimeSeconds value.
      */
@@ -77,9 +77,9 @@ public final class BareMetalMachineRunCommandParameters
     }
 
     /**
-     * Set the limitTimeSeconds property: The maximum time the script is allowed to run.
-     * If the execution time exceeds the maximum, the script will be stopped, any output produced until then will be
-     * captured, and the exit code matching a timeout will be returned (252).
+     * Set the limitTimeSeconds property: The maximum time the script is allowed to run. If the execution time exceeds
+     * the maximum, the script will be stopped, any output produced until then will be captured, and the exit code
+     * matching a timeout will be returned (252).
      * 
      * @param limitTimeSeconds the limitTimeSeconds value to set.
      * @return the BareMetalMachineRunCommandParameters object itself.

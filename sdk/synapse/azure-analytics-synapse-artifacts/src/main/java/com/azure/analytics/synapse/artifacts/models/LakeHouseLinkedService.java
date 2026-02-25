@@ -38,6 +38,12 @@ public class LakeHouseLinkedService extends LinkedService {
     private Object artifactId;
 
     /*
+     * The authentication type to use.
+     */
+    @Generated
+    private LakehouseAuthenticationType authenticationType;
+
+    /*
      * The ID of the application used to authenticate against Microsoft Fabric Lakehouse. Type: string (or Expression
      * with resultType string).
      */
@@ -79,6 +85,12 @@ public class LakeHouseLinkedService extends LinkedService {
      */
     @Generated
     private SecretBase servicePrincipalCredential;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    @Generated
+    private CredentialReference credential;
 
     /**
      * Creates an instance of LakeHouseLinkedService class.
@@ -143,6 +155,28 @@ public class LakeHouseLinkedService extends LinkedService {
     @Generated
     public LakeHouseLinkedService setArtifactId(Object artifactId) {
         this.artifactId = artifactId;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The authentication type to use.
+     * 
+     * @return the authenticationType value.
+     */
+    @Generated
+    public LakehouseAuthenticationType getAuthenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to use.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the LakeHouseLinkedService object itself.
+     */
+    @Generated
+    public LakeHouseLinkedService setAuthenticationType(LakehouseAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
         return this;
     }
 
@@ -297,6 +331,28 @@ public class LakeHouseLinkedService extends LinkedService {
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    @Generated
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the LakeHouseLinkedService object itself.
+     */
+    @Generated
+    public LakeHouseLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -361,12 +417,14 @@ public class LakeHouseLinkedService extends LinkedService {
         jsonWriter.writeStringField("type", this.type);
         if (workspaceId != null
             || artifactId != null
+            || authenticationType != null
             || servicePrincipalId != null
             || servicePrincipalKey != null
             || tenant != null
             || encryptedCredential != null
             || servicePrincipalCredentialType != null
-            || servicePrincipalCredential != null) {
+            || servicePrincipalCredential != null
+            || credential != null) {
             jsonWriter.writeStartObject("typeProperties");
             if (this.workspaceId != null) {
                 jsonWriter.writeUntypedField("workspaceId", this.workspaceId);
@@ -374,6 +432,8 @@ public class LakeHouseLinkedService extends LinkedService {
             if (this.artifactId != null) {
                 jsonWriter.writeUntypedField("artifactId", this.artifactId);
             }
+            jsonWriter.writeStringField("authenticationType",
+                this.authenticationType == null ? null : this.authenticationType.toString());
             if (this.servicePrincipalId != null) {
                 jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
             }
@@ -386,6 +446,7 @@ public class LakeHouseLinkedService extends LinkedService {
                 jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
             }
             jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+            jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -437,6 +498,9 @@ public class LakeHouseLinkedService extends LinkedService {
                             deserializedLakeHouseLinkedService.workspaceId = reader.readUntyped();
                         } else if ("artifactId".equals(fieldName)) {
                             deserializedLakeHouseLinkedService.artifactId = reader.readUntyped();
+                        } else if ("authenticationType".equals(fieldName)) {
+                            deserializedLakeHouseLinkedService.authenticationType
+                                = LakehouseAuthenticationType.fromString(reader.getString());
                         } else if ("servicePrincipalId".equals(fieldName)) {
                             deserializedLakeHouseLinkedService.servicePrincipalId = reader.readUntyped();
                         } else if ("servicePrincipalKey".equals(fieldName)) {
@@ -449,6 +513,8 @@ public class LakeHouseLinkedService extends LinkedService {
                             deserializedLakeHouseLinkedService.servicePrincipalCredentialType = reader.readUntyped();
                         } else if ("servicePrincipalCredential".equals(fieldName)) {
                             deserializedLakeHouseLinkedService.servicePrincipalCredential = SecretBase.fromJson(reader);
+                        } else if ("credential".equals(fieldName)) {
+                            deserializedLakeHouseLinkedService.credential = CredentialReference.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

@@ -13,13 +13,13 @@ public final class StageStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StageStatus model = BinaryData.fromString(
-            "{\"status\":641653590,\"statusMessage\":\"vodhtn\",\"stage\":\"rudhzmmesckdl\",\"nextstage\":\"gzrcxfailcfxwmdb\",\"errorMessage\":\"dfgsftufqobrj\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}}")
+            "{\"status\":1341207750,\"statusMessage\":\"fzsvtuikzh\",\"stage\":\"qglcfhmlrqryxynq\",\"nextstage\":\"rd\",\"errorMessage\":\"ovw\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}}")
             .toObject(StageStatus.class);
-        Assertions.assertEquals(641653590, model.status());
-        Assertions.assertEquals("vodhtn", model.statusMessage());
-        Assertions.assertEquals("rudhzmmesckdl", model.stage());
-        Assertions.assertEquals("gzrcxfailcfxwmdb", model.nextstage());
-        Assertions.assertEquals("dfgsftufqobrj", model.errorMessage());
+        Assertions.assertEquals(1341207750, model.status());
+        Assertions.assertEquals("fzsvtuikzh", model.statusMessage());
+        Assertions.assertEquals("qglcfhmlrqryxynq", model.stage());
+        Assertions.assertEquals("rd", model.nextstage());
+        Assertions.assertEquals("ovw", model.errorMessage());
         Assertions.assertEquals(ActiveState.INACTIVE, model.isActive());
     }
 }

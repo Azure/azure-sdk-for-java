@@ -20,7 +20,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.resolver.AddressResolverGroup;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
 import reactor.netty.Connection;
@@ -194,6 +193,7 @@ public class NettyAsyncHttpClientBuilder {
 
         // Used to track if the builder set the DefaultAddressResolverGroup. If it did, when proxying it allows the
         // no-op address resolver to be set.
+        boolean setDefaultAddressResolverGroup = false;
         if (this.baseHttpClient != null) {
             nettyHttpClient = baseHttpClient;
         } else if (this.connectionProvider != null) {
@@ -202,8 +202,10 @@ public class NettyAsyncHttpClientBuilder {
             nettyHttpClient = HttpClient.create();
         }
 
-        if (proxyOptions == null) {
+        // If a resolver hasn't been set, set the default one.
+        if (nettyHttpClient.configuration().resolver() == null) {
             nettyHttpClient = nettyHttpClient.resolver(DefaultAddressResolverGroup.INSTANCE);
+            setDefaultAddressResolverGroup = true;
         }
 
         long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
@@ -214,9 +216,9 @@ public class NettyAsyncHttpClientBuilder {
         // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
         // instead of overwritten.
         HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
+        long connectTimeoutMillis = getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis();
         nettyHttpClient = nettyHttpClient.port(port)
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
-                (int) getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis())
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) connectTimeoutMillis)
             .httpResponseDecoder(httpResponseDecoderSpec -> {
                 int maxHeaderSize = initialSpec.maxHeaderSize();
                 if (maxHeaderSize == HttpDecoderSpec.DEFAULT_MAX_HEADER_SIZE) {
@@ -264,23 +266,24 @@ public class NettyAsyncHttpClientBuilder {
                 addProxyHandler = true;
                 nettyHttpClient = nettyHttpClient.doOnChannelInit((connectionObserver, channel, socketAddress) -> {
                     if (shouldApplyProxy(socketAddress, nonProxyHostsPattern)) {
-                        channel.pipeline()
-                            .addFirst(NettyPipeline.ProxyHandler,
-                                new HttpProxyHandler(AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
-                                    handler, proxyChallengeHolder));
+                        HttpProxyHandler httpProxyHandler
+                            = new HttpProxyHandler(AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
+                                handler, proxyChallengeHolder);
+                        httpProxyHandler.setConnectTimeoutMillis(connectTimeoutMillis);
+                        channel.pipeline().addFirst(NettyPipeline.ProxyHandler, httpProxyHandler);
                     }
                 });
             } else {
                 nettyHttpClient
                     = nettyHttpClient.proxy(proxy -> proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
                         .socketAddress(buildProxyOptions.getAddress())
+                        .connectTimeoutMillis(connectTimeoutMillis)
                         .username(buildProxyOptions.getUsername())
                         .password(ignored -> buildProxyOptions.getPassword())
                         .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
             }
 
-            AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
-            if (resolver == null) {
+            if (setDefaultAddressResolverGroup) {
                 if (nonProxyHostsPattern != null) {
                     // Special handling for proxy configurations with non-proxy hosts to use a resolver that can
                     // alternate between the no-op resolver for proxying situations and the default resolve for

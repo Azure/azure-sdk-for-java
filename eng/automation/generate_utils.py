@@ -391,8 +391,8 @@ def generate_typespec_project(
     tsp_project: str,
     sdk_root: str,
     spec_root: str = None,
-    head_sha: str = "",
-    repo_url: str = "",
+    head_sha: str = "HEAD",
+    repo_url: str = "Azure/azure-rest-api-specs",
     remove_before_regen: bool = False,
     group_id: str = None,
     api_version: str = None,
@@ -423,6 +423,9 @@ def generate_typespec_project(
             # generate from remote url
             tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
+                "--no",
+                "--prefix",
+                os.path.join(sdk_root, "eng/common/tsp-client"),
                 "tsp-client",
                 "init",
                 "--update-if-exists",
@@ -438,6 +441,9 @@ def generate_typespec_project(
             repo = remove_prefix(repo_url, "https://github.com/")
             tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
+                "--no",
+                "--prefix",
+                os.path.join(sdk_root, "eng/common/tsp-client"),
                 "tsp-client",
                 "init",
                 "--update-if-exists",

@@ -28,10 +28,14 @@ pr:
       - sdk/compute/azure-resourcemanager-compute/pom.xml
 
 parameters:
-- name: release_azureresourcemanagercompute
-  displayName: 'azure-resourcemanager-compute'
-  type: boolean
-  default: false
+  - name: release_azureresourcemanagercompute
+    displayName: azure-resourcemanager-compute
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagercomputerecommender
+    displayName: azure-resourcemanager-compute-recommender
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -42,3 +46,7 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercompute
         releaseInBatch: ${{ parameters.release_azureresourcemanagercompute }}
+      - name: azure-resourcemanager-compute-recommender
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercomputerecommender
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercomputerecommender }}

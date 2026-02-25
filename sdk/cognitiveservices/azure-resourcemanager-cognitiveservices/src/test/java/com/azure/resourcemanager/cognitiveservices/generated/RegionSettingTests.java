@@ -12,20 +12,19 @@ public final class RegionSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionSetting model
-            = BinaryData.fromString("{\"name\":\"jgzjaoyfhrtx\",\"value\":5.565733,\"customsubdomain\":\"rkujy\"}")
+            = BinaryData.fromString("{\"name\":\"s\",\"value\":8.954048,\"customsubdomain\":\"zqqedq\"}")
                 .toObject(RegionSetting.class);
-        Assertions.assertEquals("jgzjaoyfhrtx", model.name());
-        Assertions.assertEquals(5.565733F, model.value());
-        Assertions.assertEquals("rkujy", model.customsubdomain());
+        Assertions.assertEquals("s", model.name());
+        Assertions.assertEquals(8.954048F, model.value());
+        Assertions.assertEquals("zqqedq", model.customsubdomain());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegionSetting model
-            = new RegionSetting().withName("jgzjaoyfhrtx").withValue(5.565733F).withCustomsubdomain("rkujy");
+        RegionSetting model = new RegionSetting().withName("s").withValue(8.954048F).withCustomsubdomain("zqqedq");
         model = BinaryData.fromObject(model).toObject(RegionSetting.class);
-        Assertions.assertEquals("jgzjaoyfhrtx", model.name());
-        Assertions.assertEquals(5.565733F, model.value());
-        Assertions.assertEquals("rkujy", model.customsubdomain());
+        Assertions.assertEquals("s", model.name());
+        Assertions.assertEquals(8.954048F, model.value());
+        Assertions.assertEquals("zqqedq", model.customsubdomain());
     }
 }

@@ -12,18 +12,18 @@ public final class BulkPublishTargetDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BulkPublishTargetDetails model
-            = BinaryData.fromString("{\"targetId\":\"kqnyh\",\"solutionInstanceName\":\"ij\"}")
+            = BinaryData.fromString("{\"targetId\":\"k\",\"solutionInstanceName\":\"epbqpcrfkbw\"}")
                 .toObject(BulkPublishTargetDetails.class);
-        Assertions.assertEquals("kqnyh", model.targetId());
-        Assertions.assertEquals("ij", model.solutionInstanceName());
+        Assertions.assertEquals("k", model.targetId());
+        Assertions.assertEquals("epbqpcrfkbw", model.solutionInstanceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BulkPublishTargetDetails model
-            = new BulkPublishTargetDetails().withTargetId("kqnyh").withSolutionInstanceName("ij");
+            = new BulkPublishTargetDetails().withTargetId("k").withSolutionInstanceName("epbqpcrfkbw");
         model = BinaryData.fromObject(model).toObject(BulkPublishTargetDetails.class);
-        Assertions.assertEquals("kqnyh", model.targetId());
-        Assertions.assertEquals("ij", model.solutionInstanceName());
+        Assertions.assertEquals("k", model.targetId());
+        Assertions.assertEquals("epbqpcrfkbw", model.solutionInstanceName());
     }
 }

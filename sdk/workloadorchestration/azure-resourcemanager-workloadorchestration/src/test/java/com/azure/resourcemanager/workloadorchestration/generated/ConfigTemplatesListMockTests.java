@@ -22,7 +22,7 @@ public final class ConfigTemplatesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"beqrkuorh\",\"latestVersion\":\"sruqnmdvha\",\"provisioningState\":\"InProgress\"},\"eTag\":\"ytiq\",\"location\":\"bqerzwx\",\"tags\":{\"dgukvlbpktgds\":\"x\"},\"id\":\"youambewr\",\"name\":\"swmowegmmuteyxe\",\"type\":\"guqigijiitns\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"rdrenxo\",\"latestVersion\":\"i\",\"provisioningState\":\"InProgress\"},\"eTag\":\"beivdlhydwbdbfg\",\"location\":\"punytjl\",\"tags\":{\"ta\":\"mmpathu\",\"wllbv\":\"deani\",\"ravaq\":\"wzsfftedousnktjt\"},\"id\":\"gfkbebauzlqbtxx\",\"name\":\"pfhnjzudrt\",\"type\":\"zkg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class ConfigTemplatesListMockTests {
 
         PagedIterable<ConfigTemplate> response = manager.configTemplates().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bqerzwx", response.iterator().next().location());
-        Assertions.assertEquals("x", response.iterator().next().tags().get("dgukvlbpktgds"));
-        Assertions.assertEquals("beqrkuorh", response.iterator().next().properties().description());
+        Assertions.assertEquals("punytjl", response.iterator().next().location());
+        Assertions.assertEquals("mmpathu", response.iterator().next().tags().get("ta"));
+        Assertions.assertEquals("rdrenxo", response.iterator().next().properties().description());
     }
 }

@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicenetworking.fluent.SecurityPoliciesInterfacesClient;
@@ -211,26 +210,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityPolicyInner>> getWithResponseAsync(String resourceGroupName,
         String trafficControllerName, String securityPolicyName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
-        if (securityPolicyName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -272,28 +251,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityPolicyInner> getWithResponse(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
-        if (securityPolicyName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, trafficControllerName, securityPolicyName, accept, context);
@@ -331,31 +288,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String trafficControllerName, String securityPolicyName, SecurityPolicyInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
-        if (securityPolicyName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -380,34 +312,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, SecurityPolicyInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
-        if (securityPolicyName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -431,34 +335,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, SecurityPolicyInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
-        if (securityPolicyName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -607,31 +483,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityPolicyInner>> updateWithResponseAsync(String resourceGroupName,
         String trafficControllerName, String securityPolicyName, SecurityPolicyUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
-        if (securityPolicyName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -676,34 +527,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityPolicyInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, SecurityPolicyUpdate properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
-        if (securityPolicyName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -744,26 +567,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String trafficControllerName, String securityPolicyName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
-        if (securityPolicyName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, securityPolicyName, context))
@@ -784,28 +587,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName,
         String securityPolicyName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
-        if (securityPolicyName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, securityPolicyName,
             Context.NONE);
@@ -826,28 +607,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
-        if (securityPolicyName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter securityPolicyName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, securityPolicyName, context);
     }
@@ -974,22 +733,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityPolicyInner>> listByTrafficControllerSinglePageAsync(String resourceGroupName,
         String trafficControllerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1030,24 +773,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityPolicyInner> listByTrafficControllerSinglePage(String resourceGroupName,
         String trafficControllerName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SecurityPolicyListResult> res
             = service.listByTrafficControllerSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1070,24 +795,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityPolicyInner> listByTrafficControllerSinglePage(String resourceGroupName,
         String trafficControllerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (trafficControllerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter trafficControllerName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SecurityPolicyListResult> res
             = service.listByTrafficControllerSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1144,13 +851,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityPolicyInner>> listByTrafficControllerNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1171,15 +871,6 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityPolicyInner> listByTrafficControllerNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SecurityPolicyListResult> res
             = service.listByTrafficControllerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1199,21 +890,10 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityPolicyInner> listByTrafficControllerNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SecurityPolicyListResult> res
             = service.listByTrafficControllerNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SecurityPoliciesInterfacesClientImpl.class);
 }

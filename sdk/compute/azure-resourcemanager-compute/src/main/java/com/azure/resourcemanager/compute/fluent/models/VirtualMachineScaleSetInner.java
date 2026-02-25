@@ -14,7 +14,9 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
 import com.azure.resourcemanager.compute.models.ExtendedLocation;
+import com.azure.resourcemanager.compute.models.HighSpeedInterconnectPlacement;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
+import com.azure.resourcemanager.compute.models.Placement;
 import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ResiliencyPolicy;
@@ -75,6 +77,12 @@ public final class VirtualMachineScaleSetInner extends Resource {
      * to ensure optimistic updates
      */
     private String etag;
+
+    /*
+     * Placement section specifies the user-defined constraints for virtual machine scale set hardware placement. This
+     * property cannot be changed once VMSS is provisioned. Minimum api-version: 2025-04-01.
+     */
+    private Placement placement;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -227,6 +235,30 @@ public final class VirtualMachineScaleSetInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the placement property: Placement section specifies the user-defined constraints for virtual machine scale
+     * set hardware placement. This property cannot be changed once VMSS is provisioned. Minimum api-version:
+     * 2025-04-01.
+     * 
+     * @return the placement value.
+     */
+    public Placement placement() {
+        return this.placement;
+    }
+
+    /**
+     * Set the placement property: Placement section specifies the user-defined constraints for virtual machine scale
+     * set hardware placement. This property cannot be changed once VMSS is provisioned. Minimum api-version:
+     * 2025-04-01.
+     * 
+     * @param placement the placement value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withPlacement(Placement placement) {
+        this.placement = placement;
+        return this;
     }
 
     /**
@@ -804,6 +836,32 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
+     * Get the highSpeedInterconnectPlacement property: Specifies the high speed interconnect placement for the virtual
+     * machine scale set.
+     * 
+     * @return the highSpeedInterconnectPlacement value.
+     */
+    public HighSpeedInterconnectPlacement highSpeedInterconnectPlacement() {
+        return this.innerProperties() == null ? null : this.innerProperties().highSpeedInterconnectPlacement();
+    }
+
+    /**
+     * Set the highSpeedInterconnectPlacement property: Specifies the high speed interconnect placement for the virtual
+     * machine scale set.
+     * 
+     * @param highSpeedInterconnectPlacement the highSpeedInterconnectPlacement value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner
+        withHighSpeedInterconnectPlacement(HighSpeedInterconnectPlacement highSpeedInterconnectPlacement) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetProperties();
+        }
+        this.innerProperties().withHighSpeedInterconnectPlacement(highSpeedInterconnectPlacement);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -824,6 +882,9 @@ public final class VirtualMachineScaleSetInner extends Resource {
         if (extendedLocation() != null) {
             extendedLocation().validate();
         }
+        if (placement() != null) {
+            placement().validate();
+        }
     }
 
     /**
@@ -840,6 +901,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("placement", this.placement);
         return jsonWriter.writeEndObject();
     }
 
@@ -886,6 +948,8 @@ public final class VirtualMachineScaleSetInner extends Resource {
                     deserializedVirtualMachineScaleSetInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetInner.etag = reader.getString();
+                } else if ("placement".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInner.placement = Placement.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetInner.systemData = SystemData.fromJson(reader);
                 } else {

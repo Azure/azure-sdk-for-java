@@ -275,7 +275,7 @@ public interface Diagnostic {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(DiagnosticProperties properties);
+            Update withProperties(DiagnosticUpdateProperties properties);
         }
     }
 

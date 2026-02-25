@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class StaticSitesDetachStaticSiteSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/DetachStaticSite.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/DetachStaticSite.json
      */
     /**
      * Sample code: Detach a static site.

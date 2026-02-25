@@ -53,17 +53,6 @@ public final class ManagedAzResiliencyStatusInner implements JsonSerializable<Ma
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (baseResourceStatus() != null) {
-            baseResourceStatus().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * scheduleChangeRequest.
+ * Represents a schedule change request.
  */
 @Fluent
 public class MicrosoftGraphScheduleChangeRequest extends MicrosoftGraphChangeTrackedEntity {

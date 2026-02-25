@@ -23,7 +23,6 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathList;
@@ -33,13 +32,13 @@ import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +62,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p>
  * Please refer to the
- *
  * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction">Azure
  * Docs</a> for more information.
  */
@@ -1246,34 +1244,56 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults) {
         try {
-            return listPathsWithOptionalTimeout(recursive, userPrincipleNameReturned, maxResults, null);
+            ListPathsOptions options = new ListPathsOptions().setRecursive(recursive)
+                .setUserPrincipalNameReturned(userPrincipleNameReturned)
+                .setMaxResults(maxResults);
+            return listPathsInternal(options);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
     }
 
-    PagedFlux<PathItem> listPathsWithOptionalTimeout(boolean recursive, boolean userPrincipleNameReturned,
-        Integer maxResults, Duration timeout) {
-        BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func = (marker, pageSize) -> listPathsSegment(marker,
-            recursive, userPrincipleNameReturned, pageSize == null ? maxResults : pageSize, timeout).map(response -> {
-                List<PathItem> value = response.getValue() == null
-                    ? Collections.emptyList()
-                    : response.getValue().getPaths().stream().map(Transforms::toPathItem).collect(Collectors.toList());
+    PagedFlux<PathItem> listPathsInternal(ListPathsOptions options) {
+        BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func = (marker,
+            pageSize) -> listPathsSegment(marker, options.isRecursive(), options.isUserPrincipalNameReturned(),
+                pageSize == null ? options.getMaxResults() : pageSize, options.getStartFrom()).map(response -> {
+                    List<PathItem> value = response.getValue() == null
+                        ? Collections.emptyList()
+                        : response.getValue()
+                            .getPaths()
+                            .stream()
+                            .map(Transforms::toPathItem)
+                            .collect(Collectors.toList());
 
-                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    value, response.getDeserializedHeaders().getXMsContinuation(), response.getDeserializedHeaders());
-            });
+                    return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), value, response.getDeserializedHeaders().getXMsContinuation(),
+                        response.getDeserializedHeaders());
+                });
 
         return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
-    private Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPathsSegment(String marker, boolean recursive,
-        boolean userPrincipleNameReturned, Integer maxResults, Duration timeout) {
-
-        return StorageImplUtils.applyOptionalTimeout(this.fileSystemDataLakeStorage.getFileSystems()
+    Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPathsSegment(String marker, boolean recursive,
+        boolean userPrincipleNameReturned, Integer maxResults, String beginFrom) {
+        return this.fileSystemDataLakeStorage.getFileSystems()
             .listPathsWithResponseAsync(recursive, null, null, marker, getDirectoryPath(), maxResults,
-                userPrincipleNameReturned, Context.NONE),
-            timeout);
+                userPrincipleNameReturned, beginFrom, Context.NONE);
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the files/directories in this directory lazily as needed. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
+     *
+     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
+     * @return A reactive response emitting the list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PathItem> listPaths(ListPathsOptions options) {
+        try {
+            return listPathsInternal(options);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
     }
 
     /**

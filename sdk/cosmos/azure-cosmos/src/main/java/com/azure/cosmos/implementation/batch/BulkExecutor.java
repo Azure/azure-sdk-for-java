@@ -662,11 +662,17 @@ public final class BulkExecutor<TContext> implements Disposable {
             this.operationContextText,
             getThreadInfo());
 
+        ItemBulkOperation<?, ?> itemBulkOperation = null;
+        if (itemOperation instanceof ItemBulkOperation<?, ?>) {
+            itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
+            itemBulkOperation
+                .getStatusTracker()
+                .recordStatusCode(operationResult.getStatusCode(), operationResult.getSubStatusCode());
+        }
+
         if (!operationResult.isSuccessStatusCode()) {
 
-            if (itemOperation instanceof ItemBulkOperation<?, ?>) {
-
-                ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
+            if (itemBulkOperation != null) {
                 return itemBulkOperation.getRetryPolicy().shouldRetry(operationResult).flatMap(
                     result -> {
                         if (result.shouldRetry) {
@@ -759,6 +765,10 @@ public final class BulkExecutor<TContext> implements Disposable {
             CosmosException cosmosException = (CosmosException) exception;
             ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
 
+            itemBulkOperation.getStatusTracker().recordStatusCode(
+                cosmosException.getStatusCode(),
+                cosmosException.getSubStatusCode());
+
             // First check if it failed due to split, so the operations need to go in a different pk range group. So
             // add it in the mainSink.
 
@@ -798,6 +808,12 @@ public final class BulkExecutor<TContext> implements Disposable {
         }
 
         TContext actualContext = this.getActualContext(itemOperation);
+
+        if (itemOperation instanceof ItemBulkOperation<?, ?>) {
+            // record for non-cosmos exception
+            ((ItemBulkOperation<?, ?>) itemOperation).getStatusTracker().recordStatusCode(-1, -1);
+        }
+
         return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, actualContext));
     }
 
@@ -898,7 +914,8 @@ public final class BulkExecutor<TContext> implements Disposable {
                             serverRequest,
                             options,
                             false,
-                            true) // disable the staled resource exception handling as it is being handled in the BulkOperationRetryPolicy
+                            true, // disable the staled resource exception handling as it is being handled in the BulkOperationRetryPolicy
+                            true)
                     .flatMap(cosmosBatchResponse -> {
 
                         cosmosBatchResponseAccessor.setGlobalOpCount(

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * workingHours.
+ * Represents a working hours.
  */
 @Fluent
 public final class MicrosoftGraphWorkingHours implements JsonSerializable<MicrosoftGraphWorkingHours> {

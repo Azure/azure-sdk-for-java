@@ -2,7 +2,7 @@
 
 Azure Resource Manager HDInsight client library for Java.
 
-This package contains Microsoft Azure SDK for HDInsight Management SDK. HDInsight Management Client. Package tag package-2024-08-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for HDInsight Management SDK. HDInsight Management Client. Package tag package-2025-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -52,7 +52,7 @@ Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment 
 Assuming the use of the `DefaultAzureCredential` credential class, the client can be authenticated using the following code:
 
 ```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
@@ -60,7 +60,7 @@ HDInsightManager manager = HDInsightManager
     .authenticate(credential, profile);
 ```
 
-The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
+The sample code assumes global Azure. Please change the `AzureCloud.AZURE_PUBLIC_CLOUD` variable if otherwise.
 
 See [Authentication][authenticate] for more options.
 
@@ -71,15 +71,15 @@ See [API design][design] for general introduction on design and key concepts on 
 ## Examples
 
 ```java
-com.azure.resourcemanager.storage.models.StorageAccount storageAccount =
-    storageManager.storageAccounts().define(storageName)
-        .withRegion(REGION)
-        .withExistingResourceGroup(resourceGroupName)
-        .withSku(StorageAccountSkuType.STANDARD_LRS)
-        .withMinimumTlsVersion(MinimumTlsVersion.TLS1_0)
-        .withAccessFromAzureServices()
-        .withAccessFromAllNetworks()
-        .create();
+com.azure.resourcemanager.storage.models.StorageAccount storageAccount = storageManager.storageAccounts()
+    .define(storageName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withSku(StorageAccountSkuType.STANDARD_LRS)
+    .withMinimumTlsVersion(MinimumTlsVersion.TLS1_0)
+    .withAccessFromAzureServices()
+    .withAccessFromAllNetworks()
+    .create();
 
 BlobContainer blobContainer = storageManager.blobContainers()
     .defineContainer(containerName)
@@ -87,59 +87,52 @@ BlobContainer blobContainer = storageManager.blobContainers()
     .withPublicAccess(PublicAccess.NONE)
     .create();
 
-cluster = hdInsightManager.clusters()
-    .define(clusterName)
-    .withExistingResourceGroup(resourceGroupName)
-    .withRegion(REGION)
-    .withProperties(
-        new ClusterCreateProperties()
-            .withClusterVersion("4.0.3000.1")
-            .withOsType(OSType.LINUX)
-            .withClusterDefinition(
-                new ClusterDefinition()
-                    .withKind("SPARK")
+cluster
+    = hdInsightManager.clusters()
+        .define(clusterName)
+        .withExistingResourceGroup(resourceGroupName)
+        .withRegion(REGION)
+        .withProperties(
+            new ClusterCreateProperties().withClusterVersion("4.0.3000.1")
+                .withOsType(OSType.LINUX)
+                .withClusterDefinition(new ClusterDefinition().withKind("SPARK")
                     .withConfigurations(Collections.unmodifiableMap(clusterDefinition)))
-            .withComputeProfile(
-                new ComputeProfile()
-                    .withRoles(
-                        Arrays.asList(
-                            new Role().withName("headnode")
-                                .withTargetInstanceCount(2)
-                                .withHardwareProfile(new HardwareProfile().withVmSize("standard_e8_v3"))
-                                .withOsProfile(osProfile)
-                                .withEncryptDataDisks(false),
-                            new Role().withName("workernode")
-                                .withTargetInstanceCount(4)
-                                .withHardwareProfile(new HardwareProfile().withVmSize("standard_e8_v3"))
-                                .withOsProfile(osProfile)
-                                .withEncryptDataDisks(false),
-                            new Role().withName("zookeepernode")
-                                .withTargetInstanceCount(3)
-                                .withHardwareProfile(new HardwareProfile().withVmSize("standard_a2_v2"))
-                                .withOsProfile(osProfile)
-                                .withEncryptDataDisks(false)
-                        )))
-            .withTier(Tier.STANDARD)
-            .withEncryptionInTransitProperties(
-                new EncryptionInTransitProperties()
-                    .withIsEncryptionInTransitEnabled(false))
-            .withStorageProfile(
-                new StorageProfile()
-                    .withStorageaccounts(
-                        Arrays.asList(
-                            new StorageAccount()
-                                .withName(storageName + ".blob.core.windows.net")
-                                .withResourceId(storageAccount.id())
-                                .withContainer(blobContainer.name())
-                                .withIsDefault(true)
-                                .withKey(storageAccount.getKeys().iterator().next().value()))
-                    ))
-            .withMinSupportedTlsVersion("1.2")
-            .withComputeIsolationProperties(
-                new ComputeIsolationProperties()
-                    .withEnableComputeIsolation(false))
-    )
-    .create();
+                .withComputeProfile(
+                    new ComputeProfile()
+                        .withRoles(
+                            Arrays
+                                .asList(
+                                    new Role().withName("headnode")
+                                        .withTargetInstanceCount(2)
+                                        .withHardwareProfile(
+                                            new HardwareProfile().withVmSize("standard_e8_v3"))
+                                        .withOsProfile(osProfile)
+                                        .withEncryptDataDisks(false),
+                                    new Role().withName("workernode")
+                                        .withTargetInstanceCount(4)
+                                        .withHardwareProfile(
+                                            new HardwareProfile().withVmSize("standard_e8_v3"))
+                                        .withOsProfile(osProfile)
+                                        .withEncryptDataDisks(false),
+                                    new Role().withName("zookeepernode")
+                                        .withTargetInstanceCount(3)
+                                        .withHardwareProfile(
+                                            new HardwareProfile().withVmSize("standard_a2_v2"))
+                                        .withOsProfile(osProfile)
+                                        .withEncryptDataDisks(false))))
+                .withTier(Tier.STANDARD)
+                .withEncryptionInTransitProperties(
+                    new EncryptionInTransitProperties().withIsEncryptionInTransitEnabled(false))
+                .withStorageProfile(new StorageProfile().withStorageaccounts(
+                    Arrays.asList(new StorageAccount().withName(storageName + ".blob.core.windows.net")
+                        .withResourceId(storageAccount.id())
+                        .withContainer(blobContainer.name())
+                        .withIsDefault(true)
+                        .withKey(storageAccount.getKeys().iterator().next().value()))))
+                .withMinSupportedTlsVersion("1.2")
+                .withComputeIsolationProperties(
+                    new ComputeIsolationProperties().withEnableComputeIsolation(false)))
+        .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/hdinsight/azure-resourcemanager-hdinsight/SAMPLE.md)
 
@@ -171,5 +164,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [cg]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
-
-

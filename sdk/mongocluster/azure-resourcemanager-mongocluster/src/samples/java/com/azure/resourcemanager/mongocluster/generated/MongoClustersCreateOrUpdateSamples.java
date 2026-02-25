@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public final class MongoClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_Create_SSDv2.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_Create_SSDv2.json
      */
     /**
      * Sample code: Creates a new Mongo Cluster resource with Premium SSDv2 storage.
@@ -53,10 +53,7 @@ public final class MongoClustersCreateOrUpdateSamples {
                 .withServerVersion("5.0")
                 .withHighAvailability(
                     new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.ZONE_REDUNDANT_PREFERRED))
-                .withStorage(new StorageProperties().withSizeGb(32L)
-                    .withType(StorageType.PREMIUM_SSDV2)
-                    .withIops(3000L)
-                    .withThroughput(125L))
+                .withStorage(new StorageProperties().withSizeGb(32L).withType(StorageType.PREMIUM_SSDV2))
                 .withSharding(new ShardingProperties().withShardCount(1))
                 .withCompute(new ComputeProperties().withTier("M30"))
                 .withAuthConfig(
@@ -65,7 +62,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_CreateGeoReplica_CMK.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_CreateGeoReplica_CMK.json
      */
     /**
      * Sample code: Creates a replica Mongo Cluster resource with Customer Managed Key encryption from a source
@@ -98,7 +95,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_Create_CMK.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_Create_CMK.json
      */
     /**
      * Sample code: Creates a new Mongo Cluster resource with Customer Managed Key encryption.
@@ -133,7 +130,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_CreateGeoReplica.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_CreateGeoReplica.json
      */
     /**
      * Sample code: Creates a replica Mongo Cluster resource from a source resource.
@@ -154,7 +151,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_CreatePITR.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_CreatePITR.json
      */
     /**
      * Sample code: Creates a Mongo Cluster resource from a point in time restore.
@@ -171,12 +168,39 @@ public final class MongoClustersCreateOrUpdateSamples {
                 .withRestoreParameters(new MongoClusterRestoreParameters()
                     .withPointInTimeUTC(OffsetDateTime.parse("2023-01-13T20:07:35Z"))
                     .withSourceResourceId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster")))
+                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"))
+                .withAdministrator(
+                    new AdministratorProperties().withUserName("mongoAdmin").withPassword("fakeTokenPlaceholder")))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_Create.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_CreatePITR_EntraAuth.json
+     */
+    /**
+     * Sample code: Creates a Mongo Cluster resource from a point in time restore with Microsoft Entra ID authentication
+     * mode enabled.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void createsAMongoClusterResourceFromAPointInTimeRestoreWithMicrosoftEntraIDAuthenticationModeEnabled(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        manager.mongoClusters()
+            .define("myMongoCluster")
+            .withRegion("westus2")
+            .withExistingResourceGroup("TestResourceGroup")
+            .withProperties(new MongoClusterProperties().withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
+                .withRestoreParameters(new MongoClusterRestoreParameters()
+                    .withPointInTimeUTC(OffsetDateTime.parse("2023-01-13T20:07:35Z"))
+                    .withSourceResourceId(
+                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"))
+                .withAuthConfig(
+                    new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.MICROSOFT_ENTRA_ID))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-09-01/MongoClusters_Create.json
      */
     /**
      * Sample code: Creates a new Mongo Cluster resource.
@@ -204,7 +228,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_CreatePITR_CMK.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_CreatePITR_CMK.json
      */
     /**
      * Sample code: Creates a Mongo Cluster resource with Customer Managed Key encryption from a point in time restore.

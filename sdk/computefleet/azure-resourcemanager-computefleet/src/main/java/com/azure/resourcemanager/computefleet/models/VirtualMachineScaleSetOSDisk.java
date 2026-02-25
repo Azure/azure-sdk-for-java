@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -362,30 +361,6 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
         this.deleteOption = deleteOption;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (createOption() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property createOption in model VirtualMachineScaleSetOSDisk"));
-        }
-        if (diffDiskSettings() != null) {
-            diffDiskSettings().validate();
-        }
-        if (image() != null) {
-            image().validate();
-        }
-        if (managedDisk() != null) {
-            managedDisk().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetOSDisk.class);
 
     /**
      * {@inheritDoc}

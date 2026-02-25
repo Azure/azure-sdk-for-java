@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
-
 public class AggregateQueryTests extends TestSuiteBase {
 
     public static class QueryConfig {
@@ -115,7 +113,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
     public void bulkInsert() {
         generateTestData();
-        voidBulkInsertBlocking(createdCollection, docs);
+        voidInsertAllItemsBlocking(createdCollection, docs, true);
     }
 
     public void generateTestData() {
@@ -268,13 +266,13 @@ public class AggregateQueryTests extends TestSuiteBase {
         client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         try {
-            truncateCollection(createdCollection);
+            cleanUpContainer(createdCollection);
         } catch (Throwable throwable) {
             throwable = Exceptions.unwrap(throwable);
             if (!(throwable instanceof CosmosException)) {
-                throw new AssertionError(lenientFormat("stopping test due to collection %s truncation failure: ",
-                    createdCollection,
-                    throwable));
+                throw new AssertionError(String.format("stopping test due to collection %s truncation failure: ",
+                    createdCollection),
+                    throwable);
             }
             logger.error("ignored: collection {} truncation failure: ", createdCollection, throwable);
         }

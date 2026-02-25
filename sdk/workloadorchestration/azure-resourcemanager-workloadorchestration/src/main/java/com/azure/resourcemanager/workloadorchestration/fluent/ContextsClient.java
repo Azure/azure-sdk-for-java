@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ContextInner;
+import com.azure.resourcemanager.workloadorchestration.models.ContextUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in ContextsClient.
@@ -118,7 +119,7 @@ public interface ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ContextInner>, ContextInner> beginUpdate(String resourceGroupName, String contextName,
-        ContextInner properties);
+        ContextUpdate properties);
 
     /**
      * update an Context Resource.
@@ -134,7 +135,7 @@ public interface ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ContextInner>, ContextInner> beginUpdate(String resourceGroupName, String contextName,
-        ContextInner properties, Context context);
+        ContextUpdate properties, Context context);
 
     /**
      * update an Context Resource.
@@ -148,7 +149,7 @@ public interface ContextsClient {
      * @return context Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContextInner update(String resourceGroupName, String contextName, ContextInner properties);
+    ContextInner update(String resourceGroupName, String contextName, ContextUpdate properties);
 
     /**
      * update an Context Resource.
@@ -163,7 +164,7 @@ public interface ContextsClient {
      * @return context Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContextInner update(String resourceGroupName, String contextName, ContextInner properties, Context context);
+    ContextInner update(String resourceGroupName, String contextName, ContextUpdate properties, Context context);
 
     /**
      * List by specified resource group.

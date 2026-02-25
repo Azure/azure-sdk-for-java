@@ -13,23 +13,24 @@ public final class ProjectFileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectFileInner model = BinaryData.fromString(
-            "{\"etag\":\"kbnujr\",\"properties\":{\"extension\":\"tylbfpncurdoiw\",\"filePath\":\"thtywub\",\"lastModified\":\"2021-05-27T18:04:18Z\",\"mediaType\":\"h\",\"size\":4556205744842776800},\"systemData\":{\"createdBy\":\"ntwjch\",\"createdByType\":\"Application\",\"createdAt\":\"2021-02-14T11:21:56Z\",\"lastModifiedBy\":\"xum\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-06-22T06:40:38Z\"},\"id\":\"dzjlu\",\"name\":\"dfdlwggyts\",\"type\":\"wtovvtgsein\"}")
+            "{\"etag\":\"kr\",\"properties\":{\"extension\":\"tqmieox\",\"filePath\":\"ggufhyaomtb\",\"lastModified\":\"2021-01-30T02:08:41Z\",\"mediaType\":\"vgrvkffo\",\"size\":1220387324863982995},\"id\":\"jbibg\",\"name\":\"mfxumvfcluyovw\",\"type\":\"nbkfezzxscy\"}")
             .toObject(ProjectFileInner.class);
-        Assertions.assertEquals("kbnujr", model.etag());
-        Assertions.assertEquals("tylbfpncurdoiw", model.properties().extension());
-        Assertions.assertEquals("thtywub", model.properties().filePath());
-        Assertions.assertEquals("h", model.properties().mediaType());
+        Assertions.assertEquals("kr", model.etag());
+        Assertions.assertEquals("tqmieox", model.properties().extension());
+        Assertions.assertEquals("ggufhyaomtb", model.properties().filePath());
+        Assertions.assertEquals("vgrvkffo", model.properties().mediaType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectFileInner model = new ProjectFileInner().withEtag("kbnujr")
-            .withProperties(
-                new ProjectFileProperties().withExtension("tylbfpncurdoiw").withFilePath("thtywub").withMediaType("h"));
+        ProjectFileInner model = new ProjectFileInner().withEtag("kr")
+            .withProperties(new ProjectFileProperties().withExtension("tqmieox")
+                .withFilePath("ggufhyaomtb")
+                .withMediaType("vgrvkffo"));
         model = BinaryData.fromObject(model).toObject(ProjectFileInner.class);
-        Assertions.assertEquals("kbnujr", model.etag());
-        Assertions.assertEquals("tylbfpncurdoiw", model.properties().extension());
-        Assertions.assertEquals("thtywub", model.properties().filePath());
-        Assertions.assertEquals("h", model.properties().mediaType());
+        Assertions.assertEquals("kr", model.etag());
+        Assertions.assertEquals("tqmieox", model.properties().extension());
+        Assertions.assertEquals("ggufhyaomtb", model.properties().filePath());
+        Assertions.assertEquals("vgrvkffo", model.properties().mediaType());
     }
 }

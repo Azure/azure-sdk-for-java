@@ -10,6 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.DiagnosticInner;
 import com.azure.resourcemanager.workloadorchestration.models.Diagnostic;
 import com.azure.resourcemanager.workloadorchestration.models.DiagnosticProperties;
+import com.azure.resourcemanager.workloadorchestration.models.DiagnosticUpdate;
+import com.azure.resourcemanager.workloadorchestration.models.DiagnosticUpdateProperties;
 import com.azure.resourcemanager.workloadorchestration.models.ExtendedLocation;
 import java.util.Collections;
 import java.util.Map;
@@ -84,6 +86,8 @@ public final class DiagnosticImpl implements Diagnostic, Diagnostic.Definition, 
 
     private String diagnosticName;
 
+    private DiagnosticUpdate updateProperties;
+
     public DiagnosticImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -111,20 +115,21 @@ public final class DiagnosticImpl implements Diagnostic, Diagnostic.Definition, 
     }
 
     public DiagnosticImpl update() {
+        this.updateProperties = new DiagnosticUpdate();
         return this;
     }
 
     public Diagnostic apply() {
         this.innerObject = serviceManager.serviceClient()
             .getDiagnostics()
-            .update(resourceGroupName, diagnosticName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, diagnosticName, updateProperties, Context.NONE);
         return this;
     }
 
     public Diagnostic apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getDiagnostics()
-            .update(resourceGroupName, diagnosticName, this.innerModel(), context);
+            .update(resourceGroupName, diagnosticName, updateProperties, context);
         return this;
     }
 
@@ -163,8 +168,13 @@ public final class DiagnosticImpl implements Diagnostic, Diagnostic.Definition, 
     }
 
     public DiagnosticImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public DiagnosticImpl withProperties(DiagnosticProperties properties) {
@@ -175,5 +185,14 @@ public final class DiagnosticImpl implements Diagnostic, Diagnostic.Definition, 
     public DiagnosticImpl withExtendedLocation(ExtendedLocation extendedLocation) {
         this.innerModel().withExtendedLocation(extendedLocation);
         return this;
+    }
+
+    public DiagnosticImpl withProperties(DiagnosticUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

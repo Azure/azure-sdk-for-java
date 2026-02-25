@@ -11,6 +11,7 @@ import java.util.Properties;
 /**
  * Load properties from files
  */
+@SuppressWarnings("deprecation")
 public final class PropertyLoader {
 
     private static final String PROJECT_PROPERTY_FILE = "/azure-spring-data-cosmos.properties";

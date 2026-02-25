@@ -65,7 +65,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2as_v4", "Standard"))
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withoutPrimaryInternalLoadBalancer()
@@ -211,7 +211,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
             .withNewVhd(50)
             .withLun(2)
             .attach()
-            .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2as_v4"))
             .withExistingStorageAccount(storageAccount)
             .create();
 
@@ -247,7 +247,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2as_v4", "Standard"))
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withoutPrimaryInternalLoadBalancer()

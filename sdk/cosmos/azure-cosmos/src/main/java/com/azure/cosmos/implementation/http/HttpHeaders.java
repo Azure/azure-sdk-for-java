@@ -117,6 +117,19 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
         return result;
     }
 
+    /**
+     * Get {@link Map} representation of the HttpHeaders collection with lower casing header name.
+     *
+     * @return the headers as map
+     */
+    public Map<String, String> toLowerCaseMap() {
+        final Map<String, String> result = new HashMap<>(headers.size());
+        for (String headerName : headers.keySet()) {
+            result.put(headerName, headers.get(headerName).value());
+        }
+        return result;
+    }
+
     @Override
     public Iterator<HttpHeader> iterator() {
         return headers.values().iterator();

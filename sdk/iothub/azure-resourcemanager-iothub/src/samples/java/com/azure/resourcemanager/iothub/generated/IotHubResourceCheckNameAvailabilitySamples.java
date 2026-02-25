@@ -12,7 +12,8 @@ import com.azure.resourcemanager.iothub.models.OperationInputs;
 public final class IotHubResourceCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/checkNameAvailability.json
+     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
+     * checkNameAvailability.json
      */
     /**
      * Sample code: IotHubResource_CheckNameAvailability.

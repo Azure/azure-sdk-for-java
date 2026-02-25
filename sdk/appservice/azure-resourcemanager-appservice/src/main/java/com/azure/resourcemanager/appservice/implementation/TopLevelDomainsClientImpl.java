@@ -65,7 +65,7 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientTopLevelDomains")
     public interface TopLevelDomainsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains")
@@ -130,10 +130,11 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .<PagedResponse<TopLevelDomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -161,11 +162,10 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context)
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -255,10 +255,11 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -287,10 +288,11 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), name, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+        return service.get(this.client.getEndpoint(), name, this.client.getSubscriptionId(), apiVersion, accept,
+            context);
     }
 
     /**
@@ -375,10 +377,11 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
         } else {
             agreementOption.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAgreements(this.client.getEndpoint(), name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), agreementOption, accept, context))
+                this.client.getSubscriptionId(), apiVersion, agreementOption, accept, context))
             .<PagedResponse<TldLegalAgreementInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -418,11 +421,12 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
         } else {
             agreementOption.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAgreements(this.client.getEndpoint(), name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), agreementOption, accept, context)
+            .listAgreements(this.client.getEndpoint(), name, this.client.getSubscriptionId(), apiVersion,
+                agreementOption, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -504,6 +508,8 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
+     * Get all top-level domains supported for registration.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -530,6 +536,8 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
+     * Get all top-level domains supported for registration.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -557,6 +565,8 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -584,6 +594,8 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

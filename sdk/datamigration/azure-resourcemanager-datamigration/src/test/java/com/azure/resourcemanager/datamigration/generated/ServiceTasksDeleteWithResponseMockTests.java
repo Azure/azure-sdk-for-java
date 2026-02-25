@@ -28,7 +28,7 @@ public final class ServiceTasksDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.serviceTasks()
-            .deleteWithResponse("ugxwjwilmqrslaat", "p", "wuj", true, com.azure.core.util.Context.NONE);
+            .deleteWithResponse("vbxxyjisskobqoc", "flioewyhxe", "smvrkdpsqe", false, com.azure.core.util.Context.NONE);
 
     }
 }

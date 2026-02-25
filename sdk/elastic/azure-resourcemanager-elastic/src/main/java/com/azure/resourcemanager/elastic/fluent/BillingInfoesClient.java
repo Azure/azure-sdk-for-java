@@ -15,7 +15,7 @@ import com.azure.resourcemanager.elastic.fluent.models.BillingInfoResponseInner;
  */
 public interface BillingInfoesClient {
     /**
-     * Get marketplace and organization info mapped to the given monitor.
+     * Retrieve marketplace and organization billing information mapped to the given Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -23,20 +23,21 @@ public interface BillingInfoesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace and organization info mapped to the given monitor along with {@link Response}.
+     * @return marketplace Subscription and Organization details to which resource gets billed into along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BillingInfoResponseInner> getWithResponse(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Get marketplace and organization info mapped to the given monitor.
+     * Retrieve marketplace and organization billing information mapped to the given Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace and organization info mapped to the given monitor.
+     * @return marketplace Subscription and Organization details to which resource gets billed into.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BillingInfoResponseInner get(String resourceGroupName, String monitorName);

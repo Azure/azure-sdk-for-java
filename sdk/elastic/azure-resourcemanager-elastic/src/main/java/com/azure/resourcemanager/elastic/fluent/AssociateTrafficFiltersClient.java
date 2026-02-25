@@ -15,7 +15,7 @@ import com.azure.core.util.polling.SyncPoller;
  */
 public interface AssociateTrafficFiltersClient {
     /**
-     * Associate traffic filter for the given deployment.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -28,7 +28,7 @@ public interface AssociateTrafficFiltersClient {
     SyncPoller<PollResult<Void>, Void> beginAssociate(String resourceGroupName, String monitorName);
 
     /**
-     * Associate traffic filter for the given deployment.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -44,7 +44,7 @@ public interface AssociateTrafficFiltersClient {
         Context context);
 
     /**
-     * Associate traffic filter for the given deployment.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -56,7 +56,7 @@ public interface AssociateTrafficFiltersClient {
     void associate(String resourceGroupName, String monitorName);
 
     /**
-     * Associate traffic filter for the given deployment.
+     * Associate a traffic filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

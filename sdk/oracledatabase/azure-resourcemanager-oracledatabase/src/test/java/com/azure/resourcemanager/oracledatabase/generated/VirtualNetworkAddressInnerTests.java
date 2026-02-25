@@ -13,18 +13,18 @@ public final class VirtualNetworkAddressInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworkAddressInner model = BinaryData.fromString(
-            "{\"properties\":{\"ipAddress\":\"bncblylpstdbhhx\",\"vmOcid\":\"zdzucerscdntnevf\",\"ocid\":\"jmygtdsslswtmwer\",\"domain\":\"fzp\",\"lifecycleDetails\":\"semwabnet\",\"provisioningState\":\"Provisioning\",\"lifecycleState\":\"Terminating\",\"timeAssigned\":\"2021-01-22T19:10:23Z\"},\"id\":\"plvwiwubmwmbes\",\"name\":\"dnkwwtppjflcxog\",\"type\":\"okonzmnsikvmkqz\"}")
+            "{\"properties\":{\"ipAddress\":\"utiiswacf\",\"vmOcid\":\"dkzzewkfvhqcrail\",\"ocid\":\"n\",\"domain\":\"fuflrwdmhdlx\",\"lifecycleDetails\":\"rxsagafcnihgwqa\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Available\",\"timeAssigned\":\"2021-11-13T04:56:11Z\"},\"id\":\"vkcvqvpkeqd\",\"name\":\"vdrhvoo\",\"type\":\"sotbob\"}")
             .toObject(VirtualNetworkAddressInner.class);
-        Assertions.assertEquals("bncblylpstdbhhx", model.properties().ipAddress());
-        Assertions.assertEquals("zdzucerscdntnevf", model.properties().vmOcid());
+        Assertions.assertEquals("utiiswacf", model.properties().ipAddress());
+        Assertions.assertEquals("dkzzewkfvhqcrail", model.properties().vmOcid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualNetworkAddressInner model = new VirtualNetworkAddressInner().withProperties(
-            new VirtualNetworkAddressProperties().withIpAddress("bncblylpstdbhhx").withVmOcid("zdzucerscdntnevf"));
+            new VirtualNetworkAddressProperties().withIpAddress("utiiswacf").withVmOcid("dkzzewkfvhqcrail"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkAddressInner.class);
-        Assertions.assertEquals("bncblylpstdbhhx", model.properties().ipAddress());
-        Assertions.assertEquals("zdzucerscdntnevf", model.properties().vmOcid());
+        Assertions.assertEquals("utiiswacf", model.properties().ipAddress());
+        Assertions.assertEquals("dkzzewkfvhqcrail", model.properties().vmOcid());
     }
 }

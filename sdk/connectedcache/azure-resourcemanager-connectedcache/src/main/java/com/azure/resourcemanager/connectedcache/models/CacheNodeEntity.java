@@ -265,12 +265,14 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
     private AutoUpdateRingType autoUpdateRingType;
 
     /*
-     * Customer requested week of month for mcc install of auto update cycle
+     * Customer requested week of month for mcc install of auto update cycle. 0 is default no selection. 1-5 are valid
+     * weeks of month, 1 is first week, 2 is second week, etc.
      */
     private Integer autoUpdateRequestedWeek;
 
     /*
-     * Customer requested day of week for mcc install of auto update cycle
+     * Customer requested day of week for mcc install of auto update cycle. 0 is default no selection. 1-7 are days of
+     * week, 1 is Sunday, 2 is Monday, etc.
      */
     private Integer autoUpdateRequestedDay;
 
@@ -897,6 +899,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
 
     /**
      * Get the autoUpdateRequestedWeek property: Customer requested week of month for mcc install of auto update cycle.
+     * 0 is default no selection. 1-5 are valid weeks of month, 1 is first week, 2 is second week, etc.
      * 
      * @return the autoUpdateRequestedWeek value.
      */
@@ -906,6 +909,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
 
     /**
      * Set the autoUpdateRequestedWeek property: Customer requested week of month for mcc install of auto update cycle.
+     * 0 is default no selection. 1-5 are valid weeks of month, 1 is first week, 2 is second week, etc.
      * 
      * @param autoUpdateRequestedWeek the autoUpdateRequestedWeek value to set.
      * @return the CacheNodeEntity object itself.
@@ -916,7 +920,8 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
     }
 
     /**
-     * Get the autoUpdateRequestedDay property: Customer requested day of week for mcc install of auto update cycle.
+     * Get the autoUpdateRequestedDay property: Customer requested day of week for mcc install of auto update cycle. 0
+     * is default no selection. 1-7 are days of week, 1 is Sunday, 2 is Monday, etc.
      * 
      * @return the autoUpdateRequestedDay value.
      */
@@ -925,7 +930,8 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
     }
 
     /**
-     * Set the autoUpdateRequestedDay property: Customer requested day of week for mcc install of auto update cycle.
+     * Set the autoUpdateRequestedDay property: Customer requested day of week for mcc install of auto update cycle. 0
+     * is default no selection. 1-7 are days of week, 1 is Sunday, 2 is Monday, etc.
      * 
      * @param autoUpdateRequestedDay the autoUpdateRequestedDay value to set.
      * @return the CacheNodeEntity object itself.
@@ -955,14 +961,6 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
     public CacheNodeEntity withAutoUpdateRequestedTime(String autoUpdateRequestedTime) {
         this.autoUpdateRequestedTime = autoUpdateRequestedTime;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**

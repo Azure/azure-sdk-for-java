@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * user
- * 
+ * Represents an user.
+ * <p>
  * Represents an Azure Active Directory user object.
  */
 @Fluent

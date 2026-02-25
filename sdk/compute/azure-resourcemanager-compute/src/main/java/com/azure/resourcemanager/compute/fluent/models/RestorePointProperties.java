@@ -61,6 +61,12 @@ public final class RestorePointProperties implements JsonSerializable<RestorePoi
      */
     private RestorePointInstanceView instanceView;
 
+    /*
+     * This property determines the time in minutes the snapshot is retained as instant access for restoring Premium SSD
+     * v2 or Ultra disk with fast restore performance in this restore point.
+     */
+    private Integer instantAccessDurationMinutes;
+
     /**
      * Creates an instance of RestorePointProperties class.
      */
@@ -194,6 +200,30 @@ public final class RestorePointProperties implements JsonSerializable<RestorePoi
     }
 
     /**
+     * Get the instantAccessDurationMinutes property: This property determines the time in minutes the snapshot is
+     * retained as instant access for restoring Premium SSD v2 or Ultra disk with fast restore performance in this
+     * restore point.
+     * 
+     * @return the instantAccessDurationMinutes value.
+     */
+    public Integer instantAccessDurationMinutes() {
+        return this.instantAccessDurationMinutes;
+    }
+
+    /**
+     * Set the instantAccessDurationMinutes property: This property determines the time in minutes the snapshot is
+     * retained as instant access for restoring Premium SSD v2 or Ultra disk with fast restore performance in this
+     * restore point.
+     * 
+     * @param instantAccessDurationMinutes the instantAccessDurationMinutes value to set.
+     * @return the RestorePointProperties object itself.
+     */
+    public RestorePointProperties withInstantAccessDurationMinutes(Integer instantAccessDurationMinutes) {
+        this.instantAccessDurationMinutes = instantAccessDurationMinutes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -226,6 +256,7 @@ public final class RestorePointProperties implements JsonSerializable<RestorePoi
         jsonWriter.writeStringField("timeCreated",
             this.timeCreated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeCreated));
         jsonWriter.writeJsonField("sourceRestorePoint", this.sourceRestorePoint);
+        jsonWriter.writeNumberField("instantAccessDurationMinutes", this.instantAccessDurationMinutes);
         return jsonWriter.writeEndObject();
     }
 
@@ -262,6 +293,9 @@ public final class RestorePointProperties implements JsonSerializable<RestorePoi
                     deserializedRestorePointProperties.sourceRestorePoint = ApiEntityReference.fromJson(reader);
                 } else if ("instanceView".equals(fieldName)) {
                     deserializedRestorePointProperties.instanceView = RestorePointInstanceView.fromJson(reader);
+                } else if ("instantAccessDurationMinutes".equals(fieldName)) {
+                    deserializedRestorePointProperties.instantAccessDurationMinutes
+                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

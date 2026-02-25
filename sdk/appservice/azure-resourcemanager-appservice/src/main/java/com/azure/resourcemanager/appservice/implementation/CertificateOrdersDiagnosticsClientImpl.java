@@ -61,7 +61,7 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientCertificateOrdersDiagnostics")
     public interface CertificateOrdersDiagnosticsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/detectors")
@@ -126,11 +126,11 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAppServiceCertificateOrderDetectorResponse(this.client.getEndpoint(),
-                resourceGroupName, certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                resourceGroupName, certificateOrderName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DetectorResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -169,11 +169,12 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listAppServiceCertificateOrderDetectorResponse(this.client.getEndpoint(), resourceGroupName,
-                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                certificateOrderName, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -300,11 +301,12 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAppServiceCertificateOrderDetectorResponse(this.client.getEndpoint(),
                 resourceGroupName, certificateOrderName, detectorName, startTime, endTime, timeGrain,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -349,11 +351,12 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getAppServiceCertificateOrderDetectorResponse(this.client.getEndpoint(), resourceGroupName,
             certificateOrderName, detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -428,6 +431,8 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
+     * Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -457,6 +462,8 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
+     * Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

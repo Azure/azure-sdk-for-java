@@ -19,6 +19,9 @@ public final class PublicIPSkuType {
     /** Static value Standard for PublicIPSkuType. */
     public static final PublicIPSkuType STANDARD = new PublicIPSkuType(PublicIpAddressSkuName.STANDARD);
 
+    /** Static value StandardV2 for PublicIPSkuType. */
+    public static final PublicIPSkuType STANDARD_V2 = new PublicIPSkuType(PublicIpAddressSkuName.STANDARD_V2);
+
     /** The actual serialized value for a PublicIPSkuType instance. */
     private final PublicIpAddressSkuName skuName;
 

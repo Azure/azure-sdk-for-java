@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * chatMessageType.
+ * Represents a chat message type.
  */
 public final class MicrosoftGraphChatMessageType extends ExpandableStringEnum<MicrosoftGraphChatMessageType> {
     /**

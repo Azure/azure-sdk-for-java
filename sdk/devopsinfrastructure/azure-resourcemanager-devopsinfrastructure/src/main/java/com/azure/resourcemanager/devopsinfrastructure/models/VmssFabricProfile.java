@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -162,38 +161,6 @@ public final class VmssFabricProfile extends FabricProfile {
         this.networkProfile = networkProfile;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (sku() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sku in model VmssFabricProfile"));
-        } else {
-            sku().validate();
-        }
-        if (images() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property images in model VmssFabricProfile"));
-        } else {
-            images().forEach(e -> e.validate());
-        }
-        if (osProfile() != null) {
-            osProfile().validate();
-        }
-        if (storageProfile() != null) {
-            storageProfile().validate();
-        }
-        if (networkProfile() != null) {
-            networkProfile().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VmssFabricProfile.class);
 
     /**
      * {@inheritDoc}

@@ -25,12 +25,12 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.MaintenanceConfigurationsClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.MaintenanceConfigurationResourceInner;
-import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appcontainers.models.MaintenanceConfigurationCollection;
 import reactor.core.publisher.Mono;
 
@@ -69,7 +69,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/maintenanceConfigurations")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -79,7 +79,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/maintenanceConfigurations")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<MaintenanceConfigurationCollection> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -89,7 +89,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -101,7 +101,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<MaintenanceConfigurationResourceInner> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -113,7 +113,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({ 200, 204 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -123,7 +123,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({ 200, 204 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -133,7 +133,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -143,7 +143,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<MaintenanceConfigurationResourceInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -153,7 +153,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -161,7 +161,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<MaintenanceConfigurationCollection> listNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -173,7 +173,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName The name of the Managed Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all maintenance configurations in the specified Managed Environment along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
@@ -212,7 +212,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName The name of the Managed Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all maintenance configurations in the specified Managed Environment as paginated response with
      * {@link PagedFlux}.
@@ -230,7 +230,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName The name of the Managed Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all maintenance configurations in the specified Managed Environment along with {@link PagedResponse}.
      */
@@ -270,7 +270,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param environmentName The name of the Managed Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all maintenance configurations in the specified Managed Environment along with {@link PagedResponse}.
      */
@@ -309,7 +309,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName The name of the Managed Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all maintenance configurations in the specified Managed Environment as paginated response with
      * {@link PagedIterable}.
@@ -327,7 +327,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param environmentName The name of the Managed Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all maintenance configurations in the specified Managed Environment as paginated response with
      * {@link PagedIterable}.
@@ -347,7 +347,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param configName The name of the maintenance configuration.
      * @param maintenanceConfigurationEnvelope Parameters to set the maintenance configuration for ManagedEnvironment .
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the Maintenance Configuration resource along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -397,7 +397,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param configName The name of the maintenance configuration.
      * @param maintenanceConfigurationEnvelope Parameters to set the maintenance configuration for ManagedEnvironment .
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the Maintenance Configuration resource on successful completion of {@link Mono}.
      */
@@ -418,7 +418,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param maintenanceConfigurationEnvelope Parameters to set the maintenance configuration for ManagedEnvironment .
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the Maintenance Configuration resource along with {@link Response}.
      */
@@ -469,7 +469,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param configName The name of the maintenance configuration.
      * @param maintenanceConfigurationEnvelope Parameters to set the maintenance configuration for ManagedEnvironment .
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the Maintenance Configuration resource.
      */
@@ -487,7 +487,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param environmentName The name of the Managed Environment.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -527,7 +527,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param environmentName The name of the Managed Environment.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -544,7 +544,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -585,7 +585,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param environmentName The name of the Managed Environment.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -600,7 +600,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param environmentName The name of the Managed Environment.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the maintenance configuration of a ManagedEnvironment along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -641,7 +641,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param environmentName The name of the Managed Environment.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the maintenance configuration of a ManagedEnvironment on successful completion of {@link Mono}.
      */
@@ -660,7 +660,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the maintenance configuration of a ManagedEnvironment along with {@link Response}.
      */
@@ -701,7 +701,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param environmentName The name of the Managed Environment.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the maintenance configuration of a ManagedEnvironment.
      */
@@ -716,7 +716,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all maintenance configurations in the specified Managed Environment along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
@@ -742,7 +742,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all maintenance configurations in the specified Managed Environment along with {@link PagedResponse}.
      */
@@ -770,7 +770,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all maintenance configurations in the specified Managed Environment along with {@link PagedResponse}.
      */

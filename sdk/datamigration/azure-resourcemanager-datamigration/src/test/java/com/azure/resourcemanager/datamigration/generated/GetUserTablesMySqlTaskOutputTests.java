@@ -11,7 +11,7 @@ public final class GetUserTablesMySqlTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetUserTablesMySqlTaskOutput model = BinaryData.fromString(
-            "{\"id\":\"okvbwnhhtqlgehg\",\"databasesToTables\":\"ipifhpfeoajvg\",\"validationErrors\":[{\"message\":\"jcsheafid\",\"actionableMessage\":\"ugsresmkssjhoi\",\"filePath\":\"xfkfwegprhptill\",\"lineNumber\":\"biqtgdq\",\"hResult\":1454570926,\"stackTrace\":\"wsldrizetpwbr\"},{\"message\":\"llibphbqzmizak\",\"actionableMessage\":\"ankjpdnjzh\",\"filePath\":\"oylhjlmuoyxprimr\",\"lineNumber\":\"pteecjme\",\"hResult\":512893820,\"stackTrace\":\"tvasy\"},{\"message\":\"xdza\",\"actionableMessage\":\"weoohguufuzboyj\",\"filePath\":\"hwtzolb\",\"lineNumber\":\"mwmdxmebwjscjpa\",\"hResult\":1591085258,\"stackTrace\":\"eabfqxnm\"},{\"message\":\"qtibxyijddtv\",\"actionableMessage\":\"ttadijae\",\"filePath\":\"mrsieekp\",\"lineNumber\":\"zaapmudqmeqwi\",\"hResult\":1749633474,\"stackTrace\":\"udqwyxebeybpmzz\"}]}")
+            "{\"id\":\"biqtgdq\",\"databasesToTables\":\"mcwsldrizetpwb\",\"validationErrors\":[{\"message\":\"libph\",\"actionableMessage\":\"zmizakakan\",\"filePath\":\"p\",\"lineNumber\":\"jzhajoy\",\"hResult\":2052287318,\"stackTrace\":\"muoyxprimr\"},{\"message\":\"pteecjme\",\"actionableMessage\":\"ls\",\"filePath\":\"asylwx\",\"lineNumber\":\"aumweoohguufu\",\"hResult\":639861434,\"stackTrace\":\"jathwtzo\"}]}")
             .toObject(GetUserTablesMySqlTaskOutput.class);
     }
 

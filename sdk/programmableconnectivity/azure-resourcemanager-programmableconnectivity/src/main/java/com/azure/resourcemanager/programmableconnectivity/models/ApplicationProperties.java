@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class ApplicationProperties implements JsonSerializable<ApplicationProperties> {
     /*
-     * Name of the application. Example: Contoso App.
+     * Name of the application.
      */
     private String name;
 
@@ -27,29 +27,24 @@ public final class ApplicationProperties implements JsonSerializable<Application
     private String applicationDescription;
 
     /*
-     * The category that describes the application.
+     * The category of the application.
      */
-    private String applicationType;
+    private Category category;
 
     /*
-     * Legal name of the organization owning the application.
+     * Commercial name of the application.
      */
-    private String legalName;
+    private String commercialName;
 
     /*
-     * A description of the organization owning the application.
+     * Privacy rights request email address.
      */
-    private String organizationDescription;
+    private String privacyRightsRequestEmailAddress;
 
     /*
-     * Unique Tax Number for the user's organization in the country/region the APC Gateway is being purchased.
+     * URL for the organization's privacy policy.
      */
-    private String taxNumber;
-
-    /*
-     * Email address of the Privacy contact or Data Protection officer of the organization.
-     */
-    private String privacyContactEmailAddress;
+    private String privacyPolicyUrl;
 
     /**
      * Creates an instance of ApplicationProperties class.
@@ -58,7 +53,7 @@ public final class ApplicationProperties implements JsonSerializable<Application
     }
 
     /**
-     * Get the name property: Name of the application. Example: Contoso App.
+     * Get the name property: Name of the application.
      * 
      * @return the name value.
      */
@@ -67,7 +62,7 @@ public final class ApplicationProperties implements JsonSerializable<Application
     }
 
     /**
-     * Set the name property: Name of the application. Example: Contoso App.
+     * Set the name property: Name of the application.
      * 
      * @param name the name value to set.
      * @return the ApplicationProperties object itself.
@@ -98,115 +93,83 @@ public final class ApplicationProperties implements JsonSerializable<Application
     }
 
     /**
-     * Get the applicationType property: The category that describes the application.
+     * Get the category property: The category of the application.
      * 
-     * @return the applicationType value.
+     * @return the category value.
      */
-    public String applicationType() {
-        return this.applicationType;
+    public Category category() {
+        return this.category;
     }
 
     /**
-     * Set the applicationType property: The category that describes the application.
+     * Set the category property: The category of the application.
      * 
-     * @param applicationType the applicationType value to set.
+     * @param category the category value to set.
      * @return the ApplicationProperties object itself.
      */
-    public ApplicationProperties withApplicationType(String applicationType) {
-        this.applicationType = applicationType;
+    public ApplicationProperties withCategory(Category category) {
+        this.category = category;
         return this;
     }
 
     /**
-     * Get the legalName property: Legal name of the organization owning the application.
+     * Get the commercialName property: Commercial name of the application.
      * 
-     * @return the legalName value.
+     * @return the commercialName value.
      */
-    public String legalName() {
-        return this.legalName;
+    public String commercialName() {
+        return this.commercialName;
     }
 
     /**
-     * Set the legalName property: Legal name of the organization owning the application.
+     * Set the commercialName property: Commercial name of the application.
      * 
-     * @param legalName the legalName value to set.
+     * @param commercialName the commercialName value to set.
      * @return the ApplicationProperties object itself.
      */
-    public ApplicationProperties withLegalName(String legalName) {
-        this.legalName = legalName;
+    public ApplicationProperties withCommercialName(String commercialName) {
+        this.commercialName = commercialName;
         return this;
     }
 
     /**
-     * Get the organizationDescription property: A description of the organization owning the application.
+     * Get the privacyRightsRequestEmailAddress property: Privacy rights request email address.
      * 
-     * @return the organizationDescription value.
+     * @return the privacyRightsRequestEmailAddress value.
      */
-    public String organizationDescription() {
-        return this.organizationDescription;
+    public String privacyRightsRequestEmailAddress() {
+        return this.privacyRightsRequestEmailAddress;
     }
 
     /**
-     * Set the organizationDescription property: A description of the organization owning the application.
+     * Set the privacyRightsRequestEmailAddress property: Privacy rights request email address.
      * 
-     * @param organizationDescription the organizationDescription value to set.
+     * @param privacyRightsRequestEmailAddress the privacyRightsRequestEmailAddress value to set.
      * @return the ApplicationProperties object itself.
      */
-    public ApplicationProperties withOrganizationDescription(String organizationDescription) {
-        this.organizationDescription = organizationDescription;
+    public ApplicationProperties withPrivacyRightsRequestEmailAddress(String privacyRightsRequestEmailAddress) {
+        this.privacyRightsRequestEmailAddress = privacyRightsRequestEmailAddress;
         return this;
     }
 
     /**
-     * Get the taxNumber property: Unique Tax Number for the user's organization in the country/region the APC Gateway
-     * is being purchased.
+     * Get the privacyPolicyUrl property: URL for the organization's privacy policy.
      * 
-     * @return the taxNumber value.
+     * @return the privacyPolicyUrl value.
      */
-    public String taxNumber() {
-        return this.taxNumber;
+    public String privacyPolicyUrl() {
+        return this.privacyPolicyUrl;
     }
 
     /**
-     * Set the taxNumber property: Unique Tax Number for the user's organization in the country/region the APC Gateway
-     * is being purchased.
+     * Set the privacyPolicyUrl property: URL for the organization's privacy policy.
      * 
-     * @param taxNumber the taxNumber value to set.
+     * @param privacyPolicyUrl the privacyPolicyUrl value to set.
      * @return the ApplicationProperties object itself.
      */
-    public ApplicationProperties withTaxNumber(String taxNumber) {
-        this.taxNumber = taxNumber;
+    public ApplicationProperties withPrivacyPolicyUrl(String privacyPolicyUrl) {
+        this.privacyPolicyUrl = privacyPolicyUrl;
         return this;
-    }
-
-    /**
-     * Get the privacyContactEmailAddress property: Email address of the Privacy contact or Data Protection officer of
-     * the organization.
-     * 
-     * @return the privacyContactEmailAddress value.
-     */
-    public String privacyContactEmailAddress() {
-        return this.privacyContactEmailAddress;
-    }
-
-    /**
-     * Set the privacyContactEmailAddress property: Email address of the Privacy contact or Data Protection officer of
-     * the organization.
-     * 
-     * @param privacyContactEmailAddress the privacyContactEmailAddress value to set.
-     * @return the ApplicationProperties object itself.
-     */
-    public ApplicationProperties withPrivacyContactEmailAddress(String privacyContactEmailAddress) {
-        this.privacyContactEmailAddress = privacyContactEmailAddress;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**
@@ -217,11 +180,10 @@ public final class ApplicationProperties implements JsonSerializable<Application
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("applicationDescription", this.applicationDescription);
-        jsonWriter.writeStringField("applicationType", this.applicationType);
-        jsonWriter.writeStringField("legalName", this.legalName);
-        jsonWriter.writeStringField("organizationDescription", this.organizationDescription);
-        jsonWriter.writeStringField("taxNumber", this.taxNumber);
-        jsonWriter.writeStringField("privacyContactEmailAddress", this.privacyContactEmailAddress);
+        jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
+        jsonWriter.writeStringField("commercialName", this.commercialName);
+        jsonWriter.writeStringField("privacyRightsRequestEmailAddress", this.privacyRightsRequestEmailAddress);
+        jsonWriter.writeStringField("privacyPolicyUrl", this.privacyPolicyUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -231,6 +193,7 @@ public final class ApplicationProperties implements JsonSerializable<Application
      * @param jsonReader The JsonReader being read.
      * @return An instance of ApplicationProperties if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ApplicationProperties.
      */
     public static ApplicationProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -244,16 +207,14 @@ public final class ApplicationProperties implements JsonSerializable<Application
                     deserializedApplicationProperties.name = reader.getString();
                 } else if ("applicationDescription".equals(fieldName)) {
                     deserializedApplicationProperties.applicationDescription = reader.getString();
-                } else if ("applicationType".equals(fieldName)) {
-                    deserializedApplicationProperties.applicationType = reader.getString();
-                } else if ("legalName".equals(fieldName)) {
-                    deserializedApplicationProperties.legalName = reader.getString();
-                } else if ("organizationDescription".equals(fieldName)) {
-                    deserializedApplicationProperties.organizationDescription = reader.getString();
-                } else if ("taxNumber".equals(fieldName)) {
-                    deserializedApplicationProperties.taxNumber = reader.getString();
-                } else if ("privacyContactEmailAddress".equals(fieldName)) {
-                    deserializedApplicationProperties.privacyContactEmailAddress = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedApplicationProperties.category = Category.fromString(reader.getString());
+                } else if ("commercialName".equals(fieldName)) {
+                    deserializedApplicationProperties.commercialName = reader.getString();
+                } else if ("privacyRightsRequestEmailAddress".equals(fieldName)) {
+                    deserializedApplicationProperties.privacyRightsRequestEmailAddress = reader.getString();
+                } else if ("privacyPolicyUrl".equals(fieldName)) {
+                    deserializedApplicationProperties.privacyPolicyUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

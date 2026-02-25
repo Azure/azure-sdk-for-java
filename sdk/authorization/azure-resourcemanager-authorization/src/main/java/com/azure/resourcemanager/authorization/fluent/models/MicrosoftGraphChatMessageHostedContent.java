@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * chatMessageHostedContent.
+ * Represents chat message hosted content.
  */
 @Fluent
 public final class MicrosoftGraphChatMessageHostedContent extends MicrosoftGraphEntity {

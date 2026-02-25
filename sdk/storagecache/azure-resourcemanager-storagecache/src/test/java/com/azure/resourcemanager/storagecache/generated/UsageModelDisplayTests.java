@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageModelDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageModelDisplay model = BinaryData.fromString("{\"description\":\"wq\"}").toObject(UsageModelDisplay.class);
-        Assertions.assertEquals("wq", model.description());
+        UsageModelDisplay model
+            = BinaryData.fromString("{\"description\":\"rmfqjhhkxbpvj\"}").toObject(UsageModelDisplay.class);
+        Assertions.assertEquals("rmfqjhhkxbpvj", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageModelDisplay model = new UsageModelDisplay().withDescription("wq");
+        UsageModelDisplay model = new UsageModelDisplay().withDescription("rmfqjhhkxbpvj");
         model = BinaryData.fromObject(model).toObject(UsageModelDisplay.class);
-        Assertions.assertEquals("wq", model.description());
+        Assertions.assertEquals("rmfqjhhkxbpvj", model.description());
     }
 }

@@ -37,6 +37,7 @@ import java.time.ZoneOffset;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -119,13 +120,13 @@ public class HelperTests extends BlobTestBase {
         String[] splitParts = parts.toUrl().toString().split("\\?");
 
         // Ensure that there is only one question mark even when sas and snapshot are present
-        assertEquals(splitParts.length, 2);
-        assertEquals(splitParts[0], "http://host/container/blob");
+        assertEquals(2, splitParts.length);
+        assertEquals("http://host/container/blob", splitParts[0]);
         assertTrue(splitParts[1].contains("snapshot=snapshot"));
         assertTrue(splitParts[1].contains("sp=r"));
         assertTrue(splitParts[1].contains("sig="));
         assertTrue(splitParts[1].contains("ses=encryptionScope"));
-        assertEquals(splitParts[1].split("&").length, 7); // snapshot & sv & sr & sp & sig & ses
+        assertEquals(7, splitParts[1].split("&").length); // snapshot & sv & sr & sp & sig & ses
     }
 
     @Test
@@ -134,7 +135,7 @@ public class HelperTests extends BlobTestBase {
 
         BlobUrlParts implParts = BlobUrlParts.parse(bup.toUrl());
 
-        assertEquals(implParts.getBlobContainerName(), BlobContainerAsyncClient.ROOT_CONTAINER_NAME);
+        assertEquals(BlobContainerAsyncClient.ROOT_CONTAINER_NAME, implParts.getBlobContainerName());
     }
 
     @Test
@@ -144,11 +145,11 @@ public class HelperTests extends BlobTestBase {
         Flux<ByteBuffer> flux = Utility.convertStreamToByteBuffer(new ByteArrayInputStream(data), 1024, 1024, true);
 
         StepVerifier.create(flux)
-            .assertNext(buffer -> assertEquals(buffer.compareTo(ByteBuffer.wrap(data)), 0))
+            .assertNext(buffer -> assertEquals(0, buffer.compareTo(ByteBuffer.wrap(data))))
             .verifyComplete();
         // subscribe multiple times and ensure data is same each time
         StepVerifier.create(flux)
-            .assertNext(buffer -> assertEquals(buffer.compareTo(ByteBuffer.wrap(data)), 0))
+            .assertNext(buffer -> assertEquals(0, buffer.compareTo(ByteBuffer.wrap(data))))
             .verifyComplete();
     }
 
@@ -165,11 +166,11 @@ public class HelperTests extends BlobTestBase {
 
         //then: "When the stream is the right length but available always returns > 0, do not throw"
         StepVerifier.create(flux)
-            .assertNext(buffer -> assertEquals(buffer.compareTo(ByteBuffer.wrap(data)), 0))
+            .assertNext(buffer -> assertEquals(0, buffer.compareTo(ByteBuffer.wrap(data))))
             .verifyComplete();
         // subscribe multiple times and ensure data is same each time
         StepVerifier.create(flux)
-            .assertNext(buffer -> assertEquals(buffer.compareTo(ByteBuffer.wrap(data)), 0))
+            .assertNext(buffer -> assertEquals(0, buffer.compareTo(ByteBuffer.wrap(data))))
             .verifyComplete();
 
         //when: "When the stream is actually longer than the length, throw"
@@ -203,5 +204,63 @@ public class HelperTests extends BlobTestBase {
 
         assertEquals(2, pageList.getPageRange().size());
         assertEquals(1, pageList.getClearRange().size());
+    }
+
+    // Tests that container names are properly URL decoded when retrieved from BlobUrlParts. Container names with
+    // special characters are not supported by the service, however, the names should still be encoded.
+    @Test
+    public void containerNameDecodingOnGet() {
+        BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setContainerName("my%20container");
+        assertEquals("my container", parts.getBlobContainerName());
+        // URL should retain the encoded form supplied by caller
+        assertTrue(parts.toUrl().toString().contains("my%20container"));
+    }
+
+    @Test
+    public void blobNameDecodingOnGet() {
+        BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setBlobName("my%20blob");
+        assertEquals("my blob", parts.getBlobName());
+        // URL should retain the encoded form supplied by caller
+        assertTrue(parts.toUrl().toString().contains("my%20blob"));
+    }
+
+    // Tests that blob names are automatically URL encoded when set in BlobUrlParts.
+    @Test
+    public void setBlobNameEncodedInURL() {
+        BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setBlobName("my blob");
+        assertEquals("my blob", parts.getBlobName());
+        String url = parts.toUrl().toString();
+        assertFalse(url.contains("my blob"));
+        assertTrue(url.contains("my%20blob"));
+    }
+
+    // Tests that container names are automatically URL encoded when set in BlobUrlParts.
+    @Test
+    public void setContainerNameEncodedInURL() {
+        BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setContainerName("my container");
+        assertEquals("my container", parts.getBlobContainerName());
+        String url = parts.toUrl().toString();
+        assertFalse(url.contains("my container"));
+        assertTrue(url.contains("my%20container"));
+    }
+
+    // Tests that blob names are properly URL decoded when retrieved from BlobUrlParts.
+    @Test
+    public void setBlobNameEncodedNotDoubleEncoded() {
+        BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setBlobName("my%20blob");
+        assertEquals("my blob", parts.getBlobName());
+        String url = parts.toUrl().toString();
+        assertTrue(url.contains("my%20blob"));
+        assertFalse(url.contains("%2520"));
+    }
+
+    // Tests that container names are properly URL decoded when retrieved from BlobUrlParts.
+    @Test
+    public void setContainerNameEncodedNotDoubleEncoded() {
+        BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setContainerName("my%20container");
+        assertEquals("my container", parts.getBlobContainerName());
+        String url = parts.toUrl().toString();
+        assertTrue(url.contains("my%20container"));
+        assertFalse(url.contains("%2520"));
     }
 }

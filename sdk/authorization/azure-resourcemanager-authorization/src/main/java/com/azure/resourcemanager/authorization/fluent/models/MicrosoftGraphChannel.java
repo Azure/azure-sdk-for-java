@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * channel.
+ * Represents a channel.
  */
 @Fluent
 public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {

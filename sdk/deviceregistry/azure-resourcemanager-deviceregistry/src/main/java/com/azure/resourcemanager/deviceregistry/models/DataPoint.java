@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -73,25 +72,6 @@ public final class DataPoint extends DataPointBase {
         super.withDataPointConfiguration(dataPointConfiguration);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model DataPoint"));
-        }
-        if (dataSource() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property dataSource in model DataPoint"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DataPoint.class);
 
     /**
      * {@inheritDoc}

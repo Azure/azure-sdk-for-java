@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storagecache.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.storagecache.models.ImportJobAdminStatus;
 import com.azure.resourcemanager.storagecache.models.ImportJobUpdate;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,17 +15,20 @@ public final class ImportJobUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImportJobUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"gbbjfddgmbmbe\":\"tumkdosvqwhbm\",\"psalgbqux\":\"ppbhtqqrolfp\",\"n\":\"gjyjgzjaoyfhrtxi\"}}")
+            "{\"tags\":{\"dqxhcrmnohjtckwh\":\"pvswjdkirso\",\"gr\":\"soifiyipjxsqw\",\"qabnmoc\":\"bznorcjxvsnby\"},\"properties\":{\"adminStatus\":\"Cancel\"}}")
             .toObject(ImportJobUpdate.class);
-        Assertions.assertEquals("tumkdosvqwhbm", model.tags().get("gbbjfddgmbmbe"));
+        Assertions.assertEquals("pvswjdkirso", model.tags().get("dqxhcrmnohjtckwh"));
+        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, model.adminStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImportJobUpdate model = new ImportJobUpdate()
-            .withTags(mapOf("gbbjfddgmbmbe", "tumkdosvqwhbm", "psalgbqux", "ppbhtqqrolfp", "n", "gjyjgzjaoyfhrtxi"));
+            .withTags(mapOf("dqxhcrmnohjtckwh", "pvswjdkirso", "gr", "soifiyipjxsqw", "qabnmoc", "bznorcjxvsnby"))
+            .withAdminStatus(ImportJobAdminStatus.CANCEL);
         model = BinaryData.fromObject(model).toObject(ImportJobUpdate.class);
-        Assertions.assertEquals("tumkdosvqwhbm", model.tags().get("gbbjfddgmbmbe"));
+        Assertions.assertEquals("pvswjdkirso", model.tags().get("dqxhcrmnohjtckwh"));
+        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, model.adminStatus());
     }
 
     // Use "Map.of" if available

@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databasewatcher.fluent.AlertRuleResourcesClient;
 import com.azure.resourcemanager.databasewatcher.fluent.models.AlertRuleResourceInner;
 import com.azure.resourcemanager.databasewatcher.implementation.models.AlertRuleResourceListResult;
@@ -173,25 +172,6 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertRuleResourceInner>> getWithResponseAsync(String resourceGroupName, String watcherName,
         String alertRuleResourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (alertRuleResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter alertRuleResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, watcherName, alertRuleResourceName, accept, context))
@@ -231,28 +211,6 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertRuleResourceInner> getWithResponse(String resourceGroupName, String watcherName,
         String alertRuleResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (alertRuleResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter alertRuleResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, watcherName, alertRuleResourceName, accept, context);
@@ -290,30 +248,6 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertRuleResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String watcherName, String alertRuleResourceName, AlertRuleResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (alertRuleResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter alertRuleResourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -360,34 +294,6 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertRuleResourceInner> createOrUpdateWithResponse(String resourceGroupName, String watcherName,
         String alertRuleResourceName, AlertRuleResourceInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (alertRuleResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter alertRuleResourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -428,25 +334,6 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String watcherName,
         String alertRuleResourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (alertRuleResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter alertRuleResourceName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, watcherName, alertRuleResourceName, context))
@@ -485,28 +372,6 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String watcherName, String alertRuleResourceName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
-        if (alertRuleResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter alertRuleResourceName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, watcherName, alertRuleResourceName, context);
     }
@@ -540,21 +405,6 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertRuleResourceInner>> listByParentSinglePageAsync(String resourceGroupName,
         String watcherName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParent(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -592,24 +442,6 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AlertRuleResourceInner> listByParentSinglePage(String resourceGroupName, String watcherName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AlertRuleResourceListResult> res
             = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -632,24 +464,6 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AlertRuleResourceInner> listByParentSinglePage(String resourceGroupName, String watcherName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (watcherName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AlertRuleResourceListResult> res
             = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -704,13 +518,6 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertRuleResourceInner>> listByParentNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParentNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -730,15 +537,6 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AlertRuleResourceInner> listByParentNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AlertRuleResourceListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -758,21 +556,10 @@ public final class AlertRuleResourcesClientImpl implements AlertRuleResourcesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AlertRuleResourceInner> listByParentNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AlertRuleResourceListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AlertRuleResourcesClientImpl.class);
 }

@@ -16,8 +16,6 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
-
 public final class RntbdConstants {
 
     static final int CURRENT_PROTOCOL_VERSION = 0x00000001;
@@ -352,7 +350,7 @@ public final class RntbdConstants {
                 case 0x0025:
                     return RntbdOperationType.Batch;
                 default:
-                    throw new DecoderException(lenientFormat("expected byte value matching %s value, not %s",
+                    throw new DecoderException(String.format("expected byte value matching %s value, not %s",
                         RntbdOperationType.class.getSimpleName(),
                         id));
             }
@@ -429,7 +427,7 @@ public final class RntbdConstants {
                 case Batch:
                     return RntbdOperationType.Batch;
                 default:
-                    throw new IllegalArgumentException(lenientFormat("unrecognized operation type: %s", type));
+                    throw new IllegalArgumentException(String.format("unrecognized operation type: %s", type));
             }
         }
 
@@ -599,7 +597,8 @@ public final class RntbdConstants {
         ChangeFeedWireFormatVersion((short) 0x00B2, RntbdTokenType.String, false),
         PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false),
         GlobalDatabaseAccountName((short) 0x00CE, RntbdTokenType.String, false),
-        ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false);
+        ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false),
+        HubRegionProcessingOnly((short)0x00EF, RntbdTokenType.Byte , false);
 
         public static final List<RntbdRequestHeader> thinClientHeadersInOrderList = Arrays.asList(
             EffectivePartitionKey,
@@ -767,7 +766,7 @@ public final class RntbdConstants {
                 case 0x001D:
                     return RntbdResourceType.UserDefinedType;
                 default:
-                    throw new DecoderException(lenientFormat("expected byte value matching %s value, not %s",
+                    throw new DecoderException(String.format("expected byte value matching %s value, not %s",
                         RntbdResourceType.class.getSimpleName(),
                         id));
             }
@@ -833,7 +832,7 @@ public final class RntbdConstants {
                 case UserDefinedType:
                     return RntbdResourceType.UserDefinedType;
                 default:
-                    throw new IllegalArgumentException(lenientFormat("unrecognized resource type: %s", type));
+                    throw new IllegalArgumentException(String.format("unrecognized resource type: %s", type));
             }
         }
 
@@ -908,7 +907,8 @@ public final class RntbdConstants {
         HasTentativeWrites((short) 0x003D, RntbdTokenType.Byte, false),
         SessionToken((short) 0x003E, RntbdTokenType.String, false),
         BackendRequestDurationMilliseconds((short) 0X0051, RntbdTokenType.Double, false),
-        CorrelatedActivityId((short) 0X0052, RntbdTokenType.Guid, false);
+        CorrelatedActivityId((short) 0X0052, RntbdTokenType.Guid, false),
+        GlobalNRegionCommittedGLSN((short) 0x0078, RntbdTokenType.LongLong, false);
 
         public static final Map<Short, RntbdResponseHeader> map;
         public static final EnumSet<RntbdResponseHeader> set = EnumSet.allOf(RntbdResponseHeader.class);

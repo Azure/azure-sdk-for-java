@@ -27,6 +27,11 @@ public final class TransportProtocol extends ExpandableStringEnum<TransportProto
     public static final TransportProtocol ALL = fromString("All");
 
     /**
+     * Static value Quic for TransportProtocol.
+     */
+    public static final TransportProtocol QUIC = fromString("Quic");
+
+    /**
      * Creates a new instance of TransportProtocol value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

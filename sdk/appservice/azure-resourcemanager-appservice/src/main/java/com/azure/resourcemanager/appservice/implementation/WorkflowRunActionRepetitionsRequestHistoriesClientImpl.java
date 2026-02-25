@@ -62,7 +62,7 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * to be used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientWorkflowRunActionRepetitionsRequestHistories")
     public interface WorkflowRunActionRepetitionsRequestHistoriesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories")
@@ -141,11 +141,12 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
         if (repetitionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, runName, actionName, repetitionName, this.client.getApiVersion(),
-                accept, context))
+            .withContext(
+                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    name, workflowName, runName, actionName, repetitionName, apiVersion, accept, context))
             .<PagedResponse<RequestHistoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -197,11 +198,12 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
         if (repetitionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                runName, actionName, repetitionName, this.client.getApiVersion(), accept, context)
+                runName, actionName, repetitionName, apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -343,11 +345,12 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter requestHistoryName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
                 resourceGroupName, name, workflowName, runName, actionName, repetitionName, requestHistoryName,
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -403,11 +406,11 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter requestHistoryName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, runName, actionName, repetitionName, requestHistoryName, this.client.getApiVersion(), accept,
-            context);
+            workflowName, runName, actionName, repetitionName, requestHistoryName, apiVersion, accept, context);
     }
 
     /**

@@ -118,8 +118,13 @@ public final class AtlasStruct implements JsonSerializable<AtlasStruct> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("attributes", this.attributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("typeName", this.typeName);
         jsonWriter.writeStringField("lastModifiedTS", this.lastModifiedTS);
         return jsonWriter.writeEndObject();

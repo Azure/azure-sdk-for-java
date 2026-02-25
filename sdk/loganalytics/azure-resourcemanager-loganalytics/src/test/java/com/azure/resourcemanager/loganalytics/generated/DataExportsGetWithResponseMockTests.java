@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.DataExport;
@@ -21,24 +21,25 @@ public final class DataExportsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataExportId\":\"sdaultxij\",\"tableNames\":[\"mfqwa\"],\"destination\":{\"resourceId\":\"nqnm\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"qdqx\"}},\"enable\":false,\"createdDate\":\"gny\",\"lastModifiedDate\":\"sf\"},\"id\":\"svtui\",\"name\":\"zh\",\"type\":\"jqg\"}";
+            = "{\"properties\":{\"dataExportId\":\"wbuqn\",\"tableNames\":[\"phzfylsgcrp\",\"bcunezzceze\",\"fwyfwlwxjwet\"],\"destination\":{\"resourceId\":\"sihclafzvaylp\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"wztcmwqkchc\"}},\"enable\":false,\"createdDate\":\"fewz\",\"lastModifiedDate\":\"jexfdeqvhp\"},\"id\":\"ylkkshkbffmbm\",\"name\":\"zjrgyww\",\"type\":\"gjxsnptfu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        DataExport response
-            = manager.dataExports().getWithResponse("jg", "yexaoguy", "i", com.azure.core.util.Context.NONE).getValue();
+        DataExport response = manager.dataExports()
+            .getWithResponse("nsnvpd", "bmikost", "z", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("sdaultxij", response.dataExportId());
-        Assertions.assertEquals("mfqwa", response.tableNames().get(0));
-        Assertions.assertEquals(false, response.enable());
-        Assertions.assertEquals("gny", response.createdDate());
-        Assertions.assertEquals("sf", response.lastModifiedDate());
-        Assertions.assertEquals("nqnm", response.resourceId());
-        Assertions.assertEquals("qdqx", response.eventHubName());
+        Assertions.assertEquals("wbuqn", response.dataExportId());
+        Assertions.assertEquals("phzfylsgcrp", response.tableNames().get(0));
+        Assertions.assertFalse(response.enable());
+        Assertions.assertEquals("fewz", response.createdDate());
+        Assertions.assertEquals("jexfdeqvhp", response.lastModifiedDate());
+        Assertions.assertEquals("sihclafzvaylp", response.resourceId());
+        Assertions.assertEquals("wztcmwqkchc", response.eventHubName());
     }
 }

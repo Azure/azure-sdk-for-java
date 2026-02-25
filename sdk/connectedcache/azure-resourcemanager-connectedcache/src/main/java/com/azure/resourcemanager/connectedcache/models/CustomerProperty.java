@@ -159,20 +159,6 @@ public final class CustomerProperty implements JsonSerializable<CustomerProperty
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (customer() != null) {
-            customer().validate();
-        }
-        if (additionalCustomerProperties() != null) {
-            additionalCustomerProperties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

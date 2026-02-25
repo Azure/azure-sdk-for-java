@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class IspCacheNodesOperationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: IspCacheNodesOperations_CreateOrUpdate.
@@ -56,7 +56,6 @@ public final class IspCacheNodesOperationsCreateOrUpdateSamples {
                             .withNginxMapping("lijygenjq")))
                         .withBgpConfiguration(new BgpConfiguration().withAsnToIpAddressMapping("pafcimhoog"))
                         .withProxyUrlConfiguration(new ProxyUrlConfiguration().withProxyUrl("hplstyg"))
-                        .withProxyUrl("qhux")
                         .withOptionalProperty1("hvpmt")
                         .withOptionalProperty2("talanelmsgxvksrzoeeontqkjzbpv")
                         .withOptionalProperty3("bxkoxq")

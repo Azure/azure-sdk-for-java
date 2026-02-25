@@ -94,7 +94,7 @@ public final class RegistryArtifactAsync {
         this.repositoryName = repositoryName;
         this.digestMono = isDigest(tagOrDigest)
             ? Mono.just(tagOrDigest)
-            : Mono.defer(() -> getTagProperties(tagOrDigest).map(a -> a.getDigest()).cache());
+            : Mono.defer(() -> getTagProperties(tagOrDigest).map(ArtifactTagProperties::getDigest).cache());
     }
 
     /**
@@ -114,7 +114,7 @@ public final class RegistryArtifactAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse() {
-        return withContext(context -> deleteWithResponse(context));
+        return withContext(this::deleteWithResponse);
     }
 
     private Mono<Response<Void>> deleteWithResponse(Context context) {
@@ -227,7 +227,7 @@ public final class RegistryArtifactAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponse() {
-        return withContext(context -> getManifestPropertiesWithResponse(context));
+        return withContext(this::getManifestPropertiesWithResponse);
     }
 
     private Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponse(Context context) {
@@ -391,7 +391,7 @@ public final class RegistryArtifactAsync {
     public PagedFlux<ArtifactTagProperties> listTagProperties(ArtifactTagOrder order) {
         return new PagedFlux<>(
             (pageSize) -> withContext(context -> listTagPropertiesSinglePageAsync(pageSize, order, context)),
-            (token, pageSize) -> withContext(context -> listTagPropertiesNextSinglePageAsync(token, context)));
+            (token, ignored) -> withContext(context -> listTagPropertiesNextSinglePageAsync(token, context)));
     }
 
     private Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesSinglePageAsync(Integer pageSize,

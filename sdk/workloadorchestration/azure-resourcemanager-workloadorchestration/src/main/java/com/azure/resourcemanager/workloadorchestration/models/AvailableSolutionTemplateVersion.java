@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadorchestration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -64,26 +63,6 @@ public final class AvailableSolutionTemplateVersion implements JsonSerializable<
     public boolean isConfigured() {
         return this.isConfigured;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (solutionTemplateVersion() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property solutionTemplateVersion in model AvailableSolutionTemplateVersion"));
-        }
-        if (latestConfigRevision() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property latestConfigRevision in model AvailableSolutionTemplateVersion"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AvailableSolutionTemplateVersion.class);
 
     /**
      * {@inheritDoc}

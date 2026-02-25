@@ -39,17 +39,6 @@ public final class FleetCredentialResultsInner implements JsonSerializable<Fleet
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (kubeconfigs() != null) {
-            kubeconfigs().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

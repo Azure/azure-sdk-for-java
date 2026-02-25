@@ -28,7 +28,7 @@ public final class SolutionTemplatesCreateVersionMockTests {
     @Test
     public void testCreateVersion() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configurations\":\"ehqpuvjmvqmt\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"oejnndljdju\",\"id\":\"br\",\"name\":\"eqy\",\"type\":\"kceysfaqegplw\"}";
+            = "{\"properties\":{\"configurations\":\"jsllfryvd\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"cfrgnawbabgfbkt\",\"id\":\"mfczl\",\"name\":\"syqkfrbzgowox\",\"type\":\"mj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,16 +38,16 @@ public final class SolutionTemplatesCreateVersionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SolutionTemplateVersion response = manager.solutionTemplates()
-            .createVersion("cgqyhleseyq", "hvyeldotj",
+            .createVersion("zknxkv", "cxetyvkunmignoh",
                 new SolutionTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.MINOR)
-                    .withVersion("iswskuk")
+                    .withVersion("qo")
                     .withSolutionTemplateVersion(new SolutionTemplateVersionInner()
-                        .withProperties(new SolutionTemplateVersionProperties().withConfigurations("asbvw")
+                        .withProperties(new SolutionTemplateVersionProperties().withConfigurations("wpin")
                             .withSpecification(mapOf())
                             .withOrchestratorType(OrchestratorType.TO))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ehqpuvjmvqmt", response.properties().configurations());
+        Assertions.assertEquals("jsllfryvd", response.properties().configurations());
         Assertions.assertEquals(OrchestratorType.TO, response.properties().orchestratorType());
     }
 

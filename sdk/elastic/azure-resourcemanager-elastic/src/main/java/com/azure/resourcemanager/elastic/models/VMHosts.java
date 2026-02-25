@@ -12,7 +12,8 @@ import com.azure.core.util.Context;
  */
 public interface VMHosts {
     /**
-     * List the vm resources currently being monitored by the Elastic monitor resource.
+     * List all VM resources currently being monitored by the Elastic monitor resource, helping you manage
+     * observability.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -24,7 +25,8 @@ public interface VMHosts {
     PagedIterable<VMResources> list(String resourceGroupName, String monitorName);
 
     /**
-     * List the vm resources currently being monitored by the Elastic monitor resource.
+     * List all VM resources currently being monitored by the Elastic monitor resource, helping you manage
+     * observability.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

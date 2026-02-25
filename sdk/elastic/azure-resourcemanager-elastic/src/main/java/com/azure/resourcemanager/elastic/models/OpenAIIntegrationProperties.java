@@ -29,6 +29,11 @@ public final class OpenAIIntegrationProperties implements JsonSerializable<OpenA
     private String openAIResourceEndpoint;
 
     /*
+     * The connector id of Open AI resource
+     */
+    private String openAIConnectorId;
+
+    /*
      * Value of API key for Open AI resource
      */
     private String key;
@@ -85,6 +90,26 @@ public final class OpenAIIntegrationProperties implements JsonSerializable<OpenA
     }
 
     /**
+     * Get the openAIConnectorId property: The connector id of Open AI resource.
+     * 
+     * @return the openAIConnectorId value.
+     */
+    public String openAIConnectorId() {
+        return this.openAIConnectorId;
+    }
+
+    /**
+     * Set the openAIConnectorId property: The connector id of Open AI resource.
+     * 
+     * @param openAIConnectorId the openAIConnectorId value to set.
+     * @return the OpenAIIntegrationProperties object itself.
+     */
+    public OpenAIIntegrationProperties withOpenAIConnectorId(String openAIConnectorId) {
+        this.openAIConnectorId = openAIConnectorId;
+        return this;
+    }
+
+    /**
      * Get the key property: Value of API key for Open AI resource.
      * 
      * @return the key value.
@@ -129,6 +154,7 @@ public final class OpenAIIntegrationProperties implements JsonSerializable<OpenA
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("openAIResourceId", this.openAIResourceId);
         jsonWriter.writeStringField("openAIResourceEndpoint", this.openAIResourceEndpoint);
+        jsonWriter.writeStringField("openAIConnectorId", this.openAIConnectorId);
         jsonWriter.writeStringField("key", this.key);
         return jsonWriter.writeEndObject();
     }
@@ -152,6 +178,8 @@ public final class OpenAIIntegrationProperties implements JsonSerializable<OpenA
                     deserializedOpenAIIntegrationProperties.openAIResourceId = reader.getString();
                 } else if ("openAIResourceEndpoint".equals(fieldName)) {
                     deserializedOpenAIIntegrationProperties.openAIResourceEndpoint = reader.getString();
+                } else if ("openAIConnectorId".equals(fieldName)) {
+                    deserializedOpenAIIntegrationProperties.openAIConnectorId = reader.getString();
                 } else if ("key".equals(fieldName)) {
                     deserializedOpenAIIntegrationProperties.key = reader.getString();
                 } else if ("lastRefreshAt".equals(fieldName)) {

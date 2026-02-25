@@ -37,7 +37,7 @@ public final class AccountsCheckNameAvailabilityWithResponseMockTests {
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
+        Assertions.assertFalse(response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
         Assertions.assertEquals("guhmuouqfpr", response.message());
     }

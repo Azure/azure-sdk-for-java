@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.DynamicSchemaVersionsClient;
@@ -211,29 +210,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DynamicSchemaVersionInner>> getWithResponseAsync(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaVersionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter dynamicSchemaVersionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -277,33 +253,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DynamicSchemaVersionInner> getWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaVersionName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter dynamicSchemaVersionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, accept, context);
@@ -345,34 +294,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String schemaName, String dynamicSchemaName, String dynamicSchemaVersionName,
         DynamicSchemaVersionInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaVersionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter dynamicSchemaVersionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -398,39 +319,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName, DynamicSchemaVersionInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaVersionName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter dynamicSchemaVersionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -456,39 +344,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName, DynamicSchemaVersionInner resource,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaVersionName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter dynamicSchemaVersionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -646,34 +501,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     private Mono<Response<DynamicSchemaVersionInner>> updateWithResponseAsync(String resourceGroupName,
         String schemaName, String dynamicSchemaName, String dynamicSchemaVersionName,
         DynamicSchemaVersionInner properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaVersionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter dynamicSchemaVersionName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -721,39 +548,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     public Response<DynamicSchemaVersionInner> updateWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName, DynamicSchemaVersionInner properties,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaVersionName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter dynamicSchemaVersionName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -796,29 +590,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaVersionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter dynamicSchemaVersionName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, schemaName, dynamicSchemaName,
@@ -841,33 +612,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaVersionName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter dynamicSchemaVersionName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName,
             Context.NONE);
@@ -889,33 +633,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, String dynamicSchemaVersionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaVersionName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter dynamicSchemaVersionName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName,
             context);
@@ -1053,25 +770,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DynamicSchemaVersionInner>> listByDynamicSchemaSinglePageAsync(String resourceGroupName,
         String schemaName, String dynamicSchemaName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDynamicSchema(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1114,28 +812,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DynamicSchemaVersionInner> listByDynamicSchemaSinglePage(String resourceGroupName,
         String schemaName, String dynamicSchemaName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DynamicSchemaVersionListResult> res = service.listByDynamicSchemaSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, schemaName,
@@ -1159,28 +835,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DynamicSchemaVersionInner> listByDynamicSchemaSinglePage(String resourceGroupName,
         String schemaName, String dynamicSchemaName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (dynamicSchemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dynamicSchemaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DynamicSchemaVersionListResult> res
             = service.listByDynamicSchemaSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1240,13 +894,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DynamicSchemaVersionInner>> listByDynamicSchemaNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1267,15 +914,6 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DynamicSchemaVersionInner> listByDynamicSchemaNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DynamicSchemaVersionListResult> res
             = service.listByDynamicSchemaNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1296,21 +934,10 @@ public final class DynamicSchemaVersionsClientImpl implements DynamicSchemaVersi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DynamicSchemaVersionInner> listByDynamicSchemaNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DynamicSchemaVersionListResult> res
             = service.listByDynamicSchemaNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DynamicSchemaVersionsClientImpl.class);
 }

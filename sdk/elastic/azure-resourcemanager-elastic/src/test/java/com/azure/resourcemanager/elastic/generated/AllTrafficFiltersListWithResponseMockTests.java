@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.ElasticTrafficFilterResponse;
@@ -22,28 +22,29 @@ public final class AllTrafficFiltersListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"rulesets\":[{\"id\":\"nwxuqlcvydyp\",\"name\":\"dooaojkniodko\",\"description\":\"bw\",\"region\":\"jhemms\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[{\"source\":\"tjinf\",\"description\":\"lfltka\",\"azureEndpointGuid\":\"vefkdlfoakggk\",\"azureEndpointName\":\"agaowpulpqblylsy\",\"id\":\"qjnsjervtia\"},{\"source\":\"sdszue\",\"description\":\"sbzkf\",\"azureEndpointGuid\":\"eyvpnqicvinvkj\",\"azureEndpointName\":\"dxrbuukzcle\",\"id\":\"hmlwpaztzpo\"}]},{\"id\":\"cckwyfzqwhxxbu\",\"name\":\"a\",\"description\":\"feqztppriol\",\"region\":\"rjaltolmncw\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":true,\"rules\":[{\"source\":\"bnwdcfh\",\"description\":\"qdpfuvglsbjjca\",\"azureEndpointGuid\":\"xbvtvudu\",\"azureEndpointName\":\"cormr\",\"id\":\"qtvcofudflvkgj\"},{\"source\":\"gdknnqv\",\"description\":\"znqntoru\",\"azureEndpointGuid\":\"gsahmkycgrauw\",\"azureEndpointName\":\"etaebu\",\"id\":\"vdmovsmzlxwabm\"},{\"source\":\"efkifr\",\"description\":\"puqujmqlgkfbtn\",\"azureEndpointGuid\":\"aongbj\",\"azureEndpointName\":\"tujitcjedft\",\"id\":\"ae\"},{\"source\":\"ojvdcpzfoqo\",\"description\":\"cybxa\",\"azureEndpointGuid\":\"gszufoxciqopid\",\"azureEndpointName\":\"mciodhkhazxkhn\",\"id\":\"onlwntoeg\"}]},{\"id\":\"dwbwhkszzcmrvexz\",\"name\":\"bt\",\"description\":\"sfraoyzko\",\"region\":\"tlmngu\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[{\"source\":\"yuuximerqfobwyzn\",\"description\":\"ykutwpf\",\"azureEndpointGuid\":\"a\",\"azureEndpointName\":\"hrskdsnfd\",\"id\":\"oakgtdlmkkzev\"},{\"source\":\"hewpusdsttwv\",\"description\":\"vbbejdcng\",\"azureEndpointGuid\":\"m\",\"azureEndpointName\":\"kufgmj\",\"id\":\"wr\"},{\"source\":\"rtwaenuuzko\",\"description\":\"minrfdw\",\"azureEndpointGuid\":\"uhhziuiefozbhdm\",\"azureEndpointName\":\"l\",\"id\":\"qhoftrmaequiah\"},{\"source\":\"cslfaoqzpiyylha\",\"description\":\"swhccsphk\",\"azureEndpointGuid\":\"vwitqscyw\",\"azureEndpointName\":\"gwol\",\"id\":\"czbwemhairsbr\"}]},{\"id\":\"dwmsweypqwd\",\"name\":\"gicccnxqhuex\",\"description\":\"ttlstvlzywemhz\",\"region\":\"csdtclusiypbs\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[{\"source\":\"feadcygq\",\"description\":\"yhejhzisxgfp\",\"azureEndpointGuid\":\"olppvksrpqvujz\",\"azureEndpointName\":\"ehtwdwrft\",\"id\":\"iby\"}]}]}";
+            = "{\"rulesets\":[{\"id\":\"h\",\"name\":\"knfd\",\"description\":\"wjchrdg\",\"region\":\"hxumwctondzj\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[{\"source\":\"gg\",\"description\":\"sb\",\"azureEndpointGuid\":\"ovvtgseinqfiu\",\"azureEndpointName\":\"qknp\",\"id\":\"gnepttwqmsni\"}]},{\"id\":\"cdm\",\"name\":\"r\",\"description\":\"lpijnkrxfrd\",\"region\":\"c\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":false,\"rules\":[{\"source\":\"nasx\",\"description\":\"tozqyzhftwesgo\",\"azureEndpointGuid\":\"zhonnxkrlgnyhmo\",\"azureEndpointName\":\"xkk\",\"id\":\"h\"},{\"source\":\"gh\",\"description\":\"bdhqxvcxgf\",\"azureEndpointGuid\":\"dsofbshrns\",\"azureEndpointName\":\"uswdv\",\"id\":\"ybycnunvj\"},{\"source\":\"tkfa\",\"description\":\"opqgikyzirtxdyux\",\"azureEndpointGuid\":\"jntpsewgioilqu\",\"azureEndpointName\":\"ydxtqm\",\"id\":\"ox\"}]},{\"id\":\"ggufhyaomtb\",\"name\":\"havgrvk\",\"description\":\"ovjzhpjbibgjmfx\",\"region\":\"vfcluyovwxnbkfe\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":false,\"rules\":[{\"source\":\"zdgiruj\",\"description\":\"bomvzzbtdcqv\",\"azureEndpointGuid\":\"iyujviylwdshfs\",\"azureEndpointName\":\"rbgyefry\",\"id\":\"gaojf\"},{\"source\":\"nc\",\"description\":\"mrfhirctymox\",\"azureEndpointGuid\":\"tpipiwyczuhx\",\"azureEndpointName\":\"pqjlihhyusps\",\"id\":\"sdvlmfwdgzxulucv\"},{\"source\":\"mrsreuzvxurisjnh\",\"description\":\"txifqj\",\"azureEndpointGuid\":\"xmrhu\",\"azureEndpointName\":\"wp\",\"id\":\"sutrgjup\"}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticManager manager = ElasticManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ElasticTrafficFilterResponse response
-            = manager.allTrafficFilters().listWithResponse("eptra", "xje", com.azure.core.util.Context.NONE).getValue();
+        ElasticTrafficFilterResponse response = manager.allTrafficFilters()
+            .listWithResponse("doiwi", "thtywub", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("nwxuqlcvydyp", response.rulesets().get(0).id());
-        Assertions.assertEquals("dooaojkniodko", response.rulesets().get(0).name());
-        Assertions.assertEquals("bw", response.rulesets().get(0).description());
-        Assertions.assertEquals("jhemms", response.rulesets().get(0).region());
+        Assertions.assertEquals("h", response.rulesets().get(0).id());
+        Assertions.assertEquals("knfd", response.rulesets().get(0).name());
+        Assertions.assertEquals("wjchrdg", response.rulesets().get(0).description());
+        Assertions.assertEquals("hxumwctondzj", response.rulesets().get(0).region());
         Assertions.assertEquals(Type.IP, response.rulesets().get(0).type());
-        Assertions.assertEquals(false, response.rulesets().get(0).includeByDefault());
-        Assertions.assertEquals("tjinf", response.rulesets().get(0).rules().get(0).source());
-        Assertions.assertEquals("lfltka", response.rulesets().get(0).rules().get(0).description());
-        Assertions.assertEquals("vefkdlfoakggk", response.rulesets().get(0).rules().get(0).azureEndpointGuid());
-        Assertions.assertEquals("agaowpulpqblylsy", response.rulesets().get(0).rules().get(0).azureEndpointName());
-        Assertions.assertEquals("qjnsjervtia", response.rulesets().get(0).rules().get(0).id());
+        Assertions.assertFalse(response.rulesets().get(0).includeByDefault());
+        Assertions.assertEquals("gg", response.rulesets().get(0).rules().get(0).source());
+        Assertions.assertEquals("sb", response.rulesets().get(0).rules().get(0).description());
+        Assertions.assertEquals("ovvtgseinqfiu", response.rulesets().get(0).rules().get(0).azureEndpointGuid());
+        Assertions.assertEquals("qknp", response.rulesets().get(0).rules().get(0).azureEndpointName());
+        Assertions.assertEquals("gnepttwqmsni", response.rulesets().get(0).rules().get(0).id());
     }
 }

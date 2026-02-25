@@ -19,7 +19,9 @@ import java.util.List;
 @Fluent
 public final class RunCommandInput implements JsonSerializable<RunCommandInput> {
     /*
-     * The run command id.
+     * Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed at
+     * https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      */
     private String commandId;
 
@@ -41,7 +43,9 @@ public final class RunCommandInput implements JsonSerializable<RunCommandInput> 
     }
 
     /**
-     * Get the commandId property: The run command id.
+     * Get the commandId property: Specifies a commandId of predefined built-in script. Command IDs available for Linux
+     * are listed at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * 
      * @return the commandId value.
      */
@@ -50,7 +54,9 @@ public final class RunCommandInput implements JsonSerializable<RunCommandInput> 
     }
 
     /**
-     * Set the commandId property: The run command id.
+     * Set the commandId property: Specifies a commandId of predefined built-in script. Command IDs available for Linux
+     * are listed at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * 
      * @param commandId the commandId value to set.
      * @return the RunCommandInput object itself.

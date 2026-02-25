@@ -35,7 +35,7 @@ public class HostnameSslTests extends AppServiceTest {
         // hostname binding
         appServiceManager.webApps()
             .define(webappName)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
             .withNewWindowsPlan(PricingTier.BASIC_B1)
             .defineHostnameBinding()

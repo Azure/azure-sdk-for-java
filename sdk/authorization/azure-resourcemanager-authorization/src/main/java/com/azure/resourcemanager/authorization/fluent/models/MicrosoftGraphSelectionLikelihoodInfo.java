@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * selectionLikelihoodInfo.
+ * Represents a selection likelihood info.
  */
 public final class MicrosoftGraphSelectionLikelihoodInfo
     extends ExpandableStringEnum<MicrosoftGraphSelectionLikelihoodInfo> {

@@ -8,9 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The IP allocation mechanism for the virtual machine.
- * Dynamic and Static are only valid for l3Network which may also specify Disabled.
- * Otherwise, Disabled is the only permitted value.
+ * The IP allocation mechanism for the virtual machine. Dynamic and Static are only valid for l3Network which may also
+ * specify Disabled. Otherwise, Disabled is the only permitted value.
  */
 public final class VirtualMachineIpAllocationMethod extends ExpandableStringEnum<VirtualMachineIpAllocationMethod> {
     /**

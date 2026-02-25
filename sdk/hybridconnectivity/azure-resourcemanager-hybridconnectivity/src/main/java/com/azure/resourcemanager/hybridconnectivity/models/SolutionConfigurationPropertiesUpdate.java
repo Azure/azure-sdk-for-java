@@ -74,17 +74,6 @@ public final class SolutionConfigurationPropertiesUpdate
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (solutionSettings() != null) {
-            solutionSettings().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

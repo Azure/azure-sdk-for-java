@@ -18,12 +18,12 @@ import java.util.List;
 @Fluent
 public final class FirewallPacketCaptureParameters implements JsonSerializable<FirewallPacketCaptureParameters> {
     /*
-     * Duration of packet capture in seconds.
+     * Duration of packet capture in seconds. If the field is not provided, the default value is 60.
      */
     private Integer durationInSeconds;
 
     /*
-     * Number of packets to be captured.
+     * Number of packets to be captured. If the field is not provided, the default value is 1000.
      */
     private Integer numberOfPacketsToCapture;
 
@@ -52,6 +52,11 @@ public final class FirewallPacketCaptureParameters implements JsonSerializable<F
      */
     private List<AzureFirewallPacketCaptureRule> filters;
 
+    /*
+     * The Azure Firewall packet capture operation to perform
+     */
+    private AzureFirewallPacketCaptureOperationType operation;
+
     /**
      * Creates an instance of FirewallPacketCaptureParameters class.
      */
@@ -59,7 +64,8 @@ public final class FirewallPacketCaptureParameters implements JsonSerializable<F
     }
 
     /**
-     * Get the durationInSeconds property: Duration of packet capture in seconds.
+     * Get the durationInSeconds property: Duration of packet capture in seconds. If the field is not provided, the
+     * default value is 60.
      * 
      * @return the durationInSeconds value.
      */
@@ -68,7 +74,8 @@ public final class FirewallPacketCaptureParameters implements JsonSerializable<F
     }
 
     /**
-     * Set the durationInSeconds property: Duration of packet capture in seconds.
+     * Set the durationInSeconds property: Duration of packet capture in seconds. If the field is not provided, the
+     * default value is 60.
      * 
      * @param durationInSeconds the durationInSeconds value to set.
      * @return the FirewallPacketCaptureParameters object itself.
@@ -79,7 +86,8 @@ public final class FirewallPacketCaptureParameters implements JsonSerializable<F
     }
 
     /**
-     * Get the numberOfPacketsToCapture property: Number of packets to be captured.
+     * Get the numberOfPacketsToCapture property: Number of packets to be captured. If the field is not provided, the
+     * default value is 1000.
      * 
      * @return the numberOfPacketsToCapture value.
      */
@@ -88,7 +96,8 @@ public final class FirewallPacketCaptureParameters implements JsonSerializable<F
     }
 
     /**
-     * Set the numberOfPacketsToCapture property: Number of packets to be captured.
+     * Set the numberOfPacketsToCapture property: Number of packets to be captured. If the field is not provided, the
+     * default value is 1000.
      * 
      * @param numberOfPacketsToCapture the numberOfPacketsToCapture value to set.
      * @return the FirewallPacketCaptureParameters object itself.
@@ -199,6 +208,26 @@ public final class FirewallPacketCaptureParameters implements JsonSerializable<F
     }
 
     /**
+     * Get the operation property: The Azure Firewall packet capture operation to perform.
+     * 
+     * @return the operation value.
+     */
+    public AzureFirewallPacketCaptureOperationType operation() {
+        return this.operation;
+    }
+
+    /**
+     * Set the operation property: The Azure Firewall packet capture operation to perform.
+     * 
+     * @param operation the operation value to set.
+     * @return the FirewallPacketCaptureParameters object itself.
+     */
+    public FirewallPacketCaptureParameters withOperation(AzureFirewallPacketCaptureOperationType operation) {
+        this.operation = operation;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -225,6 +254,7 @@ public final class FirewallPacketCaptureParameters implements JsonSerializable<F
         jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
         jsonWriter.writeArrayField("flags", this.flags, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("operation", this.operation == null ? null : this.operation.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -265,6 +295,9 @@ public final class FirewallPacketCaptureParameters implements JsonSerializable<F
                     List<AzureFirewallPacketCaptureRule> filters
                         = reader.readArray(reader1 -> AzureFirewallPacketCaptureRule.fromJson(reader1));
                     deserializedFirewallPacketCaptureParameters.filters = filters;
+                } else if ("operation".equals(fieldName)) {
+                    deserializedFirewallPacketCaptureParameters.operation
+                        = AzureFirewallPacketCaptureOperationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

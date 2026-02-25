@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.CapacityReservationGroupInstanceView;
+import com.azure.resourcemanager.compute.models.ReservationType;
 import com.azure.resourcemanager.compute.models.ResourceSharingProfile;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import java.io.IOException;
@@ -37,13 +38,20 @@ public final class CapacityReservationGroupProperties implements JsonSerializabl
     private CapacityReservationGroupInstanceView instanceView;
 
     /*
-     * Specifies the settings to enable sharing across subscriptions for the capacity reservation group resource. Pls.
-     * keep in mind the capacity reservation group resource generally can be shared across subscriptions belonging to a
-     * single azure AAD tenant or cross AAD tenant if there is a trust relationship established between the AAD tenants.
-     * **Note:** Minimum api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more
-     * details.
+     * Specifies the settings to enable sharing across subscriptions for the capacity reservation group resource. The
+     * capacity reservation group resource can generally be shared across subscriptions belonging to a single Azure AAD
+     * tenant or across AAD tenants if there is a trust relationship established between the tenants. Block capacity
+     * reservation does not support sharing across subscriptions. **Note:** Minimum api-version: 2023-09-01. Please
+     * refer to https://aka.ms/computereservationsharing for more details.
      */
     private ResourceSharingProfile sharingProfile;
+
+    /*
+     * Indicates the type of capacity reservation. Allowed values are 'Block' for block capacity reservations and
+     * 'Targeted' for reservations that enable a VM to consume a specific capacity reservation when a capacity
+     * reservation group is provided. The reservation type is immutable and cannot be changed after it is assigned.
+     */
+    private ReservationType reservationType;
 
     /**
      * Creates an instance of CapacityReservationGroupProperties class.
@@ -83,10 +91,10 @@ public final class CapacityReservationGroupProperties implements JsonSerializabl
 
     /**
      * Get the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
-     * reservation group resource. Pls. keep in mind the capacity reservation group resource generally can be shared
-     * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
-     * established between the AAD tenants. **Note:** Minimum api-version: 2023-09-01. Please refer to
-     * https://aka.ms/computereservationsharing for more details.
+     * reservation group resource. The capacity reservation group resource can generally be shared across subscriptions
+     * belonging to a single Azure AAD tenant or across AAD tenants if there is a trust relationship established between
+     * the tenants. Block capacity reservation does not support sharing across subscriptions. **Note:** Minimum
+     * api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
      * 
      * @return the sharingProfile value.
      */
@@ -96,16 +104,42 @@ public final class CapacityReservationGroupProperties implements JsonSerializabl
 
     /**
      * Set the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
-     * reservation group resource. Pls. keep in mind the capacity reservation group resource generally can be shared
-     * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
-     * established between the AAD tenants. **Note:** Minimum api-version: 2023-09-01. Please refer to
-     * https://aka.ms/computereservationsharing for more details.
+     * reservation group resource. The capacity reservation group resource can generally be shared across subscriptions
+     * belonging to a single Azure AAD tenant or across AAD tenants if there is a trust relationship established between
+     * the tenants. Block capacity reservation does not support sharing across subscriptions. **Note:** Minimum
+     * api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
      * 
      * @param sharingProfile the sharingProfile value to set.
      * @return the CapacityReservationGroupProperties object itself.
      */
     public CapacityReservationGroupProperties withSharingProfile(ResourceSharingProfile sharingProfile) {
         this.sharingProfile = sharingProfile;
+        return this;
+    }
+
+    /**
+     * Get the reservationType property: Indicates the type of capacity reservation. Allowed values are 'Block' for
+     * block capacity reservations and 'Targeted' for reservations that enable a VM to consume a specific capacity
+     * reservation when a capacity reservation group is provided. The reservation type is immutable and cannot be
+     * changed after it is assigned.
+     * 
+     * @return the reservationType value.
+     */
+    public ReservationType reservationType() {
+        return this.reservationType;
+    }
+
+    /**
+     * Set the reservationType property: Indicates the type of capacity reservation. Allowed values are 'Block' for
+     * block capacity reservations and 'Targeted' for reservations that enable a VM to consume a specific capacity
+     * reservation when a capacity reservation group is provided. The reservation type is immutable and cannot be
+     * changed after it is assigned.
+     * 
+     * @param reservationType the reservationType value to set.
+     * @return the CapacityReservationGroupProperties object itself.
+     */
+    public CapacityReservationGroupProperties withReservationType(ReservationType reservationType) {
+        this.reservationType = reservationType;
         return this;
     }
 
@@ -136,6 +170,8 @@ public final class CapacityReservationGroupProperties implements JsonSerializabl
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("sharingProfile", this.sharingProfile);
+        jsonWriter.writeStringField("reservationType",
+            this.reservationType == null ? null : this.reservationType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -170,6 +206,9 @@ public final class CapacityReservationGroupProperties implements JsonSerializabl
                 } else if ("sharingProfile".equals(fieldName)) {
                     deserializedCapacityReservationGroupProperties.sharingProfile
                         = ResourceSharingProfile.fromJson(reader);
+                } else if ("reservationType".equals(fieldName)) {
+                    deserializedCapacityReservationGroupProperties.reservationType
+                        = ReservationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

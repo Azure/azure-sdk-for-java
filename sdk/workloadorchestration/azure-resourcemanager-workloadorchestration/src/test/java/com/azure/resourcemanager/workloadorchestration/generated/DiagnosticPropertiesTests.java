@@ -11,7 +11,7 @@ public final class DiagnosticPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Deleting\"}").toObject(DiagnosticProperties.class);
+            = BinaryData.fromString("{\"provisioningState\":\"Succeeded\"}").toObject(DiagnosticProperties.class);
     }
 
     @org.junit.jupiter.api.Test

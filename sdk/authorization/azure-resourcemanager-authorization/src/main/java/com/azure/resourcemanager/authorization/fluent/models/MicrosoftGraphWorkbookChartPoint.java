@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookChartPoint.
+ * Represents a workbook chart point.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChartPoint extends MicrosoftGraphEntity {

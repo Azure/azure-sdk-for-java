@@ -7,7 +7,9 @@ package com.azure.resourcemanager.terraform.implementation;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.terraform.fluent.TerraformsClient;
+import com.azure.resourcemanager.terraform.fluent.models.TerraformOperationStatusInner;
 import com.azure.resourcemanager.terraform.models.BaseExportModel;
+import com.azure.resourcemanager.terraform.models.TerraformOperationStatus;
 import com.azure.resourcemanager.terraform.models.Terraforms;
 
 public final class TerraformsImpl implements Terraforms {
@@ -23,12 +25,22 @@ public final class TerraformsImpl implements Terraforms {
         this.serviceManager = serviceManager;
     }
 
-    public void exportTerraform(BaseExportModel body) {
-        this.serviceClient().exportTerraform(body);
+    public TerraformOperationStatus exportTerraform(BaseExportModel body) {
+        TerraformOperationStatusInner inner = this.serviceClient().exportTerraform(body);
+        if (inner != null) {
+            return new TerraformOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void exportTerraform(BaseExportModel body, Context context) {
-        this.serviceClient().exportTerraform(body, context);
+    public TerraformOperationStatus exportTerraform(BaseExportModel body, Context context) {
+        TerraformOperationStatusInner inner = this.serviceClient().exportTerraform(body, context);
+        if (inner != null) {
+            return new TerraformOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private TerraformsClient serviceClient() {

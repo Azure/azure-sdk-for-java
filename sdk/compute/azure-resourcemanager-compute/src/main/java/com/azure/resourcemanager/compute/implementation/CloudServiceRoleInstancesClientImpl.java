@@ -1712,7 +1712,8 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of all role instances in a cloud service along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleInstanceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1738,7 +1739,8 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of all role instances in a cloud service along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleInstanceInner>> listNextSinglePageAsync(String nextLink, Context context) {

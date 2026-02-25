@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurestackhci.vm.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -72,26 +71,6 @@ public final class VmImageRepositoryCredentials implements JsonSerializable<VmIm
         this.password = password;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (username() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property username in model VmImageRepositoryCredentials"));
-        }
-        if (password() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property password in model VmImageRepositoryCredentials"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VmImageRepositoryCredentials.class);
 
     /**
      * {@inheritDoc}

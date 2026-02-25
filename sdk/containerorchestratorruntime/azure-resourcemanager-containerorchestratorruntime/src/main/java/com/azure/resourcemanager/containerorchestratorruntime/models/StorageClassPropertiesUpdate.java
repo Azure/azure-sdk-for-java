@@ -251,17 +251,6 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (typeProperties() != null) {
-            typeProperties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

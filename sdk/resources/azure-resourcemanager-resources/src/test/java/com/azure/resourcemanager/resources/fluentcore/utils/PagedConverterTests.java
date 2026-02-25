@@ -122,6 +122,18 @@ public class PagedConverterTests {
         Assertions.assertEquals(3 * 10, new PagedIterable<>(mergedPagedFlux).stream().count());
     }
 
+    @Disabled("PagedConverter.mapPage should not be used with PagedConverter.mergePagedFlux (see PagedConverter documentation).")
+    @Test
+    public void testMergePagedFluxThenMapPage() {
+        PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 3, 2);
+        PagedFlux<String> mergedPagedFlux
+            = PagedConverter.mergePagedFlux(pagedFlux, item -> mockPagedFlux(item + "sub", 0, 10, 4));
+
+        PagedIterable<String> iterable
+            = new PagedIterable<>(PagedConverter.mapPage(mergedPagedFlux, Function.identity()));
+        Assertions.assertEquals(3 * 10, iterable.stream().count());
+    }
+
     @Test
     public void testMergePagedFluxContainsEmptyPage() {
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 3, 2);
@@ -252,7 +264,7 @@ public class PagedConverterTests {
 
             return pages.get(continuationToken);
         };
-        return new PagedFlux<>(() -> Mono.just(nextPage.apply(prefix)),
-            continuationToken -> Mono.just(nextPage.apply(continuationToken)));
+        return new PagedFlux<>(() -> Mono.justOrEmpty(nextPage.apply(prefix)),
+            continuationToken -> Mono.justOrEmpty(nextPage.apply(continuationToken)));
     }
 }

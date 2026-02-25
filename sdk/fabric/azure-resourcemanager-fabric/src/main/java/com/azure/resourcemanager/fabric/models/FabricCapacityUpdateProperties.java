@@ -48,17 +48,6 @@ public final class FabricCapacityUpdateProperties implements JsonSerializable<Fa
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (administration() != null) {
-            administration().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

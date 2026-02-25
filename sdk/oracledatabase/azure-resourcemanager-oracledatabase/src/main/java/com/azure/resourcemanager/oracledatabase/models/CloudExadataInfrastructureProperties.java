@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -197,6 +196,11 @@ public final class CloudExadataInfrastructureProperties
      * The compute model of the Exadata Infrastructure
      */
     private ComputeModel computeModel;
+
+    /*
+     * The exascale config details for the cloud Exadata infrastructure
+     */
+    private ExascaleConfigDetails exascaleConfig;
 
     /**
      * Creates an instance of CloudExadataInfrastructureProperties class.
@@ -623,36 +627,13 @@ public final class CloudExadataInfrastructureProperties
     }
 
     /**
-     * Validates the instance.
+     * Get the exascaleConfig property: The exascale config details for the cloud Exadata infrastructure.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the exascaleConfig value.
      */
-    public void validate() {
-        if (definedFileSystemConfiguration() != null) {
-            definedFileSystemConfiguration().forEach(e -> e.validate());
-        }
-        if (maintenanceWindow() != null) {
-            maintenanceWindow().validate();
-        }
-        if (estimatedPatchingTime() != null) {
-            estimatedPatchingTime().validate();
-        }
-        if (customerContacts() != null) {
-            customerContacts().forEach(e -> e.validate());
-        }
-        if (shape() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property shape in model CloudExadataInfrastructureProperties"));
-        }
-        if (displayName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property displayName in model CloudExadataInfrastructureProperties"));
-        }
+    public ExascaleConfigDetails exascaleConfig() {
+        return this.exascaleConfig;
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CloudExadataInfrastructureProperties.class);
 
     /**
      * {@inheritDoc}
@@ -782,6 +763,9 @@ public final class CloudExadataInfrastructureProperties
                 } else if ("computeModel".equals(fieldName)) {
                     deserializedCloudExadataInfrastructureProperties.computeModel
                         = ComputeModel.fromString(reader.getString());
+                } else if ("exascaleConfig".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.exascaleConfig
+                        = ExascaleConfigDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

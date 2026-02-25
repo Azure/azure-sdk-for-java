@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.programmableconnectivity.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,16 +15,16 @@ import java.util.List;
 /**
  * Gateway resource properties.
  */
-@Immutable
+@Fluent
 public final class GatewayProperties implements JsonSerializable<GatewayProperties> {
     /*
-     * List of Operator API Connections selected by the user
+     * List of Operator API Connections selected by the user.
      */
     private List<String> operatorApiConnections;
 
     /*
-     * Base URL of the Gateway resource. This is the URL that the users would use to make Open API Gateway requests to
-     * the Operators via Azure.
+     * Base URL of the Gateway resource. This is the URL that the users would use to make Network API requests to the
+     * Operators via Azure.
      */
     private String gatewayBaseUrl;
 
@@ -32,6 +32,16 @@ public final class GatewayProperties implements JsonSerializable<GatewayProperti
      * The status of the last operation on the Gateway resource.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * Details about the Application that would use the Operator's Network APIs.
+     */
+    private ApplicationProperties configuredApplication;
+
+    /*
+     * Details about the Organization owning the Application that would use the Operator's Network APIs.
+     */
+    private ApplicationOwnerProperties configuredApplicationOwner;
 
     /**
      * Creates an instance of GatewayProperties class.
@@ -50,7 +60,7 @@ public final class GatewayProperties implements JsonSerializable<GatewayProperti
 
     /**
      * Get the gatewayBaseUrl property: Base URL of the Gateway resource. This is the URL that the users would use to
-     * make Open API Gateway requests to the Operators via Azure.
+     * make Network API requests to the Operators via Azure.
      * 
      * @return the gatewayBaseUrl value.
      */
@@ -68,11 +78,45 @@ public final class GatewayProperties implements JsonSerializable<GatewayProperti
     }
 
     /**
-     * Validates the instance.
+     * Get the configuredApplication property: Details about the Application that would use the Operator's Network APIs.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the configuredApplication value.
      */
-    public void validate() {
+    public ApplicationProperties configuredApplication() {
+        return this.configuredApplication;
+    }
+
+    /**
+     * Set the configuredApplication property: Details about the Application that would use the Operator's Network APIs.
+     * 
+     * @param configuredApplication the configuredApplication value to set.
+     * @return the GatewayProperties object itself.
+     */
+    public GatewayProperties withConfiguredApplication(ApplicationProperties configuredApplication) {
+        this.configuredApplication = configuredApplication;
+        return this;
+    }
+
+    /**
+     * Get the configuredApplicationOwner property: Details about the Organization owning the Application that would use
+     * the Operator's Network APIs.
+     * 
+     * @return the configuredApplicationOwner value.
+     */
+    public ApplicationOwnerProperties configuredApplicationOwner() {
+        return this.configuredApplicationOwner;
+    }
+
+    /**
+     * Set the configuredApplicationOwner property: Details about the Organization owning the Application that would use
+     * the Operator's Network APIs.
+     * 
+     * @param configuredApplicationOwner the configuredApplicationOwner value to set.
+     * @return the GatewayProperties object itself.
+     */
+    public GatewayProperties withConfiguredApplicationOwner(ApplicationOwnerProperties configuredApplicationOwner) {
+        this.configuredApplicationOwner = configuredApplicationOwner;
+        return this;
     }
 
     /**
@@ -81,6 +125,8 @@ public final class GatewayProperties implements JsonSerializable<GatewayProperti
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("configuredApplication", this.configuredApplication);
+        jsonWriter.writeJsonField("configuredApplicationOwner", this.configuredApplicationOwner);
         return jsonWriter.writeEndObject();
     }
 
@@ -90,6 +136,7 @@ public final class GatewayProperties implements JsonSerializable<GatewayProperti
      * @param jsonReader The JsonReader being read.
      * @return An instance of GatewayProperties if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GatewayProperties.
      */
     public static GatewayProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -99,7 +146,12 @@ public final class GatewayProperties implements JsonSerializable<GatewayProperti
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("operatorApiConnections".equals(fieldName)) {
+                if ("configuredApplication".equals(fieldName)) {
+                    deserializedGatewayProperties.configuredApplication = ApplicationProperties.fromJson(reader);
+                } else if ("configuredApplicationOwner".equals(fieldName)) {
+                    deserializedGatewayProperties.configuredApplicationOwner
+                        = ApplicationOwnerProperties.fromJson(reader);
+                } else if ("operatorApiConnections".equals(fieldName)) {
                     List<String> operatorApiConnections = reader.readArray(reader1 -> reader1.getString());
                     deserializedGatewayProperties.operatorApiConnections = operatorApiConnections;
                 } else if ("gatewayBaseUrl".equals(fieldName)) {

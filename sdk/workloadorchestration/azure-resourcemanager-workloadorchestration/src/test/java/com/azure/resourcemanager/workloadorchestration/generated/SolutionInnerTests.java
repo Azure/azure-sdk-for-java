@@ -15,19 +15,18 @@ public final class SolutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionInner model = BinaryData.fromString(
-            "{\"properties\":{\"solutionTemplateId\":\"lmfmtdaay\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"wvgpiohg\",\"latestConfigRevision\":\"xrtfudxep\",\"isConfigured\":true}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"gvr\",\"type\":\"CustomLocation\"},\"eTag\":\"pkukghi\",\"id\":\"blxgwimf\",\"name\":\"jhfjxwm\",\"type\":\"zk\"}")
+            "{\"properties\":{\"solutionTemplateId\":\"riolxorjalt\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"ncwsob\",\"latestConfigRevision\":\"wcsdbnwdcfhucq\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"fuvglsbjjca\",\"latestConfigRevision\":\"vxb\",\"isConfigured\":false},{\"solutionTemplateVersion\":\"vudutncor\",\"latestConfigRevision\":\"r\",\"isConfigured\":false},{\"solutionTemplateVersion\":\"qtvcofudflvkgj\",\"latestConfigRevision\":\"bgdknnqv\",\"isConfigured\":true}],\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"n\",\"type\":\"EdgeZone\"},\"eTag\":\"udsgs\",\"id\":\"mkycgra\",\"name\":\"wjue\",\"type\":\"aeburuvdmo\"}")
             .toObject(SolutionInner.class);
-        Assertions.assertEquals("gvr", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
+        Assertions.assertEquals("n", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SolutionInner model = new SolutionInner().withProperties(new SolutionProperties())
-            .withExtendedLocation(
-                new ExtendedLocation().withName("gvr").withType(ExtendedLocationType.CUSTOM_LOCATION));
+            .withExtendedLocation(new ExtendedLocation().withName("n").withType(ExtendedLocationType.EDGE_ZONE));
         model = BinaryData.fromObject(model).toObject(SolutionInner.class);
-        Assertions.assertEquals("gvr", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
+        Assertions.assertEquals("n", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
     }
 }

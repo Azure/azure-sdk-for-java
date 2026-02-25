@@ -138,13 +138,13 @@ public final class BrokerAuthenticationResourceImpl implements BrokerAuthenticat
         return this;
     }
 
-    public BrokerAuthenticationResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.innerModel().withExtendedLocation(extendedLocation);
+    public BrokerAuthenticationResourceImpl withProperties(BrokerAuthenticationProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public BrokerAuthenticationResourceImpl withProperties(BrokerAuthenticationProperties properties) {
-        this.innerModel().withProperties(properties);
+    public BrokerAuthenticationResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.innerModel().withExtendedLocation(extendedLocation);
         return this;
     }
 }

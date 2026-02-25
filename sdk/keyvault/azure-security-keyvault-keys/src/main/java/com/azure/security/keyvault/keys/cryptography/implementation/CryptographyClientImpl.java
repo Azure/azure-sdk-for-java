@@ -93,7 +93,7 @@ public final class CryptographyClientImpl {
     public Mono<Response<KeyVaultKey>> getKeyAsync() {
         return keyClient.getKeyWithResponseAsync(keyName, keyVersion, EMPTY_OPTIONS)
             .onErrorMap(HttpResponseException.class,
-                e -> e.getResponse().getStatusCode() == 403
+                e -> e.getResponse() != null && e.getResponse().getStatusCode() == 403
                     ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
                     : e)
             .map(response -> new SimpleResponse<>(response,

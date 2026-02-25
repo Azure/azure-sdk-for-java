@@ -58,7 +58,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
     public void before_ReadFeedUdfsTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
 
         for (int i = 0; i < 5; i++) {
             createdUserDefinedFunctions.add(createUserDefinedFunctions(createdCollection));

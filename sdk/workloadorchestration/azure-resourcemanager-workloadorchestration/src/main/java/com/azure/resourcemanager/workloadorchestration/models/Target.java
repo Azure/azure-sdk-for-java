@@ -275,7 +275,7 @@ public interface Target {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(TargetProperties properties);
+            Update withProperties(TargetUpdateProperties properties);
         }
     }
 

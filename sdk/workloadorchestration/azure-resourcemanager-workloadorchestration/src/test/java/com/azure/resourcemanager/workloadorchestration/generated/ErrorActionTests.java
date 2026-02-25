@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ErrorActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ErrorAction model = BinaryData.fromString("{\"mode\":\"stopOnNFailures\",\"maxToleratedFailures\":1343904651}")
+        ErrorAction model = BinaryData.fromString("{\"mode\":\"stopOnAnyFailure\",\"maxToleratedFailures\":648313696}")
             .toObject(ErrorAction.class);
-        Assertions.assertEquals(ErrorActionMode.STOP_ON_NFAILURES, model.mode());
-        Assertions.assertEquals(1343904651, model.maxToleratedFailures());
+        Assertions.assertEquals(ErrorActionMode.STOP_ON_ANY_FAILURE, model.mode());
+        Assertions.assertEquals(648313696, model.maxToleratedFailures());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ErrorAction model
-            = new ErrorAction().withMode(ErrorActionMode.STOP_ON_NFAILURES).withMaxToleratedFailures(1343904651);
+            = new ErrorAction().withMode(ErrorActionMode.STOP_ON_ANY_FAILURE).withMaxToleratedFailures(648313696);
         model = BinaryData.fromObject(model).toObject(ErrorAction.class);
-        Assertions.assertEquals(ErrorActionMode.STOP_ON_NFAILURES, model.mode());
-        Assertions.assertEquals(1343904651, model.maxToleratedFailures());
+        Assertions.assertEquals(ErrorActionMode.STOP_ON_ANY_FAILURE, model.mode());
+        Assertions.assertEquals(648313696, model.maxToleratedFailures());
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class MaintenanceConfigurationsListByManagedClusterSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
      * MaintenanceConfigurationsList_MaintenanceWindow.json
      */
     /**
@@ -20,25 +20,6 @@ public final class MaintenanceConfigurationsListByManagedClusterSamples {
      */
     public static void listMaintenanceConfigurationsConfiguredWithMaintenanceWindowByManagedCluster(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getMaintenanceConfigurations()
-            .listByManagedCluster("rg1", "clustername1", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
-     * MaintenanceConfigurationsList.json
-     */
-    /**
-     * Sample code: List maintenance configurations by Managed Cluster.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        listMaintenanceConfigurationsByManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.kubernetesClusters()
             .manager()
             .serviceClient()

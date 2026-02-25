@@ -24,14 +24,14 @@ public final class PrivateEndpointConnectionInner extends AzureEntityResource {
     private PrivateEndpointConnectionProperties properties;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    private SystemData systemData;
-
-    /*
      * The location of the private endpoint connection
      */
     private String location;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * Resource Etag.
@@ -80,15 +80,6 @@ public final class PrivateEndpointConnectionInner extends AzureEntityResource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
      * Get the location property: The location of the private endpoint connection.
      * 
      * @return the location value.
@@ -106,6 +97,16 @@ public final class PrivateEndpointConnectionInner extends AzureEntityResource {
     public PrivateEndpointConnectionInner withLocation(String location) {
         this.location = location;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -196,11 +197,11 @@ public final class PrivateEndpointConnectionInner extends AzureEntityResource {
                     deserializedPrivateEndpointConnectionInner.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedPrivateEndpointConnectionInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionInner.systemData = SystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedPrivateEndpointConnectionInner.properties
                         = PrivateEndpointConnectionProperties.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedPrivateEndpointConnectionInner.systemData = SystemData.fromJson(reader);
                 } else if ("location".equals(fieldName)) {
                     deserializedPrivateEndpointConnectionInner.location = reader.getString();
                 } else {

@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
  */
 public interface MonitorOperations {
     /**
-     * Upgradable version for a monitor resource.
+     * Upgrade the Elastic monitor resource to a newer version, ensuring optimal observability and performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -22,7 +22,7 @@ public interface MonitorOperations {
     void upgrade(String resourceGroupName, String monitorName);
 
     /**
-     * Upgradable version for a monitor resource.
+     * Upgrade the Elastic monitor resource to a newer version, ensuring optimal observability and performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

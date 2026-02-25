@@ -99,14 +99,6 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

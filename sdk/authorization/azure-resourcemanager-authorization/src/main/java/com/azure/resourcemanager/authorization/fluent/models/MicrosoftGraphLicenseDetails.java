@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * licenseDetails.
+ * Represents a license details.
  */
 @Fluent
 public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {

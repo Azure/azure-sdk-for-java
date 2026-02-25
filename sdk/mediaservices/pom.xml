@@ -10,6 +10,5 @@
 
   <modules>
       <module>azure-resourcemanager-mediaservices</module>
-      <module>microsoft-azure-media</module>
   </modules>
 </project>

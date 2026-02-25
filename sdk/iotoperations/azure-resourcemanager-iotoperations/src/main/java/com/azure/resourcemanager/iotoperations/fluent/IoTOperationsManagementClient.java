@@ -108,4 +108,32 @@ public interface IoTOperationsManagementClient {
      * @return the DataflowEndpointsClient object.
      */
     DataflowEndpointsClient getDataflowEndpoints();
+
+    /**
+     * Gets the DataflowGraphsClient object to access its operations.
+     * 
+     * @return the DataflowGraphsClient object.
+     */
+    DataflowGraphsClient getDataflowGraphs();
+
+    /**
+     * Gets the RegistryEndpointsClient object to access its operations.
+     * 
+     * @return the RegistryEndpointsClient object.
+     */
+    RegistryEndpointsClient getRegistryEndpoints();
+
+    /**
+     * Gets the AkriConnectorTemplatesClient object to access its operations.
+     * 
+     * @return the AkriConnectorTemplatesClient object.
+     */
+    AkriConnectorTemplatesClient getAkriConnectorTemplates();
+
+    /**
+     * Gets the AkriConnectorsClient object to access its operations.
+     * 
+     * @return the AkriConnectorsClient object.
+     */
+    AkriConnectorsClient getAkriConnectors();
 }

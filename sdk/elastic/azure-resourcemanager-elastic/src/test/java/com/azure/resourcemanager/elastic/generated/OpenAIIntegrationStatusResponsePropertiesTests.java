@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class OpenAIIntegrationStatusResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OpenAIIntegrationStatusResponseProperties model = BinaryData.fromString("{\"status\":\"kwlhzdo\"}")
-            .toObject(OpenAIIntegrationStatusResponseProperties.class);
-        Assertions.assertEquals("kwlhzdo", model.status());
+        OpenAIIntegrationStatusResponseProperties model
+            = BinaryData.fromString("{\"status\":\"ie\"}").toObject(OpenAIIntegrationStatusResponseProperties.class);
+        Assertions.assertEquals("ie", model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OpenAIIntegrationStatusResponseProperties model
-            = new OpenAIIntegrationStatusResponseProperties().withStatus("kwlhzdo");
+            = new OpenAIIntegrationStatusResponseProperties().withStatus("ie");
         model = BinaryData.fromObject(model).toObject(OpenAIIntegrationStatusResponseProperties.class);
-        Assertions.assertEquals("kwlhzdo", model.status());
+        Assertions.assertEquals("ie", model.status());
     }
 }

@@ -15,14 +15,15 @@ import com.azure.communication.email.models.EmailSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.core.util.logging.ClientLogger;
-
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -92,7 +93,7 @@ public final class EmailAsyncClient {
                 com.azure.communication.email.implementation.models.EmailAttachment attachmentImpl = null;
 
                 attachmentImpl = new com.azure.communication.email.implementation.models.EmailAttachment(
-                    attachment.getName(), attachment.getContentType(), attachment.getContentInBase64());
+                    attachment.getName(), attachment.getContentType(), formatToBase64(attachment.getContent()));
 
                 String contentId = attachment.getContentId();
 
@@ -120,25 +121,6 @@ public final class EmailAsyncClient {
             TypeReference.createInstance(EmailSendResult.class), TypeReference.createInstance(EmailSendResult.class));
     }
 
-    /**
-     * Creates a poller from an existing operation id.
-     *
-     * @param operationId The operation id of a previous send email operation.
-     * @return A poller that can be used to poll for the status of the email.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<EmailSendResult, EmailSendResult> beginSend(String operationId) {
-        return beginSend(operationId, null);
-    }
-
-    PollerFlux<EmailSendResult, EmailSendResult> beginSend(String operationId, Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> emailServiceClient.getSendResultWithResponseAsync(operationId),
-            new DefaultPollingStrategy<>(this.serviceClient.getHttpPipeline(),
-                "{endpoint}".replace("{endpoint}", this.serviceClient.getEndpoint()), null, context),
-            TypeReference.createInstance(EmailSendResult.class), TypeReference.createInstance(EmailSendResult.class));
-    }
-
     void verifyRecipientEmailAddressesNotNull(List<EmailAddress> recipients) {
         if (recipients != null) {
             for (EmailAddress recipient : recipients) {
@@ -146,5 +128,15 @@ public final class EmailAsyncClient {
                 Objects.requireNonNull(recipient.getAddress(), "EmailAddress 'address' cannot be null.");
             }
         }
+    }
+
+    private static BinaryData formatToBase64(BinaryData content) {
+        if (content == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'content' cannot be null."));
+        }
+
+        String encodedContent = Base64.getEncoder().encodeToString(content.toBytes());
+
+        return BinaryData.fromString(encodedContent);
     }
 }

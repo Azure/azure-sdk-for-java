@@ -12,42 +12,42 @@ public final class VmSizePropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmSizeProperty model = BinaryData.fromString(
-            "{\"name\":\"ydxtqm\",\"cores\":323647852,\"dataDiskStorageTier\":\"orgguf\",\"label\":\"aomtbghhavgrvkff\",\"maxDataDiskCount\":5595663447131926478,\"memoryInMb\":3841332379064621298,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":6764739063385765952,\"webWorkerResourceDiskSizeInMb\":7551905176757776284}")
+            "{\"name\":\"jk\",\"cores\":1622584038,\"dataDiskStorageTier\":\"mouwqlgzrfzeey\",\"label\":\"izikayuhq\",\"maxDataDiskCount\":8650674702908423803,\"memoryInMb\":7267265154767840469,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":false,\"virtualMachineResourceDiskSizeInMb\":629489002910902814,\"webWorkerResourceDiskSizeInMb\":8237830073363773936}")
             .toObject(VmSizeProperty.class);
-        Assertions.assertEquals("ydxtqm", model.name());
-        Assertions.assertEquals(323647852, model.cores());
-        Assertions.assertEquals("orgguf", model.dataDiskStorageTier());
-        Assertions.assertEquals("aomtbghhavgrvkff", model.label());
-        Assertions.assertEquals(5595663447131926478L, model.maxDataDiskCount());
-        Assertions.assertEquals(3841332379064621298L, model.memoryInMb());
-        Assertions.assertEquals(true, model.supportedByVirtualMachines());
-        Assertions.assertEquals(true, model.supportedByWebWorkerRoles());
-        Assertions.assertEquals(6764739063385765952L, model.virtualMachineResourceDiskSizeInMb());
-        Assertions.assertEquals(7551905176757776284L, model.webWorkerResourceDiskSizeInMb());
+        Assertions.assertEquals("jk", model.name());
+        Assertions.assertEquals(1622584038, model.cores());
+        Assertions.assertEquals("mouwqlgzrfzeey", model.dataDiskStorageTier());
+        Assertions.assertEquals("izikayuhq", model.label());
+        Assertions.assertEquals(8650674702908423803L, model.maxDataDiskCount());
+        Assertions.assertEquals(7267265154767840469L, model.memoryInMb());
+        Assertions.assertTrue(model.supportedByVirtualMachines());
+        Assertions.assertFalse(model.supportedByWebWorkerRoles());
+        Assertions.assertEquals(629489002910902814L, model.virtualMachineResourceDiskSizeInMb());
+        Assertions.assertEquals(8237830073363773936L, model.webWorkerResourceDiskSizeInMb());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmSizeProperty model = new VmSizeProperty().withName("ydxtqm")
-            .withCores(323647852)
-            .withDataDiskStorageTier("orgguf")
-            .withLabel("aomtbghhavgrvkff")
-            .withMaxDataDiskCount(5595663447131926478L)
-            .withMemoryInMb(3841332379064621298L)
+        VmSizeProperty model = new VmSizeProperty().withName("jk")
+            .withCores(1622584038)
+            .withDataDiskStorageTier("mouwqlgzrfzeey")
+            .withLabel("izikayuhq")
+            .withMaxDataDiskCount(8650674702908423803L)
+            .withMemoryInMb(7267265154767840469L)
             .withSupportedByVirtualMachines(true)
-            .withSupportedByWebWorkerRoles(true)
-            .withVirtualMachineResourceDiskSizeInMb(6764739063385765952L)
-            .withWebWorkerResourceDiskSizeInMb(7551905176757776284L);
+            .withSupportedByWebWorkerRoles(false)
+            .withVirtualMachineResourceDiskSizeInMb(629489002910902814L)
+            .withWebWorkerResourceDiskSizeInMb(8237830073363773936L);
         model = BinaryData.fromObject(model).toObject(VmSizeProperty.class);
-        Assertions.assertEquals("ydxtqm", model.name());
-        Assertions.assertEquals(323647852, model.cores());
-        Assertions.assertEquals("orgguf", model.dataDiskStorageTier());
-        Assertions.assertEquals("aomtbghhavgrvkff", model.label());
-        Assertions.assertEquals(5595663447131926478L, model.maxDataDiskCount());
-        Assertions.assertEquals(3841332379064621298L, model.memoryInMb());
-        Assertions.assertEquals(true, model.supportedByVirtualMachines());
-        Assertions.assertEquals(true, model.supportedByWebWorkerRoles());
-        Assertions.assertEquals(6764739063385765952L, model.virtualMachineResourceDiskSizeInMb());
-        Assertions.assertEquals(7551905176757776284L, model.webWorkerResourceDiskSizeInMb());
+        Assertions.assertEquals("jk", model.name());
+        Assertions.assertEquals(1622584038, model.cores());
+        Assertions.assertEquals("mouwqlgzrfzeey", model.dataDiskStorageTier());
+        Assertions.assertEquals("izikayuhq", model.label());
+        Assertions.assertEquals(8650674702908423803L, model.maxDataDiskCount());
+        Assertions.assertEquals(7267265154767840469L, model.memoryInMb());
+        Assertions.assertTrue(model.supportedByVirtualMachines());
+        Assertions.assertFalse(model.supportedByWebWorkerRoles());
+        Assertions.assertEquals(629489002910902814L, model.virtualMachineResourceDiskSizeInMb());
+        Assertions.assertEquals(8237830073363773936L, model.webWorkerResourceDiskSizeInMb());
     }
 }

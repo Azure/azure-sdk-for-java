@@ -20,6 +20,10 @@ public final class VirtualMachineScaleSetImpl implements VirtualMachineScaleSet 
         this.serviceManager = serviceManager;
     }
 
+    public String name() {
+        return this.innerModel().name();
+    }
+
     public String id() {
         return this.innerModel().id();
     }

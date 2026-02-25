@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.workloadorchestration.generated;
 
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplate;
-import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateProperties;
+import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public final class ConfigTemplatesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key7701", "fakeTokenPlaceholder"))
-            .withProperties(new ConfigTemplateProperties().withDescription("cavjiqnrbzsvedicrixhwnfj"))
+            .withProperties(new ConfigTemplateUpdateProperties().withDescription("cavjiqnrbzsvedicrixhwnfj"))
             .apply();
     }
 

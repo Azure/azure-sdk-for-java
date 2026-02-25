@@ -13,18 +13,18 @@ public final class AzureStaticWebAppsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureStaticWebApps model
-            = BinaryData.fromString("{\"enabled\":true,\"registration\":{\"clientId\":\"gnxkrxdqmidtth\"}}")
+            = BinaryData.fromString("{\"enabled\":false,\"registration\":{\"clientId\":\"gbquxigj\"}}")
                 .toObject(AzureStaticWebApps.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("gnxkrxdqmidtth", model.registration().clientId());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("gbquxigj", model.registration().clientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureStaticWebApps model = new AzureStaticWebApps().withEnabled(true)
-            .withRegistration(new AzureStaticWebAppsRegistration().withClientId("gnxkrxdqmidtth"));
+        AzureStaticWebApps model = new AzureStaticWebApps().withEnabled(false)
+            .withRegistration(new AzureStaticWebAppsRegistration().withClientId("gbquxigj"));
         model = BinaryData.fromObject(model).toObject(AzureStaticWebApps.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("gnxkrxdqmidtth", model.registration().clientId());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("gbquxigj", model.registration().clientId());
     }
 }

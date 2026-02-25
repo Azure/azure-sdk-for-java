@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storageactions.fluent.StorageTaskAssignmentsClient;
 import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskAssignmentInner;
 import com.azure.resourcemanager.storageactions.implementation.models.StorageTaskAssignmentsListResult;
@@ -117,22 +116,6 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTaskAssignmentInner>> listSinglePageAsync(String resourceGroupName,
         String storageTaskName, Integer maxpagesize) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageTaskName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageTaskName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -196,24 +179,6 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTaskAssignmentInner> listSinglePage(String resourceGroupName, String storageTaskName,
         Integer maxpagesize) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageTaskName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageTaskName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<StorageTaskAssignmentsListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -239,24 +204,6 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTaskAssignmentInner> listSinglePage(String resourceGroupName, String storageTaskName,
         Integer maxpagesize, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageTaskName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageTaskName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<StorageTaskAssignmentsListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -316,13 +263,6 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTaskAssignmentInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<StorageTaskAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -341,15 +281,6 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTaskAssignmentInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<StorageTaskAssignmentsListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -369,21 +300,10 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTaskAssignmentInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<StorageTaskAssignmentsListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(StorageTaskAssignmentsClientImpl.class);
 }
