@@ -27,7 +27,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.appservice.fluent.CertificateOrdersDiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.models.DetectorResponseInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
-import com.azure.resourcemanager.appservice.models.DetectorResponseCollection;
+import com.azure.resourcemanager.appservice.implementation.models.DetectorResponseCollection;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
@@ -47,7 +47,7 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Initializes an instance of CertificateOrdersDiagnosticsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     CertificateOrdersDiagnosticsClientImpl(CertificateRegistrationManagementClientImpl client) {
@@ -98,9 +98,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,9 +140,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -182,9 +182,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,9 +203,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -225,9 +225,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,9 +244,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -264,9 +264,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.
@@ -312,9 +312,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.
@@ -360,9 +360,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.
@@ -383,9 +383,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.
@@ -408,9 +408,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.
@@ -431,9 +431,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -462,9 +462,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.appservice.fluent.CertificateRegistrationProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.models.CsmOperationDescriptionInner;
-import com.azure.resourcemanager.appservice.models.CsmOperationCollection;
+import com.azure.resourcemanager.appservice.implementation.models.CsmOperationCollection;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import reactor.core.publisher.Mono;
 
@@ -46,7 +46,7 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
 
     /**
      * Initializes an instance of CertificateRegistrationProvidersClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     CertificateRegistrationProvidersClientImpl(CertificateRegistrationManagementClientImpl client) {
@@ -81,10 +81,10 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
 
     /**
      * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
-     * 
+     *
      * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
-     * 
+     *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Azure resource manager operation metadata along with {@link PagedResponse} on successful
@@ -106,10 +106,10 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
 
     /**
      * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
-     * 
+     *
      * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -132,10 +132,10 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
 
     /**
      * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
-     * 
+     *
      * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
-     * 
+     *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Azure resource manager operation metadata as paginated response with {@link PagedFlux}.
@@ -148,10 +148,10 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
 
     /**
      * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
-     * 
+     *
      * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -166,10 +166,10 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
 
     /**
      * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
-     * 
+     *
      * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
-     * 
+     *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Azure resource manager operation metadata as paginated response with {@link PagedIterable}.
@@ -181,10 +181,10 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
 
     /**
      * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
-     * 
+     *
      * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -198,9 +198,9 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
 
     /**
      * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -227,9 +227,9 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
 
     /**
      * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
