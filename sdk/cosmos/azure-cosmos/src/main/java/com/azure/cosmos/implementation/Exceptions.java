@@ -94,10 +94,6 @@ public class Exceptions {
             return true;
         }
 
-        if (statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR) {
-            return true;
-        }
-
         return false;
     }
 }
