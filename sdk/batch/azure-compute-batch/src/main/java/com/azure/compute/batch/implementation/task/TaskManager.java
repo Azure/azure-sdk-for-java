@@ -12,6 +12,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.azure.compute.batch.BatchClient;
@@ -32,6 +33,27 @@ import com.azure.core.util.logging.ClientLogger;
  * and tracking any failures.
  */
 public class TaskManager {
+
+    /**
+     * Wrapper class to pair Thread and WorkingThread to check for thread states
+     */
+    private static class ThreadPairInfo {
+        private final Thread thread;
+        private final WorkingThread workingThread;
+
+        ThreadPairInfo(Thread thread, WorkingThread workingThread) {
+            this.thread = thread;
+            this.workingThread = workingThread;
+        }
+
+        public WorkingThread getWorkingThread() {
+            return workingThread;
+        }
+
+        public boolean isTerminated() {
+            return thread.getState() == Thread.State.TERMINATED;
+        }
+    }
 
     /**
      * Runnable implementation for handling task submissions in a separate thread.
@@ -196,48 +218,41 @@ public class TaskManager {
         Semaphore taskSemaphore = new Semaphore(threadNumber);
         ConcurrentLinkedQueue<BatchTaskCreateParameters> pendingList = new ConcurrentLinkedQueue<>(taskList);
         CopyOnWriteArrayList<BatchTaskCreateResult> failures = new CopyOnWriteArrayList<>();
-        List<WorkingThread> semaphoreThreads = new ArrayList<>();
+        List<ThreadPairInfo> semaphoreThreads = new ArrayList<>();
         Exception innerException = null;
 
         // Continue looping while there are still tasks left to submit OR while any active threads are still processing tasks.
         while (!pendingList.isEmpty() || taskSemaphore.availablePermits() < threadNumber) {
             try {
-                if (taskSemaphore.tryAcquire()) {
+                if (taskSemaphore.tryAcquire(30, TimeUnit.SECONDS)) {
                     if (!pendingList.isEmpty()) {
                         WorkingThread taskThread
                             = new WorkingThread(taskSubmitter, jobId, pendingList, failures, taskSemaphore);
                         Thread thread = new Thread(taskThread);
                         thread.start();
-                        semaphoreThreads.add(taskThread);
+                        semaphoreThreads.add(new ThreadPairInfo(thread, taskThread));
                     } else {
                         taskSemaphore.release();
-                        // break;
-                    }
-                } else {
-                    // No permits available, wait for workers to complete
-                    try {
-                        Thread.sleep(50); // TODO: More time? Less time?
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        throw logger.logExceptionAsError(new RuntimeException(e));
                     }
                 }
 
-                // Check for thread errors
-                for (WorkingThread taskThread : semaphoreThreads) {
-                    Exception ex = taskThread.getException();
-                    if (ex != null) {
-                        innerException = ex;
-                        break;
+                // Check for thread errors only in terminated threads
+                for (ThreadPairInfo threadPair : semaphoreThreads) {
+                    if (threadPair.isTerminated()) {
+                        Exception ex = threadPair.getWorkingThread().getException();
+                        if (ex != null) {
+                            innerException = ex;
+                            break;
+                        }
                     }
                 }
-                // TODO: How to tell apart retries vs errors?
-                if (innerException != null) {
+
+                if (innerException != null || !failures.isEmpty()) {
                     break;
                 }
             } catch (Exception e) {
-                innerException = e;
-                break;
+                // Semaphore, code, thread, etc. exception, not from Task submission
+                throw logger.logExceptionAsError(new RuntimeException("Error in task submission semaphore loop", e));
             }
         }
 
@@ -251,10 +266,12 @@ public class TaskManager {
         }
 
         if (innerException == null) {
-            for (WorkingThread taskThread : semaphoreThreads) {
-                innerException = taskThread.getException();
-                if (innerException != null) {
-                    break;
+            for (ThreadPairInfo threadPair : semaphoreThreads) {
+                if (threadPair.isTerminated()) {
+                    innerException = threadPair.getWorkingThread().getException();
+                    if (innerException != null) {
+                        break;
+                    }
                 }
             }
         }

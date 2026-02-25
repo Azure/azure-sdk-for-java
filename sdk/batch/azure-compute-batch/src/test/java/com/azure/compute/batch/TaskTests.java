@@ -42,6 +42,9 @@ import reactor.core.publisher.Mono;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -54,6 +57,8 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated
 public class TaskTests extends BatchClientTestBase {
     private static String livePoolId;
     private static String liveIaasPoolId;
