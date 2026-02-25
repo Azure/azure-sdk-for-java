@@ -377,6 +377,7 @@ public class BenchmarkOrchestrator {
         System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF");
         System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF");
         System.clearProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT");
+        System.clearProperty("COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED");
     }
 
     private void setGlobalSystemProperties(TenantWorkloadConfig firstTenant) {
