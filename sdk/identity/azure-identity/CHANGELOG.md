@@ -12,7 +12,7 @@
 - Fixed logging for token authentication errors to include full stack traces with inner exceptions. Previously, error logs referenced "inner exceptions" but only logged the error message, making debugging difficult.
 
 ### Other Changes
-- Removed unused jetty, redisson, and lettuce-core dependencies.
+- Improved `AzureDeveloperCliCredential` error handling to extract meaningful messages from azd auth token JSON output, providing cleaner error messages to users.
 
 ## 1.19.0-beta.1 (2025-11-14)
 
