@@ -4,7 +4,6 @@
 package com.azure.storage.common.implementation.structuredmessage;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -130,21 +129,22 @@ public class StructuredMessageEncoder {
     public Flux<ByteBuffer> encode(ByteBuffer unencodedBuffer) {
         StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
 
-        if (currentContentOffset == contentLength) {
-            return Flux
-                .error(LOGGER.logExceptionAsError(new IllegalArgumentException("Content has already been encoded.")));
-        }
-
-        if ((unencodedBuffer.remaining() + currentContentOffset) > contentLength) {
-            return Flux.error(
-                LOGGER.logExceptionAsError(new IllegalArgumentException("Buffer length exceeds content length.")));
-        }
-
-        if (!unencodedBuffer.hasRemaining()) {
-            return Flux.empty();
-        }
-
         return Flux.defer(() -> {
+            if (currentContentOffset == contentLength) {
+                return Flux.error(
+                    LOGGER.logExceptionAsError(new IllegalArgumentException("Content has already been encoded.")));
+            }
+
+            if ((unencodedBuffer.remaining() + currentContentOffset) > contentLength) {
+                return Flux.error(
+                    LOGGER.logExceptionAsError(new IllegalArgumentException("Buffer length exceeds content length.")));
+            }
+
+            if (!unencodedBuffer.hasRemaining()) {
+                return Flux.empty();
+            }
+
+            // create a list of buffers to store the encoded message
             List<ByteBuffer> buffers = new ArrayList<>();
 
             // if we are at the beginning of the message, encode message header

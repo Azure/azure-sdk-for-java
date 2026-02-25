@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.Disabled;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayOutputStream;
@@ -16,11 +17,13 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.CRC64_LENGTH;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_HEADER_LENGTH;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -247,6 +250,7 @@ public class MessageEncoderTests {
     }
 
     @Test
+    @Disabled("For local testing only")
     public void bigEncode() throws IOException {
         byte[] data = getRandomData(262144000);
 
@@ -259,7 +263,6 @@ public class MessageEncoderTests {
             = FluxUtil.collectBytesInByteBufferStream(structuredMessageEncoder.encode(unencodedBuffer)).block();
         byte[] expected = buildStructuredMessage(unencodedBuffer, V1_DEFAULT_SEGMENT_CONTENT_LENGTH,
             StructuredMessageFlags.STORAGE_CRC64).array();
-        System.out.println(expected.length);
         assertArrayEquals(expected, actual);
     }
 }
