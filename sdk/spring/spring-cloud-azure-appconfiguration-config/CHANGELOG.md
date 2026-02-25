@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Fixed bug where you can't refresh based off of feature flags when load balancing is enabled and you only have a single config store.
+- Fixed an issue where feature flag–based refresh did not work when load balancing was enabled with a single configuration store. Feature flag refresh now uses the same load-balanced client selection as configuration refresh, including the single-store scenario.
 
 ### Other Changes
 
