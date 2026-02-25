@@ -3,27 +3,28 @@
 
 package com.azure.storage.common.implementation.structuredmessage;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
+import org.junit.jupiter.api.Disabled;
+import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
-import static com.azure.core.util.FluxUtil.collectBytesInByteBufferStream;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.CRC64_LENGTH;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_HEADER_LENGTH;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -158,10 +159,11 @@ public class MessageEncoderTests {
 
         StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(size, segmentSize, flags);
 
-        byte[] actual = collectBytesInByteBufferStream(structuredMessageEncoder.encode(unencodedBuffer)).block();
+        byte[] actual
+            = FluxUtil.collectBytesInByteBufferStream(structuredMessageEncoder.encode(unencodedBuffer)).block();
         byte[] expected = buildStructuredMessage(unencodedBuffer, segmentSize, flags).array();
 
-        Assertions.assertArrayEquals(expected, actual);
+        assertArrayEquals(expected, actual);
     }
 
     private static Stream<Arguments> readMultipleSupplier() {
@@ -192,42 +194,40 @@ public class MessageEncoderTests {
 
         byte[] expected = buildStructuredMessage(allWrappedData, segmentSize, flags).array();
 
-        ByteArrayOutputStream allActualData = new ByteArrayOutputStream();
-        allActualData.write(Objects
-            .requireNonNull(collectBytesInByteBufferStream(structuredMessageEncoder.encode(wrappedData1)).block()));
-        allActualData.write(Objects
-            .requireNonNull(collectBytesInByteBufferStream(structuredMessageEncoder.encode(wrappedData2)).block()));
-        allActualData.write(Objects
-            .requireNonNull(collectBytesInByteBufferStream(structuredMessageEncoder.encode(wrappedData3)).block()));
+        Flux<ByteBuffer> allActualFlux = structuredMessageEncoder.encode(wrappedData1)
+            .concatWith(structuredMessageEncoder.encode(wrappedData2))
+            .concatWith(structuredMessageEncoder.encode(wrappedData3));
 
-        Assertions.assertArrayEquals(expected, allActualData.toByteArray());
+        byte[] actual = FluxUtil.collectBytesInByteBufferStream(allActualFlux).block();
+
+        assertArrayEquals(expected, actual);
     }
 
     @Test
     public void emptyBuffer() {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(10, 5, StructuredMessageFlags.NONE);
         ByteBuffer emptyBuffer = ByteBuffer.allocate(0);
-        ByteBuffer result = ByteBuffer
-            .wrap(Objects.requireNonNull(collectBytesInByteBufferStream(encoder.encode(emptyBuffer)).block()));
-        assertEquals(0, result.remaining());
+        byte[] result = FluxUtil.collectBytesInByteBufferStream(encoder.encode(emptyBuffer)).block();
+        assertNotNull(result);
+        assertEquals(0, result.length);
     }
 
     @Test
     public void contentAlreadyEncoded() {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(4, 2, StructuredMessageFlags.NONE);
-        encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3, 4 })).blockLast();
-        StepVerifier.create(encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })))
-            .expectError(IllegalArgumentException.class)
-            .verify();
+        FluxUtil.collectBytesInByteBufferStream(encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3, 4 }))).block();
+        assertThrows(IllegalArgumentException.class,
+            () -> FluxUtil.collectBytesInByteBufferStream(encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })))
+                .block());
     }
 
     @Test
     public void bufferLengthExceedsContentLength() {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(4, 2, StructuredMessageFlags.NONE);
-        encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3 })).blockLast();
-        StepVerifier.create(encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })))
-            .expectError(IllegalArgumentException.class)
-            .verify();
+        FluxUtil.collectBytesInByteBufferStream(encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3 }))).block();
+        assertThrows(IllegalArgumentException.class,
+            () -> FluxUtil.collectBytesInByteBufferStream(encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })))
+                .block());
     }
 
     @Test
@@ -246,5 +246,22 @@ public class MessageEncoderTests {
     public void testNumSegmentsExceedsMaxValue() {
         assertThrows(IllegalArgumentException.class,
             () -> new StructuredMessageEncoder(Integer.MAX_VALUE, 1, StructuredMessageFlags.NONE));
+    }
+
+    @Test
+    @Disabled("For local testing only")
+    public void bigEncode() throws IOException {
+        byte[] data = getRandomData(262144000);
+
+        ByteBuffer unencodedBuffer = ByteBuffer.wrap(data);
+
+        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(262144000,
+            V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64);
+
+        byte[] actual
+            = FluxUtil.collectBytesInByteBufferStream(structuredMessageEncoder.encode(unencodedBuffer)).block();
+        byte[] expected = buildStructuredMessage(unencodedBuffer, V1_DEFAULT_SEGMENT_CONTENT_LENGTH,
+            StructuredMessageFlags.STORAGE_CRC64).array();
+        assertArrayEquals(expected, actual);
     }
 }
