@@ -6,6 +6,7 @@
 * Added support for N-Region synchronous commit feature - See [PR 47757](https://github.com/Azure/azure-sdk-for-java/pull/47757)
 
 #### Breaking Changes
+* `ReadConsistencyStrategy` is now blocked when using Gateway connection mode. Setting a non-DEFAULT `ReadConsistencyStrategy` on `CosmosClientBuilder` or request options while using Gateway mode will throw `IllegalArgumentException`. `ReadConsistencyStrategy` is only supported in DIRECT connection mode.
 
 #### Bugs Fixed
 

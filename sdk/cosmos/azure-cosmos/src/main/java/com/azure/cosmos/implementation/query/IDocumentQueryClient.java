@@ -74,7 +74,7 @@ public interface IDocumentQueryClient {
 
     ConsistencyLevel getConsistencyLevel();
 
-    void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName);
+    void validateNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName);
 
     /// <summary>
     /// A client query compatibility mode when making query request.

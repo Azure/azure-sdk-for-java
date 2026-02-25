@@ -1358,6 +1358,15 @@ public class CosmosClientBuilder implements
                 + "azure key credential");
         ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),
             "cannot buildAsyncClient client without key credential");
+
+        ifThrowIllegalArgException(
+            this.readConsistencyStrategy != null
+                && this.readConsistencyStrategy != ReadConsistencyStrategy.DEFAULT
+                && this.directConnectionConfig == null
+                && this.gatewayConnectionConfig != null,
+            "ReadConsistencyStrategy " + this.readConsistencyStrategy
+                + " is not supported in Gateway mode. "
+                + "ReadConsistencyStrategy is only supported when using DIRECT connection mode.");
     }
 
     Configs configs() {
