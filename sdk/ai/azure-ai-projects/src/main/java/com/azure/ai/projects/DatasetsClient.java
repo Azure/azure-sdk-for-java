@@ -183,8 +183,8 @@ public final class DatasetsClient {
         PendingUploadRequest body = new PendingUploadRequest();
         PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, body);
         BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
-        String blobUri = pendingUploadResponse.getBlobReference().getBlobUri();
-        BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUri()).blobName(name).buildClient();
+        String blobUri = pendingUploadResponse.getBlobReference().getBlobUrl();
+        BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUrl()).blobName(name).buildClient();
         blobClient.upload(BinaryData.fromFile(filePath));
         RequestOptions requestOptions = new RequestOptions();
         FileDatasetVersion datasetVersion = this
@@ -215,7 +215,7 @@ public final class DatasetsClient {
         // Request a pending upload for the folder
         PendingUploadRequest request = new PendingUploadRequest();
         PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, request);
-        String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUri();
+        String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUrl();
         BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
         String containerUrl = blobContainerUri.substring(0, blobContainerUri.lastIndexOf('/'));
         // Upload all files in the directory
@@ -224,7 +224,7 @@ public final class DatasetsClient {
             String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
             // Create blob client for each file
             BlobClient blobClient
-                = new BlobClientBuilder().endpoint(credential.getSasUri()).blobName(relativePath).buildClient();
+                = new BlobClientBuilder().endpoint(credential.getSasUrl()).blobName(relativePath).buildClient();
             // Upload the file
             blobClient.upload(BinaryData.fromFile(filePath), true);
         });
@@ -311,41 +311,6 @@ public final class DatasetsClient {
         return pendingUploadWithResponse(name, version, BinaryData.fromObject(pendingUploadRequest), requestOptions)
             .getValue()
             .toObject(PendingUploadResponse.class);
-    }
-
-    /**
-     * List the latest version of each DatasetVersion.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(uri_file/uri_folder) (Required)
-     *     dataUri: String (Optional, Required on create)
-     *     isReference: Boolean (Optional)
-     *     connectionName: String (Optional)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listLatest(RequestOptions requestOptions) {
-        return this.serviceClient.listLatest(requestOptions);
     }
 
     /**
@@ -466,25 +431,6 @@ public final class DatasetsClient {
     }
 
     /**
-     * List the latest version of each DatasetVersion.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatasetVersion> listLatest() {
-        // Generated convenience method for listLatest
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listLatest(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(DatasetVersion.class));
-    }
-
-    /**
      * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
      * does not exist.
      *
@@ -553,5 +499,59 @@ public final class DatasetsClient {
         JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, false);
         return createOrUpdateVersionWithResponse(name, version, datasetVersionInBinaryData, requestOptions).getValue()
             .toObject(DatasetVersion.class);
+    }
+
+    /**
+     * List the latest version of each DatasetVersion.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listLatestVersion(RequestOptions requestOptions) {
+        return this.serviceClient.listLatestVersion(requestOptions);
+    }
+
+    /**
+     * List the latest version of each DatasetVersion.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DatasetVersion> listLatestVersion() {
+        // Generated convenience method for listLatestVersion
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listLatestVersion(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DatasetVersion.class));
     }
 }

@@ -4,11 +4,14 @@
 
 ### Features Added
 
+- Added support for filtering configuration settings and feature flags by tags. Tags can be configured via `spring.cloud.azure.appconfiguration.stores[0].selects[0].tags-filter` for key-value settings and `spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].tags-filter` for feature flags. The value is a list of `tag=value` pairs (e.g., `["env=prod", "team=backend"]`) combined with AND logic.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 - Fixed an issue where feature flag–based refresh did not work when load balancing was enabled with a single configuration store. Feature flag refresh now uses the same load-balanced client selection as configuration refresh, including the single-store scenario.
+- Fixed YAML configuration binding for `label-filter` by adding standard no-arg getter methods to `AppConfigurationKeyValueSelector` and `FeatureFlagKeyValueSelector`, enabling proper type resolution by Spring Boot's `@ConfigurationProperties` binder.
 
 ### Other Changes
 
