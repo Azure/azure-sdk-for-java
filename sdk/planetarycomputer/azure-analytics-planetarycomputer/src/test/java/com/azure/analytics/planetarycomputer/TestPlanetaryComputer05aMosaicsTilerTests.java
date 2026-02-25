@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer;
 import com.azure.analytics.planetarycomputer.models.FilterLanguage;
 import com.azure.analytics.planetarycomputer.models.GetMosaicTileJsonOptions;
 import com.azure.analytics.planetarycomputer.models.GetMosaicTileOptions;
-import com.azure.analytics.planetarycomputer.models.GetMosaicWmtsCapabilitiesOptions;
 import com.azure.analytics.planetarycomputer.models.RegisterMosaicsSearchOptions;
 import com.azure.analytics.planetarycomputer.models.StacSearchSortingDirection;
 import com.azure.analytics.planetarycomputer.models.StacSortExtension;
