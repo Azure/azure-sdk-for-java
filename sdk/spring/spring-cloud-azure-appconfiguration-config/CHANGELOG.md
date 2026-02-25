@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed bug where you can't refresh based off of feature flags when load balancing is enabled and you only have a single config store.
+
 ### Other Changes
 
 ## 7.0.0 (2026-02-03)

@@ -4,6 +4,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +34,6 @@ class ConnectionManager {
 
     /** Map of auto-discovered failover clients, keyed by endpoint URL. */
     private final Map<String, AppConfigurationReplicaClient> autoFailoverClients;
-
-    /** Currently active replica endpoint being used for requests. */
-    private String currentReplica;
 
     /** Current health status of the App Configuration store connection. */
     private AppConfigurationStoreHealth health;
@@ -67,7 +65,6 @@ class ConnectionManager {
         this.configStore = configStore;
         this.originEndpoint = configStore.getEndpoint();
         this.health = AppConfigurationStoreHealth.NOT_LOADED;
-        this.currentReplica = configStore.getEndpoint();
         this.autoFailoverClients = new HashMap<>();
         this.replicaLookUp = replicaLookUp;
         this.activeClients = new ArrayList<>();
@@ -81,15 +78,6 @@ class ConnectionManager {
      */
     AppConfigurationStoreHealth getHealth() {
         return this.health;
-    }
-
-    /**
-     * Sets the current active replica endpoint for client routing.
-     * 
-     * @param replicaEndpoint the endpoint URL to set as current; may be null to reset to primary endpoint
-     */
-    void setCurrentClient(String replicaEndpoint) {
-        this.currentReplica = replicaEndpoint;
     }
 
     /**
