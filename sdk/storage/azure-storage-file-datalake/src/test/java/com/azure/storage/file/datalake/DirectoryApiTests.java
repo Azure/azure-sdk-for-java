@@ -3825,14 +3825,17 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
-    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     @ParameterizedTest
-    public void getTagsAC() {
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
+    public void getTagsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
         Map<String, String> t = getTags();
         dc.setTags(t);
-
-        String leaseID = setupPathLeaseCondition(dc, RECEIVED_LEASE_ID);
-        DataLakeRequestConditions dac = new DataLakeRequestConditions().setLeaseId(leaseID);
+        DataLakeRequestConditions dac = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
         Response<Map<String, String>> response
             = dc.getTagsWithResponse(new DataLakeGetTagsOptions().setRequestConditions(dac), null, Context.NONE);
