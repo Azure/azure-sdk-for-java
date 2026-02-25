@@ -85,11 +85,6 @@ public final class Constants {
 
     public static final String STORAGE_LOG_STRING_TO_SIGN = "Azure-Storage-Log-String-To-Sign";
 
-    /**
-     * Context key for the request checksum algorithm (e.g. for append block, page upload).
-     */
-    public static final String REQUEST_CHECKSUM_ALGORITHM = "Azure-Storage-Request-Checksum-Algorithm";
-
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION
