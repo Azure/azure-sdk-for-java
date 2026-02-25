@@ -12,7 +12,6 @@ import com.azure.analytics.planetarycomputer.models.StacItemPointAsset;
 import com.azure.analytics.planetarycomputer.models.TilerAssetGeoJson;
 import com.azure.analytics.planetarycomputer.models.TilerMosaicSearchRegistrationResponse;
 import com.azure.core.util.BinaryData;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
@@ -180,7 +179,6 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends PlanetaryComputer
      * Java method: getStaticImage(collectionId, id)
      */
     @Test
-    @Disabled("Image ID from createStaticImage is sanitized causing URL mismatch with recording")
     @Tag("StaticImage")
     public void test05_09_GetStaticImage() {
         // Arrange

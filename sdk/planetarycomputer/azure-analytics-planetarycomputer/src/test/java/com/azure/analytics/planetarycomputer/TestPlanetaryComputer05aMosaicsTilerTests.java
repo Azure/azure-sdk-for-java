@@ -15,7 +15,6 @@ import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
 import com.azure.analytics.planetarycomputer.models.TilerMosaicSearchRegistrationResponse;
 import com.azure.analytics.planetarycomputer.models.TilerStacSearchRegistration;
 import com.azure.core.util.BinaryData;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
@@ -40,7 +39,6 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
      * Java method: registerMosaicsSearch(filter, filterLanguage, sortBy)
      */
     @Test
-    @Disabled("Recording has 400 error - filter Map serialized as string instead of JSON object")
     @Tag("RegisterSearch")
     public void test05_01_RegisterMosaicsSearch() {
         // Arrange

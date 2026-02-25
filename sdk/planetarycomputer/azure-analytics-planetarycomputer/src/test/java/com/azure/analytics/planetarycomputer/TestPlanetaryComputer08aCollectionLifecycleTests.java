@@ -27,7 +27,6 @@ public class TestPlanetaryComputer08aCollectionLifecycleTests extends PlanetaryC
     private static final String TEST_COLLECTION_ID = "test-collection-1769514824114";
 
     @Test
-    @Disabled("Recording incomplete - missing final GET request after LRO completion - needs to be re-recorded")
     @Tag("CreateCollection")
     public void test08_01_BeginCreateCollection() {
         StacClient stacClient = getStacClient();
@@ -82,8 +81,8 @@ public class TestPlanetaryComputer08aCollectionLifecycleTests extends PlanetaryC
         System.out.println("Collection '" + TEST_COLLECTION_ID + "' created successfully");
     }
 
+    @Disabled("Codegen bug: StacCollection.toJson() does not serialize 'id' field, causing 400 from server")
     @Test
-    @Disabled("Recording shows collection not found - test depends on test08_01 which needs re-recording")
     @Tag("UpdateCollection")
     public void test08_02_CreateOrReplaceCollection() {
         StacClient stacClient = getStacClient();
@@ -106,8 +105,8 @@ public class TestPlanetaryComputer08aCollectionLifecycleTests extends PlanetaryC
         System.out.println("Collection '" + TEST_COLLECTION_ID + "' updated successfully");
     }
 
+    @Disabled("Depends on test08_02 which is blocked by StacCollection.toJson() codegen bug")
     @Test
-    @Disabled("Recording shows collection not found - test depends on test08_01 which needs re-recording")
     @Tag("DeleteCollection")
     public void test08_03_DeleteCollection() {
         StacClient stacClient = getStacClient();

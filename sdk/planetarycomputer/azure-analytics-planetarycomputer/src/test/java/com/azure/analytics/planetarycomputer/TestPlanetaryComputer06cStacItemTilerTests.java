@@ -116,7 +116,6 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("Codegen bug: URL path {lon}.{lat} is ambiguous - server can't parse double path params")
     @Tag("Point")
     public void test06_15_GetPoint() {
         DataClient dataClient = getDataClient();

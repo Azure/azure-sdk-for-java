@@ -275,6 +275,12 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
         customSanitizers.add(new TestProxySanitizer("([a-z0-9]+-[a-z]+-[a-z0-9]+)-[0-9a-f]{8}", "$1-00000000",
             TestProxySanitizerType.URL));
 
+        // Static image filename sanitizer - the $..url body key is sanitized to "REDACTED" by default,
+        // so we must also sanitize the image filename in URL paths to match during playback.
+        // Pattern matches: /image/static/<anything-before-query-string>
+        customSanitizers
+            .add(new TestProxySanitizer("(?<=/image/static/)[^?]+", "REDACTED", TestProxySanitizerType.URL));
+
         // Add all sanitizers (unconditional like C#)
         interceptorManager.addSanitizers(customSanitizers);
     }
