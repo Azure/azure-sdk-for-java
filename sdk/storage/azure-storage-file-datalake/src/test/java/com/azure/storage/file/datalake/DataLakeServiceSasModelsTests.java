@@ -44,7 +44,7 @@ public class DataLakeServiceSasModelsTests {
 
     private static Stream<Arguments> sasPermissionsToStringSupplier() {
         return Stream.of(
-            // read | write | delete | create | add | list | move | execute | owner | permission || expectedString
+            // read | write | delete | create | add | list | move | execute | owner | permission | tag | expectedString
             Arguments.of(true, false, false, false, false, false, false, false, false, false, false, "r"),
             Arguments.of(false, true, false, false, false, false, false, false, false, false, false, "w"),
             Arguments.of(false, false, true, false, false, false, false, false, false, false, false, "d"),
