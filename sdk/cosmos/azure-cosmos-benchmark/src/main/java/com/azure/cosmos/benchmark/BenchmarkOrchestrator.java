@@ -15,11 +15,9 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
-import io.micrometer.core.instrument.Gauge;
-import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,13 +111,7 @@ public class BenchmarkOrchestrator {
         }
         reporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
 
-        // Register on Micrometer globalRegistry BEFORE clients are created,
-        // so Reactor Netty ConnectionProvider.metrics(true) gauges are captured.
-        // 1) SimpleMeterRegistry for local logPoolMetrics() queries
-        SimpleMeterRegistry poolMetricsRegistry = new SimpleMeterRegistry();
-        Metrics.addRegistry(poolMetricsRegistry);
 
-        logger.info("Reactor Netty pool metrics bridge enabled (SimpleMeterRegistry + App Insights)");
 
         // Optional: Result uploader
         CosmosClient resultUploaderClient = null;
@@ -176,43 +168,6 @@ public class BenchmarkOrchestrator {
         clearGlobalSystemProperties();
     }
 
-    // ======== Pool metrics logging ========
-
-    private void logPoolMetrics(String phase) {
-        logger.info("[POOL_METRICS] phase={} timestamp={}", phase, Instant.now());
-        int count = 0;
-        for (Meter meter : Metrics.globalRegistry.getMeters()) {
-            String name = meter.getId().getName();
-            if (name.contains("reactor.netty.connection.provider")) {
-                String remoteAddr = meter.getId().getTag("remote.address");
-                String poolName = meter.getId().getTag("name");
-                String poolId = meter.getId().getTag("id");
-                double value = 0;
-                if (meter instanceof Gauge) {
-                    value = ((Gauge) meter).value();
-                }
-                if (value > 0 || count < 5) { // log first 5 + any with non-zero value
-                    logger.info("[POOL_METRICS]   {} id={} remote={} pool={} value={}",
-                        name, poolId, remoteAddr, poolName, value);
-                }
-                count++;
-            }
-        }
-                // Dump all tags for the first pool meter for debugging
-        for (Meter m : Metrics.globalRegistry.getMeters()) {
-            if (m.getId().getName().contains("reactor.netty.connection.provider.total.connections")) {
-                StringBuilder sb = new StringBuilder("[POOL_METRICS_TAGS] ");
-                sb.append(m.getId().getName()).append(" tags={");
-                m.getId().getTags().forEach(t -> sb.append(t.getKey()).append("=").append(t.getValue()).append(", "));
-                sb.append("}");
-                if (m instanceof Gauge) sb.append(" value=").append(((Gauge) m).value());
-                logger.info(sb.toString());
-                break; // just first one
-            }
-        }
-        logger.info("[POOL_METRICS] total pool metric entries: {}", count);
-    }
-
     // ======== Lifecycle loop (create -> run -> close -> settle x N) ========
 
     private void runLifecycleLoop(BenchmarkConfig config, MetricRegistry registry,
@@ -232,14 +187,11 @@ public class BenchmarkOrchestrator {
             reporter.report();
             logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
                 cycle, benchmarks.size(), Instant.now());
-            logPoolMetrics("POST_CREATE");
 
             // 2. Run workload in parallel
             runWorkload(benchmarks, cycle);
             reporter.report();
             logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
-            logPoolMetrics("POST_WORKLOAD");
-
             // 3. Close all clients
             shutdownBenchmarks(benchmarks, cycle);
             reporter.report();
