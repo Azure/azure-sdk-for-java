@@ -250,6 +250,186 @@ Phase 3: Evaluate
 
 ---
 
+### S8: Protocol × Workload × Sharing Baseline Matrix (Recurring)
+
+**Purpose**: Establish a reproducible baseline across all protocol modes, workload types, and connection sharing configurations. **This test is re-run after every major change/fix** to produce before/after comparison data.
+
+#### Dimensions
+
+| Dimension | Values | Count |
+|-----------|--------|-------|
+| **Protocol** | HTTP/1.1 (default), HTTP/2, ThinClient (HTTP/2 + RNTBD) | 3 |
+| **Workload** | ReadThroughput, ReadLatency, WriteThroughput, WriteLatency, QueryOrderby | 5 |
+| **Connection Sharing** | Isolated (default), Shared (`connectionSharingAcrossClientsEnabled=true`) | 2 |
+| **Total** | | **30** |
+
+#### Protocol Enablement (JVM System Properties)
+
+| Protocol | System Properties |
+|----------|------------------|
+| HTTP/1.1 | *(none — default)* |
+| HTTP/2 | `-DCOSMOS.HTTP2_ENABLED=true` |
+| ThinClient | `-DCOSMOS.HTTP2_ENABLED=true -DCOSMOS.THINCLIENT_ENABLED=true` |
+
+#### Workloads
+
+| ID | Operation | Type | Measures | Query Plan Cacheable? |
+|----|-----------|------|----------|----------------------|
+| `read` | `ReadThroughput` | Point read | ops/sec | N/A |
+| `readlat` | `ReadLatency` | Point read | P50/P99/P99.9/Max latency | N/A |
+| `write` | `WriteThroughput` | Point write | ops/sec | N/A |
+| `writelat` | `WriteLatency` | Point write | P50/P99/P99.9/Max latency | N/A |
+| `query` | `QueryOrderby` | `SELECT * FROM c ORDER BY c._ts` | ops/sec | ❌ No (ORDER BY excluded from cache) |
+
+#### Connection Sharing Modes
+
+| ID | `connectionSharingAcrossClientsEnabled` | Pool Behavior |
+|----|---------------------------------------|---------------|
+| `isolated` | `false` (default) | Each client owns its own `ConnectionProvider` (up to 1,000 conns each) |
+| `shared` | `true` | All clients share a singleton `SharedGatewayHttpClient` (ref-counted) |
+
+#### Full Test Matrix (30 Scenarios)
+
+| # | Scenario ID | Protocol | Workload | Sharing |
+|---|-------------|----------|----------|---------|
+| 1 | `http11-read-isolated` | HTTP/1.1 | ReadThroughput | isolated |
+| 2 | `http11-read-shared` | HTTP/1.1 | ReadThroughput | shared |
+| 3 | `http11-readlat-isolated` | HTTP/1.1 | ReadLatency | isolated |
+| 4 | `http11-readlat-shared` | HTTP/1.1 | ReadLatency | shared |
+| 5 | `http11-write-isolated` | HTTP/1.1 | WriteThroughput | isolated |
+| 6 | `http11-write-shared` | HTTP/1.1 | WriteThroughput | shared |
+| 7 | `http11-writelat-isolated` | HTTP/1.1 | WriteLatency | isolated |
+| 8 | `http11-writelat-shared` | HTTP/1.1 | WriteLatency | shared |
+| 9 | `http11-query-isolated` | HTTP/1.1 | QueryOrderby | isolated |
+| 10 | `http11-query-shared` | HTTP/1.1 | QueryOrderby | shared |
+| 11 | `http2-read-isolated` | HTTP/2 | ReadThroughput | isolated |
+| 12 | `http2-read-shared` | HTTP/2 | ReadThroughput | shared |
+| 13 | `http2-readlat-isolated` | HTTP/2 | ReadLatency | isolated |
+| 14 | `http2-readlat-shared` | HTTP/2 | ReadLatency | shared |
+| 15 | `http2-write-isolated` | HTTP/2 | WriteThroughput | isolated |
+| 16 | `http2-write-shared` | HTTP/2 | WriteThroughput | shared |
+| 17 | `http2-writelat-isolated` | HTTP/2 | WriteLatency | isolated |
+| 18 | `http2-writelat-shared` | HTTP/2 | WriteLatency | shared |
+| 19 | `http2-query-isolated` | HTTP/2 | QueryOrderby | isolated |
+| 20 | `http2-query-shared` | HTTP/2 | QueryOrderby | shared |
+| 21 | `thin-read-isolated` | ThinClient | ReadThroughput | isolated |
+| 22 | `thin-read-shared` | ThinClient | ReadThroughput | shared |
+| 23 | `thin-readlat-isolated` | ThinClient | ReadLatency | isolated |
+| 24 | `thin-readlat-shared` | ThinClient | ReadLatency | shared |
+| 25 | `thin-write-isolated` | ThinClient | WriteThroughput | isolated |
+| 26 | `thin-write-shared` | ThinClient | WriteThroughput | shared |
+| 27 | `thin-writelat-isolated` | ThinClient | WriteLatency | isolated |
+| 28 | `thin-writelat-shared` | ThinClient | WriteLatency | shared |
+| 29 | `thin-query-isolated` | ThinClient | QueryOrderby | isolated |
+| 30 | `thin-query-shared` | ThinClient | QueryOrderby | shared |
+
+#### Fixed Parameters (all 30 scenarios)
+
+| Parameter | Value | Notes |
+|-----------|-------|-------|
+| **Tenants** | 50 | 50 distinct Cosmos DB accounts (`cosmosdbmulti12101`–`cosmosdbmulti121050`) |
+| **Concurrency per tenant** | 20 | Total aggregate: 50 × 20 = 1,000 concurrent requests |
+| **Operations per tenant** | 1,000,000 | Per scenario run |
+| **Pre-created documents** | 1,000 per container | ~1 KB each |
+| **Connection pool size** | 1,000 per client | Default |
+| **Connection mode** | GATEWAY | All protocols use Gateway mode |
+| **Consistency** | SESSION | Default |
+
+#### Metrics Collected Per Scenario
+
+| Category | Metrics | Source | Status |
+|----------|---------|--------|--------|
+| **Threads** | Peak thread count, thread name breakdown | `monitor.sh` (`/proc/53228/task`) | ✅ Available |
+| **Memory** | Heap used/max (KB), RSS (KB) | `jstat -gc`, `ps` | ✅ Available |
+| **File Descriptors** | Open FD count | `/proc/53228/fd` | ✅ Available |
+| **GC** | GC count, GC time (ms) | `jstat -gc` | ✅ Available |
+| **CPU** | Process CPU % | `ps -o %cpu` | ✅ Available |
+| **Network** | Socket summary | `ss -s` | ✅ Available |
+| **Throughput** | ops/sec | Codahale `Meter` | ✅ Available |
+| **Latency** | P50/P99/P99.9/Max (ms) | Codahale `Timer` | ✅ Available |
+| **Cosmos op latency** | `cosmos.client.op.latency` | Micrometer (SDK, DEFAULT) | ✅ Available |
+| **Cosmos op RUs** | `cosmos.client.op.RUs` | Micrometer (SDK, DEFAULT) | ✅ Available |
+| **GW request latency** | `cosmos.client.req.gw.latency` | Micrometer (SDK, DEFAULT) | ✅ Available |
+| **GW request count** | `cosmos.client.req.gw.requests` | Micrometer (SDK, DEFAULT) | ✅ Available |
+| **Connection pool** | active/idle/pending connections | Reactor Netty `ConnectionProvider.metrics()` | ❌ Not enabled — needs SDK change |
+| **H2 streams** | active streams per connection, utilization | Reactor Netty H2 metrics | ❌ Not available — needs SDK change |
+| **Shared pool refs** | clients sharing pool | `SharedGatewayHttpClient.counter` | ❌ Not exposed as meter |
+
+#### Execution
+
+```bash
+# Full 30-scenario baseline (50 tenants, 1M ops each, ~8-10 hours total)
+bash sdk/cosmos/azure-cosmos-benchmark/scripts/run-baseline-matrix.sh \
+    sdk/cosmos/azure-cosmos-benchmark/test-setup \
+    ~/results
+
+# Quick validation (10 tenants, default 1M ops, ~3-4 hours)
+bash sdk/cosmos/azure-cosmos-benchmark/scripts/run-baseline-matrix.sh \
+    sdk/cosmos/azure-cosmos-benchmark/test-setup \
+    ~/results \
+    --tenants 10
+
+# Quick validation with fewer ops (10 tenants, 100K ops, ~1 hour)
+bash sdk/cosmos/azure-cosmos-benchmark/scripts/run-baseline-matrix.sh \
+    sdk/cosmos/azure-cosmos-benchmark/test-setup \
+    ~/results \
+    --tenants 10 --operations 100000
+```
+
+Each scenario runs as a **separate JVM invocation** with its own system properties and GC log. A per-scenario `tenants-override.json` is generated with the correct operation, connection sharing flag, and operation count. There is a **30-second cool-down** between scenarios.
+
+#### Output Structure
+
+```
+~/results/<timestamp>-baseline/
+├── matrix-info.json              # Git branch, commit, tenant count, dimensions
+├── summary.csv                   # Peak metrics for all 30 scenarios
+├── http11-read-isolated/
+│   ├── scenario-info.json        # Protocol, workload, sharing, JVM opts, timing
+│   ├── tenants-override.json     # Generated tenants config with overrides
+│   ├── benchmark.log             # Benchmark output (throughput, latency)
+│   ├── monitor.csv               # Resource snapshots every 10s
+│   ├── gc.log                    # G1GC log
+│   └── ss-summary.txt            # Socket stats
+├── http11-read-shared/
+│   └── ...
+├── http11-readlat-isolated/
+│   └── ...
+└── ... (30 directories total)
+```
+
+#### Key Comparisons
+
+**1. Connection sharing impact** (same protocol + workload, isolated vs shared):
+- Does shared pool reduce FDs and thread count?
+- Does shared pool affect throughput or latency?
+- Expected: fewer FDs/connections, similar or better throughput
+
+**2. Protocol impact** (same workload + sharing, across protocols):
+- HTTP/2 vs HTTP/1.1: connection count reduction via multiplexing
+- ThinClient vs HTTP/2: binary framing overhead vs throughput gain
+- Expected: H2 ~30× fewer connections, similar or better latency
+
+**3. Latency vs throughput operations** (ReadThroughput vs ReadLatency):
+- ReadLatency measures per-op P99; ReadThroughput measures aggregate ops/sec
+- Same underlying `AsyncReadBenchmark` class, different metric focus
+
+**4. Read vs write** (same protocol + sharing):
+- Write operations have higher RU cost → may hit throttling sooner
+- Write latency may be higher due to replication
+
+#### When to Re-Run
+
+Re-run this matrix after:
+- Any fix from the action items (A1–A22)
+- SDK version upgrades
+- Connection pool or threading changes
+- HTTP/2 or ThinClient configuration changes
+
+Compare results using the `summary.csv` from each run.
+
+---
+
 ## 3. Infrastructure & Environment
 
 ### 3.1 Cosmos DB Setup
@@ -2103,13 +2283,67 @@ Run these scenarios in order. Each produces a result set for comparison.
 
 **Note**: B12 (OkHttp investigation) is **optional** — run only after the OkHttp adapter prototype exists on an experimental branch.
 
+#### S8 Protocol × Workload × Sharing Baseline Matrix (B13–B42)
+
+**Run after each major fix** using `run-baseline-matrix.sh`. 30 scenarios = 3 protocols × 5 workloads × 2 sharing modes. All use 50 tenants × 20 concurrency × 1M ops.
+
+| Run ID | Protocol | Workload | Sharing | JVM Props |
+|---|---|---|---|---|
+| B13 | HTTP/1.1 | ReadThroughput | isolated | — |
+| B14 | HTTP/1.1 | ReadThroughput | shared | — |
+| B15 | HTTP/1.1 | ReadLatency | isolated | — |
+| B16 | HTTP/1.1 | ReadLatency | shared | — |
+| B17 | HTTP/1.1 | WriteThroughput | isolated | — |
+| B18 | HTTP/1.1 | WriteThroughput | shared | — |
+| B19 | HTTP/1.1 | WriteLatency | isolated | — |
+| B20 | HTTP/1.1 | WriteLatency | shared | — |
+| B21 | HTTP/1.1 | QueryOrderby | isolated | — |
+| B22 | HTTP/1.1 | QueryOrderby | shared | — |
+| B23 | HTTP/2 | ReadThroughput | isolated | `HTTP2_ENABLED` |
+| B24 | HTTP/2 | ReadThroughput | shared | `HTTP2_ENABLED` |
+| B25 | HTTP/2 | ReadLatency | isolated | `HTTP2_ENABLED` |
+| B26 | HTTP/2 | ReadLatency | shared | `HTTP2_ENABLED` |
+| B27 | HTTP/2 | WriteThroughput | isolated | `HTTP2_ENABLED` |
+| B28 | HTTP/2 | WriteThroughput | shared | `HTTP2_ENABLED` |
+| B29 | HTTP/2 | WriteLatency | isolated | `HTTP2_ENABLED` |
+| B30 | HTTP/2 | WriteLatency | shared | `HTTP2_ENABLED` |
+| B31 | HTTP/2 | QueryOrderby | isolated | `HTTP2_ENABLED` |
+| B32 | HTTP/2 | QueryOrderby | shared | `HTTP2_ENABLED` |
+| B33 | ThinClient | ReadThroughput | isolated | `HTTP2+THIN` |
+| B34 | ThinClient | ReadThroughput | shared | `HTTP2+THIN` |
+| B35 | ThinClient | ReadLatency | isolated | `HTTP2+THIN` |
+| B36 | ThinClient | ReadLatency | shared | `HTTP2+THIN` |
+| B37 | ThinClient | WriteThroughput | isolated | `HTTP2+THIN` |
+| B38 | ThinClient | WriteThroughput | shared | `HTTP2+THIN` |
+| B39 | ThinClient | WriteLatency | isolated | `HTTP2+THIN` |
+| B40 | ThinClient | WriteLatency | shared | `HTTP2+THIN` |
+| B41 | ThinClient | QueryOrderby | isolated | `HTTP2+THIN` |
+| B42 | ThinClient | QueryOrderby | shared | `HTTP2+THIN` |
+
+**Execution**: `bash scripts/run-baseline-matrix.sh test-setup ~/results`
+
+**Quick validation (10 tenants)**: `bash scripts/run-baseline-matrix.sh test-setup ~/results --tenants 10`
+
 ### 10.2 Before/After Comparison
 
 After implementing a fix (e.g., A3: close `ThinClientStoreModel`):
 
-1. Re-run the relevant baseline (e.g., B9 for leak detection)
-2. Compare the specific metric (e.g., thread count over cycles)
-3. The fix passes if the metric matches the expected post-fix behavior
+1. Re-run the **S8 baseline matrix** (`run-baseline-matrix.sh`) — produces 9 scenarios
+2. Compare `summary.csv` from the new run against the previous baseline
+3. For targeted fixes, also re-run the relevant single scenario (e.g., B9 for leak detection)
+4. The fix passes if the metric matches the expected post-fix behavior
+
+#### S8 Matrix Comparison Template
+
+| Scenario | Metric | Baseline | After Fix | Δ | Pass? |
+|---|---|---|---|---|---|
+| `http11-read` | Peak threads | | | | |
+| `http11-read` | Peak heap (MB) | | | | |
+| `http11-read` | Throughput (ops/s) | | | | |
+| `http2-read` | Peak threads | | | | |
+| `thin-read` | Peak threads | | | | |
+| `http11-query` | Peak threads | | | | |
+| ... | ... | | | | |
 
 ### 10.3 Comparison Table Template
 

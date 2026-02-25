@@ -160,6 +160,9 @@ public class TenantWorkloadConfig {
     @JsonProperty("maxConnectionPoolSize")
     private Integer maxConnectionPoolSize;
 
+    @JsonProperty("connectionSharingAcrossClientsEnabled")
+    private Boolean connectionSharingAcrossClientsEnabled;
+
     @JsonProperty("preferredRegionsList")
     private String preferredRegionsList;
 
@@ -286,6 +289,10 @@ public class TenantWorkloadConfig {
 
     public int getMaxConnectionPoolSize() { return maxConnectionPoolSize != null ? maxConnectionPoolSize : 1000; }
 
+    public boolean isConnectionSharingAcrossClientsEnabled() {
+        return connectionSharingAcrossClientsEnabled != null && connectionSharingAcrossClientsEnabled;
+    }
+
     public List<String> getPreferredRegionsList() {
         if (preferredRegionsList == null || preferredRegionsList.isEmpty()) return null;
         List<String> regions = new ArrayList<>();
@@ -331,6 +338,7 @@ public class TenantWorkloadConfig {
     public void setConnectionMode(String connectionMode) { this.connectionMode = connectionMode; }
     public void setConsistencyLevel(String consistencyLevel) { this.consistencyLevel = consistencyLevel; }
     public void setMaxConnectionPoolSize(int maxConnectionPoolSize) { this.maxConnectionPoolSize = maxConnectionPoolSize; }
+    public void setConnectionSharingAcrossClientsEnabled(boolean connectionSharingAcrossClientsEnabled) { this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled; }
     public void setNumberOfPreCreatedDocuments(int numberOfPreCreatedDocuments) { this.numberOfPreCreatedDocuments = numberOfPreCreatedDocuments; }
     public void setApplicationName(String applicationName) { this.applicationName = applicationName; }
     public void setSuppressCleanup(boolean suppressCleanup) { this.suppressCleanup = suppressCleanup; }
@@ -346,6 +354,7 @@ public class TenantWorkloadConfig {
             ", operation=" + operation +
             ", concurrency=" + concurrency +
             ", connectionMode=" + connectionMode +
+            ", connectionSharingAcrossClientsEnabled=" + isConnectionSharingAcrossClientsEnabled() +
             '}';
     }
 
@@ -433,6 +442,8 @@ public class TenantWorkloadConfig {
                     if (overwrite || consistencyLevel == null) consistencyLevel = value; break;
                 case "maxConnectionPoolSize":
                     if (overwrite || maxConnectionPoolSize == null) maxConnectionPoolSize = Integer.parseInt(value); break;
+                case "connectionSharingAcrossClientsEnabled":
+                    if (overwrite || connectionSharingAcrossClientsEnabled == null) connectionSharingAcrossClientsEnabled = Boolean.parseBoolean(value); break;
                 case "preferredRegionsList":
                     if (overwrite || preferredRegionsList == null) preferredRegionsList = value; break;
                 case "manageDatabase":
@@ -477,6 +488,7 @@ public class TenantWorkloadConfig {
         t.connectionMode = cfg.getConnectionMode().name();
         t.consistencyLevel = cfg.getConsistencyLevel().name();
         t.maxConnectionPoolSize = cfg.getMaxConnectionPoolSize();
+        t.connectionSharingAcrossClientsEnabled = cfg.isConnectionSharingAcrossClientsEnabled();
         t.manageDatabase = cfg.shouldManageDatabase();
         t.applicationName = cfg.getApplicationName();
         t.isManagedIdentityRequired = cfg.isManagedIdentityRequired();

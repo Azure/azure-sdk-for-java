@@ -92,7 +92,8 @@ abstract class AsyncBenchmark<T> {
                 .preferredRegions(cfg.getPreferredRegionsList())
                 .consistencyLevel(cfg.getConsistencyLevel())
                 .userAgentSuffix(cfg.getApplicationName())
-                .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled());
+                .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
+                .connectionSharingAcrossClientsEnabled(cfg.isConnectionSharingAcrossClientsEnabled());
 
         clientBuilderAccessor
             .setRegionScopedSessionCapturingEnabled(benchmarkSpecificClientBuilder, cfg.isRegionScopedSessionContainerEnabled());

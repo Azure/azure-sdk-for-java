@@ -73,6 +73,9 @@ public class Configuration {
     @Parameter(names = "-maxConnectionPoolSize", description = "Max Connection Pool Size")
     private Integer maxConnectionPoolSize = 1000;
 
+    @Parameter(names = "-connectionSharingAcrossClientsEnabled", description = "Enable connection sharing across CosmosClient instances (Gateway mode). Reduces connection count for multi-tenant scenarios.")
+    private boolean connectionSharingAcrossClientsEnabled = false;
+
     @Parameter(names = "-diagnosticsThresholdDuration", description = "Latency threshold for printing diagnostics", converter = DurationConverter.class)
     private Duration diagnosticsThresholdDuration = Duration.ofSeconds(60);
 
@@ -486,6 +489,10 @@ public class Configuration {
 
     public Integer getMaxConnectionPoolSize() {
         return maxConnectionPoolSize;
+    }
+
+    public boolean isConnectionSharingAcrossClientsEnabled() {
+        return connectionSharingAcrossClientsEnabled;
     }
 
     public ConnectionMode getConnectionMode() {
