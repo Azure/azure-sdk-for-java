@@ -95,6 +95,9 @@ public class Configuration {
     @Parameter(names = "-enableJvmStats", description = "Enables JVM Stats")
     private boolean enableJvmStats;
 
+    @Parameter(names = "-enableNettyHttpMetrics", description = "Enables Reactor Netty HTTP client metrics (connection pool gauges via COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED)")
+    private boolean enableNettyHttpMetrics;
+
     @Parameter(names = "-throughput", description = "provisioned throughput for test container")
     private int throughput = 100000;
 
@@ -545,6 +548,10 @@ public class Configuration {
 
     public boolean isEnableJvmStats() {
         return enableJvmStats;
+    }
+
+    public boolean isEnableNettyHttpMetrics() {
+        return enableNettyHttpMetrics;
     }
 
     public MeterRegistry getAzureMonitorMeterRegistry() {

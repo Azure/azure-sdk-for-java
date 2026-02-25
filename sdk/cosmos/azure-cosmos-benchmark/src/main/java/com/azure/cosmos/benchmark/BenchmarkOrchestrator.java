@@ -71,6 +71,12 @@ public class BenchmarkOrchestrator {
             logger.info("JVM stats enabled (gc, threads, memory, threadPrefix)");
         }
 
+        // Enable Reactor Netty HTTP connection pool metrics if configured
+        if (config.isEnableNettyHttpMetrics()) {
+            System.setProperty("COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED", "true");
+            logger.info("Reactor Netty HTTP connection pool metrics enabled");
+        }
+
         // Build Cosmos micrometer registry (App Insights / Graphite) once, reuse everywhere
         MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
         if (cosmosMicrometerRegistry != null) {

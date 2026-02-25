@@ -32,6 +32,7 @@ public class BenchmarkConfig {
     private boolean suppressCleanup = false;
     private boolean gcBetweenCycles = true;
     private boolean enableJvmStats = false;
+    private boolean enableNettyHttpMetrics = false;
 
     // -- Reporting --
     private String reportingDirectory;
@@ -71,6 +72,7 @@ public class BenchmarkConfig {
 
         config.gcBetweenCycles = cfg.isGcBetweenCycles();
         config.enableJvmStats = cfg.isEnableJvmStats();
+        config.enableNettyHttpMetrics = cfg.isEnableNettyHttpMetrics();
 
         // Reporting
         config.reportingDirectory = cfg.getReportingDirectory() != null
@@ -113,6 +115,7 @@ public class BenchmarkConfig {
     public boolean isSuppressCleanup() { return suppressCleanup; }
     public boolean isGcBetweenCycles() { return gcBetweenCycles; }
     public boolean isEnableJvmStats() { return enableJvmStats; }
+    public boolean isEnableNettyHttpMetrics() { return enableNettyHttpMetrics; }
 
     public String getReportingDirectory() { return reportingDirectory; }
     public String getGraphiteEndpoint() { return graphiteEndpoint; }
