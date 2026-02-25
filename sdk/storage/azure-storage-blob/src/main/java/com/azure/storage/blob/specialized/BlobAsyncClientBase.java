@@ -1169,11 +1169,10 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
-        return downloadStreamWithResponse(new BlobDownloadStreamOptions()
-        .setRange(range)
-        .setDownloadRetryOptions(options)
-        .setRequestConditions(requestConditions)
-        .setRetrieveContentRangeMd5(getRangeContentMd5));
+        return downloadStreamWithResponse(new BlobDownloadStreamOptions().setRange(range)
+            .setDownloadRetryOptions(options)
+            .setRequestConditions(requestConditions)
+            .setRetrieveContentRangeMd5(getRangeContentMd5));
     }
 
     /**
@@ -1225,9 +1224,8 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
-        return downloadContentWithResponse(new BlobDownloadContentOptions()
-        .setDownloadRetryOptions(options)
-        .setRequestConditions(requestConditions));
+        return downloadContentWithResponse(
+            new BlobDownloadContentOptions().setDownloadRetryOptions(options).setRequestConditions(requestConditions));
     }
 
     /**

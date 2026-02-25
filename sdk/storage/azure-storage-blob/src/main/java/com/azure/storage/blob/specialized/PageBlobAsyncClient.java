@@ -494,9 +494,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions) {
-        return uploadPagesWithResponse(new PageBlobUploadPagesOptions(pageRange, body)
-        .setContentMd5(contentMd5)
-        .setRequestConditions(pageBlobRequestConditions));
+        return uploadPagesWithResponse(new PageBlobUploadPagesOptions(pageRange, body).setContentMd5(contentMd5)
+            .setRequestConditions(pageBlobRequestConditions));
     }
 
     /**
@@ -511,7 +510,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
         if (options.getBodyFlux() == null) {
-            return monoError(LOGGER, new IllegalArgumentException("PageBlobUploadPagesOptions must be constructed with Flux for async client."));
+            return monoError(LOGGER, new IllegalArgumentException(
+                "PageBlobUploadPagesOptions must be constructed with Flux for async client."));
         }
         try {
             return withContext(context -> uploadPagesWithResponseInternal(options.getPageRange(), options.getBodyFlux(),

@@ -1276,11 +1276,12 @@ public class BlobClientBase {
     public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
-        return downloadStreamWithResponse(stream, new BlobDownloadStreamOptions()
-            .setRange(range)
-            .setDownloadRetryOptions(options)
-            .setRequestConditions(requestConditions)
-            .setRetrieveContentRangeMd5(getRangeContentMd5), timeout, context);
+        return downloadStreamWithResponse(stream,
+            new BlobDownloadStreamOptions().setRange(range)
+                .setDownloadRetryOptions(options)
+                .setRequestConditions(requestConditions)
+                .setRetrieveContentRangeMd5(getRangeContentMd5),
+            timeout, context);
     }
 
     /**
@@ -1295,14 +1296,16 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobDownloadStreamOptions options,
         Duration timeout, Context context) {
-            StorageImplUtils.assertNotNull("stream", stream);
-            options = options == null ? new BlobDownloadStreamOptions() : options;
-            Mono<BlobDownloadResponse> download = client
-                .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(), options.getRequestConditions(), options.isRetrieveContentRangeMd5(), options.getResponseChecksumAlgorithm(), context)
-                .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
-                    .thenReturn(new BlobDownloadResponse(response)));
-    
-            return blockWithOptionalTimeout(download, timeout);
+        StorageImplUtils.assertNotNull("stream", stream);
+        options = options == null ? new BlobDownloadStreamOptions() : options;
+        Mono<BlobDownloadResponse> download = client
+            .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
+                options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
+                options.getResponseChecksumAlgorithm(), context)
+            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
+                .thenReturn(new BlobDownloadResponse(response)));
+
+        return blockWithOptionalTimeout(download, timeout);
     }
 
     /**
@@ -1339,9 +1342,9 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobDownloadContentResponse downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        return downloadContentWithResponse(new BlobDownloadContentOptions()
-        .setDownloadRetryOptions(options)
-        .setRequestConditions(requestConditions), timeout, context);
+        return downloadContentWithResponse(
+            new BlobDownloadContentOptions().setDownloadRetryOptions(options).setRequestConditions(requestConditions),
+            timeout, context);
     }
 
     /**
@@ -1382,14 +1385,12 @@ public class BlobClientBase {
     public BlobDownloadContentResponse downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions, BlobRange range, boolean getRangeContentMd5, Duration timeout,
         Context context) {
-        return downloadContentWithResponse(new BlobDownloadContentOptions()
-        .setDownloadRetryOptions(options)
-        .setRequestConditions(requestConditions)
-        .setRange(range)
-        .setRetrieveContentRangeMd5(getRangeContentMd5), timeout, context);
+        return downloadContentWithResponse(new BlobDownloadContentOptions().setDownloadRetryOptions(options)
+            .setRequestConditions(requestConditions)
+            .setRange(range)
+            .setRetrieveContentRangeMd5(getRangeContentMd5), timeout, context);
     }
 
-    
     /**
      * Downloads blob content (full blob or range) with options.
      *
@@ -1403,13 +1404,15 @@ public class BlobClientBase {
         Context context) {
         options = options == null ? new BlobDownloadContentOptions() : options;
         Mono<BlobDownloadContentResponse> download = client
-        .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(), options.getRequestConditions(), options.isRetrieveContentRangeMd5(), options.getResponseChecksumAlgorithm(), context)
-        .flatMap(r -> BinaryData.fromFlux(r.getValue())
-            .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                data, r.getDeserializedHeaders())))
-        .map(BlobDownloadContentResponse::new);
+            .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
+                options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
+                options.getResponseChecksumAlgorithm(), context)
+            .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                    data, r.getDeserializedHeaders())))
+            .map(BlobDownloadContentResponse::new);
 
-    return blockWithOptionalTimeout(download, timeout);
+        return blockWithOptionalTimeout(download, timeout);
     }
 
     /**

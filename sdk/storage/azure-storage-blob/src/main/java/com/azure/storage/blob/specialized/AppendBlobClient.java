@@ -227,7 +227,8 @@ public final class AppendBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream(AppendBlobOutputStreamOptions options) {
         options = options == null ? new AppendBlobOutputStreamOptions() : options;
-        return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, options.getRequestConditions(), options.getRequestChecksumAlgorithm());
+        return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, options.getRequestConditions(),
+            options.getRequestChecksumAlgorithm());
     }
 
     /**
@@ -544,7 +545,8 @@ public final class AppendBlobClient extends BlobClientBase {
 
         // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service versions
         // support up to 4MB
-        fbb = Utility.convertStreamToByteBuffer(options.getBodyStream(), options.getLength(), getMaxAppendBlockBytes(), true);
+        fbb = Utility.convertStreamToByteBuffer(options.getBodyStream(), options.getLength(), getMaxAppendBlockBytes(),
+            true);
 
         Mono<Response<AppendBlobItem>> response
             = appendBlobAsyncClient.appendBlockWithResponseInternal(fbb, options.getLength(), options.getContentMd5(),

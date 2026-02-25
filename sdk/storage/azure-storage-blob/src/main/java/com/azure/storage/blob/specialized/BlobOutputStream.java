@@ -53,7 +53,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client,
-        final AppendBlobRequestConditions appendBlobRequestConditions, final StorageChecksumAlgorithm requestChecksumAlgorithm) {
+        final AppendBlobRequestConditions appendBlobRequestConditions,
+        final StorageChecksumAlgorithm requestChecksumAlgorithm) {
         return new AppendBlobOutputStream(client, appendBlobRequestConditions, requestChecksumAlgorithm);
     }
 
