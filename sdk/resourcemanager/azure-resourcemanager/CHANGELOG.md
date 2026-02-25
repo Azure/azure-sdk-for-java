@@ -12,7 +12,24 @@
 
 - Updated `api-version` to `2025-05-01`.
 
-### Other Changes
+### azure-resourcemanager-appservice
+
+### Breaking Changes
+
+- Removed `withPassword` method from `CertificatePatchResource` class. The password property is read-only.
+
+#### Changes to `WebSiteManagementClient` Class
+
+- Moved `AppServiceManager.serviceClient().getCertificateRegistrationProviders()` to `AppServiceManager.certificateRegistrationClient().getCertificateRegistrationProviders()`.
+- Moved `AppServiceManager.serviceClient().getAppServiceCertificateOrders()` to `AppServiceManager.certificateRegistrationClient().getAppServiceCertificateOrders()`.
+- Moved `AppServiceManager.serviceClient().getCertificateOrdersDiagnostics()` to `AppServiceManager.certificateRegistrationClient().getCertificateOrdersDiagnostics()`.
+- Moved `AppServiceManager.serviceClient().getDomainRegistrationProviders()` to `AppServiceManager.domainRegistrationClient().getDomainRegistrationProviders()`.
+- Moved `AppServiceManager.serviceClient().getDomains()` to `AppServiceManager.domainRegistrationClient().getDomains()`.
+- Moved `AppServiceManager.serviceClient().getTopLevelDomains()` to `AppServiceManager.domainRegistrationClient().getTopLevelDomains()`.
+
+#### Dependency Updates
+
+- Updated `api-version` of AppService to `2025-05-01`.
 
 ## 2.59.0 (2026-01-30)
 
