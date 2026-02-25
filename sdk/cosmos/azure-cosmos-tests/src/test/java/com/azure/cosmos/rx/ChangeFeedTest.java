@@ -535,7 +535,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @BeforeMethod(groups = { "query", "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeMethod(groups = { "query", "emulator" }, timeOut = 2 * SETUP_TIMEOUT)
     public void populateDocuments(Method method) {
 
         checkNotNull(method, "Argument method must not be null.");

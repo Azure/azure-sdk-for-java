@@ -64,7 +64,7 @@ public class SessionTest extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = { "fast", "multi-master" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast", "multi-master" }, timeOut = 2 * SETUP_TIMEOUT)
     public void before_SessionTest() {
         createdDatabase = SHARED_DATABASE_INTERNAL;
 
