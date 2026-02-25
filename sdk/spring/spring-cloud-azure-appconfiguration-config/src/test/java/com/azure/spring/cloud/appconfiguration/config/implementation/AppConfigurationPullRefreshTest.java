@@ -22,9 +22,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 
-import net.jcip.annotations.NotThreadSafe;
-
-@NotThreadSafe
 public class AppConfigurationPullRefreshTest {
 
     @Mock
