@@ -1,8 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents;
+package com.azure.ai.agents.tools;
 
+import com.azure.ai.agents.AgentsAsyncClient;
+import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.AgentsServiceVersion;
+import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.*;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -19,7 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * This sample demonstrates how to create an Azure AI Agent with the MCP (Model Context Protocol) tool
  * and use it to get responses that involve MCP server calls using the async client.
  */
-public class AsyncMCPAgent {
+public class McpAgentAsync {
     public static void main(String[] args) throws InterruptedException {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_MODEL");
