@@ -6,6 +6,7 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
@@ -17,6 +18,7 @@ public final class BlockBlobStageBlockOptions {
     private final BinaryData data;
     private String leaseId;
     private byte[] contentMd5;
+    private StorageChecksumAlgorithm requestChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link BlockBlobStageBlockOptions}.
@@ -95,6 +97,28 @@ public final class BlockBlobStageBlockOptions {
      */
     public BlockBlobStageBlockOptions setContentMd5(byte[] contentMd5) {
         this.contentMd5 = CoreUtils.clone(contentMd5);
+        return this;
+    }
+
+    /**
+     * Gets the algorithm to use for request content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     *
+     * @return The request checksum algorithm.
+     */
+    public StorageChecksumAlgorithm getRequestChecksumAlgorithm() {
+        return requestChecksumAlgorithm;
+    }
+
+    /**
+     * Sets the algorithm to use for request content validation. When set to {@link StorageChecksumAlgorithm#AUTO} or
+     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will compute and send checksums for upload validation.
+     * Default is {@link StorageChecksumAlgorithm#NONE}.
+     *
+     * @param requestChecksumAlgorithm The request checksum algorithm.
+     * @return The updated options.
+     */
+    public BlockBlobStageBlockOptions setRequestChecksumAlgorithm(StorageChecksumAlgorithm requestChecksumAlgorithm) {
+        this.requestChecksumAlgorithm = requestChecksumAlgorithm;
         return this;
     }
 }

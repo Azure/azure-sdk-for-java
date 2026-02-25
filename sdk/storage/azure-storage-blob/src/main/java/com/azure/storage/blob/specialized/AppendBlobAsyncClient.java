@@ -34,10 +34,12 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
+import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -451,9 +453,34 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions) {
+        if (data == null) {
+            return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
+        }
+        return appendBlockWithResponse(new AppendBlobAppendBlockOptions(data, length).setContentMd5(contentMd5)
+            .setRequestConditions(appendBlobRequestConditions));
+    }
+
+    /**
+     * Commits a new block of data to the end of the existing append blob with options.
+     *
+     * @param options {@link AppendBlobAppendBlockOptions} containing the block data.
+     * @return A {@link Mono} containing {@link Response} whose value contains the append blob operation.
+     * @throws NullPointerException If {@code options} is null.
+     * @throws IllegalArgumentException If options were not constructed with Flux (async client).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AppendBlobItem>> appendBlockWithResponse(AppendBlobAppendBlockOptions options) {
         try {
-            return withContext(
-                context -> appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, context));
+            if (options == null) {
+                return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
+            }
+            if (options.getBodyFlux() == null) {
+                return monoError(LOGGER, new IllegalArgumentException(
+                    "AppendBlobAppendBlockOptions must be constructed with Flux for async client."));
+            }
+            return withContext(context -> appendBlockWithResponseInternal(options.getBodyFlux(), options.getLength(),
+                options.getContentMd5(), options.getRequestConditions(), options.getRequestChecksumAlgorithm(),
+                context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -461,9 +488,15 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Context context) {
+        // Prevents revapi visibility increased error
+        return appendBlockWithResponseInternal(data, length, contentMd5, appendBlobRequestConditions, null, context);
+    }
 
+    Mono<Response<AppendBlobItem>> appendBlockWithResponseInternal(Flux<ByteBuffer> data, long length,
+        byte[] contentMd5, AppendBlobRequestConditions appendBlobRequestConditions,
+        StorageChecksumAlgorithm requestChecksumAlgorithm, Context context) {
         if (data == null) {
-            return Mono.error(new NullPointerException("'data' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
 
         appendBlobRequestConditions

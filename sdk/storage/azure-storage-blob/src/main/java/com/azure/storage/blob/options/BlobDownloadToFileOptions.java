@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.nio.file.OpenOption;
@@ -25,6 +26,7 @@ public class BlobDownloadToFileOptions {
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
     private Set<OpenOption> openOptions;
+    private StorageChecksumAlgorithm responseChecksumAlgorithm;
 
     /**
      * Constructs a {@link BlobDownloadToFileOptions}.
@@ -163,6 +165,28 @@ public class BlobDownloadToFileOptions {
      */
     public BlobDownloadToFileOptions setOpenOptions(Set<OpenOption> openOptions) {
         this.openOptions = openOptions;
+        return this;
+    }
+
+    /**
+     * Gets the algorithm to use for response content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     *
+     * @return The response checksum algorithm.
+     */
+    public StorageChecksumAlgorithm getResponseChecksumAlgorithm() {
+        return responseChecksumAlgorithm;
+    }
+
+    /**
+     * Sets the algorithm to use for response content validation. When set to {@link StorageChecksumAlgorithm#AUTO} or
+     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will validate response payload checksums during download.
+     * Default is {@link StorageChecksumAlgorithm#NONE}.
+     *
+     * @param responseChecksumAlgorithm The response checksum algorithm.
+     * @return The updated options.
+     */
+    public BlobDownloadToFileOptions setResponseChecksumAlgorithm(StorageChecksumAlgorithm responseChecksumAlgorithm) {
+        this.responseChecksumAlgorithm = responseChecksumAlgorithm;
         return this;
     }
 }
