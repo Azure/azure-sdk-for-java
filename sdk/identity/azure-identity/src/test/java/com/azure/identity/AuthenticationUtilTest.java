@@ -24,7 +24,7 @@ public class AuthenticationUtilTest {
     @Test
     public void testGetBearerTokenSupplier() {
         HttpClient mockHttpClient = new HttpClient() {
-            
+
             @Override
             public HttpResponse sendSync(HttpRequest httpRequest, Context context) {
                 return new MockHttpResponse(httpRequest, 200);
