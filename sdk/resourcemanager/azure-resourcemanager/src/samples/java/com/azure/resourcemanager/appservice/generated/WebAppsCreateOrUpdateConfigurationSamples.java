@@ -32,7 +32,7 @@ public final class WebAppsCreateOrUpdateConfigurationSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .createOrUpdateConfigurationWithResponse("testrg123", "sitef6141",
+            .createOrUpdateConfiguration("testrg123", "sitef6141",
                 new SiteConfigResourceInner().withNumberOfWorkers(1)
                     .withDefaultDocuments(Arrays.asList("Default.htm", "Default.html", "Default.asp", "index.htm",
                         "index.html", "iisstart.htm", "default.aspx", "index.php", "hostingstart.html"))

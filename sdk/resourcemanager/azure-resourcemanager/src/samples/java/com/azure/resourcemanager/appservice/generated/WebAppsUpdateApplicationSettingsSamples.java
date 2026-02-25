@@ -26,7 +26,7 @@ public final class WebAppsUpdateApplicationSettingsSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .updateApplicationSettingsWithResponse("testrg123", "sitef6141",
+            .updateApplicationSettings("testrg123", "sitef6141",
                 new StringDictionaryInner().withProperties(mapOf("Setting1", "Value1", "Setting2", "Value2")),
                 com.azure.core.util.Context.NONE);
     }

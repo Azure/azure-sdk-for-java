@@ -24,7 +24,7 @@ public final class WebAppsUpdateSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .updateWithResponse("testrg123", "sitef6141", new SitePatchResourceInner().withServerFarmId(
+            .update("testrg123", "sitef6141", new SitePatchResourceInner().withServerFarmId(
                 "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
                 com.azure.core.util.Context.NONE);
     }
