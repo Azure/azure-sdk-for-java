@@ -1,8 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents;
+package com.azure.ai.agents.tools;
 
+import com.azure.ai.agents.AgentsClient;
+import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.AgentsServiceVersion;
+import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FunctionTool;
@@ -61,7 +65,7 @@ public class FunctionCallAgent {
 
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(agentReference, 
+            Response response = responsesClient.createWithAgent(agentReference,
                     ResponseCreateParams.builder().input("What's the weather like in Seattle?"));
 
             // Process and display the response

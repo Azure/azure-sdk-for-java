@@ -1,8 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents;
+package com.azure.ai.agents.tools;
 
+import com.azure.ai.agents.AgentsAsyncClient;
+import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.AgentsServiceVersion;
+import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FunctionTool;
@@ -26,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * This sample demonstrates how to create an Azure AI Agent with the Function tool
  * and use it to get responses that involve function calls using the async client.
  */
-public class AsyncFunctionCallAgent {
+public class FunctionCallAgentAsync {
     public static void main(String[] args) throws InterruptedException {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_MODEL");
