@@ -1993,7 +1993,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setTags(Map<String, String> tags) {
-        return this.setTagsWithResponse(new DataLakeSetTagsOptions(tags)).map(Response::getValue);
+        return this.setTagsWithResponse(new DataLakeSetTagsOptions(tags)).flatMap(FluxUtil::toMono);
     }
 
     /**
