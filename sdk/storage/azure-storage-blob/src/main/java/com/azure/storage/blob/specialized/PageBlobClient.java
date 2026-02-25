@@ -564,6 +564,10 @@ public final class PageBlobClient extends BlobClientBase {
      * @param timeout An optional timeout value.
      * @param context Additional context.
      * @return The information of the uploaded pages.
+     * @throws NullPointerException If {@code options} is {@code null}.
+     * @throws IllegalArgumentException if options is not constructed with InputStream.
+     * @throws UnexpectedLengthException If the length of the data read from the provided stream does not match the
+     * expected length based on the specified page range.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> uploadPagesWithResponse(PageBlobUploadPagesOptions options, Duration timeout,

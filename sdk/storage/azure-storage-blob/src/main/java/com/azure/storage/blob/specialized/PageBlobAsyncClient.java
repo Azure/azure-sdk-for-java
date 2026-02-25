@@ -494,6 +494,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions) {
+        if (body == null) {
+            return monoError(LOGGER, new NullPointerException("'body' cannot be null."));
+        }
         return uploadPagesWithResponse(new PageBlobUploadPagesOptions(pageRange, body).setContentMd5(contentMd5)
             .setRequestConditions(pageBlobRequestConditions));
     }

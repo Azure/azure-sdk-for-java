@@ -453,6 +453,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions) {
+        if (data == null) {
+            return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
+        }
         return appendBlockWithResponse(new AppendBlobAppendBlockOptions(data, length).setContentMd5(contentMd5)
             .setRequestConditions(appendBlobRequestConditions));
     }
