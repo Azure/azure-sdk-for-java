@@ -18,7 +18,7 @@ public final class AutoUpgradeProfilesListByFleetSamples {
      */
     public static void listsTheAutoUpgradeProfileResourcesByFleet(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.autoUpgradeProfiles().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
+        manager.autoUpgradeProfiles().listByFleet("rg1", "fleet1", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -31,6 +31,6 @@ public final class AutoUpgradeProfilesListByFleetSamples {
      */
     public static void listsTheAutoUpgradeProfileResourcesByFleetGeneratedByMaximumSetRule(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.autoUpgradeProfiles().listByFleet("rgfleets", "fleet1", com.azure.core.util.Context.NONE);
+        manager.autoUpgradeProfiles().listByFleet("rgfleets", "fleet1", null, null, com.azure.core.util.Context.NONE);
     }
 }

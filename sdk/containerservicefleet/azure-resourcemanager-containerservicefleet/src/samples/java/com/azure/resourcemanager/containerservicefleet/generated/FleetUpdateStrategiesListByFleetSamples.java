@@ -18,7 +18,7 @@ public final class FleetUpdateStrategiesListByFleetSamples {
      */
     public static void listTheFleetUpdateStrategyResourcesByFleet(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetUpdateStrategies().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
+        manager.fleetUpdateStrategies().listByFleet("rg1", "fleet1", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -31,6 +31,6 @@ public final class FleetUpdateStrategiesListByFleetSamples {
      */
     public static void listTheFleetUpdateStrategyResourcesByFleetGeneratedByMaximumSetRule(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetUpdateStrategies().listByFleet("rgfleets", "fleet1", com.azure.core.util.Context.NONE);
+        manager.fleetUpdateStrategies().listByFleet("rgfleets", "fleet1", null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -140,6 +140,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
         Mono<Response<UpdateRunListResult>> listByFleet(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -149,6 +150,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
         Response<UpdateRunListResult> listByFleetSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -825,6 +827,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -832,14 +836,34 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UpdateRunInner>> listByFleetSinglePageAsync(String resourceGroupName, String fleetName) {
+    private Mono<PagedResponse<UpdateRunInner>> listByFleetSinglePageAsync(String resourceGroupName, String fleetName,
+        Integer top, String skipToken) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFleet(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, fleetName, top, skipToken, accept, context))
             .<PagedResponse<UpdateRunInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List UpdateRun resources by Fleet.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a UpdateRun list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<UpdateRunInner> listByFleetAsync(String resourceGroupName, String fleetName, Integer top,
+        String skipToken) {
+        return new PagedFlux<>(() -> listByFleetSinglePageAsync(resourceGroupName, fleetName, top, skipToken),
+            nextLink -> listByFleetNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -854,7 +878,9 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UpdateRunInner> listByFleetAsync(String resourceGroupName, String fleetName) {
-        return new PagedFlux<>(() -> listByFleetSinglePageAsync(resourceGroupName, fleetName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listByFleetSinglePageAsync(resourceGroupName, fleetName, top, skipToken),
             nextLink -> listByFleetNextSinglePageAsync(nextLink));
     }
 
@@ -863,17 +889,20 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a UpdateRun list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<UpdateRunInner> listByFleetSinglePage(String resourceGroupName, String fleetName) {
+    private PagedResponse<UpdateRunInner> listByFleetSinglePage(String resourceGroupName, String fleetName, Integer top,
+        String skipToken) {
         final String accept = "application/json";
         Response<UpdateRunListResult> res
             = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, Context.NONE);
+                this.client.getSubscriptionId(), resourceGroupName, fleetName, top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -883,6 +912,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -890,12 +921,12 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @return the response of a UpdateRun list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<UpdateRunInner> listByFleetSinglePage(String resourceGroupName, String fleetName,
-        Context context) {
+    private PagedResponse<UpdateRunInner> listByFleetSinglePage(String resourceGroupName, String fleetName, Integer top,
+        String skipToken, Context context) {
         final String accept = "application/json";
         Response<UpdateRunListResult> res
             = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, context);
+                this.client.getSubscriptionId(), resourceGroupName, fleetName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -912,7 +943,9 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateRunInner> listByFleet(String resourceGroupName, String fleetName) {
-        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName, top, skipToken),
             nextLink -> listByFleetNextSinglePage(nextLink));
     }
 
@@ -921,6 +954,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -928,8 +963,9 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @return the response of a UpdateRun list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UpdateRunInner> listByFleet(String resourceGroupName, String fleetName, Context context) {
-        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName, context),
+    public PagedIterable<UpdateRunInner> listByFleet(String resourceGroupName, String fleetName, Integer top,
+        String skipToken, Context context) {
+        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName, top, skipToken, context),
             nextLink -> listByFleetNextSinglePage(nextLink, context));
     }
 

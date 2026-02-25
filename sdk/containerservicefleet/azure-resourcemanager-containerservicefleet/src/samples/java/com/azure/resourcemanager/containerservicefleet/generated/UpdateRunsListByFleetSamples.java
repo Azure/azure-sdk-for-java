@@ -18,7 +18,7 @@ public final class UpdateRunsListByFleetSamples {
      */
     public static void listsTheUpdateRunResourcesByFleet(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.updateRuns().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
+        manager.updateRuns().listByFleet("rg1", "fleet1", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -31,6 +31,6 @@ public final class UpdateRunsListByFleetSamples {
      */
     public static void listsTheUpdateRunResourcesByFleetGeneratedByMaximumSetRule(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.updateRuns().listByFleet("rgfleets", "fleet1", com.azure.core.util.Context.NONE);
+        manager.updateRuns().listByFleet("rgfleets", "fleet1", null, null, com.azure.core.util.Context.NONE);
     }
 }

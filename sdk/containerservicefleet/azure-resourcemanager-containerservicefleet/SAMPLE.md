@@ -234,7 +234,7 @@ public final class AutoUpgradeProfilesListByFleetSamples {
      */
     public static void listsTheAutoUpgradeProfileResourcesByFleet(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.autoUpgradeProfiles().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
+        manager.autoUpgradeProfiles().listByFleet("rg1", "fleet1", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -247,7 +247,7 @@ public final class AutoUpgradeProfilesListByFleetSamples {
      */
     public static void listsTheAutoUpgradeProfileResourcesByFleetGeneratedByMaximumSetRule(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.autoUpgradeProfiles().listByFleet("rgfleets", "fleet1", com.azure.core.util.Context.NONE);
+        manager.autoUpgradeProfiles().listByFleet("rgfleets", "fleet1", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -589,7 +589,7 @@ public final class FleetMembersListByFleetSamples {
      */
     public static void listsTheMembersOfAFleetGeneratedByMaximumSetRule(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetMembers().listByFleet("rgfleets", "fleet1", com.azure.core.util.Context.NONE);
+        manager.fleetMembers().listByFleet("rgfleets", "fleet1", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -602,7 +602,7 @@ public final class FleetMembersListByFleetSamples {
      */
     public static void
         listsTheMembersOfAFleet(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetMembers().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
+        manager.fleetMembers().listByFleet("rg1", "fleet1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -803,7 +803,7 @@ public final class FleetUpdateStrategiesListByFleetSamples {
      */
     public static void listTheFleetUpdateStrategyResourcesByFleet(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetUpdateStrategies().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
+        manager.fleetUpdateStrategies().listByFleet("rg1", "fleet1", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -816,7 +816,7 @@ public final class FleetUpdateStrategiesListByFleetSamples {
      */
     public static void listTheFleetUpdateStrategyResourcesByFleetGeneratedByMaximumSetRule(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetUpdateStrategies().listByFleet("rgfleets", "fleet1", com.azure.core.util.Context.NONE);
+        manager.fleetUpdateStrategies().listByFleet("rgfleets", "fleet1", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -990,7 +990,7 @@ public final class FleetsListSamples {
      */
     public static void listsTheFleetResourcesInASubscriptionGeneratedByMaximumSetRule(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleets().list(com.azure.core.util.Context.NONE);
+        manager.fleets().list(null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1003,7 +1003,7 @@ public final class FleetsListSamples {
      */
     public static void listsTheFleetResourcesInASubscription(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleets().list(com.azure.core.util.Context.NONE);
+        manager.fleets().list(null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1198,7 +1198,7 @@ public final class GatesListByFleetSamples {
      */
     public static void
         listsTheGatesOfAFleet(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.gates().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
+        manager.gates().listByFleet("rg1", "fleet1", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1211,7 +1211,7 @@ public final class GatesListByFleetSamples {
      */
     public static void gatesListByFleetMaximumSet(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.gates().listByFleet("rgfleets", "fleet-1", com.azure.core.util.Context.NONE);
+        manager.gates().listByFleet("rgfleets", "fleet-1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1480,7 +1480,7 @@ public final class UpdateRunsListByFleetSamples {
      */
     public static void listsTheUpdateRunResourcesByFleet(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.updateRuns().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
+        manager.updateRuns().listByFleet("rg1", "fleet1", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1493,7 +1493,7 @@ public final class UpdateRunsListByFleetSamples {
      */
     public static void listsTheUpdateRunResourcesByFleetGeneratedByMaximumSetRule(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.updateRuns().listByFleet("rgfleets", "fleet1", com.azure.core.util.Context.NONE);
+        manager.updateRuns().listByFleet("rgfleets", "fleet1", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
