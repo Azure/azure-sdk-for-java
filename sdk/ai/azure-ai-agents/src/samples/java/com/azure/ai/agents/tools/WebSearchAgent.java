@@ -60,7 +60,7 @@ public class WebSearchAgent {
             // Process and display the response
             System.out.println("\n=== Agent Response ===");
             for (ResponseOutputItem outputItem : response.output()) {
-//                Handle message output
+                // Handle message output
                 if (outputItem.message().isPresent()) {
                     ResponseOutputMessage message = outputItem.message().get();
                     message.content().forEach(content -> {
