@@ -147,6 +147,7 @@ public final class InputItemFunctionShellCallItemParam extends InputItem {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("environment", this.environment);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,6 +168,7 @@ public final class InputItemFunctionShellCallItemParam extends InputItem {
             InputItemType type = InputItemType.SHELL_CALL;
             String id = null;
             FunctionShellCallItemStatus status = null;
+            FunctionShellCallItemParamEnvironment environment = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -180,6 +182,8 @@ public final class InputItemFunctionShellCallItemParam extends InputItem {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     status = FunctionShellCallItemStatus.fromString(reader.getString());
+                } else if ("environment".equals(fieldName)) {
+                    environment = FunctionShellCallItemParamEnvironment.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -189,7 +193,36 @@ public final class InputItemFunctionShellCallItemParam extends InputItem {
             deserializedInputItemFunctionShellCallItemParam.type = type;
             deserializedInputItemFunctionShellCallItemParam.id = id;
             deserializedInputItemFunctionShellCallItemParam.status = status;
+            deserializedInputItemFunctionShellCallItemParam.environment = environment;
             return deserializedInputItemFunctionShellCallItemParam;
         });
+    }
+
+    /*
+     * The environment property.
+     */
+    @Generated
+    private FunctionShellCallItemParamEnvironment environment;
+
+    /**
+     * Get the environment property: The environment property.
+     *
+     * @return the environment value.
+     */
+    @Generated
+    public FunctionShellCallItemParamEnvironment getEnvironment() {
+        return this.environment;
+    }
+
+    /**
+     * Set the environment property: The environment property.
+     *
+     * @param environment the environment value to set.
+     * @return the InputItemFunctionShellCallItemParam object itself.
+     */
+    @Generated
+    public InputItemFunctionShellCallItemParam setEnvironment(FunctionShellCallItemParamEnvironment environment) {
+        this.environment = environment;
+        return this;
     }
 }

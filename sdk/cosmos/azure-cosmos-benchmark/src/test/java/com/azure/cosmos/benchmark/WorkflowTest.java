@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.codahale.metrics.MetricRegistry;
 import com.beust.jcommander.JCommander;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
@@ -67,7 +68,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg) {
+        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(TenantWorkloadConfig.fromConfiguration(cfg), new MetricRegistry()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -123,7 +124,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg) {
+        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(TenantWorkloadConfig.fromConfiguration(cfg), new MetricRegistry()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -164,7 +165,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg) {
+        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(TenantWorkloadConfig.fromConfiguration(cfg), new MetricRegistry()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -205,7 +206,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg) {
+        AsyncReadBenchmark wf = new AsyncReadBenchmark(TenantWorkloadConfig.fromConfiguration(cfg), new MetricRegistry()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -246,7 +247,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg) {
+        AsyncReadBenchmark wf = new AsyncReadBenchmark(TenantWorkloadConfig.fromConfiguration(cfg), new MetricRegistry()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();

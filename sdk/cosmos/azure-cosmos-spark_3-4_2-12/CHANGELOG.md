@@ -7,6 +7,12 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 4.43.1 (2026-02-25)
+
+#### Bugs Fixed
 * Fixed an issue where `TransientIOErrorsRetryingIterator` would trigger extra query during retries and on close. - See [PR 47996](https://github.com/Azure/azure-sdk-for-java/pull/47996)
 
 #### Other Changes

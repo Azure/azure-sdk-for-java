@@ -15,7 +15,7 @@ import java.io.IOException;
  * Web search tool call
  *
  * The results of a web search tool call. See the
- * [web search guide](https://platform.openai.com/docs/guides/tools-web-search) for more information.
+ * [web search guide](/docs/guides/tools-web-search) for more information.
  */
 @Immutable
 public final class InputItemWebSearchToolCall extends InputItem {
@@ -40,7 +40,7 @@ public final class InputItemWebSearchToolCall extends InputItem {
 
     /*
      * An object describing the specific action taken in this web search call.
-     * Includes details on how the model used the web (search, open_page, find).
+     * Includes details on how the model used the web (search, open_page, find_in_page).
      */
     @Generated
     private final BinaryData action;
@@ -78,7 +78,7 @@ public final class InputItemWebSearchToolCall extends InputItem {
 
     /**
      * Get the action property: An object describing the specific action taken in this web search call.
-     * Includes details on how the model used the web (search, open_page, find).
+     * Includes details on how the model used the web (search, open_page, find_in_page).
      *
      * @return the action value.
      */

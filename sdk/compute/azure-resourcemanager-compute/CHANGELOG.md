@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 2.56.2 (2026-02-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
 ## 2.56.1 (2026-01-29)
 
 ### Other Changes
