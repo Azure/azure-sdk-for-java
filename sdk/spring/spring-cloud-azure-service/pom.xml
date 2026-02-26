@@ -47,7 +47,7 @@
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>9.37.3</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>10.8</version> <!-- {x-version-update;springboot4_com.nimbusds:nimbus-jose-jwt;external_dependency} -->
     </dependency>
 
     <!-- Azure SDKs-->
@@ -216,7 +216,7 @@
               <includes>
                 <include>org.apache.kafka:kafka-clients:[4.1.1]</include> <!-- {x-include-update;springboot4_org.apache.kafka:kafka-clients;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.7.9]</include> <!-- {x-include-update;springboot4_org.postgresql:postgresql;external_dependency} -->
-                <include>com.nimbusds:nimbus-jose-jwt:[9.37.3]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+                <include>com.nimbusds:nimbus-jose-jwt:[10.8]</include> <!-- {x-include-update;springboot4_com.nimbusds:nimbus-jose-jwt;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
