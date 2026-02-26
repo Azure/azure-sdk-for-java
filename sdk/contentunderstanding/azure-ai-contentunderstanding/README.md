@@ -246,13 +246,13 @@ Content Understanding operations are asynchronous long-running operations. The w
 2. **Poll for Results** - Poll the operation location until the analysis completes
 3. **Process Results** - Extract and display the structured results
 
-The SDK provides `SyncPoller<T, U>` and `PollerFlux<T, U>` types that handle polling automatically. For analysis operations, the SDK returns pollers that provide access to the final `AnalyzeResult`.
+The SDK provides `SyncPoller<T, U>` and `PollerFlux<T, U>` types that handle polling automatically. For analysis operations, the SDK returns pollers that provide access to the final `AnalysisResult`.
 
 ### Main classes
 
 * **`ContentUnderstandingClient`** - The synchronous client for analyzing content, as well as creating, managing, and configuring analyzers
 * **`ContentUnderstandingAsyncClient`** - The asynchronous client with the same capabilities
-* **`AnalyzeResult`** - Contains the structured results of an analysis operation, including content elements, markdown, and metadata
+* **`AnalysisResult`** - Contains the structured results of an analysis operation, including content elements, markdown, and metadata
 
 ### Thread safety
 
