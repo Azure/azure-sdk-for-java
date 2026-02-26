@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.CosmosChangeFeedRequestOptionsImpl;
@@ -113,6 +114,20 @@ public final class CosmosChangeFeedRequestOptions {
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
         this.actualRequestOptions.setReadConsistencyStrategy(readConsistencyStrategy);
+        return this;
+    }
+
+    /**
+     * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} to be used for the request. If the config is already
+     * set on the client, then this will override the client level config for this request.
+     *
+     * @param cosmosEndToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * @return the CosmosChangeFeedRequestOptions
+     */
+    public CosmosChangeFeedRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(
+        CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
+
+        this.actualRequestOptions.setCosmosEndToEndLatencyPolicyConfig(cosmosEndToEndOperationLatencyPolicyConfig);
         return this;
     }
 
