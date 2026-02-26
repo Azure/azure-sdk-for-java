@@ -215,8 +215,4 @@ public class ReadConsistencyStrategyForGatewayE2ETests extends TestSuiteBase {
             .block();
     }
 
-    private enum GatewayVariant {
-        GATEWAY_V1,
-        GATEWAY_V2
-    }
 }
