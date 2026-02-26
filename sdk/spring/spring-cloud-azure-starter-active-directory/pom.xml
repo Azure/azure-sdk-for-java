@@ -79,7 +79,7 @@
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>9.37.3</version> <!-- {x-version-update;springboot4_com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>10.8</version> <!-- {x-version-update;springboot4_com.nimbusds:nimbus-jose-jwt;external_dependency} -->
     </dependency>
   </dependencies>
 

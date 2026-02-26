@@ -21,7 +21,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * The object type, which is always 'agent'.
      */
     @Generated
-    private final String object = "agent";
+    private final AgentObjectType object = AgentObjectType.AGENT;
 
     /*
      * The unique identifier of the agent.
@@ -61,7 +61,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * @return the object value.
      */
     @Generated
-    public String getObject() {
+    public AgentObjectType getObject() {
         return this.object;
     }
 
@@ -102,7 +102,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("versions", this.versions);
