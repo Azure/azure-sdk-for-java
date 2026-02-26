@@ -254,7 +254,8 @@ abstract class AsyncBenchmark<T> {
             }
         }
 
-        docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();
+        int prePopConcurrency = Math.min(cfg.getConcurrency(), 100);
+        docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), prePopConcurrency).collectList().block();
         logger.info("Finished pre-populating {} documents", cfg.getNumberOfPreCreatedDocuments());
 
         init();
