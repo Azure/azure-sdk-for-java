@@ -944,6 +944,11 @@
           "code": "java.class.removed",
           "old": "class com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource",
           "justification": "Model not used."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "com.azure.resourcemanager.appservice.models.ExpressionTraces",
+          "justification": "Model not used."
         }
       ]
     }
