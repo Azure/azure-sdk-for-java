@@ -28,6 +28,7 @@ import com.azure.resourcemanager.appservice.models.UsageState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Site resource specific properties.
@@ -296,7 +297,7 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
     /*
      * Specifies an operation id if this site has a pending operation.
      */
-    private String inProgressOperationId;
+    private UUID inProgressOperationId;
 
     /*
      * Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled' or an empty string.
@@ -1174,7 +1175,7 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
      * 
      * @return the inProgressOperationId value.
      */
-    public String inProgressOperationId() {
+    public UUID inProgressOperationId() {
         return this.inProgressOperationId;
     }
 
@@ -1535,7 +1536,8 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
                 } else if ("redundancyMode".equals(fieldName)) {
                     deserializedSitePropertiesInner.redundancyMode = RedundancyMode.fromString(reader.getString());
                 } else if ("inProgressOperationId".equals(fieldName)) {
-                    deserializedSitePropertiesInner.inProgressOperationId = reader.getString();
+                    deserializedSitePropertiesInner.inProgressOperationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedSitePropertiesInner.publicNetworkAccess = reader.getString();
                 } else if ("storageAccountRequired".equals(fieldName)) {

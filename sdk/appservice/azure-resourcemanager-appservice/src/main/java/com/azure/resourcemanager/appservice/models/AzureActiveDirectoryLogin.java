@@ -27,7 +27,7 @@ public final class AzureActiveDirectoryLogin implements JsonSerializable<AzureAc
      * <code>true</code> if the www-authenticate provider should be omitted from the request; otherwise,
      * <code>false</code>.
      */
-    private Boolean disableWWWAuthenticate;
+    private Boolean disableWwwAuthenticate;
 
     /**
      * Creates an instance of AzureActiveDirectoryLogin class.
@@ -58,24 +58,24 @@ public final class AzureActiveDirectoryLogin implements JsonSerializable<AzureAc
     }
 
     /**
-     * Get the disableWWWAuthenticate property: &lt;code&gt;true&lt;/code&gt; if the www-authenticate provider should be
+     * Get the disableWwwAuthenticate property: &lt;code&gt;true&lt;/code&gt; if the www-authenticate provider should be
      * omitted from the request; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
-     * @return the disableWWWAuthenticate value.
+     * @return the disableWwwAuthenticate value.
      */
-    public Boolean disableWWWAuthenticate() {
-        return this.disableWWWAuthenticate;
+    public Boolean disableWwwAuthenticate() {
+        return this.disableWwwAuthenticate;
     }
 
     /**
-     * Set the disableWWWAuthenticate property: &lt;code&gt;true&lt;/code&gt; if the www-authenticate provider should be
+     * Set the disableWwwAuthenticate property: &lt;code&gt;true&lt;/code&gt; if the www-authenticate provider should be
      * omitted from the request; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
-     * @param disableWWWAuthenticate the disableWWWAuthenticate value to set.
+     * @param disableWwwAuthenticate the disableWwwAuthenticate value to set.
      * @return the AzureActiveDirectoryLogin object itself.
      */
-    public AzureActiveDirectoryLogin withDisableWWWAuthenticate(Boolean disableWWWAuthenticate) {
-        this.disableWWWAuthenticate = disableWWWAuthenticate;
+    public AzureActiveDirectoryLogin withDisableWwwAuthenticate(Boolean disableWwwAuthenticate) {
+        this.disableWwwAuthenticate = disableWwwAuthenticate;
         return this;
     }
 
@@ -95,7 +95,7 @@ public final class AzureActiveDirectoryLogin implements JsonSerializable<AzureAc
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("loginParameters", this.loginParameters,
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("disableWWWAuthenticate", this.disableWWWAuthenticate);
+        jsonWriter.writeBooleanField("disableWWWAuthenticate", this.disableWwwAuthenticate);
         return jsonWriter.writeEndObject();
     }
 
@@ -118,7 +118,7 @@ public final class AzureActiveDirectoryLogin implements JsonSerializable<AzureAc
                     List<String> loginParameters = reader.readArray(reader1 -> reader1.getString());
                     deserializedAzureActiveDirectoryLogin.loginParameters = loginParameters;
                 } else if ("disableWWWAuthenticate".equals(fieldName)) {
-                    deserializedAzureActiveDirectoryLogin.disableWWWAuthenticate
+                    deserializedAzureActiveDirectoryLogin.disableWwwAuthenticate
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();

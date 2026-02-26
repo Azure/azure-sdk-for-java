@@ -13,6 +13,8 @@ import com.azure.resourcemanager.appservice.models.Channels;
 import com.azure.resourcemanager.appservice.models.NotificationLevel;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * RecommendationRule resource specific properties.
@@ -38,7 +40,7 @@ public final class RecommendationRuleProperties implements JsonSerializable<Reco
      * Recommendation ID of an associated recommendation object tied to the rule, if exists.
      * If such an object doesn't exist, it is set to null.
      */
-    private String recommendationId;
+    private UUID recommendationId;
 
     /*
      * Localized detailed description of the rule.
@@ -125,7 +127,7 @@ public final class RecommendationRuleProperties implements JsonSerializable<Reco
      * 
      * @return the recommendationId value.
      */
-    public String recommendationId() {
+    public UUID recommendationId() {
         return this.recommendationId;
     }
 
@@ -228,7 +230,7 @@ public final class RecommendationRuleProperties implements JsonSerializable<Reco
         jsonWriter.writeStringField("recommendationName", this.recommendationName);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeStringField("recommendationId", this.recommendationId);
+        jsonWriter.writeStringField("recommendationId", Objects.toString(this.recommendationId, null));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("actionName", this.actionName);
         jsonWriter.writeStringField("level", this.level == null ? null : this.level.toString());
@@ -262,7 +264,8 @@ public final class RecommendationRuleProperties implements JsonSerializable<Reco
                 } else if ("message".equals(fieldName)) {
                     deserializedRecommendationRuleProperties.message = reader.getString();
                 } else if ("recommendationId".equals(fieldName)) {
-                    deserializedRecommendationRuleProperties.recommendationId = reader.getString();
+                    deserializedRecommendationRuleProperties.recommendationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("description".equals(fieldName)) {
                     deserializedRecommendationRuleProperties.description = reader.getString();
                 } else if ("actionName".equals(fieldName)) {

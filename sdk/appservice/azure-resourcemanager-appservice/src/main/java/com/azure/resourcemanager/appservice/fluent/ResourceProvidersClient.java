@@ -426,7 +426,7 @@ public interface ResourceProvidersClient {
      * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<CustomHostnameSitesInner> listCustomHostNameSitesAsync(String hostname);
+    PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync(String hostname);
 
     /**
      * Get custom hostnames under this subscription.
@@ -437,7 +437,7 @@ public interface ResourceProvidersClient {
      * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<CustomHostnameSitesInner> listCustomHostNameSitesAsync();
+    PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync();
 
     /**
      * Get custom hostnames under this subscription.
@@ -448,7 +448,7 @@ public interface ResourceProvidersClient {
      * @return custom hostnames under this subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CustomHostnameSitesInner> listCustomHostNameSites();
+    PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites();
 
     /**
      * Get custom hostnames under this subscription.
@@ -462,7 +462,7 @@ public interface ResourceProvidersClient {
      * @return custom hostnames under this subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CustomHostnameSitesInner> listCustomHostNameSites(String hostname, Context context);
+    PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites(String hostname, Context context);
 
     /**
      * Get a list of available geographical regions.

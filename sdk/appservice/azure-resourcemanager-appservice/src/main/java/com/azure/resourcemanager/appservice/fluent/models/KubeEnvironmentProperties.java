@@ -73,7 +73,7 @@ public final class KubeEnvironmentProperties implements JsonSerializable<KubeEnv
     /*
      * The aksResourceID property.
      */
-    private String aksResourceID;
+    private String aksResourceId;
 
     /**
      * Creates an instance of KubeEnvironmentProperties class.
@@ -242,22 +242,22 @@ public final class KubeEnvironmentProperties implements JsonSerializable<KubeEnv
     }
 
     /**
-     * Get the aksResourceID property: The aksResourceID property.
+     * Get the aksResourceId property: The aksResourceID property.
      * 
-     * @return the aksResourceID value.
+     * @return the aksResourceId value.
      */
-    public String aksResourceID() {
-        return this.aksResourceID;
+    public String aksResourceId() {
+        return this.aksResourceId;
     }
 
     /**
-     * Set the aksResourceID property: The aksResourceID property.
+     * Set the aksResourceId property: The aksResourceID property.
      * 
-     * @param aksResourceID the aksResourceID value to set.
+     * @param aksResourceId the aksResourceId value to set.
      * @return the KubeEnvironmentProperties object itself.
      */
-    public KubeEnvironmentProperties withAksResourceID(String aksResourceID) {
-        this.aksResourceID = aksResourceID;
+    public KubeEnvironmentProperties withAksResourceId(String aksResourceId) {
+        this.aksResourceId = aksResourceId;
         return this;
     }
 
@@ -290,7 +290,7 @@ public final class KubeEnvironmentProperties implements JsonSerializable<KubeEnv
         jsonWriter.writeJsonField("arcConfiguration", this.arcConfiguration);
         jsonWriter.writeJsonField("appLogsConfiguration", this.appLogsConfiguration);
         jsonWriter.writeJsonField("containerAppsConfiguration", this.containerAppsConfiguration);
-        jsonWriter.writeStringField("aksResourceID", this.aksResourceID);
+        jsonWriter.writeStringField("aksResourceID", this.aksResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -331,7 +331,7 @@ public final class KubeEnvironmentProperties implements JsonSerializable<KubeEnv
                     deserializedKubeEnvironmentProperties.containerAppsConfiguration
                         = ContainerAppsConfiguration.fromJson(reader);
                 } else if ("aksResourceID".equals(fieldName)) {
-                    deserializedKubeEnvironmentProperties.aksResourceID = reader.getString();
+                    deserializedKubeEnvironmentProperties.aksResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

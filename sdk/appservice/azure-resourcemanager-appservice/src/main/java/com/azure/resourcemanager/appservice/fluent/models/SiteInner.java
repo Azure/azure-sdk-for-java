@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * A web app, a mobile app backend, or an API app.
@@ -1136,7 +1137,7 @@ public final class SiteInner extends Resource {
      * 
      * @return the inProgressOperationId value.
      */
-    public String inProgressOperationId() {
+    public UUID inProgressOperationId() {
         return this.innerProperties() == null ? null : this.innerProperties().inProgressOperationId();
     }
 

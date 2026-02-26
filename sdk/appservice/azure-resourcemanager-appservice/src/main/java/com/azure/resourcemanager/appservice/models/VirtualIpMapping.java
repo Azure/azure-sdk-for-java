@@ -19,7 +19,7 @@ public final class VirtualIpMapping implements JsonSerializable<VirtualIpMapping
     /*
      * Virtual IP address.
      */
-    private String virtualIP;
+    private String virtualIp;
 
     /*
      * Internal HTTP port.
@@ -48,12 +48,12 @@ public final class VirtualIpMapping implements JsonSerializable<VirtualIpMapping
     }
 
     /**
-     * Get the virtualIP property: Virtual IP address.
+     * Get the virtualIp property: Virtual IP address.
      * 
-     * @return the virtualIP value.
+     * @return the virtualIp value.
      */
-    public String virtualIP() {
-        return this.virtualIP;
+    public String virtualIp() {
+        return this.virtualIp;
     }
 
     /**
@@ -106,7 +106,7 @@ public final class VirtualIpMapping implements JsonSerializable<VirtualIpMapping
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("virtualIP", this.virtualIP);
+        jsonWriter.writeStringField("virtualIP", this.virtualIp);
         jsonWriter.writeNumberField("internalHttpPort", this.internalHttpPort);
         jsonWriter.writeNumberField("internalHttpsPort", this.internalHttpsPort);
         jsonWriter.writeBooleanField("inUse", this.inUse);
@@ -130,7 +130,7 @@ public final class VirtualIpMapping implements JsonSerializable<VirtualIpMapping
                 reader.nextToken();
 
                 if ("virtualIP".equals(fieldName)) {
-                    deserializedVirtualIpMapping.virtualIP = reader.getString();
+                    deserializedVirtualIpMapping.virtualIp = reader.getString();
                 } else if ("internalHttpPort".equals(fieldName)) {
                     deserializedVirtualIpMapping.internalHttpPort = reader.getNullable(JsonReader::getInt);
                 } else if ("internalHttpsPort".equals(fieldName)) {

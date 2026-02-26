@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * An operation on a resource.
@@ -60,7 +62,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     /*
      * Applicable only for stamp operation ids.
      */
-    private String geoMasterOperationId;
+    private UUID geoMasterOperationId;
 
     /**
      * Creates an instance of OperationInner class.
@@ -136,7 +138,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
      * 
      * @return the geoMasterOperationId value.
      */
-    public String geoMasterOperationId() {
+    public UUID geoMasterOperationId() {
         return this.geoMasterOperationId;
     }
 
@@ -167,7 +169,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
             this.modifiedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.modifiedTime));
         jsonWriter.writeStringField("expirationTime",
             this.expirationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTime));
-        jsonWriter.writeStringField("geoMasterOperationId", this.geoMasterOperationId);
+        jsonWriter.writeStringField("geoMasterOperationId", Objects.toString(this.geoMasterOperationId, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -205,7 +207,8 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
                     deserializedOperationInner.expirationTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("geoMasterOperationId".equals(fieldName)) {
-                    deserializedOperationInner.geoMasterOperationId = reader.getString();
+                    deserializedOperationInner.geoMasterOperationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

@@ -22,6 +22,7 @@ import com.azure.resourcemanager.appservice.models.UsageState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * ARM resource for a site.
@@ -829,7 +830,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * 
      * @return the inProgressOperationId value.
      */
-    public String inProgressOperationId() {
+    public UUID inProgressOperationId() {
         return this.innerProperties() == null ? null : this.innerProperties().inProgressOperationId();
     }
 

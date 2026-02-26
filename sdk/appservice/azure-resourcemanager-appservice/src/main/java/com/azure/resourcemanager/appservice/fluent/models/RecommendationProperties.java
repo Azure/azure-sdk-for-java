@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Recommendation resource specific properties.
@@ -31,7 +33,7 @@ public final class RecommendationProperties implements JsonSerializable<Recommen
     /*
      * A GUID value that each recommendation object is associated with.
      */
-    private String recommendationId;
+    private UUID recommendationId;
 
     /*
      * Full ARM resource ID string that this recommendation object is associated with.
@@ -159,7 +161,7 @@ public final class RecommendationProperties implements JsonSerializable<Recommen
      * 
      * @return the recommendationId value.
      */
-    public String recommendationId() {
+    public UUID recommendationId() {
         return this.recommendationId;
     }
 
@@ -372,7 +374,7 @@ public final class RecommendationProperties implements JsonSerializable<Recommen
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("creationTime",
             this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
-        jsonWriter.writeStringField("recommendationId", this.recommendationId);
+        jsonWriter.writeStringField("recommendationId", Objects.toString(this.recommendationId, null));
         jsonWriter.writeStringField("resourceId", this.resourceId);
         jsonWriter.writeStringField("resourceScope", this.resourceScope == null ? null : this.resourceScope.toString());
         jsonWriter.writeStringField("ruleName", this.ruleName);
@@ -424,7 +426,8 @@ public final class RecommendationProperties implements JsonSerializable<Recommen
                     deserializedRecommendationProperties.creationTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("recommendationId".equals(fieldName)) {
-                    deserializedRecommendationProperties.recommendationId = reader.getString();
+                    deserializedRecommendationProperties.recommendationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("resourceId".equals(fieldName)) {
                     deserializedRecommendationProperties.resourceId = reader.getString();
                 } else if ("resourceScope".equals(fieldName)) {

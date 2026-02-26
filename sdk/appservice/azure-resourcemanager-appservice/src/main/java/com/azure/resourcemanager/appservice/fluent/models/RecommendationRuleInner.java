@@ -14,6 +14,7 @@ import com.azure.resourcemanager.appservice.models.Channels;
 import com.azure.resourcemanager.appservice.models.NotificationLevel;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents a recommendation rule that the recommendation engine can perform.
@@ -147,7 +148,7 @@ public final class RecommendationRuleInner extends ProxyResource {
      * 
      * @return the recommendationId value.
      */
-    public String recommendationId() {
+    public UUID recommendationId() {
         return this.innerProperties() == null ? null : this.innerProperties().recommendationId();
     }
 

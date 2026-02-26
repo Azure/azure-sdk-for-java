@@ -41,7 +41,7 @@ public final class AnalysisData implements JsonSerializable<AnalysisData> {
     /*
      * Detector Meta Data
      */
-    private ResponseMetadata detectorMetaData;
+    private ResponseMetadata detectorMetadata;
 
     /**
      * Creates an instance of AnalysisData class.
@@ -86,12 +86,12 @@ public final class AnalysisData implements JsonSerializable<AnalysisData> {
     }
 
     /**
-     * Get the detectorMetaData property: Detector Meta Data.
+     * Get the detectorMetadata property: Detector Meta Data.
      * 
-     * @return the detectorMetaData value.
+     * @return the detectorMetadata value.
      */
-    public ResponseMetadata detectorMetaData() {
-        return this.detectorMetaData;
+    public ResponseMetadata detectorMetadata() {
+        return this.detectorMetadata;
     }
 
     /**
@@ -109,8 +109,8 @@ public final class AnalysisData implements JsonSerializable<AnalysisData> {
         if (data() != null) {
             data().forEach(e -> e.forEach(e1 -> e1.validate()));
         }
-        if (detectorMetaData() != null) {
-            detectorMetaData().validate();
+        if (detectorMetadata() != null) {
+            detectorMetadata().validate();
         }
     }
 
@@ -125,7 +125,7 @@ public final class AnalysisData implements JsonSerializable<AnalysisData> {
         jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("data", this.data,
             (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
-        jsonWriter.writeJsonField("detectorMetaData", this.detectorMetaData);
+        jsonWriter.writeJsonField("detectorMetaData", this.detectorMetadata);
         return jsonWriter.writeEndObject();
     }
 
@@ -157,7 +157,7 @@ public final class AnalysisData implements JsonSerializable<AnalysisData> {
                         = reader.readArray(reader1 -> reader1.readArray(reader2 -> NameValuePair.fromJson(reader2)));
                     deserializedAnalysisData.data = data;
                 } else if ("detectorMetaData".equals(fieldName)) {
-                    deserializedAnalysisData.detectorMetaData = ResponseMetadata.fromJson(reader);
+                    deserializedAnalysisData.detectorMetadata = ResponseMetadata.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -348,25 +348,25 @@ public final class KubeEnvironmentInner extends Resource {
     }
 
     /**
-     * Get the aksResourceID property: The aksResourceID property.
+     * Get the aksResourceId property: The aksResourceID property.
      * 
-     * @return the aksResourceID value.
+     * @return the aksResourceId value.
      */
-    public String aksResourceID() {
-        return this.innerProperties() == null ? null : this.innerProperties().aksResourceID();
+    public String aksResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().aksResourceId();
     }
 
     /**
-     * Set the aksResourceID property: The aksResourceID property.
+     * Set the aksResourceId property: The aksResourceID property.
      * 
-     * @param aksResourceID the aksResourceID value to set.
+     * @param aksResourceId the aksResourceId value to set.
      * @return the KubeEnvironmentInner object itself.
      */
-    public KubeEnvironmentInner withAksResourceID(String aksResourceID) {
+    public KubeEnvironmentInner withAksResourceId(String aksResourceId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new KubeEnvironmentProperties();
         }
-        this.innerProperties().withAksResourceID(aksResourceID);
+        this.innerProperties().withAksResourceId(aksResourceId);
         return this;
     }
 

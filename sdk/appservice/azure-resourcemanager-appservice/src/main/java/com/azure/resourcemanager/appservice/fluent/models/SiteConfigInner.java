@@ -119,7 +119,7 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
     /*
      * If using user managed identity, the user managed identity ClientId
      */
-    private String acrUserManagedIdentityID;
+    private String acrUserManagedIdentityId;
 
     /*
      * HTTP logs directory size limit.
@@ -733,22 +733,22 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
     }
 
     /**
-     * Get the acrUserManagedIdentityID property: If using user managed identity, the user managed identity ClientId.
+     * Get the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
      * 
-     * @return the acrUserManagedIdentityID value.
+     * @return the acrUserManagedIdentityId value.
      */
-    public String acrUserManagedIdentityID() {
-        return this.acrUserManagedIdentityID;
+    public String acrUserManagedIdentityId() {
+        return this.acrUserManagedIdentityId;
     }
 
     /**
-     * Set the acrUserManagedIdentityID property: If using user managed identity, the user managed identity ClientId.
+     * Set the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
      * 
-     * @param acrUserManagedIdentityID the acrUserManagedIdentityID value to set.
+     * @param acrUserManagedIdentityId the acrUserManagedIdentityId value to set.
      * @return the SiteConfigInner object itself.
      */
-    public SiteConfigInner withAcrUserManagedIdentityID(String acrUserManagedIdentityID) {
-        this.acrUserManagedIdentityID = acrUserManagedIdentityID;
+    public SiteConfigInner withAcrUserManagedIdentityId(String acrUserManagedIdentityId) {
+        this.acrUserManagedIdentityId = acrUserManagedIdentityId;
         return this;
     }
 
@@ -2017,7 +2017,7 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
         jsonWriter.writeStringField("remoteDebuggingVersion", this.remoteDebuggingVersion);
         jsonWriter.writeBooleanField("httpLoggingEnabled", this.httpLoggingEnabled);
         jsonWriter.writeBooleanField("acrUseManagedIdentityCreds", this.acrUseManagedIdentityCreds);
-        jsonWriter.writeStringField("acrUserManagedIdentityID", this.acrUserManagedIdentityID);
+        jsonWriter.writeStringField("acrUserManagedIdentityID", this.acrUserManagedIdentityId);
         jsonWriter.writeNumberField("logsDirectorySizeLimit", this.logsDirectorySizeLimit);
         jsonWriter.writeBooleanField("detailedErrorLoggingEnabled", this.detailedErrorLoggingEnabled);
         jsonWriter.writeStringField("publishingUsername", this.publishingUsername);
@@ -2141,7 +2141,7 @@ public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> 
                 } else if ("acrUseManagedIdentityCreds".equals(fieldName)) {
                     deserializedSiteConfigInner.acrUseManagedIdentityCreds = reader.getNullable(JsonReader::getBoolean);
                 } else if ("acrUserManagedIdentityID".equals(fieldName)) {
-                    deserializedSiteConfigInner.acrUserManagedIdentityID = reader.getString();
+                    deserializedSiteConfigInner.acrUserManagedIdentityId = reader.getString();
                 } else if ("logsDirectorySizeLimit".equals(fieldName)) {
                     deserializedSiteConfigInner.logsDirectorySizeLimit = reader.getNullable(JsonReader::getInt);
                 } else if ("detailedErrorLoggingEnabled".equals(fieldName)) {

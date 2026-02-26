@@ -502,25 +502,25 @@ public final class SiteConfigResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the acrUserManagedIdentityID property: If using user managed identity, the user managed identity ClientId.
+     * Get the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
      * 
-     * @return the acrUserManagedIdentityID value.
+     * @return the acrUserManagedIdentityId value.
      */
-    public String acrUserManagedIdentityID() {
-        return this.innerProperties() == null ? null : this.innerProperties().acrUserManagedIdentityID();
+    public String acrUserManagedIdentityId() {
+        return this.innerProperties() == null ? null : this.innerProperties().acrUserManagedIdentityId();
     }
 
     /**
-     * Set the acrUserManagedIdentityID property: If using user managed identity, the user managed identity ClientId.
+     * Set the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
      * 
-     * @param acrUserManagedIdentityID the acrUserManagedIdentityID value to set.
+     * @param acrUserManagedIdentityId the acrUserManagedIdentityId value to set.
      * @return the SiteConfigResourceInner object itself.
      */
-    public SiteConfigResourceInner withAcrUserManagedIdentityID(String acrUserManagedIdentityID) {
+    public SiteConfigResourceInner withAcrUserManagedIdentityId(String acrUserManagedIdentityId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SiteConfigInner();
         }
-        this.innerProperties().withAcrUserManagedIdentityID(acrUserManagedIdentityID);
+        this.innerProperties().withAcrUserManagedIdentityId(acrUserManagedIdentityId);
         return this;
     }
 

@@ -48,7 +48,7 @@ public final class DetectorAbnormalTimePeriod implements JsonSerializable<Detect
     /*
      * Downtime metadata
      */
-    private List<List<NameValuePair>> metaData;
+    private List<List<NameValuePair>> metadata;
 
     /*
      * Represents the type of the Detector
@@ -112,12 +112,12 @@ public final class DetectorAbnormalTimePeriod implements JsonSerializable<Detect
     }
 
     /**
-     * Get the metaData property: Downtime metadata.
+     * Get the metadata property: Downtime metadata.
      * 
-     * @return the metaData value.
+     * @return the metadata value.
      */
-    public List<List<NameValuePair>> metaData() {
-        return this.metaData;
+    public List<List<NameValuePair>> metadata() {
+        return this.metadata;
     }
 
     /**
@@ -144,8 +144,8 @@ public final class DetectorAbnormalTimePeriod implements JsonSerializable<Detect
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (metaData() != null) {
-            metaData().forEach(e -> e.forEach(e1 -> e1.validate()));
+        if (metadata() != null) {
+            metadata().forEach(e -> e.forEach(e1 -> e1.validate()));
         }
         if (solutions() != null) {
             solutions().forEach(e -> e.validate());
@@ -165,7 +165,7 @@ public final class DetectorAbnormalTimePeriod implements JsonSerializable<Detect
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeNumberField("priority", this.priority);
-        jsonWriter.writeArrayField("metaData", this.metaData,
+        jsonWriter.writeArrayField("metaData", this.metadata,
             (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeArrayField("solutions", this.solutions, (writer, element) -> writer.writeJson(element));
@@ -200,9 +200,9 @@ public final class DetectorAbnormalTimePeriod implements JsonSerializable<Detect
                 } else if ("priority".equals(fieldName)) {
                     deserializedDetectorAbnormalTimePeriod.priority = reader.getNullable(JsonReader::getDouble);
                 } else if ("metaData".equals(fieldName)) {
-                    List<List<NameValuePair>> metaData
+                    List<List<NameValuePair>> metadata
                         = reader.readArray(reader1 -> reader1.readArray(reader2 -> NameValuePair.fromJson(reader2)));
-                    deserializedDetectorAbnormalTimePeriod.metaData = metaData;
+                    deserializedDetectorAbnormalTimePeriod.metadata = metadata;
                 } else if ("type".equals(fieldName)) {
                     deserializedDetectorAbnormalTimePeriod.type = IssueType.fromString(reader.getString());
                 } else if ("solutions".equals(fieldName)) {

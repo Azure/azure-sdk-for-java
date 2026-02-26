@@ -69,7 +69,7 @@ public final class KubeEnvironmentPatchResourceProperties
     /*
      * The aksResourceID property.
      */
-    private String aksResourceID;
+    private String aksResourceId;
 
     /**
      * Creates an instance of KubeEnvironmentPatchResourceProperties class.
@@ -216,22 +216,22 @@ public final class KubeEnvironmentPatchResourceProperties
     }
 
     /**
-     * Get the aksResourceID property: The aksResourceID property.
+     * Get the aksResourceId property: The aksResourceID property.
      * 
-     * @return the aksResourceID value.
+     * @return the aksResourceId value.
      */
-    public String aksResourceID() {
-        return this.aksResourceID;
+    public String aksResourceId() {
+        return this.aksResourceId;
     }
 
     /**
-     * Set the aksResourceID property: The aksResourceID property.
+     * Set the aksResourceId property: The aksResourceID property.
      * 
-     * @param aksResourceID the aksResourceID value to set.
+     * @param aksResourceId the aksResourceId value to set.
      * @return the KubeEnvironmentPatchResourceProperties object itself.
      */
-    public KubeEnvironmentPatchResourceProperties withAksResourceID(String aksResourceID) {
-        this.aksResourceID = aksResourceID;
+    public KubeEnvironmentPatchResourceProperties withAksResourceId(String aksResourceId) {
+        this.aksResourceId = aksResourceId;
         return this;
     }
 
@@ -263,7 +263,7 @@ public final class KubeEnvironmentPatchResourceProperties
         jsonWriter.writeJsonField("arcConfiguration", this.arcConfiguration);
         jsonWriter.writeJsonField("appLogsConfiguration", this.appLogsConfiguration);
         jsonWriter.writeJsonField("containerAppsConfiguration", this.containerAppsConfiguration);
-        jsonWriter.writeStringField("aksResourceID", this.aksResourceID);
+        jsonWriter.writeStringField("aksResourceID", this.aksResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -305,7 +305,7 @@ public final class KubeEnvironmentPatchResourceProperties
                     deserializedKubeEnvironmentPatchResourceProperties.containerAppsConfiguration
                         = ContainerAppsConfiguration.fromJson(reader);
                 } else if ("aksResourceID".equals(fieldName)) {
-                    deserializedKubeEnvironmentPatchResourceProperties.aksResourceID = reader.getString();
+                    deserializedKubeEnvironmentPatchResourceProperties.aksResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

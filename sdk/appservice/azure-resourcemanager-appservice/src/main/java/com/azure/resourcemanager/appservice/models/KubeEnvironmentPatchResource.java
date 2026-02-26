@@ -244,25 +244,25 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the aksResourceID property: The aksResourceID property.
+     * Get the aksResourceId property: The aksResourceID property.
      * 
-     * @return the aksResourceID value.
+     * @return the aksResourceId value.
      */
-    public String aksResourceID() {
-        return this.innerProperties() == null ? null : this.innerProperties().aksResourceID();
+    public String aksResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().aksResourceId();
     }
 
     /**
-     * Set the aksResourceID property: The aksResourceID property.
+     * Set the aksResourceId property: The aksResourceID property.
      * 
-     * @param aksResourceID the aksResourceID value to set.
+     * @param aksResourceId the aksResourceId value to set.
      * @return the KubeEnvironmentPatchResource object itself.
      */
-    public KubeEnvironmentPatchResource withAksResourceID(String aksResourceID) {
+    public KubeEnvironmentPatchResource withAksResourceId(String aksResourceId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new KubeEnvironmentPatchResourceProperties();
         }
-        this.innerProperties().withAksResourceID(aksResourceID);
+        this.innerProperties().withAksResourceId(aksResourceId);
         return this;
     }
 

@@ -146,7 +146,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/customhostnameSites")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CustomHostnameSitesCollection>> listCustomHostNameSites(@HostParam("endpoint") String endpoint,
+        Mono<Response<CustomHostnameSitesCollection>> listCustomHostnameSites(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("hostname") String hostname, @HeaderParam("Accept") String accept, Context context);
 
@@ -272,7 +272,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CustomHostnameSitesCollection>> listCustomHostNameSitesNext(
+        Mono<Response<CustomHostnameSitesCollection>> listCustomHostnameSitesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -1129,7 +1129,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostNameSitesSinglePageAsync(String hostname) {
+    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesSinglePageAsync(String hostname) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1140,7 +1140,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCustomHostNameSites(this.client.getEndpoint(),
+            .withContext(context -> service.listCustomHostnameSites(this.client.getEndpoint(),
                 this.client.getApiVersion(), this.client.getSubscriptionId(), hostname, accept, context))
             .<PagedResponse<CustomHostnameSitesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -1159,7 +1159,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostNameSitesSinglePageAsync(String hostname,
+    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesSinglePageAsync(String hostname,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1172,7 +1172,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCustomHostNameSites(this.client.getEndpoint(), this.client.getApiVersion(),
+            .listCustomHostnameSites(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), hostname, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -1188,9 +1188,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CustomHostnameSitesInner> listCustomHostNameSitesAsync(String hostname) {
-        return new PagedFlux<>(() -> listCustomHostNameSitesSinglePageAsync(hostname),
-            nextLink -> listCustomHostNameSitesNextSinglePageAsync(nextLink));
+    public PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync(String hostname) {
+        return new PagedFlux<>(() -> listCustomHostnameSitesSinglePageAsync(hostname),
+            nextLink -> listCustomHostnameSitesNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1201,10 +1201,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CustomHostnameSitesInner> listCustomHostNameSitesAsync() {
+    public PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync() {
         final String hostname = null;
-        return new PagedFlux<>(() -> listCustomHostNameSitesSinglePageAsync(hostname),
-            nextLink -> listCustomHostNameSitesNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listCustomHostnameSitesSinglePageAsync(hostname),
+            nextLink -> listCustomHostnameSitesNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1218,9 +1218,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CustomHostnameSitesInner> listCustomHostNameSitesAsync(String hostname, Context context) {
-        return new PagedFlux<>(() -> listCustomHostNameSitesSinglePageAsync(hostname, context),
-            nextLink -> listCustomHostNameSitesNextSinglePageAsync(nextLink, context));
+    private PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync(String hostname, Context context) {
+        return new PagedFlux<>(() -> listCustomHostnameSitesSinglePageAsync(hostname, context),
+            nextLink -> listCustomHostnameSitesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1231,9 +1231,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return custom hostnames under this subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomHostnameSitesInner> listCustomHostNameSites() {
+    public PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites() {
         final String hostname = null;
-        return new PagedIterable<>(listCustomHostNameSitesAsync(hostname));
+        return new PagedIterable<>(listCustomHostnameSitesAsync(hostname));
     }
 
     /**
@@ -1247,8 +1247,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return custom hostnames under this subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomHostnameSitesInner> listCustomHostNameSites(String hostname, Context context) {
-        return new PagedIterable<>(listCustomHostNameSitesAsync(hostname, context));
+    public PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites(String hostname, Context context) {
+        return new PagedIterable<>(listCustomHostnameSitesAsync(hostname, context));
     }
 
     /**
@@ -2951,7 +2951,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostNameSitesNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2962,7 +2962,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.listCustomHostNameSitesNext(nextLink, this.client.getEndpoint(), accept, context))
+                context -> service.listCustomHostnameSitesNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<CustomHostnameSitesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2982,7 +2982,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostNameSitesNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesNextSinglePageAsync(String nextLink,
         Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -2993,7 +2993,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listCustomHostNameSitesNext(nextLink, this.client.getEndpoint(), accept, context)
+        return service.listCustomHostnameSitesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

@@ -63,7 +63,7 @@ public final class HostnameBindingProperties implements JsonSerializable<Hostnam
     /*
      * Virtual IP address assigned to the hostname if IP based SSL is enabled.
      */
-    private String virtualIP;
+    private String virtualIp;
 
     /**
      * Creates an instance of HostnameBindingProperties class.
@@ -233,12 +233,12 @@ public final class HostnameBindingProperties implements JsonSerializable<Hostnam
     }
 
     /**
-     * Get the virtualIP property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
+     * Get the virtualIp property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
      * 
-     * @return the virtualIP value.
+     * @return the virtualIp value.
      */
-    public String virtualIP() {
-        return this.virtualIP;
+    public String virtualIp() {
+        return this.virtualIp;
     }
 
     /**
@@ -302,7 +302,7 @@ public final class HostnameBindingProperties implements JsonSerializable<Hostnam
                 } else if ("thumbprint".equals(fieldName)) {
                     deserializedHostnameBindingProperties.thumbprint = reader.getString();
                 } else if ("virtualIP".equals(fieldName)) {
-                    deserializedHostnameBindingProperties.virtualIP = reader.getString();
+                    deserializedHostnameBindingProperties.virtualIp = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

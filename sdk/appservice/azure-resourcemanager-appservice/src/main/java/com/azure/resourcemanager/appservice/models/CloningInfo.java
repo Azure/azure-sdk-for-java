@@ -12,6 +12,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Information needed for cloning operation.
@@ -22,7 +24,7 @@ public final class CloningInfo implements JsonSerializable<CloningInfo> {
      * Correlation ID of cloning operation. This ID ties multiple cloning operations
      * together to use the same snapshot.
      */
-    private String correlationId;
+    private UUID correlationId;
 
     /*
      * <code>true</code> to overwrite destination app; otherwise, <code>false</code>.
@@ -93,7 +95,7 @@ public final class CloningInfo implements JsonSerializable<CloningInfo> {
      * 
      * @return the correlationId value.
      */
-    public String correlationId() {
+    public UUID correlationId() {
         return this.correlationId;
     }
 
@@ -104,7 +106,7 @@ public final class CloningInfo implements JsonSerializable<CloningInfo> {
      * @param correlationId the correlationId value to set.
      * @return the CloningInfo object itself.
      */
-    public CloningInfo withCorrelationId(String correlationId) {
+    public CloningInfo withCorrelationId(UUID correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -356,7 +358,7 @@ public final class CloningInfo implements JsonSerializable<CloningInfo> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("sourceWebAppId", this.sourceWebAppId);
-        jsonWriter.writeStringField("correlationId", this.correlationId);
+        jsonWriter.writeStringField("correlationId", Objects.toString(this.correlationId, null));
         jsonWriter.writeBooleanField("overwrite", this.overwrite);
         jsonWriter.writeBooleanField("cloneCustomHostNames", this.cloneCustomHostNames);
         jsonWriter.writeBooleanField("cloneSourceControl", this.cloneSourceControl);
@@ -389,7 +391,8 @@ public final class CloningInfo implements JsonSerializable<CloningInfo> {
                 if ("sourceWebAppId".equals(fieldName)) {
                     deserializedCloningInfo.sourceWebAppId = reader.getString();
                 } else if ("correlationId".equals(fieldName)) {
-                    deserializedCloningInfo.correlationId = reader.getString();
+                    deserializedCloningInfo.correlationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("overwrite".equals(fieldName)) {
                     deserializedCloningInfo.overwrite = reader.getNullable(JsonReader::getBoolean);
                 } else if ("cloneCustomHostNames".equals(fieldName)) {

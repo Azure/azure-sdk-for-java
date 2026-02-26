@@ -311,12 +311,12 @@ public final class HostnameBindingInner extends ProxyResource {
     }
 
     /**
-     * Get the virtualIP property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
+     * Get the virtualIp property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
      * 
-     * @return the virtualIP value.
+     * @return the virtualIp value.
      */
-    public String virtualIP() {
-        return this.innerProperties() == null ? null : this.innerProperties().virtualIP();
+    public String virtualIp() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualIp();
     }
 
     /**
