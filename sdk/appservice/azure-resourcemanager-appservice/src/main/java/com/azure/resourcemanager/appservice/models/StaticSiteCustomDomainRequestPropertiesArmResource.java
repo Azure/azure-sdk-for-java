@@ -8,18 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainRequestPropertiesARMResourceProperties;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainRequestPropertiesArmResourceProperties;
 import java.io.IOException;
 
 /**
  * Static Site Custom Domain Request Properties ARM resource.
  */
 @Fluent
-public final class StaticSiteCustomDomainRequestPropertiesARMResource extends ProxyOnlyResource {
+public final class StaticSiteCustomDomainRequestPropertiesArmResource extends ProxyOnlyResource {
     /*
      * StaticSiteCustomDomainRequestPropertiesARMResource resource specific properties
      */
-    private StaticSiteCustomDomainRequestPropertiesARMResourceProperties innerProperties;
+    private StaticSiteCustomDomainRequestPropertiesArmResourceProperties innerProperties;
 
     /*
      * Resource type.
@@ -37,9 +37,9 @@ public final class StaticSiteCustomDomainRequestPropertiesARMResource extends Pr
     private String id;
 
     /**
-     * Creates an instance of StaticSiteCustomDomainRequestPropertiesARMResource class.
+     * Creates an instance of StaticSiteCustomDomainRequestPropertiesArmResource class.
      */
-    public StaticSiteCustomDomainRequestPropertiesARMResource() {
+    public StaticSiteCustomDomainRequestPropertiesArmResource() {
     }
 
     /**
@@ -48,7 +48,7 @@ public final class StaticSiteCustomDomainRequestPropertiesARMResource extends Pr
      * 
      * @return the innerProperties value.
      */
-    private StaticSiteCustomDomainRequestPropertiesARMResourceProperties innerProperties() {
+    private StaticSiteCustomDomainRequestPropertiesArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -86,7 +86,7 @@ public final class StaticSiteCustomDomainRequestPropertiesARMResource extends Pr
      * {@inheritDoc}
      */
     @Override
-    public StaticSiteCustomDomainRequestPropertiesARMResource withKind(String kind) {
+    public StaticSiteCustomDomainRequestPropertiesArmResource withKind(String kind) {
         super.withKind(kind);
         return this;
     }
@@ -104,11 +104,11 @@ public final class StaticSiteCustomDomainRequestPropertiesARMResource extends Pr
      * Set the validationMethod property: Validation method for adding a custom domain.
      * 
      * @param validationMethod the validationMethod value to set.
-     * @return the StaticSiteCustomDomainRequestPropertiesARMResource object itself.
+     * @return the StaticSiteCustomDomainRequestPropertiesArmResource object itself.
      */
-    public StaticSiteCustomDomainRequestPropertiesARMResource withValidationMethod(String validationMethod) {
+    public StaticSiteCustomDomainRequestPropertiesArmResource withValidationMethod(String validationMethod) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new StaticSiteCustomDomainRequestPropertiesARMResourceProperties();
+            this.innerProperties = new StaticSiteCustomDomainRequestPropertiesArmResourceProperties();
         }
         this.innerProperties().withValidationMethod(validationMethod);
         return this;
@@ -138,39 +138,39 @@ public final class StaticSiteCustomDomainRequestPropertiesARMResource extends Pr
     }
 
     /**
-     * Reads an instance of StaticSiteCustomDomainRequestPropertiesARMResource from the JsonReader.
+     * Reads an instance of StaticSiteCustomDomainRequestPropertiesArmResource from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteCustomDomainRequestPropertiesARMResource if the JsonReader was pointing to an
+     * @return An instance of StaticSiteCustomDomainRequestPropertiesArmResource if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StaticSiteCustomDomainRequestPropertiesARMResource.
+     * @throws IOException If an error occurs while reading the StaticSiteCustomDomainRequestPropertiesArmResource.
      */
-    public static StaticSiteCustomDomainRequestPropertiesARMResource fromJson(JsonReader jsonReader)
+    public static StaticSiteCustomDomainRequestPropertiesArmResource fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteCustomDomainRequestPropertiesARMResource deserializedStaticSiteCustomDomainRequestPropertiesARMResource
-                = new StaticSiteCustomDomainRequestPropertiesARMResource();
+            StaticSiteCustomDomainRequestPropertiesArmResource deserializedStaticSiteCustomDomainRequestPropertiesArmResource
+                = new StaticSiteCustomDomainRequestPropertiesArmResource();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainRequestPropertiesARMResource.id = reader.getString();
+                    deserializedStaticSiteCustomDomainRequestPropertiesArmResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainRequestPropertiesARMResource.name = reader.getString();
+                    deserializedStaticSiteCustomDomainRequestPropertiesArmResource.name = reader.getString();
                 } else if ("kind".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainRequestPropertiesARMResource.withKind(reader.getString());
+                    deserializedStaticSiteCustomDomainRequestPropertiesArmResource.withKind(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainRequestPropertiesARMResource.type = reader.getString();
+                    deserializedStaticSiteCustomDomainRequestPropertiesArmResource.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainRequestPropertiesARMResource.innerProperties
-                        = StaticSiteCustomDomainRequestPropertiesARMResourceProperties.fromJson(reader);
+                    deserializedStaticSiteCustomDomainRequestPropertiesArmResource.innerProperties
+                        = StaticSiteCustomDomainRequestPropertiesArmResourceProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteCustomDomainRequestPropertiesARMResource;
+            return deserializedStaticSiteCustomDomainRequestPropertiesArmResource;
         });
     }
 }

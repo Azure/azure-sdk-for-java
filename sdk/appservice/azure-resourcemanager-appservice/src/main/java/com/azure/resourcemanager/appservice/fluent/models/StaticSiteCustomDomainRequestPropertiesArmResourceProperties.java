@@ -15,17 +15,17 @@ import java.io.IOException;
  * StaticSiteCustomDomainRequestPropertiesARMResource resource specific properties.
  */
 @Fluent
-public final class StaticSiteCustomDomainRequestPropertiesARMResourceProperties
-    implements JsonSerializable<StaticSiteCustomDomainRequestPropertiesARMResourceProperties> {
+public final class StaticSiteCustomDomainRequestPropertiesArmResourceProperties
+    implements JsonSerializable<StaticSiteCustomDomainRequestPropertiesArmResourceProperties> {
     /*
      * Validation method for adding a custom domain
      */
     private String validationMethod;
 
     /**
-     * Creates an instance of StaticSiteCustomDomainRequestPropertiesARMResourceProperties class.
+     * Creates an instance of StaticSiteCustomDomainRequestPropertiesArmResourceProperties class.
      */
-    public StaticSiteCustomDomainRequestPropertiesARMResourceProperties() {
+    public StaticSiteCustomDomainRequestPropertiesArmResourceProperties() {
     }
 
     /**
@@ -41,9 +41,9 @@ public final class StaticSiteCustomDomainRequestPropertiesARMResourceProperties
      * Set the validationMethod property: Validation method for adding a custom domain.
      * 
      * @param validationMethod the validationMethod value to set.
-     * @return the StaticSiteCustomDomainRequestPropertiesARMResourceProperties object itself.
+     * @return the StaticSiteCustomDomainRequestPropertiesArmResourceProperties object itself.
      */
-    public StaticSiteCustomDomainRequestPropertiesARMResourceProperties withValidationMethod(String validationMethod) {
+    public StaticSiteCustomDomainRequestPropertiesArmResourceProperties withValidationMethod(String validationMethod) {
         this.validationMethod = validationMethod;
         return this;
     }
@@ -67,32 +67,32 @@ public final class StaticSiteCustomDomainRequestPropertiesARMResourceProperties
     }
 
     /**
-     * Reads an instance of StaticSiteCustomDomainRequestPropertiesARMResourceProperties from the JsonReader.
+     * Reads an instance of StaticSiteCustomDomainRequestPropertiesArmResourceProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteCustomDomainRequestPropertiesARMResourceProperties if the JsonReader was
+     * @return An instance of StaticSiteCustomDomainRequestPropertiesArmResourceProperties if the JsonReader was
      * pointing to an instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the
-     * StaticSiteCustomDomainRequestPropertiesARMResourceProperties.
+     * StaticSiteCustomDomainRequestPropertiesArmResourceProperties.
      */
-    public static StaticSiteCustomDomainRequestPropertiesARMResourceProperties fromJson(JsonReader jsonReader)
+    public static StaticSiteCustomDomainRequestPropertiesArmResourceProperties fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteCustomDomainRequestPropertiesARMResourceProperties deserializedStaticSiteCustomDomainRequestPropertiesARMResourceProperties
-                = new StaticSiteCustomDomainRequestPropertiesARMResourceProperties();
+            StaticSiteCustomDomainRequestPropertiesArmResourceProperties deserializedStaticSiteCustomDomainRequestPropertiesArmResourceProperties
+                = new StaticSiteCustomDomainRequestPropertiesArmResourceProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("validationMethod".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainRequestPropertiesARMResourceProperties.validationMethod
+                    deserializedStaticSiteCustomDomainRequestPropertiesArmResourceProperties.validationMethod
                         = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteCustomDomainRequestPropertiesARMResourceProperties;
+            return deserializedStaticSiteCustomDomainRequestPropertiesArmResourceProperties;
         });
     }
 }

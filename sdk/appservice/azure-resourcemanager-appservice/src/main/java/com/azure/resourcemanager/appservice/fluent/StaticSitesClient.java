@@ -18,8 +18,8 @@ import com.azure.resourcemanager.appservice.fluent.models.PrivateLinkResourcesWr
 import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesArmResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBuildARMResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainOverviewARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBuildArmResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainOverviewArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteFunctionOverviewARMResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteLinkedBackendARMResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserARMResourceInner;
@@ -30,7 +30,7 @@ import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.models.StringListInner;
 import com.azure.resourcemanager.appservice.models.BasicAuthName;
 import com.azure.resourcemanager.appservice.models.DatabaseConnectionPatchRequest;
-import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequestPropertiesARMResource;
+import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequestPropertiesArmResource;
 import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserInvitationRequestResource;
@@ -2197,7 +2197,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<StaticSiteBuildARMResourceInner>> getStaticSiteBuildWithResponseAsync(String resourceGroupName,
+    Mono<Response<StaticSiteBuildArmResourceInner>> getStaticSiteBuildWithResponseAsync(String resourceGroupName,
         String name, String environmentName);
 
     /**
@@ -2217,7 +2217,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the details of a static site build on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteBuildARMResourceInner> getStaticSiteBuildAsync(String resourceGroupName, String name,
+    Mono<StaticSiteBuildArmResourceInner> getStaticSiteBuildAsync(String resourceGroupName, String name,
         String environmentName);
 
     /**
@@ -2238,7 +2238,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the details of a static site build along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StaticSiteBuildARMResourceInner> getStaticSiteBuildWithResponse(String resourceGroupName, String name,
+    Response<StaticSiteBuildArmResourceInner> getStaticSiteBuildWithResponse(String resourceGroupName, String name,
         String environmentName, Context context);
 
     /**
@@ -2258,7 +2258,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the details of a static site build.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteBuildARMResourceInner getStaticSiteBuild(String resourceGroupName, String name, String environmentName);
+    StaticSiteBuildArmResourceInner getStaticSiteBuild(String resourceGroupName, String name, String environmentName);
 
     /**
      * Deletes a static site build.
@@ -2400,7 +2400,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StaticSiteBuildARMResourceInner> getStaticSiteBuildsAsync(String resourceGroupName, String name);
+    PagedFlux<StaticSiteBuildArmResourceInner> getStaticSiteBuildsAsync(String resourceGroupName, String name);
 
     /**
      * Gets all static site builds for a particular static site.
@@ -2419,7 +2419,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteBuildARMResourceInner> getStaticSiteBuilds(String resourceGroupName, String name);
+    PagedIterable<StaticSiteBuildArmResourceInner> getStaticSiteBuilds(String resourceGroupName, String name);
 
     /**
      * Gets all static site builds for a particular static site.
@@ -2439,7 +2439,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteBuildARMResourceInner> getStaticSiteBuilds(String resourceGroupName, String name,
+    PagedIterable<StaticSiteBuildArmResourceInner> getStaticSiteBuilds(String resourceGroupName, String name,
         Context context);
 
     /**
@@ -4957,7 +4957,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<StaticSiteCustomDomainOverviewARMResourceInner>>
+    Mono<Response<StaticSiteCustomDomainOverviewArmResourceInner>>
         getStaticSiteCustomDomainWithResponseAsync(String resourceGroupName, String name, String domainName);
 
     /**
@@ -4978,7 +4978,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteCustomDomainOverviewARMResourceInner> getStaticSiteCustomDomainAsync(String resourceGroupName,
+    Mono<StaticSiteCustomDomainOverviewArmResourceInner> getStaticSiteCustomDomainAsync(String resourceGroupName,
         String name, String domainName);
 
     /**
@@ -4999,7 +4999,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets an existing custom domain for a particular static site along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StaticSiteCustomDomainOverviewARMResourceInner> getStaticSiteCustomDomainWithResponse(
+    Response<StaticSiteCustomDomainOverviewArmResourceInner> getStaticSiteCustomDomainWithResponse(
         String resourceGroupName, String name, String domainName, Context context);
 
     /**
@@ -5019,7 +5019,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets an existing custom domain for a particular static site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteCustomDomainOverviewARMResourceInner getStaticSiteCustomDomain(String resourceGroupName, String name,
+    StaticSiteCustomDomainOverviewArmResourceInner getStaticSiteCustomDomain(String resourceGroupName, String name,
         String domainName);
 
     /**
@@ -5042,7 +5042,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateStaticSiteCustomDomainWithResponseAsync(String resourceGroupName,
         String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope);
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
@@ -5061,9 +5061,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link PollerFlux} for polling of static Site Custom Domain Overview ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StaticSiteCustomDomainOverviewARMResourceInner>, StaticSiteCustomDomainOverviewARMResourceInner>
+    PollerFlux<PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomainAsync(String resourceGroupName, String name, String domainName,
-            StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope);
+            StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
@@ -5082,9 +5082,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link SyncPoller} for polling of static Site Custom Domain Overview ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StaticSiteCustomDomainOverviewARMResourceInner>, StaticSiteCustomDomainOverviewARMResourceInner>
+    SyncPoller<PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomain(String resourceGroupName, String name, String domainName,
-            StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope);
+            StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
@@ -5104,9 +5104,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link SyncPoller} for polling of static Site Custom Domain Overview ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StaticSiteCustomDomainOverviewARMResourceInner>, StaticSiteCustomDomainOverviewARMResourceInner>
+    SyncPoller<PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomain(String resourceGroupName, String name, String domainName,
-            StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope,
+            StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
             Context context);
 
     /**
@@ -5126,9 +5126,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Custom Domain Overview ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteCustomDomainOverviewARMResourceInner> createOrUpdateStaticSiteCustomDomainAsync(
+    Mono<StaticSiteCustomDomainOverviewArmResourceInner> createOrUpdateStaticSiteCustomDomainAsync(
         String resourceGroupName, String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope);
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
@@ -5147,9 +5147,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Custom Domain Overview ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteCustomDomainOverviewARMResourceInner createOrUpdateStaticSiteCustomDomain(String resourceGroupName,
+    StaticSiteCustomDomainOverviewArmResourceInner createOrUpdateStaticSiteCustomDomain(String resourceGroupName,
         String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope);
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
@@ -5169,9 +5169,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Custom Domain Overview ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteCustomDomainOverviewARMResourceInner createOrUpdateStaticSiteCustomDomain(String resourceGroupName,
+    StaticSiteCustomDomainOverviewArmResourceInner createOrUpdateStaticSiteCustomDomain(String resourceGroupName,
         String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope,
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
         Context context);
 
     /**
@@ -5314,7 +5314,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StaticSiteCustomDomainOverviewARMResourceInner> listStaticSiteCustomDomainsAsync(String resourceGroupName,
+    PagedFlux<StaticSiteCustomDomainOverviewArmResourceInner> listStaticSiteCustomDomainsAsync(String resourceGroupName,
         String name);
 
     /**
@@ -5334,7 +5334,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteCustomDomainOverviewARMResourceInner> listStaticSiteCustomDomains(String resourceGroupName,
+    PagedIterable<StaticSiteCustomDomainOverviewArmResourceInner> listStaticSiteCustomDomains(String resourceGroupName,
         String name);
 
     /**
@@ -5355,7 +5355,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteCustomDomainOverviewARMResourceInner> listStaticSiteCustomDomains(String resourceGroupName,
+    PagedIterable<StaticSiteCustomDomainOverviewArmResourceInner> listStaticSiteCustomDomains(String resourceGroupName,
         String name, Context context);
 
     /**
@@ -5377,7 +5377,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> validateCustomDomainCanBeAddedToStaticSiteWithResponseAsync(
         String resourceGroupName, String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope);
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
      * Validates a particular custom domain can be added to a static site.
@@ -5398,7 +5398,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSiteAsync(String resourceGroupName,
         String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope);
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
      * Validates a particular custom domain can be added to a static site.
@@ -5419,7 +5419,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSite(String resourceGroupName,
         String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope);
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
      * Validates a particular custom domain can be added to a static site.
@@ -5441,7 +5441,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSite(String resourceGroupName,
         String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope,
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
         Context context);
 
     /**
@@ -5462,7 +5462,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> validateCustomDomainCanBeAddedToStaticSiteAsync(String resourceGroupName, String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope);
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
      * Validates a particular custom domain can be added to a static site.
@@ -5481,7 +5481,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void validateCustomDomainCanBeAddedToStaticSite(String resourceGroupName, String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope);
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
      * Validates a particular custom domain can be added to a static site.
@@ -5501,7 +5501,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void validateCustomDomainCanBeAddedToStaticSite(String resourceGroupName, String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesARMResource staticSiteCustomDomainRequestPropertiesEnvelope,
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
         Context context);
 
     /**

@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBuildARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBuildArmResourceInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public final class StaticSiteBuildCollection implements JsonSerializable<StaticS
     /*
      * The StaticSiteBuildARMResource items on this page
      */
-    private List<StaticSiteBuildARMResourceInner> value;
+    private List<StaticSiteBuildArmResourceInner> value;
 
     /*
      * The link to the next page of items
@@ -40,7 +40,7 @@ public final class StaticSiteBuildCollection implements JsonSerializable<StaticS
      * 
      * @return the value value.
      */
-    public List<StaticSiteBuildARMResourceInner> value() {
+    public List<StaticSiteBuildArmResourceInner> value() {
         return this.value;
     }
 
@@ -98,8 +98,8 @@ public final class StaticSiteBuildCollection implements JsonSerializable<StaticS
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<StaticSiteBuildARMResourceInner> value
-                        = reader.readArray(reader1 -> StaticSiteBuildARMResourceInner.fromJson(reader1));
+                    List<StaticSiteBuildArmResourceInner> value
+                        = reader.readArray(reader1 -> StaticSiteBuildArmResourceInner.fromJson(reader1));
                     deserializedStaticSiteBuildCollection.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedStaticSiteBuildCollection.nextLink = reader.getString();

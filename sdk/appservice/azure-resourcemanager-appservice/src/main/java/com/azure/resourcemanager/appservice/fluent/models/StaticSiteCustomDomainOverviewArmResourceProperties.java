@@ -18,8 +18,8 @@ import java.time.OffsetDateTime;
  * StaticSiteCustomDomainOverviewARMResource resource specific properties.
  */
 @Immutable
-public final class StaticSiteCustomDomainOverviewARMResourceProperties
-    implements JsonSerializable<StaticSiteCustomDomainOverviewARMResourceProperties> {
+public final class StaticSiteCustomDomainOverviewArmResourceProperties
+    implements JsonSerializable<StaticSiteCustomDomainOverviewArmResourceProperties> {
     /*
      * The domain name for the static site custom domain.
      */
@@ -46,9 +46,9 @@ public final class StaticSiteCustomDomainOverviewARMResourceProperties
     private String errorMessage;
 
     /**
-     * Creates an instance of StaticSiteCustomDomainOverviewARMResourceProperties class.
+     * Creates an instance of StaticSiteCustomDomainOverviewArmResourceProperties class.
      */
-    private StaticSiteCustomDomainOverviewARMResourceProperties() {
+    private StaticSiteCustomDomainOverviewArmResourceProperties() {
     }
 
     /**
@@ -114,41 +114,41 @@ public final class StaticSiteCustomDomainOverviewARMResourceProperties
     }
 
     /**
-     * Reads an instance of StaticSiteCustomDomainOverviewARMResourceProperties from the JsonReader.
+     * Reads an instance of StaticSiteCustomDomainOverviewArmResourceProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteCustomDomainOverviewARMResourceProperties if the JsonReader was pointing to an
+     * @return An instance of StaticSiteCustomDomainOverviewArmResourceProperties if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StaticSiteCustomDomainOverviewARMResourceProperties.
+     * @throws IOException If an error occurs while reading the StaticSiteCustomDomainOverviewArmResourceProperties.
      */
-    public static StaticSiteCustomDomainOverviewARMResourceProperties fromJson(JsonReader jsonReader)
+    public static StaticSiteCustomDomainOverviewArmResourceProperties fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteCustomDomainOverviewARMResourceProperties deserializedStaticSiteCustomDomainOverviewARMResourceProperties
-                = new StaticSiteCustomDomainOverviewARMResourceProperties();
+            StaticSiteCustomDomainOverviewArmResourceProperties deserializedStaticSiteCustomDomainOverviewArmResourceProperties
+                = new StaticSiteCustomDomainOverviewArmResourceProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("domainName".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainOverviewARMResourceProperties.domainName = reader.getString();
+                    deserializedStaticSiteCustomDomainOverviewArmResourceProperties.domainName = reader.getString();
                 } else if ("createdOn".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainOverviewARMResourceProperties.createdOn = reader
+                    deserializedStaticSiteCustomDomainOverviewArmResourceProperties.createdOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainOverviewARMResourceProperties.status
+                    deserializedStaticSiteCustomDomainOverviewArmResourceProperties.status
                         = CustomDomainStatus.fromString(reader.getString());
                 } else if ("validationToken".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainOverviewARMResourceProperties.validationToken
+                    deserializedStaticSiteCustomDomainOverviewArmResourceProperties.validationToken
                         = reader.getString();
                 } else if ("errorMessage".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainOverviewARMResourceProperties.errorMessage = reader.getString();
+                    deserializedStaticSiteCustomDomainOverviewArmResourceProperties.errorMessage = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteCustomDomainOverviewARMResourceProperties;
+            return deserializedStaticSiteCustomDomainOverviewArmResourceProperties;
         });
     }
 }

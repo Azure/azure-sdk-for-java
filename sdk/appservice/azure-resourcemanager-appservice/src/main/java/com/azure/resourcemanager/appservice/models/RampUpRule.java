@@ -20,7 +20,7 @@ public final class RampUpRule implements JsonSerializable<RampUpRule> {
     /*
      * Hostname of a slot to which the traffic will be redirected if decided to. E.g. myapp-stage.azurewebsites.net.
      */
-    private String actionHostName;
+    private String actionHostname;
 
     /*
      * Percentage of the traffic which will be redirected to <code>ActionHostName</code>.
@@ -70,24 +70,24 @@ public final class RampUpRule implements JsonSerializable<RampUpRule> {
     }
 
     /**
-     * Get the actionHostName property: Hostname of a slot to which the traffic will be redirected if decided to. E.g.
+     * Get the actionHostname property: Hostname of a slot to which the traffic will be redirected if decided to. E.g.
      * myapp-stage.azurewebsites.net.
      * 
-     * @return the actionHostName value.
+     * @return the actionHostname value.
      */
-    public String actionHostName() {
-        return this.actionHostName;
+    public String actionHostname() {
+        return this.actionHostname;
     }
 
     /**
-     * Set the actionHostName property: Hostname of a slot to which the traffic will be redirected if decided to. E.g.
+     * Set the actionHostname property: Hostname of a slot to which the traffic will be redirected if decided to. E.g.
      * myapp-stage.azurewebsites.net.
      * 
-     * @param actionHostName the actionHostName value to set.
+     * @param actionHostname the actionHostname value to set.
      * @return the RampUpRule object itself.
      */
-    public RampUpRule withActionHostName(String actionHostName) {
-        this.actionHostName = actionHostName;
+    public RampUpRule withActionHostname(String actionHostname) {
+        this.actionHostname = actionHostname;
         return this;
     }
 
@@ -261,7 +261,7 @@ public final class RampUpRule implements JsonSerializable<RampUpRule> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("actionHostName", this.actionHostName);
+        jsonWriter.writeStringField("actionHostName", this.actionHostname);
         jsonWriter.writeNumberField("reroutePercentage", this.reroutePercentage);
         jsonWriter.writeNumberField("changeStep", this.changeStep);
         jsonWriter.writeNumberField("changeIntervalInMinutes", this.changeIntervalInMinutes);
@@ -288,7 +288,7 @@ public final class RampUpRule implements JsonSerializable<RampUpRule> {
                 reader.nextToken();
 
                 if ("actionHostName".equals(fieldName)) {
-                    deserializedRampUpRule.actionHostName = reader.getString();
+                    deserializedRampUpRule.actionHostname = reader.getString();
                 } else if ("reroutePercentage".equals(fieldName)) {
                     deserializedRampUpRule.reroutePercentage = reader.getNullable(JsonReader::getDouble);
                 } else if ("changeStep".equals(fieldName)) {

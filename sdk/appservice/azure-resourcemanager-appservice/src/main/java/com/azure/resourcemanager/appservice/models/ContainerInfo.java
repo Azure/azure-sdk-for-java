@@ -22,12 +22,12 @@ public final class ContainerInfo implements JsonSerializable<ContainerInfo> {
     /*
      * The currentTimeStamp property.
      */
-    private OffsetDateTime currentTimeStamp;
+    private OffsetDateTime currentTimestamp;
 
     /*
      * The previousTimeStamp property.
      */
-    private OffsetDateTime previousTimeStamp;
+    private OffsetDateTime previousTimestamp;
 
     /*
      * The currentCpuStats property.
@@ -66,21 +66,21 @@ public final class ContainerInfo implements JsonSerializable<ContainerInfo> {
     }
 
     /**
-     * Get the currentTimeStamp property: The currentTimeStamp property.
+     * Get the currentTimestamp property: The currentTimeStamp property.
      * 
-     * @return the currentTimeStamp value.
+     * @return the currentTimestamp value.
      */
-    public OffsetDateTime currentTimeStamp() {
-        return this.currentTimeStamp;
+    public OffsetDateTime currentTimestamp() {
+        return this.currentTimestamp;
     }
 
     /**
-     * Get the previousTimeStamp property: The previousTimeStamp property.
+     * Get the previousTimestamp property: The previousTimeStamp property.
      * 
-     * @return the previousTimeStamp value.
+     * @return the previousTimestamp value.
      */
-    public OffsetDateTime previousTimeStamp() {
-        return this.previousTimeStamp;
+    public OffsetDateTime previousTimestamp() {
+        return this.previousTimestamp;
     }
 
     /**
@@ -164,13 +164,13 @@ public final class ContainerInfo implements JsonSerializable<ContainerInfo> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("currentTimeStamp",
-            this.currentTimeStamp == null
+            this.currentTimestamp == null
                 ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.currentTimeStamp));
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.currentTimestamp));
         jsonWriter.writeStringField("previousTimeStamp",
-            this.previousTimeStamp == null
+            this.previousTimestamp == null
                 ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.previousTimeStamp));
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.previousTimestamp));
         jsonWriter.writeJsonField("currentCpuStats", this.currentCpuStats);
         jsonWriter.writeJsonField("previousCpuStats", this.previousCpuStats);
         jsonWriter.writeJsonField("memoryStats", this.memoryStats);
@@ -196,10 +196,10 @@ public final class ContainerInfo implements JsonSerializable<ContainerInfo> {
                 reader.nextToken();
 
                 if ("currentTimeStamp".equals(fieldName)) {
-                    deserializedContainerInfo.currentTimeStamp = reader
+                    deserializedContainerInfo.currentTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("previousTimeStamp".equals(fieldName)) {
-                    deserializedContainerInfo.previousTimeStamp = reader
+                    deserializedContainerInfo.previousTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("currentCpuStats".equals(fieldName)) {
                     deserializedContainerInfo.currentCpuStats = ContainerCpuStatistics.fromJson(reader);

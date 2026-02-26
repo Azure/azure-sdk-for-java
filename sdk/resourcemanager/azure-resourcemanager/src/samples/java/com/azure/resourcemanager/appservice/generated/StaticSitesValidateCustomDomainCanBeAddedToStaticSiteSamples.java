@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequestPropertiesARMResource;
+import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequestPropertiesArmResource;
 
 /**
  * Samples for StaticSites ValidateCustomDomainCanBeAddedToStaticSite.
@@ -24,6 +24,6 @@ public final class StaticSitesValidateCustomDomainCanBeAddedToStaticSiteSamples 
             .serviceClient()
             .getStaticSites()
             .validateCustomDomainCanBeAddedToStaticSite("rg", "testStaticSite0", "custom.domain.net",
-                new StaticSiteCustomDomainRequestPropertiesARMResource(), com.azure.core.util.Context.NONE);
+                new StaticSiteCustomDomainRequestPropertiesArmResource(), com.azure.core.util.Context.NONE);
     }
 }

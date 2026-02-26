@@ -18,11 +18,11 @@ import java.time.OffsetDateTime;
  * Static Site Custom Domain Overview ARM resource.
  */
 @Immutable
-public final class StaticSiteCustomDomainOverviewARMResourceInner extends ProxyResource {
+public final class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyResource {
     /*
      * StaticSiteCustomDomainOverviewARMResource resource specific properties
      */
-    private StaticSiteCustomDomainOverviewARMResourceProperties innerProperties;
+    private StaticSiteCustomDomainOverviewArmResourceProperties innerProperties;
 
     /*
      * Kind of resource.
@@ -50,9 +50,9 @@ public final class StaticSiteCustomDomainOverviewARMResourceInner extends ProxyR
     private String id;
 
     /**
-     * Creates an instance of StaticSiteCustomDomainOverviewARMResourceInner class.
+     * Creates an instance of StaticSiteCustomDomainOverviewArmResourceInner class.
      */
-    private StaticSiteCustomDomainOverviewARMResourceInner() {
+    private StaticSiteCustomDomainOverviewArmResourceInner() {
     }
 
     /**
@@ -60,7 +60,7 @@ public final class StaticSiteCustomDomainOverviewARMResourceInner extends ProxyR
      * 
      * @return the innerProperties value.
      */
-    private StaticSiteCustomDomainOverviewARMResourceProperties innerProperties() {
+    private StaticSiteCustomDomainOverviewArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -180,41 +180,41 @@ public final class StaticSiteCustomDomainOverviewARMResourceInner extends ProxyR
     }
 
     /**
-     * Reads an instance of StaticSiteCustomDomainOverviewARMResourceInner from the JsonReader.
+     * Reads an instance of StaticSiteCustomDomainOverviewArmResourceInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteCustomDomainOverviewARMResourceInner if the JsonReader was pointing to an
+     * @return An instance of StaticSiteCustomDomainOverviewArmResourceInner if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StaticSiteCustomDomainOverviewARMResourceInner.
+     * @throws IOException If an error occurs while reading the StaticSiteCustomDomainOverviewArmResourceInner.
      */
-    public static StaticSiteCustomDomainOverviewARMResourceInner fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteCustomDomainOverviewArmResourceInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteCustomDomainOverviewARMResourceInner deserializedStaticSiteCustomDomainOverviewARMResourceInner
-                = new StaticSiteCustomDomainOverviewARMResourceInner();
+            StaticSiteCustomDomainOverviewArmResourceInner deserializedStaticSiteCustomDomainOverviewArmResourceInner
+                = new StaticSiteCustomDomainOverviewArmResourceInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainOverviewARMResourceInner.id = reader.getString();
+                    deserializedStaticSiteCustomDomainOverviewArmResourceInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainOverviewARMResourceInner.name = reader.getString();
+                    deserializedStaticSiteCustomDomainOverviewArmResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainOverviewARMResourceInner.type = reader.getString();
+                    deserializedStaticSiteCustomDomainOverviewArmResourceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainOverviewARMResourceInner.innerProperties
-                        = StaticSiteCustomDomainOverviewARMResourceProperties.fromJson(reader);
+                    deserializedStaticSiteCustomDomainOverviewArmResourceInner.innerProperties
+                        = StaticSiteCustomDomainOverviewArmResourceProperties.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainOverviewARMResourceInner.kind = reader.getString();
+                    deserializedStaticSiteCustomDomainOverviewArmResourceInner.kind = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedStaticSiteCustomDomainOverviewARMResourceInner.systemData = SystemData.fromJson(reader);
+                    deserializedStaticSiteCustomDomainOverviewArmResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteCustomDomainOverviewARMResourceInner;
+            return deserializedStaticSiteCustomDomainOverviewArmResourceInner;
         });
     }
 }

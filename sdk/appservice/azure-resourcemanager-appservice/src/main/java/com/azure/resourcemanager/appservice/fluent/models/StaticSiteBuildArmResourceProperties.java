@@ -22,8 +22,8 @@ import java.util.List;
  * StaticSiteBuildARMResource resource specific properties.
  */
 @Immutable
-public final class StaticSiteBuildARMResourceProperties
-    implements JsonSerializable<StaticSiteBuildARMResourceProperties> {
+public final class StaticSiteBuildArmResourceProperties
+    implements JsonSerializable<StaticSiteBuildArmResourceProperties> {
     /*
      * An identifier for the static site build.
      */
@@ -75,9 +75,9 @@ public final class StaticSiteBuildARMResourceProperties
     private List<DatabaseConnectionOverview> databaseConnections;
 
     /**
-     * Creates an instance of StaticSiteBuildARMResourceProperties class.
+     * Creates an instance of StaticSiteBuildArmResourceProperties class.
      */
-    private StaticSiteBuildARMResourceProperties() {
+    private StaticSiteBuildArmResourceProperties() {
     }
 
     /**
@@ -197,57 +197,57 @@ public final class StaticSiteBuildARMResourceProperties
     }
 
     /**
-     * Reads an instance of StaticSiteBuildARMResourceProperties from the JsonReader.
+     * Reads an instance of StaticSiteBuildArmResourceProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteBuildARMResourceProperties if the JsonReader was pointing to an instance of it,
+     * @return An instance of StaticSiteBuildArmResourceProperties if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StaticSiteBuildARMResourceProperties.
+     * @throws IOException If an error occurs while reading the StaticSiteBuildArmResourceProperties.
      */
-    public static StaticSiteBuildARMResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteBuildArmResourceProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteBuildARMResourceProperties deserializedStaticSiteBuildARMResourceProperties
-                = new StaticSiteBuildARMResourceProperties();
+            StaticSiteBuildArmResourceProperties deserializedStaticSiteBuildArmResourceProperties
+                = new StaticSiteBuildArmResourceProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("buildId".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceProperties.buildId = reader.getString();
+                    deserializedStaticSiteBuildArmResourceProperties.buildId = reader.getString();
                 } else if ("sourceBranch".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceProperties.sourceBranch = reader.getString();
+                    deserializedStaticSiteBuildArmResourceProperties.sourceBranch = reader.getString();
                 } else if ("pullRequestTitle".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceProperties.pullRequestTitle = reader.getString();
+                    deserializedStaticSiteBuildArmResourceProperties.pullRequestTitle = reader.getString();
                 } else if ("hostname".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceProperties.hostname = reader.getString();
+                    deserializedStaticSiteBuildArmResourceProperties.hostname = reader.getString();
                 } else if ("createdTimeUtc".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceProperties.createdTimeUtc = reader
+                    deserializedStaticSiteBuildArmResourceProperties.createdTimeUtc = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdatedOn".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceProperties.lastUpdatedOn = reader
+                    deserializedStaticSiteBuildArmResourceProperties.lastUpdatedOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceProperties.status
+                    deserializedStaticSiteBuildArmResourceProperties.status
                         = BuildStatus.fromString(reader.getString());
                 } else if ("userProvidedFunctionApps".equals(fieldName)) {
                     List<StaticSiteUserProvidedFunctionApp> userProvidedFunctionApps
                         = reader.readArray(reader1 -> StaticSiteUserProvidedFunctionApp.fromJson(reader1));
-                    deserializedStaticSiteBuildARMResourceProperties.userProvidedFunctionApps
+                    deserializedStaticSiteBuildArmResourceProperties.userProvidedFunctionApps
                         = userProvidedFunctionApps;
                 } else if ("linkedBackends".equals(fieldName)) {
                     List<StaticSiteLinkedBackend> linkedBackends
                         = reader.readArray(reader1 -> StaticSiteLinkedBackend.fromJson(reader1));
-                    deserializedStaticSiteBuildARMResourceProperties.linkedBackends = linkedBackends;
+                    deserializedStaticSiteBuildArmResourceProperties.linkedBackends = linkedBackends;
                 } else if ("databaseConnections".equals(fieldName)) {
                     List<DatabaseConnectionOverview> databaseConnections
                         = reader.readArray(reader1 -> DatabaseConnectionOverview.fromJson(reader1));
-                    deserializedStaticSiteBuildARMResourceProperties.databaseConnections = databaseConnections;
+                    deserializedStaticSiteBuildArmResourceProperties.databaseConnections = databaseConnections;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteBuildARMResourceProperties;
+            return deserializedStaticSiteBuildArmResourceProperties;
         });
     }
 }

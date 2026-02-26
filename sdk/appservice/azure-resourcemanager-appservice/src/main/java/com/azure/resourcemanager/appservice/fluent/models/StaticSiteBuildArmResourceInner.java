@@ -22,11 +22,11 @@ import java.util.List;
  * Static Site Build ARM resource.
  */
 @Immutable
-public final class StaticSiteBuildARMResourceInner extends ProxyResource {
+public final class StaticSiteBuildArmResourceInner extends ProxyResource {
     /*
      * StaticSiteBuildARMResource resource specific properties
      */
-    private StaticSiteBuildARMResourceProperties innerProperties;
+    private StaticSiteBuildArmResourceProperties innerProperties;
 
     /*
      * Kind of resource.
@@ -54,9 +54,9 @@ public final class StaticSiteBuildARMResourceInner extends ProxyResource {
     private String id;
 
     /**
-     * Creates an instance of StaticSiteBuildARMResourceInner class.
+     * Creates an instance of StaticSiteBuildArmResourceInner class.
      */
-    private StaticSiteBuildARMResourceInner() {
+    private StaticSiteBuildArmResourceInner() {
     }
 
     /**
@@ -64,7 +64,7 @@ public final class StaticSiteBuildARMResourceInner extends ProxyResource {
      * 
      * @return the innerProperties value.
      */
-    private StaticSiteBuildARMResourceProperties innerProperties() {
+    private StaticSiteBuildArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -229,41 +229,41 @@ public final class StaticSiteBuildARMResourceInner extends ProxyResource {
     }
 
     /**
-     * Reads an instance of StaticSiteBuildARMResourceInner from the JsonReader.
+     * Reads an instance of StaticSiteBuildArmResourceInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteBuildARMResourceInner if the JsonReader was pointing to an instance of it, or
+     * @return An instance of StaticSiteBuildArmResourceInner if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StaticSiteBuildARMResourceInner.
+     * @throws IOException If an error occurs while reading the StaticSiteBuildArmResourceInner.
      */
-    public static StaticSiteBuildARMResourceInner fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteBuildArmResourceInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteBuildARMResourceInner deserializedStaticSiteBuildARMResourceInner
-                = new StaticSiteBuildARMResourceInner();
+            StaticSiteBuildArmResourceInner deserializedStaticSiteBuildArmResourceInner
+                = new StaticSiteBuildArmResourceInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceInner.id = reader.getString();
+                    deserializedStaticSiteBuildArmResourceInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceInner.name = reader.getString();
+                    deserializedStaticSiteBuildArmResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceInner.type = reader.getString();
+                    deserializedStaticSiteBuildArmResourceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceInner.innerProperties
-                        = StaticSiteBuildARMResourceProperties.fromJson(reader);
+                    deserializedStaticSiteBuildArmResourceInner.innerProperties
+                        = StaticSiteBuildArmResourceProperties.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceInner.kind = reader.getString();
+                    deserializedStaticSiteBuildArmResourceInner.kind = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedStaticSiteBuildARMResourceInner.systemData = SystemData.fromJson(reader);
+                    deserializedStaticSiteBuildArmResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteBuildARMResourceInner;
+            return deserializedStaticSiteBuildArmResourceInner;
         });
     }
 }
