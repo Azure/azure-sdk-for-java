@@ -16,6 +16,4 @@ results/
 scripts/
 
 # Benchmark documentation
-BENCHMARK_RESULTS.md
-IMPLEMENTATION_GUIDE.md
-MULTI_TENANCY_TEST_PLAN.md
+docs/
