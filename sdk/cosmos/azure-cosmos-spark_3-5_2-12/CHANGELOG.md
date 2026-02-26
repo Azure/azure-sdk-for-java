@@ -3,6 +3,7 @@
 ### 4.44.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `customHeaders` support  to allow setting custom HTTP headers (e.g., `x-ms-cosmos-workload-id`) that are sent with every request. - See [PR 48128](https://github.com/Azure/azure-sdk-for-java/pull/48128)
 
 #### Breaking Changes
 
