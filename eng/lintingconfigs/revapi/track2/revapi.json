@@ -928,12 +928,6 @@
           "justification": "TypeSpec fix for base resource class."
         },
         {
-          "regex": true,
-          "code": "java\\.method\\.(returnTypeChanged|parameterTypeChanged)",
-          "old" : ".* com\\.azure\\.resourcemanager\\.appservice\\.models\\.CloningInfo::.*",
-          "justification": "TypeSpec fix for UUID."
-        },
-        {
           "code": "java.method.removed",
           "old": "method com.azure.resourcemanager.appservice.models.CertificatePatchResource com.azure.resourcemanager.appservice.models.CertificatePatchResource::withPassword(java.lang.String)",
           "justification": "Bug fix, password is read-only."
