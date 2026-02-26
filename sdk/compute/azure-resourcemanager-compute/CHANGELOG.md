@@ -1,14 +1,12 @@
 # Release History
 
-## 2.57.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.56.2 (2026-02-26)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
 
 ## 2.56.1 (2026-01-29)
 
