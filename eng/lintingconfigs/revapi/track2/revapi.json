@@ -947,7 +947,7 @@
         },
         {
           "code": "java.class.removed",
-          "old": "com.azure.resourcemanager.appservice.models.ExpressionTraces",
+          "old": "class com.azure.resourcemanager.appservice.models.ExpressionTraces",
           "justification": "Model not used."
         }
       ]
