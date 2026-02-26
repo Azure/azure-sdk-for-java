@@ -42,14 +42,14 @@
 
 * `billingConfiguration()` was added
 * `withBillingConfiguration(models.BillingConfiguration)` was added
-* `benefitPlans()` was added
 * `withBenefitPlans(models.BenefitPlans)` was added
+* `benefitPlans()` was added
 
 #### `models.DisconnectedOperationUpdateProperties` was modified
 
-* `withBillingConfiguration(models.BillingConfiguration)` was added
-* `benefitPlans()` was added
 * `billingConfiguration()` was added
+* `benefitPlans()` was added
+* `withBillingConfiguration(models.BillingConfiguration)` was added
 * `withBenefitPlans(models.BenefitPlans)` was added
 
 #### `DisconnectedOperationsManager` was modified
@@ -66,8 +66,8 @@
 
 #### `models.DisconnectedOperationDeploymentManifest` was modified
 
-* `billingConfiguration()` was added
 * `benefitPlans()` was added
+* `billingConfiguration()` was added
 
 ## 1.0.0-beta.1 (2025-09-24)
 

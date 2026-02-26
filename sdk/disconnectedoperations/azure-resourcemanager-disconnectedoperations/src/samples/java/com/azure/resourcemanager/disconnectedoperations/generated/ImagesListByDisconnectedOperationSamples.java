@@ -9,7 +9,7 @@ package com.azure.resourcemanager.disconnectedoperations.generated;
  */
 public final class ImagesListByDisconnectedOperationSamples {
     /*
-     * x-ms-original-file: 2026-03-15/Images_ListByDisconnectedOperation_MaximumSet_Gen.json.json
+     * x-ms-original-file: 2026-03-15/Images_ListByDisconnectedOperation_MaximumSet_Gen.json
      */
     /**
      * Sample code: Images_ListByDisconnectedOperation.
