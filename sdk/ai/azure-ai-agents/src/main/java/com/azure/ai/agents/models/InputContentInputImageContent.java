@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * Input image
  *
- * An image input to the model. Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
+ * An image input to the model. Learn about [image inputs](/docs/guides/vision).
  */
 @Fluent
 public final class InputContentInputImageContent extends InputContent {

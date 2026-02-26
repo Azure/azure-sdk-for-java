@@ -147,6 +147,7 @@ public final class InputItemFunctionShellCallOutputItemParam extends InputItem {
         jsonWriter.writeArrayField("output", this.output, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeNumberField("max_output_length", this.maxOutputLength);
         return jsonWriter.writeEndObject();
     }
@@ -167,6 +168,7 @@ public final class InputItemFunctionShellCallOutputItemParam extends InputItem {
             List<FunctionShellCallOutputContentParam> output = null;
             InputItemType type = InputItemType.SHELL_CALL_OUTPUT;
             String id = null;
+            FunctionShellCallItemStatus status = null;
             Long maxOutputLength = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -179,6 +181,8 @@ public final class InputItemFunctionShellCallOutputItemParam extends InputItem {
                     type = InputItemType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = FunctionShellCallItemStatus.fromString(reader.getString());
                 } else if ("max_output_length".equals(fieldName)) {
                     maxOutputLength = reader.getNullable(JsonReader::getLong);
                 } else {
@@ -189,8 +193,37 @@ public final class InputItemFunctionShellCallOutputItemParam extends InputItem {
                 = new InputItemFunctionShellCallOutputItemParam(callId, output);
             deserializedInputItemFunctionShellCallOutputItemParam.type = type;
             deserializedInputItemFunctionShellCallOutputItemParam.id = id;
+            deserializedInputItemFunctionShellCallOutputItemParam.status = status;
             deserializedInputItemFunctionShellCallOutputItemParam.maxOutputLength = maxOutputLength;
             return deserializedInputItemFunctionShellCallOutputItemParam;
         });
+    }
+
+    /*
+     * The status property.
+     */
+    @Generated
+    private FunctionShellCallItemStatus status;
+
+    /**
+     * Get the status property: The status property.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public FunctionShellCallItemStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: The status property.
+     *
+     * @param status the status value to set.
+     * @return the InputItemFunctionShellCallOutputItemParam object itself.
+     */
+    @Generated
+    public InputItemFunctionShellCallOutputItemParam setStatus(FunctionShellCallItemStatus status) {
+        this.status = status;
+        return this;
     }
 }

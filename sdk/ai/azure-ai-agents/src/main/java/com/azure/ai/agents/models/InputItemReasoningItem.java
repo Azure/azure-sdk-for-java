@@ -17,7 +17,7 @@ import java.util.List;
  * A description of the chain of thought used by a reasoning model while generating
  * a response. Be sure to include these items in your `input` to the Responses API
  * for subsequent turns of a conversation if you are manually
- * [managing context](https://platform.openai.com/docs/guides/conversation-state).
+ * [managing context](/docs/guides/conversation-state).
  */
 @Fluent
 public final class InputItemReasoningItem extends InputItem {
@@ -44,7 +44,7 @@ public final class InputItemReasoningItem extends InputItem {
      * Reasoning summary content.
      */
     @Generated
-    private final List<Summary> summary;
+    private final List<SummaryTextContent> summary;
 
     /*
      * Reasoning text content.
@@ -66,7 +66,7 @@ public final class InputItemReasoningItem extends InputItem {
      * @param summary the summary value to set.
      */
     @Generated
-    public InputItemReasoningItem(String id, List<Summary> summary) {
+    public InputItemReasoningItem(String id, List<SummaryTextContent> summary) {
         this.id = id;
         this.summary = summary;
     }
@@ -120,7 +120,7 @@ public final class InputItemReasoningItem extends InputItem {
      * @return the summary value.
      */
     @Generated
-    public List<Summary> getSummary() {
+    public List<SummaryTextContent> getSummary() {
         return this.summary;
     }
 
@@ -186,7 +186,7 @@ public final class InputItemReasoningItem extends InputItem {
     public static InputItemReasoningItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            List<Summary> summary = null;
+            List<SummaryTextContent> summary = null;
             InputItemType type = InputItemType.REASONING;
             String encryptedContent = null;
             List<ReasoningTextContent> content = null;
@@ -197,7 +197,7 @@ public final class InputItemReasoningItem extends InputItem {
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("summary".equals(fieldName)) {
-                    summary = reader.readArray(reader1 -> Summary.fromJson(reader1));
+                    summary = reader.readArray(reader1 -> SummaryTextContent.fromJson(reader1));
                 } else if ("type".equals(fieldName)) {
                     type = InputItemType.fromString(reader.getString());
                 } else if ("encrypted_content".equals(fieldName)) {
