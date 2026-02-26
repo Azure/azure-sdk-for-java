@@ -11,6 +11,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.InitializerDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.nodeTypes.NodeWithModifiers;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
@@ -193,6 +194,10 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // Add Duration getters and hide *Ms() getters on time-based models
         customizeDurationProperties(customization, logger);
+
+        // Strip trailing numeric suffixes from TCGC-generated parameter names
+        // e.g., analyzeRequest1 -> analyzeRequest, grantCopyAuthorizationRequest1 -> grantCopyAuthorizationRequest
+        renameRequestParameters(customization, logger);
     }
 
     /**
@@ -1926,5 +1931,52 @@ public class ContentUnderstandingCustomizations extends Customization {
         + "        return Collections.unmodifiableList(results);\n"
         + "    }\n"
         + "}\n";
+
+    /**
+     * Rename protocol method parameters that have TCGC-generated numeric suffixes.
+     * TCGC appends "1" when a spread/wrapped body model name collides with the original TypeSpec model name,
+     * e.g., analyzeRequest1, grantCopyAuthorizationRequest1. This strips the suffix from public API parameters.
+     */
+    private void renameRequestParameters(LibraryCustomization customization, Logger logger) {
+        PackageCustomization pkg = customization.getPackage("com.azure.ai.contentunderstanding");
+        String[] clientClasses = { "ContentUnderstandingClient", "ContentUnderstandingAsyncClient" };
+
+        for (String className : clientClasses) {
+            ClassCustomization classCustomization = pkg.getClass(className);
+            classCustomization.customizeAst(compilationUnit -> {
+                compilationUnit.getClassByName(className).ifPresent(clazz -> {
+                    for (MethodDeclaration method : clazz.getMethods()) {
+                        for (Parameter param : method.getParameters()) {
+                            String name = param.getNameAsString();
+                            // Match parameters ending with a digit suffix (TCGC disambiguation)
+                            if (name.matches(".*Request\\d+$")) {
+                                String newName = name.replaceAll("\\d+$", "");
+                                // Rename parameter
+                                param.setName(newName);
+                                // Update all references in the method body
+                                method.getBody().ifPresent(body -> {
+                                    String bodyStr = body.toString();
+                                    bodyStr = bodyStr.replace(name, newName);
+                                    method.setBody(StaticJavaParser.parseBlock(bodyStr));
+                                });
+                                // Update Javadoc @param tag
+                                method.getJavadoc().ifPresent(javadoc -> {
+                                    String javadocStr = javadoc.toText();
+                                    if (javadocStr.contains("@param " + name)) {
+                                        javadocStr = javadocStr.replace(
+                                            "@param " + name + " The " + name + " parameter.",
+                                            "@param " + newName + " The " + newName + " parameter.");
+                                        method.setJavadocComment(javadocStr);
+                                    }
+                                });
+                                logger.info("Renamed parameter '{}' -> '{}' in {}.{}", name, newName,
+                                    className, method.getNameAsString());
+                            }
+                        }
+                    }
+                });
+            });
+        }
+    }
 
 }

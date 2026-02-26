@@ -159,7 +159,7 @@ public final class ContentUnderstandingAsyncClient {
      * </pre>
      *
      * @param analyzerId The unique identifier of the analyzer.
-     * @param analyzeRequest1 The analyzeRequest1 parameter.
+     * @param analyzeRequest The analyzeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -169,9 +169,9 @@ public final class ContentUnderstandingAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyze(String analyzerId, BinaryData analyzeRequest1,
+    public PollerFlux<BinaryData, BinaryData> beginAnalyze(String analyzerId, BinaryData analyzeRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginAnalyzeAsync(analyzerId, analyzeRequest1, requestOptions);
+        return this.serviceClient.beginAnalyzeAsync(analyzerId, analyzeRequest, requestOptions);
     }
 
     /**
@@ -1119,7 +1119,7 @@ public final class ContentUnderstandingAsyncClient {
      * </pre>
      *
      * @param analyzerId The unique identifier of the analyzer.
-     * @param grantCopyAuthorizationRequest1 The grantCopyAuthorizationRequest1 parameter.
+     * @param grantCopyAuthorizationRequest The grantCopyAuthorizationRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1131,8 +1131,8 @@ public final class ContentUnderstandingAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> grantCopyAuthorizationWithResponse(String analyzerId,
-        BinaryData grantCopyAuthorizationRequest1, RequestOptions requestOptions) {
-        return this.serviceClient.grantCopyAuthorizationWithResponseAsync(analyzerId, grantCopyAuthorizationRequest1,
+        BinaryData grantCopyAuthorizationRequest, RequestOptions requestOptions) {
+        return this.serviceClient.grantCopyAuthorizationWithResponseAsync(analyzerId, grantCopyAuthorizationRequest,
             requestOptions);
     }
 
