@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2026-02-25)
+## 1.0.0 (2026-02-26)
 
 - Azure Resource Manager Disconnected Operations client library for Java. This package contains Microsoft Azure SDK for Disconnected Operations Management SDK. Disconnected operations service API. Package api-version 2026-03-15. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -40,17 +40,17 @@
 
 #### `models.DisconnectedOperationProperties` was modified
 
-* `withBenefitPlans(models.BenefitPlans)` was added
-* `benefitPlans()` was added
-* `withBillingConfiguration(models.BillingConfiguration)` was added
 * `billingConfiguration()` was added
+* `withBillingConfiguration(models.BillingConfiguration)` was added
+* `benefitPlans()` was added
+* `withBenefitPlans(models.BenefitPlans)` was added
 
 #### `models.DisconnectedOperationUpdateProperties` was modified
 
 * `withBillingConfiguration(models.BillingConfiguration)` was added
-* `withBenefitPlans(models.BenefitPlans)` was added
 * `benefitPlans()` was added
 * `billingConfiguration()` was added
+* `withBenefitPlans(models.BenefitPlans)` was added
 
 #### `DisconnectedOperationsManager` was modified
 
@@ -66,8 +66,8 @@
 
 #### `models.DisconnectedOperationDeploymentManifest` was modified
 
-* `benefitPlans()` was added
 * `billingConfiguration()` was added
+* `benefitPlans()` was added
 
 ## 1.0.0-beta.1 (2025-09-24)
 
