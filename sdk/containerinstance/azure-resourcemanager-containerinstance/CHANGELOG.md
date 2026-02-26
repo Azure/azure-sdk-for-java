@@ -1,14 +1,12 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.53.8 (2026-02-26)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `azure-resourcemanager-network` and `azure-storage-file-share` dependencies.
 
 ## 2.53.7 (2026-01-29)
 
