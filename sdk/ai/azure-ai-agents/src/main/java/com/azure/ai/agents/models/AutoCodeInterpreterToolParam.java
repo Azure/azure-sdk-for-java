@@ -18,7 +18,7 @@ import java.util.List;
  * Configuration for a code interpreter container. Optionally specify the IDs of the files to run the code on.
  */
 @Fluent
-public final class CodeInterpreterContainerAuto implements JsonSerializable<CodeInterpreterContainerAuto> {
+public final class AutoCodeInterpreterToolParam implements JsonSerializable<AutoCodeInterpreterToolParam> {
 
     /*
      * Always `auto`.
@@ -38,11 +38,17 @@ public final class CodeInterpreterContainerAuto implements JsonSerializable<Code
     @Generated
     private ContainerMemoryLimit memoryLimit;
 
-    /**
-     * Creates an instance of CodeInterpreterContainerAuto class.
+    /*
+     * The network_policy property.
      */
     @Generated
-    public CodeInterpreterContainerAuto() {
+    private ContainerNetworkPolicyParam networkPolicy;
+
+    /**
+     * Creates an instance of AutoCodeInterpreterToolParam class.
+     */
+    @Generated
+    public AutoCodeInterpreterToolParam() {
     }
 
     /**
@@ -69,10 +75,10 @@ public final class CodeInterpreterContainerAuto implements JsonSerializable<Code
      * Set the fileIds property: An optional list of uploaded files to make available to your code.
      *
      * @param fileIds the fileIds value to set.
-     * @return the CodeInterpreterContainerAuto object itself.
+     * @return the AutoCodeInterpreterToolParam object itself.
      */
     @Generated
-    public CodeInterpreterContainerAuto setFileIds(List<String> fileIds) {
+    public AutoCodeInterpreterToolParam setFileIds(List<String> fileIds) {
         this.fileIds = fileIds;
         return this;
     }
@@ -91,11 +97,33 @@ public final class CodeInterpreterContainerAuto implements JsonSerializable<Code
      * Set the memoryLimit property: The memory_limit property.
      *
      * @param memoryLimit the memoryLimit value to set.
-     * @return the CodeInterpreterContainerAuto object itself.
+     * @return the AutoCodeInterpreterToolParam object itself.
      */
     @Generated
-    public CodeInterpreterContainerAuto setMemoryLimit(ContainerMemoryLimit memoryLimit) {
+    public AutoCodeInterpreterToolParam setMemoryLimit(ContainerMemoryLimit memoryLimit) {
         this.memoryLimit = memoryLimit;
+        return this;
+    }
+
+    /**
+     * Get the networkPolicy property: The network_policy property.
+     *
+     * @return the networkPolicy value.
+     */
+    @Generated
+    public ContainerNetworkPolicyParam getNetworkPolicy() {
+        return this.networkPolicy;
+    }
+
+    /**
+     * Set the networkPolicy property: The network_policy property.
+     *
+     * @param networkPolicy the networkPolicy value to set.
+     * @return the AutoCodeInterpreterToolParam object itself.
+     */
+    @Generated
+    public AutoCodeInterpreterToolParam setNetworkPolicy(ContainerNetworkPolicyParam networkPolicy) {
+        this.networkPolicy = networkPolicy;
         return this;
     }
 
@@ -109,36 +137,40 @@ public final class CodeInterpreterContainerAuto implements JsonSerializable<Code
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("memory_limit", this.memoryLimit == null ? null : this.memoryLimit.toString());
+        jsonWriter.writeJsonField("network_policy", this.networkPolicy);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of CodeInterpreterContainerAuto from the JsonReader.
+     * Reads an instance of AutoCodeInterpreterToolParam from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CodeInterpreterContainerAuto if the JsonReader was pointing to an instance of it, or null
+     * @return An instance of AutoCodeInterpreterToolParam if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CodeInterpreterContainerAuto.
+     * @throws IOException If an error occurs while reading the AutoCodeInterpreterToolParam.
      */
     @Generated
-    public static CodeInterpreterContainerAuto fromJson(JsonReader jsonReader) throws IOException {
+    public static AutoCodeInterpreterToolParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            CodeInterpreterContainerAuto deserializedCodeInterpreterContainerAuto = new CodeInterpreterContainerAuto();
+            AutoCodeInterpreterToolParam deserializedAutoCodeInterpreterToolParam = new AutoCodeInterpreterToolParam();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("file_ids".equals(fieldName)) {
                     List<String> fileIds = reader.readArray(reader1 -> reader1.getString());
-                    deserializedCodeInterpreterContainerAuto.fileIds = fileIds;
+                    deserializedAutoCodeInterpreterToolParam.fileIds = fileIds;
                 } else if ("memory_limit".equals(fieldName)) {
-                    deserializedCodeInterpreterContainerAuto.memoryLimit
+                    deserializedAutoCodeInterpreterToolParam.memoryLimit
                         = ContainerMemoryLimit.fromString(reader.getString());
+                } else if ("network_policy".equals(fieldName)) {
+                    deserializedAutoCodeInterpreterToolParam.networkPolicy
+                        = ContainerNetworkPolicyParam.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedCodeInterpreterContainerAuto;
+            return deserializedAutoCodeInterpreterToolParam;
         });
     }
 }

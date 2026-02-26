@@ -6,7 +6,6 @@ package com.azure.ai.agents.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -17,13 +16,13 @@ import java.io.IOException;
  * A summary text from the model.
  */
 @Immutable
-public final class Summary implements JsonSerializable<Summary> {
+public final class SummaryTextContent extends MessageContent {
 
     /*
-     * The type of the object. Always `summary_text`.
+     * The type property.
      */
     @Generated
-    private final String type = "summary_text";
+    private MessageContentType type = MessageContentType.SUMMARY_TEXT;
 
     /*
      * A summary of the reasoning output from the model so far.
@@ -32,22 +31,23 @@ public final class Summary implements JsonSerializable<Summary> {
     private final String text;
 
     /**
-     * Creates an instance of Summary class.
+     * Creates an instance of SummaryTextContent class.
      *
      * @param text the text value to set.
      */
     @Generated
-    public Summary(String text) {
+    public SummaryTextContent(String text) {
         this.text = text;
     }
 
     /**
-     * Get the type property: The type of the object. Always `summary_text`.
+     * Get the type property: The type property.
      *
      * @return the type value.
      */
     @Generated
-    public String getType() {
+    @Override
+    public MessageContentType getType() {
         return this.type;
     }
 
@@ -68,34 +68,39 @@ public final class Summary implements JsonSerializable<Summary> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of Summary from the JsonReader.
+     * Reads an instance of SummaryTextContent from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Summary if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
+     * @return An instance of SummaryTextContent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Summary.
+     * @throws IOException If an error occurs while reading the SummaryTextContent.
      */
     @Generated
-    public static Summary fromJson(JsonReader jsonReader) throws IOException {
+    public static SummaryTextContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String text = null;
+            MessageContentType type = MessageContentType.SUMMARY_TEXT;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("text".equals(fieldName)) {
                     text = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = MessageContentType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new Summary(text);
+            SummaryTextContent deserializedSummaryTextContent = new SummaryTextContent(text);
+            deserializedSummaryTextContent.type = type;
+            return deserializedSummaryTextContent;
         });
     }
 }

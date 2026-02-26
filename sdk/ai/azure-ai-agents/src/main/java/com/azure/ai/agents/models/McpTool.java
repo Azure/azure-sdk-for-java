@@ -16,7 +16,7 @@ import java.util.Map;
  * MCP tool
  *
  * Give the model access to additional tools via remote Model Context Protocol
- * (MCP) servers. [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+ * (MCP) servers. [Learn more about MCP](/docs/guides/tools-remote-mcp).
  */
 @Fluent
 public final class McpTool extends Tool {
@@ -43,7 +43,7 @@ public final class McpTool extends Tool {
     /*
      * Identifier for service connectors, like those available in ChatGPT. One of
      * `server_url` or `connector_id` must be provided. Learn more about service
-     * connectors [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+     * connectors [here](/docs/guides/tools-remote-mcp#connectors).
      * Currently supported `connector_id` values are:
      * - Dropbox: `connector_dropbox`
      * - Gmail: `connector_gmail`
@@ -154,7 +154,7 @@ public final class McpTool extends Tool {
     /**
      * Get the connectorType property: Identifier for service connectors, like those available in ChatGPT. One of
      * `server_url` or `connector_id` must be provided. Learn more about service
-     * connectors [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+     * connectors [here](/docs/guides/tools-remote-mcp#connectors).
      * Currently supported `connector_id` values are:
      * - Dropbox: `connector_dropbox`
      * - Gmail: `connector_gmail`
@@ -175,7 +175,7 @@ public final class McpTool extends Tool {
     /**
      * Set the connectorType property: Identifier for service connectors, like those available in ChatGPT. One of
      * `server_url` or `connector_id` must be provided. Learn more about service
-     * connectors [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+     * connectors [here](/docs/guides/tools-remote-mcp#connectors).
      * Currently supported `connector_id` values are:
      * - Dropbox: `connector_dropbox`
      * - Gmail: `connector_gmail`

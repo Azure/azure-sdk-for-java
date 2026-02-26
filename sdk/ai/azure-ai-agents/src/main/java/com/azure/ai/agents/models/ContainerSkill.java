@@ -12,22 +12,22 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ComputerAction model.
+ * The ContainerSkill model.
  */
 @Immutable
-public class ComputerAction implements JsonSerializable<ComputerAction> {
+public class ContainerSkill implements JsonSerializable<ContainerSkill> {
 
     /*
      * The type property.
      */
     @Generated
-    private ComputerActionType type = ComputerActionType.fromString("ComputerAction");
+    private ContainerSkillType type = ContainerSkillType.fromString("ContainerSkill");
 
     /**
-     * Creates an instance of ComputerAction class.
+     * Creates an instance of ContainerSkill class.
      */
     @Generated
-    public ComputerAction() {
+    public ContainerSkill() {
     }
 
     /**
@@ -36,7 +36,7 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
      * @return the type value.
      */
     @Generated
-    public ComputerActionType getType() {
+    public ContainerSkillType getType() {
         return this.type;
     }
 
@@ -52,15 +52,15 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
     }
 
     /**
-     * Reads an instance of ComputerAction from the JsonReader.
+     * Reads an instance of ContainerSkill from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ComputerAction if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ContainerSkill if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ComputerAction.
+     * @throws IOException If an error occurs while reading the ContainerSkill.
      */
     @Generated
-    public static ComputerAction fromJson(JsonReader jsonReader) throws IOException {
+    public static ContainerSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -77,24 +77,10 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("click".equals(discriminatorValue)) {
-                    return ClickParam.fromJson(readerToUse.reset());
-                } else if ("double_click".equals(discriminatorValue)) {
-                    return DoubleClickAction.fromJson(readerToUse.reset());
-                } else if ("drag".equals(discriminatorValue)) {
-                    return DragParam.fromJson(readerToUse.reset());
-                } else if ("keypress".equals(discriminatorValue)) {
-                    return KeyPressAction.fromJson(readerToUse.reset());
-                } else if ("move".equals(discriminatorValue)) {
-                    return MoveParam.fromJson(readerToUse.reset());
-                } else if ("screenshot".equals(discriminatorValue)) {
-                    return ScreenshotParam.fromJson(readerToUse.reset());
-                } else if ("scroll".equals(discriminatorValue)) {
-                    return ScrollParam.fromJson(readerToUse.reset());
-                } else if ("type".equals(discriminatorValue)) {
-                    return TypeParam.fromJson(readerToUse.reset());
-                } else if ("wait".equals(discriminatorValue)) {
-                    return WaitParam.fromJson(readerToUse.reset());
+                if ("skill_reference".equals(discriminatorValue)) {
+                    return SkillReferenceParam.fromJson(readerToUse.reset());
+                } else if ("inline".equals(discriminatorValue)) {
+                    return InlineSkillParam.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -103,19 +89,19 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
     }
 
     @Generated
-    static ComputerAction fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static ContainerSkill fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ComputerAction deserializedComputerAction = new ComputerAction();
+            ContainerSkill deserializedContainerSkill = new ContainerSkill();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedComputerAction.type = ComputerActionType.fromString(reader.getString());
+                    deserializedContainerSkill.type = ContainerSkillType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedComputerAction;
+            return deserializedContainerSkill;
         });
     }
 }

@@ -12,22 +12,23 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ComputerAction model.
+ * Network access policy for the container.
  */
 @Immutable
-public class ComputerAction implements JsonSerializable<ComputerAction> {
+public class ContainerNetworkPolicyParam implements JsonSerializable<ContainerNetworkPolicyParam> {
 
     /*
      * The type property.
      */
     @Generated
-    private ComputerActionType type = ComputerActionType.fromString("ComputerAction");
+    private ContainerNetworkPolicyParamType type
+        = ContainerNetworkPolicyParamType.fromString("ContainerNetworkPolicyParam");
 
     /**
-     * Creates an instance of ComputerAction class.
+     * Creates an instance of ContainerNetworkPolicyParam class.
      */
     @Generated
-    public ComputerAction() {
+    public ContainerNetworkPolicyParam() {
     }
 
     /**
@@ -36,7 +37,7 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
      * @return the type value.
      */
     @Generated
-    public ComputerActionType getType() {
+    public ContainerNetworkPolicyParamType getType() {
         return this.type;
     }
 
@@ -52,15 +53,15 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
     }
 
     /**
-     * Reads an instance of ComputerAction from the JsonReader.
+     * Reads an instance of ContainerNetworkPolicyParam from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ComputerAction if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ComputerAction.
+     * @return An instance of ContainerNetworkPolicyParam if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerNetworkPolicyParam.
      */
     @Generated
-    public static ComputerAction fromJson(JsonReader jsonReader) throws IOException {
+    public static ContainerNetworkPolicyParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -77,24 +78,10 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("click".equals(discriminatorValue)) {
-                    return ClickParam.fromJson(readerToUse.reset());
-                } else if ("double_click".equals(discriminatorValue)) {
-                    return DoubleClickAction.fromJson(readerToUse.reset());
-                } else if ("drag".equals(discriminatorValue)) {
-                    return DragParam.fromJson(readerToUse.reset());
-                } else if ("keypress".equals(discriminatorValue)) {
-                    return KeyPressAction.fromJson(readerToUse.reset());
-                } else if ("move".equals(discriminatorValue)) {
-                    return MoveParam.fromJson(readerToUse.reset());
-                } else if ("screenshot".equals(discriminatorValue)) {
-                    return ScreenshotParam.fromJson(readerToUse.reset());
-                } else if ("scroll".equals(discriminatorValue)) {
-                    return ScrollParam.fromJson(readerToUse.reset());
-                } else if ("type".equals(discriminatorValue)) {
-                    return TypeParam.fromJson(readerToUse.reset());
-                } else if ("wait".equals(discriminatorValue)) {
-                    return WaitParam.fromJson(readerToUse.reset());
+                if ("disabled".equals(discriminatorValue)) {
+                    return ContainerNetworkPolicyDisabledParam.fromJson(readerToUse.reset());
+                } else if ("allowlist".equals(discriminatorValue)) {
+                    return ContainerNetworkPolicyAllowlistParam.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -103,19 +90,20 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
     }
 
     @Generated
-    static ComputerAction fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static ContainerNetworkPolicyParam fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ComputerAction deserializedComputerAction = new ComputerAction();
+            ContainerNetworkPolicyParam deserializedContainerNetworkPolicyParam = new ContainerNetworkPolicyParam();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedComputerAction.type = ComputerActionType.fromString(reader.getString());
+                    deserializedContainerNetworkPolicyParam.type
+                        = ContainerNetworkPolicyParamType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedComputerAction;
+            return deserializedContainerNetworkPolicyParam;
         });
     }
 }

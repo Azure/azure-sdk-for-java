@@ -16,7 +16,7 @@ import java.io.IOException;
  * A screenshot action.
  */
 @Immutable
-public final class Screenshot extends ComputerAction {
+public final class ScreenshotParam extends ComputerAction {
 
     /*
      * The type property.
@@ -25,10 +25,10 @@ public final class Screenshot extends ComputerAction {
     private ComputerActionType type = ComputerActionType.SCREENSHOT;
 
     /**
-     * Creates an instance of Screenshot class.
+     * Creates an instance of ScreenshotParam class.
      */
     @Generated
-    public Screenshot() {
+    public ScreenshotParam() {
     }
 
     /**
@@ -54,27 +54,27 @@ public final class Screenshot extends ComputerAction {
     }
 
     /**
-     * Reads an instance of Screenshot from the JsonReader.
+     * Reads an instance of ScreenshotParam from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Screenshot if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IOException If an error occurs while reading the Screenshot.
+     * @return An instance of ScreenshotParam if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScreenshotParam.
      */
     @Generated
-    public static Screenshot fromJson(JsonReader jsonReader) throws IOException {
+    public static ScreenshotParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Screenshot deserializedScreenshot = new Screenshot();
+            ScreenshotParam deserializedScreenshotParam = new ScreenshotParam();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedScreenshot.type = ComputerActionType.fromString(reader.getString());
+                    deserializedScreenshotParam.type = ComputerActionType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedScreenshot;
+            return deserializedScreenshotParam;
         });
     }
 }

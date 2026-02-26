@@ -17,7 +17,7 @@ import java.io.IOException;
  * An x/y coordinate pair, e.g. `{ x: 100, y: 200 }`.
  */
 @Immutable
-public final class DragPoint implements JsonSerializable<DragPoint> {
+public final class CoordParam implements JsonSerializable<CoordParam> {
 
     /*
      * The x-coordinate.
@@ -32,13 +32,13 @@ public final class DragPoint implements JsonSerializable<DragPoint> {
     private final long y;
 
     /**
-     * Creates an instance of DragPoint class.
+     * Creates an instance of CoordParam class.
      *
      * @param x the x value to set.
      * @param y the y value to set.
      */
     @Generated
-    public DragPoint(long x, long y) {
+    public CoordParam(long x, long y) {
         this.x = x;
         this.y = y;
     }
@@ -76,16 +76,16 @@ public final class DragPoint implements JsonSerializable<DragPoint> {
     }
 
     /**
-     * Reads an instance of DragPoint from the JsonReader.
+     * Reads an instance of CoordParam from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DragPoint if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * @return An instance of CoordParam if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DragPoint.
+     * @throws IOException If an error occurs while reading the CoordParam.
      */
     @Generated
-    public static DragPoint fromJson(JsonReader jsonReader) throws IOException {
+    public static CoordParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             long x = 0L;
             long y = 0L;
@@ -100,7 +100,7 @@ public final class DragPoint implements JsonSerializable<DragPoint> {
                     reader.skipChildren();
                 }
             }
-            return new DragPoint(x, y);
+            return new CoordParam(x, y);
         });
     }
 }

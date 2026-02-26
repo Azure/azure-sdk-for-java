@@ -9,43 +9,35 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
- * Drag
+ * Type
  *
- * A drag action.
+ * An action to type in text.
  */
 @Immutable
-public final class Drag extends ComputerAction {
+public final class TypeParam extends ComputerAction {
 
     /*
      * The type property.
      */
     @Generated
-    private ComputerActionType type = ComputerActionType.DRAG;
+    private ComputerActionType type = ComputerActionType.TYPE;
 
     /*
-     * An array of coordinates representing the path of the drag action. Coordinates will appear as an array
-     * of objects, eg
-     * ```
-     * [
-     * { x: 100, y: 200 },
-     * { x: 200, y: 300 }
-     * ]
-     * ```
+     * The text to type.
      */
     @Generated
-    private final List<DragPoint> path;
+    private final String text;
 
     /**
-     * Creates an instance of Drag class.
+     * Creates an instance of TypeParam class.
      *
-     * @param path the path value to set.
+     * @param text the text value to set.
      */
     @Generated
-    public Drag(List<DragPoint> path) {
-        this.path = path;
+    public TypeParam(String text) {
+        this.text = text;
     }
 
     /**
@@ -60,21 +52,13 @@ public final class Drag extends ComputerAction {
     }
 
     /**
-     * Get the path property: An array of coordinates representing the path of the drag action. Coordinates will appear
-     * as an array
-     * of objects, eg
-     * ```
-     * [
-     * { x: 100, y: 200 },
-     * { x: 200, y: 300 }
-     * ]
-     * ```.
+     * Get the text property: The text to type.
      *
-     * @return the path value.
+     * @return the text value.
      */
     @Generated
-    public List<DragPoint> getPath() {
-        return this.path;
+    public String getText() {
+        return this.text;
     }
 
     /**
@@ -84,39 +68,39 @@ public final class Drag extends ComputerAction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("path", this.path, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of Drag from the JsonReader.
+     * Reads an instance of TypeParam from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Drag if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
+     * @return An instance of TypeParam if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Drag.
+     * @throws IOException If an error occurs while reading the TypeParam.
      */
     @Generated
-    public static Drag fromJson(JsonReader jsonReader) throws IOException {
+    public static TypeParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<DragPoint> path = null;
-            ComputerActionType type = ComputerActionType.DRAG;
+            String text = null;
+            ComputerActionType type = ComputerActionType.TYPE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("path".equals(fieldName)) {
-                    path = reader.readArray(reader1 -> DragPoint.fromJson(reader1));
+                if ("text".equals(fieldName)) {
+                    text = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = ComputerActionType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            Drag deserializedDrag = new Drag(path);
-            deserializedDrag.type = type;
-            return deserializedDrag;
+            TypeParam deserializedTypeParam = new TypeParam(text);
+            deserializedTypeParam.type = type;
+            return deserializedTypeParam;
         });
     }
 }

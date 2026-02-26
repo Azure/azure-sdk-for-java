@@ -12,22 +12,23 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ComputerAction model.
+ * The FunctionShellToolParamEnvironment model.
  */
 @Immutable
-public class ComputerAction implements JsonSerializable<ComputerAction> {
+public class FunctionShellToolParamEnvironment implements JsonSerializable<FunctionShellToolParamEnvironment> {
 
     /*
      * The type property.
      */
     @Generated
-    private ComputerActionType type = ComputerActionType.fromString("ComputerAction");
+    private FunctionShellToolParamEnvironmentType type
+        = FunctionShellToolParamEnvironmentType.fromString("FunctionShellToolParamEnvironment");
 
     /**
-     * Creates an instance of ComputerAction class.
+     * Creates an instance of FunctionShellToolParamEnvironment class.
      */
     @Generated
-    public ComputerAction() {
+    public FunctionShellToolParamEnvironment() {
     }
 
     /**
@@ -36,7 +37,7 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
      * @return the type value.
      */
     @Generated
-    public ComputerActionType getType() {
+    public FunctionShellToolParamEnvironmentType getType() {
         return this.type;
     }
 
@@ -52,15 +53,15 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
     }
 
     /**
-     * Reads an instance of ComputerAction from the JsonReader.
+     * Reads an instance of FunctionShellToolParamEnvironment from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ComputerAction if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ComputerAction.
+     * @return An instance of FunctionShellToolParamEnvironment if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FunctionShellToolParamEnvironment.
      */
     @Generated
-    public static ComputerAction fromJson(JsonReader jsonReader) throws IOException {
+    public static FunctionShellToolParamEnvironment fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -77,24 +78,12 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("click".equals(discriminatorValue)) {
-                    return ClickParam.fromJson(readerToUse.reset());
-                } else if ("double_click".equals(discriminatorValue)) {
-                    return DoubleClickAction.fromJson(readerToUse.reset());
-                } else if ("drag".equals(discriminatorValue)) {
-                    return DragParam.fromJson(readerToUse.reset());
-                } else if ("keypress".equals(discriminatorValue)) {
-                    return KeyPressAction.fromJson(readerToUse.reset());
-                } else if ("move".equals(discriminatorValue)) {
-                    return MoveParam.fromJson(readerToUse.reset());
-                } else if ("screenshot".equals(discriminatorValue)) {
-                    return ScreenshotParam.fromJson(readerToUse.reset());
-                } else if ("scroll".equals(discriminatorValue)) {
-                    return ScrollParam.fromJson(readerToUse.reset());
-                } else if ("type".equals(discriminatorValue)) {
-                    return TypeParam.fromJson(readerToUse.reset());
-                } else if ("wait".equals(discriminatorValue)) {
-                    return WaitParam.fromJson(readerToUse.reset());
+                if ("local".equals(discriminatorValue)) {
+                    return FunctionShellToolParamEnvironmentLocalEnvironmentParam.fromJson(readerToUse.reset());
+                } else if ("container_reference".equals(discriminatorValue)) {
+                    return FunctionShellToolParamEnvironmentContainerReferenceParam.fromJson(readerToUse.reset());
+                } else if ("container_auto".equals(discriminatorValue)) {
+                    return ContainerAutoParam.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -103,19 +92,21 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
     }
 
     @Generated
-    static ComputerAction fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static FunctionShellToolParamEnvironment fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ComputerAction deserializedComputerAction = new ComputerAction();
+            FunctionShellToolParamEnvironment deserializedFunctionShellToolParamEnvironment
+                = new FunctionShellToolParamEnvironment();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedComputerAction.type = ComputerActionType.fromString(reader.getString());
+                    deserializedFunctionShellToolParamEnvironment.type
+                        = FunctionShellToolParamEnvironmentType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedComputerAction;
+            return deserializedFunctionShellToolParamEnvironment;
         });
     }
 }

@@ -11,41 +11,57 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Move
+ * Scroll
  *
- * A mouse move action.
+ * A scroll action.
  */
 @Immutable
-public final class Move extends ComputerAction {
+public final class ScrollParam extends ComputerAction {
 
     /*
      * The type property.
      */
     @Generated
-    private ComputerActionType type = ComputerActionType.MOVE;
+    private ComputerActionType type = ComputerActionType.SCROLL;
 
     /*
-     * The x-coordinate to move to.
+     * The x-coordinate where the scroll occurred.
      */
     @Generated
     private final long x;
 
     /*
-     * The y-coordinate to move to.
+     * The y-coordinate where the scroll occurred.
      */
     @Generated
     private final long y;
 
+    /*
+     * The horizontal scroll distance.
+     */
+    @Generated
+    private final long scrollX;
+
+    /*
+     * The vertical scroll distance.
+     */
+    @Generated
+    private final long scrollY;
+
     /**
-     * Creates an instance of Move class.
+     * Creates an instance of ScrollParam class.
      *
      * @param x the x value to set.
      * @param y the y value to set.
+     * @param scrollX the scrollX value to set.
+     * @param scrollY the scrollY value to set.
      */
     @Generated
-    public Move(long x, long y) {
+    public ScrollParam(long x, long y, long scrollX, long scrollY) {
         this.x = x;
         this.y = y;
+        this.scrollX = scrollX;
+        this.scrollY = scrollY;
     }
 
     /**
@@ -60,7 +76,7 @@ public final class Move extends ComputerAction {
     }
 
     /**
-     * Get the x property: The x-coordinate to move to.
+     * Get the x property: The x-coordinate where the scroll occurred.
      *
      * @return the x value.
      */
@@ -70,13 +86,33 @@ public final class Move extends ComputerAction {
     }
 
     /**
-     * Get the y property: The y-coordinate to move to.
+     * Get the y property: The y-coordinate where the scroll occurred.
      *
      * @return the y value.
      */
     @Generated
     public long getY() {
         return this.y;
+    }
+
+    /**
+     * Get the scrollX property: The horizontal scroll distance.
+     *
+     * @return the scrollX value.
+     */
+    @Generated
+    public long getScrollX() {
+        return this.scrollX;
+    }
+
+    /**
+     * Get the scrollY property: The vertical scroll distance.
+     *
+     * @return the scrollY value.
+     */
+    @Generated
+    public long getScrollY() {
+        return this.scrollY;
     }
 
     /**
@@ -88,25 +124,29 @@ public final class Move extends ComputerAction {
         jsonWriter.writeStartObject();
         jsonWriter.writeLongField("x", this.x);
         jsonWriter.writeLongField("y", this.y);
+        jsonWriter.writeLongField("scroll_x", this.scrollX);
+        jsonWriter.writeLongField("scroll_y", this.scrollY);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of Move from the JsonReader.
+     * Reads an instance of ScrollParam from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Move if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
+     * @return An instance of ScrollParam if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Move.
+     * @throws IOException If an error occurs while reading the ScrollParam.
      */
     @Generated
-    public static Move fromJson(JsonReader jsonReader) throws IOException {
+    public static ScrollParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             long x = 0L;
             long y = 0L;
-            ComputerActionType type = ComputerActionType.MOVE;
+            long scrollX = 0L;
+            long scrollY = 0L;
+            ComputerActionType type = ComputerActionType.SCROLL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -114,15 +154,19 @@ public final class Move extends ComputerAction {
                     x = reader.getLong();
                 } else if ("y".equals(fieldName)) {
                     y = reader.getLong();
+                } else if ("scroll_x".equals(fieldName)) {
+                    scrollX = reader.getLong();
+                } else if ("scroll_y".equals(fieldName)) {
+                    scrollY = reader.getLong();
                 } else if ("type".equals(fieldName)) {
                     type = ComputerActionType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            Move deserializedMove = new Move(x, y);
-            deserializedMove.type = type;
-            return deserializedMove;
+            ScrollParam deserializedScrollParam = new ScrollParam(x, y, scrollX, scrollY);
+            deserializedScrollParam.type = type;
+            return deserializedScrollParam;
         });
     }
 }
