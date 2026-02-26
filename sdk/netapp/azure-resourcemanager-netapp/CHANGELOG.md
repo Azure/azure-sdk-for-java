@@ -61,8 +61,8 @@
 
 #### `models.Volume` was modified
 
-* `listQuotaReport(models.QuotaReportFilterRequest,com.azure.core.util.Context)` was added
 * `listQuotaReport()` was added
+* `listQuotaReport(models.QuotaReportFilterRequest,com.azure.core.util.Context)` was added
 
 #### `models.VolumePropertiesDataProtection` was modified
 
@@ -79,8 +79,8 @@
 
 #### `models.VolumePatchPropertiesDataProtection` was modified
 
-* `ransomwareProtection()` was added
 * `withRansomwareProtection(models.RansomwareProtectionPatchSettings)` was added
+* `ransomwareProtection()` was added
 
 #### `models.Volumes` was modified
 
