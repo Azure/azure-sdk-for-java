@@ -173,6 +173,11 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 LOGGER.debug("Removing stale (non-running) processor for '{}'.", buildProcessorName(key));
                 try {
                     listeners.forEach(l -> l.processorRemoved(buildProcessorName(key), stale));
+                } catch (Exception ex) {
+                    LOGGER.warn("Listener notification failed while removing stale processor for '{}'.",
+                        buildProcessorName(key), ex);
+                }
+                try {
                     stale.close();
                 } catch (Exception ex) {
                     LOGGER.warn("Failed to close stale Service Bus processor client for '{}'.",
