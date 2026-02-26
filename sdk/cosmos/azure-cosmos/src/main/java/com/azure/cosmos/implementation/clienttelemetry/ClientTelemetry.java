@@ -16,7 +16,6 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.handler.codec.http.HttpMethod;
-import org.HdrHistogram.ConcurrentDoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -27,34 +26,43 @@ import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * Manages per-client telemetry info and shared VM metadata (IMDS).
+ *
+ * <p>VM metadata is fetched once per JVM from the Azure Instance Metadata Service (IMDS)
+ * and cached in a static singleton. The IMDS HTTP client is created on-demand for the
+ * first metadata fetch and disposed immediately after; no long-lived HTTP client is kept.</p>
+ */
 public class ClientTelemetry {
-    public final static boolean DEFAULT_CLIENT_TELEMETRY_ENABLED = false;
     public final static String VM_ID_PREFIX = "vmId_";
-    public final static String TCP_NEW_CHANNEL_LATENCY_NAME = "TcpNewChannelOpenLatency";
-    public final static String TCP_NEW_CHANNEL_LATENCY_UNIT = "MilliSecond";
-    public final static int TCP_NEW_CHANNEL_LATENCY_MAX_MILLI_SEC = 300000;
-    public final static int TCP_NEW_CHANNEL_LATENCY_PRECISION = 2;
+    public final static boolean DEFAULT_CLIENT_TELEMETRY_ENABLED = false;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private final static AtomicReference<AzureVMMetadata> azureVmMetaDataSingleton =
-        new AtomicReference<>(null);
-    private final ClientTelemetryInfo clientTelemetryInfo;
-    private final boolean clientMetricsEnabled;
-    private final Configs configs;
-    private final CosmosClientTelemetryConfig clientTelemetryConfig;
-    private final HttpClient metadataHttpClient;
     private static final Logger logger = LoggerFactory.getLogger(ClientTelemetry.class);
     private static final String USER_AGENT = Utils.getUserAgent();
 
-    //IMDS Constants
-    public static final String IMDS_AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
-    public static final Duration IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5);
-    public static final Duration IMDS_DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
-    public static final Duration IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(5);
-    public static final int IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE = 5;
+    // Cached IMDS metadata Mono. Reactor's cache() ensures:
+    // - The fetch executes at most once
+    // - All concurrent subscribers share the single result
+    // - The HTTP client is created and disposed within the fetch
+    private static final Mono<AzureVMMetadata> CACHED_METADATA = fetchAzureVmMetadata().cache();
+
+    // Sentinel for "not on Azure VM" or "IMDS unreachable"
+    private static final AzureVMMetadata METADATA_NOT_AVAILABLE = new AzureVMMetadata();
+
+    // IMDS Constants
+    private static final String IMDS_AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
+    private static final Duration IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5);
+    private static final Duration IMDS_DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(5);
+    private static final int IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE = 5;
+
+    // Per-instance fields
+    private final ClientTelemetryInfo clientTelemetryInfo;
+    private final boolean clientMetricsEnabled;
+    private final CosmosClientTelemetryConfig clientTelemetryConfig;
 
     public ClientTelemetry(DiagnosticsClientContext diagnosticsClientContext,
                            Boolean acceleratedNetworking,
@@ -82,7 +90,6 @@ public class ClientTelemetry {
 
         checkNotNull(clientTelemetryConfig, "Argument 'clientTelemetryConfig' cannot be null");
 
-        this.configs = configs;
         this.clientTelemetryConfig = clientTelemetryConfig;
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
             clientTelemetryAccessor = ImplementationBridgeHelpers
@@ -91,7 +98,6 @@ public class ClientTelemetry {
         assert(clientTelemetryAccessor != null);
         this.clientMetricsEnabled = clientTelemetryAccessor
             .isClientMetricsEnabled(clientTelemetryConfig);
-        this.metadataHttpClient = getHttpClientForIMDS(configs);
     }
 
     public ClientTelemetryInfo getClientTelemetryInfo() {
@@ -103,41 +109,28 @@ public class ClientTelemetry {
         return clientTelemetryConfig;
     }
 
-    public static String getMachineId(DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
-        AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
-
-        if (metadataSnapshot != null && metadataSnapshot.getVmId() != null) {
-            String machineId = VM_ID_PREFIX + metadataSnapshot.getVmId();
-            if (diagnosticsClientConfig != null) {
-                diagnosticsClientConfig.withMachineId(machineId);
-            }
-            return machineId;
-        }
-
-        if (diagnosticsClientConfig == null) {
-            return "";
-        }
-
-        return diagnosticsClientConfig.getMachineId();
-    }
-
+    /**
+     * Blocking version of machine ID lookup. Used by Spark connector (CosmosClientCache.scala).
+     * Delegates to getMachineId which waits up to 5s for IMDS metadata.
+     */
     public static String blockingGetOrLoadMachineId(
-        DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
+            DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
+        return getMachineId(diagnosticsClientConfig);
+    }
 
-        AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
-
-        if (metadataSnapshot == null) {
-            loadAzureVmMetaData(null).block();
-        }
-
-        metadataSnapshot = azureVmMetaDataSingleton.get();
-
-        if (metadataSnapshot != null && metadataSnapshot.getVmId() != null) {
-            String machineId = VM_ID_PREFIX + metadataSnapshot.getVmId();
-            if (diagnosticsClientConfig != null) {
-                diagnosticsClientConfig.withMachineId(machineId);
+    public static String getMachineId(DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
+        // Try to get cached metadata (non-blocking if already resolved)
+        try {
+            AzureVMMetadata metadata = CACHED_METADATA.block(Duration.ofSeconds(5));
+            if (metadata != null && metadata != METADATA_NOT_AVAILABLE && metadata.getVmId() != null) {
+                String machineId = VM_ID_PREFIX + metadata.getVmId();
+                if (diagnosticsClientConfig != null) {
+                    diagnosticsClientConfig.withMachineId(machineId);
+                }
+                return machineId;
             }
-            return machineId;
+        } catch (Exception ignored) {
+            // Timeout or error - fall through to default
         }
 
         if (diagnosticsClientConfig == null) {
@@ -145,37 +138,26 @@ public class ClientTelemetry {
         }
 
         return diagnosticsClientConfig.getMachineId();
-    }
-
-    public static void recordValue(ConcurrentDoubleHistogram doubleHistogram, long value) {
-        try {
-            doubleHistogram.recordValue(value);
-        } catch (Exception ex) {
-            logger.warn("Error while recording value for client telemetry. ", ex);
-        }
     }
 
     public boolean isClientMetricsEnabled() {
         return this.clientMetricsEnabled;
     }
 
+    /**
+     * Initialize this client telemetry instance by loading VM metadata (if not already cached).
+     * The first call triggers an IMDS HTTP request; the HTTP client is disposed immediately
+     * after the metadata is fetched. Subsequent calls just populate from the static cache.
+     */
     public Mono<?> init() {
         return loadAzureVmMetaData(this);
     }
 
     public void close() {
-        logger.debug("GlobalEndpointManager closed.");
-    }
-
-    private static HttpClient getHttpClientForIMDS(Configs configs) {
-        // Proxy is not supported for azure instance metadata service
-        HttpClientConfig httpClientConfig = new HttpClientConfig(configs)
-                .withMaxIdleConnectionTimeout(IMDS_DEFAULT_IDLE_CONNECTION_TIMEOUT)
-                .withPoolSize(IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE)
-                .withNetworkRequestTimeout(IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT)
-                .withConnectionAcquireTimeout(IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT);
-
-        return HttpClient.createFixed(httpClientConfig);
+        // Nothing to clean up -- no per-instance resources.
+        // The IMDS HTTP client is created and disposed during init(), not held.
+        // Per-instance state (clientTelemetryInfo) will be GC'd with this instance.
+        logger.debug("ClientTelemetry closed.");
     }
 
     private void populateAzureVmMetaData(AzureVMMetadata azureVMMetadata) {
@@ -185,18 +167,15 @@ public class ClientTelemetry {
             "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
     }
 
-    private static Mono<?> loadAzureVmMetaData(ClientTelemetry thisPtr) {
+    /**
+     * Creates the one-time IMDS fetch Mono. Called once to initialize CACHED_METADATA.
+     * Reactor's cache() operator ensures this executes at most once; all concurrent
+     * subscribers share the single result. The HTTP client is ephemeral.
+     */
+    private static Mono<AzureVMMetadata> fetchAzureVmMetadata() {
         if (Configs.shouldDisableIMDSAccess()) {
             logger.info("Access to IMDS to get Azure VM metadata is disabled");
-            return Mono.empty();
-        }
-        AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
-
-        if (metadataSnapshot != null) {
-            if (thisPtr != null) {
-                thisPtr.populateAzureVmMetaData(metadataSnapshot);
-            }
-            return Mono.empty();
+            return Mono.just(METADATA_NOT_AVAILABLE);
         }
 
         URI targetEndpoint;
@@ -204,29 +183,47 @@ public class ClientTelemetry {
             targetEndpoint = new URI(IMDS_AZURE_VM_METADATA);
         } catch (URISyntaxException ex) {
             logger.info("Unable to parse azure vm metadata url");
-            return Mono.empty();
+            return Mono.just(METADATA_NOT_AVAILABLE);
         }
+
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Metadata", "true");
         HttpHeaders httpHeaders = new HttpHeaders(headers);
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(),
-            httpHeaders);
-        HttpClient httpClient = thisPtr != null ? thisPtr.metadataHttpClient : getHttpClientForIMDS(new Configs());
-        Mono<HttpResponse> httpResponseMono =  httpClient.send(httpRequest);
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint,
+            targetEndpoint.getPort(), httpHeaders);
 
-        return httpResponseMono
-            .flatMap(HttpResponse::bodyAsString)
-            .map(ClientTelemetry::parse)
-            .doOnSuccess(metadata -> {
-                azureVmMetaDataSingleton.compareAndSet(null, metadata);
-                if (thisPtr != null) {
-                    thisPtr.populateAzureVmMetaData(metadata);
-                }
-            }).onErrorResume(throwable -> {
-                logger.info("Client is not on azure vm");
-                logger.debug("Unable to get azure vm metadata", throwable);
-                return Mono.empty();
-            });
+        HttpClientConfig httpClientConfig = new HttpClientConfig(new Configs())
+            .withMaxIdleConnectionTimeout(IMDS_DEFAULT_IDLE_CONNECTION_TIMEOUT)
+            .withPoolSize(IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE)
+            .withNetworkRequestTimeout(IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT)
+            .withConnectionAcquireTimeout(IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT);
+
+        return Mono.usingWhen(
+            Mono.fromCallable(() -> HttpClient.createFixed(httpClientConfig)),
+            httpClient -> httpClient.send(httpRequest)
+                .flatMap(HttpResponse::bodyAsString)
+                .map(ClientTelemetry::parse),
+            httpClient -> Mono.fromRunnable(() -> {
+                try { httpClient.shutdown(); } catch (Exception e) { /* ignore */ }
+            })
+        )
+        .onErrorResume(throwable -> {
+            logger.debug("Client is not on azure vm");
+            logger.debug("Unable to get azure vm metadata", throwable);
+            return Mono.just(METADATA_NOT_AVAILABLE);
+        })
+        .subscribeOn(reactor.core.scheduler.Schedulers.boundedElastic());
+    }
+
+    /**
+     * Load metadata from cache and populate this instance's telemetry info.
+     */
+    private static Mono<?> loadAzureVmMetaData(ClientTelemetry thisPtr) {
+        return CACHED_METADATA.doOnNext(metadata -> {
+            if (thisPtr != null && metadata != METADATA_NOT_AVAILABLE) {
+                thisPtr.populateAzureVmMetaData(metadata);
+            }
+        });
     }
 
     private static AzureVMMetadata parse(String itemResponseBodyAsString) {
