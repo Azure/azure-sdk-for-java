@@ -35,8 +35,8 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         };
     }
 
-    @DataProvider(name = "readOperationTypeProvider")
-    public static Object[][] readOperationTypeProvider() {
+    @DataProvider(name = "nonWriteOperationTypeProvider")
+    public static Object[][] nonWriteOperationTypeProvider() {
         return new Object[][]{
             // OperationType, useThinClientMode, expectedTimeout1, expectedTimeout2, expectedTimeout3, backoff1, backoff2
 
@@ -51,7 +51,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"unit"}, dataProvider = "readOperationTypeProvider")
+    @Test(groups = {"unit"}, dataProvider = "nonWriteOperationTypeProvider")
     public void shouldRetryOnTimeoutForReadOperations(
             OperationType operationType,
             boolean useThinClientMode,

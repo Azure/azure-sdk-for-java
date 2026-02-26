@@ -111,7 +111,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
 
     @AfterClass(groups = {"fi-thinclient-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        //System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         safeClose(this.client);
     }
 

@@ -1086,7 +1086,7 @@ public class ClientSideRequestStatistics {
                 jsonGenerator.writeObjectField("requestTimeline", gatewayStatistics.getRequestTimeline());
                 jsonGenerator.writeStringField("partitionKeyRangeId", gatewayStatistics.getPartitionKeyRangeId());
                 jsonGenerator.writeNumberField("responsePayloadSizeInBytes", gatewayStatistics.getResponsePayloadSizeInBytes());
-                jsonGenerator.writeStringField("httpNwResponseTimeout", gatewayStatistics.getHttpNetworkResponseTimeout());
+                jsonGenerator.writeStringField("httpNetworkResponseTimeoutInMs", gatewayStatistics.getHttpNetworkResponseTimeout());
                 this.writeNonNullStringField(jsonGenerator, "exceptionMessage", gatewayStatistics.getExceptionMessage());
                 this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", gatewayStatistics.getExceptionResponseHeaders());
                 this.writeNonNullStringField(jsonGenerator, "faultInjectionRuleId", gatewayStatistics.getFaultInjectionRuleId());
