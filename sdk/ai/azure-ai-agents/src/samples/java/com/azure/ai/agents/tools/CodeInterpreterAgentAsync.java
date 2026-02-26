@@ -101,7 +101,7 @@ public class CodeInterpreterAgentAsync {
             .doOnError(error -> {
                 System.err.println("Error: " + error.getMessage());
                 error.printStackTrace();
-            }).timeout(Duration.ofSeconds(30))
+            }).timeout(Duration.ofSeconds(300))
             .block();
     }
 }
