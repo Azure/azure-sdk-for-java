@@ -506,7 +506,11 @@ public class ResourceTokenTest extends TestSuiteBase {
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, databaseId);
+        try {
+            safeDeleteDatabase(client, databaseId);
+        } catch (Exception e) {
+            logger.warn("Failed to delete database during cleanup", e);
+        }
         safeClose(client);
     }
 

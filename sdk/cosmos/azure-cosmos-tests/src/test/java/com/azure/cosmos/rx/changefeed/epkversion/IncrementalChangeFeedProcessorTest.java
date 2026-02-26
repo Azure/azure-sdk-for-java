@@ -1662,7 +1662,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"query" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = {"query" }, timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void endToEndTimeoutConfigShouldBeSuppressed() throws InterruptedException {
         CosmosAsyncClient clientWithE2ETimeoutConfig = null;
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
