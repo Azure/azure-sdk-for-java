@@ -84,6 +84,14 @@ public class BenchmarkOrchestrator {
             logger.info("Cosmos + Reactor Netty metrics will export to: {}", cosmosMicrometerRegistry.getClass().getSimpleName());
         }
 
+        // Always add a SimpleMeterRegistry to globalRegistry when netty metrics are enabled,
+        // so Reactor Netty ConnectionProvider gauges have a backing store for values.
+        // Without this, gauges register on the CompositeMeterRegistry but return 0.
+        if (config.isEnableNettyHttpMetrics()) {
+            Metrics.addRegistry(new io.micrometer.core.instrument.simple.SimpleMeterRegistry());
+            logger.info("SimpleMeterRegistry added to globalRegistry for Reactor Netty pool gauge backing");
+        }
+
         // Prepare all tenants (inject shared state, set defaults)
         prepareTenants(config, cosmosMicrometerRegistry);
 
