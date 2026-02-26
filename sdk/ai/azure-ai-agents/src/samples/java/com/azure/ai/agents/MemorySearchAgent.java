@@ -5,7 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.MemorySearchTool;
+import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
 import com.azure.ai.agents.models.MemoryStoreDefaultOptions;
 import com.azure.ai.agents.models.MemoryStoreDetails;
@@ -36,7 +36,7 @@ public class MemorySearchAgent {
         AgentsClientBuilder builder = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .serviceVersion(AgentsServiceVersion.V2025_05_15_PREVIEW);
+                .serviceVersion(AgentsServiceVersion.getLatest());
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();
@@ -62,8 +62,8 @@ public class MemorySearchAgent {
                     = memoryStoresClient.createMemoryStore(memoryStoreName, definition, description, null);
             System.out.printf("Created memory store: %s (%s)\n", memoryStore.getName(), memoryStore.getId());
 
-            MemorySearchTool tool = new MemorySearchTool(memoryStore.getName(), scope)
-                    .setUpdateDelay(1); // Wait 1 second of inactivity before extracting memories
+            MemorySearchPreviewTool tool = new MemorySearchPreviewTool(memoryStore.getName(), scope)
+                    .setUpdateDelaySeconds(1); // Wait 1 second of inactivity before extracting memories
 
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(agentModel)
                     .setInstructions("You are a helpful assistant that answers general questions.")
