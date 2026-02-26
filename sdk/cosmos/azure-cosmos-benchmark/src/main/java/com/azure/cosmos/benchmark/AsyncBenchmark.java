@@ -14,6 +14,7 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -253,7 +254,8 @@ abstract class AsyncBenchmark<T> {
             }
         }
 
-        docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();
+        int prePopConcurrency = Math.min(cfg.getConcurrency(), 100);
+        docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), prePopConcurrency).collectList().block();
         logger.info("Finished pre-populating {} documents", cfg.getNumberOfPreCreatedDocuments());
 
         init();

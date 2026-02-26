@@ -12,10 +12,9 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
-import io.micrometer.core.instrument.Gauge;
-import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
+
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -70,8 +69,29 @@ public class BenchmarkOrchestrator {
             logger.info("JVM stats enabled (gc, threads, memory, threadPrefix)");
         }
 
+        // Enable Reactor Netty HTTP connection pool metrics if configured
+        if (config.isEnableNettyHttpMetrics()) {
+            System.setProperty("COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED", "true");
+            logger.info("Reactor Netty HTTP connection pool metrics enabled");
+        }
+
+        // Build Cosmos micrometer registry (App Insights / Graphite) once, reuse everywhere
+        MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
+        if (cosmosMicrometerRegistry != null) {
+            Metrics.addRegistry(cosmosMicrometerRegistry);
+            logger.info("Cosmos + Reactor Netty metrics will export to: {}", cosmosMicrometerRegistry.getClass().getSimpleName());
+        }
+
+        // Always add a SimpleMeterRegistry to globalRegistry when netty metrics are enabled,
+        // so Reactor Netty ConnectionProvider gauges have a backing store for values.
+        // Without this, gauges register on the CompositeMeterRegistry but return 0.
+        if (config.isEnableNettyHttpMetrics()) {
+            Metrics.addRegistry(new io.micrometer.core.instrument.simple.SimpleMeterRegistry());
+            logger.info("SimpleMeterRegistry added to globalRegistry for Reactor Netty pool gauge backing");
+        }
+
         // Prepare all tenants (inject shared state, set defaults)
-        prepareTenants(config);
+        prepareTenants(config, cosmosMicrometerRegistry);
 
         // Reporter selection: CSV > Console
         ScheduledReporter reporter;
@@ -132,6 +152,14 @@ public class BenchmarkOrchestrator {
                 config.getResultUploadDatabase(), config.getResultUploadContainer());
         }
 
+        // Netty HTTP connection pool metrics reporter (only when enabled)
+        NettyHttpMetricsReporter nettyMetricsReporter = null;
+        if (config.isEnableNettyHttpMetrics() && config.getReportingDirectory() != null) {
+            Path nettyMetricsDir = Paths.get(config.getReportingDirectory());
+            nettyMetricsReporter = new NettyHttpMetricsReporter(Metrics.globalRegistry, nettyMetricsDir);
+            nettyMetricsReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+        }
+
         reporter.report();
         logger.info("[LIFECYCLE] PRE_CREATE timestamp={}", Instant.now());
         logger.info("BenchmarkConfig: {}", config);
@@ -150,43 +178,6 @@ public class BenchmarkOrchestrator {
             resultUploaderClient.close();
         }
         clearGlobalSystemProperties();
-    }
-
-    // ======== Pool metrics logging ========
-
-    private void logPoolMetrics(String phase) {
-        logger.info("[POOL_METRICS] phase={} timestamp={}", phase, Instant.now());
-        int count = 0;
-        for (Meter meter : Metrics.globalRegistry.getMeters()) {
-            String name = meter.getId().getName();
-            if (name.contains("reactor.netty.connection.provider")) {
-                String remoteAddr = meter.getId().getTag("remote.address");
-                String poolName = meter.getId().getTag("name");
-                String poolId = meter.getId().getTag("id");
-                double value = 0;
-                if (meter instanceof Gauge) {
-                    value = ((Gauge) meter).value();
-                }
-                if (value > 0 || count < 5) { // log first 5 + any with non-zero value
-                    logger.info("[POOL_METRICS]   {} id={} remote={} pool={} value={}",
-                        name, poolId, remoteAddr, poolName, value);
-                }
-                count++;
-            }
-        }
-                // Dump all tags for the first pool meter for debugging
-        for (Meter m : Metrics.globalRegistry.getMeters()) {
-            if (m.getId().getName().contains("reactor.netty.connection.provider.total.connections")) {
-                StringBuilder sb = new StringBuilder("[POOL_METRICS_TAGS] ");
-                sb.append(m.getId().getName()).append(" tags={");
-                m.getId().getTags().forEach(t -> sb.append(t.getKey()).append("=").append(t.getValue()).append(", "));
-                sb.append("}");
-                if (m instanceof Gauge) sb.append(" value=").append(((Gauge) m).value());
-                logger.info(sb.toString());
-                break; // just first one
-            }
-        }
-        logger.info("[POOL_METRICS] total pool metric entries: {}", count);
     }
 
     // ======== Lifecycle loop (create -> run -> close -> settle x N) ========
@@ -306,8 +297,8 @@ public class BenchmarkOrchestrator {
      * Centralizes all tenant mutation: suppressCleanup, applicationName suffix,
      * micrometer registry injection.
      */
-    private void prepareTenants(BenchmarkConfig config) {
-        MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
+    private void prepareTenants(BenchmarkConfig config, MeterRegistry cosmosMicrometerRegistry) {
+        // cosmosMicrometerRegistry passed as parameter
         if (cosmosMicrometerRegistry != null) {
             logger.info("Cosmos micrometer registry: {}", cosmosMicrometerRegistry.getClass().getSimpleName());
         }
@@ -394,6 +385,7 @@ public class BenchmarkOrchestrator {
         System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF");
         System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF");
         System.clearProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT");
+        System.clearProperty("COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED");
     }
 
     private void setGlobalSystemProperties(BenchmarkConfig config) {
