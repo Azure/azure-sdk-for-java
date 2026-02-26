@@ -460,6 +460,16 @@ public class CosmosItemTest extends TestSuiteBase {
 
             logger.info("Cosmos Diagnostics: {}", feedResponse.getCosmosDiagnostics().getDiagnosticsContext().toJson());
         }
+        catch (CosmosException e) {
+            // With Strong consistency and 2 out of 3 secondaries unreachable,
+            // read quorum cannot be met - 503 is the expected/correct behavior
+            if (effectiveConsistencyLevel == ConsistencyLevel.STRONG && e.getStatusCode() == 503) {
+                logger.info("Expected 503 for Strong consistency with 2 unreachable secondaries. SubStatus: {}",
+                    e.getSubStatusCode());
+            } else {
+                throw e;
+            }
+        }
         finally {
             connectTimeout.disable();
         }
