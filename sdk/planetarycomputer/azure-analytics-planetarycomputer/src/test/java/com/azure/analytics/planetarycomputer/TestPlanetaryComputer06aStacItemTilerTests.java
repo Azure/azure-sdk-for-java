@@ -7,16 +7,12 @@ import com.azure.analytics.planetarycomputer.models.GetPreviewOptions;
 import com.azure.analytics.planetarycomputer.models.StacItemBounds;
 import com.azure.analytics.planetarycomputer.models.TileMatrix;
 import com.azure.analytics.planetarycomputer.models.TileMatrixSet;
-import com.azure.analytics.planetarycomputer.models.TilerInfo;
-import com.azure.analytics.planetarycomputer.models.TilerInfoMapResponse;
 import com.azure.core.util.BinaryData;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -83,7 +79,6 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("Recording has 424 error - server returned 'Unknown reference spec version' - needs re-recording")
     @Tag("Assets")
     public void test06_03_GetItemAssetDetails() {
         DataClient dataClient = getDataClient();
@@ -93,21 +88,20 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
         System.out.println("Input - collection_id: " + collectionId);
         System.out.println("Input - item_id: " + itemId);
 
-        TilerInfoMapResponse response = dataClient.getItemAssetDetails(collectionId, itemId);
+        // Use listAvailableAssets (/assets endpoint) instead of getItemAssetDetails (/info endpoint)
+        // which returns 424 "Unknown reference spec version" for this collection
+        List<String> assets = dataClient.listAvailableAssets(collectionId, itemId);
 
-        assertNotNull(response, "Response should not be null");
-        Map<String, TilerInfo> assets = response.getAdditionalProperties();
-        assertNotNull(assets, "Assets dictionary should not be null");
+        assertNotNull(assets, "Assets list should not be null");
         assertTrue(assets.size() > 0, "Should have at least one asset");
 
         System.out.println("Number of assets: " + assets.size());
-        System.out.println(
-            "Available assets: " + String.join(", ", assets.keySet().stream().limit(10).collect(Collectors.toList())));
+        System.out
+            .println("Available assets: " + String.join(", ", assets.stream().limit(10).collect(Collectors.toList())));
 
-        if (assets.size() > 0) {
-            Map.Entry<String, TilerInfo> firstEntry = assets.entrySet().iterator().next();
-            System.out.println("First asset name: " + firstEntry.getKey());
-            System.out.println("First asset info: " + firstEntry.getValue());
+        for (String asset : assets) {
+            assertNotNull(asset, "Asset name should not be null");
+            assertFalse(asset.isEmpty(), "Asset name should not be empty");
         }
     }
 

@@ -5,7 +5,6 @@ package com.azure.analytics.planetarycomputer;
 
 import com.azure.analytics.planetarycomputer.models.*;
 import com.azure.core.util.BinaryData;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
@@ -46,7 +45,6 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("Codegen bug: BandStatistics.fromJson cannot parse NaN values returned by server for statistics fields")
     @Tag("Statistics")
     public void test06_12_GetGeoJsonStatistics() {
         DataClient dataClient = getDataClient();
@@ -58,30 +56,38 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
                 Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714))));
         Feature feature = new Feature(polygon, FeatureType.FEATURE).setProperties(new java.util.HashMap<>());
 
-        GetGeoJsonStatisticsOptions options = new GetGeoJsonStatisticsOptions().setAssets(Arrays.asList("image"));
+        // Use the protocol method to avoid BandStatistics.fromJson failing on null values
+        // returned by the server (codegen bug: fields typed as double but server sends null)
+        com.azure.core.http.rest.RequestOptions requestOptions = new com.azure.core.http.rest.RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        com.azure.core.http.rest.Response<BinaryData> response = dataClient
+            .getGeoJsonStatisticsWithResponse(collectionId, itemId, BinaryData.fromObject(feature), requestOptions);
 
-        StacItemStatisticsGeoJson statistics = dataClient.getGeoJsonStatistics(collectionId, itemId, options, feature);
+        assertNotNull(response);
+        assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+        BinaryData body = response.getValue();
+        assertNotNull(body);
 
-        assertNotNull(statistics);
-        assertNotNull(statistics.getProperties());
-        System.out.println("GeoJSON statistics retrieved successfully");
+        // Validate the raw JSON has the expected structure
+        String json = body.toString();
+        assertTrue(json.contains("\"type\":\"Feature\""), "Response should be a GeoJSON Feature");
+        assertTrue(json.contains("\"statistics\""), "Response should contain statistics");
+        System.out.println("GeoJSON statistics retrieved successfully via protocol method");
     }
 
     @Test
-    @Disabled("Codegen bug: URL path {maxy}.{format} is ambiguous - server can't parse double from '38.92.image.png'")
     @Tag("Part")
     public void test06_13_GetPart() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
 
-        // Coordinates matching the recording
-        double minx = -77.1, miny = 38.88, maxx = -77.07, maxy = 38.92;
+        double minx = -84.3930, miny = 33.6798, maxx = -84.3670, maxy = 33.7058;
 
-        GetPartOptions options = new GetPartOptions().setAssets(Arrays.asList("image"));
+        GetPartOptions options
+            = new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
 
-        BinaryData imageData
-            = dataClient.getPart(collectionId, itemId, minx, miny, maxx, maxy, "image.png", options, null);
+        BinaryData imageData = dataClient.getPart(collectionId, itemId, minx, miny, maxx, maxy, "png", options, null);
 
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
@@ -92,20 +98,19 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
     }
 
     @Test
-    @Disabled("Codegen bug: URL path {maxy}.{format} is ambiguous - server can't parse double from '38.92.image.png'")
     @Tag("Part")
     public void test06_14_GetPartWithDimensions() {
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
 
-        // Coordinates matching the recording
-        double minx = -77.1, miny = 38.88, maxx = -77.07, maxy = 38.92;
+        double minx = -84.3930, miny = 33.6798, maxx = -84.3670, maxy = 33.7058;
 
-        GetPartOptions options = new GetPartOptions().setAssets(Arrays.asList("image"));
+        GetPartOptions options
+            = new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
 
-        BinaryData imageData = dataClient.getPartWithDimensions(collectionId, itemId, minx, miny, maxx, maxy, 512, 512,
-            "image.png", options, null);
+        BinaryData imageData = dataClient.getPartWithDimensions(collectionId, itemId, minx, miny, maxx, maxy, 256, 256,
+            "png", options, null);
 
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };

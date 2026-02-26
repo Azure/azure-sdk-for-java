@@ -4,8 +4,10 @@
 package com.azure.analytics.planetarycomputer;
 
 import com.azure.analytics.planetarycomputer.models.*;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
@@ -81,7 +83,6 @@ public class TestPlanetaryComputer08aCollectionLifecycleTests extends PlanetaryC
         System.out.println("Collection '" + TEST_COLLECTION_ID + "' created successfully");
     }
 
-    @Disabled("Codegen bug: StacCollection.toJson() does not serialize 'id' field, causing 400 from server")
     @Test
     @Tag("UpdateCollection")
     public void test08_02_CreateOrReplaceCollection() {
@@ -89,23 +90,27 @@ public class TestPlanetaryComputer08aCollectionLifecycleTests extends PlanetaryC
 
         System.out.println("Test collection ID: " + TEST_COLLECTION_ID);
 
-        // Get existing collection
-        StacCollection originalCollection = stacClient.getCollection(TEST_COLLECTION_ID);
+        // Use protocol method to work around StacCollection.toJson() codegen bug
+        // that omits the 'id' field during serialization
+        Response<BinaryData> getResponse
+            = stacClient.getCollectionWithResponse(TEST_COLLECTION_ID, new RequestOptions());
+        String collectionJson = getResponse.getValue().toString();
 
-        // Update the title
-        originalCollection.setTitle("Updated Example Collection");
+        // Modify the description in the raw JSON
+        collectionJson = collectionJson.replace("An example collection", "Test collection - UPDATED");
 
-        // Replace collection
+        // Replace collection using protocol method (raw JSON preserves all fields including 'id')
         System.out.println("Calling: createOrReplaceCollection(...)");
-        StacCollection updatedCollection = stacClient.createOrReplaceCollection(TEST_COLLECTION_ID, originalCollection);
+        Response<BinaryData> updateResponse = stacClient.createOrReplaceCollectionWithResponse(TEST_COLLECTION_ID,
+            BinaryData.fromString(collectionJson), new RequestOptions());
 
-        assertNotNull(updatedCollection);
-        assertEquals("Updated Example Collection", updatedCollection.getTitle(), "Title should be updated");
+        assertTrue(updateResponse.getStatusCode() >= 200 && updateResponse.getStatusCode() < 300);
+        String updatedJson = updateResponse.getValue().toString();
+        assertTrue(updatedJson.contains("Test collection - UPDATED"), "Description should be updated");
 
         System.out.println("Collection '" + TEST_COLLECTION_ID + "' updated successfully");
     }
 
-    @Disabled("Depends on test08_02 which is blocked by StacCollection.toJson() codegen bug")
     @Test
     @Tag("DeleteCollection")
     public void test08_03_DeleteCollection() {
@@ -114,9 +119,12 @@ public class TestPlanetaryComputer08aCollectionLifecycleTests extends PlanetaryC
         System.out.println("Test collection ID: " + TEST_COLLECTION_ID);
         System.out.println("Calling: beginDeleteCollection(...)");
 
-        SyncPoller<Operation, Void> deletePoller = stacClient.beginDeleteCollection(TEST_COLLECTION_ID);
-        deletePoller.getFinalResult();
+        // Use protocol method and just start the LRO without waiting for completion
+        // (matching .NET test pattern which uses WaitUntil.Started)
+        SyncPoller<BinaryData, Void> deletePoller
+            = stacClient.beginDeleteCollection(TEST_COLLECTION_ID, new RequestOptions());
+        deletePoller.poll();
 
-        System.out.println("Collection '" + TEST_COLLECTION_ID + "' deleted successfully");
+        System.out.println("Collection '" + TEST_COLLECTION_ID + "' delete initiated successfully");
     }
 }

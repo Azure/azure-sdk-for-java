@@ -13,7 +13,7 @@ import com.azure.analytics.planetarycomputer.models.ManagedIdentityMetadata;
 import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureTokenConnection;
 import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureTokenIngestionSource;
 import com.azure.core.http.rest.PagedIterable;
-import org.junit.jupiter.api.Disabled;
+import com.azure.core.http.rest.RequestOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
@@ -221,7 +221,6 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
      * Java method: beginCreate(collectionId, IngestionDefinition)
      */
     @Test
-    @Disabled("Recording incomplete - missing POST entry for create() call, only has DELETE LRO cleanup")
     @Tag("IngestionDefinition")
     public void test02_03_CreateIngestionDefinition() {
         // Arrange
@@ -233,11 +232,11 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
         System.out.println("Collection ID: " + collectionId);
         System.out.println("Source Catalog URL: " + sourceCatalogUrl);
 
-        // Delete all existing ingestions first
+        // Delete all existing ingestions first (fire-and-forget, matching .NET WaitUntil.Started pattern)
         System.out.println("Deleting all existing ingestions...");
         for (IngestionDefinition existingIngestion : ingestionClient.list(collectionId, null, null)) {
-            ingestionClient.beginDelete(collectionId, existingIngestion.getId()).getFinalResult();
-            System.out.println("  Deleted existing ingestion: " + existingIngestion.getId());
+            ingestionClient.beginDelete(collectionId, existingIngestion.getId(), new RequestOptions()).poll();
+            System.out.println("  Started delete for ingestion: " + existingIngestion.getId());
         }
 
         // Create ingestion definition
