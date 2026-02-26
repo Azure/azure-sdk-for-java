@@ -300,7 +300,7 @@ springboot4_com.fasterxml.jackson.module:jackson-module-parameter-names;2.20.2
 springboot4_com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
 springboot4_com.google.code.findbugs:jsr305;3.0.2
 springboot4_com.mysql:mysql-connector-j;9.5.0
-springboot4_com.nimbusds:nimbus-jose-jwt;9.37.3
+springboot4_com.nimbusds:nimbus-jose-jwt;10.8
 springboot4_io.lettuce:lettuce-core;6.8.2.RELEASE
 springboot4_io.micrometer:micrometer-core;1.16.2
 springboot4_io.netty:netty-buffer;4.2.9.Final

@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Compound Filter
+ *
  * Combine multiple filters using `and` or `or`.
  */
 @Immutable
@@ -71,8 +73,13 @@ public final class CompoundFilter implements JsonSerializable<CompoundFilter> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeArrayField("filters", this.filters,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 

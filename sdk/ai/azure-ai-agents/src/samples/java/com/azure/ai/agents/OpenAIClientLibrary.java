@@ -6,8 +6,6 @@ package com.azure.ai.agents;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.openai.azure.AzureOpenAIServiceVersion;
-import com.openai.azure.AzureUrlPathMode;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.credential.BearerTokenCredential;
@@ -23,11 +21,9 @@ public class OpenAIClientLibrary {
         String model = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_MODEL");
 
         OpenAIClient client = OpenAIOkHttpClient.builder()
-                .baseUrl(endpoint.endsWith("/") ? endpoint + "openai" : endpoint + "/openai")
-                .azureUrlPathMode(AzureUrlPathMode.UNIFIED)
+                .baseUrl(endpoint.endsWith("/") ? endpoint + "openai/v1" : endpoint + "/openai/v1")
                 .credential(BearerTokenCredential.create(AuthenticationUtil.getBearerTokenSupplier(
                         new DefaultAzureCredentialBuilder().build(), "https://ai.azure.com/.default")))
-                .azureServiceVersion(AzureOpenAIServiceVersion.fromString("2025-11-15-preview"))
                 .build();
 
         ResponseCreateParams responseRequest = new ResponseCreateParams.Builder()

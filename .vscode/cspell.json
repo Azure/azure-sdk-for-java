@@ -231,7 +231,9 @@
     "backoff",
     "boringssl",
     "BYOD",
+    "Dartifact",
     "Dgpg",
+    "Dremote",
     "Dskip",
     "mvnw",
     "TBLPROPERTIES",
@@ -359,6 +361,7 @@
     "Mordor",
     "mosca",
     "mpga",
+    "mpkjc",
     "msal",
     "msix",
     "MSRC",
@@ -455,7 +458,19 @@
         "reimaged",
         "isdirectory",
         "SSDLRS",
-        "VMGUEST"
+        "VMGUEST",
+        "imds",
+        "confidentialvm"
+      ]
+    },
+    {
+      "filename": "sdk/ai/**",
+      "words": [
+        "oneg",
+        "fourg",
+        "sixg",
+        "okio",
+        "xhigh"
       ]
     },
     {
@@ -883,6 +898,7 @@
         "FILLER",
         "foundry",
         "FOUNDRY",
+        "Unpooled",
         "viseme",
         "VISEME",
         "webrtc",
@@ -986,6 +1002,7 @@
         "clientime",
         "ctxt",
         "etags",
+        "GZRS",
         "HTBB",
         "IPMISMATCH",
         "myaccountname",
@@ -1002,6 +1019,7 @@
         "myjavacontainerbuffereduploadlength",
         "myjavacontainerparallelupload",
         "RAGRS",
+        "RAGZRS",
         "saoid"
       ]
     },

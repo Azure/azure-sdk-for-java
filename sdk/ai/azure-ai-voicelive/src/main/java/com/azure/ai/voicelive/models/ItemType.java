@@ -84,10 +84,4 @@ public final class ItemType extends ExpandableStringEnum<ItemType> {
      */
     @Generated
     public static final ItemType MCP_APPROVAL_RESPONSE = fromString("mcp_approval_response");
-
-    /**
-     * Static value foundry_agent_call for ItemType.
-     */
-    @Generated
-    public static final ItemType FOUNDRY_AGENT_CALL = fromString("foundry_agent_call");
 }
