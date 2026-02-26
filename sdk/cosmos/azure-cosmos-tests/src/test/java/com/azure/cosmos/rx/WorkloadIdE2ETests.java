@@ -32,17 +32,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * End-to-end integration tests for the custom headers / workload-id feature.
  * <p>
  * Test type: EMULATOR INTEGRATION TEST — requires the Cosmos DB Emulator to be running locally.
- * These tests create a real database and container, then execute CRUD and query operations
- * with the {@code x-ms-cosmos-workload-id} header set at client level and/or request level.
- * <p>
- * What is verified:
- * 1. CRUD operations succeed with client-level custom headers (workload-id)
- * 2. Per-request header overrides work via setHeader()
- * 3. Client with no custom headers continues to work (no regression)
- * 4. Query operations succeed with workload-id
- * 5. Empty headers and multiple headers are handled correctly
- * <p>
-
  */
 public class WorkloadIdE2ETests extends TestSuiteBase {
 
@@ -82,13 +71,12 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
     }
 
     /**
-     * Smoke test: verifies that a create (POST) operation succeeds when the client
+     * verifies that a create (POST) operation succeeds when the client
      * has a workload-id custom header set at the builder level. Confirms the header
      * flows through the request pipeline without causing errors.
      */
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createItemWithClientLevelWorkloadId() {
-        // Smoke test: verify create operation succeeds with client-level workload-id header
         TestObject doc = TestObject.create();
 
         CosmosItemResponse<TestObject> response = container
