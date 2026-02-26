@@ -1536,13 +1536,8 @@ public final class ContentUnderstandingAsyncClient {
      * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
      * @param stringEncoding The string encoding format for content spans in the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
-     * @param modelDeployments Override the resource-level default mapping of supported large language model (LLM) names
-     * to model deployment names in Microsoft Foundry. Dictionary of string to string
-     * (LLM model name -&gt; model deployment name in Microsoft Foundry). Keys must be supported model names for the
-     * analyzer you are calling (get them via Get Analyzer, GET /analyzers/{analyzerId}, response.supportedModels).
-     * Values are model deployment names in your Microsoft Foundry resource.
-     * To get more information for a quickstart for REST API, see https://aka.ms/cudoc-quickstart-rest.
-     * Example: { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
+     * @param modelDeployments Specify the default mapping of model names to LLM/embedding deployments in Microsoft
+     * Foundry. For details and current semantics, see https://aka.ms/cudoc-quickstart-rest.
      * @param processingLocation The location where the data may be processed. Defaults to global.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
