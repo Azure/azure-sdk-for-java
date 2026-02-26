@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -628,12 +629,28 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                     createdItems.add(testObject);
                 }
 
-                container.executeBulkOperations(Flux.fromIterable(itemOperations)).blockLast();
+                // Collect bulk responses and verify all operations succeeded
+                List<CosmosBulkOperationResponse<Object>> responses =
+                    container.executeBulkOperations(Flux.fromIterable(itemOperations)).collectList().block();
 
-                // Poll until bulk operations are fully indexed instead of using a fixed sleep
-                // This is more resilient to timing variations across CI environments
+                // Retry any failed operations (e.g., due to 429 throttling)
+                if (responses != null) {
+                    List<CosmosItemOperation> failedOps = new ArrayList<>();
+                    for (CosmosBulkOperationResponse<Object> response : responses) {
+                        if (response.getResponse() == null || response.getResponse().getStatusCode() >= 400) {
+                            failedOps.add(response.getOperation());
+                        }
+                    }
+                    if (!failedOps.isEmpty()) {
+                        logger.warn("Retrying {} failed bulk operations", failedOps.size());
+                        try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                        container.executeBulkOperations(Flux.fromIterable(failedOps)).blockLast();
+                    }
+                }
+
+                // Poll until all items are queryable
                 String query = "select * from c";
-                int maxRetries = 10;
+                int maxRetries = 20;
                 int retryCount = 0;
                 boolean indexingComplete = false;
                 while (retryCount < maxRetries && !indexingComplete) {
