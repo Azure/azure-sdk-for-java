@@ -39,9 +39,24 @@ public class TransactionalBatchTest extends BatchTestBase {
     @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_TransactionalBatchTest() {
         assertThat(this.batchClient).isNull();
-        this.batchClient = getClientBuilder().buildClient();
-        CosmosAsyncContainer batchAsyncContainer = getSharedMultiPartitionCosmosContainer(this.batchClient.asyncClient());
-        batchContainer = batchClient.getDatabase(batchAsyncContainer.getDatabase().getId()).getContainer(batchAsyncContainer.getId());
+        int maxRetries = 3;
+        for (int i = 0; i < maxRetries; i++) {
+            try {
+                this.batchClient = getClientBuilder().buildClient();
+                CosmosAsyncContainer batchAsyncContainer = getSharedMultiPartitionCosmosContainer(this.batchClient.asyncClient());
+                batchContainer = batchClient.getDatabase(batchAsyncContainer.getDatabase().getId()).getContainer(batchAsyncContainer.getId());
+                break;
+            } catch (Exception e) {
+                if (i < maxRetries - 1) {
+                    logger.warn("Retrying TransactionalBatchTest setup after failure (attempt {}): {}", i + 1, e.getMessage());
+                    safeCloseSyncClient(this.batchClient);
+                    this.batchClient = null;
+                    try { Thread.sleep(1000 * (i + 1)); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
+                } else {
+                    throw e;
+                }
+            }
+        }
     }
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

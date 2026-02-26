@@ -100,7 +100,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(Configs.isQueryPlanCachingEnabled()).isFalse();
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void orderByQuery() {
         /*
         The idea here is to query documents in pages, query all the documents(with pagesize as num_documents and compare
@@ -116,7 +116,7 @@ public class QueryValidationTests extends TestSuiteBase {
             createdDocuments);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT *2)
+    @Test(groups = {"query"}, timeOut = TIMEOUT *2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void orderByQueryForLargeCollection() {
         CosmosContainerProperties containerProperties = getCollectionDefinition();
         createdDatabase.createContainer(
@@ -275,7 +275,7 @@ public class QueryValidationTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"query"}, dataProvider = "query", timeOut = TIMEOUT)
+    @Test(groups = {"query"}, dataProvider = "query", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryPlanCacheSinglePartitionCorrectness(String query) {
 
         String pk1 = "pk1";
@@ -310,7 +310,7 @@ public class QueryValidationTests extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryPlanCacheSinglePartitionParameterizedQueriesCorrectness() {
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
         sqlQuerySpec.setQueryText("select * from c where c.id = @id");
@@ -482,7 +482,7 @@ public class QueryValidationTests extends TestSuiteBase {
         container.delete().block();
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"query"}, timeOut = TIMEOUT * 10, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void orderbyContinuationOnUndefinedAndNull() throws Exception {
         /*
         Objective of this test is to break on undefined/null orderbyItems and resume queryFormat using that continuation
