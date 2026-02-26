@@ -40,17 +40,17 @@
 
 #### `models.DisconnectedOperationProperties` was modified
 
+* `benefitPlans()` was added
 * `billingConfiguration()` was added
 * `withBillingConfiguration(models.BillingConfiguration)` was added
 * `withBenefitPlans(models.BenefitPlans)` was added
-* `benefitPlans()` was added
 
 #### `models.DisconnectedOperationUpdateProperties` was modified
 
 * `billingConfiguration()` was added
+* `withBenefitPlans(models.BenefitPlans)` was added
 * `benefitPlans()` was added
 * `withBillingConfiguration(models.BillingConfiguration)` was added
-* `withBenefitPlans(models.BenefitPlans)` was added
 
 #### `DisconnectedOperationsManager` was modified
 
