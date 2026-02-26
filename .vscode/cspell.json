@@ -361,6 +361,7 @@
     "Mordor",
     "mosca",
     "mpga",
+    "mpkjc",
     "msal",
     "msix",
     "MSRC",
@@ -457,7 +458,19 @@
         "reimaged",
         "isdirectory",
         "SSDLRS",
-        "VMGUEST"
+        "VMGUEST",
+        "imds",
+        "confidentialvm"
+      ]
+    },
+    {
+      "filename": "sdk/ai/**",
+      "words": [
+        "oneg",
+        "fourg",
+        "sixg",
+        "okio",
+        "xhigh"
       ]
     },
     {

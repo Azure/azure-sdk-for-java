@@ -73,21 +73,21 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
         boolean shutdownExecutorOnStop,
         Set<MetricAttribute> disabledMetricAttributes,
         CosmosContainer results,
-        Configuration config) {
+        String operation,
+        String testVariationName,
+        String branchName,
+        String commitId,
+        int concurrency) {
         super(registry, "cosmos-reporter", filter, rateUnit, durationUnit, executor, shutdownExecutorOnStop, disabledMetricAttributes);
 
         this.lastRecorded = Instant.now();
         this.cpuReader = new CpuMemoryReader();
         this.results = results;
-        if (config.isSync()) {
-            this.operation = "SYNC_" + config.getOperationType().name();
-        } else {
-            this.operation = config.getOperationType().name();
-        }
-        this.testVariationName = config.getTestVariationName();
-        this.branchName = config.getBranchName();
-        this.commitId = config.getCommitId();
-        this.concurrency = config.getConcurrency();
+        this.operation = operation;
+        this.testVariationName = testVariationName != null ? testVariationName : "";
+        this.branchName = branchName != null ? branchName : "";
+        this.commitId = commitId != null ? commitId : "";
+        this.concurrency = concurrency;
     }
 
     @Override
@@ -141,9 +141,9 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
         SortedMap<String, Timer> timers) {
         // We are only interested in success / failure rate and median and P99 latency for now
 
-        Meter successMeter = meters.get(Configuration.SUCCESS_COUNTER_METER_NAME);
-        Meter failureMeter = meters.get(Configuration.FAILURE_COUNTER_METER_NAME);
-        Timer latencyTimer = timers.get(Configuration.LATENCY_METER_NAME);
+        Meter successMeter = meters.get(TenantWorkloadConfig.SUCCESS_COUNTER_METER_NAME);
+        Meter failureMeter = meters.get(TenantWorkloadConfig.FAILURE_COUNTER_METER_NAME);
+        Timer latencyTimer = timers.get(TenantWorkloadConfig.LATENCY_METER_NAME);
 
         Instant nowSnapshot = Instant.now();
 
@@ -180,11 +180,18 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
      *
      * @param registry the registry to report
      * @param resultsContainer the Cosmos DB container to write the results into
-     * @param config the Configuration for the test run
+     * @param operation the operation name for result reporting
+     * @param testVariationName test variation identifier
+     * @param branchName source branch name
+     * @param commitId source commit identifier
+     * @param concurrency degree of concurrency
      * @return a {@link Builder} instance for a {@link CosmosTotalResultReporter}
      */
-    public static Builder forRegistry(MetricRegistry registry, CosmosContainer resultsContainer, Configuration config) {
-        return new Builder(registry, resultsContainer, config);
+    public static Builder forRegistry(MetricRegistry registry, CosmosContainer resultsContainer,
+                                      String operation, String testVariationName,
+                                      String branchName, String commitId, int concurrency) {
+        return new Builder(registry, resultsContainer, operation, testVariationName,
+            branchName, commitId, concurrency);
     }
 
     /**
@@ -194,8 +201,12 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
      */
     public static class Builder {
         private final MetricRegistry registry;
-
         private final CosmosContainer resultsContainer;
+        private final String operation;
+        private final String testVariationName;
+        private final String branchName;
+        private final String commitId;
+        private final int concurrency;
         private TimeUnit rateUnit;
         private TimeUnit durationUnit;
         private MetricFilter filter;
@@ -203,10 +214,9 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
         private boolean shutdownExecutorOnStop;
         private Set<MetricAttribute> disabledMetricAttributes;
 
-        private final Configuration config;
-
-
-        private Builder(MetricRegistry registry, CosmosContainer resultsContainer, Configuration config) {
+        private Builder(MetricRegistry registry, CosmosContainer resultsContainer,
+                        String operation, String testVariationName,
+                        String branchName, String commitId, int concurrency) {
             this.registry = registry;
             this.rateUnit = TimeUnit.SECONDS;
             this.durationUnit = TimeUnit.MILLISECONDS;
@@ -215,7 +225,11 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
             this.shutdownExecutorOnStop = true;
             this.disabledMetricAttributes = Collections.emptySet();
             this.resultsContainer = resultsContainer;
-            this.config = config;
+            this.operation = operation;
+            this.testVariationName = testVariationName;
+            this.branchName = branchName;
+            this.commitId = commitId;
+            this.concurrency = concurrency;
         }
 
         /**
@@ -303,7 +317,11 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
                 shutdownExecutorOnStop,
                 disabledMetricAttributes,
                 resultsContainer,
-                config);
+                operation,
+                testVariationName,
+                branchName,
+                commitId,
+                concurrency);
         }
     }
 }

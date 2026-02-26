@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The input definition information for an openapi function.
@@ -35,7 +36,7 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
      * The openapi function shape, described as a JSON Schema object.
      */
     @Generated
-    private final BinaryData spec;
+    private final Map<String, BinaryData> spec;
 
     /*
      * Open API authentication details
@@ -54,20 +55,6 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
      */
     @Generated
     private List<OpenApiFunctionDefinitionFunction> functions;
-
-    /**
-     * Creates an instance of OpenApiFunctionDefinition class.
-     *
-     * @param name the name value to set.
-     * @param spec the spec value to set.
-     * @param auth the auth value to set.
-     */
-    @Generated
-    public OpenApiFunctionDefinition(String name, BinaryData spec, OpenApiAuthDetails auth) {
-        this.name = name;
-        this.spec = spec;
-        this.auth = auth;
-    }
 
     /**
      * Get the name property: The name of the function to be called.
@@ -109,7 +96,7 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
      * @return the spec value.
      */
     @Generated
-    public BinaryData getSpec() {
+    public Map<String, BinaryData> getSpec() {
         return this.spec;
     }
 
@@ -163,8 +150,13 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeFieldName("spec");
-        this.spec.writeTo(jsonWriter);
+        jsonWriter.writeMapField("spec", this.spec, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeJsonField("auth", this.auth);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("default_params", this.defaultParams,
@@ -185,7 +177,7 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
     public static OpenApiFunctionDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            BinaryData spec = null;
+            Map<String, BinaryData> spec = null;
             OpenApiAuthDetails auth = null;
             String description = null;
             List<String> defaultParams = null;
@@ -196,7 +188,8 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("spec".equals(fieldName)) {
-                    spec = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    spec = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("auth".equals(fieldName)) {
                     auth = OpenApiAuthDetails.fromJson(reader);
                 } else if ("description".equals(fieldName)) {
@@ -216,5 +209,19 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
             deserializedOpenApiFunctionDefinition.functions = functions;
             return deserializedOpenApiFunctionDefinition;
         });
+    }
+
+    /**
+     * Creates an instance of OpenApiFunctionDefinition class.
+     *
+     * @param name the name value to set.
+     * @param spec the spec value to set.
+     * @param auth the auth value to set.
+     */
+    @Generated
+    public OpenApiFunctionDefinition(String name, Map<String, BinaryData> spec, OpenApiAuthDetails auth) {
+        this.name = name;
+        this.spec = spec;
+        this.auth = auth;
     }
 }

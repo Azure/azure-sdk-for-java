@@ -34,6 +34,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import com.codahale.metrics.MetricRegistry;
 
 /**
  * This workflow is intended for session and above consistency levels.
@@ -52,19 +53,19 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     private ConcurrentHashMap<Integer, Document> cache;
     private int cacheSize;
 
-    ReadMyWriteWorkflow(Configuration cfg) {
-        super(cfg);
+    ReadMyWriteWorkflow(TenantWorkloadConfig cfg, MetricRegistry sharedRegistry) {
+        super(cfg, sharedRegistry);
     }
 
     @Override
     protected void init() {
         // TODO: move read my writes to use v4 APIs
         this.client =  CosmosBridgeInternal.getAsyncDocumentClient(benchmarkWorkloadClient);
-        Database database = DocDBUtils.getDatabase(client, configuration.getDatabaseId());
-        this.collection = DocDBUtils.getCollection(client, database.getSelfLink(), configuration.getCollectionId());
+        Database database = DocDBUtils.getDatabase(client, workloadConfig.getDatabaseId());
+        this.collection = DocDBUtils.getCollection(client, database.getSelfLink(), workloadConfig.getContainerId());
         this.nameCollectionLink = String.format("dbs/%s/colls/%s", database.getId(), collection.getId());
 
-        this.cacheSize = configuration.getNumberOfPreCreatedDocuments();
+        this.cacheSize = workloadConfig.getNumberOfPreCreatedDocuments();
         this.cache = new ConcurrentHashMap<>();
         this.populateCache();
     }
@@ -170,7 +171,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         }
 
         logger.info("PRE-populating {} documents ....", cacheSize);
-        Flux.merge(Flux.fromIterable(list), configuration.getConcurrency()).then().block();
+        Flux.merge(Flux.fromIterable(list), workloadConfig.getConcurrency()).then().block();
         logger.info("Finished pre-populating {} documents", cacheSize);
     }
 
@@ -284,8 +285,8 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         QueryFeedOperationState state = new QueryFeedOperationState(
                 benchmarkWorkloadClient,
             "xPartitionQuery",
-            configuration.getDatabaseId(),
-            configuration.getCollectionId(),
+            workloadConfig.getDatabaseId(),
+            workloadConfig.getContainerId(),
             ResourceType.Document,
             OperationType.Query,
             null,
@@ -315,8 +316,8 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         QueryFeedOperationState state = new QueryFeedOperationState(
                 benchmarkWorkloadClient,
             "singlePartitionQuery",
-            configuration.getDatabaseId(),
-            configuration.getCollectionId(),
+            workloadConfig.getDatabaseId(),
+            workloadConfig.getContainerId(),
             ResourceType.Document,
             OperationType.Query,
             null,
@@ -484,7 +485,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     }
 
     protected String getCollectionLink() {
-        if (configuration.isUseNameLink()) {
+        if (workloadConfig.isUseNameLink()) {
             return this.nameCollectionLink;
         } else {
             return collection.getSelfLink();
@@ -492,7 +493,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     }
 
     protected String getDocumentLink(Document doc) {
-        if (configuration.isUseNameLink()) {
+        if (workloadConfig.isUseNameLink()) {
             return this.nameCollectionLink + "/docs/" + doc.getId();
         } else {
             return doc.getSelfLink();

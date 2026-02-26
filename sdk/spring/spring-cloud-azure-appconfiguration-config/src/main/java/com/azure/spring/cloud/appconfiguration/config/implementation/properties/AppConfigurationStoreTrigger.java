@@ -10,52 +10,62 @@ import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * Properties on what Triggers are checked before a refresh is triggered.
+ * A sentinel configuration setting that is monitored for changes to trigger a
+ * configuration refresh.
  */
 public final class AppConfigurationStoreTrigger {
 
     /**
-     * Key value of the configuration setting checked when looking for changes.
+     * Key of the sentinel configuration setting to monitor. Required.
      */
     @NotNull
     private String key;
 
     /**
-     * Label value of the configuration setting checked when looking for changes.
-     * If the label is not set, the default value is no label.
+     * Label of the sentinel configuration setting to monitor. Defaults to the
+     * empty (no label) value when not set.
      */
     private String label;
 
     /**
-     * @return the key
+     * Returns the key of the sentinel setting.
+     *
+     * @return the sentinel key
      */
     public String getKey() {
         return key;
     }
 
     /**
-     * @param key the key to set
+     * Sets the key of the sentinel setting to monitor.
+     *
+     * @param key the sentinel key
      */
     public void setKey(String key) {
         this.key = key;
     }
 
     /**
-     * @return the label
+     * Returns the label of the sentinel setting, defaulting to the empty-label
+     * value when not explicitly set.
+     *
+     * @return the resolved label
      */
     public String getLabel() {
         return mapLabel(label);
     }
 
     /**
-     * @param label the label to set
+     * Sets the label of the sentinel setting to monitor.
+     *
+     * @param label the sentinel label
      */
     public void setLabel(String label) {
         this.label = label;
     }
 
     /**
-     * Validates key isn't null
+     * Validates that the sentinel key is not null.
      */
     @PostConstruct
     void validateAndInit() {
