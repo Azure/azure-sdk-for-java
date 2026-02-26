@@ -37,7 +37,7 @@ import com.azure.resourcemanager.appservice.fluent.models.DatabaseConnectionInne
 import com.azure.resourcemanager.appservice.fluent.models.PrivateLinkResourcesWrapperInner;
 import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteArmResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBuildARMResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainOverviewARMResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteFunctionOverviewARMResourceInner;
@@ -63,7 +63,7 @@ import com.azure.resourcemanager.appservice.models.DatabaseConnectionPatchReques
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequestPropertiesARMResource;
 import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
-import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesARMResource;
+import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserInvitationRequestResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteZipDeploymentARMResource;
 import com.azure.resourcemanager.appservice.models.StaticSitesWorkflowPreviewRequest;
@@ -332,7 +332,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") StaticSiteResetPropertiesARMResource resetPropertiesEnvelope,
+            @BodyParam("application/json") StaticSiteResetPropertiesArmResource resetPropertiesEnvelope,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -677,7 +677,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/basicAuth/{basicAuthName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteBasicAuthPropertiesARMResourceInner>> getBasicAuth(
+        Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>> getBasicAuth(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
@@ -687,13 +687,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/basicAuth/{basicAuthName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<StaticSiteBasicAuthPropertiesARMResourceInner>> createOrUpdateBasicAuth(
+        Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>> createOrUpdateBasicAuth(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("basicAuthName") BasicAuthName basicAuthName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") StaticSiteBasicAuthPropertiesARMResourceInner basicAuthEnvelope,
+            @BodyParam("application/json") StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -5019,7 +5019,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetStaticSiteApiKeyWithResponseAsync(String resourceGroupName, String name,
-        StaticSiteResetPropertiesARMResource resetPropertiesEnvelope) {
+        StaticSiteResetPropertiesArmResource resetPropertiesEnvelope) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5065,7 +5065,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> resetStaticSiteApiKeyWithResponseAsync(String resourceGroupName, String name,
-        StaticSiteResetPropertiesARMResource resetPropertiesEnvelope, Context context) {
+        StaticSiteResetPropertiesArmResource resetPropertiesEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5108,7 +5108,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetStaticSiteApiKeyAsync(String resourceGroupName, String name,
-        StaticSiteResetPropertiesARMResource resetPropertiesEnvelope) {
+        StaticSiteResetPropertiesArmResource resetPropertiesEnvelope) {
         return resetStaticSiteApiKeyWithResponseAsync(resourceGroupName, name, resetPropertiesEnvelope)
             .flatMap(ignored -> Mono.empty());
     }
@@ -5129,7 +5129,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetStaticSiteApiKeyWithResponse(String resourceGroupName, String name,
-        StaticSiteResetPropertiesARMResource resetPropertiesEnvelope, Context context) {
+        StaticSiteResetPropertiesArmResource resetPropertiesEnvelope, Context context) {
         return resetStaticSiteApiKeyWithResponseAsync(resourceGroupName, name, resetPropertiesEnvelope, context)
             .block();
     }
@@ -5148,7 +5148,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resetStaticSiteApiKey(String resourceGroupName, String name,
-        StaticSiteResetPropertiesARMResource resetPropertiesEnvelope) {
+        StaticSiteResetPropertiesArmResource resetPropertiesEnvelope) {
         resetStaticSiteApiKeyWithResponse(resourceGroupName, name, resetPropertiesEnvelope, Context.NONE);
     }
 
@@ -11177,7 +11177,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StaticSiteBasicAuthPropertiesARMResourceInner>>
+    public Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>>
         getBasicAuthWithResponseAsync(String resourceGroupName, String name, BasicAuthName basicAuthName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -11222,7 +11222,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteBasicAuthPropertiesARMResourceInner>> getBasicAuthWithResponseAsync(
+    private Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>> getBasicAuthWithResponseAsync(
         String resourceGroupName, String name, BasicAuthName basicAuthName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -11264,7 +11264,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Description for Gets the basic auth properties for a static site on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StaticSiteBasicAuthPropertiesARMResourceInner> getBasicAuthAsync(String resourceGroupName, String name,
+    public Mono<StaticSiteBasicAuthPropertiesArmResourceInner> getBasicAuthAsync(String resourceGroupName, String name,
         BasicAuthName basicAuthName) {
         return getBasicAuthWithResponseAsync(resourceGroupName, name, basicAuthName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -11287,7 +11287,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Description for Gets the basic auth properties for a static site along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StaticSiteBasicAuthPropertiesARMResourceInner> getBasicAuthWithResponse(String resourceGroupName,
+    public Response<StaticSiteBasicAuthPropertiesArmResourceInner> getBasicAuthWithResponse(String resourceGroupName,
         String name, BasicAuthName basicAuthName, Context context) {
         return getBasicAuthWithResponseAsync(resourceGroupName, name, basicAuthName, context).block();
     }
@@ -11308,7 +11308,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Description for Gets the basic auth properties for a static site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StaticSiteBasicAuthPropertiesARMResourceInner getBasicAuth(String resourceGroupName, String name,
+    public StaticSiteBasicAuthPropertiesArmResourceInner getBasicAuth(String resourceGroupName, String name,
         BasicAuthName basicAuthName) {
         return getBasicAuthWithResponse(resourceGroupName, name, basicAuthName, Context.NONE).getValue();
     }
@@ -11329,9 +11329,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StaticSiteBasicAuthPropertiesARMResourceInner>> createOrUpdateBasicAuthWithResponseAsync(
+    public Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>> createOrUpdateBasicAuthWithResponseAsync(
         String resourceGroupName, String name, BasicAuthName basicAuthName,
-        StaticSiteBasicAuthPropertiesARMResourceInner basicAuthEnvelope) {
+        StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -11382,9 +11382,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteBasicAuthPropertiesARMResourceInner>> createOrUpdateBasicAuthWithResponseAsync(
+    private Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>> createOrUpdateBasicAuthWithResponseAsync(
         String resourceGroupName, String name, BasicAuthName basicAuthName,
-        StaticSiteBasicAuthPropertiesARMResourceInner basicAuthEnvelope, Context context) {
+        StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -11432,8 +11432,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @return static site basic auth properties ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StaticSiteBasicAuthPropertiesARMResourceInner> createOrUpdateBasicAuthAsync(String resourceGroupName,
-        String name, BasicAuthName basicAuthName, StaticSiteBasicAuthPropertiesARMResourceInner basicAuthEnvelope) {
+    public Mono<StaticSiteBasicAuthPropertiesArmResourceInner> createOrUpdateBasicAuthAsync(String resourceGroupName,
+        String name, BasicAuthName basicAuthName, StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope) {
         return createOrUpdateBasicAuthWithResponseAsync(resourceGroupName, name, basicAuthName, basicAuthEnvelope)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -11454,9 +11454,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @return static site basic auth properties ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StaticSiteBasicAuthPropertiesARMResourceInner> createOrUpdateBasicAuthWithResponse(
+    public Response<StaticSiteBasicAuthPropertiesArmResourceInner> createOrUpdateBasicAuthWithResponse(
         String resourceGroupName, String name, BasicAuthName basicAuthName,
-        StaticSiteBasicAuthPropertiesARMResourceInner basicAuthEnvelope, Context context) {
+        StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope, Context context) {
         return createOrUpdateBasicAuthWithResponseAsync(resourceGroupName, name, basicAuthName, basicAuthEnvelope,
             context).block();
     }
@@ -11476,8 +11476,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @return static site basic auth properties ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StaticSiteBasicAuthPropertiesARMResourceInner createOrUpdateBasicAuth(String resourceGroupName, String name,
-        BasicAuthName basicAuthName, StaticSiteBasicAuthPropertiesARMResourceInner basicAuthEnvelope) {
+    public StaticSiteBasicAuthPropertiesArmResourceInner createOrUpdateBasicAuth(String resourceGroupName, String name,
+        BasicAuthName basicAuthName, StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope) {
         return createOrUpdateBasicAuthWithResponse(resourceGroupName, name, basicAuthName, basicAuthEnvelope,
             Context.NONE).getValue();
     }
@@ -11498,7 +11498,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteBasicAuthPropertiesARMResourceInner>>
+    private Mono<PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner>>
         listBasicAuthSinglePageAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -11519,7 +11519,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         return FluxUtil
             .withContext(context -> service.listBasicAuth(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, name, accept, context))
-            .<PagedResponse<StaticSiteBasicAuthPropertiesARMResourceInner>>map(
+            .<PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -11542,7 +11542,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteBasicAuthPropertiesARMResourceInner>>
+    private Mono<PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner>>
         listBasicAuthSinglePageAsync(String resourceGroupName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -11584,7 +11584,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<StaticSiteBasicAuthPropertiesARMResourceInner> listBasicAuthAsync(String resourceGroupName,
+    public PagedFlux<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuthAsync(String resourceGroupName,
         String name) {
         return new PagedFlux<>(() -> listBasicAuthSinglePageAsync(resourceGroupName, name),
             nextLink -> listBasicAuthNextSinglePageAsync(nextLink));
@@ -11607,7 +11607,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteBasicAuthPropertiesARMResourceInner> listBasicAuthAsync(String resourceGroupName,
+    private PagedFlux<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuthAsync(String resourceGroupName,
         String name, Context context) {
         return new PagedFlux<>(() -> listBasicAuthSinglePageAsync(resourceGroupName, name, context),
             nextLink -> listBasicAuthNextSinglePageAsync(nextLink, context));
@@ -11629,7 +11629,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StaticSiteBasicAuthPropertiesARMResourceInner> listBasicAuth(String resourceGroupName,
+    public PagedIterable<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuth(String resourceGroupName,
         String name) {
         return new PagedIterable<>(listBasicAuthAsync(resourceGroupName, name));
     }
@@ -11651,7 +11651,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StaticSiteBasicAuthPropertiesARMResourceInner> listBasicAuth(String resourceGroupName,
+    public PagedIterable<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuth(String resourceGroupName,
         String name, Context context) {
         return new PagedIterable<>(listBasicAuthAsync(resourceGroupName, name, context));
     }
@@ -15826,7 +15826,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteBasicAuthPropertiesARMResourceInner>>
+    private Mono<PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner>>
         listBasicAuthNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -15838,7 +15838,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBasicAuthNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StaticSiteBasicAuthPropertiesARMResourceInner>>map(
+            .<PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -15860,7 +15860,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteBasicAuthPropertiesARMResourceInner>>
+    private Mono<PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner>>
         listBasicAuthNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));

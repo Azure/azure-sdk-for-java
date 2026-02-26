@@ -17,7 +17,7 @@ import com.azure.resourcemanager.appservice.fluent.models.DatabaseConnectionInne
 import com.azure.resourcemanager.appservice.fluent.models.PrivateLinkResourcesWrapperInner;
 import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteArmResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBuildARMResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainOverviewARMResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteFunctionOverviewARMResourceInner;
@@ -32,7 +32,7 @@ import com.azure.resourcemanager.appservice.models.BasicAuthName;
 import com.azure.resourcemanager.appservice.models.DatabaseConnectionPatchRequest;
 import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequestPropertiesARMResource;
 import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
-import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesARMResource;
+import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserInvitationRequestResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteZipDeploymentARMResource;
 import com.azure.resourcemanager.appservice.models.StaticSitesWorkflowPreviewRequest;
@@ -1946,7 +1946,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> resetStaticSiteApiKeyWithResponseAsync(String resourceGroupName, String name,
-        StaticSiteResetPropertiesARMResource resetPropertiesEnvelope);
+        StaticSiteResetPropertiesArmResource resetPropertiesEnvelope);
 
     /**
      * Resets the api key for an existing static site.
@@ -1964,7 +1964,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> resetStaticSiteApiKeyAsync(String resourceGroupName, String name,
-        StaticSiteResetPropertiesARMResource resetPropertiesEnvelope);
+        StaticSiteResetPropertiesArmResource resetPropertiesEnvelope);
 
     /**
      * Resets the api key for an existing static site.
@@ -1983,7 +1983,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> resetStaticSiteApiKeyWithResponse(String resourceGroupName, String name,
-        StaticSiteResetPropertiesARMResource resetPropertiesEnvelope, Context context);
+        StaticSiteResetPropertiesArmResource resetPropertiesEnvelope, Context context);
 
     /**
      * Resets the api key for an existing static site.
@@ -2000,7 +2000,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void resetStaticSiteApiKey(String resourceGroupName, String name,
-        StaticSiteResetPropertiesARMResource resetPropertiesEnvelope);
+        StaticSiteResetPropertiesArmResource resetPropertiesEnvelope);
 
     /**
      * Returns details of database connections for a static site.
@@ -4736,7 +4736,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<StaticSiteBasicAuthPropertiesARMResourceInner>>
+    Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>>
         getBasicAuthWithResponseAsync(String resourceGroupName, String name, BasicAuthName basicAuthName);
 
     /**
@@ -4756,7 +4756,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the basic auth properties for a static site on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteBasicAuthPropertiesARMResourceInner> getBasicAuthAsync(String resourceGroupName, String name,
+    Mono<StaticSiteBasicAuthPropertiesArmResourceInner> getBasicAuthAsync(String resourceGroupName, String name,
         BasicAuthName basicAuthName);
 
     /**
@@ -4777,7 +4777,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the basic auth properties for a static site along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StaticSiteBasicAuthPropertiesARMResourceInner> getBasicAuthWithResponse(String resourceGroupName,
+    Response<StaticSiteBasicAuthPropertiesArmResourceInner> getBasicAuthWithResponse(String resourceGroupName,
         String name, BasicAuthName basicAuthName, Context context);
 
     /**
@@ -4797,7 +4797,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the basic auth properties for a static site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteBasicAuthPropertiesARMResourceInner getBasicAuth(String resourceGroupName, String name,
+    StaticSiteBasicAuthPropertiesArmResourceInner getBasicAuth(String resourceGroupName, String name,
         BasicAuthName basicAuthName);
 
     /**
@@ -4817,9 +4817,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<StaticSiteBasicAuthPropertiesARMResourceInner>> createOrUpdateBasicAuthWithResponseAsync(
+    Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>> createOrUpdateBasicAuthWithResponseAsync(
         String resourceGroupName, String name, BasicAuthName basicAuthName,
-        StaticSiteBasicAuthPropertiesARMResourceInner basicAuthEnvelope);
+        StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope);
 
     /**
      * Adds or updates basic auth for a static site.
@@ -4837,8 +4837,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static site basic auth properties ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteBasicAuthPropertiesARMResourceInner> createOrUpdateBasicAuthAsync(String resourceGroupName,
-        String name, BasicAuthName basicAuthName, StaticSiteBasicAuthPropertiesARMResourceInner basicAuthEnvelope);
+    Mono<StaticSiteBasicAuthPropertiesArmResourceInner> createOrUpdateBasicAuthAsync(String resourceGroupName,
+        String name, BasicAuthName basicAuthName, StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope);
 
     /**
      * Adds or updates basic auth for a static site.
@@ -4857,9 +4857,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static site basic auth properties ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StaticSiteBasicAuthPropertiesARMResourceInner> createOrUpdateBasicAuthWithResponse(
+    Response<StaticSiteBasicAuthPropertiesArmResourceInner> createOrUpdateBasicAuthWithResponse(
         String resourceGroupName, String name, BasicAuthName basicAuthName,
-        StaticSiteBasicAuthPropertiesARMResourceInner basicAuthEnvelope, Context context);
+        StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope, Context context);
 
     /**
      * Adds or updates basic auth for a static site.
@@ -4877,8 +4877,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static site basic auth properties ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteBasicAuthPropertiesARMResourceInner createOrUpdateBasicAuth(String resourceGroupName, String name,
-        BasicAuthName basicAuthName, StaticSiteBasicAuthPropertiesARMResourceInner basicAuthEnvelope);
+    StaticSiteBasicAuthPropertiesArmResourceInner createOrUpdateBasicAuth(String resourceGroupName, String name,
+        BasicAuthName basicAuthName, StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope);
 
     /**
      * Gets the basic auth properties for a static site as a collection.
@@ -4897,7 +4897,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StaticSiteBasicAuthPropertiesARMResourceInner> listBasicAuthAsync(String resourceGroupName, String name);
+    PagedFlux<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuthAsync(String resourceGroupName, String name);
 
     /**
      * Gets the basic auth properties for a static site as a collection.
@@ -4916,7 +4916,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteBasicAuthPropertiesARMResourceInner> listBasicAuth(String resourceGroupName, String name);
+    PagedIterable<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuth(String resourceGroupName, String name);
 
     /**
      * Gets the basic auth properties for a static site as a collection.
@@ -4936,7 +4936,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteBasicAuthPropertiesARMResourceInner> listBasicAuth(String resourceGroupName, String name,
+    PagedIterable<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuth(String resourceGroupName, String name,
         Context context);
 
     /**

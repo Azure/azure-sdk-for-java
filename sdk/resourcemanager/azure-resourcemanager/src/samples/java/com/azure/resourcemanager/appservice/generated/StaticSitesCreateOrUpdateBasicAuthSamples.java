@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesArmResourceInner;
 import com.azure.resourcemanager.appservice.models.BasicAuthName;
 
 /**
@@ -26,7 +26,7 @@ public final class StaticSitesCreateOrUpdateBasicAuthSamples {
             .serviceClient()
             .getStaticSites()
             .createOrUpdateBasicAuthWithResponse("rg", "testStaticSite0", BasicAuthName.DEFAULT,
-                new StaticSiteBasicAuthPropertiesARMResourceInner().withPassword("fakeTokenPlaceholder")
+                new StaticSiteBasicAuthPropertiesArmResourceInner().withPassword("fakeTokenPlaceholder")
                     .withApplicableEnvironmentsMode("AllEnvironments"),
                 com.azure.core.util.Context.NONE);
     }

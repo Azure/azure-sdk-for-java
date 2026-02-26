@@ -23,7 +23,7 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
     /*
      * RemotePrivateEndpointConnectionARMResource resource specific properties
      */
-    private RemotePrivateEndpointConnectionARMResourceProperties innerProperties;
+    private RemotePrivateEndpointConnectionArmResourceProperties innerProperties;
 
     /*
      * Kind of resource.
@@ -61,7 +61,7 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
      * 
      * @return the innerProperties value.
      */
-    private RemotePrivateEndpointConnectionARMResourceProperties innerProperties() {
+    private RemotePrivateEndpointConnectionArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -150,7 +150,7 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
      */
     public RemotePrivateEndpointConnectionArmResourceInner withPrivateEndpoint(ArmIdWrapper privateEndpoint) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new RemotePrivateEndpointConnectionARMResourceProperties();
+            this.innerProperties = new RemotePrivateEndpointConnectionArmResourceProperties();
         }
         this.innerProperties().withPrivateEndpoint(privateEndpoint);
         return this;
@@ -174,7 +174,7 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
     public RemotePrivateEndpointConnectionArmResourceInner
         withPrivateLinkServiceConnectionState(PrivateLinkConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new RemotePrivateEndpointConnectionARMResourceProperties();
+            this.innerProperties = new RemotePrivateEndpointConnectionArmResourceProperties();
         }
         this.innerProperties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
@@ -197,7 +197,7 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
      */
     public RemotePrivateEndpointConnectionArmResourceInner withIpAddresses(List<String> ipAddresses) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new RemotePrivateEndpointConnectionARMResourceProperties();
+            this.innerProperties = new RemotePrivateEndpointConnectionArmResourceProperties();
         }
         this.innerProperties().withIpAddresses(ipAddresses);
         return this;
@@ -250,7 +250,7 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
                     deserializedRemotePrivateEndpointConnectionArmResourceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedRemotePrivateEndpointConnectionArmResourceInner.innerProperties
-                        = RemotePrivateEndpointConnectionARMResourceProperties.fromJson(reader);
+                        = RemotePrivateEndpointConnectionArmResourceProperties.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedRemotePrivateEndpointConnectionArmResourceInner.kind = reader.getString();
                 } else if ("systemData".equals(fieldName)) {

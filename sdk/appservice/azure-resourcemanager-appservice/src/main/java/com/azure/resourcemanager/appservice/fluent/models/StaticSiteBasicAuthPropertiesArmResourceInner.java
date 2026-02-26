@@ -17,11 +17,11 @@ import java.util.List;
  * Static site basic auth properties ARM resource.
  */
 @Fluent
-public final class StaticSiteBasicAuthPropertiesARMResourceInner extends ProxyResource {
+public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyResource {
     /*
      * StaticSiteBasicAuthPropertiesARMResource resource specific properties
      */
-    private StaticSiteBasicAuthPropertiesARMResourceProperties innerProperties;
+    private StaticSiteBasicAuthPropertiesArmResourceProperties innerProperties;
 
     /*
      * Kind of resource.
@@ -49,9 +49,9 @@ public final class StaticSiteBasicAuthPropertiesARMResourceInner extends ProxyRe
     private String id;
 
     /**
-     * Creates an instance of StaticSiteBasicAuthPropertiesARMResourceInner class.
+     * Creates an instance of StaticSiteBasicAuthPropertiesArmResourceInner class.
      */
-    public StaticSiteBasicAuthPropertiesARMResourceInner() {
+    public StaticSiteBasicAuthPropertiesArmResourceInner() {
     }
 
     /**
@@ -59,7 +59,7 @@ public final class StaticSiteBasicAuthPropertiesARMResourceInner extends ProxyRe
      * 
      * @return the innerProperties value.
      */
-    private StaticSiteBasicAuthPropertiesARMResourceProperties innerProperties() {
+    private StaticSiteBasicAuthPropertiesArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -76,9 +76,9 @@ public final class StaticSiteBasicAuthPropertiesARMResourceInner extends ProxyRe
      * Set the kind property: Kind of resource.
      * 
      * @param kind the kind value to set.
-     * @return the StaticSiteBasicAuthPropertiesARMResourceInner object itself.
+     * @return the StaticSiteBasicAuthPropertiesArmResourceInner object itself.
      */
-    public StaticSiteBasicAuthPropertiesARMResourceInner withKind(String kind) {
+    public StaticSiteBasicAuthPropertiesArmResourceInner withKind(String kind) {
         this.kind = kind;
         return this;
     }
@@ -135,11 +135,11 @@ public final class StaticSiteBasicAuthPropertiesARMResourceInner extends ProxyRe
      * Set the password property: The password for basic auth.
      * 
      * @param password the password value to set.
-     * @return the StaticSiteBasicAuthPropertiesARMResourceInner object itself.
+     * @return the StaticSiteBasicAuthPropertiesArmResourceInner object itself.
      */
-    public StaticSiteBasicAuthPropertiesARMResourceInner withPassword(String password) {
+    public StaticSiteBasicAuthPropertiesArmResourceInner withPassword(String password) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new StaticSiteBasicAuthPropertiesARMResourceProperties();
+            this.innerProperties = new StaticSiteBasicAuthPropertiesArmResourceProperties();
         }
         this.innerProperties().withPassword(password);
         return this;
@@ -158,11 +158,11 @@ public final class StaticSiteBasicAuthPropertiesARMResourceInner extends ProxyRe
      * Set the secretUrl property: Url to the secret in Key Vault.
      * 
      * @param secretUrl the secretUrl value to set.
-     * @return the StaticSiteBasicAuthPropertiesARMResourceInner object itself.
+     * @return the StaticSiteBasicAuthPropertiesArmResourceInner object itself.
      */
-    public StaticSiteBasicAuthPropertiesARMResourceInner withSecretUrl(String secretUrl) {
+    public StaticSiteBasicAuthPropertiesArmResourceInner withSecretUrl(String secretUrl) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new StaticSiteBasicAuthPropertiesARMResourceProperties();
+            this.innerProperties = new StaticSiteBasicAuthPropertiesArmResourceProperties();
         }
         this.innerProperties().withSecretUrl(secretUrl);
         return this;
@@ -183,12 +183,12 @@ public final class StaticSiteBasicAuthPropertiesARMResourceInner extends ProxyRe
      * it is active.
      * 
      * @param applicableEnvironmentsMode the applicableEnvironmentsMode value to set.
-     * @return the StaticSiteBasicAuthPropertiesARMResourceInner object itself.
+     * @return the StaticSiteBasicAuthPropertiesArmResourceInner object itself.
      */
-    public StaticSiteBasicAuthPropertiesARMResourceInner
+    public StaticSiteBasicAuthPropertiesArmResourceInner
         withApplicableEnvironmentsMode(String applicableEnvironmentsMode) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new StaticSiteBasicAuthPropertiesARMResourceProperties();
+            this.innerProperties = new StaticSiteBasicAuthPropertiesArmResourceProperties();
         }
         this.innerProperties().withApplicableEnvironmentsMode(applicableEnvironmentsMode);
         return this;
@@ -209,11 +209,11 @@ public final class StaticSiteBasicAuthPropertiesARMResourceInner extends ProxyRe
      * set to SpecifiedEnvironments.
      * 
      * @param environments the environments value to set.
-     * @return the StaticSiteBasicAuthPropertiesARMResourceInner object itself.
+     * @return the StaticSiteBasicAuthPropertiesArmResourceInner object itself.
      */
-    public StaticSiteBasicAuthPropertiesARMResourceInner withEnvironments(List<String> environments) {
+    public StaticSiteBasicAuthPropertiesArmResourceInner withEnvironments(List<String> environments) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new StaticSiteBasicAuthPropertiesARMResourceProperties();
+            this.innerProperties = new StaticSiteBasicAuthPropertiesArmResourceProperties();
         }
         this.innerProperties().withEnvironments(environments);
         return this;
@@ -251,41 +251,41 @@ public final class StaticSiteBasicAuthPropertiesARMResourceInner extends ProxyRe
     }
 
     /**
-     * Reads an instance of StaticSiteBasicAuthPropertiesARMResourceInner from the JsonReader.
+     * Reads an instance of StaticSiteBasicAuthPropertiesArmResourceInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteBasicAuthPropertiesARMResourceInner if the JsonReader was pointing to an
+     * @return An instance of StaticSiteBasicAuthPropertiesArmResourceInner if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StaticSiteBasicAuthPropertiesARMResourceInner.
+     * @throws IOException If an error occurs while reading the StaticSiteBasicAuthPropertiesArmResourceInner.
      */
-    public static StaticSiteBasicAuthPropertiesARMResourceInner fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteBasicAuthPropertiesArmResourceInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteBasicAuthPropertiesARMResourceInner deserializedStaticSiteBasicAuthPropertiesARMResourceInner
-                = new StaticSiteBasicAuthPropertiesARMResourceInner();
+            StaticSiteBasicAuthPropertiesArmResourceInner deserializedStaticSiteBasicAuthPropertiesArmResourceInner
+                = new StaticSiteBasicAuthPropertiesArmResourceInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedStaticSiteBasicAuthPropertiesARMResourceInner.id = reader.getString();
+                    deserializedStaticSiteBasicAuthPropertiesArmResourceInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedStaticSiteBasicAuthPropertiesARMResourceInner.name = reader.getString();
+                    deserializedStaticSiteBasicAuthPropertiesArmResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedStaticSiteBasicAuthPropertiesARMResourceInner.type = reader.getString();
+                    deserializedStaticSiteBasicAuthPropertiesArmResourceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedStaticSiteBasicAuthPropertiesARMResourceInner.innerProperties
-                        = StaticSiteBasicAuthPropertiesARMResourceProperties.fromJson(reader);
+                    deserializedStaticSiteBasicAuthPropertiesArmResourceInner.innerProperties
+                        = StaticSiteBasicAuthPropertiesArmResourceProperties.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedStaticSiteBasicAuthPropertiesARMResourceInner.kind = reader.getString();
+                    deserializedStaticSiteBasicAuthPropertiesArmResourceInner.kind = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedStaticSiteBasicAuthPropertiesARMResourceInner.systemData = SystemData.fromJson(reader);
+                    deserializedStaticSiteBasicAuthPropertiesArmResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteBasicAuthPropertiesARMResourceInner;
+            return deserializedStaticSiteBasicAuthPropertiesArmResourceInner;
         });
     }
 }

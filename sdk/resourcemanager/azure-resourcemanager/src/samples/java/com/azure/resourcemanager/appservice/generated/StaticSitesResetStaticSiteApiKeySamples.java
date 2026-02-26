@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesARMResource;
+import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmResource;
 
 /**
  * Samples for StaticSites ResetStaticSiteApiKey.
@@ -24,7 +24,7 @@ public final class StaticSitesResetStaticSiteApiKeySamples {
             .serviceClient()
             .getStaticSites()
             .resetStaticSiteApiKeyWithResponse("rg", "testStaticSite0",
-                new StaticSiteResetPropertiesARMResource().withRepositoryToken("fakeTokenPlaceholder")
+                new StaticSiteResetPropertiesArmResource().withRepositoryToken("fakeTokenPlaceholder")
                     .withShouldUpdateRepository(true),
                 com.azure.core.util.Context.NONE);
     }

@@ -17,8 +17,8 @@ import java.util.List;
  * StaticSiteBasicAuthPropertiesARMResource resource specific properties.
  */
 @Fluent
-public final class StaticSiteBasicAuthPropertiesARMResourceProperties
-    implements JsonSerializable<StaticSiteBasicAuthPropertiesARMResourceProperties> {
+public final class StaticSiteBasicAuthPropertiesArmResourceProperties
+    implements JsonSerializable<StaticSiteBasicAuthPropertiesArmResourceProperties> {
     /*
      * The password for basic auth.
      */
@@ -45,9 +45,9 @@ public final class StaticSiteBasicAuthPropertiesARMResourceProperties
     private String secretState;
 
     /**
-     * Creates an instance of StaticSiteBasicAuthPropertiesARMResourceProperties class.
+     * Creates an instance of StaticSiteBasicAuthPropertiesArmResourceProperties class.
      */
-    public StaticSiteBasicAuthPropertiesARMResourceProperties() {
+    public StaticSiteBasicAuthPropertiesArmResourceProperties() {
     }
 
     /**
@@ -63,9 +63,9 @@ public final class StaticSiteBasicAuthPropertiesARMResourceProperties
      * Set the password property: The password for basic auth.
      * 
      * @param password the password value to set.
-     * @return the StaticSiteBasicAuthPropertiesARMResourceProperties object itself.
+     * @return the StaticSiteBasicAuthPropertiesArmResourceProperties object itself.
      */
-    public StaticSiteBasicAuthPropertiesARMResourceProperties withPassword(String password) {
+    public StaticSiteBasicAuthPropertiesArmResourceProperties withPassword(String password) {
         this.password = password;
         return this;
     }
@@ -83,9 +83,9 @@ public final class StaticSiteBasicAuthPropertiesARMResourceProperties
      * Set the secretUrl property: Url to the secret in Key Vault.
      * 
      * @param secretUrl the secretUrl value to set.
-     * @return the StaticSiteBasicAuthPropertiesARMResourceProperties object itself.
+     * @return the StaticSiteBasicAuthPropertiesArmResourceProperties object itself.
      */
-    public StaticSiteBasicAuthPropertiesARMResourceProperties withSecretUrl(String secretUrl) {
+    public StaticSiteBasicAuthPropertiesArmResourceProperties withSecretUrl(String secretUrl) {
         this.secretUrl = secretUrl;
         return this;
     }
@@ -105,9 +105,9 @@ public final class StaticSiteBasicAuthPropertiesARMResourceProperties
      * it is active.
      * 
      * @param applicableEnvironmentsMode the applicableEnvironmentsMode value to set.
-     * @return the StaticSiteBasicAuthPropertiesARMResourceProperties object itself.
+     * @return the StaticSiteBasicAuthPropertiesArmResourceProperties object itself.
      */
-    public StaticSiteBasicAuthPropertiesARMResourceProperties
+    public StaticSiteBasicAuthPropertiesArmResourceProperties
         withApplicableEnvironmentsMode(String applicableEnvironmentsMode) {
         this.applicableEnvironmentsMode = applicableEnvironmentsMode;
         return this;
@@ -128,9 +128,9 @@ public final class StaticSiteBasicAuthPropertiesARMResourceProperties
      * set to SpecifiedEnvironments.
      * 
      * @param environments the environments value to set.
-     * @return the StaticSiteBasicAuthPropertiesARMResourceProperties object itself.
+     * @return the StaticSiteBasicAuthPropertiesArmResourceProperties object itself.
      */
-    public StaticSiteBasicAuthPropertiesARMResourceProperties withEnvironments(List<String> environments) {
+    public StaticSiteBasicAuthPropertiesArmResourceProperties withEnvironments(List<String> environments) {
         this.environments = environments;
         return this;
     }
@@ -153,12 +153,12 @@ public final class StaticSiteBasicAuthPropertiesARMResourceProperties
         if (applicableEnvironmentsMode() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property applicableEnvironmentsMode in model StaticSiteBasicAuthPropertiesARMResourceProperties"));
+                    "Missing required property applicableEnvironmentsMode in model StaticSiteBasicAuthPropertiesArmResourceProperties"));
         }
     }
 
     private static final ClientLogger LOGGER
-        = new ClientLogger(StaticSiteBasicAuthPropertiesARMResourceProperties.class);
+        = new ClientLogger(StaticSiteBasicAuthPropertiesArmResourceProperties.class);
 
     /**
      * {@inheritDoc}
@@ -174,41 +174,41 @@ public final class StaticSiteBasicAuthPropertiesARMResourceProperties
     }
 
     /**
-     * Reads an instance of StaticSiteBasicAuthPropertiesARMResourceProperties from the JsonReader.
+     * Reads an instance of StaticSiteBasicAuthPropertiesArmResourceProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteBasicAuthPropertiesARMResourceProperties if the JsonReader was pointing to an
+     * @return An instance of StaticSiteBasicAuthPropertiesArmResourceProperties if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StaticSiteBasicAuthPropertiesARMResourceProperties.
+     * @throws IOException If an error occurs while reading the StaticSiteBasicAuthPropertiesArmResourceProperties.
      */
-    public static StaticSiteBasicAuthPropertiesARMResourceProperties fromJson(JsonReader jsonReader)
+    public static StaticSiteBasicAuthPropertiesArmResourceProperties fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteBasicAuthPropertiesARMResourceProperties deserializedStaticSiteBasicAuthPropertiesARMResourceProperties
-                = new StaticSiteBasicAuthPropertiesARMResourceProperties();
+            StaticSiteBasicAuthPropertiesArmResourceProperties deserializedStaticSiteBasicAuthPropertiesArmResourceProperties
+                = new StaticSiteBasicAuthPropertiesArmResourceProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("applicableEnvironmentsMode".equals(fieldName)) {
-                    deserializedStaticSiteBasicAuthPropertiesARMResourceProperties.applicableEnvironmentsMode
+                    deserializedStaticSiteBasicAuthPropertiesArmResourceProperties.applicableEnvironmentsMode
                         = reader.getString();
                 } else if ("password".equals(fieldName)) {
-                    deserializedStaticSiteBasicAuthPropertiesARMResourceProperties.password = reader.getString();
+                    deserializedStaticSiteBasicAuthPropertiesArmResourceProperties.password = reader.getString();
                 } else if ("secretUrl".equals(fieldName)) {
-                    deserializedStaticSiteBasicAuthPropertiesARMResourceProperties.secretUrl = reader.getString();
+                    deserializedStaticSiteBasicAuthPropertiesArmResourceProperties.secretUrl = reader.getString();
                 } else if ("environments".equals(fieldName)) {
                     List<String> environments = reader.readArray(reader1 -> reader1.getString());
-                    deserializedStaticSiteBasicAuthPropertiesARMResourceProperties.environments = environments;
+                    deserializedStaticSiteBasicAuthPropertiesArmResourceProperties.environments = environments;
                 } else if ("secretState".equals(fieldName)) {
-                    deserializedStaticSiteBasicAuthPropertiesARMResourceProperties.secretState = reader.getString();
+                    deserializedStaticSiteBasicAuthPropertiesArmResourceProperties.secretState = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteBasicAuthPropertiesARMResourceProperties;
+            return deserializedStaticSiteBasicAuthPropertiesArmResourceProperties;
         });
     }
 }

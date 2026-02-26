@@ -15,7 +15,7 @@ import java.io.IOException;
  * Static Site Reset Properties ARM resource.
  */
 @Fluent
-public final class StaticSiteResetPropertiesARMResource extends ProxyOnlyResource {
+public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {
     /*
      * StaticSiteResetPropertiesARMResource resource specific properties
      */
@@ -37,9 +37,9 @@ public final class StaticSiteResetPropertiesARMResource extends ProxyOnlyResourc
     private String id;
 
     /**
-     * Creates an instance of StaticSiteResetPropertiesARMResource class.
+     * Creates an instance of StaticSiteResetPropertiesArmResource class.
      */
-    public StaticSiteResetPropertiesARMResource() {
+    public StaticSiteResetPropertiesArmResource() {
     }
 
     /**
@@ -85,7 +85,7 @@ public final class StaticSiteResetPropertiesARMResource extends ProxyOnlyResourc
      * {@inheritDoc}
      */
     @Override
-    public StaticSiteResetPropertiesARMResource withKind(String kind) {
+    public StaticSiteResetPropertiesArmResource withKind(String kind) {
         super.withKind(kind);
         return this;
     }
@@ -103,9 +103,9 @@ public final class StaticSiteResetPropertiesARMResource extends ProxyOnlyResourc
      * Set the repositoryToken property: The token which proves admin privileges to the repository.
      * 
      * @param repositoryToken the repositoryToken value to set.
-     * @return the StaticSiteResetPropertiesARMResource object itself.
+     * @return the StaticSiteResetPropertiesArmResource object itself.
      */
-    public StaticSiteResetPropertiesARMResource withRepositoryToken(String repositoryToken) {
+    public StaticSiteResetPropertiesArmResource withRepositoryToken(String repositoryToken) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSiteResetPropertiesARMResourceProperties();
         }
@@ -128,9 +128,9 @@ public final class StaticSiteResetPropertiesARMResource extends ProxyOnlyResourc
      * properties.
      * 
      * @param shouldUpdateRepository the shouldUpdateRepository value to set.
-     * @return the StaticSiteResetPropertiesARMResource object itself.
+     * @return the StaticSiteResetPropertiesArmResource object itself.
      */
-    public StaticSiteResetPropertiesARMResource withShouldUpdateRepository(Boolean shouldUpdateRepository) {
+    public StaticSiteResetPropertiesArmResource withShouldUpdateRepository(Boolean shouldUpdateRepository) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSiteResetPropertiesARMResourceProperties();
         }
@@ -162,38 +162,38 @@ public final class StaticSiteResetPropertiesARMResource extends ProxyOnlyResourc
     }
 
     /**
-     * Reads an instance of StaticSiteResetPropertiesARMResource from the JsonReader.
+     * Reads an instance of StaticSiteResetPropertiesArmResource from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteResetPropertiesARMResource if the JsonReader was pointing to an instance of it,
+     * @return An instance of StaticSiteResetPropertiesArmResource if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StaticSiteResetPropertiesARMResource.
+     * @throws IOException If an error occurs while reading the StaticSiteResetPropertiesArmResource.
      */
-    public static StaticSiteResetPropertiesARMResource fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteResetPropertiesArmResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteResetPropertiesARMResource deserializedStaticSiteResetPropertiesARMResource
-                = new StaticSiteResetPropertiesARMResource();
+            StaticSiteResetPropertiesArmResource deserializedStaticSiteResetPropertiesArmResource
+                = new StaticSiteResetPropertiesArmResource();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedStaticSiteResetPropertiesARMResource.id = reader.getString();
+                    deserializedStaticSiteResetPropertiesArmResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedStaticSiteResetPropertiesARMResource.name = reader.getString();
+                    deserializedStaticSiteResetPropertiesArmResource.name = reader.getString();
                 } else if ("kind".equals(fieldName)) {
-                    deserializedStaticSiteResetPropertiesARMResource.withKind(reader.getString());
+                    deserializedStaticSiteResetPropertiesArmResource.withKind(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    deserializedStaticSiteResetPropertiesARMResource.type = reader.getString();
+                    deserializedStaticSiteResetPropertiesArmResource.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedStaticSiteResetPropertiesARMResource.innerProperties
+                    deserializedStaticSiteResetPropertiesArmResource.innerProperties
                         = StaticSiteResetPropertiesARMResourceProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteResetPropertiesARMResource;
+            return deserializedStaticSiteResetPropertiesArmResource;
         });
     }
 }

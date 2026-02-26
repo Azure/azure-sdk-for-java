@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesArmResourceInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public final class StaticSiteBasicAuthPropertiesCollection
     /*
      * The StaticSiteBasicAuthPropertiesARMResource items on this page
      */
-    private List<StaticSiteBasicAuthPropertiesARMResourceInner> value;
+    private List<StaticSiteBasicAuthPropertiesArmResourceInner> value;
 
     /*
      * The link to the next page of items
@@ -41,7 +41,7 @@ public final class StaticSiteBasicAuthPropertiesCollection
      * 
      * @return the value value.
      */
-    public List<StaticSiteBasicAuthPropertiesARMResourceInner> value() {
+    public List<StaticSiteBasicAuthPropertiesArmResourceInner> value() {
         return this.value;
     }
 
@@ -100,8 +100,8 @@ public final class StaticSiteBasicAuthPropertiesCollection
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<StaticSiteBasicAuthPropertiesARMResourceInner> value
-                        = reader.readArray(reader1 -> StaticSiteBasicAuthPropertiesARMResourceInner.fromJson(reader1));
+                    List<StaticSiteBasicAuthPropertiesArmResourceInner> value
+                        = reader.readArray(reader1 -> StaticSiteBasicAuthPropertiesArmResourceInner.fromJson(reader1));
                     deserializedStaticSiteBasicAuthPropertiesCollection.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedStaticSiteBasicAuthPropertiesCollection.nextLink = reader.getString();

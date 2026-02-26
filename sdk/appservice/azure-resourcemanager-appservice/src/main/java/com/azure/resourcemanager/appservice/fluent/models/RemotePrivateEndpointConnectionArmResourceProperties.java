@@ -18,8 +18,8 @@ import java.util.List;
  * RemotePrivateEndpointConnectionARMResource resource specific properties.
  */
 @Fluent
-public final class RemotePrivateEndpointConnectionARMResourceProperties
-    implements JsonSerializable<RemotePrivateEndpointConnectionARMResourceProperties> {
+public final class RemotePrivateEndpointConnectionArmResourceProperties
+    implements JsonSerializable<RemotePrivateEndpointConnectionArmResourceProperties> {
     /*
      * The provisioningState property.
      */
@@ -41,9 +41,9 @@ public final class RemotePrivateEndpointConnectionARMResourceProperties
     private List<String> ipAddresses;
 
     /**
-     * Creates an instance of RemotePrivateEndpointConnectionARMResourceProperties class.
+     * Creates an instance of RemotePrivateEndpointConnectionArmResourceProperties class.
      */
-    public RemotePrivateEndpointConnectionARMResourceProperties() {
+    public RemotePrivateEndpointConnectionArmResourceProperties() {
     }
 
     /**
@@ -68,9 +68,9 @@ public final class RemotePrivateEndpointConnectionARMResourceProperties
      * Set the privateEndpoint property: PrivateEndpoint of a remote private endpoint connection.
      * 
      * @param privateEndpoint the privateEndpoint value to set.
-     * @return the RemotePrivateEndpointConnectionARMResourceProperties object itself.
+     * @return the RemotePrivateEndpointConnectionArmResourceProperties object itself.
      */
-    public RemotePrivateEndpointConnectionARMResourceProperties withPrivateEndpoint(ArmIdWrapper privateEndpoint) {
+    public RemotePrivateEndpointConnectionArmResourceProperties withPrivateEndpoint(ArmIdWrapper privateEndpoint) {
         this.privateEndpoint = privateEndpoint;
         return this;
     }
@@ -88,9 +88,9 @@ public final class RemotePrivateEndpointConnectionARMResourceProperties
      * Set the privateLinkServiceConnectionState property: The state of a private link connection.
      * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
-     * @return the RemotePrivateEndpointConnectionARMResourceProperties object itself.
+     * @return the RemotePrivateEndpointConnectionArmResourceProperties object itself.
      */
-    public RemotePrivateEndpointConnectionARMResourceProperties
+    public RemotePrivateEndpointConnectionArmResourceProperties
         withPrivateLinkServiceConnectionState(PrivateLinkConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
@@ -109,9 +109,9 @@ public final class RemotePrivateEndpointConnectionARMResourceProperties
      * Set the ipAddresses property: Private IPAddresses mapped to the remote private endpoint.
      * 
      * @param ipAddresses the ipAddresses value to set.
-     * @return the RemotePrivateEndpointConnectionARMResourceProperties object itself.
+     * @return the RemotePrivateEndpointConnectionArmResourceProperties object itself.
      */
-    public RemotePrivateEndpointConnectionARMResourceProperties withIpAddresses(List<String> ipAddresses) {
+    public RemotePrivateEndpointConnectionArmResourceProperties withIpAddresses(List<String> ipAddresses) {
         this.ipAddresses = ipAddresses;
         return this;
     }
@@ -143,40 +143,40 @@ public final class RemotePrivateEndpointConnectionARMResourceProperties
     }
 
     /**
-     * Reads an instance of RemotePrivateEndpointConnectionARMResourceProperties from the JsonReader.
+     * Reads an instance of RemotePrivateEndpointConnectionArmResourceProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RemotePrivateEndpointConnectionARMResourceProperties if the JsonReader was pointing to an
+     * @return An instance of RemotePrivateEndpointConnectionArmResourceProperties if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RemotePrivateEndpointConnectionARMResourceProperties.
+     * @throws IOException If an error occurs while reading the RemotePrivateEndpointConnectionArmResourceProperties.
      */
-    public static RemotePrivateEndpointConnectionARMResourceProperties fromJson(JsonReader jsonReader)
+    public static RemotePrivateEndpointConnectionArmResourceProperties fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            RemotePrivateEndpointConnectionARMResourceProperties deserializedRemotePrivateEndpointConnectionARMResourceProperties
-                = new RemotePrivateEndpointConnectionARMResourceProperties();
+            RemotePrivateEndpointConnectionArmResourceProperties deserializedRemotePrivateEndpointConnectionArmResourceProperties
+                = new RemotePrivateEndpointConnectionArmResourceProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("provisioningState".equals(fieldName)) {
-                    deserializedRemotePrivateEndpointConnectionARMResourceProperties.provisioningState
+                    deserializedRemotePrivateEndpointConnectionArmResourceProperties.provisioningState
                         = reader.getString();
                 } else if ("privateEndpoint".equals(fieldName)) {
-                    deserializedRemotePrivateEndpointConnectionARMResourceProperties.privateEndpoint
+                    deserializedRemotePrivateEndpointConnectionArmResourceProperties.privateEndpoint
                         = ArmIdWrapper.fromJson(reader);
                 } else if ("privateLinkServiceConnectionState".equals(fieldName)) {
-                    deserializedRemotePrivateEndpointConnectionARMResourceProperties.privateLinkServiceConnectionState
+                    deserializedRemotePrivateEndpointConnectionArmResourceProperties.privateLinkServiceConnectionState
                         = PrivateLinkConnectionState.fromJson(reader);
                 } else if ("ipAddresses".equals(fieldName)) {
                     List<String> ipAddresses = reader.readArray(reader1 -> reader1.getString());
-                    deserializedRemotePrivateEndpointConnectionARMResourceProperties.ipAddresses = ipAddresses;
+                    deserializedRemotePrivateEndpointConnectionArmResourceProperties.ipAddresses = ipAddresses;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedRemotePrivateEndpointConnectionARMResourceProperties;
+            return deserializedRemotePrivateEndpointConnectionArmResourceProperties;
         });
     }
 }
