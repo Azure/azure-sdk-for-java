@@ -42,7 +42,7 @@ public class McpAgent {
         try {
             // Create an MCPTool that connects to a remote MCP server
             McpTool tool = new McpTool("my-mcp-server")
-                .setServerUrl("https://my.mcp.server/mcp")
+                .setServerUrl("https://example.mcp.server/mcp") // Add your MCP server URL here
                 .setServerDescription("An MCP server that provides additional tools");
 
             // Create the agent definition with MCP tool enabled
@@ -88,6 +88,9 @@ public class McpAgent {
 
             System.out.println("\nResponse ID: " + response.id());
             System.out.println("Model Used: " + response.model());
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
         } finally {
             // Cleanup agent
             if (agent != null) {

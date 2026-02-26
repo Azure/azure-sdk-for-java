@@ -44,7 +44,7 @@ public class McpAgentAsync {
 
         // Create an MCPTool that connects to an MCP server via project connection
         McpTool tool = new McpTool("my-mcp-server")
-            .setServerUrl("https://my.mcp.server/mcp")
+            .setServerUrl("https://example.mcp.server/mcp") // Add your MCP server URL here
             .setServerDescription("An MCP server that provides additional tools");
 
         // Create the agent definition with MCP tool enabled
