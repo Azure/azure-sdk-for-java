@@ -94,6 +94,9 @@ public class FunctionCallAgent {
 
             System.out.println("\nResponse ID: " + response.id());
             System.out.println("Model Used: " + response.model());
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
         } finally {
             // Cleanup agent
             if (agent != null) {
