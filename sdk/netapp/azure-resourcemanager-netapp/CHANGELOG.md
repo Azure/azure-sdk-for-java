@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0 (2026-02-12)
+## 2.1.0 (2026-02-26)
 
 - Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2025-12-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -51,6 +51,8 @@
 
 * `models.QuotaType` was added
 
+* `models.ListQuotaReportResult` was added
+
 * `models.QuotaReportFilterRequest` was added
 
 * `models.RansomwareReportProperties` was added
@@ -59,13 +61,13 @@
 
 #### `models.Volume` was modified
 
-* `listQuotaReport()` was added
 * `listQuotaReport(models.QuotaReportFilterRequest,com.azure.core.util.Context)` was added
+* `listQuotaReport()` was added
 
 #### `models.VolumePropertiesDataProtection` was modified
 
-* `withRansomwareProtection(models.RansomwareProtectionSettings)` was added
 * `ransomwareProtection()` was added
+* `withRansomwareProtection(models.RansomwareProtectionSettings)` was added
 
 #### `models.VolumeQuotaRule$Definition` was modified
 
@@ -77,8 +79,8 @@
 
 #### `models.VolumePatchPropertiesDataProtection` was modified
 
-* `withRansomwareProtection(models.RansomwareProtectionPatchSettings)` was added
 * `ransomwareProtection()` was added
+* `withRansomwareProtection(models.RansomwareProtectionPatchSettings)` was added
 
 #### `models.Volumes` was modified
 

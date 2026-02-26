@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.models.ClusterPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.GetGroupIdListForLdapUserResponseInner;
-import com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResponseInner;
+import com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResultInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.SvmPeerCommandResponseInner;
@@ -1710,7 +1710,7 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner>
+    SyncPoller<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner>
         beginListQuotaReport(String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
@@ -1728,7 +1728,7 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner> beginListQuotaReport(
+    SyncPoller<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner> beginListQuotaReport(
         String resourceGroupName, String accountName, String poolName, String volumeName, QuotaReportFilterRequest body,
         Context context);
 
@@ -1745,7 +1745,7 @@ public interface VolumesClient {
      * @return quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ListQuotaReportResponseInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
+    ListQuotaReportResultInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
         String volumeName);
 
     /**
@@ -1763,6 +1763,6 @@ public interface VolumesClient {
      * @return quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ListQuotaReportResponseInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
+    ListQuotaReportResultInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
         String volumeName, QuotaReportFilterRequest body, Context context);
 }

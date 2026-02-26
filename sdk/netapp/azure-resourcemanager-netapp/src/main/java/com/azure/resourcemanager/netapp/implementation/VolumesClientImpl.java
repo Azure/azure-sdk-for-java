@@ -38,7 +38,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
 import com.azure.resourcemanager.netapp.fluent.models.ClusterPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.GetGroupIdListForLdapUserResponseInner;
-import com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResponseInner;
+import com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResultInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.SvmPeerCommandResponseInner;
@@ -7917,13 +7917,13 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link PollerFlux} for polling of quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner>
-        beginListQuotaReportAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
-            QuotaReportFilterRequest body) {
+    private PollerFlux<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner> beginListQuotaReportAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName,
+        QuotaReportFilterRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = listQuotaReportWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body);
-        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class,
+        return this.client.<ListQuotaReportResultInner, ListQuotaReportResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ListQuotaReportResultInner.class, ListQuotaReportResultInner.class,
             this.client.getContext());
     }
 
@@ -7940,13 +7940,13 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link PollerFlux} for polling of quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner>
+    private PollerFlux<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner>
         beginListQuotaReportAsync(String resourceGroupName, String accountName, String poolName, String volumeName) {
         final QuotaReportFilterRequest body = null;
         Mono<Response<Flux<ByteBuffer>>> mono
             = listQuotaReportWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body);
-        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class,
+        return this.client.<ListQuotaReportResultInner, ListQuotaReportResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ListQuotaReportResultInner.class, ListQuotaReportResultInner.class,
             this.client.getContext());
     }
 
@@ -7964,13 +7964,13 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner> beginListQuotaReport(
+    public SyncPoller<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner> beginListQuotaReport(
         String resourceGroupName, String accountName, String poolName, String volumeName,
         QuotaReportFilterRequest body) {
         Response<BinaryData> response
             = listQuotaReportWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
-        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(response,
-            ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class, Context.NONE);
+        return this.client.<ListQuotaReportResultInner, ListQuotaReportResultInner>getLroResult(response,
+            ListQuotaReportResultInner.class, ListQuotaReportResultInner.class, Context.NONE);
     }
 
     /**
@@ -7986,13 +7986,13 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner>
+    public SyncPoller<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner>
         beginListQuotaReport(String resourceGroupName, String accountName, String poolName, String volumeName) {
         final QuotaReportFilterRequest body = null;
         Response<BinaryData> response
             = listQuotaReportWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
-        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(response,
-            ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class, Context.NONE);
+        return this.client.<ListQuotaReportResultInner, ListQuotaReportResultInner>getLroResult(response,
+            ListQuotaReportResultInner.class, ListQuotaReportResultInner.class, Context.NONE);
     }
 
     /**
@@ -8010,13 +8010,13 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner> beginListQuotaReport(
+    public SyncPoller<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner> beginListQuotaReport(
         String resourceGroupName, String accountName, String poolName, String volumeName, QuotaReportFilterRequest body,
         Context context) {
         Response<BinaryData> response
             = listQuotaReportWithResponse(resourceGroupName, accountName, poolName, volumeName, body, context);
-        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(response,
-            ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class, context);
+        return this.client.<ListQuotaReportResultInner, ListQuotaReportResultInner>getLroResult(response,
+            ListQuotaReportResultInner.class, ListQuotaReportResultInner.class, context);
     }
 
     /**
@@ -8033,7 +8033,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return quota report for volume (with filter support) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ListQuotaReportResponseInner> listQuotaReportAsync(String resourceGroupName, String accountName,
+    private Mono<ListQuotaReportResultInner> listQuotaReportAsync(String resourceGroupName, String accountName,
         String poolName, String volumeName, QuotaReportFilterRequest body) {
         return beginListQuotaReportAsync(resourceGroupName, accountName, poolName, volumeName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -8052,7 +8052,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return quota report for volume (with filter support) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ListQuotaReportResponseInner> listQuotaReportAsync(String resourceGroupName, String accountName,
+    private Mono<ListQuotaReportResultInner> listQuotaReportAsync(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
         final QuotaReportFilterRequest body = null;
         return beginListQuotaReportAsync(resourceGroupName, accountName, poolName, volumeName, body).last()
@@ -8072,7 +8072,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListQuotaReportResponseInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
+    public ListQuotaReportResultInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
         final QuotaReportFilterRequest body = null;
         return beginListQuotaReport(resourceGroupName, accountName, poolName, volumeName, body).getFinalResult();
@@ -8093,7 +8093,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListQuotaReportResponseInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
+    public ListQuotaReportResultInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
         String volumeName, QuotaReportFilterRequest body, Context context) {
         return beginListQuotaReport(resourceGroupName, accountName, poolName, volumeName, body, context)
             .getFinalResult();

@@ -22,7 +22,7 @@ import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
-import com.azure.resourcemanager.netapp.models.ListQuotaReportResponse;
+import com.azure.resourcemanager.netapp.models.ListQuotaReportResult;
 import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
 import com.azure.resourcemanager.netapp.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
@@ -631,11 +631,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().revertRelocation(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
-    public ListQuotaReportResponse listQuotaReport() {
+    public ListQuotaReportResult listQuotaReport() {
         return serviceManager.volumes().listQuotaReport(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public ListQuotaReportResponse listQuotaReport(QuotaReportFilterRequest body, Context context) {
+    public ListQuotaReportResult listQuotaReport(QuotaReportFilterRequest body, Context context) {
         return serviceManager.volumes()
             .listQuotaReport(resourceGroupName, accountName, poolName, volumeName, body, context);
     }

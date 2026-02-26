@@ -773,7 +773,7 @@ public interface Volumes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota report for volume (with filter support).
      */
-    ListQuotaReportResponse listQuotaReport(String resourceGroupName, String accountName, String poolName,
+    ListQuotaReportResult listQuotaReport(String resourceGroupName, String accountName, String poolName,
         String volumeName);
 
     /**
@@ -790,7 +790,7 @@ public interface Volumes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota report for volume (with filter support).
      */
-    ListQuotaReportResponse listQuotaReport(String resourceGroupName, String accountName, String poolName,
+    ListQuotaReportResult listQuotaReport(String resourceGroupName, String accountName, String poolName,
         String volumeName, QuotaReportFilterRequest body, Context context);
 
     /**

@@ -2042,7 +2042,7 @@ public interface Volume {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota report for volume (with filter support).
      */
-    ListQuotaReportResponse listQuotaReport();
+    ListQuotaReportResult listQuotaReport();
 
     /**
      * Get quota report for volume (with filter support).
@@ -2054,5 +2054,5 @@ public interface Volume {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota report for volume (with filter support).
      */
-    ListQuotaReportResponse listQuotaReport(QuotaReportFilterRequest body, Context context);
+    ListQuotaReportResult listQuotaReport(QuotaReportFilterRequest body, Context context);
 }
