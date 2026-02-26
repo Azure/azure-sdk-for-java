@@ -126,13 +126,3 @@ stress-test-addons*
 
 # Temp typespec files
 TempTypeSpecFiles/
-
-# Copilot agents and skills (local-only)
-.github/agents/
-.github/skills/
-
-# Cosmos benchmark docs and scripts (local-only)
-sdk/cosmos/azure-cosmos-benchmark/docs/
-sdk/cosmos/azure-cosmos-benchmark/scripts/
-sdk/cosmos/azure-cosmos-benchmark/test-results/
-sdk/cosmos/azure-cosmos-benchmark/test-setup/
