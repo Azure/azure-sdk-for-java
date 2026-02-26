@@ -66,8 +66,8 @@
 
 #### `models.VolumePropertiesDataProtection` was modified
 
-* `ransomwareProtection()` was added
 * `withRansomwareProtection(models.RansomwareProtectionSettings)` was added
+* `ransomwareProtection()` was added
 
 #### `models.VolumeQuotaRule$Definition` was modified
 
@@ -84,8 +84,8 @@
 
 #### `models.Volumes` was modified
 
-* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
 * `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.QuotaReportFilterRequest,com.azure.core.util.Context)` was added
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
 
 #### `models.VolumeQuotaRulePatch` was modified
 
