@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteResetPropertiesARMResourceProperties;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteResetPropertiesArmResourceProperties;
 import java.io.IOException;
 
 /**
@@ -19,7 +19,7 @@ public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResourc
     /*
      * StaticSiteResetPropertiesARMResource resource specific properties
      */
-    private StaticSiteResetPropertiesARMResourceProperties innerProperties;
+    private StaticSiteResetPropertiesArmResourceProperties innerProperties;
 
     /*
      * Resource type.
@@ -47,7 +47,7 @@ public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResourc
      * 
      * @return the innerProperties value.
      */
-    private StaticSiteResetPropertiesARMResourceProperties innerProperties() {
+    private StaticSiteResetPropertiesArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -107,7 +107,7 @@ public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResourc
      */
     public StaticSiteResetPropertiesArmResource withRepositoryToken(String repositoryToken) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new StaticSiteResetPropertiesARMResourceProperties();
+            this.innerProperties = new StaticSiteResetPropertiesArmResourceProperties();
         }
         this.innerProperties().withRepositoryToken(repositoryToken);
         return this;
@@ -132,7 +132,7 @@ public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResourc
      */
     public StaticSiteResetPropertiesArmResource withShouldUpdateRepository(Boolean shouldUpdateRepository) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new StaticSiteResetPropertiesARMResourceProperties();
+            this.innerProperties = new StaticSiteResetPropertiesArmResourceProperties();
         }
         this.innerProperties().withShouldUpdateRepository(shouldUpdateRepository);
         return this;
@@ -187,7 +187,7 @@ public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResourc
                     deserializedStaticSiteResetPropertiesArmResource.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedStaticSiteResetPropertiesArmResource.innerProperties
-                        = StaticSiteResetPropertiesARMResourceProperties.fromJson(reader);
+                        = StaticSiteResetPropertiesArmResourceProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

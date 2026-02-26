@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.DetectorAbnormalTimePeriod;
 import com.azure.resourcemanager.appservice.models.DiagnosticMetricSet;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
-import com.azure.resourcemanager.appservice.models.ResponseMetaData;
+import com.azure.resourcemanager.appservice.models.ResponseMetadata;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -63,7 +63,7 @@ public final class DiagnosticDetectorResponseProperties
     /*
      * Meta Data
      */
-    private ResponseMetaData responseMetaData;
+    private ResponseMetadata responseMetaData;
 
     /**
      * Creates an instance of DiagnosticDetectorResponseProperties class.
@@ -139,7 +139,7 @@ public final class DiagnosticDetectorResponseProperties
      * 
      * @return the responseMetaData value.
      */
-    public ResponseMetaData responseMetaData() {
+    public ResponseMetadata responseMetaData() {
         return this.responseMetaData;
     }
 
@@ -229,7 +229,7 @@ public final class DiagnosticDetectorResponseProperties
                     deserializedDiagnosticDetectorResponseProperties.data = data;
                 } else if ("responseMetaData".equals(fieldName)) {
                     deserializedDiagnosticDetectorResponseProperties.responseMetaData
-                        = ResponseMetaData.fromJson(reader);
+                        = ResponseMetadata.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

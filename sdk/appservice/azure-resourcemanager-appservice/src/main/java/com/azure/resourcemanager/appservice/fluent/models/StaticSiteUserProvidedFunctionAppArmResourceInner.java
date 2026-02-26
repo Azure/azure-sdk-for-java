@@ -17,11 +17,11 @@ import java.time.OffsetDateTime;
  * Static Site User Provided Function App ARM resource.
  */
 @Fluent
-public final class StaticSiteUserProvidedFunctionAppARMResourceInner extends ProxyResource {
+public final class StaticSiteUserProvidedFunctionAppArmResourceInner extends ProxyResource {
     /*
      * StaticSiteUserProvidedFunctionAppARMResource resource specific properties
      */
-    private StaticSiteUserProvidedFunctionAppARMResourceProperties innerProperties;
+    private StaticSiteUserProvidedFunctionAppArmResourceProperties innerProperties;
 
     /*
      * Kind of resource.
@@ -49,9 +49,9 @@ public final class StaticSiteUserProvidedFunctionAppARMResourceInner extends Pro
     private String id;
 
     /**
-     * Creates an instance of StaticSiteUserProvidedFunctionAppARMResourceInner class.
+     * Creates an instance of StaticSiteUserProvidedFunctionAppArmResourceInner class.
      */
-    public StaticSiteUserProvidedFunctionAppARMResourceInner() {
+    public StaticSiteUserProvidedFunctionAppArmResourceInner() {
     }
 
     /**
@@ -59,7 +59,7 @@ public final class StaticSiteUserProvidedFunctionAppARMResourceInner extends Pro
      * 
      * @return the innerProperties value.
      */
-    private StaticSiteUserProvidedFunctionAppARMResourceProperties innerProperties() {
+    private StaticSiteUserProvidedFunctionAppArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -76,9 +76,9 @@ public final class StaticSiteUserProvidedFunctionAppARMResourceInner extends Pro
      * Set the kind property: Kind of resource.
      * 
      * @param kind the kind value to set.
-     * @return the StaticSiteUserProvidedFunctionAppARMResourceInner object itself.
+     * @return the StaticSiteUserProvidedFunctionAppArmResourceInner object itself.
      */
-    public StaticSiteUserProvidedFunctionAppARMResourceInner withKind(String kind) {
+    public StaticSiteUserProvidedFunctionAppArmResourceInner withKind(String kind) {
         this.kind = kind;
         return this;
     }
@@ -135,11 +135,11 @@ public final class StaticSiteUserProvidedFunctionAppARMResourceInner extends Pro
      * Set the functionAppResourceId property: The resource id of the function app registered with the static site.
      * 
      * @param functionAppResourceId the functionAppResourceId value to set.
-     * @return the StaticSiteUserProvidedFunctionAppARMResourceInner object itself.
+     * @return the StaticSiteUserProvidedFunctionAppArmResourceInner object itself.
      */
-    public StaticSiteUserProvidedFunctionAppARMResourceInner withFunctionAppResourceId(String functionAppResourceId) {
+    public StaticSiteUserProvidedFunctionAppArmResourceInner withFunctionAppResourceId(String functionAppResourceId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new StaticSiteUserProvidedFunctionAppARMResourceProperties();
+            this.innerProperties = new StaticSiteUserProvidedFunctionAppArmResourceProperties();
         }
         this.innerProperties().withFunctionAppResourceId(functionAppResourceId);
         return this;
@@ -158,11 +158,11 @@ public final class StaticSiteUserProvidedFunctionAppARMResourceInner extends Pro
      * Set the functionAppRegion property: The region of the function app registered with the static site.
      * 
      * @param functionAppRegion the functionAppRegion value to set.
-     * @return the StaticSiteUserProvidedFunctionAppARMResourceInner object itself.
+     * @return the StaticSiteUserProvidedFunctionAppArmResourceInner object itself.
      */
-    public StaticSiteUserProvidedFunctionAppARMResourceInner withFunctionAppRegion(String functionAppRegion) {
+    public StaticSiteUserProvidedFunctionAppArmResourceInner withFunctionAppRegion(String functionAppRegion) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new StaticSiteUserProvidedFunctionAppARMResourceProperties();
+            this.innerProperties = new StaticSiteUserProvidedFunctionAppArmResourceProperties();
         }
         this.innerProperties().withFunctionAppRegion(functionAppRegion);
         return this;
@@ -200,42 +200,42 @@ public final class StaticSiteUserProvidedFunctionAppARMResourceInner extends Pro
     }
 
     /**
-     * Reads an instance of StaticSiteUserProvidedFunctionAppARMResourceInner from the JsonReader.
+     * Reads an instance of StaticSiteUserProvidedFunctionAppArmResourceInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteUserProvidedFunctionAppARMResourceInner if the JsonReader was pointing to an
+     * @return An instance of StaticSiteUserProvidedFunctionAppArmResourceInner if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StaticSiteUserProvidedFunctionAppARMResourceInner.
+     * @throws IOException If an error occurs while reading the StaticSiteUserProvidedFunctionAppArmResourceInner.
      */
-    public static StaticSiteUserProvidedFunctionAppARMResourceInner fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteUserProvidedFunctionAppArmResourceInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteUserProvidedFunctionAppARMResourceInner deserializedStaticSiteUserProvidedFunctionAppARMResourceInner
-                = new StaticSiteUserProvidedFunctionAppARMResourceInner();
+            StaticSiteUserProvidedFunctionAppArmResourceInner deserializedStaticSiteUserProvidedFunctionAppArmResourceInner
+                = new StaticSiteUserProvidedFunctionAppArmResourceInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedStaticSiteUserProvidedFunctionAppARMResourceInner.id = reader.getString();
+                    deserializedStaticSiteUserProvidedFunctionAppArmResourceInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedStaticSiteUserProvidedFunctionAppARMResourceInner.name = reader.getString();
+                    deserializedStaticSiteUserProvidedFunctionAppArmResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedStaticSiteUserProvidedFunctionAppARMResourceInner.type = reader.getString();
+                    deserializedStaticSiteUserProvidedFunctionAppArmResourceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedStaticSiteUserProvidedFunctionAppARMResourceInner.innerProperties
-                        = StaticSiteUserProvidedFunctionAppARMResourceProperties.fromJson(reader);
+                    deserializedStaticSiteUserProvidedFunctionAppArmResourceInner.innerProperties
+                        = StaticSiteUserProvidedFunctionAppArmResourceProperties.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedStaticSiteUserProvidedFunctionAppARMResourceInner.kind = reader.getString();
+                    deserializedStaticSiteUserProvidedFunctionAppArmResourceInner.kind = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedStaticSiteUserProvidedFunctionAppARMResourceInner.systemData
+                    deserializedStaticSiteUserProvidedFunctionAppArmResourceInner.systemData
                         = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteUserProvidedFunctionAppARMResourceInner;
+            return deserializedStaticSiteUserProvidedFunctionAppArmResourceInner;
         });
     }
 }

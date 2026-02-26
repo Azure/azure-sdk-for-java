@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserArmResourceInner;
 
 /**
  * Samples for StaticSites UpdateStaticSiteUser.
@@ -24,6 +24,6 @@ public final class StaticSitesUpdateStaticSiteUserSamples {
             .serviceClient()
             .getStaticSites()
             .updateStaticSiteUserWithResponse("rg", "testStaticSite0", "aad", "1234",
-                new StaticSiteUserARMResourceInner().withRoles("contributor"), com.azure.core.util.Context.NONE);
+                new StaticSiteUserArmResourceInner().withRoles("contributor"), com.azure.core.util.Context.NONE);
     }
 }

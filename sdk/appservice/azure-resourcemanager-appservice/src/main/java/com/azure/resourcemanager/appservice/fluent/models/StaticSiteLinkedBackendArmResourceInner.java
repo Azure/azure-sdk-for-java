@@ -17,11 +17,11 @@ import java.time.OffsetDateTime;
  * Static Site Linked Backend ARM resource.
  */
 @Fluent
-public final class StaticSiteLinkedBackendARMResourceInner extends ProxyResource {
+public final class StaticSiteLinkedBackendArmResourceInner extends ProxyResource {
     /*
      * StaticSiteLinkedBackendARMResource resource specific properties
      */
-    private StaticSiteLinkedBackendARMResourceProperties innerProperties;
+    private StaticSiteLinkedBackendArmResourceProperties innerProperties;
 
     /*
      * Kind of resource.
@@ -49,9 +49,9 @@ public final class StaticSiteLinkedBackendARMResourceInner extends ProxyResource
     private String id;
 
     /**
-     * Creates an instance of StaticSiteLinkedBackendARMResourceInner class.
+     * Creates an instance of StaticSiteLinkedBackendArmResourceInner class.
      */
-    public StaticSiteLinkedBackendARMResourceInner() {
+    public StaticSiteLinkedBackendArmResourceInner() {
     }
 
     /**
@@ -59,7 +59,7 @@ public final class StaticSiteLinkedBackendARMResourceInner extends ProxyResource
      * 
      * @return the innerProperties value.
      */
-    private StaticSiteLinkedBackendARMResourceProperties innerProperties() {
+    private StaticSiteLinkedBackendArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -76,9 +76,9 @@ public final class StaticSiteLinkedBackendARMResourceInner extends ProxyResource
      * Set the kind property: Kind of resource.
      * 
      * @param kind the kind value to set.
-     * @return the StaticSiteLinkedBackendARMResourceInner object itself.
+     * @return the StaticSiteLinkedBackendArmResourceInner object itself.
      */
-    public StaticSiteLinkedBackendARMResourceInner withKind(String kind) {
+    public StaticSiteLinkedBackendArmResourceInner withKind(String kind) {
         this.kind = kind;
         return this;
     }
@@ -135,11 +135,11 @@ public final class StaticSiteLinkedBackendARMResourceInner extends ProxyResource
      * Set the backendResourceId property: The resource id of the backend linked to the static site.
      * 
      * @param backendResourceId the backendResourceId value to set.
-     * @return the StaticSiteLinkedBackendARMResourceInner object itself.
+     * @return the StaticSiteLinkedBackendArmResourceInner object itself.
      */
-    public StaticSiteLinkedBackendARMResourceInner withBackendResourceId(String backendResourceId) {
+    public StaticSiteLinkedBackendArmResourceInner withBackendResourceId(String backendResourceId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new StaticSiteLinkedBackendARMResourceProperties();
+            this.innerProperties = new StaticSiteLinkedBackendArmResourceProperties();
         }
         this.innerProperties().withBackendResourceId(backendResourceId);
         return this;
@@ -158,11 +158,11 @@ public final class StaticSiteLinkedBackendARMResourceInner extends ProxyResource
      * Set the region property: The region of the backend linked to the static site.
      * 
      * @param region the region value to set.
-     * @return the StaticSiteLinkedBackendARMResourceInner object itself.
+     * @return the StaticSiteLinkedBackendArmResourceInner object itself.
      */
-    public StaticSiteLinkedBackendARMResourceInner withRegion(String region) {
+    public StaticSiteLinkedBackendArmResourceInner withRegion(String region) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new StaticSiteLinkedBackendARMResourceProperties();
+            this.innerProperties = new StaticSiteLinkedBackendArmResourceProperties();
         }
         this.innerProperties().withRegion(region);
         return this;
@@ -209,41 +209,41 @@ public final class StaticSiteLinkedBackendARMResourceInner extends ProxyResource
     }
 
     /**
-     * Reads an instance of StaticSiteLinkedBackendARMResourceInner from the JsonReader.
+     * Reads an instance of StaticSiteLinkedBackendArmResourceInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteLinkedBackendARMResourceInner if the JsonReader was pointing to an instance of
+     * @return An instance of StaticSiteLinkedBackendArmResourceInner if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StaticSiteLinkedBackendARMResourceInner.
+     * @throws IOException If an error occurs while reading the StaticSiteLinkedBackendArmResourceInner.
      */
-    public static StaticSiteLinkedBackendARMResourceInner fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteLinkedBackendArmResourceInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteLinkedBackendARMResourceInner deserializedStaticSiteLinkedBackendARMResourceInner
-                = new StaticSiteLinkedBackendARMResourceInner();
+            StaticSiteLinkedBackendArmResourceInner deserializedStaticSiteLinkedBackendArmResourceInner
+                = new StaticSiteLinkedBackendArmResourceInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedStaticSiteLinkedBackendARMResourceInner.id = reader.getString();
+                    deserializedStaticSiteLinkedBackendArmResourceInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedStaticSiteLinkedBackendARMResourceInner.name = reader.getString();
+                    deserializedStaticSiteLinkedBackendArmResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedStaticSiteLinkedBackendARMResourceInner.type = reader.getString();
+                    deserializedStaticSiteLinkedBackendArmResourceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedStaticSiteLinkedBackendARMResourceInner.innerProperties
-                        = StaticSiteLinkedBackendARMResourceProperties.fromJson(reader);
+                    deserializedStaticSiteLinkedBackendArmResourceInner.innerProperties
+                        = StaticSiteLinkedBackendArmResourceProperties.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedStaticSiteLinkedBackendARMResourceInner.kind = reader.getString();
+                    deserializedStaticSiteLinkedBackendArmResourceInner.kind = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedStaticSiteLinkedBackendARMResourceInner.systemData = SystemData.fromJson(reader);
+                    deserializedStaticSiteLinkedBackendArmResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteLinkedBackendARMResourceInner;
+            return deserializedStaticSiteLinkedBackendArmResourceInner;
         });
     }
 }

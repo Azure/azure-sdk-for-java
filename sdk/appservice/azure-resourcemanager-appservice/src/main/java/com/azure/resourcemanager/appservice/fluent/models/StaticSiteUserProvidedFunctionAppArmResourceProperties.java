@@ -17,8 +17,8 @@ import java.time.OffsetDateTime;
  * StaticSiteUserProvidedFunctionAppARMResource resource specific properties.
  */
 @Fluent
-public final class StaticSiteUserProvidedFunctionAppARMResourceProperties
-    implements JsonSerializable<StaticSiteUserProvidedFunctionAppARMResourceProperties> {
+public final class StaticSiteUserProvidedFunctionAppArmResourceProperties
+    implements JsonSerializable<StaticSiteUserProvidedFunctionAppArmResourceProperties> {
     /*
      * The resource id of the function app registered with the static site
      */
@@ -35,9 +35,9 @@ public final class StaticSiteUserProvidedFunctionAppARMResourceProperties
     private OffsetDateTime createdOn;
 
     /**
-     * Creates an instance of StaticSiteUserProvidedFunctionAppARMResourceProperties class.
+     * Creates an instance of StaticSiteUserProvidedFunctionAppArmResourceProperties class.
      */
-    public StaticSiteUserProvidedFunctionAppARMResourceProperties() {
+    public StaticSiteUserProvidedFunctionAppArmResourceProperties() {
     }
 
     /**
@@ -53,9 +53,9 @@ public final class StaticSiteUserProvidedFunctionAppARMResourceProperties
      * Set the functionAppResourceId property: The resource id of the function app registered with the static site.
      * 
      * @param functionAppResourceId the functionAppResourceId value to set.
-     * @return the StaticSiteUserProvidedFunctionAppARMResourceProperties object itself.
+     * @return the StaticSiteUserProvidedFunctionAppArmResourceProperties object itself.
      */
-    public StaticSiteUserProvidedFunctionAppARMResourceProperties
+    public StaticSiteUserProvidedFunctionAppArmResourceProperties
         withFunctionAppResourceId(String functionAppResourceId) {
         this.functionAppResourceId = functionAppResourceId;
         return this;
@@ -74,9 +74,9 @@ public final class StaticSiteUserProvidedFunctionAppARMResourceProperties
      * Set the functionAppRegion property: The region of the function app registered with the static site.
      * 
      * @param functionAppRegion the functionAppRegion value to set.
-     * @return the StaticSiteUserProvidedFunctionAppARMResourceProperties object itself.
+     * @return the StaticSiteUserProvidedFunctionAppArmResourceProperties object itself.
      */
-    public StaticSiteUserProvidedFunctionAppARMResourceProperties withFunctionAppRegion(String functionAppRegion) {
+    public StaticSiteUserProvidedFunctionAppArmResourceProperties withFunctionAppRegion(String functionAppRegion) {
         this.functionAppRegion = functionAppRegion;
         return this;
     }
@@ -110,37 +110,37 @@ public final class StaticSiteUserProvidedFunctionAppARMResourceProperties
     }
 
     /**
-     * Reads an instance of StaticSiteUserProvidedFunctionAppARMResourceProperties from the JsonReader.
+     * Reads an instance of StaticSiteUserProvidedFunctionAppArmResourceProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteUserProvidedFunctionAppARMResourceProperties if the JsonReader was pointing to
+     * @return An instance of StaticSiteUserProvidedFunctionAppArmResourceProperties if the JsonReader was pointing to
      * an instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StaticSiteUserProvidedFunctionAppARMResourceProperties.
+     * @throws IOException If an error occurs while reading the StaticSiteUserProvidedFunctionAppArmResourceProperties.
      */
-    public static StaticSiteUserProvidedFunctionAppARMResourceProperties fromJson(JsonReader jsonReader)
+    public static StaticSiteUserProvidedFunctionAppArmResourceProperties fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteUserProvidedFunctionAppARMResourceProperties deserializedStaticSiteUserProvidedFunctionAppARMResourceProperties
-                = new StaticSiteUserProvidedFunctionAppARMResourceProperties();
+            StaticSiteUserProvidedFunctionAppArmResourceProperties deserializedStaticSiteUserProvidedFunctionAppArmResourceProperties
+                = new StaticSiteUserProvidedFunctionAppArmResourceProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("functionAppResourceId".equals(fieldName)) {
-                    deserializedStaticSiteUserProvidedFunctionAppARMResourceProperties.functionAppResourceId
+                    deserializedStaticSiteUserProvidedFunctionAppArmResourceProperties.functionAppResourceId
                         = reader.getString();
                 } else if ("functionAppRegion".equals(fieldName)) {
-                    deserializedStaticSiteUserProvidedFunctionAppARMResourceProperties.functionAppRegion
+                    deserializedStaticSiteUserProvidedFunctionAppArmResourceProperties.functionAppRegion
                         = reader.getString();
                 } else if ("createdOn".equals(fieldName)) {
-                    deserializedStaticSiteUserProvidedFunctionAppARMResourceProperties.createdOn = reader
+                    deserializedStaticSiteUserProvidedFunctionAppArmResourceProperties.createdOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteUserProvidedFunctionAppARMResourceProperties;
+            return deserializedStaticSiteUserProvidedFunctionAppArmResourceProperties;
         });
     }
 }

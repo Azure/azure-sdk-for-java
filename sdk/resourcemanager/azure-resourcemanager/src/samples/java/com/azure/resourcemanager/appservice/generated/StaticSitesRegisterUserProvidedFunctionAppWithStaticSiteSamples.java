@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserProvidedFunctionAppARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserProvidedFunctionAppArmResourceInner;
 
 /**
  * Samples for StaticSites RegisterUserProvidedFunctionAppWithStaticSite.
@@ -25,7 +25,7 @@ public final class StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteSampl
             .serviceClient()
             .getStaticSites()
             .registerUserProvidedFunctionAppWithStaticSite("rg", "testStaticSite0", "testFunctionApp",
-                new StaticSiteUserProvidedFunctionAppARMResourceInner().withFunctionAppResourceId(
+                new StaticSiteUserProvidedFunctionAppArmResourceInner().withFunctionAppResourceId(
                     "/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp")
                     .withFunctionAppRegion("West US 2"),
                 true, com.azure.core.util.Context.NONE);

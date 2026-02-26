@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteLinkedBackendARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteLinkedBackendArmResourceInner;
 
 /**
  * Samples for StaticSites ValidateBackend.
@@ -24,7 +24,7 @@ public final class StaticSitesValidateBackendSamples {
             .serviceClient()
             .getStaticSites()
             .validateBackend("rg", "testStaticSite0", "testBackend",
-                new StaticSiteLinkedBackendARMResourceInner().withBackendResourceId(
+                new StaticSiteLinkedBackendArmResourceInner().withBackendResourceId(
                     "/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend")
                     .withRegion("West US 2"),
                 com.azure.core.util.Context.NONE);

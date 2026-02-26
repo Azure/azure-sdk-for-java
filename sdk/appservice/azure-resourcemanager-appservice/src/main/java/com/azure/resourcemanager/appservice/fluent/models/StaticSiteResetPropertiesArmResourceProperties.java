@@ -15,8 +15,8 @@ import java.io.IOException;
  * StaticSiteResetPropertiesARMResource resource specific properties.
  */
 @Fluent
-public final class StaticSiteResetPropertiesARMResourceProperties
-    implements JsonSerializable<StaticSiteResetPropertiesARMResourceProperties> {
+public final class StaticSiteResetPropertiesArmResourceProperties
+    implements JsonSerializable<StaticSiteResetPropertiesArmResourceProperties> {
     /*
      * The token which proves admin privileges to the repository.
      */
@@ -28,9 +28,9 @@ public final class StaticSiteResetPropertiesARMResourceProperties
     private Boolean shouldUpdateRepository;
 
     /**
-     * Creates an instance of StaticSiteResetPropertiesARMResourceProperties class.
+     * Creates an instance of StaticSiteResetPropertiesArmResourceProperties class.
      */
-    public StaticSiteResetPropertiesARMResourceProperties() {
+    public StaticSiteResetPropertiesArmResourceProperties() {
     }
 
     /**
@@ -46,9 +46,9 @@ public final class StaticSiteResetPropertiesARMResourceProperties
      * Set the repositoryToken property: The token which proves admin privileges to the repository.
      * 
      * @param repositoryToken the repositoryToken value to set.
-     * @return the StaticSiteResetPropertiesARMResourceProperties object itself.
+     * @return the StaticSiteResetPropertiesArmResourceProperties object itself.
      */
-    public StaticSiteResetPropertiesARMResourceProperties withRepositoryToken(String repositoryToken) {
+    public StaticSiteResetPropertiesArmResourceProperties withRepositoryToken(String repositoryToken) {
         this.repositoryToken = repositoryToken;
         return this;
     }
@@ -68,9 +68,9 @@ public final class StaticSiteResetPropertiesARMResourceProperties
      * properties.
      * 
      * @param shouldUpdateRepository the shouldUpdateRepository value to set.
-     * @return the StaticSiteResetPropertiesARMResourceProperties object itself.
+     * @return the StaticSiteResetPropertiesArmResourceProperties object itself.
      */
-    public StaticSiteResetPropertiesARMResourceProperties withShouldUpdateRepository(Boolean shouldUpdateRepository) {
+    public StaticSiteResetPropertiesArmResourceProperties withShouldUpdateRepository(Boolean shouldUpdateRepository) {
         this.shouldUpdateRepository = shouldUpdateRepository;
         return this;
     }
@@ -95,32 +95,32 @@ public final class StaticSiteResetPropertiesARMResourceProperties
     }
 
     /**
-     * Reads an instance of StaticSiteResetPropertiesARMResourceProperties from the JsonReader.
+     * Reads an instance of StaticSiteResetPropertiesArmResourceProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteResetPropertiesARMResourceProperties if the JsonReader was pointing to an
+     * @return An instance of StaticSiteResetPropertiesArmResourceProperties if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StaticSiteResetPropertiesARMResourceProperties.
+     * @throws IOException If an error occurs while reading the StaticSiteResetPropertiesArmResourceProperties.
      */
-    public static StaticSiteResetPropertiesARMResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteResetPropertiesArmResourceProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteResetPropertiesARMResourceProperties deserializedStaticSiteResetPropertiesARMResourceProperties
-                = new StaticSiteResetPropertiesARMResourceProperties();
+            StaticSiteResetPropertiesArmResourceProperties deserializedStaticSiteResetPropertiesArmResourceProperties
+                = new StaticSiteResetPropertiesArmResourceProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("repositoryToken".equals(fieldName)) {
-                    deserializedStaticSiteResetPropertiesARMResourceProperties.repositoryToken = reader.getString();
+                    deserializedStaticSiteResetPropertiesArmResourceProperties.repositoryToken = reader.getString();
                 } else if ("shouldUpdateRepository".equals(fieldName)) {
-                    deserializedStaticSiteResetPropertiesARMResourceProperties.shouldUpdateRepository
+                    deserializedStaticSiteResetPropertiesArmResourceProperties.shouldUpdateRepository
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteResetPropertiesARMResourceProperties;
+            return deserializedStaticSiteResetPropertiesArmResourceProperties;
         });
     }
 }

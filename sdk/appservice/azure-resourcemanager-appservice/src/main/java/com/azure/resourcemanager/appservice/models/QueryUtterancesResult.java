@@ -24,7 +24,7 @@ public final class QueryUtterancesResult implements JsonSerializable<QueryUttera
     /*
      * Score of a sample utterance.
      */
-    private Double score;
+    private Float score;
 
     /**
      * Creates an instance of QueryUtterancesResult class.
@@ -46,7 +46,7 @@ public final class QueryUtterancesResult implements JsonSerializable<QueryUttera
      * 
      * @return the score value.
      */
-    public Double score() {
+    public Float score() {
         return this.score;
     }
 
@@ -90,7 +90,7 @@ public final class QueryUtterancesResult implements JsonSerializable<QueryUttera
                 if ("sampleUtterance".equals(fieldName)) {
                     deserializedQueryUtterancesResult.sampleUtterance = SampleUtterance.fromJson(reader);
                 } else if ("score".equals(fieldName)) {
-                    deserializedQueryUtterancesResult.score = reader.getNullable(JsonReader::getDouble);
+                    deserializedQueryUtterancesResult.score = reader.getNullable(JsonReader::getFloat);
                 } else {
                     reader.skipChildren();
                 }

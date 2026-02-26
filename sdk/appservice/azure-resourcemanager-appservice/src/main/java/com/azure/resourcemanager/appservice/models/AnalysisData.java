@@ -41,7 +41,7 @@ public final class AnalysisData implements JsonSerializable<AnalysisData> {
     /*
      * Detector Meta Data
      */
-    private ResponseMetaData detectorMetaData;
+    private ResponseMetadata detectorMetaData;
 
     /**
      * Creates an instance of AnalysisData class.
@@ -90,7 +90,7 @@ public final class AnalysisData implements JsonSerializable<AnalysisData> {
      * 
      * @return the detectorMetaData value.
      */
-    public ResponseMetaData detectorMetaData() {
+    public ResponseMetadata detectorMetaData() {
         return this.detectorMetaData;
     }
 
@@ -157,7 +157,7 @@ public final class AnalysisData implements JsonSerializable<AnalysisData> {
                         = reader.readArray(reader1 -> reader1.readArray(reader2 -> NameValuePair.fromJson(reader2)));
                     deserializedAnalysisData.data = data;
                 } else if ("detectorMetaData".equals(fieldName)) {
-                    deserializedAnalysisData.detectorMetaData = ResponseMetaData.fromJson(reader);
+                    deserializedAnalysisData.detectorMetaData = ResponseMetadata.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

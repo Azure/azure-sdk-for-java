@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 /**
  * Specifies the IP mode of the app.
  */
-public enum IPMode {
+public enum IpMode {
     /**
      * Enum value IPv4.
      */
@@ -24,26 +24,26 @@ public enum IPMode {
     IPV4AND_IPV6("IPv4AndIPv6");
 
     /**
-     * The actual serialized value for a IPMode instance.
+     * The actual serialized value for a IpMode instance.
      */
     private final String value;
 
-    IPMode(String value) {
+    IpMode(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a IPMode instance.
+     * Parses a serialized value to a IpMode instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed IPMode object, or null if unable to parse.
+     * @return the parsed IpMode object, or null if unable to parse.
      */
-    public static IPMode fromString(String value) {
+    public static IpMode fromString(String value) {
         if (value == null) {
             return null;
         }
-        IPMode[] items = IPMode.values();
-        for (IPMode item : items) {
+        IpMode[] items = IpMode.values();
+        for (IpMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

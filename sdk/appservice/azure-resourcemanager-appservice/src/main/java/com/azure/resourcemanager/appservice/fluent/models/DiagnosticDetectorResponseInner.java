@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.DetectorAbnormalTimePeriod;
 import com.azure.resourcemanager.appservice.models.DiagnosticMetricSet;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.azure.resourcemanager.appservice.models.ResponseMetaData;
+import com.azure.resourcemanager.appservice.models.ResponseMetadata;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -155,7 +155,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * 
      * @return the responseMetaData value.
      */
-    public ResponseMetaData responseMetaData() {
+    public ResponseMetadata responseMetaData() {
         return this.innerProperties() == null ? null : this.innerProperties().responseMetaData();
     }
 

@@ -20,11 +20,11 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteArmResourceI
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBuildArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainOverviewArmResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteFunctionOverviewARMResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteLinkedBackendARMResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteFunctionOverviewArmResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteLinkedBackendArmResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserInvitationResponseResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserProvidedFunctionAppARMResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserProvidedFunctionAppArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSitesWorkflowPreviewInner;
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.models.StringListInner;
@@ -34,7 +34,7 @@ import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequest
 import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserInvitationRequestResource;
-import com.azure.resourcemanager.appservice.models.StaticSiteZipDeploymentARMResource;
+import com.azure.resourcemanager.appservice.models.StaticSiteZipDeploymentArmResource;
 import com.azure.resourcemanager.appservice.models.StaticSitesWorkflowPreviewRequest;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -978,7 +978,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the list of users of a static site as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StaticSiteUserARMResourceInner> listStaticSiteUsersAsync(String resourceGroupName, String name,
+    PagedFlux<StaticSiteUserArmResourceInner> listStaticSiteUsersAsync(String resourceGroupName, String name,
         String authprovider);
 
     /**
@@ -998,7 +998,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the list of users of a static site as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteUserARMResourceInner> listStaticSiteUsers(String resourceGroupName, String name,
+    PagedIterable<StaticSiteUserArmResourceInner> listStaticSiteUsers(String resourceGroupName, String name,
         String authprovider);
 
     /**
@@ -1019,7 +1019,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the list of users of a static site as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteUserARMResourceInner> listStaticSiteUsers(String resourceGroupName, String name,
+    PagedIterable<StaticSiteUserArmResourceInner> listStaticSiteUsers(String resourceGroupName, String name,
         String authprovider, Context context);
 
     /**
@@ -1113,8 +1113,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site User ARM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<StaticSiteUserARMResourceInner>> updateStaticSiteUserWithResponseAsync(String resourceGroupName,
-        String name, String authprovider, String userid, StaticSiteUserARMResourceInner staticSiteUserEnvelope);
+    Mono<Response<StaticSiteUserArmResourceInner>> updateStaticSiteUserWithResponseAsync(String resourceGroupName,
+        String name, String authprovider, String userid, StaticSiteUserArmResourceInner staticSiteUserEnvelope);
 
     /**
      * Updates a user entry with the listed roles
@@ -1133,8 +1133,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site User ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteUserARMResourceInner> updateStaticSiteUserAsync(String resourceGroupName, String name,
-        String authprovider, String userid, StaticSiteUserARMResourceInner staticSiteUserEnvelope);
+    Mono<StaticSiteUserArmResourceInner> updateStaticSiteUserAsync(String resourceGroupName, String name,
+        String authprovider, String userid, StaticSiteUserArmResourceInner staticSiteUserEnvelope);
 
     /**
      * Updates a user entry with the listed roles
@@ -1154,8 +1154,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site User ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StaticSiteUserARMResourceInner> updateStaticSiteUserWithResponse(String resourceGroupName, String name,
-        String authprovider, String userid, StaticSiteUserARMResourceInner staticSiteUserEnvelope, Context context);
+    Response<StaticSiteUserArmResourceInner> updateStaticSiteUserWithResponse(String resourceGroupName, String name,
+        String authprovider, String userid, StaticSiteUserArmResourceInner staticSiteUserEnvelope, Context context);
 
     /**
      * Updates a user entry with the listed roles
@@ -1174,8 +1174,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site User ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserARMResourceInner updateStaticSiteUser(String resourceGroupName, String name, String authprovider,
-        String userid, StaticSiteUserARMResourceInner staticSiteUserEnvelope);
+    StaticSiteUserArmResourceInner updateStaticSiteUser(String resourceGroupName, String name, String authprovider,
+        String userid, StaticSiteUserArmResourceInner staticSiteUserEnvelope);
 
     /**
      * Creates or updates the app settings of a static site.
@@ -1527,7 +1527,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the functions of a static site as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StaticSiteFunctionOverviewARMResourceInner> listStaticSiteFunctionsAsync(String resourceGroupName,
+    PagedFlux<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctionsAsync(String resourceGroupName,
         String name);
 
     /**
@@ -1546,7 +1546,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the functions of a static site as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteFunctionOverviewARMResourceInner> listStaticSiteFunctions(String resourceGroupName,
+    PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctions(String resourceGroupName,
         String name);
 
     /**
@@ -1566,7 +1566,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the functions of a static site as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteFunctionOverviewARMResourceInner> listStaticSiteFunctions(String resourceGroupName,
+    PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctions(String resourceGroupName,
         String name, Context context);
 
     /**
@@ -2063,7 +2063,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createZipDeploymentForStaticSiteWithResponseAsync(String resourceGroupName,
-        String name, StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope);
+        String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
      * Deploys zipped content to a static site.
@@ -2082,7 +2082,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteAsync(String resourceGroupName, String name,
-        StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope);
+        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
      * Deploys zipped content to a static site.
@@ -2101,7 +2101,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSite(String resourceGroupName, String name,
-        StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope);
+        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
      * Deploys zipped content to a static site.
@@ -2121,7 +2121,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSite(String resourceGroupName, String name,
-        StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope, Context context);
+        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context);
 
     /**
      * Deploys zipped content to a static site.
@@ -2140,7 +2140,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> createZipDeploymentForStaticSiteAsync(String resourceGroupName, String name,
-        StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope);
+        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
      * Deploys zipped content to a static site.
@@ -2158,7 +2158,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void createZipDeploymentForStaticSite(String resourceGroupName, String name,
-        StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope);
+        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
      * Deploys zipped content to a static site.
@@ -2177,7 +2177,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void createZipDeploymentForStaticSite(String resourceGroupName, String name,
-        StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope, Context context);
+        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context);
 
     /**
      * Gets the details of a static site build.
@@ -2615,7 +2615,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StaticSiteFunctionOverviewARMResourceInner> listStaticSiteBuildFunctionsAsync(String resourceGroupName,
+    PagedFlux<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteBuildFunctionsAsync(String resourceGroupName,
         String name, String environmentName);
 
     /**
@@ -2636,7 +2636,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteFunctionOverviewARMResourceInner> listStaticSiteBuildFunctions(String resourceGroupName,
+    PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteBuildFunctions(String resourceGroupName,
         String name, String environmentName);
 
     /**
@@ -2658,7 +2658,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteFunctionOverviewARMResourceInner> listStaticSiteBuildFunctions(String resourceGroupName,
+    PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteBuildFunctions(String resourceGroupName,
         String name, String environmentName, Context context);
 
     /**
@@ -2891,7 +2891,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createZipDeploymentForStaticSiteBuildWithResponseAsync(String resourceGroupName,
-        String name, String environmentName, StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope);
+        String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
      * Deploys zipped content to a specific environment of a static site.
@@ -2911,7 +2911,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuildAsync(String resourceGroupName,
-        String name, String environmentName, StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope);
+        String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
      * Deploys zipped content to a specific environment of a static site.
@@ -2931,7 +2931,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(String resourceGroupName, String name,
-        String environmentName, StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope);
+        String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
      * Deploys zipped content to a specific environment of a static site.
@@ -2952,7 +2952,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(String resourceGroupName, String name,
-        String environmentName, StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope, Context context);
+        String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context);
 
     /**
      * Deploys zipped content to a specific environment of a static site.
@@ -2972,7 +2972,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> createZipDeploymentForStaticSiteBuildAsync(String resourceGroupName, String name, String environmentName,
-        StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope);
+        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
      * Deploys zipped content to a specific environment of a static site.
@@ -2991,7 +2991,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void createZipDeploymentForStaticSiteBuild(String resourceGroupName, String name, String environmentName,
-        StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope);
+        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
      * Deploys zipped content to a specific environment of a static site.
@@ -3011,7 +3011,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void createZipDeploymentForStaticSiteBuild(String resourceGroupName, String name, String environmentName,
-        StaticSiteZipDeploymentARMResource staticSiteZipDeploymentEnvelope, Context context);
+        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context);
 
     /**
      * Returns overview of a database connection for a static site build by name.
@@ -3855,7 +3855,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<StaticSiteUserProvidedFunctionAppARMResourceInner>>
+    Mono<Response<StaticSiteUserProvidedFunctionAppArmResourceInner>>
         getUserProvidedFunctionAppForStaticSiteBuildWithResponseAsync(String resourceGroupName, String name,
             String environmentName, String functionAppName);
 
@@ -3878,7 +3878,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteUserProvidedFunctionAppARMResourceInner> getUserProvidedFunctionAppForStaticSiteBuildAsync(
+    Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppForStaticSiteBuildAsync(
         String resourceGroupName, String name, String environmentName, String functionAppName);
 
     /**
@@ -3901,7 +3901,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StaticSiteUserProvidedFunctionAppARMResourceInner>
+    Response<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppForStaticSiteBuildWithResponse(String resourceGroupName, String name,
             String environmentName, String functionAppName, Context context);
 
@@ -3923,7 +3923,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the details of the user provided function app registered with a static site build.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserProvidedFunctionAppARMResourceInner getUserProvidedFunctionAppForStaticSiteBuild(
+    StaticSiteUserProvidedFunctionAppArmResourceInner getUserProvidedFunctionAppForStaticSiteBuild(
         String resourceGroupName, String name, String environmentName, String functionAppName);
 
     /**
@@ -3950,7 +3950,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> registerUserProvidedFunctionAppWithStaticSiteBuildWithResponseAsync(
         String resourceGroupName, String name, String environmentName, String functionAppName,
-        StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced);
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced);
 
     /**
      * Register a user provided function app with a static site build
@@ -3973,10 +3973,10 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppARMResourceInner>, StaticSiteUserProvidedFunctionAppARMResourceInner>
+    PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
         beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(String resourceGroupName, String name,
             String environmentName, String functionAppName,
-            StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced);
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced);
 
     /**
      * Register a user provided function app with a static site build
@@ -3996,10 +3996,10 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppARMResourceInner>, StaticSiteUserProvidedFunctionAppARMResourceInner>
+    PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
         beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(String resourceGroupName, String name,
             String environmentName, String functionAppName,
-            StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope);
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
      * Register a user provided function app with a static site build
@@ -4019,10 +4019,10 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppARMResourceInner>, StaticSiteUserProvidedFunctionAppARMResourceInner>
+    SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
         beginRegisterUserProvidedFunctionAppWithStaticSiteBuild(String resourceGroupName, String name,
             String environmentName, String functionAppName,
-            StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope);
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
      * Register a user provided function app with a static site build
@@ -4046,10 +4046,10 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppARMResourceInner>, StaticSiteUserProvidedFunctionAppARMResourceInner>
+    SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
         beginRegisterUserProvidedFunctionAppWithStaticSiteBuild(String resourceGroupName, String name,
             String environmentName, String functionAppName,
-            StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
             Context context);
 
     /**
@@ -4073,9 +4073,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteUserProvidedFunctionAppARMResourceInner> registerUserProvidedFunctionAppWithStaticSiteBuildAsync(
+    Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> registerUserProvidedFunctionAppWithStaticSiteBuildAsync(
         String resourceGroupName, String name, String environmentName, String functionAppName,
-        StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced);
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced);
 
     /**
      * Register a user provided function app with a static site build
@@ -4095,9 +4095,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteUserProvidedFunctionAppARMResourceInner> registerUserProvidedFunctionAppWithStaticSiteBuildAsync(
+    Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> registerUserProvidedFunctionAppWithStaticSiteBuildAsync(
         String resourceGroupName, String name, String environmentName, String functionAppName,
-        StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope);
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
      * Register a user provided function app with a static site build
@@ -4117,9 +4117,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserProvidedFunctionAppARMResourceInner registerUserProvidedFunctionAppWithStaticSiteBuild(
+    StaticSiteUserProvidedFunctionAppArmResourceInner registerUserProvidedFunctionAppWithStaticSiteBuild(
         String resourceGroupName, String name, String environmentName, String functionAppName,
-        StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope);
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
      * Register a user provided function app with a static site build
@@ -4143,9 +4143,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserProvidedFunctionAppARMResourceInner registerUserProvidedFunctionAppWithStaticSiteBuild(
+    StaticSiteUserProvidedFunctionAppArmResourceInner registerUserProvidedFunctionAppWithStaticSiteBuild(
         String resourceGroupName, String name, String environmentName, String functionAppName,
-        StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
         Context context);
 
     /**
@@ -4242,7 +4242,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StaticSiteUserProvidedFunctionAppARMResourceInner> getUserProvidedFunctionAppsForStaticSiteBuildAsync(
+    PagedFlux<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppsForStaticSiteBuildAsync(
         String resourceGroupName, String name, String environmentName);
 
     /**
@@ -4263,7 +4263,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteUserProvidedFunctionAppARMResourceInner>
+    PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSiteBuild(String resourceGroupName, String name, String environmentName);
 
     /**
@@ -4285,7 +4285,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteUserProvidedFunctionAppARMResourceInner> getUserProvidedFunctionAppsForStaticSiteBuild(
+    PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppsForStaticSiteBuild(
         String resourceGroupName, String name, String environmentName, Context context);
 
     /**
@@ -4306,7 +4306,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<StaticSiteUserProvidedFunctionAppARMResourceInner>>
+    Mono<Response<StaticSiteUserProvidedFunctionAppArmResourceInner>>
         getUserProvidedFunctionAppForStaticSiteWithResponseAsync(String resourceGroupName, String name,
             String functionAppName);
 
@@ -4328,7 +4328,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteUserProvidedFunctionAppARMResourceInner>
+    Mono<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppForStaticSiteAsync(String resourceGroupName, String name, String functionAppName);
 
     /**
@@ -4350,7 +4350,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StaticSiteUserProvidedFunctionAppARMResourceInner> getUserProvidedFunctionAppForStaticSiteWithResponse(
+    Response<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppForStaticSiteWithResponse(
         String resourceGroupName, String name, String functionAppName, Context context);
 
     /**
@@ -4370,7 +4370,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * Description for Gets the details of the user provided function app registered with a static site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserProvidedFunctionAppARMResourceInner getUserProvidedFunctionAppForStaticSite(String resourceGroupName,
+    StaticSiteUserProvidedFunctionAppArmResourceInner getUserProvidedFunctionAppForStaticSite(String resourceGroupName,
         String name, String functionAppName);
 
     /**
@@ -4396,7 +4396,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> registerUserProvidedFunctionAppWithStaticSiteWithResponseAsync(
         String resourceGroupName, String name, String functionAppName,
-        StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced);
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced);
 
     /**
      * Register a user provided function app with a static site
@@ -4418,10 +4418,10 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppARMResourceInner>, StaticSiteUserProvidedFunctionAppARMResourceInner>
+    PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
         beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(String resourceGroupName, String name,
             String functionAppName,
-            StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced);
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced);
 
     /**
      * Register a user provided function app with a static site
@@ -4440,10 +4440,10 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppARMResourceInner>, StaticSiteUserProvidedFunctionAppARMResourceInner>
+    PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
         beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(String resourceGroupName, String name,
             String functionAppName,
-            StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope);
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
      * Register a user provided function app with a static site
@@ -4462,10 +4462,10 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppARMResourceInner>, StaticSiteUserProvidedFunctionAppARMResourceInner>
+    SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
         beginRegisterUserProvidedFunctionAppWithStaticSite(String resourceGroupName, String name,
             String functionAppName,
-            StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope);
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
      * Register a user provided function app with a static site
@@ -4488,10 +4488,10 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppARMResourceInner>, StaticSiteUserProvidedFunctionAppARMResourceInner>
+    SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
         beginRegisterUserProvidedFunctionAppWithStaticSite(String resourceGroupName, String name,
             String functionAppName,
-            StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
             Context context);
 
     /**
@@ -4514,9 +4514,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteUserProvidedFunctionAppARMResourceInner> registerUserProvidedFunctionAppWithStaticSiteAsync(
+    Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> registerUserProvidedFunctionAppWithStaticSiteAsync(
         String resourceGroupName, String name, String functionAppName,
-        StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced);
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced);
 
     /**
      * Register a user provided function app with a static site
@@ -4535,9 +4535,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteUserProvidedFunctionAppARMResourceInner> registerUserProvidedFunctionAppWithStaticSiteAsync(
+    Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> registerUserProvidedFunctionAppWithStaticSiteAsync(
         String resourceGroupName, String name, String functionAppName,
-        StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope);
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
      * Register a user provided function app with a static site
@@ -4556,9 +4556,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserProvidedFunctionAppARMResourceInner registerUserProvidedFunctionAppWithStaticSite(
+    StaticSiteUserProvidedFunctionAppArmResourceInner registerUserProvidedFunctionAppWithStaticSite(
         String resourceGroupName, String name, String functionAppName,
-        StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope);
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
      * Register a user provided function app with a static site
@@ -4581,9 +4581,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserProvidedFunctionAppARMResourceInner registerUserProvidedFunctionAppWithStaticSite(
+    StaticSiteUserProvidedFunctionAppArmResourceInner registerUserProvidedFunctionAppWithStaticSite(
         String resourceGroupName, String name, String functionAppName,
-        StaticSiteUserProvidedFunctionAppARMResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
         Context context);
 
     /**
@@ -4674,7 +4674,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StaticSiteUserProvidedFunctionAppARMResourceInner>
+    PagedFlux<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSiteAsync(String resourceGroupName, String name);
 
     /**
@@ -4694,7 +4694,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteUserProvidedFunctionAppARMResourceInner>
+    PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSite(String resourceGroupName, String name);
 
     /**
@@ -4715,7 +4715,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteUserProvidedFunctionAppARMResourceInner>
+    PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSite(String resourceGroupName, String name, Context context);
 
     /**
@@ -5518,7 +5518,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<StaticSiteLinkedBackendARMResourceInner>> getLinkedBackendWithResponseAsync(String resourceGroupName,
+    Mono<Response<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendWithResponseAsync(String resourceGroupName,
         String name, String linkedBackendName);
 
     /**
@@ -5534,7 +5534,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteLinkedBackendARMResourceInner> getLinkedBackendAsync(String resourceGroupName, String name,
+    Mono<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendAsync(String resourceGroupName, String name,
         String linkedBackendName);
 
     /**
@@ -5551,7 +5551,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Linked Backend ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StaticSiteLinkedBackendARMResourceInner> getLinkedBackendWithResponse(String resourceGroupName,
+    Response<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendWithResponse(String resourceGroupName,
         String name, String linkedBackendName, Context context);
 
     /**
@@ -5567,7 +5567,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Linked Backend ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteLinkedBackendARMResourceInner getLinkedBackend(String resourceGroupName, String name,
+    StaticSiteLinkedBackendArmResourceInner getLinkedBackend(String resourceGroupName, String name,
         String linkedBackendName);
 
     /**
@@ -5586,7 +5586,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> linkBackendWithResponseAsync(String resourceGroupName, String name,
-        String linkedBackendName, StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Link backend to a static site.
@@ -5602,9 +5602,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link PollerFlux} for polling of static Site Linked Backend ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StaticSiteLinkedBackendARMResourceInner>, StaticSiteLinkedBackendARMResourceInner>
+    PollerFlux<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendAsync(String resourceGroupName, String name, String linkedBackendName,
-            StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Link backend to a static site.
@@ -5620,9 +5620,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link SyncPoller} for polling of static Site Linked Backend ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StaticSiteLinkedBackendARMResourceInner>, StaticSiteLinkedBackendARMResourceInner>
+    SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackend(String resourceGroupName, String name, String linkedBackendName,
-            StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Link backend to a static site.
@@ -5639,9 +5639,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link SyncPoller} for polling of static Site Linked Backend ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StaticSiteLinkedBackendARMResourceInner>, StaticSiteLinkedBackendARMResourceInner>
+    SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackend(String resourceGroupName, String name, String linkedBackendName,
-            StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope, Context context);
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context);
 
     /**
      * Link backend to a static site.
@@ -5657,8 +5657,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteLinkedBackendARMResourceInner> linkBackendAsync(String resourceGroupName, String name,
-        String linkedBackendName, StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+    Mono<StaticSiteLinkedBackendArmResourceInner> linkBackendAsync(String resourceGroupName, String name,
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Link backend to a static site.
@@ -5674,8 +5674,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Linked Backend ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteLinkedBackendARMResourceInner linkBackend(String resourceGroupName, String name, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+    StaticSiteLinkedBackendArmResourceInner linkBackend(String resourceGroupName, String name, String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Link backend to a static site.
@@ -5692,8 +5692,8 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Linked Backend ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteLinkedBackendARMResourceInner linkBackend(String resourceGroupName, String name, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope, Context context);
+    StaticSiteLinkedBackendArmResourceInner linkBackend(String resourceGroupName, String name, String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context);
 
     /**
      * Unlink a backend from a static site.
@@ -5771,7 +5771,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return collection of static site linked backends as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StaticSiteLinkedBackendARMResourceInner> getLinkedBackendsAsync(String resourceGroupName, String name);
+    PagedFlux<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsAsync(String resourceGroupName, String name);
 
     /**
      * Returns details of all backends linked to a static site.
@@ -5785,7 +5785,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return collection of static site linked backends as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteLinkedBackendARMResourceInner> getLinkedBackends(String resourceGroupName, String name);
+    PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackends(String resourceGroupName, String name);
 
     /**
      * Returns details of all backends linked to a static site.
@@ -5800,7 +5800,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return collection of static site linked backends as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteLinkedBackendARMResourceInner> getLinkedBackends(String resourceGroupName, String name,
+    PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackends(String resourceGroupName, String name,
         Context context);
 
     /**
@@ -5818,7 +5818,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> validateBackendWithResponseAsync(String resourceGroupName, String name,
-        String linkedBackendName, StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Validates that a backend can be linked to a static site.
@@ -5835,7 +5835,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginValidateBackendAsync(String resourceGroupName, String name,
-        String linkedBackendName, StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Validates that a backend can be linked to a static site.
@@ -5852,7 +5852,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginValidateBackend(String resourceGroupName, String name,
-        String linkedBackendName, StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Validates that a backend can be linked to a static site.
@@ -5870,7 +5870,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginValidateBackend(String resourceGroupName, String name,
-        String linkedBackendName, StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope,
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
         Context context);
 
     /**
@@ -5888,7 +5888,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> validateBackendAsync(String resourceGroupName, String name, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Validates that a backend can be linked to a static site.
@@ -5904,7 +5904,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void validateBackend(String resourceGroupName, String name, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Validates that a backend can be linked to a static site.
@@ -5921,7 +5921,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void validateBackend(String resourceGroupName, String name, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope, Context context);
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context);
 
     /**
      * Returns the details of a linked backend linked to a static site build by name.
@@ -5938,7 +5938,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<StaticSiteLinkedBackendARMResourceInner>> getLinkedBackendForBuildWithResponseAsync(
+    Mono<Response<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendForBuildWithResponseAsync(
         String resourceGroupName, String name, String environmentName, String linkedBackendName);
 
     /**
@@ -5955,7 +5955,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteLinkedBackendARMResourceInner> getLinkedBackendForBuildAsync(String resourceGroupName, String name,
+    Mono<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendForBuildAsync(String resourceGroupName, String name,
         String environmentName, String linkedBackendName);
 
     /**
@@ -5973,7 +5973,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Linked Backend ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StaticSiteLinkedBackendARMResourceInner> getLinkedBackendForBuildWithResponse(String resourceGroupName,
+    Response<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendForBuildWithResponse(String resourceGroupName,
         String name, String environmentName, String linkedBackendName, Context context);
 
     /**
@@ -5990,7 +5990,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Linked Backend ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteLinkedBackendARMResourceInner getLinkedBackendForBuild(String resourceGroupName, String name,
+    StaticSiteLinkedBackendArmResourceInner getLinkedBackendForBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName);
 
     /**
@@ -6011,7 +6011,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> linkBackendToBuildWithResponseAsync(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Link backend to a static site build.
@@ -6028,9 +6028,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link PollerFlux} for polling of static Site Linked Backend ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StaticSiteLinkedBackendARMResourceInner>, StaticSiteLinkedBackendARMResourceInner>
+    PollerFlux<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendToBuildAsync(String resourceGroupName, String name, String environmentName,
-            String linkedBackendName, StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+            String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Link backend to a static site build.
@@ -6047,9 +6047,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link SyncPoller} for polling of static Site Linked Backend ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StaticSiteLinkedBackendARMResourceInner>, StaticSiteLinkedBackendARMResourceInner>
+    SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendToBuild(String resourceGroupName, String name, String environmentName, String linkedBackendName,
-            StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Link backend to a static site build.
@@ -6067,9 +6067,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return the {@link SyncPoller} for polling of static Site Linked Backend ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StaticSiteLinkedBackendARMResourceInner>, StaticSiteLinkedBackendARMResourceInner>
+    SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendToBuild(String resourceGroupName, String name, String environmentName, String linkedBackendName,
-            StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope, Context context);
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context);
 
     /**
      * Link backend to a static site build.
@@ -6086,9 +6086,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StaticSiteLinkedBackendARMResourceInner> linkBackendToBuildAsync(String resourceGroupName, String name,
+    Mono<StaticSiteLinkedBackendArmResourceInner> linkBackendToBuildAsync(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Link backend to a static site build.
@@ -6105,9 +6105,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Linked Backend ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteLinkedBackendARMResourceInner linkBackendToBuild(String resourceGroupName, String name,
+    StaticSiteLinkedBackendArmResourceInner linkBackendToBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Link backend to a static site build.
@@ -6125,9 +6125,9 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return static Site Linked Backend ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteLinkedBackendARMResourceInner linkBackendToBuild(String resourceGroupName, String name,
+    StaticSiteLinkedBackendArmResourceInner linkBackendToBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope, Context context);
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context);
 
     /**
      * Unlink a backend from a static site build.
@@ -6212,7 +6212,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return collection of static site linked backends as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StaticSiteLinkedBackendARMResourceInner> getLinkedBackendsForBuildAsync(String resourceGroupName,
+    PagedFlux<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuildAsync(String resourceGroupName,
         String name, String environmentName);
 
     /**
@@ -6228,7 +6228,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return collection of static site linked backends as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteLinkedBackendARMResourceInner> getLinkedBackendsForBuild(String resourceGroupName,
+    PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuild(String resourceGroupName,
         String name, String environmentName);
 
     /**
@@ -6245,7 +6245,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * @return collection of static site linked backends as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StaticSiteLinkedBackendARMResourceInner> getLinkedBackendsForBuild(String resourceGroupName,
+    PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuild(String resourceGroupName,
         String name, String environmentName, Context context);
 
     /**
@@ -6265,7 +6265,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> validateBackendForBuildWithResponseAsync(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Validates that a backend can be linked to a static site build.
@@ -6284,7 +6284,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginValidateBackendForBuildAsync(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Validates that a backend can be linked to a static site build.
@@ -6303,7 +6303,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginValidateBackendForBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Validates that a backend can be linked to a static site build.
@@ -6323,7 +6323,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginValidateBackendForBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
-        StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope, Context context);
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context);
 
     /**
      * Validates that a backend can be linked to a static site build.
@@ -6341,7 +6341,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> validateBackendForBuildAsync(String resourceGroupName, String name, String environmentName,
-        String linkedBackendName, StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Validates that a backend can be linked to a static site build.
@@ -6358,7 +6358,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void validateBackendForBuild(String resourceGroupName, String name, String environmentName,
-        String linkedBackendName, StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope);
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope);
 
     /**
      * Validates that a backend can be linked to a static site build.
@@ -6376,7 +6376,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void validateBackendForBuild(String resourceGroupName, String name, String environmentName,
-        String linkedBackendName, StaticSiteLinkedBackendARMResourceInner staticSiteLinkedBackendEnvelope,
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
         Context context);
 
     /**

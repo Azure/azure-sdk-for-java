@@ -1,4 +1,4 @@
 directory: specification/web/resource-manager/Microsoft.Web/AppService
-commit: 9fa61557e0712449fb1e8a55b3f4090cfb1863d0
+commit: 7387fdeec01d41a2f2796637a9a685ac655f9fe1
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

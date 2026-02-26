@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.models.VirtualIPMapping;
+import com.azure.resourcemanager.appservice.models.VirtualIpMapping;
 import java.io.IOException;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public final class AddressResponseProperties implements JsonSerializable<Address
     /*
      * Additional virtual IPs.
      */
-    private List<VirtualIPMapping> vipMappings;
+    private List<VirtualIpMapping> vipMappings;
 
     /**
      * Creates an instance of AddressResponseProperties class.
@@ -77,7 +77,7 @@ public final class AddressResponseProperties implements JsonSerializable<Address
      * 
      * @return the vipMappings value.
      */
-    public List<VirtualIPMapping> vipMappings() {
+    public List<VirtualIpMapping> vipMappings() {
         return this.vipMappings;
     }
 
@@ -129,8 +129,8 @@ public final class AddressResponseProperties implements JsonSerializable<Address
                     List<String> outboundIpAddresses = reader.readArray(reader1 -> reader1.getString());
                     deserializedAddressResponseProperties.outboundIpAddresses = outboundIpAddresses;
                 } else if ("vipMappings".equals(fieldName)) {
-                    List<VirtualIPMapping> vipMappings
-                        = reader.readArray(reader1 -> VirtualIPMapping.fromJson(reader1));
+                    List<VirtualIpMapping> vipMappings
+                        = reader.readArray(reader1 -> VirtualIpMapping.fromJson(reader1));
                     deserializedAddressResponseProperties.vipMappings = vipMappings;
                 } else {
                     reader.skipChildren();

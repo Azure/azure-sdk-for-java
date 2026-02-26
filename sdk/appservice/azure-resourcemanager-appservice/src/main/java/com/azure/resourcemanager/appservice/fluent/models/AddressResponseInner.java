@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appservice.models.VirtualIPMapping;
+import com.azure.resourcemanager.appservice.models.VirtualIpMapping;
 import java.io.IOException;
 import java.util.List;
 
@@ -145,7 +145,7 @@ public final class AddressResponseInner extends ProxyResource {
      * 
      * @return the vipMappings value.
      */
-    public List<VirtualIPMapping> vipMappings() {
+    public List<VirtualIpMapping> vipMappings() {
         return this.innerProperties() == null ? null : this.innerProperties().vipMappings();
     }
 

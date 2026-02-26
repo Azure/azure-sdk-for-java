@@ -18,7 +18,7 @@ import com.azure.resourcemanager.appservice.models.ExtendedLocation;
 import com.azure.resourcemanager.appservice.models.FunctionAppConfig;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
-import com.azure.resourcemanager.appservice.models.IPMode;
+import com.azure.resourcemanager.appservice.models.IpMode;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.OutboundVnetRouting;
 import com.azure.resourcemanager.appservice.models.RedundancyMode;
@@ -820,7 +820,7 @@ public final class SiteInner extends Resource {
      * 
      * @return the ipMode value.
      */
-    public IPMode ipMode() {
+    public IpMode ipMode() {
         return this.innerProperties() == null ? null : this.innerProperties().ipMode();
     }
 
@@ -830,7 +830,7 @@ public final class SiteInner extends Resource {
      * @param ipMode the ipMode value to set.
      * @return the SiteInner object itself.
      */
-    public SiteInner withIpMode(IPMode ipMode) {
+    public SiteInner withIpMode(IpMode ipMode) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SitePropertiesInner();
         }

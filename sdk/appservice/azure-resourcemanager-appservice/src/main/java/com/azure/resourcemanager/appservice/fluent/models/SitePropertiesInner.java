@@ -17,7 +17,7 @@ import com.azure.resourcemanager.appservice.models.DaprConfig;
 import com.azure.resourcemanager.appservice.models.FunctionAppConfig;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
-import com.azure.resourcemanager.appservice.models.IPMode;
+import com.azure.resourcemanager.appservice.models.IpMode;
 import com.azure.resourcemanager.appservice.models.OutboundVnetRouting;
 import com.azure.resourcemanager.appservice.models.RedundancyMode;
 import com.azure.resourcemanager.appservice.models.ResourceConfig;
@@ -200,7 +200,7 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
     /*
      * Specifies the IP mode of the app.
      */
-    private IPMode ipMode;
+    private IpMode ipMode;
 
     /*
      * Whether to use end to end encryption between the FrontEnd and the Worker
@@ -888,7 +888,7 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
      * 
      * @return the ipMode value.
      */
-    public IPMode ipMode() {
+    public IpMode ipMode() {
         return this.ipMode;
     }
 
@@ -898,7 +898,7 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
      * @param ipMode the ipMode value to set.
      * @return the SitePropertiesInner object itself.
      */
-    public SitePropertiesInner withIpMode(IPMode ipMode) {
+    public SitePropertiesInner withIpMode(IpMode ipMode) {
         this.ipMode = ipMode;
         return this;
     }
@@ -1497,7 +1497,7 @@ public final class SitePropertiesInner implements JsonSerializable<SitePropertie
                 } else if ("clientCertExclusionPaths".equals(fieldName)) {
                     deserializedSitePropertiesInner.clientCertExclusionPaths = reader.getString();
                 } else if ("ipMode".equals(fieldName)) {
-                    deserializedSitePropertiesInner.ipMode = IPMode.fromString(reader.getString());
+                    deserializedSitePropertiesInner.ipMode = IpMode.fromString(reader.getString());
                 } else if ("endToEndEncryptionEnabled".equals(fieldName)) {
                     deserializedSitePropertiesInner.endToEndEncryptionEnabled
                         = reader.getNullable(JsonReader::getBoolean);

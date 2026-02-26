@@ -16,8 +16,8 @@ import java.io.IOException;
  * StaticSiteFunctionOverviewARMResource resource specific properties.
  */
 @Immutable
-public final class StaticSiteFunctionOverviewARMResourceProperties
-    implements JsonSerializable<StaticSiteFunctionOverviewARMResourceProperties> {
+public final class StaticSiteFunctionOverviewArmResourceProperties
+    implements JsonSerializable<StaticSiteFunctionOverviewArmResourceProperties> {
     /*
      * The name for the function
      */
@@ -29,9 +29,9 @@ public final class StaticSiteFunctionOverviewARMResourceProperties
     private TriggerTypes triggerType;
 
     /**
-     * Creates an instance of StaticSiteFunctionOverviewARMResourceProperties class.
+     * Creates an instance of StaticSiteFunctionOverviewArmResourceProperties class.
      */
-    private StaticSiteFunctionOverviewARMResourceProperties() {
+    private StaticSiteFunctionOverviewArmResourceProperties() {
     }
 
     /**
@@ -70,32 +70,32 @@ public final class StaticSiteFunctionOverviewARMResourceProperties
     }
 
     /**
-     * Reads an instance of StaticSiteFunctionOverviewARMResourceProperties from the JsonReader.
+     * Reads an instance of StaticSiteFunctionOverviewArmResourceProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteFunctionOverviewARMResourceProperties if the JsonReader was pointing to an
+     * @return An instance of StaticSiteFunctionOverviewArmResourceProperties if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StaticSiteFunctionOverviewARMResourceProperties.
+     * @throws IOException If an error occurs while reading the StaticSiteFunctionOverviewArmResourceProperties.
      */
-    public static StaticSiteFunctionOverviewARMResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteFunctionOverviewArmResourceProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteFunctionOverviewARMResourceProperties deserializedStaticSiteFunctionOverviewARMResourceProperties
-                = new StaticSiteFunctionOverviewARMResourceProperties();
+            StaticSiteFunctionOverviewArmResourceProperties deserializedStaticSiteFunctionOverviewArmResourceProperties
+                = new StaticSiteFunctionOverviewArmResourceProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("functionName".equals(fieldName)) {
-                    deserializedStaticSiteFunctionOverviewARMResourceProperties.functionName = reader.getString();
+                    deserializedStaticSiteFunctionOverviewArmResourceProperties.functionName = reader.getString();
                 } else if ("triggerType".equals(fieldName)) {
-                    deserializedStaticSiteFunctionOverviewARMResourceProperties.triggerType
+                    deserializedStaticSiteFunctionOverviewArmResourceProperties.triggerType
                         = TriggerTypes.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteFunctionOverviewARMResourceProperties;
+            return deserializedStaticSiteFunctionOverviewArmResourceProperties;
         });
     }
 }

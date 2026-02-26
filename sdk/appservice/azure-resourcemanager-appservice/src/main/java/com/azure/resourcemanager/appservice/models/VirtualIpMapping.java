@@ -15,7 +15,7 @@ import java.io.IOException;
  * Virtual IP mapping.
  */
 @Immutable
-public final class VirtualIPMapping implements JsonSerializable<VirtualIPMapping> {
+public final class VirtualIpMapping implements JsonSerializable<VirtualIpMapping> {
     /*
      * Virtual IP address.
      */
@@ -42,9 +42,9 @@ public final class VirtualIPMapping implements JsonSerializable<VirtualIPMapping
     private String serviceName;
 
     /**
-     * Creates an instance of VirtualIPMapping class.
+     * Creates an instance of VirtualIpMapping class.
      */
-    private VirtualIPMapping() {
+    private VirtualIpMapping() {
     }
 
     /**
@@ -115,36 +115,36 @@ public final class VirtualIPMapping implements JsonSerializable<VirtualIPMapping
     }
 
     /**
-     * Reads an instance of VirtualIPMapping from the JsonReader.
+     * Reads an instance of VirtualIpMapping from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VirtualIPMapping if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of VirtualIpMapping if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the VirtualIPMapping.
+     * @throws IOException If an error occurs while reading the VirtualIpMapping.
      */
-    public static VirtualIPMapping fromJson(JsonReader jsonReader) throws IOException {
+    public static VirtualIpMapping fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            VirtualIPMapping deserializedVirtualIPMapping = new VirtualIPMapping();
+            VirtualIpMapping deserializedVirtualIpMapping = new VirtualIpMapping();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("virtualIP".equals(fieldName)) {
-                    deserializedVirtualIPMapping.virtualIP = reader.getString();
+                    deserializedVirtualIpMapping.virtualIP = reader.getString();
                 } else if ("internalHttpPort".equals(fieldName)) {
-                    deserializedVirtualIPMapping.internalHttpPort = reader.getNullable(JsonReader::getInt);
+                    deserializedVirtualIpMapping.internalHttpPort = reader.getNullable(JsonReader::getInt);
                 } else if ("internalHttpsPort".equals(fieldName)) {
-                    deserializedVirtualIPMapping.internalHttpsPort = reader.getNullable(JsonReader::getInt);
+                    deserializedVirtualIpMapping.internalHttpsPort = reader.getNullable(JsonReader::getInt);
                 } else if ("inUse".equals(fieldName)) {
-                    deserializedVirtualIPMapping.inUse = reader.getNullable(JsonReader::getBoolean);
+                    deserializedVirtualIpMapping.inUse = reader.getNullable(JsonReader::getBoolean);
                 } else if ("serviceName".equals(fieldName)) {
-                    deserializedVirtualIPMapping.serviceName = reader.getString();
+                    deserializedVirtualIpMapping.serviceName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedVirtualIPMapping;
+            return deserializedVirtualIpMapping;
         });
     }
 }

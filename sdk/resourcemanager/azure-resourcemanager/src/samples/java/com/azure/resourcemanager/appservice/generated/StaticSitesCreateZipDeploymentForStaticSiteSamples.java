@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.resourcemanager.appservice.models.StaticSiteZipDeploymentARMResource;
+import com.azure.resourcemanager.appservice.models.StaticSiteZipDeploymentArmResource;
 
 /**
  * Samples for StaticSites CreateZipDeploymentForStaticSite.
@@ -24,7 +24,7 @@ public final class StaticSitesCreateZipDeploymentForStaticSiteSamples {
             .serviceClient()
             .getStaticSites()
             .createZipDeploymentForStaticSite("rg", "testStaticSite0",
-                new StaticSiteZipDeploymentARMResource()
+                new StaticSiteZipDeploymentArmResource()
                     .withAppZipUrl(
                         "https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip")
                     .withApiZipUrl(

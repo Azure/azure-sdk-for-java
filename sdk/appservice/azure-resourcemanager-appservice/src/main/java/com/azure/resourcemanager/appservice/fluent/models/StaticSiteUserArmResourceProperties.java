@@ -15,8 +15,8 @@ import java.io.IOException;
  * StaticSiteUserARMResource resource specific properties.
  */
 @Fluent
-public final class StaticSiteUserARMResourceProperties
-    implements JsonSerializable<StaticSiteUserARMResourceProperties> {
+public final class StaticSiteUserArmResourceProperties
+    implements JsonSerializable<StaticSiteUserArmResourceProperties> {
     /*
      * The identity provider for the static site user.
      */
@@ -38,9 +38,9 @@ public final class StaticSiteUserARMResourceProperties
     private String roles;
 
     /**
-     * Creates an instance of StaticSiteUserARMResourceProperties class.
+     * Creates an instance of StaticSiteUserArmResourceProperties class.
      */
-    public StaticSiteUserARMResourceProperties() {
+    public StaticSiteUserArmResourceProperties() {
     }
 
     /**
@@ -83,9 +83,9 @@ public final class StaticSiteUserARMResourceProperties
      * Set the roles property: The roles for the static site user, in free-form string format.
      * 
      * @param roles the roles value to set.
-     * @return the StaticSiteUserARMResourceProperties object itself.
+     * @return the StaticSiteUserArmResourceProperties object itself.
      */
-    public StaticSiteUserARMResourceProperties withRoles(String roles) {
+    public StaticSiteUserArmResourceProperties withRoles(String roles) {
         this.roles = roles;
         return this;
     }
@@ -109,35 +109,35 @@ public final class StaticSiteUserARMResourceProperties
     }
 
     /**
-     * Reads an instance of StaticSiteUserARMResourceProperties from the JsonReader.
+     * Reads an instance of StaticSiteUserArmResourceProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteUserARMResourceProperties if the JsonReader was pointing to an instance of it,
+     * @return An instance of StaticSiteUserArmResourceProperties if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StaticSiteUserARMResourceProperties.
+     * @throws IOException If an error occurs while reading the StaticSiteUserArmResourceProperties.
      */
-    public static StaticSiteUserARMResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteUserArmResourceProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteUserARMResourceProperties deserializedStaticSiteUserARMResourceProperties
-                = new StaticSiteUserARMResourceProperties();
+            StaticSiteUserArmResourceProperties deserializedStaticSiteUserArmResourceProperties
+                = new StaticSiteUserArmResourceProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("provider".equals(fieldName)) {
-                    deserializedStaticSiteUserARMResourceProperties.provider = reader.getString();
+                    deserializedStaticSiteUserArmResourceProperties.provider = reader.getString();
                 } else if ("userId".equals(fieldName)) {
-                    deserializedStaticSiteUserARMResourceProperties.userId = reader.getString();
+                    deserializedStaticSiteUserArmResourceProperties.userId = reader.getString();
                 } else if ("displayName".equals(fieldName)) {
-                    deserializedStaticSiteUserARMResourceProperties.displayName = reader.getString();
+                    deserializedStaticSiteUserArmResourceProperties.displayName = reader.getString();
                 } else if ("roles".equals(fieldName)) {
-                    deserializedStaticSiteUserARMResourceProperties.roles = reader.getString();
+                    deserializedStaticSiteUserArmResourceProperties.roles = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteUserARMResourceProperties;
+            return deserializedStaticSiteUserArmResourceProperties;
         });
     }
 }

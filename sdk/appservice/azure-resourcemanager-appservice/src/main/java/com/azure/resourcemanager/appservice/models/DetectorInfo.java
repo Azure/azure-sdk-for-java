@@ -60,7 +60,7 @@ public final class DetectorInfo implements JsonSerializable<DetectorInfo> {
     /*
      * Defines score of a detector to power ML based matching.
      */
-    private Double score;
+    private Float score;
 
     /**
      * Creates an instance of DetectorInfo class.
@@ -145,7 +145,7 @@ public final class DetectorInfo implements JsonSerializable<DetectorInfo> {
      * 
      * @return the score value.
      */
-    public Double score() {
+    public Float score() {
         return this.score;
     }
 
@@ -203,7 +203,7 @@ public final class DetectorInfo implements JsonSerializable<DetectorInfo> {
                 } else if ("type".equals(fieldName)) {
                     deserializedDetectorInfo.type = DetectorType.fromString(reader.getString());
                 } else if ("score".equals(fieldName)) {
-                    deserializedDetectorInfo.score = reader.getNullable(JsonReader::getDouble);
+                    deserializedDetectorInfo.score = reader.getNullable(JsonReader::getFloat);
                 } else {
                     reader.skipChildren();
                 }

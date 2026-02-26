@@ -15,7 +15,7 @@ import java.io.IOException;
  * Static site zip deployment ARM resource.
  */
 @Fluent
-public final class StaticSiteZipDeploymentARMResource extends ProxyOnlyResource {
+public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
     /*
      * Core resource properties
      */
@@ -37,9 +37,9 @@ public final class StaticSiteZipDeploymentARMResource extends ProxyOnlyResource 
     private String id;
 
     /**
-     * Creates an instance of StaticSiteZipDeploymentARMResource class.
+     * Creates an instance of StaticSiteZipDeploymentArmResource class.
      */
-    public StaticSiteZipDeploymentARMResource() {
+    public StaticSiteZipDeploymentArmResource() {
     }
 
     /**
@@ -85,7 +85,7 @@ public final class StaticSiteZipDeploymentARMResource extends ProxyOnlyResource 
      * {@inheritDoc}
      */
     @Override
-    public StaticSiteZipDeploymentARMResource withKind(String kind) {
+    public StaticSiteZipDeploymentArmResource withKind(String kind) {
         super.withKind(kind);
         return this;
     }
@@ -103,9 +103,9 @@ public final class StaticSiteZipDeploymentARMResource extends ProxyOnlyResource 
      * Set the appZipUrl property: URL for the zipped app content.
      * 
      * @param appZipUrl the appZipUrl value to set.
-     * @return the StaticSiteZipDeploymentARMResource object itself.
+     * @return the StaticSiteZipDeploymentArmResource object itself.
      */
-    public StaticSiteZipDeploymentARMResource withAppZipUrl(String appZipUrl) {
+    public StaticSiteZipDeploymentArmResource withAppZipUrl(String appZipUrl) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSiteZipDeployment();
         }
@@ -126,9 +126,9 @@ public final class StaticSiteZipDeploymentARMResource extends ProxyOnlyResource 
      * Set the apiZipUrl property: URL for the zipped api content.
      * 
      * @param apiZipUrl the apiZipUrl value to set.
-     * @return the StaticSiteZipDeploymentARMResource object itself.
+     * @return the StaticSiteZipDeploymentArmResource object itself.
      */
-    public StaticSiteZipDeploymentARMResource withApiZipUrl(String apiZipUrl) {
+    public StaticSiteZipDeploymentArmResource withApiZipUrl(String apiZipUrl) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSiteZipDeployment();
         }
@@ -149,9 +149,9 @@ public final class StaticSiteZipDeploymentARMResource extends ProxyOnlyResource 
      * Set the deploymentTitle property: A title to label the deployment.
      * 
      * @param deploymentTitle the deploymentTitle value to set.
-     * @return the StaticSiteZipDeploymentARMResource object itself.
+     * @return the StaticSiteZipDeploymentArmResource object itself.
      */
-    public StaticSiteZipDeploymentARMResource withDeploymentTitle(String deploymentTitle) {
+    public StaticSiteZipDeploymentArmResource withDeploymentTitle(String deploymentTitle) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSiteZipDeployment();
         }
@@ -172,9 +172,9 @@ public final class StaticSiteZipDeploymentARMResource extends ProxyOnlyResource 
      * Set the provider property: The provider submitting this deployment.
      * 
      * @param provider the provider value to set.
-     * @return the StaticSiteZipDeploymentARMResource object itself.
+     * @return the StaticSiteZipDeploymentArmResource object itself.
      */
-    public StaticSiteZipDeploymentARMResource withProvider(String provider) {
+    public StaticSiteZipDeploymentArmResource withProvider(String provider) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSiteZipDeployment();
         }
@@ -195,9 +195,9 @@ public final class StaticSiteZipDeploymentARMResource extends ProxyOnlyResource 
      * Set the functionLanguage property: The language of the api content, if it exists.
      * 
      * @param functionLanguage the functionLanguage value to set.
-     * @return the StaticSiteZipDeploymentARMResource object itself.
+     * @return the StaticSiteZipDeploymentArmResource object itself.
      */
-    public StaticSiteZipDeploymentARMResource withFunctionLanguage(String functionLanguage) {
+    public StaticSiteZipDeploymentArmResource withFunctionLanguage(String functionLanguage) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSiteZipDeployment();
         }
@@ -229,38 +229,38 @@ public final class StaticSiteZipDeploymentARMResource extends ProxyOnlyResource 
     }
 
     /**
-     * Reads an instance of StaticSiteZipDeploymentARMResource from the JsonReader.
+     * Reads an instance of StaticSiteZipDeploymentArmResource from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteZipDeploymentARMResource if the JsonReader was pointing to an instance of it, or
+     * @return An instance of StaticSiteZipDeploymentArmResource if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StaticSiteZipDeploymentARMResource.
+     * @throws IOException If an error occurs while reading the StaticSiteZipDeploymentArmResource.
      */
-    public static StaticSiteZipDeploymentARMResource fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteZipDeploymentArmResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteZipDeploymentARMResource deserializedStaticSiteZipDeploymentARMResource
-                = new StaticSiteZipDeploymentARMResource();
+            StaticSiteZipDeploymentArmResource deserializedStaticSiteZipDeploymentArmResource
+                = new StaticSiteZipDeploymentArmResource();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedStaticSiteZipDeploymentARMResource.id = reader.getString();
+                    deserializedStaticSiteZipDeploymentArmResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedStaticSiteZipDeploymentARMResource.name = reader.getString();
+                    deserializedStaticSiteZipDeploymentArmResource.name = reader.getString();
                 } else if ("kind".equals(fieldName)) {
-                    deserializedStaticSiteZipDeploymentARMResource.withKind(reader.getString());
+                    deserializedStaticSiteZipDeploymentArmResource.withKind(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    deserializedStaticSiteZipDeploymentARMResource.type = reader.getString();
+                    deserializedStaticSiteZipDeploymentArmResource.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedStaticSiteZipDeploymentARMResource.innerProperties
+                    deserializedStaticSiteZipDeploymentArmResource.innerProperties
                         = StaticSiteZipDeployment.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteZipDeploymentARMResource;
+            return deserializedStaticSiteZipDeploymentArmResource;
         });
     }
 }

@@ -17,8 +17,8 @@ import java.time.OffsetDateTime;
  * StaticSiteLinkedBackendARMResource resource specific properties.
  */
 @Fluent
-public final class StaticSiteLinkedBackendARMResourceProperties
-    implements JsonSerializable<StaticSiteLinkedBackendARMResourceProperties> {
+public final class StaticSiteLinkedBackendArmResourceProperties
+    implements JsonSerializable<StaticSiteLinkedBackendArmResourceProperties> {
     /*
      * The resource id of the backend linked to the static site
      */
@@ -40,9 +40,9 @@ public final class StaticSiteLinkedBackendARMResourceProperties
     private String provisioningState;
 
     /**
-     * Creates an instance of StaticSiteLinkedBackendARMResourceProperties class.
+     * Creates an instance of StaticSiteLinkedBackendArmResourceProperties class.
      */
-    public StaticSiteLinkedBackendARMResourceProperties() {
+    public StaticSiteLinkedBackendArmResourceProperties() {
     }
 
     /**
@@ -58,9 +58,9 @@ public final class StaticSiteLinkedBackendARMResourceProperties
      * Set the backendResourceId property: The resource id of the backend linked to the static site.
      * 
      * @param backendResourceId the backendResourceId value to set.
-     * @return the StaticSiteLinkedBackendARMResourceProperties object itself.
+     * @return the StaticSiteLinkedBackendArmResourceProperties object itself.
      */
-    public StaticSiteLinkedBackendARMResourceProperties withBackendResourceId(String backendResourceId) {
+    public StaticSiteLinkedBackendArmResourceProperties withBackendResourceId(String backendResourceId) {
         this.backendResourceId = backendResourceId;
         return this;
     }
@@ -78,9 +78,9 @@ public final class StaticSiteLinkedBackendARMResourceProperties
      * Set the region property: The region of the backend linked to the static site.
      * 
      * @param region the region value to set.
-     * @return the StaticSiteLinkedBackendARMResourceProperties object itself.
+     * @return the StaticSiteLinkedBackendArmResourceProperties object itself.
      */
-    public StaticSiteLinkedBackendARMResourceProperties withRegion(String region) {
+    public StaticSiteLinkedBackendArmResourceProperties withRegion(String region) {
         this.region = region;
         return this;
     }
@@ -123,36 +123,36 @@ public final class StaticSiteLinkedBackendARMResourceProperties
     }
 
     /**
-     * Reads an instance of StaticSiteLinkedBackendARMResourceProperties from the JsonReader.
+     * Reads an instance of StaticSiteLinkedBackendArmResourceProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StaticSiteLinkedBackendARMResourceProperties if the JsonReader was pointing to an instance
+     * @return An instance of StaticSiteLinkedBackendArmResourceProperties if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StaticSiteLinkedBackendARMResourceProperties.
+     * @throws IOException If an error occurs while reading the StaticSiteLinkedBackendArmResourceProperties.
      */
-    public static StaticSiteLinkedBackendARMResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static StaticSiteLinkedBackendArmResourceProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StaticSiteLinkedBackendARMResourceProperties deserializedStaticSiteLinkedBackendARMResourceProperties
-                = new StaticSiteLinkedBackendARMResourceProperties();
+            StaticSiteLinkedBackendArmResourceProperties deserializedStaticSiteLinkedBackendArmResourceProperties
+                = new StaticSiteLinkedBackendArmResourceProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("backendResourceId".equals(fieldName)) {
-                    deserializedStaticSiteLinkedBackendARMResourceProperties.backendResourceId = reader.getString();
+                    deserializedStaticSiteLinkedBackendArmResourceProperties.backendResourceId = reader.getString();
                 } else if ("region".equals(fieldName)) {
-                    deserializedStaticSiteLinkedBackendARMResourceProperties.region = reader.getString();
+                    deserializedStaticSiteLinkedBackendArmResourceProperties.region = reader.getString();
                 } else if ("createdOn".equals(fieldName)) {
-                    deserializedStaticSiteLinkedBackendARMResourceProperties.createdOn = reader
+                    deserializedStaticSiteLinkedBackendArmResourceProperties.createdOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedStaticSiteLinkedBackendARMResourceProperties.provisioningState = reader.getString();
+                    deserializedStaticSiteLinkedBackendArmResourceProperties.provisioningState = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStaticSiteLinkedBackendARMResourceProperties;
+            return deserializedStaticSiteLinkedBackendArmResourceProperties;
         });
     }
 }
