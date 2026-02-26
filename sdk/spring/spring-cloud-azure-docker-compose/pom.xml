@@ -61,6 +61,12 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos</artifactId>
+      <version>4.78.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
       <version>12.33.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <exclusions>

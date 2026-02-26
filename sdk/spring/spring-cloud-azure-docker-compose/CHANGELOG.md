@@ -3,6 +3,7 @@
 ## 7.1.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for Azure Cosmos DB emulator in `spring-cloud-azure-docker-compose`.
 
 ### Breaking Changes
 

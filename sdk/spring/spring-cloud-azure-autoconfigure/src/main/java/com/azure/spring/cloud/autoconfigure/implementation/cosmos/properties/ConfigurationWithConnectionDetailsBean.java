@@ -38,7 +38,9 @@ class ConfigurationWithConnectionDetailsBean {
             .bind(AzureCosmosProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromGlobalProperties));
         AzureCosmosProperties properties = bindResult.isBound() ? bindResult.get() : propertiesLoadFromGlobalProperties;
         properties.setEndpoint(connectionDetails.getEndpoint());
-        properties.setDatabase(connectionDetails.getDatabase());
+        if (connectionDetails.getDatabase() != null) {
+            properties.setDatabase(connectionDetails.getDatabase());
+        }
         properties.setKey(connectionDetails.getKey());
         properties.setConnectionMode(connectionDetails.getConnectionMode());
         properties.setEndpointDiscoveryEnabled(connectionDetails.getEndpointDiscoveryEnabled());
