@@ -99,6 +99,23 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
     }
 
     @Test
+    void testStaleQueueProcessorReplacedAfterClose() {
+        // Simulate a queue processor being closed by the SDK due to a non-transient error.
+        ServiceBusProcessorClient first = processorFactory.createProcessor(entityName, this.listener, errorHandler);
+        assertNotNull(first);
+        assertEquals(1, queueProcessorAddedTimes);
+
+        // Close the processor to simulate SDK-internal disposal.
+        first.close();
+
+        // Factory must detect the closed (non-running) queue processor and return a brand-new one.
+        ServiceBusProcessorClient second = processorFactory.createProcessor(entityName, this.listener, errorHandler);
+        assertNotNull(second);
+        assertNotSame(first, second);
+        assertEquals(2, queueProcessorAddedTimes);
+    }
+
+    @Test
     void testRecreateServiceBusProcessorClient() {
         final ServiceBusProcessorClient client = processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
         assertNotNull(client);
