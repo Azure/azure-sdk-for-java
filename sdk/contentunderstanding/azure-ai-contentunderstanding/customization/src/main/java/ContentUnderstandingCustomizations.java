@@ -195,7 +195,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         // Add Duration getters and hide *Ms() getters on time-based models
         customizeDurationProperties(customization, logger);
 
-        // Strip trailing numeric suffixes from TCGC-generated parameter names
+        // Strip trailing numeric suffixes from emitter-generated parameter names
         // e.g., analyzeRequest1 -> analyzeRequest, grantCopyAuthorizationRequest1 -> grantCopyAuthorizationRequest
         renameRequestParameters(customization, logger);
     }
@@ -1933,8 +1933,8 @@ public class ContentUnderstandingCustomizations extends Customization {
         + "}\n";
 
     /**
-     * Rename protocol method parameters that have TCGC-generated numeric suffixes.
-     * TCGC appends "1" when a spread/wrapped body model name collides with the original TypeSpec model name,
+     * Rename protocol method parameters that have emitter-generated numeric suffixes.
+     * The emitter appends "1" when a spread/wrapped body model name collides with the original TypeSpec model name,
      * e.g., analyzeRequest1, grantCopyAuthorizationRequest1. This strips the suffix from public API parameters.
      */
     private void renameRequestParameters(LibraryCustomization customization, Logger logger) {
@@ -1948,7 +1948,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                     for (MethodDeclaration method : clazz.getMethods()) {
                         for (Parameter param : method.getParameters()) {
                             String name = param.getNameAsString();
-                            // Match parameters ending with a digit suffix (TCGC disambiguation)
+                            // Match parameters ending with a digit suffix (emitter disambiguation)
                             if (name.matches(".*Request\\d+$")) {
                                 String newName = name.replaceAll("\\d+$", "");
                                 // Rename parameter
