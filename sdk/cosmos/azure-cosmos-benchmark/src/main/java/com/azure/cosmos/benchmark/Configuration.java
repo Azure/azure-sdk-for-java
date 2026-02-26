@@ -76,9 +76,6 @@ public class Configuration {
     @Parameter(names = "-connectionSharingAcrossClientsEnabled", description = "Enable connection sharing across CosmosClient instances (Gateway mode). Reduces connection count for multi-tenant scenarios.")
     private boolean connectionSharingAcrossClientsEnabled = false;
 
-    @Parameter(names = "-http2Enabled", description = "Enable HTTP/2 for Gateway mode connections")
-    private boolean http2Enabled;
-
     @Parameter(names = "-diagnosticsThresholdDuration", description = "Latency threshold for printing diagnostics", converter = DurationConverter.class)
     private Duration diagnosticsThresholdDuration = Duration.ofSeconds(60);
 
@@ -499,10 +496,6 @@ public class Configuration {
 
     public boolean isConnectionSharingAcrossClientsEnabled() {
         return connectionSharingAcrossClientsEnabled;
-    }
-
-    public boolean isHttp2Enabled() {
-        return http2Enabled;
     }
 
     public ConnectionMode getConnectionMode() {

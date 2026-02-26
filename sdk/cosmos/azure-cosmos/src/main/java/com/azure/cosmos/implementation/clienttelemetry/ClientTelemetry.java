@@ -34,11 +34,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * <p>VM metadata is fetched once per JVM from the Azure Instance Metadata Service (IMDS)
  * and cached in a static singleton. The IMDS HTTP client is created on-demand for the
-<<<<<<< HEAD
- * first metadata fetch and disposed immediately after  no long-lived HTTP client is kept.</p>
-=======
  * first metadata fetch and disposed immediately after; no long-lived HTTP client is kept.</p>
->>>>>>> main
  */
 public class ClientTelemetry {
     public final static String VM_ID_PREFIX = "vmId_";

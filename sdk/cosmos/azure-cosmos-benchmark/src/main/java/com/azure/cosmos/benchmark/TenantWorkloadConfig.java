@@ -166,9 +166,6 @@ public class TenantWorkloadConfig {
     @JsonProperty("connectionSharingAcrossClientsEnabled")
     private Boolean connectionSharingAcrossClientsEnabled;
 
-    @JsonProperty("http2Enabled")
-    private Boolean http2Enabled;
-
     @JsonProperty("preferredRegionsList")
     private String preferredRegionsList;
 
@@ -287,10 +284,6 @@ public class TenantWorkloadConfig {
         return connectionSharingAcrossClientsEnabled != null && connectionSharingAcrossClientsEnabled;
     }
 
-    public boolean isHttp2Enabled() {
-        return http2Enabled != null && http2Enabled;
-    }
-
     public List<String> getPreferredRegionsList() {
         if (preferredRegionsList == null || preferredRegionsList.isEmpty()) return null;
         List<String> regions = new ArrayList<>();
@@ -334,7 +327,6 @@ public class TenantWorkloadConfig {
     public void setConsistencyLevel(String consistencyLevel) { this.consistencyLevel = consistencyLevel; }
     public void setMaxConnectionPoolSize(int maxConnectionPoolSize) { this.maxConnectionPoolSize = maxConnectionPoolSize; }
     public void setConnectionSharingAcrossClientsEnabled(boolean connectionSharingAcrossClientsEnabled) { this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled; }
-    public void setHttp2Enabled(boolean http2Enabled) { this.http2Enabled = http2Enabled; }
     public void setNumberOfPreCreatedDocuments(int numberOfPreCreatedDocuments) { this.numberOfPreCreatedDocuments = numberOfPreCreatedDocuments; }
     public void setApplicationName(String applicationName) { this.applicationName = applicationName; }
     public void setSuppressCleanup(boolean suppressCleanup) { this.suppressCleanup = suppressCleanup; }
@@ -351,7 +343,6 @@ public class TenantWorkloadConfig {
             ", concurrency=" + concurrency +
             ", connectionMode=" + connectionMode +
             ", connectionSharingAcrossClientsEnabled=" + isConnectionSharingAcrossClientsEnabled() +
-            ", http2Enabled=" + isHttp2Enabled() +
             '}';
     }
 
@@ -486,7 +477,6 @@ public class TenantWorkloadConfig {
         t.consistencyLevel = cfg.getConsistencyLevel().name();
         t.maxConnectionPoolSize = cfg.getMaxConnectionPoolSize();
         t.connectionSharingAcrossClientsEnabled = cfg.isConnectionSharingAcrossClientsEnabled();
-        t.http2Enabled = cfg.isHttp2Enabled();
         t.manageDatabase = cfg.shouldManageDatabase();
         t.applicationName = cfg.getApplicationName();
         t.isManagedIdentityRequired = cfg.isManagedIdentityRequired();
@@ -557,9 +547,7 @@ public class TenantWorkloadConfig {
             for (JsonNode tenantNode : tenantsNode) {
                 TenantWorkloadConfig tenant = OBJECT_MAPPER.treeToValue(tenantNode, TenantWorkloadConfig.class);
                 tenant.applyMap(globalDefaults, false);
-
                 validateTenantConfig(tenant);
-
                 tenants.add(tenant);
             }
         }

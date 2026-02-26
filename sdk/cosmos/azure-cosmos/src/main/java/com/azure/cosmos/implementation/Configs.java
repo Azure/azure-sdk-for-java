@@ -522,17 +522,11 @@ public class Configs {
     }
 
     public static boolean isNettyHttpClientMetricsEnabled() {
-        String valueFromSystemProperty = System.getProperty(NETTY_HTTP_CLIENT_METRICS_ENABLED);
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Boolean.parseBoolean(valueFromSystemProperty);
-        }
-
-        String valueFromEnvVariable = System.getenv(NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE);
-        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Boolean.parseBoolean(valueFromEnvVariable);
-        }
-
-        return DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED;
+        return Boolean.parseBoolean(
+            System.getProperty(NETTY_HTTP_CLIENT_METRICS_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED))));
     }
 
     public static boolean isClientLeakDetectionEnabled() {

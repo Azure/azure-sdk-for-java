@@ -75,23 +75,8 @@ public class BenchmarkOrchestrator {
             logger.info("Reactor Netty HTTP connection pool metrics enabled");
         }
 
-        // Build Cosmos micrometer registry (App Insights / Graphite) once, reuse everywhere
-        MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
-        if (cosmosMicrometerRegistry != null) {
-            Metrics.addRegistry(cosmosMicrometerRegistry);
-            logger.info("Cosmos + Reactor Netty metrics will export to: {}", cosmosMicrometerRegistry.getClass().getSimpleName());
-        }
-
-        // Always add a SimpleMeterRegistry to globalRegistry when netty metrics are enabled,
-        // so Reactor Netty ConnectionProvider gauges have a backing store for values.
-        // Without this, gauges register on the CompositeMeterRegistry but return 0.
-        if (config.isEnableNettyHttpMetrics()) {
-            Metrics.addRegistry(new io.micrometer.core.instrument.simple.SimpleMeterRegistry());
-            logger.info("SimpleMeterRegistry added to globalRegistry for Reactor Netty pool gauge backing");
-        }
-
         // Prepare all tenants (inject shared state, set defaults)
-        prepareTenants(config, cosmosMicrometerRegistry);
+        prepareTenants(config);
 
         // Reporter selection: CSV > Console
         ScheduledReporter reporter;
@@ -111,11 +96,6 @@ public class BenchmarkOrchestrator {
             logger.info("Console reporter started");
         }
         reporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
-
-        // Register SimpleMeterRegistry on Micrometer globalRegistry BEFORE clients are created
-        SimpleMeterRegistry poolMetricsRegistry = new SimpleMeterRegistry();
-        Metrics.addRegistry(poolMetricsRegistry);
-        logger.info("Reactor Netty pool metrics bridge enabled");
 
         // Optional: Result uploader
         CosmosClient resultUploaderClient = null;
@@ -154,9 +134,14 @@ public class BenchmarkOrchestrator {
 
         // Netty HTTP connection pool metrics reporter (only when enabled)
         NettyHttpMetricsReporter nettyMetricsReporter = null;
+        // Add a SimpleMeterRegistry to globalRegistry when netty metrics are enabled,
         if (config.isEnableNettyHttpMetrics() && config.getReportingDirectory() != null) {
+            SimpleMeterRegistry nettyHttpMeterRegistry = new SimpleMeterRegistry();
+            Metrics.addRegistry(nettyHttpMeterRegistry);
+            logger.info("SimpleMeterRegistry added to globalRegistry for Reactor Netty pool gauge backing");
+
             Path nettyMetricsDir = Paths.get(config.getReportingDirectory());
-            nettyMetricsReporter = new NettyHttpMetricsReporter(Metrics.globalRegistry, nettyMetricsDir);
+            nettyMetricsReporter = new NettyHttpMetricsReporter(nettyHttpMeterRegistry, nettyMetricsDir);
             nettyMetricsReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
         }
 
@@ -297,8 +282,8 @@ public class BenchmarkOrchestrator {
      * Centralizes all tenant mutation: suppressCleanup, applicationName suffix,
      * micrometer registry injection.
      */
-    private void prepareTenants(BenchmarkConfig config, MeterRegistry cosmosMicrometerRegistry) {
-        // cosmosMicrometerRegistry passed as parameter
+    private void prepareTenants(BenchmarkConfig config) {
+        MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
         if (cosmosMicrometerRegistry != null) {
             logger.info("Cosmos micrometer registry: {}", cosmosMicrometerRegistry.getClass().getSimpleName());
         }
