@@ -38,7 +38,6 @@ import static org.assertj.core.api.Assertions.assertThat;
     classes = {Application.class, SpringMonitorTest.TestConfig.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestRestTemplate
-@Disabled("Needs to be fixed for Spring 7")
 class SpringMonitorTest {
 
     private static CountDownLatch countDownLatch;

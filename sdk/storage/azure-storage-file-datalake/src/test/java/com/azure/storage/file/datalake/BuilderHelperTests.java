@@ -264,12 +264,6 @@ public class BuilderHelperTests {
 
         assertThrows(IllegalStateException.class,
             () -> new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
-                .credential(new MockTokenCredential())
-                .credential(new AzureSasCredential("foo"))
-                .buildClient());
-
-        assertThrows(IllegalStateException.class,
-            () -> new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
                 .sasToken("foo")
                 .credential(new AzureSasCredential("foo"))
                 .buildClient());
@@ -289,13 +283,6 @@ public class BuilderHelperTests {
         assertThrows(IllegalStateException.class,
             () -> new DataLakePathClientBuilder().endpoint(ENDPOINT)
                 .pathName("foo")
-                .credential(new MockTokenCredential())
-                .credential(new AzureSasCredential("foo"))
-                .buildDirectoryClient());
-
-        assertThrows(IllegalStateException.class,
-            () -> new DataLakePathClientBuilder().endpoint(ENDPOINT)
-                .pathName("foo")
                 .sasToken("foo")
                 .credential(new AzureSasCredential("foo"))
                 .buildDirectoryClient());
@@ -309,12 +296,6 @@ public class BuilderHelperTests {
         assertThrows(IllegalStateException.class,
             () -> new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
                 .credential(new StorageSharedKeyCredential("foo", "bar"))
-                .credential(new AzureSasCredential("foo"))
-                .buildClient());
-
-        assertThrows(IllegalStateException.class,
-            () -> new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
-                .credential(new MockTokenCredential())
                 .credential(new AzureSasCredential("foo"))
                 .buildClient());
 

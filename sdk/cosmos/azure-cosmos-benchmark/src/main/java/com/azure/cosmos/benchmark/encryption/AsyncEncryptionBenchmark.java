@@ -15,6 +15,7 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.benchmark.BenchmarkHelper;
 import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.Operation;
 import com.azure.cosmos.benchmark.PojoizedJson;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
@@ -35,7 +36,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.codahale.metrics.ConsoleReporter;
@@ -112,16 +112,14 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
     private AtomicBoolean warmupMode = new AtomicBoolean(false);
 
-    private static final TokenCredential CREDENTIAL = new DefaultAzureCredentialBuilder()
-            .managedIdentityClientId(Configuration.getAadManagedIdentityId())
-            .authorityHost(Configuration.getAadLoginUri())
-            .tenantId(Configuration.getAadTenantId())
-            .build();
-
     AsyncEncryptionBenchmark(Configuration cfg) throws IOException {
 
+        final TokenCredential credential = cfg.isManagedIdentityRequired()
+            ? cfg.buildTokenCredential()
+            : null;
+
         CosmosClientBuilder cosmosClientBuilder = cfg.isManagedIdentityRequired() ?
-                new CosmosClientBuilder().credential(CREDENTIAL) :
+                new CosmosClientBuilder().credential(credential) :
                 new CosmosClientBuilder().key(cfg.getMasterKey());
 
         cosmosClientBuilder
@@ -147,9 +145,9 @@ public abstract class AsyncEncryptionBenchmark<T> {
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
         ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
 
-        if (configuration.getOperationType() != Configuration.Operation.WriteLatency
-            && configuration.getOperationType() != Configuration.Operation.WriteThroughput
-            && configuration.getOperationType() != Configuration.Operation.ReadMyWrites) {
+        if (configuration.getOperationType() != Operation.WriteLatency
+            && configuration.getOperationType() != Operation.WriteThroughput
+            && configuration.getOperationType() != Operation.ReadMyWrites) {
             logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
@@ -313,7 +311,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
         }
     }
 
-    private boolean latencyAwareOperations(Configuration.Operation operation) {
+    private boolean latencyAwareOperations(Operation operation) {
         switch (configuration.getOperationType()) {
             case ReadLatency:
             case WriteLatency:

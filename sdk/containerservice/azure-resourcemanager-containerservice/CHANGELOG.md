@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 2.57.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
 ## 2.58.0-beta.1 (2025-12-15)
 
 ### Other Changes

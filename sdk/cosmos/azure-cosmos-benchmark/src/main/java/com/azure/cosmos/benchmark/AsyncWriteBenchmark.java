@@ -5,6 +5,7 @@ package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.reactivestreams.Subscription;
@@ -50,36 +51,36 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
         }
     }
 
-    AsyncWriteBenchmark(Configuration cfg) {
-        super(cfg);
+    AsyncWriteBenchmark(TenantWorkloadConfig cfg, MetricRegistry sharedRegistry) {
+        super(cfg, sharedRegistry);
 
         uuid = UUID.randomUUID().toString();
-        dataFieldValue = RandomStringUtils.randomAlphabetic(configuration.getDocumentDataFieldSize());
+        dataFieldValue = RandomStringUtils.randomAlphabetic(workloadConfig.getDocumentDataFieldSize());
     }
 
     @Override
     protected void performWorkload(BaseSubscriber<CosmosItemResponse> baseSubscriber, long i) throws InterruptedException {
         String id = uuid + i;
         Mono<CosmosItemResponse<PojoizedJson>> obs;
-        if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
+        if (workloadConfig.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
             obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
                 dataFieldValue,
                 partitionKey,
-                configuration.getDocumentDataFieldCount()));
+                workloadConfig.getDocumentDataFieldCount()));
         } else {
             // more optimized for write as partition key is already passed as config
             obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
                 dataFieldValue,
                 partitionKey,
-                configuration.getDocumentDataFieldCount()),
+                workloadConfig.getDocumentDataFieldCount()),
                 new PartitionKey(id),
                 null);
         }
 
         concurrencyControlSemaphore.acquire();
 
-        if (configuration.getOperationType() == Configuration.Operation.WriteThroughput) {
+        if (workloadConfig.getOperationType() == Operation.WriteThroughput) {
             obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
         } else {
             LatencySubscriber<CosmosItemResponse> latencySubscriber = new LatencySubscriber<>(baseSubscriber);

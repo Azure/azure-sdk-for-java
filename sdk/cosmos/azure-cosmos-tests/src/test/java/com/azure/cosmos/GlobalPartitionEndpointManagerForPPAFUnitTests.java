@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AvailabilityStrategyContext;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -18,7 +17,9 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
-import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelFailoverInfo;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelAutomaticFailoverInfo;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.apache.commons.lang3.tuple.Pair;
@@ -37,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
@@ -148,11 +148,11 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
             String maxExclusive = "BB";
             String collectionResourceId = "dbs/db1/colls/coll1";
 
-            Field failedRegionalRoutingContextsField = PartitionLevelFailoverInfo.class.getDeclaredField("failedRegionalRoutingContexts");
+            Field failedRegionalRoutingContextsField = PartitionLevelAutomaticFailoverInfo.class.getDeclaredField("failedRegionalRoutingContexts");
 
             assertThat(failedRegionalRoutingContextsField).isNotNull();
 
-            Field currentRegionalContextField = PartitionLevelFailoverInfo.class.getDeclaredField("current");
+            Field currentRegionalContextField = PartitionLevelAutomaticFailoverInfo.class.getDeclaredField("current");
 
             assertThat(currentRegionalContextField).isNotNull();
 
@@ -362,11 +362,11 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
         logger.warn("Handling exception for {}", locationWithFailure.getPath());
         globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request, false);
 
-        Field failedLocationsField = PartitionLevelFailoverInfo.class.getDeclaredField("failedRegionalRoutingContexts");
+        Field failedLocationsField = PartitionLevelAutomaticFailoverInfo.class.getDeclaredField("failedRegionalRoutingContexts");
 
         assertThat(failedLocationsField).isNotNull();
 
-        Field currentField = PartitionLevelFailoverInfo.class.getDeclaredField("current");
+        Field currentField = PartitionLevelAutomaticFailoverInfo.class.getDeclaredField("current");
 
         assertThat(currentField).isNotNull();
 
@@ -421,8 +421,10 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
                     false,
                     collectionLink,
                     new SerializationDiagnosticsContext()),
-                new AvailabilityStrategyContext(true, true)
-            )
+                new AvailabilityStrategyContext(true, true),
+                new AtomicBoolean(false),
+                new PerPartitionCircuitBreakerInfoHolder(),
+                new PerPartitionAutomaticFailoverInfoHolder())
 );
 
         return request;

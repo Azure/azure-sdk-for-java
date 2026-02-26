@@ -211,7 +211,7 @@ public class ChangeFeedProcessorMigrationTests extends TestSuiteBase {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, true));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

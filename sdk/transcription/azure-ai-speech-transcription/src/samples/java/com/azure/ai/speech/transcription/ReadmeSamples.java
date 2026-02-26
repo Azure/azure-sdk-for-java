@@ -227,6 +227,8 @@ public final class ReadmeSamples {
 
     /**
      * Sample for using enhanced mode to improve transcription quality.
+     * Enhanced Mode uses LLM-powered speech recognition to provide improved
+     * transcription accuracy with GPU acceleration.
      */
     public void enhancedModeBasic() throws Exception {
         TranscriptionClient client = new TranscriptionClientBuilder()
@@ -241,20 +243,22 @@ public final class ReadmeSamples {
 
         // Enhanced mode is automatically enabled when you create EnhancedModeOptions
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
-            .setPrompts(java.util.Arrays.asList(
-                "Output must be in lexical format."
-            ));
+            .setTask("transcribe");
 
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
-            .setLocales(java.util.Arrays.asList("en-US", "es-ES"))
             .setEnhancedModeOptions(enhancedMode);
 
         TranscriptionResult result = client.transcribe(options);
+
+        result.getCombinedPhrases().forEach(phrase -> {
+            System.out.println(phrase.getText());
+        });
         // END: readme-sample-enhancedModeBasic
     }
 
     /**
      * Sample for using enhanced mode with custom prompts.
+     * Prompts are optional text that guides the output style for transcribe or translate tasks.
      */
     public void enhancedModeWithPrompts() throws Exception {
         TranscriptionClient client = new TranscriptionClientBuilder()
@@ -267,27 +271,27 @@ public final class ReadmeSamples {
 
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
-        // Enhanced mode is automatically enabled
-        // Use prompts to guide transcription with domain-specific terminology
-        // Always include lexical format prompt for best results
+        // Guide output formatting using prompts
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
-            .setPrompts(java.util.Arrays.asList(
-                "Output must be in lexical format.",
-                "Medical consultation discussing hypertension and diabetes",
-                "Common medications: metformin, lisinopril, atorvastatin",
-                "Patient symptoms and treatment plan"
-            ));
+            .setTask("transcribe")
+            .setPrompts(java.util.Arrays.asList("Output must be in lexical format."));
 
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
-            .setLocales(java.util.Arrays.asList("en-US", "es-ES"))
             .setEnhancedModeOptions(enhancedMode);
 
         TranscriptionResult result = client.transcribe(options);
+
+        result.getCombinedPhrases().forEach(phrase -> {
+            System.out.println(phrase.getText());
+        });
         // END: readme-sample-enhancedModeWithPrompts
     }
 
     /**
      * Sample for using enhanced mode with translation.
+     * Translate speech to a target language during transcription.
+     * Specify the target language using the language code (e.g., "en" for English,
+     * "ko" for Korean, "es" for Spanish, "zh" for Chinese).
      */
     public void enhancedModeWithTranslation() throws Exception {
         TranscriptionClient client = new TranscriptionClientBuilder()
@@ -296,20 +300,24 @@ public final class ReadmeSamples {
             .buildClient();
 
         // BEGIN: readme-sample-enhancedModeWithTranslation
-        byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
+        byte[] audioData = Files.readAllBytes(Paths.get("path/to/chinese-audio.wav"));
 
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
-        // Enhanced mode is automatically enabled
-        // Configure enhanced mode to transcribe Spanish audio and translate to English
+        // Translate Chinese speech to Korean
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
-            .setTargetLanguage("en-US"); // Translate to English
+            .setTask("translate")
+            .setTargetLanguage("ko");  // Translate to Korean
 
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
-            .setLocales(java.util.Arrays.asList("es-ES")) // Source language: Spanish
             .setEnhancedModeOptions(enhancedMode);
 
         TranscriptionResult result = client.transcribe(options);
+
+        System.out.println("Translated to Korean:");
+        result.getCombinedPhrases().forEach(phrase -> {
+            System.out.println(phrase.getText());
+        });
         // END: readme-sample-enhancedModeWithTranslation
     }
 
@@ -364,7 +372,40 @@ public final class ReadmeSamples {
     }
 
     /**
-     * Sample for enhanced mode transcription.
+     * Sample for combining enhanced mode with diarization.
+     * Note: Diarization is only supported for the "transcribe" task, not for "translate".
+     */
+    public void enhancedModeWithDiarization() throws Exception {
+        TranscriptionClient client = new TranscriptionClientBuilder()
+            .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
+            .credential(new KeyCredential("<your-api-key>"))
+            .buildClient();
+
+        // BEGIN: readme-sample-enhancedModeWithDiarization
+        byte[] audioData = Files.readAllBytes(Paths.get("path/to/meeting.wav"));
+
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
+
+        EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+            .setTask("transcribe")
+            .setPrompts(java.util.Arrays.asList("Output must be in lexical format."));
+
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
+            .setEnhancedModeOptions(enhancedMode)
+            .setProfanityFilterMode(ProfanityFilterMode.MASKED)
+            .setDiarizationOptions(new TranscriptionDiarizationOptions()
+                .setMaxSpeakers(2));
+
+        TranscriptionResult result = client.transcribe(options);
+
+        result.getPhrases().forEach(phrase -> {
+            System.out.println("[Speaker " + phrase.getSpeaker() + "] " + phrase.getText());
+        });
+        // END: readme-sample-enhancedModeWithDiarization
+    }
+
+    /**
+     * Sample for enhanced mode transcription (for README).
      */
     public void transcribeEnhancedMode() throws Exception {
         TranscriptionClient client = new TranscriptionClientBuilder()
@@ -406,8 +447,7 @@ public final class ReadmeSamples {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         PhraseListOptions phraseListOptions = new PhraseListOptions()
-            .setPhrases(java.util.Arrays.asList("Azure", "Cognitive Services"))
-            .setBiasingWeight(5.0);
+            .setPhrases(java.util.Arrays.asList("Azure", "Cognitive Services"));
 
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
             .setPhraseListOptions(phraseListOptions);

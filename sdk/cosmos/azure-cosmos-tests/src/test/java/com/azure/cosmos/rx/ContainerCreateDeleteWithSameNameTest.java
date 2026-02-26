@@ -929,7 +929,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             docDefList.add(TestObject.creatNewTestObject());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedContainer, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedContainer, docDefList, true));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

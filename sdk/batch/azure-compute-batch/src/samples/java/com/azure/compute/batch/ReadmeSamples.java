@@ -19,10 +19,6 @@ import com.azure.compute.batch.models.AutoUserScope;
 import com.azure.compute.batch.models.AutoUserSpecification;
 import com.azure.compute.batch.models.BatchApplication;
 import com.azure.compute.batch.models.BatchApplicationsListOptions;
-import com.azure.compute.batch.models.BatchCertificate;
-import com.azure.compute.batch.models.BatchCertificateFormat;
-import com.azure.compute.batch.models.BatchCertificateGetOptions;
-import com.azure.compute.batch.models.BatchCertificatesListOptions;
 import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
 import com.azure.compute.batch.models.BatchError;
 import com.azure.compute.batch.models.BatchErrorException;
@@ -591,35 +587,6 @@ public final class ReadmeSamples {
                 System.out.println("Log upload container URL: " + logResult.getVirtualDirectoryName());
             });
         // END: com.azure.compute.batch.upload-node-logs.upload-batch-service-logs-async
-
-        // BEGIN: com.azure.compute.batch.create-certificate.certificate-create
-        batchClient.createCertificate(
-            new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2randomByb2Hash==".getBytes())
-                .setCertificateFormat(BatchCertificateFormat.PFX)
-                .setPassword("fakeTokenPlaceholder"),
-            null);
-        // END: com.azure.compute.batch.create-certificate.certificate-create
-
-        // BEGIN: com.azure.compute.batch.get-certificate.certificate-get
-        BatchCertificate certificateResponse = batchClient.getCertificate("sha1", "0123456789abcdef0123456789abcdef01234567",
-            new BatchCertificateGetOptions());
-        // END: com.azure.compute.batch.get-certificate.certificate-get
-
-        // BEGIN: com.azure.compute.batch.list-certificates.certificate-list
-        PagedIterable<BatchCertificate> certificateList = batchClient.listCertificates(new BatchCertificatesListOptions());
-        // END: com.azure.compute.batch.list-certificates.certificate-list
-
-        // BEGIN: com.azure.compute.batch.certificate.delete-certificate
-        String thumbprintAlgorithm = "sha1";
-        String thumbprint = "your-thumbprint";
-        SyncPoller<BatchCertificate, Void> deleteCertificatePoller = batchClient.beginDeleteCertificate(thumbprintAlgorithm, thumbprint);
-        deleteCertificatePoller.waitForCompletion();
-        PollResponse<BatchCertificate> finalDeleteCertificateResponse = deleteCertificatePoller.poll();
-        // END: com.azure.compute.batch.certificate.delete-certificate
-
-        // BEGIN: com.azure.compute.batch.cancel-certificate-deletion.certificate-cancel-delete
-        batchClient.cancelCertificateDeletion("sha1", "0123456789abcdef0123456789abcdef01234567", null);
-        // END: com.azure.compute.batch.cancel-certificate-deletion.certificate-cancel-delete
 
         // BEGIN: com.azure.compute.batch.get-application.get-applications
         BatchApplication application = batchClient.getApplication("my_application_id", null);

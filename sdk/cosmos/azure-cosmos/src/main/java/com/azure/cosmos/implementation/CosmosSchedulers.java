@@ -10,6 +10,7 @@ public class CosmosSchedulers {
     private final static String COSMOS_PARALLEL_THREAD_NAME =  "cosmos-parallel";
     private final static String TRANSPORT_RESPONSE_BOUNDED_ELASTIC_THREAD_NAME = "transport-response-bounded-elastic";
     private final static String TRANSACTIONAL_BULK_EXECUTOR_BOUNDED_ELASTIC_THREAD_NAME = "transactional_bulk-executor-bounded-elastic";
+    private final static String TRANSACTIONAL_BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC_THREAD_NAME = "transactional_bulk-executor-flush-bounded-elastic";
     private final static String BULK_EXECUTOR_BOUNDED_ELASTIC_THREAD_NAME = "bulk-executor-bounded-elastic";
     private final static String BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC_THREAD_NAME = "bulk-executor-flush-bounded-elastic";
     private final static String OPEN_CONNECTIONS_BOUNDED_ELASTIC_THREAD_NAME = "open-connections-bounded-elastic";
@@ -40,6 +41,14 @@ public class CosmosSchedulers {
         2 * Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
         TRANSACTIONAL_BULK_EXECUTOR_BOUNDED_ELASTIC_THREAD_NAME,
+        TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
+        true
+    );
+
+    public final static Scheduler TRANSACTIONAL_BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+        TRANSACTIONAL_BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC_THREAD_NAME,
         TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
         true
     );

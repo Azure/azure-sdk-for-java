@@ -31,7 +31,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
 
     val metricsPublisher = new TestOutputMetricsPublisher
     val pointWriter = new PointWriter(
@@ -73,7 +73,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
 
     val metricsPublisher = new TestOutputMetricsPublisher
     val pointWriter = new PointWriter(
@@ -107,7 +107,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
     }
 
-    val deleteConfig = CosmosWriteConfig(ItemWriteStrategy.ItemDelete, maxRetryCount = 3, bulkEnabled = false)
+    val deleteConfig = CosmosWriteConfig(ItemWriteStrategy.ItemDelete, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
 
     val pointDeleter = new PointWriter(
       container,
@@ -133,7 +133,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
 
     val pointWriter = new PointWriter(
       container,
@@ -192,7 +192,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val deleteConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemDeleteIfNotModified,
       maxRetryCount = 3,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val pointDeleter = new PointWriter(
       container,
@@ -217,7 +218,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false, bulkTransactional = false)
     val pointWriter = new PointWriter(
       container,
       partitionKeyDefinition,
@@ -253,7 +254,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
     val writeConfig = CosmosWriteConfig(
-      ItemWriteStrategy.ItemOverwriteIfNotModified, maxRetryCount = 3, bulkEnabled = false)
+      ItemWriteStrategy.ItemOverwriteIfNotModified, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
 
     val metricsPublisher = new TestOutputMetricsPublisher
     var pointWriter = new PointWriter(
@@ -372,7 +373,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val metricsPublisher = new TestOutputMetricsPublisher
     val pointWriter = new PointWriter(
@@ -501,7 +503,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val pointWriter = new PointWriter(
       container,
@@ -578,7 +581,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val pointWriter = new PointWriter(
       container,
@@ -637,7 +641,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val pointWriter = new PointWriter(
       container,
@@ -718,7 +723,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val pointWriter = new PointWriter(
       container,
@@ -794,6 +800,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           ItemWriteStrategy.ItemOverwrite,
           5,
           bulkEnabled = true,
+          bulkTransactional = false,
+          bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
           bulkMaxPendingOperations = Some(900)
         )
 
@@ -860,7 +868,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val pointWriter = new PointWriter(
       container,
@@ -964,6 +973,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           ItemWriteStrategy.ItemBulkUpdate,
           5,
           bulkEnabled = false,
+          bulkTransactional = false,
           bulkMaxPendingOperations = Some(900),
           patchConfigs = Some(CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]())))
 
@@ -1011,6 +1021,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           ItemWriteStrategy.ItemBulkUpdate,
           5,
           bulkEnabled = false,
+          bulkTransactional = false,
           bulkMaxPendingOperations = Some(900),
           patchConfigs = Some(CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]))
       )
@@ -1059,7 +1070,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
         ItemWriteStrategy.ItemOverwrite,
         5,
-        bulkEnabled = false)
+        bulkEnabled = false,
+        bulkTransactional = false)
 
     val pointWriter = new PointWriter(
         container,
@@ -1132,7 +1144,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemOverwrite,
           5,
-          bulkEnabled = false)
+          bulkEnabled = false,
+          bulkTransactional = false)
 
       val pointWriter = new PointWriter(
           container,
@@ -1179,7 +1192,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemOverwrite,
           5,
-          bulkEnabled = false)
+          bulkEnabled = false,
+          bulkTransactional = false)
 
       val pointWriter = new PointWriter(
           container,
@@ -1238,7 +1252,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemOverwrite,
           5,
-          bulkEnabled = false)
+          bulkEnabled = false,
+          bulkTransactional = false)
 
       val pointWriter = new PointWriter(
           container,
@@ -1314,6 +1329,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
                   ItemWriteStrategy.ItemOverwrite,
                   5,
                   bulkEnabled = true,
+                  bulkTransactional = false,
+                  bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
                   bulkMaxPendingOperations = Some(900)
               )
 

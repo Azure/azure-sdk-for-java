@@ -31,6 +31,7 @@ import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
@@ -60,6 +61,7 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
+
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
@@ -1176,6 +1178,11 @@ public class ImplementationBridgeHelpers {
             CosmosBatchRequestOptions setOperationContextAndListenerTuple(
               CosmosBatchRequestOptions cosmosBatchRequestOptions,
               OperationContextAndListenerTuple operationContextAndListenerTuple);
+            CosmosBatchRequestOptions setDisableRetryForThrottledBatchRequest(
+                CosmosBatchRequestOptions cosmosBatchRequestOptions,
+                boolean disableRetryForThrottledBatchRequest
+            );
+            boolean shouldDisableRetryForThrottledBatchRequest(CosmosBatchRequestOptions cosmosBatchRequestOptions);
         }
     }
 
