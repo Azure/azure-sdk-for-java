@@ -6,16 +6,24 @@ package com.azure.spring.messaging.servicebus.core;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
+import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class DefaultServiceBusNamespaceProcessorFactoryTests {
     private ServiceBusProcessorFactory processorFactory;
@@ -83,15 +91,16 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
 
     @Test
     void testStaleProcessorReplacedAfterClose() {
-        // Simulate a processor being closed by the SDK due to a non-transient error.
+        // End-to-end test with a real processor: create, close, re-create.
+        // Note: the processor is never started, so isRunning() is already false before close().
+        // See testProcessorEvictedAfterTransitionToNotRunning for a mock-based test that
+        // simulates the running → not-running transition.
         ServiceBusProcessorClient first = processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
         assertNotNull(first);
         assertEquals(1, topicProcessorAddedTimes);
 
-        // Close the processor to simulate SDK-internal disposal.
         first.close();
 
-        // factory must detect the closed (non-running) processor and return a brand-new one.
         ServiceBusProcessorClient second = processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
         assertNotNull(second);
         assertNotSame(first, second);
@@ -100,19 +109,50 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
 
     @Test
     void testStaleQueueProcessorReplacedAfterClose() {
-        // Simulate a queue processor being closed by the SDK due to a non-transient error.
+        // End-to-end test with a real queue processor: create, close, re-create.
+        // See testProcessorEvictedAfterTransitionToNotRunning for a mock-based test that
+        // simulates the running → not-running transition.
         ServiceBusProcessorClient first = processorFactory.createProcessor(entityName, this.listener, errorHandler);
         assertNotNull(first);
         assertEquals(1, queueProcessorAddedTimes);
 
-        // Close the processor to simulate SDK-internal disposal.
         first.close();
 
-        // Factory must detect the closed (non-running) queue processor and return a brand-new one.
         ServiceBusProcessorClient second = processorFactory.createProcessor(entityName, this.listener, errorHandler);
         assertNotNull(second);
         assertNotSame(first, second);
         assertEquals(2, queueProcessorAddedTimes);
+    }
+
+    @Test
+    void testRunningProcessorReturnedFromCache() throws Exception {
+        // A processor that reports isRunning() == true must NOT be evicted from the cache.
+        ServiceBusProcessorClient runningMock = mock(ServiceBusProcessorClient.class);
+        when(runningMock.isRunning()).thenReturn(true);
+
+        ConsumerIdentifier key = new ConsumerIdentifier(entityName, subscription);
+        getProcessorMap().put(key, runningMock);
+
+        ServiceBusProcessorClient result = processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
+        assertSame(runningMock, result);
+        verify(runningMock, never()).close();
+    }
+
+    @Test
+    void testProcessorEvictedAfterTransitionToNotRunning() throws Exception {
+        // Simulate a processor that was running and then transitioned to not-running
+        // (e.g., closed by the SDK due to a non-transient error, or stopped).
+        ServiceBusProcessorClient staleMock = mock(ServiceBusProcessorClient.class);
+        when(staleMock.isRunning()).thenReturn(false);
+
+        ConsumerIdentifier key = new ConsumerIdentifier(entityName, subscription);
+        getProcessorMap().put(key, staleMock);
+
+        ServiceBusProcessorClient result = processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
+        assertNotSame(staleMock, result);
+        assertNotNull(result);
+        verify(staleMock).close();
+        assertEquals(1, topicProcessorAddedTimes);
     }
 
     @Test
@@ -206,6 +246,13 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         assertEquals(4, shareClientCalledTimes.get());
         assertEquals(1, noneSessionClientCalledTimes.get());
         assertEquals(1, sessionClientCalledTimes.get());
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<ConsumerIdentifier, ServiceBusProcessorClient> getProcessorMap() throws Exception {
+        Field field = DefaultServiceBusNamespaceProcessorFactory.class.getDeclaredField("processorMap");
+        field.setAccessible(true);
+        return (Map<ConsumerIdentifier, ServiceBusProcessorClient>) field.get(processorFactory);
     }
 
 }
