@@ -119,7 +119,7 @@ public class NettyHttpMetricsReporter {
             }
             writer.flush();
         } catch (IOException e) {
-            logger.warn("Failed to write netty pool metrics: {}", e.getMessage());
+            logger.warn("Failed to write netty pool metrics", e);
         }
 
         if (count > 0) {

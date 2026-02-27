@@ -69,12 +69,6 @@ public class BenchmarkOrchestrator {
             logger.info("JVM stats enabled (gc, threads, memory, threadPrefix)");
         }
 
-        // Enable Reactor Netty HTTP connection pool metrics if configured
-        if (config.isEnableNettyHttpMetrics()) {
-            System.setProperty("COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED", "true");
-            logger.info("Reactor Netty HTTP connection pool metrics enabled");
-        }
-
         // Prepare all tenants (inject shared state, set defaults)
         prepareTenants(config);
 
@@ -134,9 +128,10 @@ public class BenchmarkOrchestrator {
 
         // Netty HTTP connection pool metrics reporter (only when enabled)
         NettyHttpMetricsReporter nettyMetricsReporter = null;
+        SimpleMeterRegistry nettyHttpMeterRegistry = null;
         // Add a SimpleMeterRegistry to globalRegistry when netty metrics are enabled,
         if (config.isEnableNettyHttpMetrics() && config.getReportingDirectory() != null) {
-            SimpleMeterRegistry nettyHttpMeterRegistry = new SimpleMeterRegistry();
+            nettyHttpMeterRegistry = new SimpleMeterRegistry();
             Metrics.addRegistry(nettyHttpMeterRegistry);
             logger.info("SimpleMeterRegistry added to globalRegistry for Reactor Netty pool gauge backing");
 
@@ -150,19 +145,27 @@ public class BenchmarkOrchestrator {
         logger.info("BenchmarkConfig: {}", config);
 
         // ======== Lifecycle loop ========
-        runLifecycleLoop(config, registry, reporter);
-
-        // Cleanup reporters
-        reporter.report();
-        reporter.stop();
-        if (resultReporter != null) {
-            resultReporter.report();
-            resultReporter.stop();
+        try {
+            runLifecycleLoop(config, registry, reporter);
+        } finally {
+            // Cleanup reporters
+            reporter.report();
+            reporter.stop();
+            if (resultReporter != null) {
+                resultReporter.report();
+                resultReporter.stop();
+            }
+            if (resultUploaderClient != null) {
+                resultUploaderClient.close();
+            }
+            if (nettyMetricsReporter != null) {
+                nettyMetricsReporter.stop();
+            }
+            if (nettyHttpMeterRegistry != null) {
+                Metrics.removeRegistry(nettyHttpMeterRegistry);
+            }
+            clearGlobalSystemProperties();
         }
-        if (resultUploaderClient != null) {
-            resultUploaderClient.close();
-        }
-        clearGlobalSystemProperties();
     }
 
     // ======== Lifecycle loop (create -> run -> close -> settle x N) ========
@@ -394,6 +397,11 @@ public class BenchmarkOrchestrator {
         if (config.getMinConnectionPoolSizePerEndpoint() >= 1) {
             System.setProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT",
                 String.valueOf(config.getMinConnectionPoolSizePerEndpoint()));
+        }
+
+        if (config.isEnableNettyHttpMetrics()) {
+            System.setProperty("COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED", "true");
+            logger.info("Reactor Netty HTTP connection pool metrics enabled");
         }
 
         logger.info("Global system properties set (circuit breaker: {}, PPAF: {}, minConnPoolSize: {})",
