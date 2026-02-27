@@ -481,7 +481,7 @@
 # ServiceOwners:                                                   @klaaslanghout
 
 # PRLabel: %Voice Live
-/sdk/ai/azure-ai-voicelive/                                        @amber-yujueWang @rhurey @xitzhang
+/sdk/voicelive/                                                    @amber-yujueWang @emilyjiji @pankopon @rhurey @xitzhang
 
 # PRLabel: %WebPubSub
 /sdk/webpubsub/azure-messaging-webpubsub-client/                   @Azure/azure-java-sdk @chenkennt @vicancy @zackliu
