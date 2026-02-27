@@ -25,7 +25,6 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ScheduledReporter;
@@ -92,15 +91,13 @@ public class AsyncCtlWorkload {
     private int queryPct;
     private int readManyPct;
 
-    private static final TokenCredential CREDENTIAL = new DefaultAzureCredentialBuilder()
-            .managedIdentityClientId(Configuration.getAadManagedIdentityId())
-            .authorityHost(Configuration.getAadLoginUri())
-            .tenantId(Configuration.getAadTenantId())
-            .build();
-
     public AsyncCtlWorkload(Configuration cfg) {
+        final TokenCredential credential = cfg.isManagedIdentityRequired()
+            ? cfg.buildTokenCredential()
+            : null;
+
         CosmosClientBuilder cosmosClientBuilder = cfg.isManagedIdentityRequired() ?
-                new CosmosClientBuilder().credential(CREDENTIAL) :
+                new CosmosClientBuilder().credential(credential) :
                 new CosmosClientBuilder().key(cfg.getMasterKey());
 
         cosmosClientBuilder

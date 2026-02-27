@@ -14,7 +14,7 @@ import java.io.IOException;
  * JSON schema
  *
  * JSON Schema response format. Used to generate structured JSON responses.
- * Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
+ * Learn more about [Structured Outputs](/docs/guides/structured-outputs).
  */
 @Fluent
 public final class TextResponseFormatJsonSchema extends TextResponseFormatConfiguration {

@@ -1483,6 +1483,33 @@ public final class NodeTypeInner extends ProxyResource {
     }
 
     /**
+     * Get the enableResilientEphemeralOsDisk property: Specifies whether the node type should use a resilient ephemeral
+     * OS disk when using a supported SKU size. A resilient ephemeral OS disk provides improved reliability for
+     * ephemeral OS disks by enabling full caching.
+     * 
+     * @return the enableResilientEphemeralOsDisk value.
+     */
+    public Boolean enableResilientEphemeralOsDisk() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableResilientEphemeralOsDisk();
+    }
+
+    /**
+     * Set the enableResilientEphemeralOsDisk property: Specifies whether the node type should use a resilient ephemeral
+     * OS disk when using a supported SKU size. A resilient ephemeral OS disk provides improved reliability for
+     * ephemeral OS disks by enabling full caching.
+     * 
+     * @param enableResilientEphemeralOsDisk the enableResilientEphemeralOsDisk value to set.
+     * @return the NodeTypeInner object itself.
+     */
+    public NodeTypeInner withEnableResilientEphemeralOsDisk(Boolean enableResilientEphemeralOsDisk) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NodeTypeProperties();
+        }
+        this.innerProperties().withEnableResilientEphemeralOsDisk(enableResilientEphemeralOsDisk);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

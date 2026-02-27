@@ -104,6 +104,22 @@ public class Configuration {
     @Parameter(names = "-manageDatabase", description = "Control switch for creating/deleting underlying database resource")
     private boolean manageDatabase = false;
 
+    @Parameter(names = "-suppressCleanup", description = "Skip deleting database/container on shutdown (for multi-cycle CHURN)")
+    private boolean suppressCleanup = false;
+
+    @Parameter(names = "-tenantsFile", description = "Path to tenants.json for multi-tenant benchmarks")
+    private String tenantsFile;
+
+    @Parameter(names = "-cycles", description = "Number of create/destroy cycles (1 = single run)")
+    private int cycles = 1;
+
+    @Parameter(names = "-settleTimeMs", description = "Milliseconds to wait between cycles for thread/resource cleanup. Default: 90000 when cycles>1, 0 otherwise.")
+    private long settleTimeMs = -1;
+
+    @Parameter(names = "-gcBetweenCycles", description = "Force GC during settle period between cycles")
+    private boolean gcBetweenCycles = true;
+
+
     @Parameter(names = "-preferredRegionsList", description = "Comma separated preferred regions list")
     private String preferredRegionsList;
 
@@ -148,15 +164,26 @@ public class Configuration {
     @Parameter(names = "isPartitionLevelCircuitBreakerEnabled", description = "A flag to denote whether partition level circuit breaker is enabled.")
     private String isPartitionLevelCircuitBreakerEnabled = String.valueOf(true);
 
+    @Parameter(names = "-aadLoginEndpoint", description = "AAD login endpoint for this configuration instance. Overrides COSMOS.AAD_LOGIN_ENDPOINT / COSMOS_AAD_LOGIN_ENDPOINT.")
+    private String aadLoginEndpoint;
+
+    @Parameter(names = "-aadTenantId", description = "AAD tenant ID for this configuration instance. Overrides COSMOS.AAD_TENANT_ID / COSMOS_AAD_TENANT_ID.")
+    private String aadTenantId;
+
+    @Parameter(names = "-aadManagedIdentityClientId", description = "AAD managed identity client ID for this configuration instance. Overrides COSMOS.AAD_MANAGED_IDENTITY_ID / COSMOS_AAD_MANAGED_IDENTITY_ID.")
+    private String aadManagedIdentityClientId;
+
     @Parameter(names = "-isManagedIdentityRequired", description = "A flag to denote whether benchmark-specific CosmosClient instance should use Managed Identity to authenticate.")
     private String isManagedIdentityRequired = String.valueOf(false);
+
+    // ── Multi-tenancy orchestrator flags (not CLI — set programmatically) ──
+
 
     @Parameter(names = "-isPerPartitionAutomaticFailoverRequired", description = "A flag to denote whether per-partition automatic failover is required.")
     private String isPerPartitionAutomaticFailoverRequired = String.valueOf(true);
 
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
-        + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
         + "\tWriteThroughput - run a Write workload that prints only throughput\n"
         + "\tReadLatency - run a READ workload that prints both throughput and latency *\n"
         + "\tWriteLatency - run a Write workload that prints both throughput and latency\n"
@@ -289,58 +316,7 @@ public class Configuration {
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
 
-    public enum Operation {
-        ReadThroughput,
-        WriteThroughput,
-        ReadLatency,
-        WriteLatency,
-        QueryInClauseParallel,
-        QueryCross,
-        QuerySingle,
-        QuerySingleMany,
-        QueryParallel,
-        QueryOrderby,
-        QueryAggregate,
-        QueryAggregateTopOrderby,
-        QueryTopOrderby,
-        Mixed,
-        ReadMyWrites,
-        ReadThroughputWithMultipleClients,
-        CtlWorkload,
-        ReadAllItemsOfLogicalPartition,
-        LinkedInCtlWorkload,
-        ReadManyLatency,
-        ReadManyThroughput;
-
-        static Operation fromString(String code) {
-
-            for (Operation output : Operation.values()) {
-                if (output.toString().equalsIgnoreCase(code)) {
-                    return output;
-                }
-            }
-
-            return null;
-        }
-
-        static class OperationTypeConverter implements IStringConverter<Operation> {
-
-            /*
-             * (non-Javadoc)
-             *
-             * @see com.beust.jcommander.IStringConverter#convert(java.lang.STRING)
-             */
-            @Override
-            public Operation convert(String value) {
-                Operation ret = fromString(value);
-                if (ret == null) {
-                    throw new ParameterException("Value " + value + " can not be converted to ClientType. "
-                                                         + "Available values are: " + Arrays.toString(Operation.values()));
-                }
-                return ret;
-            }
-        }
-    }
+    // Operation enum extracted to standalone Operation.java
 
     private static ConsistencyLevel fromString(String code) {
         for (ConsistencyLevel output : ConsistencyLevel.values()) {
@@ -423,6 +399,77 @@ public class Configuration {
 
     public String getApplicationName() {
         return applicationName;
+    }
+
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
+
+    public void setServiceEndpoint(String serviceEndpoint) {
+        this.serviceEndpoint = serviceEndpoint;
+    }
+
+    public void setMasterKey(String masterKey) {
+        this.masterKey = masterKey;
+    }
+
+    public void setDatabaseId(String databaseId) {
+        this.databaseId = databaseId;
+    }
+
+    public void setCollectionId(String collectionId) {
+        this.collectionId = collectionId;
+    }
+
+    public void setOperation(Operation operation) {
+        this.operation = operation;
+    }
+
+    public void setOperationFromString(String operationName) {
+        Operation op = Operation.fromString(operationName);
+        if (op != null) {
+            this.operation = op;
+        }
+    }
+
+    public void setConcurrency(int concurrency) {
+        this.concurrency = concurrency;
+    }
+
+    public void setConnectionMode(ConnectionMode connectionMode) {
+        this.connectionMode = connectionMode;
+    }
+
+    public void setMaxConnectionPoolSize(int maxConnectionPoolSize) {
+        this.maxConnectionPoolSize = maxConnectionPoolSize;
+    }
+
+    public void setNumberOfOperations(int numberOfOperations) {
+        this.numberOfOperations = numberOfOperations;
+    }
+
+    public void setNumberOfPreCreatedDocuments(int numberOfPreCreatedDocuments) {
+        this.numberOfPreCreatedDocuments = numberOfPreCreatedDocuments;
+    }
+
+    public void setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+        this.consistencyLevel = consistencyLevel;
+    }
+
+    public void setThroughput(int throughput) {
+        this.throughput = throughput;
+    }
+
+    public void setManageDatabase(boolean manageDatabase) {
+        this.manageDatabase = manageDatabase;
+    }
+
+    public void setPreferredRegionsList(String preferredRegionsList) {
+        this.preferredRegionsList = preferredRegionsList;
+    }
+
+    public void setSkipWarmUpOperations(int skipWarmUpOperations) {
+        this.skipWarmUpOperations = skipWarmUpOperations;
     }
 
     public boolean isHelp() {
@@ -556,6 +603,31 @@ public class Configuration {
     public boolean shouldManageDatabase() {
         return this.manageDatabase;
     }
+
+    public boolean isSuppressCleanup() {
+        return this.suppressCleanup;
+    }
+
+    public void setSuppressCleanup(boolean suppressCleanup) {
+        this.suppressCleanup = suppressCleanup;
+    }
+
+    public String getTenantsFile() {
+        return tenantsFile;
+    }
+
+    public int getCycles() {
+        return cycles;
+    }
+
+    public long getSettleTimeMs() {
+        return settleTimeMs;
+    }
+
+    public boolean isGcBetweenCycles() {
+        return gcBetweenCycles;
+    }
+
 
     public int getBulkloadBatchSize() {
         return this.bulkloadBatchSize;
@@ -880,6 +952,57 @@ public class Configuration {
 
     public static String getAadTenantId() {
         return getOptionalConfigProperty("AAD_TENANT_ID", null, v -> v);
+    }
+
+    /**
+     * Returns the AAD login endpoint for this configuration instance.
+     * Falls back to the static/system-property value if not set per-instance.
+     */
+    public String getInstanceAadLoginEndpoint() {
+        return aadLoginEndpoint != null ? aadLoginEndpoint : getAadLoginUri();
+    }
+
+    /**
+     * Returns the AAD managed identity client ID for this configuration instance.
+     * Falls back to the static/system-property value if not set per-instance.
+     */
+    public String getInstanceAadManagedIdentityClientId() {
+        return aadManagedIdentityClientId != null ? aadManagedIdentityClientId : getAadManagedIdentityId();
+    }
+
+    /**
+     * Returns the AAD tenant ID for this configuration instance.
+     * Falls back to the static/system-property value if not set per-instance.
+     */
+    public String getInstanceAadTenantId() {
+        return aadTenantId != null ? aadTenantId : getAadTenantId();
+    }
+
+    /**
+     * Builds a {@link com.azure.core.credential.TokenCredential} based on this configuration instance's
+     * AAD settings. Each call returns a new credential, allowing per-tenant identity in multi-tenant benchmarks.
+     *
+     * @return a new TokenCredential configured with this instance's AAD login endpoint, tenant ID,
+     *         and managed identity client ID.
+     */
+    public com.azure.core.credential.TokenCredential buildTokenCredential() {
+        return new com.azure.identity.DefaultAzureCredentialBuilder()
+            .managedIdentityClientId(getInstanceAadManagedIdentityClientId())
+            .authorityHost(getInstanceAadLoginEndpoint())
+            .tenantId(getInstanceAadTenantId())
+            .build();
+    }
+
+    public void setAadLoginEndpoint(String aadLoginEndpoint) {
+        this.aadLoginEndpoint = aadLoginEndpoint;
+    }
+
+    public void setAadTenantId(String aadTenantId) {
+        this.aadTenantId = aadTenantId;
+    }
+
+    public void setAadManagedIdentityClientId(String aadManagedIdentityClientId) {
+        this.aadManagedIdentityClientId = aadManagedIdentityClientId;
     }
 
     private static <T> T getOptionalConfigProperty(String name, T defaultValue, Function<String, T> conversion) {
