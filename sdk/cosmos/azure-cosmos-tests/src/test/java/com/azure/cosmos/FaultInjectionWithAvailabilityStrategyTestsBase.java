@@ -316,8 +316,9 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                 (c, operationType) -> injectRequestRateTooLargeError(c, this.writeableRegions, operationType);
 
             final CosmosAsyncContainer[] containerHolder = new CosmosAsyncContainer[1];
+            final CosmosAsyncClient clientForRetry = dummyClient;
             executeWithRetry(() -> {
-                containerHolder[0] = this.createTestContainer(dummyClient);
+                containerHolder[0] = this.createTestContainer(clientForRetry);
             }, 3, "FaultInjectionWithAvailabilityStrategyTestsBase createTestContainer");
             this.testDatabaseId = containerHolder[0].getDatabase().getId();
             this.testContainerId = containerHolder[0].getId();
