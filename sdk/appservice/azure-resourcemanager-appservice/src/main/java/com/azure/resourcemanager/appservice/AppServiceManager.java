@@ -240,7 +240,9 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
      * based on Azure REST API.
      *
      * @return wrapped inner task client.
+     * @deprecated Use azure-resourcemanager-certificateregistration lib.
      */
+    @Deprecated
     public CertificateRegistrationManagementClient certificateRegistrationClient() {
         return certificateRegistrationClient;
     }
@@ -250,7 +252,9 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
      * based on Azure REST API.
      *
      * @return wrapped inner task client.
+     * @deprecated Use azure-resourcemanager-domainregistration lib.
      */
+    @Deprecated
     public DomainRegistrationManagementClient domainRegistrationClient() {
         return domainRegistrationClient;
     }

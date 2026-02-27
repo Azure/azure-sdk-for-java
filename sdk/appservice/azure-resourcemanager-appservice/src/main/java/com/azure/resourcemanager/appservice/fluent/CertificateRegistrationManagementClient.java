@@ -9,60 +9,62 @@ import java.time.Duration;
 
 /**
  * The interface for CertificateRegistrationManagementClient class.
+ * @deprecated Use azure-resourcemanager-certificateregistration lib.
  */
+@Deprecated
 public interface CertificateRegistrationManagementClient {
     /**
      * Gets The ID of the target subscription.
-     * 
+     *
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     * 
+     *
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     * 
+     *
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     * 
+     *
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the CertificateRegistrationProvidersClient object to access its operations.
-     * 
+     *
      * @return the CertificateRegistrationProvidersClient object.
      */
     CertificateRegistrationProvidersClient getCertificateRegistrationProviders();
 
     /**
      * Gets the AppServiceCertificateOrdersClient object to access its operations.
-     * 
+     *
      * @return the AppServiceCertificateOrdersClient object.
      */
     AppServiceCertificateOrdersClient getAppServiceCertificateOrders();
 
     /**
      * Gets the CertificateOrdersDiagnosticsClient object to access its operations.
-     * 
+     *
      * @return the CertificateOrdersDiagnosticsClient object.
      */
     CertificateOrdersDiagnosticsClient getCertificateOrdersDiagnostics();

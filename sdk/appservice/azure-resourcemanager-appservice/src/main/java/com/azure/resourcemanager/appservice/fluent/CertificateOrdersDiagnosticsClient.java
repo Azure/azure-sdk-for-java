@@ -16,13 +16,15 @@ import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in CertificateOrdersDiagnosticsClient.
+ * @deprecated Use azure-resourcemanager-certificateregistration lib.
  */
+@Deprecated
 public interface CertificateOrdersDiagnosticsClient {
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,9 +39,9 @@ public interface CertificateOrdersDiagnosticsClient {
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,9 +56,9 @@ public interface CertificateOrdersDiagnosticsClient {
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -72,9 +74,9 @@ public interface CertificateOrdersDiagnosticsClient {
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.
@@ -95,9 +97,9 @@ public interface CertificateOrdersDiagnosticsClient {
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.
@@ -113,9 +115,9 @@ public interface CertificateOrdersDiagnosticsClient {
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.
@@ -136,9 +138,9 @@ public interface CertificateOrdersDiagnosticsClient {
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param detectorName The detector name which needs to be run.

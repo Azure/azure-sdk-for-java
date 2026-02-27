@@ -29,14 +29,16 @@ import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in DomainsClient.
+ * @deprecated Use azure-resourcemanager-domainregistration lib.
  */
+@Deprecated
 public interface DomainsClient
     extends InnerSupportsGet<DomainInner>, InnerSupportsListing<DomainInner>, InnerSupportsDelete<Void> {
     /**
      * Check if a domain is available for registration.
-     * 
+     *
      * Description for Check if a domain is available for registration.
-     * 
+     *
      * @param identifier The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -50,9 +52,9 @@ public interface DomainsClient
 
     /**
      * Check if a domain is available for registration.
-     * 
+     *
      * Description for Check if a domain is available for registration.
-     * 
+     *
      * @param identifier The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -65,9 +67,9 @@ public interface DomainsClient
 
     /**
      * Check if a domain is available for registration.
-     * 
+     *
      * Description for Check if a domain is available for registration.
-     * 
+     *
      * @param identifier The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -82,9 +84,9 @@ public interface DomainsClient
 
     /**
      * Check if a domain is available for registration.
-     * 
+     *
      * Description for Check if a domain is available for registration.
-     * 
+     *
      * @param identifier The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -97,9 +99,9 @@ public interface DomainsClient
 
     /**
      * Get all domains in a subscription.
-     * 
+     *
      * Description for Get all domains in a subscription.
-     * 
+     *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -110,9 +112,9 @@ public interface DomainsClient
 
     /**
      * Get all domains in a subscription.
-     * 
+     *
      * Description for Get all domains in a subscription.
-     * 
+     *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -123,9 +125,9 @@ public interface DomainsClient
 
     /**
      * Get all domains in a subscription.
-     * 
+     *
      * Description for Get all domains in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -138,9 +140,9 @@ public interface DomainsClient
 
     /**
      * Generate a single sign-on request for the domain management portal.
-     * 
+     *
      * Description for Generate a single sign-on request for the domain management portal.
-     * 
+     *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -152,9 +154,9 @@ public interface DomainsClient
 
     /**
      * Generate a single sign-on request for the domain management portal.
-     * 
+     *
      * Description for Generate a single sign-on request for the domain management portal.
-     * 
+     *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -165,9 +167,9 @@ public interface DomainsClient
 
     /**
      * Generate a single sign-on request for the domain management portal.
-     * 
+     *
      * Description for Generate a single sign-on request for the domain management portal.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -180,9 +182,9 @@ public interface DomainsClient
 
     /**
      * Generate a single sign-on request for the domain management portal.
-     * 
+     *
      * Description for Generate a single sign-on request for the domain management portal.
-     * 
+     *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -193,9 +195,9 @@ public interface DomainsClient
 
     /**
      * Get domain name recommendations based on keywords.
-     * 
+     *
      * Description for Get domain name recommendations based on keywords.
-     * 
+     *
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -208,9 +210,9 @@ public interface DomainsClient
 
     /**
      * Get domain name recommendations based on keywords.
-     * 
+     *
      * Description for Get domain name recommendations based on keywords.
-     * 
+     *
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -223,9 +225,9 @@ public interface DomainsClient
 
     /**
      * Get domain name recommendations based on keywords.
-     * 
+     *
      * Description for Get domain name recommendations based on keywords.
-     * 
+     *
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,9 +242,9 @@ public interface DomainsClient
 
     /**
      * Get all domains in a resource group.
-     * 
+     *
      * Description for Get all domains in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -255,9 +257,9 @@ public interface DomainsClient
 
     /**
      * Get all domains in a resource group.
-     * 
+     *
      * Description for Get all domains in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -270,9 +272,9 @@ public interface DomainsClient
 
     /**
      * Get all domains in a resource group.
-     * 
+     *
      * Description for Get all domains in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -286,9 +288,9 @@ public interface DomainsClient
 
     /**
      * Get a domain.
-     * 
+     *
      * Description for Get a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -302,9 +304,9 @@ public interface DomainsClient
 
     /**
      * Get a domain.
-     * 
+     *
      * Description for Get a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -318,9 +320,9 @@ public interface DomainsClient
 
     /**
      * Get a domain.
-     * 
+     *
      * Description for Get a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -335,9 +337,9 @@ public interface DomainsClient
 
     /**
      * Get a domain.
-     * 
+     *
      * Description for Get a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,9 +353,9 @@ public interface DomainsClient
 
     /**
      * Creates or updates a domain.
-     * 
+     *
      * Description for Creates or updates a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
@@ -369,9 +371,9 @@ public interface DomainsClient
 
     /**
      * Creates or updates a domain.
-     * 
+     *
      * Description for Creates or updates a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
@@ -387,9 +389,9 @@ public interface DomainsClient
 
     /**
      * Creates or updates a domain.
-     * 
+     *
      * Description for Creates or updates a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
@@ -405,9 +407,9 @@ public interface DomainsClient
 
     /**
      * Creates or updates a domain.
-     * 
+     *
      * Description for Creates or updates a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
@@ -424,9 +426,9 @@ public interface DomainsClient
 
     /**
      * Creates or updates a domain.
-     * 
+     *
      * Description for Creates or updates a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
@@ -441,9 +443,9 @@ public interface DomainsClient
 
     /**
      * Creates or updates a domain.
-     * 
+     *
      * Description for Creates or updates a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
@@ -458,9 +460,9 @@ public interface DomainsClient
 
     /**
      * Creates or updates a domain.
-     * 
+     *
      * Description for Creates or updates a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
@@ -476,9 +478,9 @@ public interface DomainsClient
 
     /**
      * Creates or updates a domain.
-     * 
+     *
      * Description for Creates or updates a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
@@ -494,9 +496,9 @@ public interface DomainsClient
 
     /**
      * Creates or updates a domain.
-     * 
+     *
      * Description for Creates or updates a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
@@ -511,9 +513,9 @@ public interface DomainsClient
 
     /**
      * Creates or updates a domain.
-     * 
+     *
      * Description for Creates or updates a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
@@ -530,9 +532,9 @@ public interface DomainsClient
 
     /**
      * Creates or updates a domain.
-     * 
+     *
      * Description for Creates or updates a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
@@ -547,9 +549,9 @@ public interface DomainsClient
 
     /**
      * Delete a domain.
-     * 
+     *
      * Description for Delete a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
@@ -566,9 +568,9 @@ public interface DomainsClient
 
     /**
      * Delete a domain.
-     * 
+     *
      * Description for Delete a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -582,9 +584,9 @@ public interface DomainsClient
 
     /**
      * Delete a domain.
-     * 
+     *
      * Description for Delete a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
@@ -602,9 +604,9 @@ public interface DomainsClient
 
     /**
      * Delete a domain.
-     * 
+     *
      * Description for Delete a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -617,9 +619,9 @@ public interface DomainsClient
 
     /**
      * Lists domain ownership identifiers.
-     * 
+     *
      * Description for Lists domain ownership identifiers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -634,9 +636,9 @@ public interface DomainsClient
 
     /**
      * Lists domain ownership identifiers.
-     * 
+     *
      * Description for Lists domain ownership identifiers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -650,9 +652,9 @@ public interface DomainsClient
 
     /**
      * Lists domain ownership identifiers.
-     * 
+     *
      * Description for Lists domain ownership identifiers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -668,9 +670,9 @@ public interface DomainsClient
 
     /**
      * Get ownership identifier for domain
-     * 
+     *
      * Description for Get ownership identifier for domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -686,9 +688,9 @@ public interface DomainsClient
 
     /**
      * Get ownership identifier for domain
-     * 
+     *
      * Description for Get ownership identifier for domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -704,9 +706,9 @@ public interface DomainsClient
 
     /**
      * Get ownership identifier for domain
-     * 
+     *
      * Description for Get ownership identifier for domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -723,9 +725,9 @@ public interface DomainsClient
 
     /**
      * Get ownership identifier for domain
-     * 
+     *
      * Description for Get ownership identifier for domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -740,10 +742,10 @@ public interface DomainsClient
 
     /**
      * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
-     * 
+     *
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -761,10 +763,10 @@ public interface DomainsClient
 
     /**
      * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
-     * 
+     *
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -781,10 +783,10 @@ public interface DomainsClient
 
     /**
      * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
-     * 
+     *
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -802,10 +804,10 @@ public interface DomainsClient
 
     /**
      * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
-     * 
+     *
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -822,10 +824,10 @@ public interface DomainsClient
 
     /**
      * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
-     * 
+     *
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -842,10 +844,10 @@ public interface DomainsClient
 
     /**
      * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
-     * 
+     *
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -862,10 +864,10 @@ public interface DomainsClient
 
     /**
      * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
-     * 
+     *
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -883,10 +885,10 @@ public interface DomainsClient
 
     /**
      * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
-     * 
+     *
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -903,9 +905,9 @@ public interface DomainsClient
 
     /**
      * Delete ownership identifier for domain
-     * 
+     *
      * Description for Delete ownership identifier for domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -921,9 +923,9 @@ public interface DomainsClient
 
     /**
      * Delete ownership identifier for domain
-     * 
+     *
      * Description for Delete ownership identifier for domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -938,9 +940,9 @@ public interface DomainsClient
 
     /**
      * Delete ownership identifier for domain
-     * 
+     *
      * Description for Delete ownership identifier for domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -957,9 +959,9 @@ public interface DomainsClient
 
     /**
      * Delete ownership identifier for domain
-     * 
+     *
      * Description for Delete ownership identifier for domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param name Name of identifier.
@@ -973,9 +975,9 @@ public interface DomainsClient
 
     /**
      * Renew a domain.
-     * 
+     *
      * Description for Renew a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -989,9 +991,9 @@ public interface DomainsClient
 
     /**
      * Renew a domain.
-     * 
+     *
      * Description for Renew a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1005,9 +1007,9 @@ public interface DomainsClient
 
     /**
      * Renew a domain.
-     * 
+     *
      * Description for Renew a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -1022,9 +1024,9 @@ public interface DomainsClient
 
     /**
      * Renew a domain.
-     * 
+     *
      * Description for Renew a domain.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1037,7 +1039,7 @@ public interface DomainsClient
 
     /**
      * Transfer out domain to another registrar.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1053,7 +1055,7 @@ public interface DomainsClient
 
     /**
      * Transfer out domain to another registrar.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1069,7 +1071,7 @@ public interface DomainsClient
 
     /**
      * Transfer out domain to another registrar.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
@@ -1086,7 +1088,7 @@ public interface DomainsClient
 
     /**
      * Transfer out domain to another registrar.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

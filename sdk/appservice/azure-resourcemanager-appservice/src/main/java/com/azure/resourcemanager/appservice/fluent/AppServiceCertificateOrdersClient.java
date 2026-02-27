@@ -34,14 +34,16 @@ import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in AppServiceCertificateOrdersClient.
+ * @deprecated Use azure-resourcemanager-certificateregistration lib.
  */
+@Deprecated
 public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppServiceCertificateOrderInner>,
     InnerSupportsListing<AppServiceCertificateOrderInner>, InnerSupportsDelete<Void> {
     /**
      * List all certificate orders in a subscription.
-     * 
+     *
      * Description for List all certificate orders in a subscription.
-     * 
+     *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,9 +54,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * List all certificate orders in a subscription.
-     * 
+     *
      * Description for List all certificate orders in a subscription.
-     * 
+     *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -65,9 +67,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * List all certificate orders in a subscription.
-     * 
+     *
      * Description for List all certificate orders in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -80,9 +82,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Validate information for a certificate order.
-     * 
+     *
      * Description for Validate information for a certificate order.
-     * 
+     *
      * @param appServiceCertificateOrder The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -96,9 +98,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Validate information for a certificate order.
-     * 
+     *
      * Description for Validate information for a certificate order.
-     * 
+     *
      * @param appServiceCertificateOrder The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -111,9 +113,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Validate information for a certificate order.
-     * 
+     *
      * Description for Validate information for a certificate order.
-     * 
+     *
      * @param appServiceCertificateOrder The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,9 +130,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Validate information for a certificate order.
-     * 
+     *
      * Description for Validate information for a certificate order.
-     * 
+     *
      * @param appServiceCertificateOrder The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -142,9 +144,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Get certificate orders in a resource group.
-     * 
+     *
      * Description for Get certificate orders in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -157,9 +159,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Get certificate orders in a resource group.
-     * 
+     *
      * Description for Get certificate orders in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -172,9 +174,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Get certificate orders in a resource group.
-     * 
+     *
      * Description for Get certificate orders in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -188,9 +190,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Get a certificate order.
-     * 
+     *
      * Description for Get a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,9 +207,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Get a certificate order.
-     * 
+     *
      * Description for Get a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,9 +224,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Get a certificate order.
-     * 
+     *
      * Description for Get a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -240,9 +242,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Get a certificate order.
-     * 
+     *
      * Description for Get a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -256,9 +258,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Create or update a certificate purchase order.
-     * 
+     *
      * Description for Create or update a certificate purchase order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -274,9 +276,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Create or update a certificate purchase order.
-     * 
+     *
      * Description for Create or update a certificate purchase order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -293,9 +295,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Create or update a certificate purchase order.
-     * 
+     *
      * Description for Create or update a certificate purchase order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -312,9 +314,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Create or update a certificate purchase order.
-     * 
+     *
      * Description for Create or update a certificate purchase order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -332,9 +334,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Create or update a certificate purchase order.
-     * 
+     *
      * Description for Create or update a certificate purchase order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -350,9 +352,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Create or update a certificate purchase order.
-     * 
+     *
      * Description for Create or update a certificate purchase order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -368,9 +370,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Create or update a certificate purchase order.
-     * 
+     *
      * Description for Create or update a certificate purchase order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -387,9 +389,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Create or update a certificate purchase order.
-     * 
+     *
      * Description for Create or update a certificate purchase order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -405,9 +407,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Create or update a certificate purchase order.
-     * 
+     *
      * Description for Create or update a certificate purchase order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -423,9 +425,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Create or update a certificate purchase order.
-     * 
+     *
      * Description for Create or update a certificate purchase order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -442,9 +444,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Create or update a certificate purchase order.
-     * 
+     *
      * Description for Create or update a certificate purchase order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -460,9 +462,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Delete an existing certificate order.
-     * 
+     *
      * Description for Delete an existing certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -476,9 +478,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Delete an existing certificate order.
-     * 
+     *
      * Description for Delete an existing certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,9 +494,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Delete an existing certificate order.
-     * 
+     *
      * Description for Delete an existing certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -509,9 +511,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Delete an existing certificate order.
-     * 
+     *
      * Description for Delete an existing certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -524,9 +526,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * List all certificates associated with a certificate order.
-     * 
+     *
      * Description for List all certificates associated with a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -541,9 +543,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * List all certificates associated with a certificate order.
-     * 
+     *
      * Description for List all certificates associated with a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -558,9 +560,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * List all certificates associated with a certificate order.
-     * 
+     *
      * Description for List all certificates associated with a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -576,9 +578,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Get the certificate associated with a certificate order.
-     * 
+     *
      * Description for Get the certificate associated with a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -595,9 +597,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Get the certificate associated with a certificate order.
-     * 
+     *
      * Description for Get the certificate associated with a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -614,9 +616,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Get the certificate associated with a certificate order.
-     * 
+     *
      * Description for Get the certificate associated with a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -634,9 +636,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Get the certificate associated with a certificate order.
-     * 
+     *
      * Description for Get the certificate associated with a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -652,9 +654,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * Description for Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -672,9 +674,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * Description for Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -693,9 +695,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * Description for Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -714,9 +716,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * Description for Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -736,9 +738,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * Description for Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -756,9 +758,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * Description for Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -775,9 +777,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * Description for Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -795,9 +797,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * Description for Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -815,9 +817,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * Description for Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -835,9 +837,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * Description for Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -857,9 +859,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * Description for Creates or updates a certificate and associates with key vault secret.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -876,9 +878,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Delete the certificate associated with a certificate order.
-     * 
+     *
      * Description for Delete the certificate associated with a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -894,9 +896,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Delete the certificate associated with a certificate order.
-     * 
+     *
      * Description for Delete the certificate associated with a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -911,9 +913,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Delete the certificate associated with a certificate order.
-     * 
+     *
      * Description for Delete the certificate associated with a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -930,9 +932,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Delete the certificate associated with a certificate order.
-     * 
+     *
      * Description for Delete the certificate associated with a certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param name Name of the certificate.
@@ -946,9 +948,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Reissue an existing certificate order.
-     * 
+     *
      * Description for Reissue an existing certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -964,9 +966,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Reissue an existing certificate order.
-     * 
+     *
      * Description for Reissue an existing certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -982,9 +984,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Reissue an existing certificate order.
-     * 
+     *
      * Description for Reissue an existing certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -1001,9 +1003,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Reissue an existing certificate order.
-     * 
+     *
      * Description for Reissue an existing certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -1018,9 +1020,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Renew an existing certificate order.
-     * 
+     *
      * Description for Renew an existing certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param renewCertificateOrderRequest Renew parameters.
@@ -1036,9 +1038,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Renew an existing certificate order.
-     * 
+     *
      * Description for Renew an existing certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param renewCertificateOrderRequest Renew parameters.
@@ -1054,9 +1056,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Renew an existing certificate order.
-     * 
+     *
      * Description for Renew an existing certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param renewCertificateOrderRequest Renew parameters.
@@ -1073,9 +1075,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Renew an existing certificate order.
-     * 
+     *
      * Description for Renew an existing certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param renewCertificateOrderRequest Renew parameters.
@@ -1090,9 +1092,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Resend certificate email.
-     * 
+     *
      * Description for Resend certificate email.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1106,9 +1108,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Resend certificate email.
-     * 
+     *
      * Description for Resend certificate email.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1122,9 +1124,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Resend certificate email.
-     * 
+     *
      * Description for Resend certificate email.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -1139,9 +1141,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Resend certificate email.
-     * 
+     *
      * Description for Resend certificate email.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1154,10 +1156,10 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Resend domain verification email to customer for this certificate order
-     * 
+     *
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param nameIdentifier Email address.
@@ -1173,10 +1175,10 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Resend domain verification email to customer for this certificate order
-     * 
+     *
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param nameIdentifier Email address.
@@ -1192,10 +1194,10 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Resend domain verification email to customer for this certificate order
-     * 
+     *
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param nameIdentifier Email address.
@@ -1212,10 +1214,10 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Resend domain verification email to customer for this certificate order
-     * 
+     *
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param nameIdentifier Email address.
@@ -1229,9 +1231,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Retrieve the list of certificate actions.
-     * 
+     *
      * Description for Retrieve the list of certificate actions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1246,9 +1248,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Retrieve the list of certificate actions.
-     * 
+     *
      * Description for Retrieve the list of certificate actions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1262,9 +1264,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Retrieve the list of certificate actions.
-     * 
+     *
      * Description for Retrieve the list of certificate actions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -1280,9 +1282,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Retrieve the list of certificate actions.
-     * 
+     *
      * Description for Retrieve the list of certificate actions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1296,9 +1298,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Retrieve email history.
-     * 
+     *
      * Description for Retrieve email history.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1313,9 +1315,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Retrieve email history.
-     * 
+     *
      * Description for Retrieve email history.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1329,9 +1331,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Retrieve email history.
-     * 
+     *
      * Description for Retrieve email history.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -1347,9 +1349,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Retrieve email history.
-     * 
+     *
      * Description for Retrieve email history.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1363,7 +1365,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     * 
+     *
      * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
      * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
@@ -1371,7 +1373,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param siteSealRequest Site seal request.
@@ -1387,7 +1389,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     * 
+     *
      * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
      * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
@@ -1395,7 +1397,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param siteSealRequest Site seal request.
@@ -1411,7 +1413,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     * 
+     *
      * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
      * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
@@ -1419,7 +1421,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param siteSealRequest Site seal request.
@@ -1436,7 +1438,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     * 
+     *
      * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
      * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
@@ -1444,7 +1446,7 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param siteSealRequest Site seal request.
@@ -1460,9 +1462,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Verify domain ownership for this certificate order.
-     * 
+     *
      * Description for Verify domain ownership for this certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1476,9 +1478,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Verify domain ownership for this certificate order.
-     * 
+     *
      * Description for Verify domain ownership for this certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1492,9 +1494,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Verify domain ownership for this certificate order.
-     * 
+     *
      * Description for Verify domain ownership for this certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -1510,9 +1512,9 @@ public interface AppServiceCertificateOrdersClient extends InnerSupportsGet<AppS
 
     /**
      * Verify domain ownership for this certificate order.
-     * 
+     *
      * Description for Verify domain ownership for this certificate order.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
