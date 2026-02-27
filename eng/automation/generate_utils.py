@@ -27,10 +27,7 @@ os.chdir(pwd)
 # Pattern for matching GitHub tspconfig.yaml blob URLs
 TSPCONFIG_URL_PATTERN = re.compile(
     r"^https://github.com/(?P<repo>Azure/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$",
-    re.IGNORECASE,
 )
-
-
 # Add two more indent for list in yaml dump
 class ListIndentDumper(yaml.SafeDumper):
 
@@ -431,13 +428,13 @@ def resolve_tspconfig_variables(value: str, config: dict, emitter_name: str) -> 
             # 1. Check emitter options
             var_value = config.get("options", {}).get(emitter_name, {}).get(var_name)
             # 2. Check parameters
-            if not var_value:
+            if var_value is None:
                 var_value = config.get("parameters", {}).get(var_name, {}).get("default")
             # 3. Check global config
-            if not var_value:
+            if var_value is None:
                 var_value = config.get(var_name)
 
-            if var_value and isinstance(var_value, str):
+            if isinstance(var_value, str):
                 new_resolved = new_resolved.replace(f"{{{var_name}}}", var_value)
 
         if new_resolved == resolved:
@@ -479,7 +476,7 @@ def resolve_sdk_folder_from_tspconfig(tsp_project: str, spec_root: str = None) -
             return None
 
         # Resolve all template variables following the spec validation order
-        # e.g. "{output-dir}/{service-dir}/azure-resourcemanager-widget" will resolve to "/sdk/{service}/azure-resourcemanager-widget" after resolution, and then we can parse the service name and get the sdk_folder
+        # e.g. "{output-dir}/{service-dir}/azure-resourcemanager-widget" will resolve to "sdk/{service}/azure-resourcemanager-widget" after resolution, and then we can parse the service name and get the sdk_folder
         sdk_folder = resolve_tspconfig_variables(emitter_output_dir, yaml_json, java_emitter)
         if not sdk_folder:
             return None
@@ -497,7 +494,7 @@ def resolve_sdk_folder_from_tspconfig(tsp_project: str, spec_root: str = None) -
         logging.info(f"[RESOLVE] Resolved SDK folder from tspconfig: {sdk_folder}")
         return sdk_folder
     except Exception as e:
-        logging.warning(f"[RESOLVE] Failed to resolve SDK folder from tspconfig: {e}")
+        logging.error(f"[RESOLVE] Failed to resolve SDK folder from tspconfig: {e}", exc_info=True)
         return None
 
 
@@ -612,7 +609,7 @@ def generate_typespec_project(
                 )
 
                 if remove_before_regen and group_id:
-                    remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
+                    remove_generated_source_code(os.path.join(sdk_root, sdk_folder), f"{group_id}.{service}")
                     _, current_version = set_or_increase_version(
                         sdk_root, group_id, module, version=version, preview=generate_beta_sdk
                     )
@@ -625,13 +622,13 @@ def generate_typespec_project(
                 succeeded = True
             else:
                 raise RuntimeError(
-                    "Failed to resolve SDK folder from tspconfig.yaml. "
+                    f"Failed to resolve SDK folder from tspconfig.yaml at '{tsp_project}'. "
                     "Please check that tspconfig.yaml has valid Java emitter options "
                     "with 'emitter-output-dir' and 'service-dir'."
                 )
     except (subprocess.CalledProcessError, RuntimeError) as error:
         logging.error(f"[GENERATE] Code generation failed: {error}")
-        if not sdk_folder and resolved_sdk_folder:
+        if resolved_sdk_folder:
             sdk_folder = resolved_sdk_folder
             module, service = parse_service_module(sdk_folder)
 
