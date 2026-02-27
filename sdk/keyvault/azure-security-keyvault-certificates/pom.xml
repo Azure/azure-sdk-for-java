@@ -79,7 +79,7 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-lts8on</artifactId>
-      <version>2.73.6</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
+      <version>2.73.8</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
