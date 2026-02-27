@@ -143,7 +143,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         Document docDefinition = getDocumentDefinition(cnt);
 
-        int maxRetries = 10;
+        int maxRetries = 20;
         for (int retry = 0; retry <= maxRetries; retry++) {
             try {
                 return client
@@ -151,11 +151,9 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
             } catch (CosmosException e) {
                 if (e.getStatusCode() == 429 && retry < maxRetries) {
                     long retryAfterMs = e.getRetryAfterDuration().toMillis();
-                    if (retryAfterMs <= 0) {
-                        retryAfterMs = 2000;
-                    }
+                    long backoffMs = Math.max(retryAfterMs, 1000L * (retry + 1));
                     try {
-                        TimeUnit.MILLISECONDS.sleep(retryAfterMs);
+                        TimeUnit.MILLISECONDS.sleep(backoffMs);
                     } catch (InterruptedException ie) {
                         Thread.currentThread().interrupt();
                         throw e;

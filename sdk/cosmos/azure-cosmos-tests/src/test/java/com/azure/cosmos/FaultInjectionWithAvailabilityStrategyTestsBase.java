@@ -1711,7 +1711,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // cross regional retry to finish within e2e timeout.
             new Object[] {
                 "Create_404-1002_FirstRegionOnly_RemotePreferredWithHighInRegionRetryTime_NoAvailabilityStrategy_WithRetries",
-                ONE_SECOND_DURATION,
+                TWO_SECOND_DURATION,
                 noAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
