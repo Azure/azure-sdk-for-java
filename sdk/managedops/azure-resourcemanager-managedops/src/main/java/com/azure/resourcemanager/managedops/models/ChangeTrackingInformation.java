@@ -24,7 +24,7 @@ public final class ChangeTrackingInformation implements JsonSerializable<ChangeT
     /*
      * Indicates whether the service is enabled.
      */
-    private ChangeTrackingInformationEnablementStatus enablementStatus;
+    private EnablementState enablementStatus;
 
     /**
      * Creates an instance of ChangeTrackingInformation class.
@@ -46,7 +46,7 @@ public final class ChangeTrackingInformation implements JsonSerializable<ChangeT
      * 
      * @return the enablementStatus value.
      */
-    public ChangeTrackingInformationEnablementStatus enablementStatus() {
+    public EnablementState enablementStatus() {
         return this.enablementStatus;
     }
 
@@ -82,7 +82,7 @@ public final class ChangeTrackingInformation implements JsonSerializable<ChangeT
                     deserializedChangeTrackingInformation.dcrId = reader.getString();
                 } else if ("enablementStatus".equals(fieldName)) {
                     deserializedChangeTrackingInformation.enablementStatus
-                        = ChangeTrackingInformationEnablementStatus.fromString(reader.getString());
+                        = EnablementState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

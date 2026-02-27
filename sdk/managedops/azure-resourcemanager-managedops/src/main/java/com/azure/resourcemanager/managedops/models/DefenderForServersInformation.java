@@ -19,7 +19,7 @@ public final class DefenderForServersInformation implements JsonSerializable<Def
     /*
      * Indicates whether the service is enabled.
      */
-    private ChangeTrackingInformationEnablementStatus enablementStatus;
+    private EnablementState enablementStatus;
 
     /**
      * Creates an instance of DefenderForServersInformation class.
@@ -32,7 +32,7 @@ public final class DefenderForServersInformation implements JsonSerializable<Def
      * 
      * @return the enablementStatus value.
      */
-    public ChangeTrackingInformationEnablementStatus enablementStatus() {
+    public EnablementState enablementStatus() {
         return this.enablementStatus;
     }
 
@@ -66,7 +66,7 @@ public final class DefenderForServersInformation implements JsonSerializable<Def
 
                 if ("enablementStatus".equals(fieldName)) {
                     deserializedDefenderForServersInformation.enablementStatus
-                        = ChangeTrackingInformationEnablementStatus.fromString(reader.getString());
+                        = EnablementState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

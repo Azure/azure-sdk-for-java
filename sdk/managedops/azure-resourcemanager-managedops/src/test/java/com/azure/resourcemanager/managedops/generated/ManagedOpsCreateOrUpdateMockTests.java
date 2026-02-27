@@ -13,7 +13,7 @@ import com.azure.resourcemanager.managedops.ManagedOpsManager;
 import com.azure.resourcemanager.managedops.models.AzureMonitorConfiguration;
 import com.azure.resourcemanager.managedops.models.ChangeTrackingConfiguration;
 import com.azure.resourcemanager.managedops.models.DesiredConfiguration;
-import com.azure.resourcemanager.managedops.models.DesiredConfigurationDefenderForServers;
+import com.azure.resourcemanager.managedops.models.DesiredEnablementState;
 import com.azure.resourcemanager.managedops.models.ManagedOp;
 import com.azure.resourcemanager.managedops.models.ManagedOpsProperties;
 import java.nio.charset.StandardCharsets;
@@ -42,8 +42,8 @@ public final class ManagedOpsCreateOrUpdateMockTests {
                     new ChangeTrackingConfiguration().withLogAnalyticsWorkspaceId("sfqpteehz"))
                 .withAzureMonitorInsights(new AzureMonitorConfiguration().withAzureMonitorWorkspaceId("vypyqrimzinpv"))
                 .withUserAssignedManagedIdentityId("wjdk")
-                .withDefenderForServers(DesiredConfigurationDefenderForServers.DISABLE)
-                .withDefenderCspm(DesiredConfigurationDefenderForServers.ENABLE)))
+                .withDefenderForServers(DesiredEnablementState.DISABLE)
+                .withDefenderCspm(DesiredEnablementState.ENABLE)))
             .create();
 
         Assertions.assertEquals("u",
@@ -52,9 +52,9 @@ public final class ManagedOpsCreateOrUpdateMockTests {
             response.properties().desiredConfiguration().azureMonitorInsights().azureMonitorWorkspaceId());
         Assertions.assertEquals("gqexzlocxs",
             response.properties().desiredConfiguration().userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
+        Assertions.assertEquals(DesiredEnablementState.ENABLE,
             response.properties().desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredEnablementState.DISABLE,
             response.properties().desiredConfiguration().defenderCspm());
     }
 }
