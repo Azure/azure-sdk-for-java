@@ -78,12 +78,6 @@ This README is based on the latest released version of the Azure Compute Batch S
     - [Get Node File Properties](#get-node-file-properties)
     - [Get Remote Login Settings](#get-remote-login-settings)
     - [Upload Node Logs](#upload-node-logs)
-  - [Certificate Operations](#certificate-operations)
-    - [Create Certificate](#create-certificate)
-    - [Get Certificate](#get-certificate)
-    - [List Certificates](#list-certificates)
-    - [Delete Certificate](#delete-certificate)
-    - [Cancel Delete Certificate](#cancel-delete-certificate)
   - [Application Operations](#application-operations)
     - [Get Application](#get-application)
     - [List Applications](#list-applications)
@@ -1010,59 +1004,6 @@ batchAsyncClient.uploadNodeLogs("poolId", "nodeId", null)
         System.out.println("Number of files uploaded: " + logResult.getNumberOfFilesUploaded());
         System.out.println("Log upload container URL: " + logResult.getVirtualDirectoryName());
     });
-```
-
-### Certificate Operations
-
-Note: Certificate operations are deprecated. Please migrate to use Azure Key Vault. For more information, see [Migrate Batch account certificates to Azure Key Vault](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-
-#### Create Certificate
-
-The `createCertificate` method can be called with a `BatchCertificate` parameter to create a certificate.
-
-```java com.azure.compute.batch.create-certificate.certificate-create
-batchClient.createCertificate(
-    new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2randomByb2Hash==".getBytes())
-        .setCertificateFormat(BatchCertificateFormat.PFX)
-        .setPassword("fakeTokenPlaceholder"),
-    null);
-```
-
-#### Get Certificate
-
-The `getCertificate` method can be used to get the certificate.
-
-```java com.azure.compute.batch.get-certificate.certificate-get
-BatchCertificate certificateResponse = batchClient.getCertificate("sha1", "0123456789abcdef0123456789abcdef01234567",
-    new BatchCertificateGetOptions());
-```
-
-#### List Certificates
-
-The `listCertificates` method can be used to get a list of certificates.
-
-```java com.azure.compute.batch.list-certificates.certificate-list
-PagedIterable<BatchCertificate> certificateList = batchClient.listCertificates(new BatchCertificatesListOptions());
-```
-
-#### Delete Certificate
-
-The `beginDeleteCertificate` method can be used to delete a certificate.
-
-```java com.azure.compute.batch.certificate.delete-certificate
-String thumbprintAlgorithm = "sha1";
-String thumbprint = "your-thumbprint";
-SyncPoller<BatchCertificate, Void> deleteCertificatePoller = batchClient.beginDeleteCertificate(thumbprintAlgorithm, thumbprint);
-deleteCertificatePoller.waitForCompletion();
-PollResponse<BatchCertificate> finalDeleteCertificateResponse = deleteCertificatePoller.poll();
-```
-
-#### Cancel Delete Certificate
-
-The `cancelCertificateDeletion` method can be used to cancel the deletion of a certificate.
-
-```java com.azure.compute.batch.cancel-certificate-deletion.certificate-cancel-delete
-batchClient.cancelCertificateDeletion("sha1", "0123456789abcdef0123456789abcdef01234567", null);
 ```
 
 ### Application Operations

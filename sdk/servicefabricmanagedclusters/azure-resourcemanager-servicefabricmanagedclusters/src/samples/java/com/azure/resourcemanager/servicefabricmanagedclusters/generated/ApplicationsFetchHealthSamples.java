@@ -12,7 +12,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.HealthFilte
  */
 public final class ApplicationsFetchHealthSamples {
     /*
-     * x-ms-original-file: 2025-10-01-preview/ApplicationActionFetchHealth_example.json
+     * x-ms-original-file: 2026-02-01/ApplicationActionFetchHealth_example.json
      */
     /**
      * Sample code: Fetch application health.
