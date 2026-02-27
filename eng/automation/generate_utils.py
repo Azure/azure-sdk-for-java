@@ -393,6 +393,68 @@ def update_spec(spec: str, subspec: str) -> str:
     return spec
 
 
+def resolve_tspconfig_variables(value: str, config: dict, emitter_name: str) -> Optional[str]:
+    """
+    Resolve template variables in a tspconfig value, following the same resolution
+    order as the spec validation (sdk-tspconfig-validation.ts):
+    1. Emitter options (e.g., options.@azure-tools/typespec-java.service-dir)
+    2. Parameters (e.g., parameters.service-dir.default)
+    3. Global config keys
+
+    {output-dir} is treated as empty since we want paths relative to sdk_root.
+    {project-root} is similarly a runtime variable and is ignored.
+
+    Iterates up to 10 times to handle nested variables.
+    Returns the resolved string, or None if unresolved variables remain.
+    """
+    # Runtime variables provided by tsp-client, not defined in tspconfig.yaml.
+    # {output-dir} is the sdk_root — we want relative paths, so treat as empty.
+    # {project-root} is the spec project root — not relevant for SDK folder resolution. Mainly used for typespec-autorest. Treat as empty as well.
+    runtime_variables = {"output-dir": "", "project-root": ""}
+
+    resolved = value
+    max_iterations = 10
+
+    for _ in range(max_iterations):
+        if "{" not in resolved:
+            return resolved
+
+        new_resolved = resolved
+        for match in re.finditer(r"\{([^}]+)\}", resolved):
+            var_name = match.group(1)
+
+            # 0. Check runtime variables
+            if var_name in runtime_variables:
+                new_resolved = new_resolved.replace(f"{{{var_name}}}", runtime_variables[var_name])
+                continue
+
+            # 1. Check emitter options
+            var_value = config.get("options", {}).get(emitter_name, {}).get(var_name)
+            # 2. Check parameters
+            if not var_value:
+                var_value = config.get("parameters", {}).get(var_name, {}).get("default")
+            # 3. Check global config
+            if not var_value:
+                var_value = config.get(var_name)
+
+            if var_value and isinstance(var_value, str):
+                new_resolved = new_resolved.replace(f"{{{var_name}}}", var_value)
+
+        if new_resolved == resolved:
+            # No progress — unresolved variables remain
+            unresolved = re.search(r"\{([^}]+)\}", resolved)
+            var = unresolved.group(1) if unresolved else "unknown"
+            logging.warning(f"[RESOLVE] Could not resolve variable {{{var}}} in tspconfig")
+            return None
+        resolved = new_resolved
+
+    if "{" in resolved:
+        logging.warning("[RESOLVE] Maximum resolution depth reached, possible circular reference")
+        return None
+
+    return resolved
+
+
 def resolve_sdk_folder_from_tspconfig(tsp_project: str, spec_root: str = None) -> Optional[str]:
     """
     Parse tspconfig.yaml to determine the SDK folder without running generation.
@@ -410,33 +472,25 @@ def resolve_sdk_folder_from_tspconfig(tsp_project: str, spec_root: str = None) -
             logging.warning("[RESOLVE] tspconfig.yaml root is not a mapping; cannot resolve SDK folder")
             return None
 
-        java_options = yaml_json.get("options", {}).get("@azure-tools/typespec-java", {})
+        java_emitter = "@azure-tools/typespec-java"
+        java_options = yaml_json.get("options", {}).get(java_emitter, {})
         emitter_output_dir = java_options.get("emitter-output-dir")
-        if not emitter_output_dir:
+        if not emitter_output_dir or not isinstance(emitter_output_dir, str):
             return None
 
-        # service-dir can be overridden in the Java emitter options
-        service_dir = java_options.get("service-dir") or (
-            yaml_json.get("parameters", {}).get("service-dir", {}).get("default")
-        )
-        if not service_dir:
+        # Resolve all template variables following the spec validation order
+        # e.g. "{output-dir}/{service-dir}/azure-resourcemanager-widget" will resolve to "/sdk/{service}/azure-resourcemanager-widget" after resolution, and then we can parse the service name and get the sdk_folder
+        sdk_folder = resolve_tspconfig_variables(emitter_output_dir, yaml_json, java_emitter)
+        if not sdk_folder:
             return None
 
-        # Normalize service_dir to ensure consistent path separators
-        service_dir = os.path.normpath(service_dir)
+        # Remove leading path separator after stripping output-dir
+        sdk_folder = re.sub(r"^[/\\]+", "", sdk_folder)
 
-        # Resolve template variables to get relative path from sdk_root
-        sdk_folder = emitter_output_dir
-        sdk_folder = sdk_folder.replace("{output-dir}", "").lstrip("/\\")
-        sdk_folder = sdk_folder.replace("{service-dir}", service_dir)
-
-        # Normalize the resolved SDK folder path for consistent parsing
-        sdk_folder = os.path.normpath(sdk_folder)
-
-        # Sanity check: sdk_folder should start with service_dir
-        if not sdk_folder.startswith(service_dir):
+        # Sanity check: sdk_folder should be under sdk/ directory
+        if not sdk_folder.startswith("sdk/"):
             logging.warning(
-                f"[RESOLVE] Resolved SDK folder '{sdk_folder}' does not start with service-dir '{service_dir}'"
+                f"[RESOLVE] Resolved SDK folder '{sdk_folder}' does not start with 'sdk/'"
             )
             return None
 
