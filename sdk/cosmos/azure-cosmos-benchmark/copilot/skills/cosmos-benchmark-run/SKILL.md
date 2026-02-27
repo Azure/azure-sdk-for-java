@@ -12,9 +12,9 @@ Execute a benchmark on one or more VMs. Always uses `run-benchmark.sh` wrapper (
 Auto-detect from provision output:
 
 ```bash
-VM_IP=$(cat .vm-ip)
-VM_USER=$(cat .vm-user)
-VM_KEY=$(cat .vm-key)
+VM_IP=$(cat benchmark-config/vm-ip)
+VM_USER=$(cat benchmark-config/vm-user)
+VM_KEY=$(cat benchmark-config/vm-key)
 SSH_CMD="ssh -i $VM_KEY $VM_USER@$VM_IP"
 ```
 
@@ -22,10 +22,10 @@ SSH_CMD="ssh -i $VM_KEY $VM_USER@$VM_IP"
 
 ### Application Insights (auto-configure from provision output)
 
-If `test-setup/app-insights-connection-string.txt` exists:
+If `benchmark-config/app-insights-connection-string.txt` exists:
 
 ```bash
-AI_CONN_STR=$(cat test-setup/app-insights-connection-string.txt)
+AI_CONN_STR=$(cat benchmark-config/app-insights-connection-string.txt)
 $SSH_CMD "echo 'export APPLICATIONINSIGHTS_CONNECTION_STRING=\"$AI_CONN_STR\"' >> ~/.bashrc"
 ```
 
@@ -67,7 +67,7 @@ Always run inside tmux so the benchmark survives SSH disconnection.
 
 ```bash
 $SSH_CMD "tmux new-session -d -s bench 'cd ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark && \
-  bash scripts/run-benchmark.sh CHURN ~/tenants.json ./results/<run-name> [extra-flags]'"
+  bash copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh CHURN ~/tenants.json ./results/<run-name> [extra-flags]'"
 ```
 
 ### Monitor progress
@@ -99,19 +99,19 @@ For comparing versions or running different scenarios simultaneously:
 # VM 1: baseline (main branch)
 ssh -i $VM_KEY $VM_USER@<VM1_IP> "tmux new-session -d -s bench \
   'cd ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark && \
-   bash scripts/run-benchmark.sh CHURN ~/tenants.json ./results/baseline-main'"
+   bash copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh CHURN ~/tenants.json ./results/baseline-main'"
 
 # VM 2: fix branch
 ssh -i $VM_KEY $VM_USER@<VM2_IP> "tmux new-session -d -s bench \
   'cd ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark && \
-   bash scripts/run-benchmark.sh CHURN ~/tenants.json ./results/fix-branch'"
+   bash copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh CHURN ~/tenants.json ./results/fix-branch'"
 ```
 
 To test different SDK versions on different VMs, use the **setup** skill on each VM with different branch/PR/commit targets before running.
 
 ## 5. What run-benchmark.sh Does
 
-The wrapper script (`scripts/run-benchmark.sh`) handles:
+The wrapper script (`copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh`) handles:
 1. Captures git metadata (branch, commit) → `git-info.json`
 2. Launches JVM with `-Xmx8g -XX:+UseG1GC` + GC logging
 3. Spawns `monitor.sh` in parallel for external JVM monitoring → `monitor.csv`
@@ -136,5 +136,5 @@ Suggest using the **cosmos-benchmark-analyze** skill to analyze results.
 
 - **Preset flag recipes**: `references/presets.md`
 - **Full operation catalog & custom scenarios**: `references/scenarios.md`
-- **Run script**: `sdk/cosmos/azure-cosmos-benchmark/scripts/run-benchmark.sh`
-- **Trigger script**: `sdk/cosmos/azure-cosmos-benchmark/scripts/trigger-benchmark.sh`
+- **Run script**: `scripts/run-benchmark.sh`
+- **Trigger script**: `scripts/trigger-benchmark.sh`

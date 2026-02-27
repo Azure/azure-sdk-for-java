@@ -11,7 +11,7 @@ Comprehensive post-run analysis: download results, CSV metrics, run comparison, 
 
 Auto-detect VM connection:
 ```bash
-VM_IP=$(cat .vm-ip); VM_USER=$(cat .vm-user); VM_KEY=$(cat .vm-key)
+VM_IP=$(cat benchmark-config/vm-ip); VM_USER=$(cat benchmark-config/vm-user); VM_KEY=$(cat benchmark-config/vm-key)
 ```
 
 Download a run's results:
@@ -156,7 +156,7 @@ Produce a markdown report with embedded charts (as inline base64 images or Plotl
 ### Using generate-dashboard.py
 
 ```bash
-python3 scripts/generate-dashboard.py \
+python3 copilot/skills/cosmos-benchmark-analyze/scripts/generate-dashboard.py \
   <results-dir>/metrics \
   <results-dir>/benchmark.log \
   <results-dir>/report.html \
@@ -193,4 +193,4 @@ Placeholder: user will provide specific KQL queries for latency percentiles, err
 - **Pass/fail thresholds and CSV columns**: `references/thresholds.md`
 - **Python hprof parser**: `references/parse_hprof.py`
 - **Kusto table schema & ingestion**: `references/kusto-schema.md`
-- **Dashboard generator**: `sdk/cosmos/azure-cosmos-benchmark/scripts/generate-dashboard.py`
+- **Dashboard generator**: `scripts/generate-dashboard.py`

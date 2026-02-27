@@ -28,8 +28,8 @@ Check and report the current state of the entire benchmark environment.
    - Read `git-info.json` for branch/commit if present
    - Show most recent 5–10 runs
 
-4. **Benchmark VM**: Check for `.vm-ip` file in workspace root.
-   - If found, SSH to verify: `ssh -i $(cat .vm-key) $(cat .vm-user)@$(cat .vm-ip) "echo OK; uptime; java -version 2>&1 | head -1; ls ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark/results/ 2>/dev/null | tail -5"`
+4. **Benchmark VM**: Check for `benchmark-config/vm-ip` file in workspace root.
+   - If found, SSH to verify: `ssh -i $(cat benchmark-config/vm-key) $(cat benchmark-config/vm-user)@$(cat benchmark-config/vm-ip) "echo OK; uptime; java -version 2>&1 | head -1; ls ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark/results/ 2>/dev/null | tail -5"`
    - Report: reachable/unreachable, uptime, JDK version, runs on VM
 
 5. **Build status**: Check for `sdk/cosmos/azure-cosmos-benchmark/target/azure-cosmos-benchmark-*-jar-with-dependencies.jar`.

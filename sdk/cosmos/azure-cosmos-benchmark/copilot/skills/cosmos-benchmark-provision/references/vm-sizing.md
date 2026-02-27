@@ -1,13 +1,8 @@
 # VM Sizing Reference
 
-## Recommended configurations by workload
+## Default VM size
 
-| Tenants | Scenario | VM Size | vCPUs | RAM | Notes |
-|---------|----------|---------|-------|-----|-------|
-| 1-10 | Quick test | Standard_D4s_v5 | 4 | 16 GB | Minimal |
-| 10-50 | CHURN, SCALING | Standard_D16s_v5 | 16 | 64 GB | Default recommendation |
-| 50-100 | POOL_PRESSURE | Standard_D32s_v5 | 32 | 128 GB | High concurrency |
-| 100+ | SOAK (24h) | Standard_D16s_v5 | 16 | 64 GB | Long-running, moderate load |
+Use **Standard_D16s_v5** (16 vCPUs, 64 GB RAM) for all benchmark workloads.
 
 ## Cost considerations
 

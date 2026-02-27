@@ -111,13 +111,13 @@ else
     exit 1
 fi
 
-echo "$VM_IP" > .vm-ip
-echo "$SSH_USER" > .vm-user
-echo "$SSH_PRIVATE_KEY" > .vm-key
+echo "$VM_IP" > benchmark-config/vm-ip
+echo "$SSH_USER" > benchmark-config/vm-user
+echo "$SSH_PRIVATE_KEY" > benchmark-config/vm-key
 
-# Also save to test-setup/ for organized access
-mkdir -p test-setup
-echo "VM_IP=$VM_IP" > test-setup/vm-config.env
-echo "VM_USER=$SSH_USER" >> test-setup/vm-config.env
-echo "VM_KEY_PATH=$SSH_PRIVATE_KEY" >> test-setup/vm-config.env
+# Also save to benchmark-config/ for organized access
+mkdir -p benchmark-config
+echo "VM_IP=$VM_IP" > benchmark-config/vm-config.env
+echo "VM_USER=$SSH_USER" >> benchmark-config/vm-config.env
+echo "VM_KEY_PATH=$SSH_PRIVATE_KEY" >> benchmark-config/vm-config.env
 echo "=== Ready: $(ssh_cmd) ${SSH_USER}@${VM_IP} ==="

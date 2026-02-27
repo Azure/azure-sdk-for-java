@@ -122,6 +122,12 @@ public class TenantWorkloadConfig {
     @JsonProperty("nonPointOperationLatencyThresholdMs")
     private Integer nonPointOperationLatencyThresholdMs;
 
+    /**
+     * Per-client flag: controls region-scoped session capturing on the CosmosClientBuilder.
+     * Unlike JVM-global system properties (circuit breaker, PPAF, minConnectionPoolSize),
+     * this is set per-client via {@code CosmosClientBuilderAccessor.setRegionScopedSessionCapturingEnabled}
+     * and can genuinely differ per tenant.
+     */
     @JsonProperty("isRegionScopedSessionContainerEnabled")
     private Boolean isRegionScopedSessionContainerEnabled;
 
@@ -145,9 +151,6 @@ public class TenantWorkloadConfig {
 
     @JsonProperty("aggressiveWarmupDuration")
     private String aggressiveWarmupDuration;
-
-    @JsonProperty("minConnectionPoolSizePerEndpoint")
-    private Integer minConnectionPoolSizePerEndpoint;
 
     // ======== Connection params ========
 
@@ -175,14 +178,6 @@ public class TenantWorkloadConfig {
 
     /** Cosmos SDK micrometer registry (set by orchestrator, not from JSON). */
     private transient MeterRegistry cosmosMicrometerRegistry;
-
-    // ======== System property flags ========
-
-    @JsonProperty("isPartitionLevelCircuitBreakerEnabled")
-    private String isPartitionLevelCircuitBreakerEnabled;
-
-    @JsonProperty("isPerPartitionAutomaticFailoverRequired")
-    private String isPerPartitionAutomaticFailoverRequired;
 
     public TenantWorkloadConfig() {}
 
@@ -270,10 +265,6 @@ public class TenantWorkloadConfig {
         return Duration.parse(aggressiveWarmupDuration);
     }
 
-    public int getMinConnectionPoolSizePerEndpoint() {
-        return minConnectionPoolSizePerEndpoint != null ? minConnectionPoolSizePerEndpoint : 0;
-    }
-
     public ConnectionMode getConnectionMode() {
         if (connectionMode == null) return ConnectionMode.DIRECT;
         return ConnectionMode.valueOf(connectionMode.toUpperCase());
@@ -299,9 +290,6 @@ public class TenantWorkloadConfig {
     public String getApplicationName() { return applicationName != null ? applicationName : ""; }
     public boolean isSuppressCleanup() { return suppressCleanup; }
     public MeterRegistry getCosmosMicrometerRegistry() { return cosmosMicrometerRegistry; }
-
-    public String getIsPartitionLevelCircuitBreakerEnabled() { return isPartitionLevelCircuitBreakerEnabled; }
-    public String getIsPerPartitionAutomaticFailoverRequired() { return isPerPartitionAutomaticFailoverRequired; }
 
     /**
      * Builds a TokenCredential for managed identity authentication.
@@ -425,8 +413,6 @@ public class TenantWorkloadConfig {
                     if (overwrite || proactiveConnectionRegionsCount == null) proactiveConnectionRegionsCount = Integer.parseInt(value); break;
                 case "aggressiveWarmupDuration":
                     if (overwrite || aggressiveWarmupDuration == null) aggressiveWarmupDuration = value; break;
-                case "minConnectionPoolSizePerEndpoint":
-                    if (overwrite || minConnectionPoolSizePerEndpoint == null) minConnectionPoolSizePerEndpoint = Integer.parseInt(value); break;
                 case "connectionMode":
                     if (overwrite || connectionMode == null) connectionMode = value; break;
                 case "consistencyLevel":
@@ -437,10 +423,12 @@ public class TenantWorkloadConfig {
                     if (overwrite || preferredRegionsList == null) preferredRegionsList = value; break;
                 case "manageDatabase":
                     if (overwrite || manageDatabase == null) manageDatabase = Boolean.parseBoolean(value); break;
+                // JVM-global properties (minConnectionPoolSizePerEndpoint, isPartitionLevelCircuitBreakerEnabled,
+                // isPerPartitionAutomaticFailoverRequired) are handled in BenchmarkConfig, not per-tenant.
+                case "minConnectionPoolSizePerEndpoint":
                 case "isPartitionLevelCircuitBreakerEnabled":
-                    if (overwrite || isPartitionLevelCircuitBreakerEnabled == null) isPartitionLevelCircuitBreakerEnabled = value; break;
                 case "isPerPartitionAutomaticFailoverRequired":
-                    if (overwrite || isPerPartitionAutomaticFailoverRequired == null) isPerPartitionAutomaticFailoverRequired = value; break;
+                    break;
                 default:
                     logger.debug("Unknown config key '{}' (value: {})", key, value);
                     break;
@@ -512,15 +500,14 @@ public class TenantWorkloadConfig {
         if (cfg.getAggressiveWarmupDuration() != null) {
             t.aggressiveWarmupDuration = cfg.getAggressiveWarmupDuration().toString();
         }
-        t.minConnectionPoolSizePerEndpoint = cfg.getMinConnectionPoolSizePerEndpoint();
 
         // Connection
         t.preferredRegionsList = cfg.getPreferredRegionsList() != null
             ? String.join(",", cfg.getPreferredRegionsList()) : null;
 
-        // System property flags
-        t.isPartitionLevelCircuitBreakerEnabled = String.valueOf(cfg.isPartitionLevelCircuitBreakerEnabled());
-        t.isPerPartitionAutomaticFailoverRequired = String.valueOf(cfg.isPerPartitionAutomaticFailoverRequired());
+        // Note: JVM-global system properties (isPartitionLevelCircuitBreakerEnabled,
+        // isPerPartitionAutomaticFailoverRequired, minConnectionPoolSizePerEndpoint)
+        // are handled in BenchmarkConfig, not per-tenant.
 
         return t;
     }
@@ -552,11 +539,37 @@ public class TenantWorkloadConfig {
             for (JsonNode tenantNode : tenantsNode) {
                 TenantWorkloadConfig tenant = OBJECT_MAPPER.treeToValue(tenantNode, TenantWorkloadConfig.class);
                 tenant.applyMap(globalDefaults, false);
+                validateTenantConfig(tenant);
                 tenants.add(tenant);
             }
         }
 
         logger.info("Parsed {} tenants from {}", tenants.size(), tenantsFile.getName());
         return tenants;
+    }
+
+    private static void validateTenantConfig(TenantWorkloadConfig tenant) {
+        List<String> missing = new ArrayList<>();
+        if (isNullOrEmpty(tenant.getServiceEndpoint())) {
+            missing.add("serviceEndpoint");
+        }
+        if (isNullOrEmpty(tenant.getDatabaseId())) {
+            missing.add("databaseId");
+        }
+        if (isNullOrEmpty(tenant.getContainerId())) {
+            missing.add("containerId");
+        }
+        if (!tenant.isManagedIdentityRequired()
+            && isNullOrEmpty(tenant.getMasterKey())) {
+            missing.add("masterKey (required when isManagedIdentityRequired is not true)");
+        }
+        if (!missing.isEmpty()) {
+            throw new IllegalArgumentException(
+                "Tenant '" + tenant.getId() + "' is missing required configuration: " + missing);
+        }
+    }
+
+    private static boolean isNullOrEmpty(String value) {
+        return value == null || value.isEmpty();
     }
 }

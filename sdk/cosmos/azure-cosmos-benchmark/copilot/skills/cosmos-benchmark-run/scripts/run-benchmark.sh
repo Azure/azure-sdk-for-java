@@ -8,8 +8,8 @@ set -euo pipefail
 
 SCENARIO=${1:-SCALING}
 TENANTS_FILE=${2:-tenants.json}
-if [[ ! -f "$TENANTS_FILE" && -f "sdk/cosmos/azure-cosmos-benchmark/test-setup/tenants.json" ]]; then
-    TENANTS_FILE="sdk/cosmos/azure-cosmos-benchmark/test-setup/tenants.json"
+if [[ ! -f "$TENANTS_FILE" && -f "sdk/cosmos/azure-cosmos-benchmark/benchmark-config/tenants.json" ]]; then
+    TENANTS_FILE="sdk/cosmos/azure-cosmos-benchmark/benchmark-config/tenants.json"
 fi
 
 OUTPUT_DIR=${3:-./results/$(date +%Y%m%dT%H%M%S)-${SCENARIO}}

@@ -1,24 +1,5 @@
-# Test setup (contains secrets and tenant configs)
-test-setup/
-!test-setup/README.md
-!test-setup/tenants-sample.json
-
-# Test results (downloaded from VM)
-test-results/
-!test-results/README.md
-
-# VM connection files
-.vm-ip
-.vm-user
-.vm-key
+# Benchmark config (contains secrets, tenant configs, VM connection info)
+benchmark-config/
 
 # Results directory
 results/
-
-# Scripts
-scripts/
-
-# Benchmark documentation
-BENCHMARK_RESULTS.md
-IMPLEMENTATION_GUIDE.md
-MULTI_TENANCY_TEST_PLAN.md

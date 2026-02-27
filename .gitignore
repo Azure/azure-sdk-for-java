@@ -126,6 +126,3 @@ stress-test-addons*
 
 # Temp typespec files
 TempTypeSpecFiles/
-
-# Copilot skills (local agent config)
-.github/skills/

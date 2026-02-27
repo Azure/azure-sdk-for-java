@@ -15,13 +15,13 @@ Determine user intent and follow the matching workflow:
 
 | User wants to... | Skill to load |
 |---|---|
-| Provision Azure resources (Cosmos accounts, App Insights, VMs) | Read `.github/skills/cosmos-benchmark-provision/SKILL.md` |
-| Set up environment (install tools, clone repo, generate config, build) | Read `.github/skills/cosmos-benchmark-setup/SKILL.md` |
-| Run a benchmark (checkout branch/PR, select scenario, execute) | Read `.github/skills/cosmos-benchmark-run/SKILL.md` |
-| Analyze results (CSV, compare runs, heap/thread dumps, reports, Kusto) | Read `.github/skills/cosmos-benchmark-analyze/SKILL.md` |
-| Check status (resources, runs, VM, build, config overview) | Read `.github/skills/cosmos-benchmark-status/SKILL.md` |
+| Provision Azure resources (Cosmos accounts, App Insights, VMs) | Read `sdk/cosmos/azure-cosmos-benchmark/copilot/skills/cosmos-benchmark-provision/SKILL.md` |
+| Set up environment (install tools, clone repo, generate config, build) | Read `sdk/cosmos/azure-cosmos-benchmark/copilot/skills/cosmos-benchmark-setup/SKILL.md` |
+| Run a benchmark (checkout branch/PR, select scenario, execute) | Read `sdk/cosmos/azure-cosmos-benchmark/copilot/skills/cosmos-benchmark-run/SKILL.md` |
+| Analyze results (CSV, compare runs, heap/thread dumps, reports, Kusto) | Read `sdk/cosmos/azure-cosmos-benchmark/copilot/skills/cosmos-benchmark-analyze/SKILL.md` |
+| Check status (resources, runs, VM, build, config overview) | Read `sdk/cosmos/azure-cosmos-benchmark/copilot/skills/cosmos-benchmark-status/SKILL.md` |
 
-When a skill references files in its `references/` directory, read them from the skill's directory (e.g., `.github/skills/cosmos-benchmark-analyze/references/thresholds.md`).
+When a skill references files in its `references/` directory, read them from the skill's directory (e.g., `sdk/cosmos/azure-cosmos-benchmark/copilot/skills/cosmos-benchmark-analyze/references/thresholds.md`).
 
 ## Subagent Usage
 

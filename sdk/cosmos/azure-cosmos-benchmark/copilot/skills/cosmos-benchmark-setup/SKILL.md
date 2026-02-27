@@ -12,13 +12,13 @@ Prepare the execution environment after infrastructure is provisioned.
 Auto-detect VM connection info from provision output:
 
 ```bash
-VM_IP=$(cat .vm-ip)
-VM_USER=$(cat .vm-user)
-VM_KEY=$(cat .vm-key)
+VM_IP=$(cat benchmark-config/vm-ip)
+VM_USER=$(cat benchmark-config/vm-user)
+VM_KEY=$(cat benchmark-config/vm-key)
 SSH_CMD="ssh -i $VM_KEY $VM_USER@$VM_IP"
 ```
 
-If `.vm-ip` doesn't exist, ask the user for VM IP and SSH credentials.
+If `benchmark-config/vm-ip` doesn't exist, ask the user for VM IP and SSH credentials.
 
 All remote commands below use `$SSH_CMD` as shorthand.
 
@@ -27,7 +27,7 @@ All remote commands below use `$SSH_CMD` as shorthand.
 Run the setup script:
 
 ```bash
-$SSH_CMD 'bash -s' < sdk/cosmos/azure-cosmos-benchmark/scripts/setup-benchmark-vm.sh
+$SSH_CMD 'bash -s' < copilot/skills/cosmos-benchmark-setup/scripts/setup-benchmark-vm.sh
 ```
 
 ### What gets installed

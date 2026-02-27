@@ -6,9 +6,6 @@ package com.azure.cosmos.benchmark;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.ScheduledReporter;
-import com.codahale.metrics.graphite.Graphite;
-import com.codahale.metrics.graphite.GraphiteReporter;
-import com.codahale.metrics.MetricFilter;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.codahale.metrics.MetricRegistry;
@@ -20,7 +17,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,6 +29,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Benchmark orchestrator. Sets up infrastructure (metrics, reporters, system properties),
@@ -57,7 +54,7 @@ public class BenchmarkOrchestrator {
             return;
         }
 
-        setGlobalSystemProperties(config.getTenantWorkloads().get(0));
+        setGlobalSystemProperties(config);
 
         // Set up shared metric registry
         MetricRegistry registry = new MetricRegistry();
@@ -72,20 +69,9 @@ public class BenchmarkOrchestrator {
         // Prepare all tenants (inject shared state, set defaults)
         prepareTenants(config);
 
-        // Reporter selection: Graphite > CSV > Console (same pattern as original AsyncBenchmark)
+        // Reporter selection: CSV > Console
         ScheduledReporter reporter;
-        if (config.getGraphiteEndpoint() != null) {
-            Graphite graphite = new Graphite(new InetSocketAddress(
-                config.getGraphiteEndpoint(),
-                config.getGraphiteEndpointPort()));
-            reporter = GraphiteReporter.forRegistry(registry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .filter(MetricFilter.ALL)
-                .build(graphite);
-            logger.info("Graphite reporter started -> {}:{}",
-                config.getGraphiteEndpoint(), config.getGraphiteEndpointPort());
-        } else if (config.getReportingDirectory() != null) {
+        if (config.getReportingDirectory() != null) {
             Path metricsDir = Paths.get(config.getReportingDirectory(), "metrics");
             Files.createDirectories(metricsDir);
             reporter = CsvReporter.forRegistry(registry)
@@ -167,41 +153,65 @@ public class BenchmarkOrchestrator {
         logger.info("Starting benchmark: {} cycles x {} tenants", totalCycles, tenants.size());
         long startTime = System.currentTimeMillis();
 
-        for (int cycle = 1; cycle <= totalCycles; cycle++) {
-            reporter.report();
-            logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
+        AtomicInteger threadCounter = new AtomicInteger(0);
+        ExecutorService executor = Executors.newFixedThreadPool(tenants.size(), r -> {
+            Thread t = new Thread(r, "tenant-worker-" + threadCounter.getAndIncrement());
+            t.setDaemon(false);
+            return t;
+        });
 
-            // 1. Create clients
-            List<AsyncBenchmark<?>> benchmarks = createBenchmarks(config, registry);
-            reporter.report();
-            logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
-                cycle, benchmarks.size(), Instant.now());
+        try {
+            for (int cycle = 1; cycle <= totalCycles; cycle++) {
+                reporter.report();
+                logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
 
-            // 2. Run workload in parallel
-            runWorkload(benchmarks, cycle);
-            reporter.report();
-            logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
+                // 1. Create clients
+                List<AsyncBenchmark<?>> benchmarks = createBenchmarks(config, registry);
+                reporter.report();
+                logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
+                    cycle, benchmarks.size(), Instant.now());
 
-            // 3. Close all clients
-            shutdownBenchmarks(benchmarks, cycle);
-            reporter.report();
-            logger.info("[LIFECYCLE] POST_CLOSE cycle={} timestamp={}", cycle, Instant.now());
+                // 2. Run workload in parallel
+                runWorkload(benchmarks, cycle, executor);
+                reporter.report();
+                logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
 
-            // 4. Settle
-            if (config.getSettleTimeMs() > 0) {
-                logger.info("  Settling for {}ms...", config.getSettleTimeMs());
-                long halfSettle = config.getSettleTimeMs() / 2;
-                Thread.sleep(halfSettle);
-                if (config.isGcBetweenCycles()) {
-                    System.gc();
+                // 3. Close all clients
+                shutdownBenchmarks(benchmarks, cycle);
+                reporter.report();
+                logger.info("[LIFECYCLE] POST_CLOSE cycle={} timestamp={}", cycle, Instant.now());
+
+                // 4. Settle
+                if (config.getSettleTimeMs() > 0) {
+                    logger.info("  Settling for {}ms...", config.getSettleTimeMs());
+                    long halfSettle = config.getSettleTimeMs() / 2;
+                    Thread.sleep(halfSettle);
+                    if (config.isGcBetweenCycles()) {
+                        System.gc();
+                    }
+                    Thread.sleep(config.getSettleTimeMs() - halfSettle);
+                    if (config.isGcBetweenCycles()) {
+                        System.gc();
+                    }
                 }
-                Thread.sleep(config.getSettleTimeMs() - halfSettle);
-                if (config.isGcBetweenCycles()) {
-                    System.gc();
-                }
+                reporter.report();
+                logger.info("[LIFECYCLE] POST_SETTLE cycle={} timestamp={}", cycle, Instant.now());
             }
-            reporter.report();
-            logger.info("[LIFECYCLE] POST_SETTLE cycle={} timestamp={}", cycle, Instant.now());
+        } finally {
+            executor.shutdown();
+            try {
+                if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+                    logger.warn("Executor did not terminate within the timeout");
+                    executor.shutdownNow();
+                    if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+                        logger.error("Executor did not terminate after shutdownNow");
+                    }
+                }
+            } catch (InterruptedException e) {
+                logger.warn("Interrupted while awaiting executor termination", e);
+                executor.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
         }
 
         long durationSec = (System.currentTimeMillis() - startTime) / 1000;
@@ -217,12 +227,7 @@ public class BenchmarkOrchestrator {
         return benchmarks;
     }
 
-    private void runWorkload(List<AsyncBenchmark<?>> benchmarks, int cycle) throws Exception {
-        ExecutorService executor = Executors.newFixedThreadPool(benchmarks.size(), r -> {
-            Thread t = new Thread(r, "tenant-worker");
-            t.setDaemon(false);
-            return t;
-        });
+    private void runWorkload(List<AsyncBenchmark<?>> benchmarks, int cycle, ExecutorService executor) throws Exception {
         List<Future<?>> futures = new ArrayList<>();
         final int currentCycle = cycle;
         for (AsyncBenchmark<?> benchmark : benchmarks) {
@@ -237,7 +242,6 @@ public class BenchmarkOrchestrator {
         for (Future<?> f : futures) {
             f.get();
         }
-        executor.shutdown();
     }
 
     private void shutdownBenchmarks(List<AsyncBenchmark<?>> benchmarks, int cycle) {
@@ -330,15 +334,6 @@ public class BenchmarkOrchestrator {
             return tempCfg.getAzureMonitorMeterRegistry();
         }
 
-        String graphiteAddress = System.getProperty("azure.cosmos.monitoring.graphite.serviceAddress",
-            StringUtils.defaultString(
-                com.google.common.base.Strings.emptyToNull(
-                    System.getenv("GRAPHITE_SERVICE_ADDRESS")), null));
-        if (graphiteAddress != null) {
-            Configuration tempCfg = new Configuration();
-            return tempCfg.getGraphiteMeterRegistry();
-        }
-
         return null;
     }
 
@@ -355,10 +350,8 @@ public class BenchmarkOrchestrator {
         System.clearProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT");
     }
 
-    private void setGlobalSystemProperties(TenantWorkloadConfig firstTenant) {
-        String circuitBreakerEnabled = firstTenant.getIsPartitionLevelCircuitBreakerEnabled();
-        if (circuitBreakerEnabled == null) circuitBreakerEnabled = "true";
-        if (Boolean.parseBoolean(circuitBreakerEnabled)) {
+    private void setGlobalSystemProperties(BenchmarkConfig config) {
+        if (config.isPartitionLevelCircuitBreakerEnabled()) {
             System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
                 "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
                     + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
@@ -368,21 +361,21 @@ public class BenchmarkOrchestrator {
             System.setProperty("COSMOS.ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS", "30");
         }
 
-        String ppafEnabled = firstTenant.getIsPerPartitionAutomaticFailoverRequired();
-        if (ppafEnabled == null) ppafEnabled = "true";
-        if (Boolean.parseBoolean(ppafEnabled)) {
+        if (config.isPerPartitionAutomaticFailoverRequired()) {
             System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
             System.setProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED", "true");
             System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "5");
             System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF", "120");
         }
 
-        if (firstTenant.getMinConnectionPoolSizePerEndpoint() >= 1) {
+        if (config.getMinConnectionPoolSizePerEndpoint() >= 1) {
             System.setProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT",
-                String.valueOf(firstTenant.getMinConnectionPoolSizePerEndpoint()));
+                String.valueOf(config.getMinConnectionPoolSizePerEndpoint()));
         }
 
         logger.info("Global system properties set (circuit breaker: {}, PPAF: {}, minConnPoolSize: {})",
-            circuitBreakerEnabled, ppafEnabled, firstTenant.getMinConnectionPoolSizePerEndpoint());
+            config.isPartitionLevelCircuitBreakerEnabled(),
+            config.isPerPartitionAutomaticFailoverRequired(),
+            config.getMinConnectionPoolSizePerEndpoint());
     }
 }

@@ -114,7 +114,7 @@ AI_CONN_STR=$(az monitor app-insights component show \
   --app <app-insights-name> \
   --resource-group rg-cosmos-benchmark \
   --query connectionString -o tsv)
-echo "$AI_CONN_STR" > test-setup/app-insights-connection-string.txt
+echo "$AI_CONN_STR" > benchmark-config/app-insights-connection-string.txt
 ```
 
 The **run** skill uses this via environment variable `APPLICATIONINSIGHTS_CONNECTION_STRING`.
@@ -128,14 +128,14 @@ Ask user how to discover:
   az monitor app-insights component list -g <rg> --query "[].{name:name, connectionString:connectionString}" -o table
   ```
 
-Save to `test-setup/app-insights-connection-string.txt`.
+Save to `benchmark-config/app-insights-connection-string.txt`.
 
 ## 3. Azure VMs
 
 ### Create new (via provision script)
 
 ```bash
-bash sdk/cosmos/azure-cosmos-benchmark/scripts/provision-benchmark-vm.sh \
+bash copilot/skills/cosmos-benchmark-provision/scripts/provision-benchmark-vm.sh \
   --new --location <region> --create-key \
   [--size Standard_D16s_v5] \
   [--disk-size 256] \
@@ -177,21 +177,21 @@ az vm open-port --resource-group rg-cosmos-benchmark --name vm-benchmark-01 --po
 
 ```bash
 # Option A: provide IP directly
-bash sdk/cosmos/azure-cosmos-benchmark/scripts/provision-benchmark-vm.sh \
+bash copilot/skills/cosmos-benchmark-provision/scripts/provision-benchmark-vm.sh \
   --existing --ip <VM_IP> --user benchuser --key ~/.ssh/id_rsa
 
 # Option B: discover from resource group + VM name
-bash sdk/cosmos/azure-cosmos-benchmark/scripts/provision-benchmark-vm.sh \
+bash copilot/skills/cosmos-benchmark-provision/scripts/provision-benchmark-vm.sh \
   --existing --rg <rg> --vm-name <name> --key ~/.ssh/id_rsa
 ```
 
 ### Connection info saved
 
 The provision script saves:
-- `.vm-ip` — VM public IP
-- `.vm-user` — SSH username
-- `.vm-key` — path to SSH private key
-- `test-setup/vm-config.env` — all three in `KEY=VALUE` format
+- `benchmark-config/vm-ip` — VM public IP
+- `benchmark-config/vm-user` — SSH username
+- `benchmark-config/vm-key` — path to SSH private key
+- `benchmark-config/vm-config.env` — all three in `KEY=VALUE` format
 
 Read `references/vm-sizing.md` for workload-specific VM sizing.
 
@@ -212,4 +212,4 @@ Use the **cosmos-benchmark-setup** skill to:
 ## References
 
 - **VM sizing by workload**: `references/vm-sizing.md`
-- **Provision script**: `sdk/cosmos/azure-cosmos-benchmark/scripts/provision-benchmark-vm.sh`
+- **Provision script**: `scripts/provision-benchmark-vm.sh`

@@ -33,4 +33,4 @@ mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true 
 mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-benchmark clean package -P package-assembly
 
 echo "=== Setup complete ==="
-echo "Next: Set APPLICATIONINSIGHTS_CONNECTION_STRING and copy tenants.json from test-setup/ to the VM"
+echo "Next: Set APPLICATIONINSIGHTS_CONNECTION_STRING and copy tenants.json from benchmark-config/ to the VM"
