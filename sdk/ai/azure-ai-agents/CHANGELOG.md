@@ -28,7 +28,11 @@
 
 ### Bugs Fixed
 
+- Fixed Memory Stores long-running operations (e.g. `beginUpdateMemories`) failing because the required `Foundry-Features` header was not included in poll requests, and custom LRO terminal states (`"completed"`, `"superseded"`) were not mapped to standard `LongRunningOperationStatus` values, causing pollers to hang indefinitely.
+
 ### Other Changes
+
+- Enabled and stabilised `MemoryStoresTests` and `MemoryStoresAsyncTests` (previously `@Disabled`), with timeout guards to prevent hanging.
 
 ## 2.0.0-beta.1 (2026-02-25)
 
