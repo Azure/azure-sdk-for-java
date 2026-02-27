@@ -82,19 +82,19 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
                 } else if ("double_click".equals(discriminatorValue)) {
                     return DoubleClickAction.fromJson(readerToUse.reset());
                 } else if ("drag".equals(discriminatorValue)) {
-                    return Drag.fromJson(readerToUse.reset());
+                    return DragParam.fromJson(readerToUse.reset());
                 } else if ("keypress".equals(discriminatorValue)) {
                     return KeyPressAction.fromJson(readerToUse.reset());
                 } else if ("move".equals(discriminatorValue)) {
-                    return Move.fromJson(readerToUse.reset());
+                    return MoveParam.fromJson(readerToUse.reset());
                 } else if ("screenshot".equals(discriminatorValue)) {
-                    return Screenshot.fromJson(readerToUse.reset());
+                    return ScreenshotParam.fromJson(readerToUse.reset());
                 } else if ("scroll".equals(discriminatorValue)) {
-                    return Scroll.fromJson(readerToUse.reset());
+                    return ScrollParam.fromJson(readerToUse.reset());
                 } else if ("type".equals(discriminatorValue)) {
-                    return Type.fromJson(readerToUse.reset());
+                    return TypeParam.fromJson(readerToUse.reset());
                 } else if ("wait".equals(discriminatorValue)) {
-                    return Wait.fromJson(readerToUse.reset());
+                    return WaitParam.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

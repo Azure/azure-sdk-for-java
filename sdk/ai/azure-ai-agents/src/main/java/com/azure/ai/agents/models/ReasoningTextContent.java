@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * ReasoningTextContent
+ * Reasoning text
  *
  * Reasoning text from the model.
  */

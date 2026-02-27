@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Find action
  *
- * Action type "find": Searches for a pattern within a loaded page.
+ * Action type "find_in_page": Searches for a pattern within a loaded page.
  */
 @Immutable
 public final class WebSearchActionFind implements JsonSerializable<WebSearchActionFind> {
