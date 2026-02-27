@@ -170,18 +170,19 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         ServiceBusProcessorClient stale = processorMap.get(key);
         if (stale != null && !stale.isRunning()) {
             if (processorMap.remove(key, stale)) {
-                LOGGER.debug("Removing stale (non-running) processor for '{}'.", buildProcessorName(key));
+                String processorName = buildProcessorName(key);
+                LOGGER.debug("Removing stale (non-running) processor for '{}'.", processorName);
                 try {
-                    listeners.forEach(l -> l.processorRemoved(buildProcessorName(key), stale));
+                    listeners.forEach(l -> l.processorRemoved(processorName, stale));
                 } catch (Exception ex) {
                     LOGGER.warn("Listener notification failed while removing stale processor for '{}'.",
-                        buildProcessorName(key), ex);
+                        processorName, ex);
                 }
                 try {
                     stale.close();
                 } catch (Exception ex) {
                     LOGGER.warn("Failed to close stale Service Bus processor client for '{}'.",
-                        buildProcessorName(key), ex);
+                        processorName, ex);
                 }
             }
         }
