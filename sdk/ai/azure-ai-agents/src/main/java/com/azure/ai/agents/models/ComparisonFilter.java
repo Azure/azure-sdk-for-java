@@ -13,15 +13,23 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
+ * Comparison Filter
+ *
  * A filter used to compare a specified attribute key to a given value using a defined comparison operation.
  */
 @Immutable
 public final class ComparisonFilter implements JsonSerializable<ComparisonFilter> {
 
     /*
-     * Specifies the comparison operator:
-     * `eq` (equal), `ne` (not equal), `gt` (greater than), `gte` (greater than or equal), `lt` (less than), `lte` (less
-     * than or equal).
+     * Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`, `nin`.
+     * - `eq`: equals
+     * - `ne`: not equal
+     * - `gt`: greater than
+     * - `gte`: greater than or equal
+     * - `lt`: less than
+     * - `lte`: less than or equal
+     * - `in`: in
+     * - `nin`: not in
      */
     @Generated
     private final ComparisonFilterType type;
@@ -53,9 +61,15 @@ public final class ComparisonFilter implements JsonSerializable<ComparisonFilter
     }
 
     /**
-     * Get the type property: Specifies the comparison operator:
-     * `eq` (equal), `ne` (not equal), `gt` (greater than), `gte` (greater than or equal), `lt` (less than), `lte` (less
-     * than or equal).
+     * Get the type property: Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`, `nin`.
+     * - `eq`: equals
+     * - `ne`: not equal
+     * - `gt`: greater than
+     * - `gte`: greater than or equal
+     * - `lt`: less than
+     * - `lte`: less than or equal
+     * - `in`: in
+     * - `nin`: not in.
      *
      * @return the type value.
      */

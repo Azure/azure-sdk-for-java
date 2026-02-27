@@ -8,6 +8,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
@@ -53,8 +54,8 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
         }
     }
 
-    AsyncQueryBenchmark(Configuration cfg) {
-        super(cfg);
+    AsyncQueryBenchmark(TenantWorkloadConfig cfg, MetricRegistry sharedRegistry) {
+        super(cfg, sharedRegistry);
     }
 
     @Override
@@ -74,39 +75,39 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
         Random r = new Random();
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        if (configuration.getOperationType() == Configuration.Operation.QueryCross) {
+        if (workloadConfig.getOperationType() == Operation.QueryCross) {
 
-            int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
+            int index = r.nextInt(workloadConfig.getNumberOfPreCreatedDocuments());
             String sqlQuery = "Select * from c where c.id = \"" + docsToRead.get(index).getId() + "\"";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
-        } else if (configuration.getOperationType() == Configuration.Operation.QuerySingle) {
+        } else if (workloadConfig.getOperationType() == Operation.QuerySingle) {
 
-            int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
+            int index = r.nextInt(workloadConfig.getNumberOfPreCreatedDocuments());
             String pk = (String) docsToRead.get(index).getProperty(partitionKey);
             options.setPartitionKey(new PartitionKey(pk));
             String sqlQuery = "Select * from c where c." + partitionKey + " = \"" + pk + "\"";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
-        } else if (configuration.getOperationType() == Configuration.Operation.QueryParallel) {
+        } else if (workloadConfig.getOperationType() == Operation.QueryParallel) {
 
             String sqlQuery = "Select * from c";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
-        } else if (configuration.getOperationType() == Configuration.Operation.QueryOrderby) {
+        } else if (workloadConfig.getOperationType() == Operation.QueryOrderby) {
 
             String sqlQuery = "Select * from c order by c._ts";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
-        } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregate) {
+        } else if (workloadConfig.getOperationType() == Operation.QueryAggregate) {
 
             String sqlQuery = "Select value max(c._ts) from c";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
-        } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregateTopOrderby) {
+        } else if (workloadConfig.getOperationType() == Operation.QueryAggregateTopOrderby) {
 
             String sqlQuery = "Select top 1 value count(c) from c order by c._ts";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
-        } else if (configuration.getOperationType() == Configuration.Operation.QueryTopOrderby) {
+        } else if (workloadConfig.getOperationType() == Operation.QueryTopOrderby) {
 
             String sqlQuery = "Select top 1000 * from c order by c._ts";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
-        } else if (configuration.getOperationType() == Configuration.Operation.QueryInClauseParallel) {
+        } else if (workloadConfig.getOperationType() == Operation.QueryInClauseParallel) {
 
             ReadMyWriteWorkflow.QueryBuilder queryBuilder = new ReadMyWriteWorkflow.QueryBuilder();
             options.setMaxDegreeOfParallelism(200);
@@ -123,13 +124,13 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
 
             SqlQuerySpec query = queryBuilder.toSqlQuerySpec();
             obs = cosmosAsyncContainer.queryItems(query, options, PojoizedJson.class).byPage();
-        } else if (configuration.getOperationType() == Configuration.Operation.ReadAllItemsOfLogicalPartition) {
+        } else if (workloadConfig.getOperationType() == Operation.ReadAllItemsOfLogicalPartition) {
 
-            int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
+            int index = r.nextInt(workloadConfig.getNumberOfPreCreatedDocuments());
             String pk = (String) docsToRead.get(index).getProperty(partitionKey);
             obs = cosmosAsyncContainer.readAllItems(new PartitionKey(pk), options, PojoizedJson.class).byPage();
         } else {
-            throw new IllegalArgumentException("Unsupported Operation: " + configuration.getOperationType());
+            throw new IllegalArgumentException("Unsupported Operation: " + workloadConfig.getOperationType());
         }
 
         concurrencyControlSemaphore.acquire();
