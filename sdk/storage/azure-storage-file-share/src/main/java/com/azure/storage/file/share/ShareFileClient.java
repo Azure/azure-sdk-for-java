@@ -31,6 +31,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
@@ -540,7 +541,6 @@ public class ShareFileClient {
         // Checks that file permission and file permission key are valid
         ModelHelper.validateFilePermissionAndKey(options.getFilePermission(), smbProperties.getFilePermissionKey());
 
-        /* PULLED FROM RELEASE
         Long contentLength;
         byte[] contentMD5;
         if (options.getData() != null) {
@@ -549,7 +549,7 @@ public class ShareFileClient {
         } else {
             contentLength = null;
             contentMD5 = null;
-        } */
+        }
 
         Callable<ResponseBase<FilesCreateHeaders, Void>> operation = () -> this.azureFileStorageClient.getFiles()
             .createWithResponse(shareName, filePath, options.getSize(), null, options.getMetadata(),

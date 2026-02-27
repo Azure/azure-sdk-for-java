@@ -469,7 +469,6 @@ public class ShareFileAsyncClient {
         // Checks that file permission and file permission key are valid
         ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
-        /* PULLED FROM RELEASE
         Mono<UploadUtils.FluxMd5Wrapper> contentMD5Mono;
         Long contentLength;
         if (binaryData != null) {
@@ -478,7 +477,7 @@ public class ShareFileAsyncClient {
         } else {
             contentLength = null;
             contentMD5Mono = UploadUtils.computeMd5(null, false, LOGGER);
-        } */
+        }
 
         //return contentMD5Mono.flatMap(fluxMD5wrapper -> azureFileStorageClient.getFiles()
         return azureFileStorageClient.getFiles()
