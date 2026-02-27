@@ -323,6 +323,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 .getEffectiveHttpTransportSerializer(this)
                 .wrapInHttpRequest(request, requestUri);
 
+            // Capture the request record early so it's available on both success and error paths.
+            // Each retry creates a new HttpRequest with a new record, so this is per-attempt.
+            request.requestContext.reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
 
             if (this.gatewayServerErrorInjector != null) {
@@ -506,9 +510,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                             if (reactorNettyRequestRecord != null) {
                                 rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
-                                rsp.setChannelId(reactorNettyRequestRecord.getChannelId());
-                                rsp.setParentChannelId(reactorNettyRequestRecord.getParentChannelId());
-                                rsp.setHttp2(reactorNettyRequestRecord.isHttp2());
 
                                 if (this.gatewayServerErrorInjector != null) {
                                     // only configure when fault injection is used
@@ -649,12 +650,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                     .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
                     }
 
-                    BridgeInternal.recordGatewayResponse(
-                        request.requestContext.cosmosDiagnostics,
-                        request,
-                        dce,
-                        globalEndpointManager,
-                        httpRequest.reactorNettyRequestRecord());
+                    BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager);
                 }
 
                 return Mono.error(dce);
@@ -709,12 +705,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                     request.faultInjectionRequestContext
                                         .getFaultInjectionRuleEvaluationResults(transportRequestId));
 
-                            BridgeInternal.recordGatewayResponse(
-                                request.requestContext.cosmosDiagnostics,
-                                request,
-                                oce,
-                                globalEndpointManager,
-                                reactorNettyRequestRecord);
+                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager);
                         }
                     }
                 }

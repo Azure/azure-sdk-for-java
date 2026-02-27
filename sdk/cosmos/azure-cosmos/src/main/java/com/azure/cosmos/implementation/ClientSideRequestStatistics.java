@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCi
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
-import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
+import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -53,7 +53,6 @@ public class ClientSideRequestStatistics {
     private NavigableSet<RegionWithContext> regionsContactedWithContext;
     private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
-    private FaultInjectionRequestContext requestContext;
     private List<GatewayStatistics> gatewayStatisticsList;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
@@ -301,9 +300,18 @@ public class ClientSideRequestStatistics {
             gatewayStatistics.endpoint = storeResponseDiagnostics.getEndpoint();
             gatewayStatistics.requestThroughputControlGroupName = storeResponseDiagnostics.getRequestThroughputControlGroupName();
             gatewayStatistics.requestThroughputControlGroupConfig = storeResponseDiagnostics.getRequestThroughputControlGroupConfig();
-            gatewayStatistics.channelId = storeResponseDiagnostics.getChannelId();
-            gatewayStatistics.parentChannelId = storeResponseDiagnostics.getParentChannelId();
-            gatewayStatistics.http2 = storeResponseDiagnostics.isHttp2();
+
+            // Channel IDs are captured from requestContext.reactorNettyRequestRecord,
+            // which is set by RxGatewayStoreModel on both success and error paths.
+            if (rxDocumentServiceRequest != null
+                && rxDocumentServiceRequest.requestContext != null
+                && rxDocumentServiceRequest.requestContext.reactorNettyRequestRecord != null) {
+
+                ReactorNettyRequestRecord record = rxDocumentServiceRequest.requestContext.reactorNettyRequestRecord;
+                gatewayStatistics.channelId = record.getChannelId();
+                gatewayStatistics.parentChannelId = record.getParentChannelId();
+                gatewayStatistics.http2 = record.isHttp2();
+            }
 
             this.activityId = storeResponseDiagnostics.getActivityId() != null ? storeResponseDiagnostics.getActivityId() :
                 rxDocumentServiceRequest.getActivityId().toString();
