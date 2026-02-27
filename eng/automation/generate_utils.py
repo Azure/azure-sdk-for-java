@@ -24,6 +24,12 @@ from utils import set_or_increase_version
 
 os.chdir(pwd)
 
+# Pattern for matching GitHub tspconfig.yaml blob URLs
+TSPCONFIG_URL_PATTERN = re.compile(
+    r"^https://github.com/(?P<repo>Azure/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$",
+    re.IGNORECASE,
+)
+
 
 # Add two more indent for list in yaml dump
 class ListIndentDumper(yaml.SafeDumper):
@@ -416,10 +422,16 @@ def resolve_sdk_folder_from_tspconfig(tsp_project: str, spec_root: str = None) -
         if not service_dir:
             return None
 
+        # Normalize service_dir to ensure consistent path separators
+        service_dir = os.path.normpath(service_dir)
+
         # Resolve template variables to get relative path from sdk_root
         sdk_folder = emitter_output_dir
         sdk_folder = sdk_folder.replace("{output-dir}", "").lstrip("/\\")
         sdk_folder = sdk_folder.replace("{service-dir}", service_dir)
+
+        # Normalize the resolved SDK folder path for consistent parsing
+        sdk_folder = os.path.normpath(sdk_folder)
 
         # Sanity check: sdk_folder should start with service_dir
         if not sdk_folder.startswith(service_dir):
@@ -438,11 +450,7 @@ def resolve_sdk_folder_from_tspconfig(tsp_project: str, spec_root: str = None) -
 def _read_tspconfig(tsp_project: str, spec_root: str = None) -> Optional[str]:
     """Read tspconfig.yaml content from either a remote URL or local path."""
 
-    url_match = re.match(
-        r"^https://github.com/(?P<repo>[^/]*/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$",
-        tsp_project,
-        re.IGNORECASE,
-    )
+    url_match = TSPCONFIG_URL_PATTERN.match(tsp_project)
 
     if url_match:
         repo = url_match.group("repo")
@@ -490,11 +498,7 @@ def generate_typespec_project(
     resolved_sdk_folder = None
 
     try:
-        url_match = re.match(
-            r"^https://github.com/(?P<repo>[^/]*/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$",
-            tsp_project,
-            re.IGNORECASE,
-        )
+        url_match = TSPCONFIG_URL_PATTERN.match(tsp_project)
 
         tspconfig_valid = True
         if url_match:
@@ -567,8 +571,8 @@ def generate_typespec_project(
                 tsp_cmd = tsp_cmd_add_emitter_options(tsp_cmd_base, emitter_options)
                 check_call(tsp_cmd, sdk_root)
 
-                sdk_folder = resolved_sdk_folder or find_sdk_folder(sdk_root)
-                logging.info("SDK folder: " + sdk_folder)
+                sdk_folder = find_sdk_folder(sdk_root)
+                logging.info(f"SDK folder: {sdk_folder if sdk_folder else 'None'}")
                 if sdk_folder:
                     module, service = parse_service_module(sdk_folder)
                     # check require_sdk_integration
@@ -580,7 +584,7 @@ def generate_typespec_project(
                         "--porcelain",
                         os.path.join(sdk_folder, "pom.xml"),
                     ]
-                    logging.info("Command line: " + " ".join(cmd))
+                    logging.info("Command line: %s", " ".join(cmd))
                     output = subprocess.check_output(cmd, cwd=sdk_root)
                     output_str = str(output, "utf-8")
                     git_items = output_str.splitlines()
