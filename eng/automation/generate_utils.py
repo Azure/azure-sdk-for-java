@@ -446,7 +446,7 @@ def _read_tspconfig(tsp_project: str, spec_root: str = None) -> Optional[str]:
         commit = url_match.group("commit")
         path = url_match.group("path")
         raw_url = f"https://raw.githubusercontent.com/{repo}/{commit}/{path}/tspconfig.yaml"
-        response = requests.get(raw_url)
+        response = requests.get(raw_url, timeout=30)
         if response.status_code == 200:
             return response.text
         logging.warning(f"[RESOLVE] Failed to fetch tspconfig from {raw_url}: HTTP {response.status_code}")
