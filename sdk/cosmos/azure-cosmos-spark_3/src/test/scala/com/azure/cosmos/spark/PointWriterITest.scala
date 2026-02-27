@@ -286,7 +286,10 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       allItems should have size items.size
     }
 
-    metricsPublisher.getRecordsWrittenSnapshot() shouldEqual items.size
+    // Poll until metrics are fully recorded after flush
+    eventually(timeout(10.seconds), interval(100.milliseconds)) {
+      metricsPublisher.getRecordsWrittenSnapshot() shouldEqual items.size
+    }
     metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
     metricsPublisher.getTotalRequestChargeSnapshot() > 5 * items.size shouldEqual true
     metricsPublisher.getTotalRequestChargeSnapshot() < 10 * items.size shouldEqual true
