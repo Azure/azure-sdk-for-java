@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The Annotation model.
+ * An annotation that applies to a span of output text.
  */
 @Immutable
 public class Annotation implements JsonSerializable<Annotation> {
@@ -78,11 +78,13 @@ public class Annotation implements JsonSerializable<Annotation> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("file_citation".equals(discriminatorValue)) {
-                    return AnnotationFileCitation.fromJson(readerToUse.reset());
+                    return FileCitationBody.fromJson(readerToUse.reset());
                 } else if ("url_citation".equals(discriminatorValue)) {
-                    return AnnotationUrlCitation.fromJson(readerToUse.reset());
+                    return UrlCitationBody.fromJson(readerToUse.reset());
+                } else if ("container_file_citation".equals(discriminatorValue)) {
+                    return ContainerFileCitationBody.fromJson(readerToUse.reset());
                 } else if ("file_path".equals(discriminatorValue)) {
-                    return AnnotationFilePath.fromJson(readerToUse.reset());
+                    return FilePath.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

@@ -6,6 +6,7 @@ package com.azure.cosmos.benchmark;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
@@ -47,19 +48,19 @@ class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> 
         }
     }
 
-    AsyncReadManyBenchmark(Configuration cfg) {
-        super(cfg);
+    AsyncReadManyBenchmark(TenantWorkloadConfig cfg, MetricRegistry sharedRegistry) {
+        super(cfg, sharedRegistry);
         r = new Random();
     }
 
     @Override
     protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i) throws Exception {
-        int tupleSize = configuration.getTupleSize();
-        int randomIdx = r.nextInt(configuration.getNumberOfPreCreatedDocuments());
+        int tupleSize = workloadConfig.getTupleSize();
+        int randomIdx = r.nextInt(workloadConfig.getNumberOfPreCreatedDocuments());
         List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
 
         for (int idx = randomIdx; idx < randomIdx + tupleSize; idx++) {
-            int index = idx % configuration.getNumberOfPreCreatedDocuments();
+            int index = idx % workloadConfig.getNumberOfPreCreatedDocuments();
             PojoizedJson doc = docsToRead.get(index);
             String partitionKeyValue = (String) doc.getProperty(partitionKey);
             PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
@@ -71,7 +72,7 @@ class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> 
 
         concurrencyControlSemaphore.acquire();
 
-        switch (configuration.getOperationType()) {
+        switch (workloadConfig.getOperationType()) {
             case ReadManyLatency:
                 readManyLatency(obs, baseSubscriber);
                 break;
@@ -79,7 +80,7 @@ class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> 
                 readManyThroughput(obs, baseSubscriber);
                 break;
             default:
-                throw new IllegalArgumentException("invalid workload type " + configuration.getOperationType());
+                throw new IllegalArgumentException("invalid workload type " + workloadConfig.getOperationType());
         }
     }
 

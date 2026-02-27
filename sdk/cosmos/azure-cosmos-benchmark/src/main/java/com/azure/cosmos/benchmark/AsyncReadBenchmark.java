@@ -5,6 +5,7 @@ package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
@@ -44,8 +45,8 @@ class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
         }
     }
 
-    AsyncReadBenchmark(Configuration cfg) {
-        super(cfg);
+    AsyncReadBenchmark(TenantWorkloadConfig cfg, MetricRegistry sharedRegistry) {
+        super(cfg, sharedRegistry);
     }
 
     @Override
@@ -60,7 +61,7 @@ class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
 
         concurrencyControlSemaphore.acquire();
 
-        switch (configuration.getOperationType()) {
+        switch (workloadConfig.getOperationType()) {
             case ReadThroughput:
                 readThroughput(result, baseSubscriber, i);
                 break;
@@ -68,7 +69,7 @@ class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
                 readLatency(result, baseSubscriber, i);
                 break;
             default:
-                throw new IllegalArgumentException("invalid workload type " + configuration.getOperationType());
+                throw new IllegalArgumentException("invalid workload type " + workloadConfig.getOperationType());
         }
     }
 

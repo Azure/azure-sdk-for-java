@@ -13,12 +13,6 @@ import java.util.Collection;
 public final class FoundryFeaturesOptInKeys extends ExpandableStringEnum<FoundryFeaturesOptInKeys> {
 
     /**
-     * Static value ContainerAgents=V1Preview for FoundryFeaturesOptInKeys.
-     */
-    @Generated
-    public static final FoundryFeaturesOptInKeys CONTAINER_AGENTS_V1_PREVIEW = fromString("ContainerAgents=V1Preview");
-
-    /**
      * Static value HostedAgents=V1Preview for FoundryFeaturesOptInKeys.
      */
     @Generated
