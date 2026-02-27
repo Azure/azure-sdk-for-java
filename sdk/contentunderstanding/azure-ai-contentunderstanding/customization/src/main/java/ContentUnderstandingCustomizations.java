@@ -1300,6 +1300,14 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     // =================== ContentSource file contents ===================
+    // These string constants are emitted as-is to src/main/java/.../models/ via addFile().
+    // For easier reading, review the generated output files directly:
+    //   - models/PointF.java
+    //   - models/RectangleF.java
+    //   - models/Rectangle.java
+    //   - models/ContentSource.java
+    //   - models/DocumentSource.java
+    //   - models/AudioVisualSource.java
 
     private static final String POINT_F_CONTENT =
         "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
