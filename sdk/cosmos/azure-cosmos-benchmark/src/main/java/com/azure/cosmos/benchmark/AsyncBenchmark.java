@@ -377,18 +377,20 @@ abstract class AsyncBenchmark<T> {
     protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i) throws Exception;
 
     private void resetMeters() {
-        metricsRegistry.remove(TenantWorkloadConfig.SUCCESS_COUNTER_METER_NAME);
-        metricsRegistry.remove(TenantWorkloadConfig.FAILURE_COUNTER_METER_NAME);
+        String tenantPrefix = workloadConfig.getId() != null ? workloadConfig.getId() + "." : "";
+        metricsRegistry.remove(tenantPrefix + TenantWorkloadConfig.SUCCESS_COUNTER_METER_NAME);
+        metricsRegistry.remove(tenantPrefix + TenantWorkloadConfig.FAILURE_COUNTER_METER_NAME);
         if (latencyAwareOperations(workloadConfig.getOperationType())) {
-            metricsRegistry.remove(TenantWorkloadConfig.LATENCY_METER_NAME);
+            metricsRegistry.remove(tenantPrefix + TenantWorkloadConfig.LATENCY_METER_NAME);
         }
     }
 
     private void initializeMeter() {
-        successMeter = metricsRegistry.meter(TenantWorkloadConfig.SUCCESS_COUNTER_METER_NAME);
-        failureMeter = metricsRegistry.meter(TenantWorkloadConfig.FAILURE_COUNTER_METER_NAME);
+        String tenantPrefix = workloadConfig.getId() != null ? workloadConfig.getId() + "." : "";
+        successMeter = metricsRegistry.meter(tenantPrefix + TenantWorkloadConfig.SUCCESS_COUNTER_METER_NAME);
+        failureMeter = metricsRegistry.meter(tenantPrefix + TenantWorkloadConfig.FAILURE_COUNTER_METER_NAME);
         if (latencyAwareOperations(workloadConfig.getOperationType())) {
-            latency = metricsRegistry.register(TenantWorkloadConfig.LATENCY_METER_NAME, new Timer(new HdrHistogramResetOnSnapshotReservoir()));
+            latency = metricsRegistry.register(tenantPrefix + TenantWorkloadConfig.LATENCY_METER_NAME, new Timer(new HdrHistogramResetOnSnapshotReservoir()));
         }
     }
 
