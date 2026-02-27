@@ -17,9 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
-import static com.azure.cosmos.benchmark.Configuration.Operation.CtlWorkload;
-import static com.azure.cosmos.benchmark.Configuration.Operation.LinkedInCtlWorkload;
-import static com.azure.cosmos.benchmark.Configuration.Operation.ReadThroughputWithMultipleClients;
+import static com.azure.cosmos.benchmark.Operation.CtlWorkload;
+import static com.azure.cosmos.benchmark.Operation.LinkedInCtlWorkload;
 
 public class Main {
 
@@ -33,7 +32,6 @@ public class Main {
 
             JCommander jcommander = new JCommander(cfg, args);
             if (cfg.isHelp()) {
-                // prints out the usage help
                 jcommander.usage();
                 return;
             }
@@ -43,9 +41,7 @@ public class Main {
             if (cfg.isSync()) {
                 syncBenchmark(cfg);
             } else {
-                if (cfg.getOperationType().equals(ReadThroughputWithMultipleClients)) {
-                    asyncMultiClientBenchmark(cfg);
-                } else if (cfg.getOperationType().equals(CtlWorkload)) {
+                if (cfg.getOperationType().equals(CtlWorkload)) {
                     asyncCtlWorkload(cfg);
                 } else if (cfg.getOperationType().equals(LinkedInCtlWorkload)) {
                     linkedInCtlWorkload(cfg);
@@ -56,7 +52,6 @@ public class Main {
                 }
             }
         } catch (ParameterException e) {
-            // if any error in parsing the cmd-line options print out the usage help
             System.err.println("INVALID Usage: " + e.getMessage());
             System.err.println("Try '-help' for more information.");
             throw e;
@@ -114,59 +109,15 @@ public class Main {
         }
     }
 
+    /**
+     * Async benchmark path: builds BenchmarkConfig from CLI args and delegates to BenchmarkOrchestrator.
+     * Handles both single-tenant (CLI args) and multi-tenant (tenants.json) modes.
+     */
     private static void asyncBenchmark(Configuration cfg) throws Exception {
-        LOGGER.info("Async benchmark ...");
-        AsyncBenchmark<?> benchmark = null;
-        try {
-            switch (cfg.getOperationType()) {
-                case WriteThroughput:
-                case WriteLatency:
-                    benchmark = new AsyncWriteBenchmark(cfg);
-                    break;
-
-                case ReadThroughput:
-                case ReadLatency:
-                    benchmark = new AsyncReadBenchmark(cfg);
-                    break;
-
-                case QueryCross:
-                case QuerySingle:
-                case QueryParallel:
-                case QueryOrderby:
-                case QueryAggregate:
-                case QueryTopOrderby:
-                case QueryAggregateTopOrderby:
-                case QueryInClauseParallel:
-                case ReadAllItemsOfLogicalPartition:
-                    benchmark = new AsyncQueryBenchmark(cfg);
-                    break;
-                case ReadManyLatency:
-                case ReadManyThroughput:
-                    benchmark = new AsyncReadManyBenchmark(cfg);
-                    break;
-                case Mixed:
-                    benchmark = new AsyncMixedBenchmark(cfg);
-                    break;
-
-                case QuerySingleMany:
-                    benchmark = new AsyncQuerySinglePartitionMultiple(cfg);
-                    break;
-
-                case ReadMyWrites:
-                    benchmark = new ReadMyWriteWorkflow(cfg);
-                    break;
-
-                default:
-                    throw new RuntimeException(cfg.getOperationType() + " is not supported");
-            }
-
-            LOGGER.info("Starting {}", cfg.getOperationType());
-            benchmark.run();
-        } finally {
-            if (benchmark != null) {
-                benchmark.shutdown();
-            }
-        }
+        BenchmarkConfig benchConfig = BenchmarkConfig.fromConfiguration(cfg);
+        LOGGER.info("Async benchmark via BenchmarkOrchestrator ({} tenants, {} cycles)...",
+            benchConfig.getTenantWorkloads().size(), benchConfig.getCycles());
+        new BenchmarkOrchestrator().run(benchConfig);
     }
 
     private static void asyncEncryptionBenchmark(Configuration cfg) throws Exception {
@@ -201,20 +152,6 @@ public class Main {
                     throw new RuntimeException(cfg.getOperationType() + " is not supported");
             }
 
-            LOGGER.info("Starting {}", cfg.getOperationType());
-            benchmark.run();
-        } finally {
-            if (benchmark != null) {
-                benchmark.shutdown();
-            }
-        }
-    }
-
-    private static void asyncMultiClientBenchmark(Configuration cfg) throws Exception {
-        LOGGER.info("Async multi client benchmark ...");
-        AsynReadWithMultipleClients<?> benchmark = null;
-        try {
-            benchmark = new AsynReadWithMultipleClients<>(cfg);
             LOGGER.info("Starting {}", cfg.getOperationType());
             benchmark.run();
         } finally {
