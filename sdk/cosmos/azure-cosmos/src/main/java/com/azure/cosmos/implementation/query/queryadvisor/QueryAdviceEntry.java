@@ -52,12 +52,18 @@ class QueryAdviceEntry {
         }
 
         String message = ruleDirectory.getRuleMessage(this.id);
-        if (message == null) {
-            return null;
-        }
 
         StringBuilder sb = new StringBuilder();
         sb.append(this.id).append(": ");
+
+        if (message == null) {
+            // Unknown rule ID - still surface the ID and a documentation link so the user
+            // has something actionable even when the local rules file is outdated.
+            sb.append("For more information, please visit ")
+              .append(ruleDirectory.getUrlPrefix())
+              .append(this.id);
+            return sb.toString();
+        }
 
         // Format message with parameters if available
         if (this.parameters != null && !this.parameters.isEmpty()) {
