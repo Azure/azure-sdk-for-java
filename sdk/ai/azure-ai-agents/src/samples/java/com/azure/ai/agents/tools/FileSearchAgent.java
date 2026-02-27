@@ -86,7 +86,7 @@ public class FileSearchAgent {
             System.out.println("Created vector store: " + vectorStore.id());
 
             System.out.println("Waiting for vector store to process files...");
-            sleepSeconds(5); // Wait for vector store to be ready
+            Thread.sleep(5000); // Wait for vector store to be ready
 
             // Create a FileSearchTool with the vector store ID
             FileSearchTool tool = new FileSearchTool(Collections.singletonList(vectorStore.id()));
@@ -169,15 +169,6 @@ public class FileSearchAgent {
                 openAIClient.files().delete(uploadedFile.id());
                 System.out.println("File deleted successfully.");
             }
-        }
-    }
-
-    private static void sleepSeconds(long seconds) {
-        try {
-            TimeUnit.SECONDS.sleep(seconds);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Sleep interrupted", e);
         }
     }
 }
