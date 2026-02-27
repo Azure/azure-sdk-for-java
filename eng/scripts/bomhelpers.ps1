@@ -41,6 +41,54 @@ function UpdateDependencyOfClientSDK() {
   $cmdOutput = python $updateVersionFilePath --skip-readme
 }
 
+# Reverts entries in version_client.txt whose current version is a beta prerelease but whose
+# dependency version is a stable release. Stable patch releases must not have beta dependencies;
+# this ensures all {x-version-update;...;current} references in POM files resolve to a stable
+# version when update_versions.py runs during patch generation.
+function RevertBetaDependenciesToStable() {
+  $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
+  $versionClientFilePath = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
+  $setVersionFilePath = Join-Path $repoRoot "eng" "versioning" "set_versions.py"
+
+  Write-Host "Scanning version_client.txt for SDK libraries with beta current versions that must be reverted to stable for the patch release..."
+  foreach ($line in Get-Content $versionClientFilePath) {
+    # Skip comment lines and empty lines
+    if ([string]::IsNullOrWhiteSpace($line) -or $line.TrimStart().StartsWith("#")) {
+      continue
+    }
+
+    # Format: <groupId>:<artifactId>;<dependency-version>;<current-version>
+    $parts = $line.Split(';')
+    if ($parts.Length -ne 3) {
+      continue
+    }
+
+    $libraryId       = $parts[0].Trim()
+    $dependencyVersion = $parts[1].Trim()
+    $currentVersion  = $parts[2].Trim()
+
+    $idParts = $libraryId.Split(':')
+    if ($idParts.Length -ne 2) {
+      continue
+    }
+    $groupId    = $idParts[0].Trim()
+    $artifactId = $idParts[1].Trim()
+
+    # If the current version is a beta prerelease but the dependency version is stable,
+    # revert the current version to the stable dependency version. This prevents
+    # update_versions.py from injecting a beta version into the patched library's POM.
+    if ($currentVersion -match '-beta\.' -and !($dependencyVersion -match '-beta\.')) {
+      Write-Host "Reverting $libraryId current version from '$currentVersion' (beta) to stable '$dependencyVersion'"
+      python $setVersionFilePath --new-version $dependencyVersion --artifact-id $artifactId --group-id $groupId
+      if ($LASTEXITCODE -ne 0) {
+        LogError "RevertBetaDependenciesToStable: failed to revert ${libraryId} from '$currentVersion' to '$dependencyVersion'"
+        exit $LASTEXITCODE
+      }
+    }
+  }
+  Write-Host "Completed reverting beta current versions to stable in version_client.txt."
+}
+
 # Get all azure com client artifacts from Maven.
 function GetAllAzComClientArtifactsFromMaven($GroupId = "com.azure") {
   $groupPath = $GroupId -replace '\.', '/'

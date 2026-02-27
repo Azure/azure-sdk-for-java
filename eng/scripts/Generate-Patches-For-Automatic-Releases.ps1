@@ -52,6 +52,14 @@ try {
     $packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
     $libraryList = $null
 
+    # Revert any SDK library entries in version_client.txt whose current version is a beta prerelease
+    # back to the last stable dependency version. Stable patch releases cannot depend on beta libraries;
+    # if a patched library's POM contains an {x-version-update;...;current} tag pointing to a library
+    # whose current version in version_client.txt is beta, update_versions.py would inject a beta
+    # dependency into the released artifact. Reverting here ensures all such references resolve to
+    # the last stable release before patch generation begins.
+    RevertBetaDependenciesToStable
+
     # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
     foreach ($packageData in $packagesData) {
         . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"]
