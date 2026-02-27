@@ -78,15 +78,6 @@ public final class AudioVisualSource extends ContentSource {
     }
 
     /**
-     * Gets the time in milliseconds.
-     *
-     * @return The time in milliseconds.
-     */
-    public int getTimeMs() {
-        return timeMs;
-    }
-
-    /**
      * Gets the time as a Duration.
      *
      * @return The time as a Duration.

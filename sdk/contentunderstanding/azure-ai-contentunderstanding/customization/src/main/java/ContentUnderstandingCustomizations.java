@@ -189,8 +189,8 @@ public class ContentUnderstandingCustomizations extends Customization {
         // Add ContentSource class hierarchy for grounding source parsing
         addContentSourceClasses(customization, logger);
 
-        // Add getGroundingSources() to ContentField
-        addGroundingSourcesMethod(customization, logger);
+        // Add getSources() to ContentField
+        addSourcesMethod(customization, logger);
 
         // Add Duration getters and hide *Ms() getters on time-based models
         customizeDurationProperties(customization, logger);
@@ -1275,18 +1275,18 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Add getGroundingSources() method to ContentField via AST customization.
+     * Add getSources() method to ContentField via AST customization.
      */
-    private void addGroundingSourcesMethod(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding getGroundingSources() to ContentField");
+    private void addSourcesMethod(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding getSources() to ContentField");
 
         customization.getClass(MODELS_PACKAGE, "ContentField").customizeAst(ast ->
             ast.getClassByName("ContentField").ifPresent(clazz -> {
                 ast.addImport("java.util.List");
-                clazz.addMethod("getGroundingSources", Modifier.Keyword.PUBLIC)
+                clazz.addMethod("getSources", Modifier.Keyword.PUBLIC)
                     .setType("List<ContentSource>")
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Parses the encoded source string into typed grounding sources.\n\n"
+                        "Parses the encoded source string into typed content sources.\n\n"
                         + "The returned list contains {@link DocumentSource} or {@link AudioVisualSource} "
                         + "instances depending on the wire format.\n"
                         + "Returns {@code null} if the source string is null or empty."))
@@ -1554,7 +1554,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         + " * <p>Use {@link DocumentSource#parse(String)} or {@link AudioVisualSource#parse(String)} to parse\n"
         + " * a semicolon-delimited string containing one or more segments.</p>\n"
         + " *\n"
-        + " * @see ContentField#getGroundingSources()\n"
+        + " * @see ContentField#getSources()\n"
         + " */\n"
         + "@Immutable\n"
         + "public abstract class ContentSource {\n"

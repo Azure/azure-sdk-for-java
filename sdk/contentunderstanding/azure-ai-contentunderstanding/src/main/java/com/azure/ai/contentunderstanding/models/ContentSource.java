@@ -23,7 +23,7 @@ import java.util.Objects;
  * <p>Use {@link DocumentSource#parse(String)} or {@link AudioVisualSource#parse(String)} to parse
  * a semicolon-delimited string containing one or more segments.</p>
  *
- * @see ContentField#getGroundingSources()
+ * @see ContentField#getSources()
  */
 @Immutable
 public abstract class ContentSource {
