@@ -9,7 +9,7 @@
         "maven": {
           "groupId": "org.bouncycastle",
           "artifactId": "bcpkix-lts8on",
-          "version": "2.73.8"
+          "version": "2.73.6"
         }
       }
     }
