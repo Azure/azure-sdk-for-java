@@ -1,0 +1,81 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.agents.implementation;
+
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.util.Context;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollingStrategyOptions;
+
+/**
+ * Shared polling helpers for the Agents SDK.
+ *
+ * <p>The generated {@code OperationLocationPollingStrategy} / {@code SyncOperationLocationPollingStrategy}
+ * delegate here so that the two strategies stay in sync and only minimal edits are needed in the
+ * generated files.</p>
+ *
+ * <p>This class is package-private; it is <b>not</b> part of the public API.</p>
+ */
+final class AgentsServicePollUtils {
+
+    /** Required preview-feature header for Memory Stores operations. */
+    private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
+
+    private static final String FOUNDRY_FEATURES_VALUE = "MemoryStores=V1Preview";
+
+    private AgentsServicePollUtils() {
+    }
+
+    // ---- header injection -------------------------------------------------
+
+    /**
+     * Returns a copy of the given {@link PollingStrategyOptions} whose {@link Context} includes
+     * the {@code Foundry-Features} header.  Because the pipeline already contains
+     * {@link AddHeadersFromContextPolicy}, the header is automatically added to every HTTP
+     * request the parent strategy makes (initial, poll, and final-result GETs).
+     */
+    static PollingStrategyOptions withFoundryFeatures(PollingStrategyOptions options) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(FOUNDRY_FEATURES, FOUNDRY_FEATURES_VALUE);
+        Context context = options.getContext() != null ? options.getContext() : Context.NONE;
+        return options.setContext(context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
+    }
+
+    // ---- status remapping -------------------------------------------------
+
+    /**
+     * Remaps a {@link PollResponse} whose status may contain a custom service terminal state
+     * ({@code "completed"}, {@code "superseded"}) that the base {@code OperationResourcePollingStrategy}
+     * cannot recognise.  If no remapping is needed the original response is returned as-is.
+     *
+     * <p>The Memory Stores TypeSpec defines:</p>
+     * <ul>
+     *   <li>{@code "completed"} &rarr; {@link LongRunningOperationStatus#SUCCESSFULLY_COMPLETED}</li>
+     *   <li>{@code "superseded"} &rarr; {@link LongRunningOperationStatus#USER_CANCELLED}</li>
+     * </ul>
+     */
+    static <T> PollResponse<T> remapStatus(PollResponse<T> response) {
+        LongRunningOperationStatus status = response.getStatus();
+        LongRunningOperationStatus mapped = mapCustomStatus(status);
+        if (mapped == status) {
+            return response;
+        }
+        return new PollResponse<>(mapped, response.getValue(), response.getRetryAfter());
+    }
+
+    private static LongRunningOperationStatus mapCustomStatus(LongRunningOperationStatus status) {
+        // Standard statuses (Succeeded, Failed, Canceled, InProgress, NotStarted) are already
+        // mapped correctly by the parent's PollResult; only remap the custom ones.
+        String name = status.toString();
+        if ("completed".equalsIgnoreCase(name)) {
+            return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        } else if ("superseded".equalsIgnoreCase(name)) {
+            return LongRunningOperationStatus.USER_CANCELLED;
+        }
+        return status;
+    }
+}

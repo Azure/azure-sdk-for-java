@@ -8,13 +8,15 @@ import com.azure.ai.agents.models.DeleteMemoryStoreResult;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.ResponseInputItem;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.util.Arrays;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -23,8 +25,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Disabled("Awaiting service versioning consolidation.")
+@Timeout(30)
 public class MemoryStoresTests extends ClientTestBase {
+
+    private static final Duration POLL_TIMEOUT = Duration.ofSeconds(30);
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
@@ -126,13 +130,10 @@ public class MemoryStoresTests extends ClientTestBase {
         SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> updatePoller
             = memoryStoreClient.beginUpdateMemories(memoryStoreName, scope, Arrays.asList(userMessage), null, 0);
 
-        // Wait for the update operation to complete
-        LongRunningOperationStatus status = null;
-        while (status != LongRunningOperationStatus.fromString(MemoryStoreUpdateStatus.COMPLETED.toString(), true)) {
-            sleep(500);
-            System.out.println("Polling status: " + status);
-            status = updatePoller.poll().getStatus();
-        }
+        // Wait for the update operation to complete (with timeout to avoid hanging)
+        PollResponse<MemoryStoreUpdateResponse> pollResponse = updatePoller.waitForCompletion(POLL_TIMEOUT);
+        assertTrue(pollResponse.getStatus().isComplete(),
+            "Polling did not complete within timeout. Last status: " + pollResponse.getStatus());
         MemoryStoreUpdateCompletedResult updateResult = updatePoller.getFinalResult();
         assertNotNull(updateResult);
         assertNotNull(updateResult.getMemoryOperations());
@@ -234,12 +235,9 @@ public class MemoryStoresTests extends ClientTestBase {
         System.out.println("Superseded first memory update operation (Update ID: " + initialUpdateId + ", Status: "
             + initialPoller.poll().getStatus() + ")");
 
-        LongRunningOperationStatus chainedStatus = null;
-        while (chainedStatus
-            != LongRunningOperationStatus.fromString(MemoryStoreUpdateStatus.COMPLETED.toString(), true)) {
-            sleep(500);
-            chainedStatus = chainedPoller.poll().getStatus();
-        }
+        PollResponse<MemoryStoreUpdateResponse> chainedPollResponse = chainedPoller.waitForCompletion(POLL_TIMEOUT);
+        assertTrue(chainedPollResponse.getStatus().isComplete(),
+            "Chained polling did not complete within timeout. Last status: " + chainedPollResponse.getStatus());
         MemoryStoreUpdateCompletedResult updateResult = chainedPoller.getFinalResult();
         assertNotNull(updateResult);
         assertNotNull(updateResult.getMemoryOperations());
@@ -302,11 +300,9 @@ public class MemoryStoresTests extends ClientTestBase {
         System.out.println("Deleted memory store `" + memoryStoreName + "`");
     }
 
-    private static void cleanupBeforeTest(MemoryStoresClient memoryStoreClient, String memoryStoreName) {
-        // Ensure clean state: delete if it already exists
+    private void cleanupBeforeTest(MemoryStoresClient memoryStoreClient, String memoryStoreName) {
         try {
-            DeleteMemoryStoreResult deleteExisting = memoryStoreClient.deleteMemoryStore(memoryStoreName);
-            assertNotNull(deleteExisting);
+            memoryStoreClient.deleteMemoryStore(memoryStoreName);
         } catch (ResourceNotFoundException ex) {
             // ok if it does not exist
         }

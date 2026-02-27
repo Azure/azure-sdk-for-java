@@ -57,7 +57,8 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
      * @throws NullPointerException if {@code pollingStrategyOptions} is null.
      */
     public SyncOperationLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions, String propertyName) {
-        super(PollingUtils.OPERATION_LOCATION_HEADER, pollingStrategyOptions);
+        super(PollingUtils.OPERATION_LOCATION_HEADER,
+            AgentsServicePollUtils.withFoundryFeatures(pollingStrategyOptions));
         this.propertyName = propertyName;
         this.endpoint = pollingStrategyOptions.getEndpoint();
         this.serializer = pollingStrategyOptions.getSerializer() != null
@@ -102,6 +103,19 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
             String.format("Operation failed or cancelled with status code %d, '%s' header: %s, and response body: %s",
                 response.getStatusCode(), PollingUtils.OPERATION_LOCATION_HEADER, operationLocationHeader,
                 response.getValue())));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Delegates to the parent (which handles URL construction with api-version and sends the
+     * {@code Foundry-Features} header injected via the context) and then remaps custom LRO
+     * terminal states (e.g. "completed", "superseded") to standard
+     * {@link LongRunningOperationStatus} values.</p>
+     */
+    @Override
+    public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+        return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType));
     }
 
     /**

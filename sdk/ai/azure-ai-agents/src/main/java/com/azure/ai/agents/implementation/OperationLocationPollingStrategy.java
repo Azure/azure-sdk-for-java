@@ -56,7 +56,8 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
      * @throws NullPointerException if {@code pollingStrategyOptions} is null.
      */
     public OperationLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions, String propertyName) {
-        super(PollingUtils.OPERATION_LOCATION_HEADER, pollingStrategyOptions);
+        super(PollingUtils.OPERATION_LOCATION_HEADER,
+            AgentsServicePollUtils.withFoundryFeatures(pollingStrategyOptions));
         this.propertyName = propertyName;
         this.endpoint = pollingStrategyOptions.getEndpoint();
         this.serializer = pollingStrategyOptions.getSerializer() != null
@@ -105,6 +106,19 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
                         response.getStatusCode(), PollingUtils.OPERATION_LOCATION_HEADER, operationLocationHeader,
                         response.getValue())));
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Delegates to the parent (which handles URL construction with api-version and sends the
+     * {@code Foundry-Features} header injected via the context) and then remaps custom LRO
+     * terminal states (e.g. "completed", "superseded") to standard
+     * {@link LongRunningOperationStatus} values.</p>
+     */
+    @Override
+    public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+        return super.poll(pollingContext, pollResponseType).map(AgentsServicePollUtils::remapStatus);
     }
 
     /**
