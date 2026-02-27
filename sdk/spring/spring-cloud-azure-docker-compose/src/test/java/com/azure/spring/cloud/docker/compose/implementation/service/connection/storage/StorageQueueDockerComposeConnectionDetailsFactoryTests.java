@@ -25,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnabledOnOs(OS.LINUX)
 class StorageQueueDockerComposeConnectionDetailsFactoryTests {
 
+
     @Autowired
     private QueueClient queueClient;
 
