@@ -17,6 +17,9 @@
 
 ### Other Changes
 
+- Certificate Registration related feature is deprecated in this library. Please use "azure-resourcemanager-certificateregistration" library.
+- Domain Registration related feature is deprecated in this library. Please use "azure-resourcemanager-domainregistration" library.
+
 #### Dependency Updates
 
 - Updated `api-version` of AppService to `2025-05-01`.
