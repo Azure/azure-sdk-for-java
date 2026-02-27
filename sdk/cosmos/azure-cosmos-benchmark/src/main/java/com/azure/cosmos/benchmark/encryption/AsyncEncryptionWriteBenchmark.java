@@ -5,6 +5,7 @@ package com.azure.cosmos.benchmark.encryption;
 
 import com.azure.cosmos.benchmark.BenchmarkHelper;
 import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.Operation;
 import com.azure.cosmos.benchmark.PojoizedJson;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -91,7 +92,7 @@ public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<Cosm
 
         concurrencyControlSemaphore.acquire();
 
-        if (configuration.getOperationType() == Configuration.Operation.WriteThroughput) {
+        if (configuration.getOperationType() == Operation.WriteThroughput) {
             obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
         } else {
             LatencySubscriber<CosmosItemResponse> latencySubscriber = new LatencySubscriber<>(baseSubscriber);

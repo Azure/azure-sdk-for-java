@@ -11,44 +11,23 @@ public class AgentsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        renameImageGenSizeEnums(libraryCustomization, logger);
+        renameImageGenToolSize(libraryCustomization, logger);
     }
 
-    /**
-     * Customization for enum values that are originally numbers and get transliterated by the emitter.
-     * @param customization
-     * @param logger
-     */
-    private void renameImageGenSizeEnums(LibraryCustomization customization, Logger logger) {
-        logger.info("Renaming enum ImageGenToolSize variants");
+    private void renameImageGenToolSize(LibraryCustomization customization, Logger logger) {
         customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize").customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
-                .ifPresent(clazz -> clazz.getEntries().stream()
-                        .filter(entry -> "ONE_ZERO_TWO_FOURX_ONE_ZERO_TWO_FOUR".equals(entry.getName().getIdentifier()))
-                        .forEach(entry -> entry.setName("SIZE_1024X1024"))));
+            .ifPresent(clazz -> clazz.getEntries().stream()
+                .filter(entry -> "ONE_ZERO_TWO_FOURX_ONE_ZERO_TWO_FOUR".equals(entry.getName().getIdentifier()))
+                .forEach(entry -> entry.setName("RESOLUTION_1024_X_1024"))));
 
         customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize").customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
-                .ifPresent(clazz -> clazz.getEntries().stream()
-                        .filter(entry -> "ONE_ZERO_TWO_FOURX_ONE_FIVE_THREE_SIX".equals(entry.getName().getIdentifier()))
-                        .forEach(entry -> entry.setName("SIZE_1024X1536"))));
+            .ifPresent(clazz -> clazz.getEntries().stream()
+                .filter(entry -> "ONE_ZERO_TWO_FOURX_ONE_FIVE_THREE_SIX".equals(entry.getName().getIdentifier()))
+                .forEach(entry -> entry.setName("RESOLUTION_1024_X_1536"))));
 
         customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize").customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
-                .ifPresent(clazz -> clazz.getEntries().stream()
-                        .filter(entry -> "ONE_FIVE_THREE_SIXX_ONE_ZERO_TWO_FOUR".equals(entry.getName().getIdentifier()))
-                        .forEach(entry -> entry.setName("SIZE_1536X1024"))));
-
-        customization.getClass("com.azure.ai.agents.models", "ComputerActionType").customizeAst(ast -> ast.getEnumByName("ComputerActionType")
-                .ifPresent(clazz -> clazz.getEntries().stream()
-                        .filter(entry -> "KEYPRESS".equals(entry.getName().getIdentifier()))
-                        .forEach(entry -> entry.setName("KEY_PRESS"))));
-
-        customization.getClass("com.azure.ai.agents.models", "ComputerActionKeyPress")
-                .customizeAst(ast -> ast.getClassByName("ComputerActionKeyPress")
-                        .flatMap(clazz -> clazz.getFieldByName("type"))
-                        .ifPresent(barField ->
-                                barField.getVariables().forEach(var -> {
-                                    if (var.getNameAsString().equals("type")) {
-                                        var.setInitializer("ComputerActionType.KEY_PRESS");
-                                    }
-                                })));
+            .ifPresent(clazz -> clazz.getEntries().stream()
+                .filter(entry -> "ONE_FIVE_THREE_SIXX_ONE_ZERO_TWO_FOUR".equals(entry.getName().getIdentifier()))
+                .forEach(entry -> entry.setName("RESOLUTION_1536_X_1024"))));
     }
 }

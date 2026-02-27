@@ -20,7 +20,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
@@ -92,12 +91,6 @@ abstract class SyncBenchmark<T> {
         "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG" // Implicitly set when COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED is set to true
     );
 
-    private static final TokenCredential CREDENTIAL = new DefaultAzureCredentialBuilder()
-            .managedIdentityClientId(Configuration.getAadManagedIdentityId())
-            .authorityHost(Configuration.getAadLoginUri())
-            .tenantId(Configuration.getAadTenantId())
-            .build();
-
     static abstract class ResultHandler<T, Throwable> implements BiFunction<T, Throwable, T> {
         ResultHandler() {
         }
@@ -158,9 +151,13 @@ abstract class SyncBenchmark<T> {
 
         boolean isManagedIdentityRequired = configuration.isManagedIdentityRequired();
 
+        final TokenCredential credential = isManagedIdentityRequired
+            ? cfg.buildTokenCredential()
+            : null;
+
         CosmosClientBuilder benchmarkSpecificClientBuilder = isManagedIdentityRequired ?
                 new CosmosClientBuilder()
-                        .credential(CREDENTIAL) :
+                        .credential(credential) :
                 new CosmosClientBuilder()
                         .key(cfg.getMasterKey());
 
@@ -259,9 +256,9 @@ abstract class SyncBenchmark<T> {
 
             ArrayList<CompletableFuture<PojoizedJson>> createDocumentFutureList = new ArrayList<>();
 
-            if (configuration.getOperationType() != Configuration.Operation.WriteLatency
-                    && configuration.getOperationType() != Configuration.Operation.WriteThroughput
-                    && configuration.getOperationType() != Configuration.Operation.ReadMyWrites) {
+            if (configuration.getOperationType() != Operation.WriteLatency
+                    && configuration.getOperationType() != Operation.WriteThroughput
+                    && configuration.getOperationType() != Operation.ReadMyWrites) {
                 String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
                 for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                     String uuid = UUID.randomUUID().toString();
@@ -308,11 +305,18 @@ abstract class SyncBenchmark<T> {
             }
 
             if (configuration.getResultUploadDatabase() != null && configuration.getResultUploadContainer() != null) {
+                String op = configuration.isSync()
+                    ? "SYNC_" + configuration.getOperationType().name()
+                    : configuration.getOperationType().name();
                 resultReporter = CosmosTotalResultReporter
                         .forRegistry(
                                 metricsRegistry,
                                 this.resultUploaderClient.getDatabase(configuration.getResultUploadDatabase()).getContainer(configuration.getResultUploadContainer()),
-                                configuration)
+                                op,
+                                configuration.getTestVariationName(),
+                                configuration.getBranchName(),
+                                configuration.getCommitId(),
+                                configuration.getConcurrency())
                         .convertRatesTo(TimeUnit.SECONDS)
                         .convertDurationsTo(TimeUnit.MILLISECONDS).build();
             } else {

@@ -6,21 +6,24 @@ package com.azure.ai.agents.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
+ * Code interpreter output image
+ *
  * The image output from the code interpreter.
  */
 @Immutable
-public final class CodeInterpreterOutputImage extends CodeInterpreterOutput {
+public final class CodeInterpreterOutputImage implements JsonSerializable<CodeInterpreterOutputImage> {
 
     /*
-     * The type property.
+     * The type of the output. Always `image`.
      */
     @Generated
-    private CodeInterpreterOutputType type = CodeInterpreterOutputType.IMAGE;
+    private final String type = "image";
 
     /*
      * The URL of the image output from the code interpreter.
@@ -39,13 +42,12 @@ public final class CodeInterpreterOutputImage extends CodeInterpreterOutput {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The type of the output. Always `image`.
      *
      * @return the type value.
      */
     @Generated
-    @Override
-    public CodeInterpreterOutputType getType() {
+    public String getType() {
         return this.type;
     }
 
@@ -66,8 +68,8 @@ public final class CodeInterpreterOutputImage extends CodeInterpreterOutput {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("url", this.url);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -84,21 +86,16 @@ public final class CodeInterpreterOutputImage extends CodeInterpreterOutput {
     public static CodeInterpreterOutputImage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String url = null;
-            CodeInterpreterOutputType type = CodeInterpreterOutputType.IMAGE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("url".equals(fieldName)) {
                     url = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = CodeInterpreterOutputType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            CodeInterpreterOutputImage deserializedCodeInterpreterOutputImage = new CodeInterpreterOutputImage(url);
-            deserializedCodeInterpreterOutputImage.type = type;
-            return deserializedCodeInterpreterOutputImage;
+            return new CodeInterpreterOutputImage(url);
         });
     }
 }

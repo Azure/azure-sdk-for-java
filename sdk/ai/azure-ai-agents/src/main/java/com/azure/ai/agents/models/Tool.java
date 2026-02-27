@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The Tool model.
+ * A tool that can be used to generate a response.
  */
 @Immutable
 public class Tool implements JsonSerializable<Tool> {
@@ -77,44 +77,52 @@ public class Tool implements JsonSerializable<Tool> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("function".equals(discriminatorValue)) {
+                if ("bing_grounding".equals(discriminatorValue)) {
+                    return BingGroundingTool.fromJson(readerToUse.reset());
+                } else if ("fabric_dataagent_preview".equals(discriminatorValue)) {
+                    return MicrosoftFabricPreviewTool.fromJson(readerToUse.reset());
+                } else if ("sharepoint_grounding_preview".equals(discriminatorValue)) {
+                    return SharepointPreviewTool.fromJson(readerToUse.reset());
+                } else if ("azure_ai_search".equals(discriminatorValue)) {
+                    return AzureAISearchTool.fromJson(readerToUse.reset());
+                } else if ("openapi".equals(discriminatorValue)) {
+                    return OpenApiTool.fromJson(readerToUse.reset());
+                } else if ("bing_custom_search_preview".equals(discriminatorValue)) {
+                    return BingCustomSearchPreviewTool.fromJson(readerToUse.reset());
+                } else if ("browser_automation_preview".equals(discriminatorValue)) {
+                    return BrowserAutomationPreviewTool.fromJson(readerToUse.reset());
+                } else if ("azure_function".equals(discriminatorValue)) {
+                    return AzureFunctionTool.fromJson(readerToUse.reset());
+                } else if ("capture_structured_outputs".equals(discriminatorValue)) {
+                    return CaptureStructuredOutputsTool.fromJson(readerToUse.reset());
+                } else if ("a2a_preview".equals(discriminatorValue)) {
+                    return A2APreviewTool.fromJson(readerToUse.reset());
+                } else if ("memory_search_preview".equals(discriminatorValue)) {
+                    return MemorySearchPreviewTool.fromJson(readerToUse.reset());
+                } else if ("code_interpreter".equals(discriminatorValue)) {
+                    return CodeInterpreterTool.fromJson(readerToUse.reset());
+                } else if ("function".equals(discriminatorValue)) {
                     return FunctionTool.fromJson(readerToUse.reset());
                 } else if ("file_search".equals(discriminatorValue)) {
                     return FileSearchTool.fromJson(readerToUse.reset());
                 } else if ("computer_use_preview".equals(discriminatorValue)) {
                     return ComputerUsePreviewTool.fromJson(readerToUse.reset());
-                } else if ("web_search_preview".equals(discriminatorValue)) {
-                    return WebSearchPreviewTool.fromJson(readerToUse.reset());
-                } else if ("code_interpreter".equals(discriminatorValue)) {
-                    return CodeInterpreterTool.fromJson(readerToUse.reset());
+                } else if ("web_search".equals(discriminatorValue)) {
+                    return WebSearchTool.fromJson(readerToUse.reset());
+                } else if ("mcp".equals(discriminatorValue)) {
+                    return McpTool.fromJson(readerToUse.reset());
                 } else if ("image_generation".equals(discriminatorValue)) {
                     return ImageGenTool.fromJson(readerToUse.reset());
                 } else if ("local_shell".equals(discriminatorValue)) {
-                    return LocalShellTool.fromJson(readerToUse.reset());
-                } else if ("mcp".equals(discriminatorValue)) {
-                    return MCPTool.fromJson(readerToUse.reset());
-                } else if ("bing_grounding".equals(discriminatorValue)) {
-                    return BingGroundingAgentTool.fromJson(readerToUse.reset());
-                } else if ("fabric_dataagent_preview".equals(discriminatorValue)) {
-                    return MicrosoftFabricAgentTool.fromJson(readerToUse.reset());
-                } else if ("sharepoint_grounding_preview".equals(discriminatorValue)) {
-                    return SharepointAgentTool.fromJson(readerToUse.reset());
-                } else if ("azure_ai_search".equals(discriminatorValue)) {
-                    return AzureAISearchAgentTool.fromJson(readerToUse.reset());
-                } else if ("openapi".equals(discriminatorValue)) {
-                    return OpenApiAgentTool.fromJson(readerToUse.reset());
-                } else if ("bing_custom_search_preview".equals(discriminatorValue)) {
-                    return BingCustomSearchAgentTool.fromJson(readerToUse.reset());
-                } else if ("browser_automation_preview".equals(discriminatorValue)) {
-                    return BrowserAutomationAgentTool.fromJson(readerToUse.reset());
-                } else if ("azure_function".equals(discriminatorValue)) {
-                    return AzureFunctionAgentTool.fromJson(readerToUse.reset());
-                } else if ("capture_structured_outputs".equals(discriminatorValue)) {
-                    return CaptureStructuredOutputsTool.fromJson(readerToUse.reset());
-                } else if ("a2a_preview".equals(discriminatorValue)) {
-                    return A2ATool.fromJson(readerToUse.reset());
-                } else if ("memory_search".equals(discriminatorValue)) {
-                    return MemorySearchTool.fromJson(readerToUse.reset());
+                    return LocalShellToolParam.fromJson(readerToUse.reset());
+                } else if ("shell".equals(discriminatorValue)) {
+                    return FunctionShellToolParam.fromJson(readerToUse.reset());
+                } else if ("custom".equals(discriminatorValue)) {
+                    return CustomToolParam.fromJson(readerToUse.reset());
+                } else if ("web_search_preview".equals(discriminatorValue)) {
+                    return WebSearchPreviewTool.fromJson(readerToUse.reset());
+                } else if ("apply_patch".equals(discriminatorValue)) {
+                    return ApplyPatchToolParam.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

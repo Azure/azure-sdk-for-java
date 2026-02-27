@@ -948,6 +948,7 @@ public class StoreReader {
                 int numberOfReadRegions = -1;
                 Double backendLatencyInMs = null;
                 Double retryAfterInMs = null;
+                long globalNRegionCommittedLSN = -1;
 
                 if (replicaStatusList != null) {
                     ImplementationBridgeHelpers
@@ -995,15 +996,14 @@ public class StoreReader {
                     numberOfReadRegions = Integer.parseInt(headerValue);
                 }
 
-                long globalNRegionCommittedLSN = -1;
                 headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     globalCommittedLSN = Long.parseLong(headerValue);
-                } else {
-                    headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN);
-                    if (!Strings.isNullOrEmpty(headerValue)) {
-                        globalNRegionCommittedLSN = Long.parseLong(headerValue);
-                    }
+                }
+
+                headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN);
+                if (!Strings.isNullOrEmpty(headerValue)) {
+                    globalNRegionCommittedLSN = Long.parseLong(headerValue);
                 }
 
                 headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS);
