@@ -92,7 +92,11 @@
 /sdk/ai/                                                           @Azure/azure-java-sdk @dargilco @jpalvarezl @trrwilson
 
 # PRLabel: %AI Agents
-/sdk/ai/azure-ai-agents-persistent/                                @Azure/azure-java-sdk @dargilco @jpalvarezl @trrwilson
+/sdk/ai/azure-ai-agents/                                           @Azure/azure-java-sdk @dargilco @glecaros @jpalvarezl @kaylieee @trrwilson
+/sdk/ai/azure-ai-agents-persistent/                                @Azure/azure-java-sdk @dargilco @glecaros @jpalvarezl @kaylieee @trrwilson
+
+# PRLabel: %AI Projects
+/sdk/ai/azure-ai-projects/                                         @Azure/azure-java-sdk @dargilco @glecaros @jpalvarezl @kaylieee @trrwilson
 
 # PRLabel: %AI Model Inference
 /sdk/ai/azure-ai-inference/                                        @Azure/azure-java-sdk @dargilco @glharper @trrwilson
@@ -477,7 +481,7 @@
 # ServiceOwners:                                                   @klaaslanghout
 
 # PRLabel: %Voice Live
-/sdk/ai/azure-ai-voicelive/                                        @amber-yujueWang @rhurey @xitzhang
+/sdk/voicelive/                                                    @amber-yujueWang @emilyjiji @pankopon @rhurey @xitzhang
 
 # PRLabel: %WebPubSub
 /sdk/webpubsub/azure-messaging-webpubsub-client/                   @Azure/azure-java-sdk @chenkennt @vicancy @zackliu
