@@ -198,6 +198,9 @@ public class ContentUnderstandingCustomizations extends Customization {
         // Strip trailing numeric suffixes from emitter-generated parameter names
         // e.g., analyzeRequest1 -> analyzeRequest, grantCopyAuthorizationRequest1 -> grantCopyAuthorizationRequest
         renameRequestParameters(customization, logger);
+
+        // Default LRO polling interval to 3 seconds for Content Understanding operations
+        customizePollingInterval(customization, logger);
     }
 
     /**
@@ -1979,6 +1982,33 @@ public class ContentUnderstandingCustomizations extends Customization {
                 });
             });
         }
+    }
+
+    /**
+     * Default the LRO polling interval to 3 seconds for all Content Understanding operations.
+     * The generated code uses Duration.ofSeconds(1) as the default polling interval for
+     * PollerFlux.create() and SyncPoller.createPoller() calls. Content Understanding operations
+     * typically take several seconds, so polling every 1 second is unnecessarily aggressive.
+     * This customization replaces Duration.ofSeconds(1) with Duration.ofSeconds(3) in
+     * ContentUnderstandingClientImpl to reduce unnecessary polling traffic.
+     */
+    private void customizePollingInterval(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing default LRO polling interval to 3 seconds");
+
+        customization.getClass(IMPLEMENTATION_PACKAGE, "ContentUnderstandingClientImpl").customizeAst(ast ->
+            ast.getClassByName("ContentUnderstandingClientImpl").ifPresent(clazz -> {
+                int count = 0;
+                for (MethodDeclaration method : clazz.getMethods()) {
+                    method.getBody().ifPresent(body -> {
+                        String bodyStr = body.toString();
+                        if (bodyStr.contains("Duration.ofSeconds(1)")) {
+                            String updated = bodyStr.replace("Duration.ofSeconds(1)", "Duration.ofSeconds(3)");
+                            method.setBody(StaticJavaParser.parseBlock(updated));
+                        }
+                    });
+                }
+                logger.info("Updated polling interval from 1s to 3s in ContentUnderstandingClientImpl");
+            }));
     }
 
 }
