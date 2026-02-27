@@ -250,16 +250,18 @@ public class ReactorNettyClient implements HttpClient {
 
             if (state.equals(HttpClientState.CONNECTED)) {
                 ReactorNettyRequestRecord requestRecord = getRequestRecordFromConnection(conn);
-                if (requestRecord != null) {
-                    requestRecord.setTimeConnected(time);
-                    captureChannelIds(conn.channel(), requestRecord, true);
+                if (requestRecord == null) {
+                    throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
                 }
+                requestRecord.setTimeConnected(time);
+                captureChannelIds(conn.channel(), requestRecord, true);
             } else if (state.equals(HttpClientState.ACQUIRED)) {
                 ReactorNettyRequestRecord requestRecord = getRequestRecordFromConnection(conn);
-                if (requestRecord != null) {
-                    requestRecord.setTimeAcquired(time);
-                    captureChannelIds(conn.channel(), requestRecord, false);
+                if (requestRecord == null) {
+                    throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
                 }
+                requestRecord.setTimeAcquired(time);
+                captureChannelIds(conn.channel(), requestRecord, false);
             } else if (state.equals(HttpClientState.STREAM_CONFIGURED)) {
                 // STREAM_CONFIGURED fires for HTTP/2 streams on every request (unlike CONNECTED
                 // which only fires once when the TCP connection is established).

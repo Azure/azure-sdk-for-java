@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TestObject;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -55,7 +56,7 @@ import static org.testng.AssertJUnit.fail;
  * 1. Group "manual-thinclient-network-delay" — NOT included in CI.
  * 2. Docker container with --cap-add=NET_ADMIN, JDK 21, .m2 mounted.
  * 3. Tests self-manage tc netem (add/remove delay) — no manual intervention.
- * 4. Run via: ./azure-cosmos-tests/run-netem-tests.sh inside container.
+ * 4. See NETWORK_DELAY_TESTING_README.md for full setup and run instructions.
  * <p>
  * DESIGN:
  * - No creates during tests. One seed item created in beforeClass (via shared container).
@@ -63,7 +64,7 @@ import static org.testng.AssertJUnit.fail;
  * - Assertions compare parentChannelId before/after to prove connection survival.
  * - Tests run sequentially (thread-count=1) to avoid tc interference between tests.
  */
-public class ManualNetworkDelayConnectionLifecycleTests extends FaultInjectionTestBase {
+public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
 
     private CosmosAsyncClient client;
     private CosmosAsyncContainer cosmosAsyncContainer;
@@ -77,7 +78,7 @@ public class ManualNetworkDelayConnectionLifecycleTests extends FaultInjectionTe
     private static final String NETWORK_INTERFACE = "eth0";
 
     @Factory(dataProvider = "clientBuildersWithGatewayAndHttp2")
-    public ManualNetworkDelayConnectionLifecycleTests(CosmosClientBuilder clientBuilder) {
+    public Http2ConnectionLifecycleTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
     }
@@ -226,16 +227,16 @@ public class ManualNetworkDelayConnectionLifecycleTests extends FaultInjectionTe
         JsonNode gwStats = node.get("gatewayStatisticsList");
         assertThat(gwStats).as(context + ": gatewayStatisticsList should not be null").isNotNull();
         assertThat(gwStats.isArray()).as(context + ": gatewayStatisticsList should be an array").isTrue();
-        boolean found408_10002 = false;
+        boolean foundGatewayReadTimeout = false;
         for (JsonNode stat : gwStats) {
             int status = stat.has("statusCode") ? stat.get("statusCode").asInt() : 0;
             int subStatus = stat.has("subStatusCode") ? stat.get("subStatusCode").asInt() : 0;
-            if (status == 408 && subStatus == 10002) {
-                found408_10002 = true;
+            if (status == HttpConstants.StatusCodes.REQUEST_TIMEOUT && subStatus == HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT) {
+                foundGatewayReadTimeout = true;
                 break;
             }
         }
-        assertThat(found408_10002)
+        assertThat(foundGatewayReadTimeout)
             .as(context + ": should contain at least one 408/10002 (GATEWAY_ENDPOINT_READ_TIMEOUT) entry")
             .isTrue();
     }
@@ -257,7 +258,7 @@ public class ManualNetworkDelayConnectionLifecycleTests extends FaultInjectionTe
         for (JsonNode stat : gwStats) {
             int status = stat.has("statusCode") ? stat.get("statusCode").asInt() : 0;
             int subStatus = stat.has("subStatusCode") ? stat.get("subStatusCode").asInt() : 0;
-            assertThat(status == 408 && subStatus == 10002)
+            assertThat(status == HttpConstants.StatusCodes.REQUEST_TIMEOUT && subStatus == HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)
                 .as(context + ": should NOT contain 408/10002 (GATEWAY_ENDPOINT_READ_TIMEOUT) — delay should be removed")
                 .isFalse();
         }
@@ -708,7 +709,7 @@ public class ManualNetworkDelayConnectionLifecycleTests extends FaultInjectionTe
                 for (JsonNode stat : delayedGwStats) {
                     int status = stat.has("statusCode") ? stat.get("statusCode").asInt() : 0;
                     int subStatus = stat.has("subStatusCode") ? stat.get("subStatusCode").asInt() : 0;
-                    assertThat(status == 408 && subStatus == 10002)
+                    assertThat(status == HttpConstants.StatusCodes.REQUEST_TIMEOUT && subStatus == HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)
                         .as("3s e2e should cancel BEFORE ReadTimeoutHandler (6s) fires — should NOT see 408/10002")
                         .isFalse();
                 }
