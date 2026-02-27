@@ -13,7 +13,7 @@ import java.util.Objects;
 /**
  * Abstract base class for parsed grounding sources returned by Content Understanding.
  *
- * <p>The service encodes source positions as compact strings in the {@link ContentField#getSource()} property.
+ * <p>The service encodes source positions as compact strings in the {@link ContentField#getSources()} property.
  * This class hierarchy parses those strings into strongly-typed objects:</p>
  * <ul>
  * <li>{@link DocumentSource} &mdash; {@code D(page,x1,y1,x2,y2,x3,y3,x4,y4)}</li>
@@ -81,7 +81,7 @@ public abstract class ContentSource {
      * @throws NullPointerException if {@code source} is null.
      * @throws IllegalArgumentException if {@code source} is empty or any segment has an unrecognized format.
      */
-    static List<ContentSource> parseSource(String source) {
+    public static List<ContentSource> parseAll(String source) {
         Objects.requireNonNull(source, "'source' cannot be null.");
         if (source.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'source' cannot be empty."));

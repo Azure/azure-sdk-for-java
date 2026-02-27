@@ -178,7 +178,7 @@ public class Sample04_CreateAnalyzer {
                     ? String.format("%.2f", companyNameField.getConfidence())
                     : "N/A"));
                 System.out.println(
-                    "  Source: " + (companyNameField.getSource() != null ? companyNameField.getSource() : "N/A"));
+                    "  Source: " + (companyNameField.getSources() != null ? companyNameField.getSources() : "N/A"));
                 List<ContentSpan> spans = companyNameField.getSpans();
                 if (spans != null && !spans.isEmpty()) {
                     ContentSpan span = spans.get(0);
@@ -199,7 +199,7 @@ public class Sample04_CreateAnalyzer {
                     ? String.format("%.2f", totalAmountField.getConfidence())
                     : "N/A"));
                 System.out.println(
-                    "  Source: " + (totalAmountField.getSource() != null ? totalAmountField.getSource() : "N/A"));
+                    "  Source: " + (totalAmountField.getSources() != null ? totalAmountField.getSources() : "N/A"));
                 List<ContentSpan> spans = totalAmountField.getSpans();
                 if (spans != null && !spans.isEmpty()) {
                     ContentSpan span = spans.get(0);
@@ -219,8 +219,8 @@ public class Sample04_CreateAnalyzer {
                     ? String.format("%.2f", summaryField.getConfidence())
                     : "N/A"));
                 // Note: Generated fields may not have source information
-                if (summaryField.getSource() != null && !summaryField.getSource().isEmpty()) {
-                    System.out.println("  Source: " + summaryField.getSource());
+                if (summaryField.getSources() != null && !summaryField.getSources().isEmpty()) {
+                    System.out.println("  Source: " + summaryField.getSources());
                 }
             }
 
@@ -236,8 +236,8 @@ public class Sample04_CreateAnalyzer {
                     ? String.format("%.2f", documentTypeField.getConfidence())
                     : "N/A"));
                 // Note: Classified fields may not have source information
-                if (documentTypeField.getSource() != null && !documentTypeField.getSource().isEmpty()) {
-                    System.out.println("  Source: " + documentTypeField.getSource());
+                if (documentTypeField.getSources() != null && !documentTypeField.getSources().isEmpty()) {
+                    System.out.println("  Source: " + documentTypeField.getSources());
                 }
             }
         }

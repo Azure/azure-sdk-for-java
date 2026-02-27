@@ -20,6 +20,7 @@ import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.ai.contentunderstanding.models.ContentNumberField;
 import com.azure.ai.contentunderstanding.models.ContentStringField;
+import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -364,7 +365,7 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
                         ? String.format("%.2f", companyNameField.getConfidence())
                         : "N/A"));
                     System.out.println(
-                        "  Source: " + (companyNameField.getSource() != null ? companyNameField.getSource() : "N/A"));
+                        "  Source: " + (companyNameField.getSources() != null ? companyNameField.getSources() : "N/A"));
                     List<ContentSpan> spans = companyNameField.getSpans();
                     if (spans != null && !spans.isEmpty()) {
                         ContentSpan span = spans.get(0);
@@ -385,7 +386,7 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
                         ? String.format("%.2f", totalAmountField.getConfidence())
                         : "N/A"));
                     System.out.println(
-                        "  Source: " + (totalAmountField.getSource() != null ? totalAmountField.getSource() : "N/A"));
+                        "  Source: " + (totalAmountField.getSources() != null ? totalAmountField.getSources() : "N/A"));
                     List<ContentSpan> spans = totalAmountField.getSpans();
                     if (spans != null && !spans.isEmpty()) {
                         ContentSpan span = spans.get(0);
@@ -405,8 +406,8 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
                         ? String.format("%.2f", summaryField.getConfidence())
                         : "N/A"));
                     // Note: Generated fields may not have source information
-                    if (summaryField.getSource() != null && !summaryField.getSource().isEmpty()) {
-                        System.out.println("  Source: " + summaryField.getSource());
+                    if (summaryField.getSources() != null && !summaryField.getSources().isEmpty()) {
+                        System.out.println("  Source: " + summaryField.getSources());
                     }
                 }
 
@@ -422,8 +423,8 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
                         ? String.format("%.2f", documentTypeField.getConfidence())
                         : "N/A"));
                     // Note: Classified fields may not have source information
-                    if (documentTypeField.getSource() != null && !documentTypeField.getSource().isEmpty()) {
-                        System.out.println("  Source: " + documentTypeField.getSource());
+                    if (documentTypeField.getSources() != null && !documentTypeField.getSources().isEmpty()) {
+                        System.out.println("  Source: " + documentTypeField.getSources());
                     }
                 }
             }
@@ -470,11 +471,12 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
                         .println("  Confidence: " + String.format("%.2f", companyNameFieldAssert.getConfidence()));
                 }
 
-                if (companyNameFieldAssert.getSource() != null
-                    && !companyNameFieldAssert.getSource().trim().isEmpty()) {
-                    assertTrue(companyNameFieldAssert.getSource().startsWith("D("),
-                        "Source should start with 'D(' for extracted fields");
-                    System.out.println("  Source: " + companyNameFieldAssert.getSource());
+                if (companyNameFieldAssert.getSources() != null && !companyNameFieldAssert.getSources().isEmpty()) {
+                    assertTrue(
+                        companyNameFieldAssert.getSources() != null
+                            && companyNameFieldAssert.getSources().get(0) instanceof DocumentSource,
+                        "Source should be a DocumentSource for extracted fields");
+                    System.out.println("  Source: " + companyNameFieldAssert.getSources());
                 }
 
                 List<ContentSpan> spans = companyNameFieldAssert.getSpans();

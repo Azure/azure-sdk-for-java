@@ -13,6 +13,7 @@ import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ContentObjectField;
+import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -104,7 +105,7 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
                     ? String.format("%.2f", customerNameField.getConfidence())
                     : "N/A"));
                 System.out.println(
-                    "  Source: " + (customerNameField.getSource() != null ? customerNameField.getSource() : "N/A"));
+                    "  Source: " + (customerNameField.getSources() != null ? customerNameField.getSources() : "N/A"));
                 List<ContentSpan> spans = customerNameField.getSpans();
                 if (spans != null && !spans.isEmpty()) {
                     ContentSpan span = spans.get(0);
@@ -119,7 +120,7 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
                     ? String.format("%.2f", invoiceDateField.getConfidence())
                     : "N/A"));
                 System.out.println(
-                    "  Source: " + (invoiceDateField.getSource() != null ? invoiceDateField.getSource() : "N/A"));
+                    "  Source: " + (invoiceDateField.getSources() != null ? invoiceDateField.getSources() : "N/A"));
                 List<ContentSpan> spans = invoiceDateField.getSpans();
                 if (spans != null && !spans.isEmpty()) {
                     ContentSpan span = spans.get(0);
@@ -148,8 +149,8 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
                 if (totalAmountObj.getConfidence() != null) {
                     System.out.println("  Confidence: " + String.format("%.2f", totalAmountObj.getConfidence()));
                 }
-                if (totalAmountObj.getSource() != null && !totalAmountObj.getSource().isEmpty()) {
-                    System.out.println("  Source: " + totalAmountObj.getSource());
+                if (totalAmountObj.getSources() != null && !totalAmountObj.getSources().isEmpty()) {
+                    System.out.println("  Source: " + totalAmountObj.getSources());
                 }
             }
 

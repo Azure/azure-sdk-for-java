@@ -114,7 +114,7 @@ public class Sample03_AnalyzeInvoiceAsync {
                             ? String.format("%.2f", customerNameField.getConfidence())
                             : "N/A"));
                         System.out.println("  Source: "
-                            + (customerNameField.getSource() != null ? customerNameField.getSource() : "N/A"));
+                            + (customerNameField.getSources() != null ? customerNameField.getSources() : "N/A"));
                         List<ContentSpan> spans = customerNameField.getSpans();
                         if (spans != null && !spans.isEmpty()) {
                             ContentSpan span = spans.get(0);
@@ -129,7 +129,7 @@ public class Sample03_AnalyzeInvoiceAsync {
                             ? String.format("%.2f", invoiceDateField.getConfidence())
                             : "N/A"));
                         System.out.println("  Source: "
-                            + (invoiceDateField.getSource() != null ? invoiceDateField.getSource() : "N/A"));
+                            + (invoiceDateField.getSources() != null ? invoiceDateField.getSources() : "N/A"));
                         List<ContentSpan> spans = invoiceDateField.getSpans();
                         if (spans != null && !spans.isEmpty()) {
                             ContentSpan span = spans.get(0);
@@ -158,8 +158,8 @@ public class Sample03_AnalyzeInvoiceAsync {
                         if (totalAmountObj.getConfidence() != null) {
                             System.out.println("  Confidence: " + String.format("%.2f", totalAmountObj.getConfidence()));
                         }
-                        if (totalAmountObj.getSource() != null && !totalAmountObj.getSource().isEmpty()) {
-                            System.out.println("  Source: " + totalAmountObj.getSource());
+                        if (totalAmountObj.getSources() != null && !totalAmountObj.getSources().isEmpty()) {
+                            System.out.println("  Source: " + totalAmountObj.getSources());
                         }
                     }
 

@@ -31,7 +31,7 @@ import org.slf4j.Logger;
  *       {@code OperationLocationPollingStrategy} to set operationId on the status.</li>
  *   <li>Add static accessor helper ({@code ContentAnalyzerAnalyzeOperationStatusHelper}) so polling
  *       can set the private operationId.</li>
- *   <li>Add convenience methods on model classes for content/array/object fields (equivalent to *.Extensions.cs).</li>
+ *   <li>Add convenience methods on model classes for content/array/object fields.</li>
  *   <li>Make {@code ContentUnderstandingDefaults} constructor public and add {@code updateDefaults}
  *       convenience methods that accept {@code Map} or {@code ContentUnderstandingDefaults} (TypeSpec
  *       disabled these; we re-enable and add them).</li>
@@ -153,7 +153,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         // Add static accessor helper for operationId
         addStaticAccessorForOperationId(customization, logger);
 
-        // Add convenience methods to model classes (equivalent to *.Extensions.cs)
+        // Add convenience methods to model classes
         customizeContentFieldExtensions(customization, logger);
         customizeArrayFieldExtensions(customization, logger);
         customizeObjectFieldExtensions(customization, logger);
@@ -187,7 +187,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         customizeFieldValueAccessors(customization, logger);
 
         // Add ContentSource class hierarchy for grounding source parsing
-        addContentSourceClasses(customization, logger);
+        addContentSourceAndGeometryTypes(customization, logger);
 
         // Add getSources() to ContentField
         addSourcesMethod(customization, logger);
@@ -442,7 +442,7 @@ public class ContentUnderstandingCustomizations extends Customization {
     // =================== Extensions equivalent implementations ===================
 
     /**
-     * Add getValue() method to ContentField class (equivalent to ContentField.Extensions.cs)
+     * Add getValue() method to ContentField class.
      * This allows users to get the typed value regardless of the field subtype.
      */
     private void customizeContentFieldExtensions(LibraryCustomization customization, Logger logger) {
@@ -485,7 +485,7 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Add convenience methods to ContentArrayField class (equivalent to ArrayField.Extensions.cs)
+     * Add convenience methods to ContentArrayField class.
      */
     private void customizeArrayFieldExtensions(LibraryCustomization customization, Logger logger) {
         logger.info("Adding convenience methods to ContentArrayField class");
@@ -498,7 +498,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                     StaticJavaParser.parseExpression("new ClientLogger(ContentArrayField.class)"),
                     Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
 
-                // Add size() method - equivalent to Count property in C#
+                // Add size() method
                 clazz.addMethod("size", Modifier.Keyword.PUBLIC)
                     .setType("int")
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
@@ -507,7 +507,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "return getValueArray() != null ? getValueArray().size() : 0; }"));
 
-                // Add get(int index) method - equivalent to indexer in C# (throw via ClientLogger per SDK lint)
+                // Add get(int index) method (throw via ClientLogger per SDK lint)
                 clazz.addMethod("get", Modifier.Keyword.PUBLIC)
                     .setType("ContentField")
                     .addParameter("int", "index")
@@ -526,7 +526,7 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Add convenience methods to ContentObjectField class (equivalent to ObjectField.Extensions.cs)
+     * Add convenience methods to ContentObjectField class.
      */
     private void customizeObjectFieldExtensions(LibraryCustomization customization, Logger logger) {
         logger.info("Adding convenience methods to ContentObjectField class");
@@ -540,7 +540,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                     StaticJavaParser.parseExpression("new ClientLogger(ContentObjectField.class)"),
                     Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
 
-                // Add getField(String fieldName) method - equivalent to indexer in C# (throw via ClientLogger per SDK lint)
+                // Add getField(String fieldName) method (throw via ClientLogger per SDK lint)
                 clazz.addMethod("getField", Modifier.Keyword.PUBLIC)
                     .setType("ContentField")
                     .addParameter("String", "fieldName")
@@ -706,7 +706,7 @@ public class ContentUnderstandingCustomizations extends Customization {
 
     /**
      * EMITTER-FIX: Add convenience methods for updateDefaults that accept typed objects
-     * instead of BinaryData. This is equivalent to C# Update Operations in ContentUnderstandingClient.Customizations.cs
+     * instead of BinaryData.
      *
      * Note: TypeSpec auto-generates updateAnalyzer convenience methods, so we only add updateDefaults here.
      * The updateDefaults convenience methods were disabled in TypeSpec because they require a public constructor
@@ -1263,7 +1263,7 @@ public class ContentUnderstandingCustomizations extends Customization {
      * Add ContentSource, DocumentSource, AudioVisualSource, and geometry types
      * (PointF, RectangleF, Rectangle) as custom files via the raw editor.
      */
-    private void addContentSourceClasses(LibraryCustomization customization, Logger logger) {
+    private void addContentSourceAndGeometryTypes(LibraryCustomization customization, Logger logger) {
         logger.info("Adding ContentSource class hierarchy and geometry types");
 
         customization.getRawEditor().addFile(SRC_MODELS + "PointF.java", POINT_F_CONTENT);
@@ -1275,13 +1275,15 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Add getSources() method to ContentField via AST customization.
+     * Hide getSource() and add getSources() method to ContentField via AST customization.
      */
     private void addSourcesMethod(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding getSources() to ContentField");
+        logger.info("Adding getSources() and hiding getSource() on ContentField");
 
         customization.getClass(MODELS_PACKAGE, "ContentField").customizeAst(ast ->
             ast.getClassByName("ContentField").ifPresent(clazz -> {
+                // Hide getSource() — users should use getSources() for typed access
+                clazz.getMethodsByName("getSource").forEach(m -> m.removeModifier(Modifier.Keyword.PUBLIC));
                 ast.addImport("java.util.List");
                 clazz.addMethod("getSources", Modifier.Keyword.PUBLIC)
                     .setType("List<ContentSource>")
@@ -1294,8 +1296,8 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("see", "DocumentSource#parse(String)")
                         .addBlockTag("see", "AudioVisualSource#parse(String)"))
                     .setBody(StaticJavaParser.parseBlock("{"
-                        + "String src = getSource();"
-                        + "return (src == null || src.isEmpty()) ? null : ContentSource.parseSource(src); }"));
+                        + "String src = this.source;"
+                        + "return (src == null || src.isEmpty()) ? null : ContentSource.parseAll(src); }"));
             }));
     }
 
@@ -1552,7 +1554,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         + "/**\n"
         + " * Abstract base class for parsed grounding sources returned by Content Understanding.\n"
         + " *\n"
-        + " * <p>The service encodes source positions as compact strings in the {@link ContentField#getSource()} property.\n"
+        + " * <p>The service encodes source positions as compact strings in the {@link ContentField#getSources()} property.\n"
         + " * This class hierarchy parses those strings into strongly-typed objects:</p>\n"
         + " * <ul>\n"
         + " * <li>{@link DocumentSource} &mdash; {@code D(page,x1,y1,x2,y2,x3,y3,x4,y4)}</li>\n"
@@ -1615,7 +1617,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         + "     * @throws NullPointerException if {@code source} is null.\n"
         + "     * @throws IllegalArgumentException if {@code source} is empty or any segment has an unrecognized format.\n"
         + "     */\n"
-        + "    static List<ContentSource> parseSource(String source) {\n"
+        + "    public static List<ContentSource> parseAll(String source) {\n"
         + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
         + "        if (source.isEmpty()) {\n"
         + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"

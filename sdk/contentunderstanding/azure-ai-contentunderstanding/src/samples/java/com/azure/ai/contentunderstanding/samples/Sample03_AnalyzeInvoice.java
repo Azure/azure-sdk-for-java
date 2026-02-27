@@ -11,8 +11,10 @@ import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ContentObjectField;
 import com.azure.core.credential.AzureKeyCredential;
@@ -100,8 +102,18 @@ public class Sample03_AnalyzeInvoice {
                 System.out.println("  Confidence: " + (customerNameField.getConfidence() != null
                     ? String.format("%.2f", customerNameField.getConfidence())
                     : "N/A"));
-                System.out.println(
-                    "  Source: " + (customerNameField.getSource() != null ? customerNameField.getSource() : "N/A"));
+                // Demonstrate typed source access: parse into DocumentSource for page number and bounding box
+                List<ContentSource> sources = customerNameField.getSources();
+                if (sources != null) {
+                    for (ContentSource src : sources) {
+                        if (src instanceof DocumentSource) {
+                            DocumentSource docSrc = (DocumentSource) src;
+                            System.out.println("  Source: page " + docSrc.getPageNumber()
+                                + ", polygon " + docSrc.getPolygon()
+                                + ", bounding box " + docSrc.getBoundingBox());
+                        }
+                    }
+                }
                 List<ContentSpan> spans = customerNameField.getSpans();
                 if (spans != null && !spans.isEmpty()) {
                     ContentSpan span = spans.get(0);
@@ -116,7 +128,7 @@ public class Sample03_AnalyzeInvoice {
                     ? String.format("%.2f", invoiceDateField.getConfidence())
                     : "N/A"));
                 System.out.println(
-                    "  Source: " + (invoiceDateField.getSource() != null ? invoiceDateField.getSource() : "N/A"));
+                    "  Source: " + (invoiceDateField.getSources() != null ? invoiceDateField.getSources() : "N/A"));
                 List<ContentSpan> spans = invoiceDateField.getSpans();
                 if (spans != null && !spans.isEmpty()) {
                     ContentSpan span = spans.get(0);
@@ -145,8 +157,8 @@ public class Sample03_AnalyzeInvoice {
                 if (totalAmountObj.getConfidence() != null) {
                     System.out.println("  Confidence: " + String.format("%.2f", totalAmountObj.getConfidence()));
                 }
-                if (totalAmountObj.getSource() != null && !totalAmountObj.getSource().isEmpty()) {
-                    System.out.println("  Source: " + totalAmountObj.getSource());
+                if (totalAmountObj.getSources() != null && !totalAmountObj.getSources().isEmpty()) {
+                    System.out.println("  Source: " + totalAmountObj.getSources());
                 }
             }
 

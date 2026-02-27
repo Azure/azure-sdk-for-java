@@ -109,7 +109,7 @@ public class ContentField implements JsonSerializable<ContentField> {
      * @return the source value.
      */
     @Generated
-    public String getSource() {
+    String getSource() {
         return this.source;
     }
 
@@ -277,7 +277,7 @@ public class ContentField implements JsonSerializable<ContentField> {
      * @see AudioVisualSource#parse(String)
      */
     public List<ContentSource> getSources() {
-        String src = getSource();
-        return (src == null || src.isEmpty()) ? null : ContentSource.parseSource(src);
+        String src = this.source;
+        return (src == null || src.isEmpty()) ? null : ContentSource.parseAll(src);
     }
 }
