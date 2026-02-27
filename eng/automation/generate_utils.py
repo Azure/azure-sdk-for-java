@@ -400,6 +400,9 @@ def resolve_sdk_folder_from_tspconfig(tsp_project: str, spec_root: str = None) -
             return None
 
         yaml_json = yaml.safe_load(tspconfig_content)
+        if not isinstance(yaml_json, dict):
+            logging.warning("[RESOLVE] tspconfig.yaml root is not a mapping; cannot resolve SDK folder")
+            return None
 
         java_options = yaml_json.get("options", {}).get("@azure-tools/typespec-java", {})
         emitter_output_dir = java_options.get("emitter-output-dir")
@@ -415,7 +418,7 @@ def resolve_sdk_folder_from_tspconfig(tsp_project: str, spec_root: str = None) -
 
         # Resolve template variables to get relative path from sdk_root
         sdk_folder = emitter_output_dir
-        sdk_folder = sdk_folder.replace("{output-dir}/", "").replace("{output-dir}\\", "")
+        sdk_folder = sdk_folder.replace("{output-dir}", "").lstrip("/\\")
         sdk_folder = sdk_folder.replace("{service-dir}", service_dir)
 
         # Sanity check: sdk_folder should start with service_dir
@@ -557,6 +560,10 @@ def generate_typespec_project(
                         "[GENERATE] Failed to resolve SDK folder from tspconfig. "
                         "Falling back to double generation to discover sdk_folder."
                     )
+                else:
+                    logging.debug(
+                        "[RESOLVE] Skipping optimization - resolved_sdk_folder not available or conditions not met"
+                    )
                 tsp_cmd = tsp_cmd_add_emitter_options(tsp_cmd_base, emitter_options)
                 check_call(tsp_cmd, sdk_root)
 
@@ -603,7 +610,7 @@ def generate_typespec_project(
         logging.error(f"[GENERATE] Code generation failed. tsp-client init fails: {error}")
         try:
             sdk_folder = resolved_sdk_folder or find_sdk_folder(sdk_root)
-            logging.info("SDK folder: " + sdk_folder)
+            logging.info(f"SDK folder: {sdk_folder if sdk_folder else 'None'}")
             if sdk_folder:
                 # parse service and module
                 module, service = parse_service_module(sdk_folder)
