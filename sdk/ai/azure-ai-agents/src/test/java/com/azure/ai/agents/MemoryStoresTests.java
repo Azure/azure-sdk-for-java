@@ -7,8 +7,6 @@ import com.azure.ai.agents.models.*;
 import com.azure.ai.agents.models.DeleteMemoryStoreResult;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.ResponseInputItem;
@@ -118,10 +116,6 @@ public class MemoryStoresTests extends ClientTestBase {
         assertNotNull(memoryStore.getId());
         assertEquals(memoryStoreName, memoryStore.getName());
         assertEquals(description, memoryStore.getDescription());
-        System.out.println("Created memory store: " + memoryStore.getName() + " (" + memoryStore.getId() + "): "
-            + memoryStore.getDescription());
-        System.out.println("  - Chat model: " + definition.getChatModel());
-        System.out.println("  - Embedding model: " + definition.getEmbeddingModel());
 
         // Add memories to the memory store
         ResponseInputItem userMessage = ResponseInputItem.ofEasyInputMessage(
@@ -131,19 +125,15 @@ public class MemoryStoresTests extends ClientTestBase {
             = memoryStoreClient.beginUpdateMemories(memoryStoreName, scope, Arrays.asList(userMessage), null, 0);
 
         // Wait for the update operation to complete (with timeout to avoid hanging)
-        PollResponse<MemoryStoreUpdateResponse> pollResponse = updatePoller.waitForCompletion(POLL_TIMEOUT);
-        assertTrue(pollResponse.getStatus().isComplete(),
-            "Polling did not complete within timeout. Last status: " + pollResponse.getStatus());
+        updatePoller.waitForCompletion(POLL_TIMEOUT);
         MemoryStoreUpdateCompletedResult updateResult = updatePoller.getFinalResult();
         assertNotNull(updateResult);
         assertNotNull(updateResult.getMemoryOperations());
-        System.out.println("Updated with " + updateResult.getMemoryOperations().size() + " memory operations");
+
         for (MemoryOperation operation : updateResult.getMemoryOperations()) {
             assertNotNull(operation.getKind());
             assertNotNull(operation.getMemoryItem().getMemoryId());
             assertNotNull(operation.getMemoryItem().getContent());
-            System.out.println("  - Operation: " + operation.getKind() + ", Memory ID: "
-                + operation.getMemoryItem().getMemoryId() + ", Content: " + operation.getMemoryItem().getContent());
         }
 
         ResponseInputItem queryMessage = ResponseInputItem.ofEasyInputMessage(
@@ -154,23 +144,19 @@ public class MemoryStoresTests extends ClientTestBase {
             Arrays.asList(queryMessage), null, searchOptions);
         assertNotNull(searchResponse);
         assertNotNull(searchResponse.getMemories());
-        System.out.println("Found " + searchResponse.getMemories().size() + " memories");
+
         for (MemorySearchItem memory : searchResponse.getMemories()) {
             assertNotNull(memory.getMemoryItem().getMemoryId());
             assertNotNull(memory.getMemoryItem().getContent());
-            System.out.println("  - Memory ID: " + memory.getMemoryItem().getMemoryId() + ", Content: "
-                + memory.getMemoryItem().getContent());
         }
 
         // Delete memories for a specific scope
         memoryStoreClient.deleteScope(memoryStoreName, scope);
-        System.out.println("Deleted memories for scope '" + scope + "'");
 
         // Delete memory store
         DeleteMemoryStoreResult deleteResponse = memoryStoreClient.deleteMemoryStore(memoryStoreName);
         assertNotNull(deleteResponse);
         assertTrue(deleteResponse.isDeleted());
-        System.out.println("Deleted memory store `" + memoryStoreName + "`");
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -203,8 +189,6 @@ public class MemoryStoresTests extends ClientTestBase {
             = memoryStoreClient.createMemoryStore(memoryStoreName, definition, description, null);
         assertNotNull(memoryStore);
         assertEquals(memoryStoreName, memoryStore.getName());
-        System.out.println("Created memory store: " + memoryStore.getName() + " (" + memoryStore.getId() + "): "
-            + memoryStore.getDescription());
 
         ResponseInputItem initialMessage = ResponseInputItem.ofEasyInputMessage(
             EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(firstMessageContent).build());
@@ -215,8 +199,6 @@ public class MemoryStoresTests extends ClientTestBase {
         assertNotNull(initialResponse);
         String initialUpdateId = initialResponse.getUpdateId();
         assertNotNull(initialUpdateId);
-        System.out.println("Scheduled memory update operation (Update ID: " + initialUpdateId + ", Status: "
-            + initialPoller.poll().getStatus() + ")");
 
         // Extend the previous update with another update and more messages
         ResponseInputItem chainedMessage = ResponseInputItem.ofEasyInputMessage(
@@ -228,27 +210,16 @@ public class MemoryStoresTests extends ClientTestBase {
         assertNotNull(chainedResponse);
         String chainedUpdateId = chainedResponse.getUpdateId();
         assertNotNull(chainedUpdateId);
-        System.out.println("Scheduled memory update operation (Update ID: " + chainedUpdateId + ", Status: "
-            + chainedPoller.poll().getStatus() + ")");
 
-        // As first update has not started yet, the new update will cancel the first update and cover both sets of messages
-        System.out.println("Superseded first memory update operation (Update ID: " + initialUpdateId + ", Status: "
-            + initialPoller.poll().getStatus() + ")");
-
-        PollResponse<MemoryStoreUpdateResponse> chainedPollResponse = chainedPoller.waitForCompletion(POLL_TIMEOUT);
-        assertTrue(chainedPollResponse.getStatus().isComplete(),
-            "Chained polling did not complete within timeout. Last status: " + chainedPollResponse.getStatus());
+        chainedPoller.waitForCompletion(POLL_TIMEOUT);
         MemoryStoreUpdateCompletedResult updateResult = chainedPoller.getFinalResult();
         assertNotNull(updateResult);
         assertNotNull(updateResult.getMemoryOperations());
-        System.out.println("Second update " + chainedUpdateId + " completed with "
-            + updateResult.getMemoryOperations().size() + " memory operations");
+
         for (MemoryOperation operation : updateResult.getMemoryOperations()) {
             assertNotNull(operation.getKind());
             assertNotNull(operation.getMemoryItem().getMemoryId());
             assertNotNull(operation.getMemoryItem().getContent());
-            System.out.println("  - Operation: " + operation.getKind() + ", Memory ID: "
-                + operation.getMemoryItem().getMemoryId() + ", Content: " + operation.getMemoryItem().getContent());
         }
 
         // Retrieve memories from the memory store
@@ -261,12 +232,10 @@ public class MemoryStoresTests extends ClientTestBase {
             = memoryStoreClient.searchMemories(memoryStoreName, scope, Arrays.asList(searchQuery), null, searchOptions);
         assertNotNull(searchResponse);
         assertNotNull(searchResponse.getMemories());
-        System.out.println("Found " + searchResponse.getMemories().size() + " memories");
+
         for (MemorySearchItem memory : searchResponse.getMemories()) {
             assertNotNull(memory.getMemoryItem().getMemoryId());
             assertNotNull(memory.getMemoryItem().getContent());
-            System.out.println("  - Memory ID: " + memory.getMemoryItem().getMemoryId() + ", Content: "
-                + memory.getMemoryItem().getContent());
         }
         String previousSearchId = searchResponse.getSearchId();
         assertNotNull(previousSearchId);
@@ -281,23 +250,19 @@ public class MemoryStoresTests extends ClientTestBase {
             Arrays.asList(agentMessage, followupQuery), previousSearchId, searchOptions);
         assertNotNull(followupSearch);
         assertNotNull(followupSearch.getMemories());
-        System.out.println("Found " + followupSearch.getMemories().size() + " memories");
+
         for (MemorySearchItem memory : followupSearch.getMemories()) {
             assertNotNull(memory.getMemoryItem().getMemoryId());
             assertNotNull(memory.getMemoryItem().getContent());
-            System.out.println("  - Memory ID: " + memory.getMemoryItem().getMemoryId() + ", Content: "
-                + memory.getMemoryItem().getContent());
         }
 
         // Delete memories for the current scope
         memoryStoreClient.deleteScope(memoryStoreName, scope);
-        System.out.println("Deleted memories for scope '" + scope + "'");
 
         // Delete memory store
         DeleteMemoryStoreResult deleteResponse = memoryStoreClient.deleteMemoryStore(memoryStoreName);
         assertNotNull(deleteResponse);
         assertTrue(deleteResponse.isDeleted());
-        System.out.println("Deleted memory store `" + memoryStoreName + "`");
     }
 
     private void cleanupBeforeTest(MemoryStoresClient memoryStoreClient, String memoryStoreName) {

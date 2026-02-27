@@ -105,4 +105,26 @@ class AgentsServicePollUtilsTest {
         assertNotNull(context.getData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY).orElse(null),
             "Foundry-Features header should also be present");
     }
+
+    @Test
+    void withFoundryFeaturesMergesWithExistingHeaders() {
+        HttpHeaders existingHeaders = new HttpHeaders();
+        existingHeaders.set(com.azure.core.http.HttpHeaderName.fromString("X-Custom"), "custom-value");
+        Context contextWithHeaders
+            = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, existingHeaders);
+        PollingStrategyOptions options
+            = new PollingStrategyOptions(new HttpPipelineBuilder().build()).setContext(contextWithHeaders);
+
+        PollingStrategyOptions result = AgentsServicePollUtils.withFoundryFeatures(options);
+
+        HttpHeaders merged = (HttpHeaders) result.getContext()
+            .getData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY)
+            .orElse(null);
+        assertNotNull(merged);
+        assertEquals("custom-value", merged.getValue(com.azure.core.http.HttpHeaderName.fromString("X-Custom")),
+            "Pre-existing header should be preserved");
+        assertEquals("MemoryStores=V1Preview",
+            merged.getValue(com.azure.core.http.HttpHeaderName.fromString("Foundry-Features")),
+            "Foundry-Features header should be added");
+    }
 }

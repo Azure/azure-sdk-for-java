@@ -33,15 +33,22 @@ final class AgentsServicePollUtils {
     // ---- header injection -------------------------------------------------
 
     /**
-     * Returns a copy of the given {@link PollingStrategyOptions} whose {@link Context} includes
-     * the {@code Foundry-Features} header.  Because the pipeline already contains
+     * Adds the {@code Foundry-Features} header to the given {@link PollingStrategyOptions}'s
+     * {@link Context}.  If the context already carries {@link HttpHeaders} under the
+     * {@link AddHeadersFromContextPolicy} key they are preserved; the {@code Foundry-Features}
+     * entry is merged in.  Because the pipeline already contains
      * {@link AddHeadersFromContextPolicy}, the header is automatically added to every HTTP
      * request the parent strategy makes (initial, poll, and final-result GETs).
+     *
+     * <p><strong>Note:</strong> this method mutates and returns the same
+     * {@code PollingStrategyOptions} instance.</p>
      */
     static PollingStrategyOptions withFoundryFeatures(PollingStrategyOptions options) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(FOUNDRY_FEATURES, FOUNDRY_FEATURES_VALUE);
         Context context = options.getContext() != null ? options.getContext() : Context.NONE;
+        Object existing = context.getData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY).orElse(null);
+        HttpHeaders headers
+            = (existing instanceof HttpHeaders) ? new HttpHeaders((HttpHeaders) existing) : new HttpHeaders();
+        headers.set(FOUNDRY_FEATURES, FOUNDRY_FEATURES_VALUE);
         return options.setContext(context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
     }
 
