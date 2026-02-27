@@ -423,10 +423,10 @@
 # ServiceOwners:                                                   @Azure/azure-sdk-write-networkcloud
 
 # PRLabel: %Planetary Computer
-/sdk/planetarycomputer/                                            @chahibi @mandarinamdar @karthick-rn @gmoralessanchez
+/sdk/planetarycomputer/                                            @chahibi @mandarinamdar @karthick-rn
 
 # ServiceLabel: %Planetary Computer
-# ServiceOwners:                                                   @chahibi @mandarinamdar @karthick-rn @gmoralessanchez
+# ServiceOwners:                                                   @chahibi @mandarinamdar @karthick-rn
 
 # PRLabel: %Purview
 /sdk/purview/                                                      @Azure/azure-java-sdk @yifan-zhou922
