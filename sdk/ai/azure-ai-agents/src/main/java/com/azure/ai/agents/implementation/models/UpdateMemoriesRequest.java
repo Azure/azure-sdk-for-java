@@ -26,7 +26,7 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
     private final String scope;
 
     /*
-     * Conversation items from which to extract memories.
+     * Conversation items to be stored in memory.
      */
     @Generated
     private List<InputItem> items;
@@ -68,7 +68,7 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
     }
 
     /**
-     * Get the items property: Conversation items from which to extract memories.
+     * Get the items property: Conversation items to be stored in memory.
      *
      * @return the items value.
      */
@@ -78,7 +78,7 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
     }
 
     /**
-     * Set the items property: Conversation items from which to extract memories.
+     * Set the items property: Conversation items to be stored in memory.
      *
      * @param items the items value to set.
      * @return the UpdateMemoriesRequest object itself.

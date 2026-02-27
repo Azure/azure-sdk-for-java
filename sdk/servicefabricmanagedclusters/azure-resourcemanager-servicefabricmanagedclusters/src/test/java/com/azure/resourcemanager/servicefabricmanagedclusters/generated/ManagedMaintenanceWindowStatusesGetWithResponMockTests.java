@@ -20,7 +20,7 @@ public final class ManagedMaintenanceWindowStatusesGetWithResponMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"isWindowEnabled\":false,\"isRegionReady\":false,\"isWindowActive\":false,\"canApplyUpdates\":true,\"lastWindowStatusUpdateAtUTC\":\"2021-10-01T04:20:56Z\",\"lastWindowStartTimeUTC\":\"2021-07-27T11:11:31Z\",\"lastWindowEndTimeUTC\":\"2021-08-19T07:20:59Z\"}";
+            = "{\"isWindowEnabled\":false,\"isRegionReady\":false,\"isWindowActive\":false,\"canApplyUpdates\":false,\"lastWindowStatusUpdateAtUTC\":\"2021-11-04T09:46:52Z\",\"lastWindowStartTimeUTC\":\"2021-05-14T22:34:06Z\",\"lastWindowEndTimeUTC\":\"2021-09-14T21:14:21Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ManagedMaintenanceWindowStatusesGetWithResponMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedMaintenanceWindowStatus response = manager.managedMaintenanceWindowStatuses()
-            .getWithResponse("srxuzvoam", "tcqiosmg", com.azure.core.util.Context.NONE)
+            .getWithResponse("bdb", "qgqqihedsvqwthmk", com.azure.core.util.Context.NONE)
             .getValue();
 
     }
