@@ -326,6 +326,31 @@ public final class CosmosReadManyRequestOptions {
     }
 
     /**
+     * Gets queryAdviceEnabled, which is used to obtain query advice to understand aspects of the query
+     * that can be optimized. The results will be displayed in FeedResponse.getQueryAdvice().
+     * Please note that this option will incur overhead, so it should be enabled when debugging queries.
+     *
+     * @return queryAdviceEnabled (default: false)
+     */
+    public boolean isQueryAdviceEnabled() {
+        return this.actualRequestOptions.isQueryAdviceEnabled();
+    }
+
+    /**
+     * Sets queryAdviceEnabled, which is used to obtain query advice to understand aspects of the query
+     * that can be optimized. The results will be displayed in FeedResponse.getQueryAdvice().
+     * Please note that this option will incur overhead, so it should be enabled when debugging queries.
+     * By default, query advice is disabled.
+     *
+     * @param queryAdviceEnabled a boolean used to obtain the query advice
+     * @return the CosmosReadManyRequestOptions instance
+     */
+    public CosmosReadManyRequestOptions setQueryAdviceEnabled(boolean queryAdviceEnabled) {
+        this.actualRequestOptions.setQueryAdviceEnabled(queryAdviceEnabled);
+        return this;
+    }
+
+    /**
      * Gets the custom item serializer defined for this instance of request options
      * @return the custom item serializer
      */
