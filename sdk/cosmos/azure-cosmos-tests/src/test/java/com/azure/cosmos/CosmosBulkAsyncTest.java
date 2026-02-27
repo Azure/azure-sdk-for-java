@@ -65,26 +65,14 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosBulkAsyncTest() {
         assertThat(this.bulkClient).isNull();
-        int maxRetries = 3;
-        for (int i = 0; i < maxRetries; i++) {
-            try {
-                ThrottlingRetryOptions throttlingOptions = new ThrottlingRetryOptions()
-                    .setMaxRetryAttemptsOnThrottledRequests(1000000)
-                    .setMaxRetryWaitTime(Duration.ofDays(1));
-                this.bulkClient = getClientBuilder().throttlingRetryOptions(throttlingOptions).buildAsyncClient();
-                bulkAsyncContainer = getSharedMultiPartitionCosmosContainer(this.bulkClient);
-                break;
-            } catch (Exception e) {
-                if (i < maxRetries - 1) {
-                    logger.warn("Retrying CosmosBulkAsyncTest setup after failure (attempt {}): {}", i + 1, e.getMessage());
-                    safeClose(this.bulkClient);
-                    this.bulkClient = null;
-                    try { Thread.sleep(1000 * (i + 1)); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
-                } else {
-                    throw e;
-                }
-            }
-        }
+        executeWithRetry(() -> {
+            safeClose(this.bulkClient);
+            ThrottlingRetryOptions throttlingOptions = new ThrottlingRetryOptions()
+                .setMaxRetryAttemptsOnThrottledRequests(1000000)
+                .setMaxRetryWaitTime(Duration.ofDays(1));
+            this.bulkClient = getClientBuilder().throttlingRetryOptions(throttlingOptions).buildAsyncClient();
+            bulkAsyncContainer = getSharedMultiPartitionCosmosContainer(this.bulkClient);
+        }, 3, "CosmosBulkAsyncTest setup");
     }
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -138,13 +138,37 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     private static boolean isTransientCreateFailure(Throwable t) {
         if (t instanceof CosmosException) {
             int statusCode = ((CosmosException) t).getStatusCode();
-            return statusCode == 408 || statusCode == 429 || statusCode == 503;
+            return statusCode == 408 || statusCode == 429;
         }
         return false;
     }
 
     private static boolean isConflictException(Throwable t) {
         return t instanceof CosmosException && ((CosmosException) t).getStatusCode() == 409;
+    }
+
+    /**
+     * Executes an action with retry logic for transient failures in @BeforeClass setup methods.
+     * Retries up to maxRetries times with increasing backoff (1s, 2s, 3s...).
+     *
+     * @param action   the action to execute
+     * @param maxRetries maximum number of retries
+     * @param context  description for logging (e.g., test class name)
+     */
+    protected static void executeWithRetry(Runnable action, int maxRetries, String context) {
+        for (int i = 0; i < maxRetries; i++) {
+            try {
+                action.run();
+                return;
+            } catch (Exception e) {
+                if (i < maxRetries - 1) {
+                    logger.warn("Retrying {} after failure (attempt {}): {}", context, i + 1, e.getMessage());
+                    try { Thread.sleep(1000L * (i + 1)); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
+                } else {
+                    throw e;
+                }
+            }
+        }
     }
 
     protected final static ConsistencyLevel accountConsistency;
@@ -988,6 +1012,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         client.createDatabase(databaseSettings)
             .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
                 .filter(TestSuiteBase::isTransientCreateFailure))
+            .onErrorResume(e -> isConflictException(e) ? Mono.empty() : Mono.error(e))
             .block();
         return client.getDatabase(databaseSettings.getId());
     }
@@ -997,6 +1022,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         client.createDatabase(databaseSettings)
             .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
                 .filter(TestSuiteBase::isTransientCreateFailure))
+            .onErrorResume(e -> isConflictException(e) ? Mono.empty() : Mono.error(e))
             .block();
         return client.getDatabase(databaseSettings.getId());
     }
@@ -1053,12 +1079,16 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     static protected void safeDeleteAllCollections(CosmosAsyncDatabase database) {
         if (database != null) {
-            List<CosmosContainerProperties> collections = database.readAllContainers()
-                .collectList()
-                .block();
+            try {
+                List<CosmosContainerProperties> collections = database.readAllContainers()
+                    .collectList()
+                    .block();
 
-            for(CosmosContainerProperties collection: collections) {
-                database.getContainer(collection.getId()).delete().block();
+                for (CosmosContainerProperties collection : collections) {
+                    safeDeleteCollection(database.getContainer(collection.getId()));
+                }
+            } catch (Exception e) {
+                logger.error("failed to delete all collections", e);
             }
         }
     }

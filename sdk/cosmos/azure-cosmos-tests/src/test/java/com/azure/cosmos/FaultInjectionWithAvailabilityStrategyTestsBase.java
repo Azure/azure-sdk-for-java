@@ -315,23 +315,12 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             this.injectRequestRateTooLargeIntoAllRegions =
                 (c, operationType) -> injectRequestRateTooLargeError(c, this.writeableRegions, operationType);
 
-            int maxContainerCreateRetries = 3;
-            CosmosAsyncContainer container = null;
-            for (int attempt = 0; attempt < maxContainerCreateRetries; attempt++) {
-                try {
-                    container = this.createTestContainer(dummyClient);
-                    break;
-                } catch (Exception e) {
-                    if (attempt < maxContainerCreateRetries - 1) {
-                        logger.warn("Retrying createTestContainer after failure (attempt {}): {}", attempt + 1, e.getMessage());
-                        try { Thread.sleep(2000 * (attempt + 1)); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
-                    } else {
-                        throw e;
-                    }
-                }
-            }
-            this.testDatabaseId = container.getDatabase().getId();
-            this.testContainerId = container.getId();
+            final CosmosAsyncContainer[] containerHolder = new CosmosAsyncContainer[1];
+            executeWithRetry(() -> {
+                containerHolder[0] = this.createTestContainer(dummyClient);
+            }, 3, "FaultInjectionWithAvailabilityStrategyTestsBase createTestContainer");
+            this.testDatabaseId = containerHolder[0].getDatabase().getId();
+            this.testContainerId = containerHolder[0].getId();
 
             // Creating a container is an async task - especially with multiple regions it can
             // take some time until the container is available in the remote regions as well

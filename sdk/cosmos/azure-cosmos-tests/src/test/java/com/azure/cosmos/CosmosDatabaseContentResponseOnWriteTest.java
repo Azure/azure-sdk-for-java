@@ -42,13 +42,9 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
 
     @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        try {
-            safeDeleteSyncDatabase(createdDatabase);
-            for (String dbId : databases) {
-                safeDeleteSyncDatabase(client.getDatabase(dbId));
-            }
-        } catch (Exception e) {
-            logger.warn("Failed to delete databases during cleanup", e);
+        safeDeleteSyncDatabase(createdDatabase);
+        for (String dbId : databases) {
+            safeDeleteSyncDatabase(client.getDatabase(dbId));
         }
         safeCloseSyncClient(client);
     }

@@ -682,7 +682,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .filter(throwable -> {
                     if (throwable instanceof CosmosException) {
                         int statusCode = ((CosmosException) throwable).getStatusCode();
-                        return statusCode == 408 || statusCode == 429 || statusCode == 503;
+                        return statusCode == 408 || statusCode == 429;
                     }
                     return false;
                 }))

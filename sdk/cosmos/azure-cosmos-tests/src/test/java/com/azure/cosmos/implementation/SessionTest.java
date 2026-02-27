@@ -79,8 +79,9 @@ public class SessionTest extends TestSuiteBase {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setOfferThroughput(20000); //Making sure we have 4 physical partitions
 
-        int maxRetries = 3;
-        for (int i = 0; i < maxRetries; i++) {
+        executeWithRetry(() -> {
+            safeClose(houseKeepingClient);
+            safeClose(spyClient);
             AsyncDocumentClient asynClient = createGatewayHouseKeepingDocumentClient().build();
             try {
                 createdCollection = createCollection(asynClient, createdDatabase.getId(),
@@ -91,29 +92,16 @@ public class SessionTest extends TestSuiteBase {
                 if (connectionMode == ConnectionMode.DIRECT) {
                     spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder());
                 } else {
-                    // Gateway builder has multipleWriteRegionsEnabled false by default, enabling it for multi master test
                     ConnectionPolicy connectionPolicy = clientBuilder().connectionPolicy;
                     connectionPolicy.setMultipleWriteRegionsEnabled(true);
                     spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder().withConnectionPolicy(connectionPolicy));
                 }
                 options = new RequestOptions();
                 options.setPartitionKey(PartitionKey.NONE);
-                break;
-            } catch (Exception e) {
-                if (i < maxRetries - 1) {
-                    logger.warn("Retrying SessionTest setup after failure (attempt {}): {}", i + 1, e.getMessage());
-                    safeClose(houseKeepingClient);
-                    safeClose(spyClient);
-                    houseKeepingClient = null;
-                    spyClient = null;
-                    try { Thread.sleep(1000 * (i + 1)); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
-                } else {
-                    throw e;
-                }
             } finally {
                 asynClient.close();
             }
-        }
+        }, 3, "SessionTest setup");
     }
 
     @AfterClass(groups = { "fast", "multi-master" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -468,7 +468,9 @@ public class ClientMetricsTest extends BatchTestBase {
         runReadItemTestWithThresholds(minThresholds, true);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
+    // TestState constructor creates a new client and collection, which can exceed 40s in CI.
+    // Using SETUP_TIMEOUT (60s) instead of SuperFlakyTestRetryAnalyzer to give adequate time.
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void replaceItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -661,7 +663,7 @@ public class ClientMetricsTest extends BatchTestBase {
         return response;
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readAllItemsWithDetailMetricsWithExplicitPageSize() throws Exception {
         try (TestState state = new TestState(getClientBuilder(),
             CosmosMetricCategory.DEFAULT,
@@ -1086,7 +1088,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void endpointMetricsAreDurable() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.ALL)){
             if (state.client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {

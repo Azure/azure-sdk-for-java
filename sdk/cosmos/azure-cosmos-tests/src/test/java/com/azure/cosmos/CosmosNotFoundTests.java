@@ -54,39 +54,27 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
     @BeforeClass(groups = {"fast", "thinclient"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosNotFoundTests() {
-        int maxRetries = 3;
-        for (int i = 0; i < maxRetries; i++) {
-            try {
-                this.commonAsyncClient = getClientBuilder().buildAsyncClient();
+        executeWithRetry(() -> {
+            safeClose(this.commonAsyncClient);
+            this.commonAsyncClient = getClientBuilder().buildAsyncClient();
 
-                // Get shared container and create an item in it
-                CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.commonAsyncClient);
-                this.existingAsyncContainer = this.commonAsyncClient.getDatabase(asyncContainer.getDatabase().getId())
-                    .getContainer(asyncContainer.getId());
+            // Get shared container and create an item in it
+            CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.commonAsyncClient);
+            this.existingAsyncContainer = this.commonAsyncClient.getDatabase(asyncContainer.getDatabase().getId())
+                .getContainer(asyncContainer.getId());
 
-                // Get/create test database for this test class
-                CosmosAsyncDatabase asyncDatabase = getSharedCosmosDatabase(this.commonAsyncClient);
-                this.testAsyncDatabase = this.commonAsyncClient.getDatabase(asyncDatabase.getId());
+            // Get/create test database for this test class
+            CosmosAsyncDatabase asyncDatabase = getSharedCosmosDatabase(this.commonAsyncClient);
+            this.testAsyncDatabase = this.commonAsyncClient.getDatabase(asyncDatabase.getId());
 
-                // Create a test document
-                this.createdItemPk = UUID.randomUUID().toString();
+            // Create a test document
+            this.createdItemPk = UUID.randomUUID().toString();
 
-                TestObject testObject = TestObject.create(this.createdItemPk);
+            TestObject testObject = TestObject.create(this.createdItemPk);
 
-                this.existingAsyncContainer.createItem(testObject).block();
-                this.objectToCreate = testObject;
-                break;
-            } catch (Exception e) {
-                if (i < maxRetries - 1) {
-                    logger.warn("Retrying CosmosNotFoundTests setup after failure (attempt {}): {}", i + 1, e.getMessage());
-                    safeClose(this.commonAsyncClient);
-                    this.commonAsyncClient = null;
-                    try { Thread.sleep(1000 * (i + 1)); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
-                } else {
-                    throw e;
-                }
-            }
-        }
+            this.existingAsyncContainer.createItem(testObject).block();
+            this.objectToCreate = testObject;
+        }, 3, "CosmosNotFoundTests setup");
     }
 
     @DataProvider(name = "operationTypeProvider")
@@ -359,7 +347,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void performBulkOnDeletedContainer() throws InterruptedException {
 
         CosmosAsyncClient clientToUse = null, deletingAsyncClient = null;

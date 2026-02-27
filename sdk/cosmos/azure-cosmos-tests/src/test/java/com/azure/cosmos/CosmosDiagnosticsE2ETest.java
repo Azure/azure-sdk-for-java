@@ -495,23 +495,14 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         this.safeCloseCosmosClient();
 
         assertThat(builder).isNotNull();
-        int maxRetries = 3;
-        for (int i = 0; i < maxRetries; i++) {
-            try {
-                this.client = builder.buildClient();
-                CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
-                return this.client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
-            } catch (Exception e) {
-                if (i < maxRetries - 1) {
-                    logger.warn("Retrying getContainer after failure (attempt {}): {}", i + 1, e.getMessage());
-                    this.safeCloseCosmosClient();
-                    try { Thread.sleep(1000 * (i + 1)); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
-                } else {
-                    throw e;
-                }
-            }
-        }
-        throw new IllegalStateException("Failed to get container after " + maxRetries + " retries");
+        final CosmosContainer[] result = new CosmosContainer[1];
+        executeWithRetry(() -> {
+            this.safeCloseCosmosClient();
+            this.client = builder.buildClient();
+            CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
+            result[0] = this.client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        }, 3, "CosmosDiagnosticsE2ETest getContainer");
+        return result[0];
     }
 
     private CosmosDiagnostics executeDocumentOperation(
