@@ -114,7 +114,7 @@ public class ContentSourceTest {
         assertEquals(1, sources.size());
         AudioVisualSource source = sources.get(0);
 
-        assertEquals(5000, source.getTimeMs());
+        assertEquals(Duration.ofMillis(5000), source.getTime());
         assertNotNull(source.getBoundingBox());
         assertEquals(100, source.getBoundingBox().getX());
         assertEquals(200, source.getBoundingBox().getY());
@@ -127,7 +127,7 @@ public class ContentSourceTest {
         List<AudioVisualSource> sources = AudioVisualSource.parse("AV(5000)");
         AudioVisualSource source = sources.get(0);
 
-        assertEquals(5000, source.getTimeMs());
+        assertEquals(Duration.ofMillis(5000), source.getTime());
         assertNull(source.getBoundingBox());
     }
 
@@ -161,8 +161,8 @@ public class ContentSourceTest {
         List<AudioVisualSource> sources = AudioVisualSource.parse(input);
 
         assertEquals(2, sources.size());
-        assertEquals(0, sources.get(0).getTimeMs());
-        assertEquals(1000, sources.get(1).getTimeMs());
+        assertEquals(Duration.ofMillis(0), sources.get(0).getTime());
+        assertEquals(Duration.ofMillis(1000), sources.get(1).getTime());
     }
 
     @Test
