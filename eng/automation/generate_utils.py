@@ -552,6 +552,11 @@ def generate_typespec_project(
                 )
             else:
                 # Fallback: generate first to discover sdk_folder
+                if remove_before_regen and group_id:
+                    logging.warning(
+                        "[GENERATE] Failed to resolve SDK folder from tspconfig. "
+                        "Falling back to double generation to discover sdk_folder."
+                    )
                 tsp_cmd = tsp_cmd_add_emitter_options(tsp_cmd_base, emitter_options)
                 check_call(tsp_cmd, sdk_root)
 
