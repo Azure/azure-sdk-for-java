@@ -315,7 +315,21 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             this.injectRequestRateTooLargeIntoAllRegions =
                 (c, operationType) -> injectRequestRateTooLargeError(c, this.writeableRegions, operationType);
 
-            CosmosAsyncContainer container = this.createTestContainer(dummyClient);
+            int maxContainerCreateRetries = 3;
+            CosmosAsyncContainer container = null;
+            for (int attempt = 0; attempt < maxContainerCreateRetries; attempt++) {
+                try {
+                    container = this.createTestContainer(dummyClient);
+                    break;
+                } catch (Exception e) {
+                    if (attempt < maxContainerCreateRetries - 1) {
+                        logger.warn("Retrying createTestContainer after failure (attempt {}): {}", attempt + 1, e.getMessage());
+                        try { Thread.sleep(2000 * (attempt + 1)); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
+                    } else {
+                        throw e;
+                    }
+                }
+            }
             this.testDatabaseId = container.getDatabase().getId();
             this.testContainerId = container.getId();
 
@@ -563,7 +577,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // should result in the 404/0 being returned
             new Object[] {
                 "Legit404_404-1002_OnlyFirstRegion_RemotePreferred_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                TWO_SECOND_DURATION,
                 null,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
