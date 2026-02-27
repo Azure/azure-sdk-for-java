@@ -361,6 +361,7 @@
     "Mordor",
     "mosca",
     "mpga",
+    "mpkjc",
     "msal",
     "msix",
     "MSRC",
@@ -457,7 +458,19 @@
         "reimaged",
         "isdirectory",
         "SSDLRS",
-        "VMGUEST"
+        "VMGUEST",
+        "imds",
+        "confidentialvm"
+      ]
+    },
+    {
+      "filename": "sdk/ai/**",
+      "words": [
+        "oneg",
+        "fourg",
+        "sixg",
+        "okio",
+        "xhigh"
       ]
     },
     {
@@ -875,25 +888,6 @@
         "UBINARY"
       ]
     },
-	{
-      "filename": "/sdk/ai/azure-ai-voicelive/**",
-      "words": [
-        "aiservices",
-        "AIservices",
-        "Dexec",
-        "filler",
-        "FILLER",
-        "foundry",
-        "FOUNDRY",
-        "Unpooled",
-        "viseme",
-        "VISEME",
-        "webrtc",
-        "WEBRTC",
-        "xhigh",
-        "XHIGH"
-      ]
-    },
     {
       "filename": "/sdk/datalakeanalytics/**",
       "words": [
@@ -980,7 +974,7 @@
         "Netifi",
         "Zaugg",
         "lrgrwrks",
-        "Brotli"
+        "Nordwall"
       ]
     },
     {
@@ -1335,6 +1329,25 @@
       "filename": "sdk/vision/azure-ai-vision-imageanalysis/**",
       "words": [
         "javac"
+      ]
+    },
+    {
+      "filename": "/sdk/voicelive/azure-ai-voicelive/**",
+      "words": [
+        "aiservices",
+        "AIservices",
+        "Dexec",
+        "filler",
+        "FILLER",
+        "foundry",
+        "FOUNDRY",
+        "Unpooled",
+        "viseme",
+        "VISEME",
+        "webrtc",
+        "WEBRTC",
+        "xhigh",
+        "XHIGH"
       ]
     },
     {

@@ -11,111 +11,131 @@ import org.springframework.util.Assert;
 import jakarta.annotation.PostConstruct;
 
 /**
- * Properties for Monitoring an Azure App Configuration Store.
+ * Configuration properties for monitoring changes in an Azure App Configuration store.
  */
 public final class AppConfigurationStoreMonitoring {
 
     /**
-     * If true, the application will check for updates to the configuration store.
-     * When set to true at least one trigger must be set.
+     * Enables monitoring for configuration changes. When enabled, at least one
+     * trigger must be configured.
      */
     private boolean enabled = false;
 
     /**
-     * The minimum time between checks. The minimum valid time is 1s. The default refresh interval is 30s.
+     * Interval between configuration refresh checks. Must be at least 1 second.
+     * Defaults to 30 seconds.
      */
     private Duration refreshInterval = Duration.ofSeconds(30);
 
     /**
-     * The minimum time between checks of feature flags. The minimum valid time is 1s. The default refresh interval is 30s.
+     * Interval between feature flag refresh checks. Must be at least 1 second.
+     * Defaults to 30 seconds.
      */
     private Duration featureFlagRefreshInterval = Duration.ofSeconds(30);
 
     /**
-     * List of triggers that will cause a refresh of the configuration store.
+     * Sentinel keys that trigger a configuration refresh when their values change.
      */
     private List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
 
     /**
-     * Validation tokens for push notification requests.
+     * Configuration for validating push notification refresh requests.
      */
     private PushNotification pushNotification = new PushNotification();
 
     /**
-     * @return the enabled
+     * Returns whether configuration monitoring is enabled.
+     *
+     * @return {@code true} if monitoring is enabled, {@code false} otherwise
      */
     public boolean isEnabled() {
         return enabled;
     }
 
     /**
-     * @param enabled the enabled to set
+     * Sets whether configuration monitoring is enabled.
+     *
+     * @param enabled {@code true} to enable monitoring, {@code false} to disable
      */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
     /**
-     * @return the refreshInterval
+     * Returns the interval between configuration refresh checks.
+     *
+     * @return the refresh interval
      */
     public Duration getRefreshInterval() {
         return refreshInterval;
     }
 
     /**
-     * The minimum time between checks. The minimum valid time is 1s. The default refresh interval is 30s.
+     * Sets the interval between configuration refresh checks. Must be at least 1 second.
      *
-     * @param refreshInterval minimum time between refresh checks
+     * @param refreshInterval the refresh interval duration
      */
     public void setRefreshInterval(Duration refreshInterval) {
         this.refreshInterval = refreshInterval;
     }
 
     /**
-     * @return the featureFlagRefreshInterval
+     * Returns the interval between feature flag refresh checks.
+     *
+     * @return the feature flag refresh interval
      */
     public Duration getFeatureFlagRefreshInterval() {
         return featureFlagRefreshInterval;
     }
 
     /**
-     * The minimum time between checks of feature flags. The minimum valid time is 1s. The default refresh interval is 30s.
-     * @param featureFlagRefreshInterval minimum time between refresh checks for feature flags
+     * Sets the interval between feature flag refresh checks. Must be at least 1 second.
+     *
+     * @param featureFlagRefreshInterval the feature flag refresh interval duration
      */
     public void setFeatureFlagRefreshInterval(Duration featureFlagRefreshInterval) {
         this.featureFlagRefreshInterval = featureFlagRefreshInterval;
     }
 
     /**
-     * @return the triggers
+     * Returns the list of triggers that initiate a configuration refresh.
+     *
+     * @return the list of {@link AppConfigurationStoreTrigger} instances
      */
     public List<AppConfigurationStoreTrigger> getTriggers() {
         return triggers;
     }
 
     /**
-     * @param triggers the triggers to set
+     * Sets the list of triggers that initiate a configuration refresh.
+     *
+     * @param triggers the list of {@link AppConfigurationStoreTrigger} instances
      */
     public void setTriggers(List<AppConfigurationStoreTrigger> triggers) {
         this.triggers = triggers;
     }
 
     /**
-     * @return the pushNotification
+     * Returns the push notification configuration.
+     *
+     * @return the {@link PushNotification} settings
      */
     public PushNotification getPushNotification() {
         return pushNotification;
     }
 
     /**
-     * @param pushNotification the pushNotification to set
+     * Sets the push notification configuration.
+     *
+     * @param pushNotification the {@link PushNotification} settings
      */
     public void setPushNotification(PushNotification pushNotification) {
         this.pushNotification = pushNotification;
     }
 
     /**
-     * Validates refreshIntervals are at least 1 second, and if enabled triggers are valid.
+     * Validates that refresh intervals are at least 1 second and, when monitoring
+     * is enabled, that all configured triggers are valid.
      */
     @PostConstruct
     void validateAndInit() {
@@ -130,43 +150,51 @@ public final class AppConfigurationStoreMonitoring {
     }
 
     /**
-     * Push Notification tokens for setting watch interval to 0.
+     * Access tokens used to validate push notification refresh requests.
      */
     public static class PushNotification {
 
         /**
-         * Validation token for push notification requests.
+         * Primary token for validating push notification requests.
          */
         private AccessToken primaryToken = new AccessToken();
 
         /**
-         * Secondary validation token for push notification requests.
+         * Secondary (fallback) token for validating push notification requests.
          */
         private AccessToken secondaryToken = new AccessToken();
 
         /**
-         * @return the primaryToken
+         * Returns the primary access token.
+         *
+         * @return the primary {@link AccessToken}
          */
         public AccessToken getPrimaryToken() {
             return primaryToken;
         }
 
         /**
-         * @param primaryToken the primaryToken to set
+         * Sets the primary access token.
+         *
+         * @param primaryToken the primary {@link AccessToken}
          */
         public void setPrimaryToken(AccessToken primaryToken) {
             this.primaryToken = primaryToken;
         }
 
         /**
-         * @return the secondaryToken
+         * Returns the secondary access token.
+         *
+         * @return the secondary {@link AccessToken}
          */
         public AccessToken getSecondaryToken() {
             return secondaryToken;
         }
 
         /**
-         * @param secondaryToken the secondaryToken to set
+         * Sets the secondary access token.
+         *
+         * @param secondaryToken the secondary {@link AccessToken}
          */
         public void setSecondaryToken(AccessToken secondaryToken) {
             this.secondaryToken = secondaryToken;
@@ -174,51 +202,60 @@ public final class AppConfigurationStoreMonitoring {
     }
 
     /**
-     * Token used to verifying Push Refresh Requests
+     * A name/secret pair used to verify push notification refresh requests.
      */
     public static class AccessToken {
 
         /**
-         * Name of the token.
+         * Identifier for this access token.
          */
         private String name;
 
         /**
-         * Secret for the token.
+         * Secret value used for validation.
          */
         private String secret;
 
         /**
-         * @return the name
+         * Returns the token name.
+         *
+         * @return the token name, or {@code null} if not set
          */
         public String getName() {
             return name;
         }
 
         /**
-         * @param name the name to set
+         * Sets the token name.
+         *
+         * @param name the token name
          */
         public void setName(String name) {
             this.name = name;
         }
 
         /**
-         * @return the secret
+         * Returns the token secret.
+         *
+         * @return the token secret, or {@code null} if not set
          */
         public String getSecret() {
             return secret;
         }
 
         /**
-         * @param secret the secret to set
+         * Sets the token secret.
+         *
+         * @param secret the token secret
          */
         public void setSecret(String secret) {
             this.secret = secret;
         }
 
         /**
-         * Checks if name and secret are not null.
-         * @return boolean true if name and secret are not null.
+         * Returns whether this token has both a name and secret configured.
+         *
+         * @return {@code true} if both name and secret are non-null
          */
         public boolean isValid() {
             return this.name != null && this.secret != null;

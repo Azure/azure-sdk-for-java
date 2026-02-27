@@ -6596,6 +6596,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.throughputControlStore.close();
             }
 
+            if (this.clientTelemetry != null) {
+                logger.info("Closing ClientTelemetry ...");
+                this.clientTelemetry.close();
+            }
+
             this.perPartitionFailoverConfigModifier = null;
             logger.info("Shutting down completed.");
         } else {

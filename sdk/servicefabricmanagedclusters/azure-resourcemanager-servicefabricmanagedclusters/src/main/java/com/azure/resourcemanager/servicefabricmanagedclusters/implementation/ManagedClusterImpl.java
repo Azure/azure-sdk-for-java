@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.servicefabricmanagedclusters.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -18,9 +16,6 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ClusterStat
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ClusterUpgradeCadence;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ClusterUpgradeMode;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ClusterUpgradePolicy;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulation;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationContentWrapper;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationIdContent;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.IpTag;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.LoadBalancingRule;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedCluster;
@@ -296,6 +291,10 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
         return this.innerModel().enableOutboundOnlyNodeTypes();
     }
 
+    public Boolean skipManagedNsgAssignment() {
+        return this.innerModel().skipManagedNsgAssignment();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -389,42 +388,6 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
             .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
             .getValue();
         return this;
-    }
-
-    public Response<FaultSimulation> getFaultSimulationWithResponse(FaultSimulationIdContent parameters,
-        Context context) {
-        return serviceManager.managedClusters()
-            .getFaultSimulationWithResponse(resourceGroupName, clusterName, parameters, context);
-    }
-
-    public FaultSimulation getFaultSimulation(FaultSimulationIdContent parameters) {
-        return serviceManager.managedClusters().getFaultSimulation(resourceGroupName, clusterName, parameters);
-    }
-
-    public PagedIterable<FaultSimulation> listFaultSimulation() {
-        return serviceManager.managedClusters().listFaultSimulation(resourceGroupName, clusterName);
-    }
-
-    public PagedIterable<FaultSimulation> listFaultSimulation(Context context) {
-        return serviceManager.managedClusters().listFaultSimulation(resourceGroupName, clusterName, context);
-    }
-
-    public FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters) {
-        return serviceManager.managedClusters().startFaultSimulation(resourceGroupName, clusterName, parameters);
-    }
-
-    public FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters, Context context) {
-        return serviceManager.managedClusters()
-            .startFaultSimulation(resourceGroupName, clusterName, parameters, context);
-    }
-
-    public FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters) {
-        return serviceManager.managedClusters().stopFaultSimulation(resourceGroupName, clusterName, parameters);
-    }
-
-    public FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters, Context context) {
-        return serviceManager.managedClusters()
-            .stopFaultSimulation(resourceGroupName, clusterName, parameters, context);
     }
 
     public ManagedClusterImpl withRegion(Region location) {
@@ -631,6 +594,11 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
 
     public ManagedClusterImpl withEnableOutboundOnlyNodeTypes(Boolean enableOutboundOnlyNodeTypes) {
         this.innerModel().withEnableOutboundOnlyNodeTypes(enableOutboundOnlyNodeTypes);
+        return this;
+    }
+
+    public ManagedClusterImpl withSkipManagedNsgAssignment(Boolean skipManagedNsgAssignment) {
+        this.innerModel().withSkipManagedNsgAssignment(skipManagedNsgAssignment);
         return this;
     }
 

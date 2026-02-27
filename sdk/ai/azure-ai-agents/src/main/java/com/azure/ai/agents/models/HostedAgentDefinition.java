@@ -16,7 +16,7 @@ import java.util.Map;
  * The hosted agent definition.
  */
 @Fluent
-public class HostedAgentDefinition extends AgentDefinition {
+public final class HostedAgentDefinition extends AgentDefinition {
 
     /*
      * The kind property.
@@ -183,6 +183,7 @@ public class HostedAgentDefinition extends AgentDefinition {
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeMapField("environment_variables", this.environmentVariables,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("image", this.image);
         return jsonWriter.writeEndObject();
     }
 
@@ -198,33 +199,6 @@ public class HostedAgentDefinition extends AgentDefinition {
     @Generated
     public static HostedAgentDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                // Prepare for reading
-                readerToUse.nextToken();
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("kind".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("hosted".equals(discriminatorValue)) {
-                    return ImageBasedHostedAgentDefinition.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
-            }
-        });
-    }
-
-    @Generated
-    static HostedAgentDefinition fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
             RaiConfig raiConfig = null;
             List<ProtocolVersionRecord> containerProtocolVersions = null;
             String cpu = null;
@@ -232,6 +206,7 @@ public class HostedAgentDefinition extends AgentDefinition {
             AgentKind kind = AgentKind.HOSTED;
             List<Tool> tools = null;
             Map<String, String> environmentVariables = null;
+            String image = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -249,6 +224,8 @@ public class HostedAgentDefinition extends AgentDefinition {
                     tools = reader.readArray(reader1 -> Tool.fromJson(reader1));
                 } else if ("environment_variables".equals(fieldName)) {
                     environmentVariables = reader.readMap(reader1 -> reader1.getString());
+                } else if ("image".equals(fieldName)) {
+                    image = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -259,7 +236,36 @@ public class HostedAgentDefinition extends AgentDefinition {
             deserializedHostedAgentDefinition.kind = kind;
             deserializedHostedAgentDefinition.tools = tools;
             deserializedHostedAgentDefinition.environmentVariables = environmentVariables;
+            deserializedHostedAgentDefinition.image = image;
             return deserializedHostedAgentDefinition;
         });
+    }
+
+    /*
+     * The image ID for the agent, applicable to image-based hosted agents.
+     */
+    @Generated
+    private String image;
+
+    /**
+     * Get the image property: The image ID for the agent, applicable to image-based hosted agents.
+     *
+     * @return the image value.
+     */
+    @Generated
+    public String getImage() {
+        return this.image;
+    }
+
+    /**
+     * Set the image property: The image ID for the agent, applicable to image-based hosted agents.
+     *
+     * @param image the image value to set.
+     * @return the HostedAgentDefinition object itself.
+     */
+    @Generated
+    public HostedAgentDefinition setImage(String image) {
+        this.image = image;
+        return this;
     }
 }

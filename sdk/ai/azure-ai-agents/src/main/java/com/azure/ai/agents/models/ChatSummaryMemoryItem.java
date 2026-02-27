@@ -34,7 +34,7 @@ public final class ChatSummaryMemoryItem extends MemoryItem {
      * @param content the content value to set.
      */
     @Generated
-    public ChatSummaryMemoryItem(String memoryId, OffsetDateTime updatedAt, String scope, String content) {
+    private ChatSummaryMemoryItem(String memoryId, OffsetDateTime updatedAt, String scope, String content) {
         super(memoryId, updatedAt, scope, content);
     }
 
