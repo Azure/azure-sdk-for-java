@@ -112,11 +112,11 @@ com.azure.cosmos.spark:azure-cosmos-spark_3-5;0.0.1-beta.1;0.0.1-beta.1
 com.azure:azure-cosmos-encryption;2.27.0;2.28.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-cosmos-test;1.0.0-beta.17;1.0.0-beta.18
-com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.43.1;4.44.0-beta.1
-com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.43.1;4.44.0-beta.1
-com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.43.1;4.44.0-beta.1
-com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;4.43.1;4.44.0-beta.1
-com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13;4.43.1;4.44.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.43.1;4.44.0
+com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.43.1;4.44.0
+com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.43.1;4.44.0
+com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;4.43.1;4.44.0
+com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13;4.43.1;4.44.0
 com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;1.1.0;1.2.0-beta.1
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-appconfiguration;1.9.1;1.10.0-beta.1
