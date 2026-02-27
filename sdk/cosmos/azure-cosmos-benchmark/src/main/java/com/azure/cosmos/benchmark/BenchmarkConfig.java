@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +35,8 @@ public class BenchmarkConfig {
 
     // -- Reporting --
     private String reportingDirectory;
+    private String graphiteEndpoint;
+    private int graphiteEndpointPort = 2003;
     private int printingInterval = 10;
     private String resultUploadEndpoint;
     private String resultUploadKey;
@@ -47,11 +47,6 @@ public class BenchmarkConfig {
     private String testVariationName = "";
     private String branchName = "";
     private String commitId = "";
-
-    // -- JVM-global system properties (apply to all tenants, set once at startup) --
-    private boolean isPartitionLevelCircuitBreakerEnabled = true;
-    private boolean isPerPartitionAutomaticFailoverRequired = true;
-    private int minConnectionPoolSizePerEndpoint = 0;
 
     // -- Tenants (each carries its full effective config) --
     private List<TenantWorkloadConfig> tenantWorkloads = Collections.emptyList();
@@ -70,13 +65,8 @@ public class BenchmarkConfig {
         config.suppressCleanup = cfg.isSuppressCleanup();
 
         if (config.cycles > 1) {
-            long configuredSettleTimeMs = cfg.getSettleTimeMs();
-            // Only apply the default settle time when the configuration uses the sentinel -1.
-            // An explicit value (including 0 to disable settling) should be respected.
-            config.settleTimeMs = (configuredSettleTimeMs == -1)
-                ? DEFAULT_SETTLE_TIME_MS
-                : configuredSettleTimeMs;
-            config.suppressCleanup = true; // suppress container/database cleanup
+          config.settleTimeMs = Math.max(DEFAULT_SETTLE_TIME_MS, cfg.getSettleTimeMs());
+          config.suppressCleanup = true; // suppress container/database cleanup
         }
 
         config.gcBetweenCycles = cfg.isGcBetweenCycles();
@@ -85,6 +75,10 @@ public class BenchmarkConfig {
         // Reporting
         config.reportingDirectory = cfg.getReportingDirectory() != null
             ? cfg.getReportingDirectory().getPath() : null;
+        if (cfg.getGraphiteEndpoint() != null) {
+            config.graphiteEndpoint = cfg.getGraphiteEndpoint();
+            config.graphiteEndpointPort = cfg.getGraphiteEndpointPort();
+        }
         config.printingInterval = cfg.getPrintingInterval();
         config.resultUploadEndpoint = cfg.getServiceEndpointForRunResultsUploadAccount();
         config.resultUploadKey = cfg.getMasterKeyForRunResultsUploadAccount();
@@ -103,18 +97,10 @@ public class BenchmarkConfig {
             logger.info("Loading tenant configs from {}. " +
                 "Workload parameters from tenants.json will take priority over CLI args.", tenantsFile);
             config.tenantWorkloads = TenantWorkloadConfig.parseTenantsFile(new File(tenantsFile));
-
-            // Extract JVM-global system properties from globalDefaults
-            config.loadGlobalSystemPropertiesFromTenantsFile(new File(tenantsFile));
         } else {
             // Single tenant from CLI args - use fromConfiguration() to copy ALL fields
             config.tenantWorkloads = Collections.singletonList(
                 TenantWorkloadConfig.fromConfiguration(cfg));
-
-            // JVM-global system properties from CLI
-            config.isPartitionLevelCircuitBreakerEnabled = cfg.isPartitionLevelCircuitBreakerEnabled();
-            config.isPerPartitionAutomaticFailoverRequired = cfg.isPerPartitionAutomaticFailoverRequired();
-            config.minConnectionPoolSizePerEndpoint = cfg.getMinConnectionPoolSizePerEndpoint();
         }
 
         return config;
@@ -129,6 +115,8 @@ public class BenchmarkConfig {
     public boolean isEnableJvmStats() { return enableJvmStats; }
 
     public String getReportingDirectory() { return reportingDirectory; }
+    public String getGraphiteEndpoint() { return graphiteEndpoint; }
+    public int getGraphiteEndpointPort() { return graphiteEndpointPort; }
     public int getPrintingInterval() { return printingInterval; }
     public String getResultUploadEndpoint() { return resultUploadEndpoint; }
     public String getResultUploadKey() { return resultUploadKey; }
@@ -139,47 +127,14 @@ public class BenchmarkConfig {
     public String getBranchName() { return branchName; }
     public String getCommitId() { return commitId; }
 
-    public boolean isPartitionLevelCircuitBreakerEnabled() { return isPartitionLevelCircuitBreakerEnabled; }
-    public boolean isPerPartitionAutomaticFailoverRequired() { return isPerPartitionAutomaticFailoverRequired; }
-    public int getMinConnectionPoolSizePerEndpoint() { return minConnectionPoolSizePerEndpoint; }
-
     public List<TenantWorkloadConfig> getTenantWorkloads() { return tenantWorkloads; }
 
     @Override
     public String toString() {
         return String.format(
             "BenchmarkConfig{cycles=%d, settleTimeMs=%d, suppressCleanup=%s, " +
-            "gcBetweenCycles=%s, tenants=%d, reportingDirectory=%s, " +
-            "circuitBreaker=%s, ppaf=%s, minConnPoolSize=%d}",
+            "gcBetweenCycles=%s, tenants=%d, reportingDirectory=%s}",
             cycles, settleTimeMs, suppressCleanup, gcBetweenCycles,
-            tenantWorkloads.size(), reportingDirectory,
-            isPartitionLevelCircuitBreakerEnabled, isPerPartitionAutomaticFailoverRequired,
-            minConnectionPoolSizePerEndpoint);
-    }
-
-    /**
-     * Reads JVM-global system properties from the globalDefaults section of a tenants.json file.
-     * These properties are JVM-wide and cannot vary per tenant.
-     */
-    private void loadGlobalSystemPropertiesFromTenantsFile(File tenantsFile) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(tenantsFile);
-        JsonNode defaults = root.get("globalDefaults");
-        if (defaults == null || !defaults.isObject()) {
-            return;
-        }
-
-        if (defaults.has("isPartitionLevelCircuitBreakerEnabled")) {
-            isPartitionLevelCircuitBreakerEnabled =
-                Boolean.parseBoolean(defaults.get("isPartitionLevelCircuitBreakerEnabled").asText());
-        }
-        if (defaults.has("isPerPartitionAutomaticFailoverRequired")) {
-            isPerPartitionAutomaticFailoverRequired =
-                Boolean.parseBoolean(defaults.get("isPerPartitionAutomaticFailoverRequired").asText());
-        }
-        if (defaults.has("minConnectionPoolSizePerEndpoint")) {
-            minConnectionPoolSizePerEndpoint =
-                Integer.parseInt(defaults.get("minConnectionPoolSizePerEndpoint").asText());
-        }
+            tenantWorkloads.size(), reportingDirectory);
     }
 }

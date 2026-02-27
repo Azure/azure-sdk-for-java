@@ -2,3 +2,5 @@
 
 metastore_db/*
 spark-warehouse/*
+
+multi-tenancy-analysis.md
