@@ -117,8 +117,8 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 
 Some features require an opt-in via the `Foundry-Features` HTTP header. The SDK provides two enums for these flags:
 
-- **`AgentDefinitionFeatureKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `CONTAINER_AGENTS_V1_PREVIEW`, `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`.
-- **`FoundryFeaturesOptInKeys`** — Defines all known opt-in keys, including: `CONTAINER_AGENTS_V1_PREVIEW`, `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
+- **`AgentDefinitionFeatureKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`.
+- **`FoundryFeaturesOptInKeys`** — Defines all known opt-in keys, including: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
 
 > **Note:** The `MemoryStoresClient` automatically sets the `MemoryStores=V1Preview` opt-in flag on every request.
 
