@@ -14,7 +14,7 @@ import java.io.IOException;
  * Function tool call
  *
  * A tool call to run a function. See the
- * [function calling guide](https://platform.openai.com/docs/guides/function-calling) for more information.
+ * [function calling guide](/docs/guides/function-calling) for more information.
  */
 @Fluent
 public final class InputItemFunctionToolCall extends InputItem {

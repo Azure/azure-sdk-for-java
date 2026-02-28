@@ -876,6 +876,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         // Sync client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
+            ast.addImport("java.time.Duration");
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
                     .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
@@ -903,13 +904,15 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "if (contentRange != null) { requestOptions.addQueryParam(\"range\", contentRange.toString(), false); }"
                         + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
                         + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                        + "return serviceClient.beginAnalyzeBinaryWithModel(analyzerId, contentType, binaryInput, requestOptions); }"));
+                        + "return serviceClient.beginAnalyzeBinaryWithModel(analyzerId, contentType, binaryInput, requestOptions)"
+                        + ".setPollInterval(Duration.ofSeconds(3)); }"));
             });
         });
 
         // Async client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
+            ast.addImport("java.time.Duration");
             ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
                     .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
@@ -937,7 +940,8 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "if (contentRange != null) { requestOptions.addQueryParam(\"range\", contentRange.toString(), false); }"
                         + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
                         + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                        + "return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions); }"));
+                        + "return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions)"
+                        + ".setPollInterval(Duration.ofSeconds(3)); }"));
             });
         });
     }
@@ -996,6 +1000,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1");
             ast.addImport("com.azure.core.util.BinaryData");
+            ast.addImport("java.time.Duration");
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
                 // 2-param: analyzerId, inputs
                 clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
@@ -1037,7 +1042,8 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
                         + "AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);"
                         + "BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);"
-                        + "return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest1, requestOptions); }"));
+                        + "return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest1, requestOptions)"
+                        + ".setPollInterval(Duration.ofSeconds(3)); }"));
             });
         });
 
@@ -1045,6 +1051,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1");
             ast.addImport("com.azure.core.util.BinaryData");
+            ast.addImport("java.time.Duration");
             ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
                 // 2-param: analyzerId, inputs
                 clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
@@ -1086,7 +1093,8 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
                         + "AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);"
                         + "BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);"
-                        + "return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions); }"));
+                        + "return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions)"
+                        + ".setPollInterval(Duration.ofSeconds(3)); }"));
             });
         });
     }

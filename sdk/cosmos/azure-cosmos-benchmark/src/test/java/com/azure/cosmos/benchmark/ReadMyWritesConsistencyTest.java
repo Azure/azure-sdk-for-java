@@ -15,6 +15,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.codahale.metrics.MetricRegistry;
 import com.beust.jcommander.JCommander;
 import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
@@ -129,7 +130,7 @@ public class ReadMyWritesConsistencyTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg) {
+        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(TenantWorkloadConfig.fromConfiguration(cfg), new MetricRegistry()) {
             @Override
             protected void onError(Throwable throwable) {
                 logger.error("Error occurred in ReadMyWriteWorkflow", throwable);

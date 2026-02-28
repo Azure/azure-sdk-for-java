@@ -14,7 +14,7 @@ import java.io.IOException;
  * Custom tool
  *
  * A custom tool that processes input using a specified format. Learn more about [custom
- * tools](https://platform.openai.com/docs/guides/function-calling#custom-tools).
+ * tools](/docs/guides/function-calling#custom-tools).
  */
 @Fluent
 public final class CustomToolParam extends Tool {
