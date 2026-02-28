@@ -189,8 +189,13 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("storageDiagnostics", this.storageDiagnostics,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("storageDiagnostics", this.storageDiagnostics, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("api", this.api);
         jsonWriter.writeStringField("clientRequestId", this.clientRequestId);
         jsonWriter.writeStringField("requestId", this.requestId);

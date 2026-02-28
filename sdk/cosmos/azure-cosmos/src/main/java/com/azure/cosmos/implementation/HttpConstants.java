@@ -295,6 +295,9 @@ public class HttpConstants {
 
         // Throughput bucket header
         public static final String THROUGHPUT_BUCKET = "x-ms-cosmos-throughput-bucket";
+
+        // Region affinity headers
+        public static final String HUB_REGION_PROCESSING_ONLY = "x-ms-cosmos-hub-region-processing-only";
     }
 
     public static class A_IMHeaderValues {
@@ -482,6 +485,7 @@ public class HttpConstants {
         public static final int NO_VALID_STORE_RESPONSE = 21009;
         public static final int SERVER_GENERATED_408 = 21010;
         public static final int FAILED_TO_PARSE_SERVER_RESPONSE = 21011;
+        public static final int GLOBAL_N_REGION_COMMIT_WRITE_BARRIER_NOT_MET = 21012;
     }
 
     public static class HeaderValues {

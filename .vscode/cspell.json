@@ -1,4 +1,3 @@
-
 {
   "version": "0.2",
   "language": "en",
@@ -232,7 +231,9 @@
     "backoff",
     "boringssl",
     "BYOD",
+    "Dartifact",
     "Dgpg",
+    "Dremote",
     "Dskip",
     "mvnw",
     "TBLPROPERTIES",
@@ -360,6 +361,7 @@
     "Mordor",
     "mosca",
     "mpga",
+    "mpkjc",
     "msal",
     "msix",
     "MSRC",
@@ -456,47 +458,62 @@
         "reimaged",
         "isdirectory",
         "SSDLRS",
-        "VMGUEST"
+        "VMGUEST",
+        "imds",
+        "confidentialvm"
+      ]
+    },
+    {
+      "filename": "sdk/ai/**",
+      "words": [
+        "oneg",
+        "fourg",
+        "sixg",
+        "okio",
+        "xhigh"
       ]
     },
     {
       "filename": "sdk/search/azure-search-documents/**",
       "words": [
         "ADLS",
-        "mysearch",
-        "TFIDF",
-        "Decompounder",
-        "NGRAM",
-        "Bangla",
-        "Rslp",
-        "vectorizer",
-        "vectorizable",
-        "vectorizers",
-        "hnsw",
-        "rerank",
-        "reranker",
-        "mytext",
-        "myocr",
-        "econo",
-        "azsearch",
-        "bokmaal",
-        "bokmal",
         "adlsgen",
-        "sorani",
+        "AICLIP",
+        "AICLIPIMAGE",
+        "AISERVICES",
+        "AITOKENS",
+        "Bangla",
+        "bokmaal",
+        "Bokm",
+        "bokmal",
+        "coffe",
+        "dari",
+        "Decompounder",
+        "econo",
+        "hitel",
+        "hnsw",
+        "kstem",
+        "Matryoshka",
         "mylocation",
         "myloc",
-        "dari",
-        "hitel",
-        "AISERVICES",
-        "AICLIP",
-        "TLARGE",
-        "TBASE",
-        "TGIANT",
-        "tiktoken",
-        "AITOKENS",
-        "Matryoshka",
+        "myocr",
+        "mysearch",
+        "mytext",
+        "NGRAM",
         "OMINI",
-        "resyncing"
+        "rerank",
+        "reranker",
+        "resyncing",
+        "Rslp",
+        "sorani",
+        "TBASE",
+        "TFIDF",
+        "tiktoken",
+        "TGIANT",
+        "TLARGE",
+        "vectorizable",
+        "vectorizer",
+        "vectorizers"
       ]
     },
     {
@@ -871,17 +888,6 @@
         "UBINARY"
       ]
     },
-	{
-      "filename": "/sdk/ai/azure-ai-voicelive/**",
-      "words": [
-        "Dexec",
-        "viseme",
-        "VISEME",
-        "webrtc",
-        "WEBRTC",
-        "aiservices"
-      ]
-    },
     {
       "filename": "/sdk/datalakeanalytics/**",
       "words": [
@@ -968,7 +974,7 @@
         "Netifi",
         "Zaugg",
         "lrgrwrks",
-        "Brotli"
+        "Nordwall"
       ]
     },
     {
@@ -977,6 +983,7 @@
         "clientime",
         "ctxt",
         "etags",
+        "GZRS",
         "HTBB",
         "IPMISMATCH",
         "myaccountname",
@@ -993,6 +1000,7 @@
         "myjavacontainerbuffereduploadlength",
         "myjavacontainerparallelupload",
         "RAGRS",
+        "RAGZRS",
         "saoid"
       ]
     },
@@ -1321,6 +1329,25 @@
       "filename": "sdk/vision/azure-ai-vision-imageanalysis/**",
       "words": [
         "javac"
+      ]
+    },
+    {
+      "filename": "/sdk/voicelive/azure-ai-voicelive/**",
+      "words": [
+        "aiservices",
+        "AIservices",
+        "Dexec",
+        "filler",
+        "FILLER",
+        "foundry",
+        "FOUNDRY",
+        "Unpooled",
+        "viseme",
+        "VISEME",
+        "webrtc",
+        "WEBRTC",
+        "xhigh",
+        "XHIGH"
       ]
     },
     {

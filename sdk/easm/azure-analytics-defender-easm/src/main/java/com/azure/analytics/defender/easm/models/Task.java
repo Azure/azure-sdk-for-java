@@ -173,8 +173,13 @@ public final class Task implements JsonSerializable<Task> {
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("phase", this.phase == null ? null : this.phase.toString());
         jsonWriter.writeStringField("reason", this.reason);
-        jsonWriter.writeMapField("metadata", this.metadata,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 

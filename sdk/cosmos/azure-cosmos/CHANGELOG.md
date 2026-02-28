@@ -1,14 +1,27 @@
 ## Release History
 
-### 4.78.0-beta.1 (Unreleased)
+### 4.79.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for N-Region synchronous commit feature - See [PR 47757](https://github.com/Azure/azure-sdk-for-java/pull/47757)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.78.0 (2026-02-10)
+
+#### Features Added
+* Added shardKey support in `DedicatedGatewayRequestOptions` to allow specifying a shard key for dedicated gateway sharding support. - See [PR 47796](https://github.com/Azure/azure-sdk-for-java/pull/47796)
+
+#### Bugs Fixed
+* Fixed an issue where `query plan` failed with `400` or query return empty result when `CosmosQueryRequestOptions` has partition key filter and  partition key value contains non-ascii character. See [PR 47881](https://github.com/Azure/azure-sdk-for-java/pull/47881)
+* Fixed an issue where operation failed with `400` when configured with pre-trigger or post-trigger with non-ascii character. Only impact for gateway mode. See [PR 47881](https://github.com/Azure/azure-sdk-for-java/pull/47881)
+
+#### Other Changes
+* Added `x-ms-hub-region-processing-only` header to allow hub-region stickiness when 404 `READ SESSION NOT AVAIALBLE` is hit for Single-Writer accounts. - [PR 47631](https://github.com/Azure/azure-sdk-for-java/pull/47631)
 
 ### 4.77.0 (2026-01-26)
 

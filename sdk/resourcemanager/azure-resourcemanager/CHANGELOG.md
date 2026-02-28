@@ -1,6 +1,6 @@
 # Release History
 
-## 2.60.0-beta.1 (Unreleased)
+## 2.61.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.60.0 (2026-02-26)
+
+### azure-resourcemanager-network
+
+#### Breaking Changes
+
+- Removed `ADVANCED`, `BASIC`, and `STANDARD` from `FirewallPolicyIntrusionDetectionProfileType` to align with the service model.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.59.0 (2026-01-30)
 
