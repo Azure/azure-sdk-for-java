@@ -2,13 +2,13 @@
 
 ## 2.54.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Changed `typeName()` return type from `String` to enum types (`DeliveryRuleActionParametersType`, `DeliveryRuleConditionParametersType`, `CertificateSourceParametersType`, `KeyVaultSigningKeyParametersType`) in condition/action parameter classes.
+- Changed `operator()` return type from `String` to `RequestSchemeMatchConditionParametersOperator` in `RequestSchemeMatchConditionParameters`.
+- Changed `withTypeName(String)` parameter type to corresponding enum type in condition/action parameter classes.
+- Changed `withOperator(String)` parameter type to `RequestSchemeMatchConditionParametersOperator` in `RequestSchemeMatchConditionParameters`.
+- Removed `fromInt(int)` method from `PolicySettingsDefaultCustomBlockResponseStatusCode`. Use `fromValue(Integer)` instead.
 
 ## 2.53.6 (2026-01-29)
 
