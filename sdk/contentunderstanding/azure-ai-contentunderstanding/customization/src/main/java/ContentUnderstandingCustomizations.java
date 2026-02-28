@@ -459,9 +459,9 @@ public class ContentUnderstandingCustomizations extends Customization {
     // =================== Update Convenience Methods ===================
 
     /**
-     * EMITTER-FIX: Make ContentUnderstandingDefaults constructor public so that
-     * updateDefaults convenience methods can create and use instances (generated code
-     * assumes a public constructor; without this, updateDefaults would not compile).
+     * Make ContentUnderstandingDefaults constructor public so that the manual updateDefaults
+     * convenience methods (added by {@link #addUpdateDefaultsConvenienceMethods}) can create
+     * instances. The emitter generates a private constructor; we need it public.
      */
     private void customizeContentUnderstandingDefaults(LibraryCustomization customization, Logger logger) {
         logger.info("Customizing ContentUnderstandingDefaults to make constructor public and remove @Immutable");
@@ -487,12 +487,22 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * EMITTER-FIX: Add convenience methods for updateDefaults that accept typed objects
-     * instead of BinaryData.
+     * Add convenience methods for updateDefaults that accept typed objects instead of BinaryData.
      *
-     * Note: TypeSpec auto-generates updateAnalyzer convenience methods, so we only add updateDefaults here.
-     * The updateDefaults convenience methods were disabled in TypeSpec because they require a public constructor
-     * on ContentUnderstandingDefaults, which we enable via customizeContentUnderstandingDefaults.
+     * <p>The updateDefaults operation uses {@code MergePatchUpdate<ContentUnderstandingDefaults>}
+     * (JSON Merge Patch), where each property can be in 3 states: not set (unchanged), null
+     * (removed), or set to a value. The Java emitter intentionally does not generate flattened
+     * convenience methods for merge-patch requests because method parameters can only represent
+     * 2 states (value or null). See:
+     * https://azure.github.io/typespec-azure/docs/howtos/generate-client-libraries/04method/#spread-cases
+     *
+     * <p>We suppress the emitter's convenience API via {@code @@convenientAPI(false, "java")} in
+     * client.tsp and add our own here instead. This is safe for ContentUnderstandingDefaults because
+     * {@code modelDeployments} is the only property, and users always want to set it (never remove
+     * it), so the 3-state limitation does not apply.
+     *
+     * <p>If ContentUnderstandingDefaults gains additional properties in the future, revisit whether
+     * this simplified approach is still appropriate.
      */
     private void addUpdateDefaultsConvenienceMethods(LibraryCustomization customization, Logger logger) {
         logger.info("Adding updateDefaults convenience methods");
