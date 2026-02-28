@@ -8,7 +8,9 @@ import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Sample demonstrating how to list all analyzers.
