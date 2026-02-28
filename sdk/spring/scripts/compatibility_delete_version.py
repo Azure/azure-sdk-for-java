@@ -32,6 +32,7 @@ IGNORED_SPRINGBOOT_ARTIFACTS = {
         SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX + "org.mockito:mockito-core"
     },
     "3.1.12": {
+        SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX + "org.apache.commons:commons-lang3",
         SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX + "org.testcontainers:azure",
         SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX + "org.testcontainers:testcontainers"
     },
@@ -41,7 +42,6 @@ IGNORED_SPRINGBOOT_ARTIFACTS = {
         SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX + "org.testcontainers:testcontainers"
     },
     "3.3.13": {
-        SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX + "org.apache.commons:commons-lang3",
         SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX + "org.testcontainers:azure",
         SPRING_BOOT_MAJOR_3_VERSION_TAG_PREFIX + "org.testcontainers:testcontainers"
     }
