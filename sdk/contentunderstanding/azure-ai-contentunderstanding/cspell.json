@@ -8,11 +8,6 @@
     "upca",
     "upce",
     "UPCA",
-    "UPCE",
-    "Dtest",
-    "Dsurefire",
-    "dotenv",
-    "DAZURE",
-    "pytest"
+    "UPCE"
   ]
 }
