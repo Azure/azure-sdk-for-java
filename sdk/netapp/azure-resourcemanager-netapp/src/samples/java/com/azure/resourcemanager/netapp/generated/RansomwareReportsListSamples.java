@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class RansomwareReportsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/RansomwareReports_List.json
+     * x-ms-original-file: 2025-12-01/RansomwareReports_List.json
      */
     /**
      * Sample code: RansomwareReports_List.

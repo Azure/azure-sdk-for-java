@@ -11,6 +11,7 @@ import com.azure.ai.voicelive.models.AzureStandardVoice;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.InputAudioFormat;
 import com.azure.ai.voicelive.models.InteractionModality;
+// import com.azure.ai.voicelive.models.LlmInterimResponseConfig;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
@@ -298,6 +299,11 @@ public class AgentV2Sample {
                 .setAutoTruncate(true)        // Auto-truncate response on interrupt
                 .setCreateResponse(true);     // Auto-create response after speech ends
 
+            // Set up interim response configuration
+            // Uncomment to get interim responses based on latency thresholds
+            // LlmInterimResponseConfig interimResponseConfig = new LlmInterimResponseConfig()
+            //     .setLatencyThresholdMs(300);
+
             // Create session options with full audio quality settings
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
                 .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
@@ -309,6 +315,8 @@ public class AgentV2Sample {
                 // Audio quality enhancements
                 .setInputAudioEchoCancellation(new AudioEchoCancellation())
                 .setInputAudioNoiseReduction(new AudioNoiseReduction(AudioNoiseReductionType.AZURE_DEEP_NOISE_SUPPRESSION));
+                // Uncomment to enable interim responses
+                // .setInterimResponse(BinaryData.fromObject(interimResponseConfig));
 
             // Send session update
             ClientEventSessionUpdate sessionUpdate = new ClientEventSessionUpdate(sessionOptions);
