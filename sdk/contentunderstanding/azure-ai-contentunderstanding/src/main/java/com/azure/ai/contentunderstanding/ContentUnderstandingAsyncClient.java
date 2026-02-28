@@ -33,6 +33,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -2096,7 +2097,8 @@ public final class ContentUnderstandingAsyncClient {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
         }
         requestOptions.addQueryParam("stringEncoding", "utf16", false);
-        return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions);
+        return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, contentType, binaryInput, requestOptions)
+            .setPollInterval(Duration.ofSeconds(3));
     }
 
     /**
@@ -2136,6 +2138,7 @@ public final class ContentUnderstandingAsyncClient {
         requestOptions.addQueryParam("stringEncoding", "utf16", false);
         AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);
         BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);
-        return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions);
+        return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions)
+            .setPollInterval(Duration.ofSeconds(3));
     }
 }
