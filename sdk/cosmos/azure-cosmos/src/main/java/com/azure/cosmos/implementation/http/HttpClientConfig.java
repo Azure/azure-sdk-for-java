@@ -174,11 +174,16 @@ public class HttpClientConfig {
     }
 
     public String toDiagnosticsString() {
-        return String.format("(cps:%s, nrto:%s, icto:%s, cto:%s, p:%s, http2:%s)",
+        String gwV2Cto = Configs.isThinClientEnabled()
+            ? Duration.ofSeconds(Configs.getThinClientConnectionTimeoutInSeconds()).toString()
+            : "n/a";
+
+        return String.format("(cps:%s, nrto:%s, icto:%s, cto:%s, gwV2Cto:%s, p:%s, http2:%s)",
             maxPoolSize,
             networkRequestTimeout,
             maxIdleConnectionTimeout,
             connectionAcquireTimeout,
+            gwV2Cto,
             proxy != null,
             http2ConnectionConfig == null ? null : httpCfgAccessor.toDiagnosticsString(http2ConnectionConfig));
     }

@@ -54,6 +54,14 @@ public class Configs {
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
+    // Thin client connect/acquire timeout — controls CONNECT_TIMEOUT_MILLIS for Gateway V2 data plane endpoints.
+    // Data plane requests are routed to the thin client regional endpoint (from RegionalRoutingContext)
+    // which uses a non-443 port. These get an aggressive 1s connect/acquire timeout.
+    // Metadata requests target Gateway V1 endpoint (port 443) and retain the full 45s/60s timeout (unchanged).
+    private static final int DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS = 1;
+    private static final String THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS = "COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS";
+    private static final String THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS_VARIABLE = "COSMOS_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS";
+
     private static final String MAX_HTTP_BODY_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_BODY_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_CHUNK_SIZE_IN_BYTES = "COSMOS.MAX_HTTP_CHUNK_SIZE_IN_BYTES";
@@ -560,6 +568,38 @@ public class Configs {
 
     public static Duration getConnectionAcquireTimeout() {
         return CONNECTION_ACQUIRE_TIMEOUT;
+    }
+
+    /**
+     * Returns the TCP connect timeout for thin client data plane endpoints.
+     * Data plane requests routed via thinclientRegionalEndpoint (from RegionalRoutingContext)
+     * use this aggressive timeout to fail fast when the proxy is unreachable.
+     * Metadata requests on port 443 are unaffected and retain the full 45s timeout.
+     *
+     * Configurable via system property COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS
+     * or environment variable COSMOS_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS.
+     * Default: 1 second.
+     */
+    public static int getThinClientConnectionTimeoutInSeconds() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            try {
+                return Integer.parseInt(valueFromSystemProperty);
+            } catch (NumberFormatException e) {
+                // fall through to env variable
+            }
+        }
+
+        String valueFromEnvVariable = System.getenv(THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            try {
+                return Integer.parseInt(valueFromEnvVariable);
+            } catch (NumberFormatException e) {
+                // fall through to default
+            }
+        }
+
+        return DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS;
     }
 
     public static int getHttpResponseTimeoutInSeconds() {

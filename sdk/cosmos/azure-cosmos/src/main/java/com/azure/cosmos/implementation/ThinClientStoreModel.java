@@ -235,7 +235,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 requestUri,
                 requestUri.getPort(),
                 headers,
-                Flux.just(contentAsByteArray));
+                Flux.just(contentAsByteArray))
+                .withThinClientRequest(true);
         } finally {
             ReferenceCountUtil.safeRelease(byteBuf);
         }
