@@ -72,10 +72,10 @@ public class Sample12_GetResultFileAsync {
                 if (pollResponse.getStatus().isComplete()) {
                     System.out.println("Polling completed successfully");
 
-                    // Get the operation ID from the polling result using the getOperationId() convenience method
+                    // Get the operation ID from the polling result using the getId() convenience method
                     // The operation ID is extracted from the Operation-Location header and can be used with
                     // getResultFile() and deleteResult() APIs
-                    String operationId = pollResponse.getValue().getOperationId();
+                    String operationId = pollResponse.getValue().getId();
                     System.out.println("Operation ID: " + operationId);
 
                     return pollResponse.getFinalResult()

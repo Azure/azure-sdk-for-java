@@ -67,9 +67,9 @@ public class Sample13_DeleteResultAsync {
                 if (pollResponse.getStatus().isComplete()) {
                     System.out.println("Polling completed successfully");
                     
-                    // Get the operation ID using the getOperationId() convenience method
+                    // Get the operation ID using the getId() convenience method
                     // This ID is extracted from the Operation-Location header and is needed for deleteResult()
-                    String operationId = pollResponse.getValue().getOperationId();
+                    String operationId = pollResponse.getValue().getId();
                     System.out.println("Operation ID: " + operationId);
                     
                     return pollResponse.getFinalResult()

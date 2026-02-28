@@ -46,9 +46,9 @@ public class Sample13_DeleteResultTest extends ContentUnderstandingClientTestBas
         AnalysisResult result = poller.getFinalResult();
         System.out.println("Analysis completed successfully!");
 
-        // Get the operation ID using the getOperationId() convenience method
+        // Get the operation ID using the getId() convenience method
         // This ID is extracted from the Operation-Location header and is needed for deleteResult()
-        String operationId = poller.poll().getValue().getOperationId();
+        String operationId = poller.poll().getValue().getId();
         System.out.println("Operation ID: " + operationId);
 
         // Display some sample results using getValue() convenience method

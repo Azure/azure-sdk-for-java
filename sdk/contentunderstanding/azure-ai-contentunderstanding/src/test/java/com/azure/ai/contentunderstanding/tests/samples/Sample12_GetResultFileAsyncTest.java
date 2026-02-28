@@ -61,7 +61,7 @@ public class Sample12_GetResultFileAsyncTest extends ContentUnderstandingClientT
         AnalysisResult result = poller.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 // Capture the operation ID for later use with getResultFile()
-                operationIdRef.set(pollResponse.getValue().getOperationId());
+                operationIdRef.set(pollResponse.getValue().getId());
                 return pollResponse.getFinalResult();
             } else {
                 return Mono.error(

@@ -9,7 +9,6 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.InitializerDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.nodeTypes.NodeWithModifiers;
@@ -25,12 +24,6 @@ import org.slf4j.Logger;
  *
  * <h3>Extension of generated code to make it easier to use</h3>
  * <ul>
- *   <li>Add {@code operationId} field and getter/setter to {@code ContentAnalyzerAnalyzeOperationStatus};
- *       parse and set it from the Operation-Location header in polling strategies.</li>
- *   <li>Add {@code parseOperationId} to {@code PollingUtils} and override poll() in sync/async
- *       {@code OperationLocationPollingStrategy} to set operationId on the status.</li>
- *   <li>Add static accessor helper ({@code ContentAnalyzerAnalyzeOperationStatusHelper}) so polling
- *       can set the private operationId.</li>
  *   <li>Add convenience methods on model classes for content/array/object fields.</li>
  *   <li>Make {@code ContentUnderstandingDefaults} constructor public and add {@code updateDefaults}
  *       convenience methods that accept {@code Map} or {@code ContentUnderstandingDefaults} (TypeSpec
@@ -42,18 +35,6 @@ import org.slf4j.Logger;
  * </ul>
  *
  * <p><b>Scenarios and before/after</b></p>
- *
- * <p><b>operationId on status</b> — Scenario: Caller needs the operation ID (e.g. to call
- * getResultFile or deleteResult) after starting analyze.</p>
- * <pre>{@code
- * // Before: generated model had no operationId; caller could not get it from the status.
- * SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller = client.beginAnalyze(...);
- * ContentAnalyzerAnalyzeOperationStatus status = poller.getFinalResult(); // no getOperationId()
- *
- * // After: status carries operationId, set automatically by polling strategy from Operation-Location header.
- * String id = status.getOperationId();
- * client.getResultFile(analyzerId, id, ...);
- * }</pre>
  *
  * <p><b>Content/array/object field extensions</b> — Scenario: Reading document fields
  * (ContentField and subtypes ContentStringField, ContentNumberField, ContentDateField, ContentObjectField, ContentArrayField) without
@@ -141,18 +122,6 @@ public class ContentUnderstandingCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        // Add operationId field to AnalysisResult model
-        customizeAnalysisResult(customization, logger);
-
-        // Customize PollingUtils to add parseOperationId method
-        customizePollingUtils(customization, logger);
-
-        // Customize PollingStrategy to extract and set operationId
-        customizePollingStrategy(customization, logger);
-
-        // Add static accessor helper for operationId
-        addStaticAccessorForOperationId(customization, logger);
-
         // Add convenience methods to model classes
         customizeContentFieldExtensions(customization, logger);
         customizeArrayFieldExtensions(customization, logger);
@@ -201,196 +170,6 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // Default LRO polling interval to 3 seconds for Content Understanding operations
         customizePollingInterval(customization, logger);
-    }
-
-    /**
-     * Add operationId field and getter/setter to ContentAnalyzerAnalyzeOperationStatus
-     */
-    private void customizeAnalysisResult(LibraryCustomization customization, Logger logger) {
-        logger.info("Customizing ContentAnalyzerAnalyzeOperationStatus to add operationId field");
-
-        customization.getClass(MODELS_PACKAGE, "ContentAnalyzerAnalyzeOperationStatus")
-            .customizeAst(ast -> ast.getClassByName("ContentAnalyzerAnalyzeOperationStatus").ifPresent(clazz -> {
-                // Remove @Immutable annotation if present
-                clazz.getAnnotationByName("Immutable").ifPresent(Node::remove);
-
-                // Add operationId field
-                clazz.addField("String", "operationId", Modifier.Keyword.PRIVATE);
-
-                // Add public getter for operationId
-                clazz.addMethod("getOperationId", Modifier.Keyword.PUBLIC)
-                    .setType("String")
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Gets the operationId property: The unique ID of the analyze operation. "
-                        + "Use this ID with getResultFile() and deleteResult() methods."))
-                        .addBlockTag("return", "the operationId value."))
-                    .setBody(StaticJavaParser.parseBlock("{ return operationId; }"));
-
-                // Add private setter for operationId (used by helper)
-                clazz.addMethod("setOperationId", Modifier.Keyword.PRIVATE)
-                    .setType("void")
-                    .addParameter("String", "operationId")
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Sets the operationId property: The unique ID of the analyze operation."))
-                        .addBlockTag("param", "operationId the operationId value to set."))
-                    .setBody(StaticJavaParser.parseBlock("{ this.operationId = operationId; }"));
-            }));
-    }
-
-    /**
-     * Add parseOperationId method to PollingUtils
-     */
-    private void customizePollingUtils(LibraryCustomization customization, Logger logger) {
-        logger.info("Customizing PollingUtils to add parseOperationId method");
-
-        customization.getClass(IMPLEMENTATION_PACKAGE, "PollingUtils").customizeAst(ast -> {
-            ast.addImport("java.util.regex.Matcher");
-            ast.addImport("java.util.regex.Pattern");
-
-            ast.getClassByName("PollingUtils").ifPresent(clazz -> {
-                // Add regex pattern for extracting operationId from Operation-Location header
-                // Example: https://endpoint/contentunderstanding/analyzers/myAnalyzer/results/operationId?api-version=xxx
-                clazz.addFieldWithInitializer("Pattern", "OPERATION_ID_PATTERN",
-                    StaticJavaParser.parseExpression("Pattern.compile(\"[^:]+://[^/]+/contentunderstanding/.+/([^?/]+)\")"),
-                    Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
-
-                // Add parseOperationId method
-                clazz.addMethod("parseOperationId", Modifier.Keyword.STATIC)
-                    .setType("String")
-                    .addParameter("String", "operationLocationHeader")
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Parses the operationId from the Operation-Location header."))
-                        .addBlockTag("param", "operationLocationHeader the Operation-Location header value.")
-                        .addBlockTag("return", "the operationId, or null if not found."))
-                    .setBody(StaticJavaParser.parseBlock("{ "
-                        + "if (CoreUtils.isNullOrEmpty(operationLocationHeader)) { return null; }"
-                        + "Matcher matcher = OPERATION_ID_PATTERN.matcher(operationLocationHeader);"
-                        + "if (matcher.find() && matcher.group(1) != null) { return matcher.group(1); }"
-                        + "return null; }"));
-            });
-        });
-    }
-
-    /**
-     * Customize polling strategies to extract operationId and set it on the result
-     */
-    private void customizePollingStrategy(LibraryCustomization customization, Logger logger) {
-        logger.info("Customizing SyncOperationLocationPollingStrategy class");
-        PackageCustomization packageCustomization = customization.getPackage(IMPLEMENTATION_PACKAGE);
-
-        packageCustomization.getClass("SyncOperationLocationPollingStrategy").customizeAst(ast ->
-            ast.addImport("com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus")
-               .addImport("com.azure.ai.contentunderstanding.implementation.ContentAnalyzerAnalyzeOperationStatusHelper")
-               .getClassByName("SyncOperationLocationPollingStrategy").ifPresent(this::addSyncPollOverrideMethod));
-
-        logger.info("Customizing OperationLocationPollingStrategy class");
-        packageCustomization.getClass("OperationLocationPollingStrategy").customizeAst(ast ->
-            ast.addImport("com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus")
-               .addImport("com.azure.ai.contentunderstanding.implementation.ContentAnalyzerAnalyzeOperationStatusHelper")
-               .getClassByName("OperationLocationPollingStrategy").ifPresent(this::addAsyncPollOverrideMethod));
-    }
-
-    private void addSyncPollOverrideMethod(ClassOrInterfaceDeclaration clazz) {
-        clazz.addMethod("poll", Modifier.Keyword.PUBLIC)
-            .setType("PollResponse<T>")
-            .addParameter("PollingContext<T>", "pollingContext")
-            .addParameter("TypeReference<T>", "pollResponseType")
-            .addMarkerAnnotation(Override.class)
-            .setBody(StaticJavaParser.parseBlock("{ "
-                + "PollResponse<T> pollResponse = super.poll(pollingContext, pollResponseType);"
-                + "String operationLocationHeader = pollingContext.getData(String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER));"
-                + "String operationId = null;"
-                + "if (operationLocationHeader != null) {"
-                + "    operationId = PollingUtils.parseOperationId(operationLocationHeader);"
-                + "}"
-                + "if (pollResponse.getValue() instanceof ContentAnalyzerAnalyzeOperationStatus) {"
-                + "    ContentAnalyzerAnalyzeOperationStatus operation = (ContentAnalyzerAnalyzeOperationStatus) pollResponse.getValue();"
-                + "    ContentAnalyzerAnalyzeOperationStatusHelper.setOperationId(operation, operationId);"
-                + "}"
-                + "return pollResponse; }"));
-    }
-
-    private void addAsyncPollOverrideMethod(ClassOrInterfaceDeclaration clazz) {
-        clazz.addMethod("poll", Modifier.Keyword.PUBLIC)
-            .setType("Mono<PollResponse<T>>")
-            .addParameter("PollingContext<T>", "pollingContext")
-            .addParameter("TypeReference<T>", "pollResponseType")
-            .addMarkerAnnotation(Override.class)
-            .setBody(StaticJavaParser.parseBlock("{ return super.poll(pollingContext, pollResponseType)"
-                + ".map(pollResponse -> {"
-                + "    String operationLocationHeader = pollingContext.getData(String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER));"
-                + "    String operationId = null;"
-                + "    if (operationLocationHeader != null) {"
-                + "        operationId = PollingUtils.parseOperationId(operationLocationHeader);"
-                + "    }"
-                + "    if (pollResponse.getValue() instanceof ContentAnalyzerAnalyzeOperationStatus) {"
-                + "        ContentAnalyzerAnalyzeOperationStatus operation = (ContentAnalyzerAnalyzeOperationStatus) pollResponse.getValue();"
-                + "        ContentAnalyzerAnalyzeOperationStatusHelper.setOperationId(operation, operationId);"
-                + "    }"
-                + "    return pollResponse;"
-                + "}); }"));
-    }
-
-    /**
-     * Add static accessor helper for setting operationId on ContentAnalyzerAnalyzeOperationStatus
-     */
-    private void addStaticAccessorForOperationId(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding ContentAnalyzerAnalyzeOperationStatusHelper class");
-
-        // First, add the static initializer block to ContentAnalyzerAnalyzeOperationStatus
-        customization.getClass(MODELS_PACKAGE, "ContentAnalyzerAnalyzeOperationStatus").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.contentunderstanding.implementation.ContentAnalyzerAnalyzeOperationStatusHelper");
-            ast.getClassByName("ContentAnalyzerAnalyzeOperationStatus").ifPresent(clazz ->
-                clazz.getMembers().add(0, new InitializerDeclaration(true,
-                    StaticJavaParser.parseBlock("{"
-                        + "ContentAnalyzerAnalyzeOperationStatusHelper.setAccessor("
-                        + "new ContentAnalyzerAnalyzeOperationStatusHelper.ContentAnalyzerAnalyzeOperationStatusAccessor() {"
-                        + "    @Override"
-                        + "    public void setOperationId(ContentAnalyzerAnalyzeOperationStatus status, String operationId) {"
-                        + "        status.setOperationId(operationId);"
-                        + "    }"
-                        + "}); }"))));
-        });
-
-        // Create the helper class file
-        String helperContent =
-            "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
-            + "// Licensed under the MIT License.\n"
-            + "package com.azure.ai.contentunderstanding.implementation;\n\n"
-            + "import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;\n\n"
-            + "/**\n"
-            + " * Helper class to access private members of ContentAnalyzerAnalyzeOperationStatus.\n"
-            + " */\n"
-            + "public final class ContentAnalyzerAnalyzeOperationStatusHelper {\n"
-            + "    private static ContentAnalyzerAnalyzeOperationStatusAccessor accessor;\n\n"
-            + "    /**\n"
-            + "     * Interface for accessing private members.\n"
-            + "     */\n"
-            + "    public interface ContentAnalyzerAnalyzeOperationStatusAccessor {\n"
-            + "        void setOperationId(ContentAnalyzerAnalyzeOperationStatus status, String operationId);\n"
-            + "    }\n\n"
-            + "    /**\n"
-            + "     * Sets the accessor.\n"
-            + "     * @param accessorInstance the accessor instance.\n"
-            + "     */\n"
-            + "    public static void setAccessor(ContentAnalyzerAnalyzeOperationStatusAccessor accessorInstance) {\n"
-            + "        accessor = accessorInstance;\n"
-            + "    }\n\n"
-            + "    /**\n"
-            + "     * Sets the operationId on a ContentAnalyzerAnalyzeOperationStatus instance.\n"
-            + "     * @param status the status instance.\n"
-            + "     * @param operationId the operationId to set.\n"
-            + "     */\n"
-            + "    public static void setOperationId(ContentAnalyzerAnalyzeOperationStatus status, String operationId) {\n"
-            + "        accessor.setOperationId(status, operationId);\n"
-            + "    }\n\n"
-            + "    private ContentAnalyzerAnalyzeOperationStatusHelper() {\n"
-            + "    }\n"
-            + "}\n";
-
-        customization.getRawEditor().addFile(
-            "src/main/java/com/azure/ai/contentunderstanding/implementation/ContentAnalyzerAnalyzeOperationStatusHelper.java",
-            helperContent);
     }
 
     /**

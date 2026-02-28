@@ -55,10 +55,10 @@ public class Sample12_GetResultFileTest extends ContentUnderstandingClientTestBa
         AnalysisResult result = poller.getFinalResult();
         System.out.println("Analysis completed successfully!");
 
-        // Get the operation ID from the polling result using the getOperationId() convenience method
+        // Get the operation ID from the polling result using the getId() convenience method
         // The operation ID is extracted from the Operation-Location header and can be used with
         // getResultFile() and deleteResult() APIs
-        String operationId = poller.poll().getValue().getOperationId();
+        String operationId = poller.poll().getValue().getId();
         System.out.println("Operation ID: " + operationId);
 
         // END: com.azure.ai.contentunderstanding.getResultFile

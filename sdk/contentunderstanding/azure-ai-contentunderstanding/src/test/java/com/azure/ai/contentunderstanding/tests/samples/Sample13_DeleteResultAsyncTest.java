@@ -51,7 +51,7 @@ public class Sample13_DeleteResultAsyncTest extends ContentUnderstandingClientTe
         AnalysisResult result = poller.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 // Capture the operation ID for later use with deleteResult()
-                operationIdRef.set(pollResponse.getValue().getOperationId());
+                operationIdRef.set(pollResponse.getValue().getId());
                 return pollResponse.getFinalResult();
             } else {
                 return Mono.error(
