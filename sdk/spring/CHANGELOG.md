@@ -8,11 +8,20 @@ This section includes changes in `spring-cloud-azure-appconfiguration-config` mo
 
 - Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`. ([#47587](https://github.com/Azure/azure-sdk-for-java/issues/47587))
 
+### Spring Messaging Azure Service Bus
+
+This section includes changes in `spring-messaging-azure-servicebus` module.
+
+#### Bugs Fixed
+
+- Fixed `DefaultServiceBusNamespaceProcessorFactory` not removing closed/disposed `ServiceBusProcessorClient` instances from its internal cache, causing subsequent `createProcessor()` calls to return stale, non-functional processors. [#48030](https://github.com/Azure/azure-sdk-for-java/issues/48030)
+
 ## 6.2.0 (2026-03-25)
 - This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.0.0. (Note: 2025.0.x (x>0) should be supported, but they aren't tested with this release.)
 
 ### Spring Cloud Azure Autoconfigure
+
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### New Features
@@ -45,6 +54,7 @@ The ConnectionFactory type is determined by the following configuration properti
   **Note:** `CachingConnectionFactory` and `JmsPoolConnectionFactory` will be used only when they exist in classpath.
 
 ### Spring Cloud Azure Docker Compose
+
 This section includes changes in `spring-cloud-azure-docker-compose` module.
 
 #### New Features
