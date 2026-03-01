@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.callautomation.models.CustomCallingContext;
+import com.azure.communication.callautomation.implementation.accesshelpers.CustomCallingContextConstructorProxy;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.core.annotation.Immutable;
@@ -126,7 +127,7 @@ public final class IncomingCall extends CallAutomationEventBase {
     public static IncomingCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final IncomingCall event = new IncomingCall();
-            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("to".equals(fieldName)) {
@@ -167,6 +168,6 @@ public final class IncomingCall extends CallAutomationEventBase {
                 reader.skipChildren();
             }
         }
-        return new CustomCallingContext(sipHeaders, voipHeaders);
+        return CustomCallingContextConstructorProxy.create(sipHeaders, voipHeaders);
     }
 }

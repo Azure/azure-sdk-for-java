@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.callautomation.implementation.accesshelpers.CustomCallingContextConstructorProxy;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -20,6 +21,16 @@ public final class CustomCallingContext {
     private TeamsPhoneCallDetails teamsPhoneCallDetails;
     private final ClientLogger logger;
 
+    static {
+        CustomCallingContextConstructorProxy
+            .setAccessor(new CustomCallingContextConstructorProxy.CustomCallingContextConstructorAccessor() {
+                @Override
+                public CustomCallingContext create(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
+                    return new CustomCallingContext(sipHeaders, voipHeaders);
+                }
+            });
+    }
+
     /**
      * Creates an instance of CustomCallingContext class.
      */
@@ -35,7 +46,7 @@ public final class CustomCallingContext {
      * @param sipHeaders context SIP headers
      * @param voipHeaders custom context VOIP headers
      */
-    public CustomCallingContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
+    CustomCallingContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
         this(sipHeaders, voipHeaders, null);
     }
 
