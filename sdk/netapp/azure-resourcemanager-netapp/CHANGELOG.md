@@ -1,14 +1,95 @@
 # Release History
 
-## 2.1.0-beta.2 (Unreleased)
+## 2.1.0 (2026-02-26)
 
-### Features Added
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2025-12-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Type` was removed
 
-### Other Changes
+#### `models.VolumeQuotaRule$Definition` was modified
+
+* `withQuotaType(models.Type)` was removed
+
+#### `models.VolumeQuotaRule` was modified
+
+* `models.Type quotaType()` -> `models.QuotaType quotaType()`
+
+#### `models.VolumeQuotaRulePatch` was modified
+
+* `withQuotaType(models.Type)` was removed
+* `models.Type quotaType()` -> `models.QuotaType quotaType()`
+
+### Features Added
+
+* `models.RansomwareSuspects` was added
+
+* `models.RansomwareSuspectsClearRequest` was added
+
+* `models.RansomwareReport` was added
+
+* `models.ActualRansomwareProtectionState` was added
+
+* `models.ListQuotaReportResponse` was added
+
+* `models.RansomwareProtectionPatchSettings` was added
+
+* `models.RansomwareProtectionSettings` was added
+
+* `models.RansomwareSuspectResolution` was added
+
+* `models.SuspectFile` was added
+
+* `models.DesiredRansomwareProtectionState` was added
+
+* `models.QuotaReport` was added
+
+* `models.RansomwareReportSeverity` was added
+
+* `models.RansomwareReports` was added
+
+* `models.QuotaType` was added
+
+* `models.ListQuotaReportResult` was added
+
+* `models.QuotaReportFilterRequest` was added
+
+* `models.RansomwareReportProperties` was added
+
+* `models.RansomwareReportState` was added
+
+#### `models.Volume` was modified
+
+* `listQuotaReport()` was added
+* `listQuotaReport(models.QuotaReportFilterRequest,com.azure.core.util.Context)` was added
+
+#### `models.VolumePropertiesDataProtection` was modified
+
+* `withRansomwareProtection(models.RansomwareProtectionSettings)` was added
+* `ransomwareProtection()` was added
+
+#### `models.VolumeQuotaRule$Definition` was modified
+
+* `withQuotaType(models.QuotaType)` was added
+
+#### `NetAppFilesManager` was modified
+
+* `ransomwareReports()` was added
+
+#### `models.VolumePatchPropertiesDataProtection` was modified
+
+* `withRansomwareProtection(models.RansomwareProtectionPatchSettings)` was added
+* `ransomwareProtection()` was added
+
+#### `models.Volumes` was modified
+
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.QuotaReportFilterRequest,com.azure.core.util.Context)` was added
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.VolumeQuotaRulePatch` was modified
+
+* `withQuotaType(models.QuotaType)` was added
 
 ## 2.1.0-beta.1 (2025-12-04)
 

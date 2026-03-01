@@ -158,6 +158,7 @@ extends:
           - stage:
             displayName: Test VNext Emulator with ${{ mode }}
             dependsOn: [ ]
+            condition: and(succeeded(), ne(variables['Skip.VnextEmulator'], 'true'))
             variables:
               - template: /eng/pipelines/templates/variables/globals.yml
               - template: /eng/pipelines/templates/variables/image.yml

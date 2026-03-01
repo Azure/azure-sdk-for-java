@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.eventhubs.kafka;
 
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.AzureEventHubsAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
@@ -46,6 +47,23 @@ public class AzureEventHubsKafkaAutoConfiguration {
     StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsKafkaConnectionString(Environment environment) {
         String connectionString = environment.getProperty("spring.cloud.azure.eventhubs.connection-string");
 
+        try {
+            new EventHubsConnectionString(connectionString);
+        } catch (Exception e) {
+            LOGGER.error("A valid Event Hubs connection string must be provided");
+            throw e;
+        }
+
+        return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS, connectionString);
+    }
+
+    @Bean
+    @ConditionalOnBean(AzureEventHubsConnectionDetails.class)
+    @ConditionalOnMissingBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
+    StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsKafkaConnectionDetailsConnectionString(
+        AzureEventHubsConnectionDetails connectionDetails) {
+
+        String connectionString = connectionDetails.getConnectionString();
         try {
             new EventHubsConnectionString(connectionString);
         } catch (Exception e) {
