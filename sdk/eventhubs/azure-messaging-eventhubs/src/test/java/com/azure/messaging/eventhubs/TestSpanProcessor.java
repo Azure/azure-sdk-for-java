@@ -91,6 +91,8 @@ public class TestSpanProcessor implements SpanProcessor {
         String messagingSystem = attributes.get(AttributeKey.stringKey("messaging.system"));
         if ("eventhubs".equals(messagingSystem)) {
             assertEquals("Microsoft.EventHub", attributes.get(AttributeKey.stringKey("az.namespace")));
+            assertEquals("Microsoft.EventHub",
+                attributes.get(AttributeKey.stringKey("azure.resource_provider.namespace")));
             assertEquals(entityName, attributes.get(AttributeKey.stringKey("messaging.destination.name")));
             assertEquals(namespace, attributes.get(AttributeKey.stringKey("server.address")));
         }

@@ -12,6 +12,7 @@ import io.opentelemetry.api.trace.StatusCode;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import static com.azure.core.tracing.opentelemetry.ExceptionUtils.unwrapError;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
@@ -21,6 +22,7 @@ class OpenTelemetryUtils {
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryUtils.class);
 
     static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
+    static final String AZ_SERVICE_REQUEST_ID_ATTRIBUTE = "az.service_request_id";
     static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
     static final AttributeKey<String> ERROR_TYPE_ATTRIBUTE = AttributeKey.stringKey("error.type");
 
@@ -35,36 +37,35 @@ class OpenTelemetryUtils {
                 continue;
             }
 
-            addAttribute(builder, mapAttributeName(kvp.getKey()), kvp.getValue());
+            addAttribute(builder, kvp.getKey(), kvp.getValue());
         }
 
         return builder.build();
     }
 
-    private static String mapAttributeName(String name) {
+    private static void mapKeyAndConsume(String key, Consumer<String> mappedKey) {
         // TODO (limolkova) remove all these mappings prior to plugin stability
-        if ("http.method".equals(name)) {
-            return "http.request.method";
+        if ("http.method".equals(key)) {
+            mappedKey.accept("http.request.method");
+        } else if ("http.status_code".equals(key)) {
+            mappedKey.accept("http.response.status_code");
+        } else if ("http.url".equals(key)) {
+            mappedKey.accept("url.full");
+        } else if (ENTITY_PATH_KEY.equals(key)) {
+            mappedKey.accept("messaging.destination.name");
+        } else if (HOST_NAME_KEY.equals(key)) {
+            mappedKey.accept("server.address");
+        } else if (CLIENT_REQUEST_ID_ATTRIBUTE.equals(key)) {
+            mappedKey.accept("az.client_request_id");
+        } else if (SERVICE_REQUEST_ID_ATTRIBUTE.equals(key) || AZ_SERVICE_REQUEST_ID_ATTRIBUTE.equals(key)) {
+            mappedKey.accept("az.service_request_id");
+            mappedKey.accept("azure.service.request.id");
+        } else if ("az.namespace".equals(key)) {
+            mappedKey.accept("az.namespace");
+            mappedKey.accept("azure.resource_provider.namespace");
+        } else {
+            mappedKey.accept(key);
         }
-        if ("http.status_code".equals(name)) {
-            return "http.response.status_code";
-        }
-        if ("http.url".equals(name)) {
-            return "url.full";
-        }
-        if (ENTITY_PATH_KEY.equals(name)) {
-            return "messaging.destination.name";
-        }
-        if (HOST_NAME_KEY.equals(name)) {
-            return "server.address";
-        }
-        if (CLIENT_REQUEST_ID_ATTRIBUTE.equals(name)) {
-            return "az.client_request_id";
-        }
-        if (SERVICE_REQUEST_ID_ATTRIBUTE.equals(name)) {
-            return "az.service_request_id";
-        }
-        return name;
     }
 
     /**
@@ -75,24 +76,28 @@ class OpenTelemetryUtils {
      * @param key key of the attribute to be added
      * @param value value of the attribute to be added
      */
-    private static void addAttribute(AttributesBuilder attributesBuilder, String key, Object value) {
+    static void addAttribute(AttributesBuilder attributesBuilder, String key, Object value) {
         Objects.requireNonNull(key, "OpenTelemetry attribute name cannot be null.");
         if (value instanceof String) {
-            attributesBuilder.put(AttributeKey.stringKey(key), (String) value);
+            mapKeyAndConsume(key,
+                mappedKey -> attributesBuilder.put(AttributeKey.stringKey(mappedKey), (String) value));
         } else if (value instanceof Long) {
-            attributesBuilder.put(AttributeKey.longKey(key), (Long) value);
+            mapKeyAndConsume(key, mappedKey -> attributesBuilder.put(AttributeKey.longKey(mappedKey), (Long) value));
         } else if (value instanceof Integer) {
-            attributesBuilder.put(AttributeKey.longKey(key), (Integer) value);
+            mapKeyAndConsume(key, mappedKey -> attributesBuilder.put(AttributeKey.longKey(mappedKey), (Integer) value));
         } else if (value instanceof Boolean) {
-            attributesBuilder.put(AttributeKey.booleanKey(key), (Boolean) value);
+            mapKeyAndConsume(key,
+                mappedKey -> attributesBuilder.put(AttributeKey.booleanKey(mappedKey), (Boolean) value));
         } else if (value instanceof Double) {
-            attributesBuilder.put(AttributeKey.doubleKey(key), (Double) value);
+            mapKeyAndConsume(key,
+                mappedKey -> attributesBuilder.put(AttributeKey.doubleKey(mappedKey), (Double) value));
         } else if (value instanceof Float) {
-            attributesBuilder.put(AttributeKey.doubleKey(key), ((Float) value).doubleValue());
+            mapKeyAndConsume(key,
+                mappedKey -> attributesBuilder.put(AttributeKey.doubleKey(mappedKey), ((Float) value).doubleValue()));
         } else if (value instanceof Short) {
-            attributesBuilder.put(AttributeKey.longKey(key), (Short) value);
+            mapKeyAndConsume(key, mappedKey -> attributesBuilder.put(AttributeKey.longKey(mappedKey), (Short) value));
         } else if (value instanceof Byte) {
-            attributesBuilder.put(AttributeKey.longKey(key), (Byte) value);
+            mapKeyAndConsume(key, mappedKey -> attributesBuilder.put(AttributeKey.longKey(mappedKey), (Byte) value));
         } else {
             LOGGER.warning("Could not populate attribute with key '{}', type {} is not supported.", key,
                 value.getClass().getName());
@@ -110,23 +115,23 @@ class OpenTelemetryUtils {
     static void addAttribute(Span span, String key, Object value) {
         Objects.requireNonNull(key, "OpenTelemetry attribute name cannot be null.");
 
-        key = mapAttributeName(key);
         if (value instanceof String) {
-            span.setAttribute(AttributeKey.stringKey(key), (String) value);
+            mapKeyAndConsume(key, mappedKey -> span.setAttribute(AttributeKey.stringKey(mappedKey), (String) value));
         } else if (value instanceof Long) {
-            span.setAttribute(AttributeKey.longKey(key), (Long) value);
+            mapKeyAndConsume(key, mappedKey -> span.setAttribute(AttributeKey.longKey(mappedKey), (Long) value));
         } else if (value instanceof Integer) {
-            span.setAttribute(AttributeKey.longKey(key), (Integer) value);
+            mapKeyAndConsume(key, mappedKey -> span.setAttribute(AttributeKey.longKey(mappedKey), (Integer) value));
         } else if (value instanceof Boolean) {
-            span.setAttribute(AttributeKey.booleanKey(key), (Boolean) value);
+            mapKeyAndConsume(key, mappedKey -> span.setAttribute(AttributeKey.booleanKey(mappedKey), (Boolean) value));
         } else if (value instanceof Double) {
-            span.setAttribute(AttributeKey.doubleKey(key), (Double) value);
+            mapKeyAndConsume(key, mappedKey -> span.setAttribute(AttributeKey.doubleKey(mappedKey), (Double) value));
         } else if (value instanceof Float) {
-            span.setAttribute(AttributeKey.doubleKey(key), ((Float) value).doubleValue());
+            mapKeyAndConsume(key,
+                mappedKey -> span.setAttribute(AttributeKey.doubleKey(mappedKey), ((Float) value).doubleValue()));
         } else if (value instanceof Short) {
-            span.setAttribute(AttributeKey.longKey(key), (Short) value);
+            mapKeyAndConsume(key, mappedKey -> span.setAttribute(AttributeKey.longKey(mappedKey), (Short) value));
         } else if (value instanceof Byte) {
-            span.setAttribute(AttributeKey.longKey(key), (Byte) value);
+            mapKeyAndConsume(key, mappedKey -> span.setAttribute(AttributeKey.longKey(mappedKey), (Byte) value));
         } else {
             LOGGER.warning("Could not populate attribute with key '{}', type {} is not supported.", key,
                 value.getClass().getName());

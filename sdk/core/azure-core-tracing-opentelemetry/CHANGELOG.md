@@ -8,6 +8,12 @@
 
 ### Bugs Fixed
 
+- Added additional attributes according to OpenTelemetry semantic conventions changes:
+    - `az.namespace` -> `azure.resource_provider.namespace`
+    - `az.service_request_id` -> `azure.service.request.id`
+  These attributes are added in addition to the existing ones and will be reported together for now to allow users to
+  transition to the new attribute names. The old attributes will be removed in a future release.
+
 ### Other Changes
 
 ## 1.0.0-beta.62 (2026-01-15)

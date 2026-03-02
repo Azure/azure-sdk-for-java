@@ -860,6 +860,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     static class TestSpanProcessor implements SpanProcessor {
         private static final ClientLogger LOGGER = new ClientLogger(TestSpanProcessor.class);
         private static final AttributeKey<String> AZ_NAMESPACE = AttributeKey.stringKey("az.namespace");
+        private static final AttributeKey<String> AZURE_RESOURCE_PROVIDER_NAMESPACE
+            = AttributeKey.stringKey("azure.resource_provider.namespace");
         private static final AttributeKey<String> MESSAGING_SYSTEM = AttributeKey.stringKey("messaging.system");
         private static final AttributeKey<String> MESSAGING_DESTINATION_NAME
             = AttributeKey.stringKey("messaging.destination.name");
@@ -894,6 +896,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         public void onEnd(ReadableSpan readableSpan) {
             LOGGER.info(readableSpan.toString());
             assertEquals("Microsoft.ServiceBus", readableSpan.getAttribute(AZ_NAMESPACE));
+            assertEquals("Microsoft.ServiceBus", readableSpan.getAttribute(AZURE_RESOURCE_PROVIDER_NAMESPACE));
             assertEquals("servicebus", readableSpan.getAttribute(MESSAGING_SYSTEM));
             assertEquals(entityName, readableSpan.getAttribute(MESSAGING_DESTINATION_NAME));
 
