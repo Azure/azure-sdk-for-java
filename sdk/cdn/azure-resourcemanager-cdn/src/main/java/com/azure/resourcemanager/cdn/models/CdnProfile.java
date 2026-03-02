@@ -47,6 +47,13 @@ public interface CdnProfile
     Map<String, CdnEndpoint> endpoints();
 
     /**
+     * Gets latest Azure Front Door endpoints by sending http request.
+     *
+     * @return AFD endpoints in the CDN manager profile, indexed by name
+     */
+    Map<String, AfdEndpoint> afdEndpoints();
+
+    /**
      * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal used for advanced management tasks.
      *
      * @return URI used to login to the third party web portal
@@ -297,6 +304,14 @@ public interface CdnProfile
             // Why is define() taking more than just the name?
             CdnEndpoint.DefinitionStages.WithStandardAttach<WithStandardCreate> defineNewEndpoint(String name,
                 String endpointOriginHostname);
+
+            /**
+             * Starts the definition of a new Azure Front Door endpoint to be attached to the CDN profile.
+             *
+             * @param name a new endpoint name
+             * @return the first stage of a new AFD endpoint definition
+             */
+            AfdEndpoint.DefinitionStages.Blank<WithStandardCreate> defineNewAfdEndpoint(String name);
         }
 
         /**
@@ -393,6 +408,14 @@ public interface CdnProfile
                 String endpointOriginHostname);
 
             /**
+             * Starts the definition of a new Azure Front Door endpoint to be attached to the CDN profile.
+             *
+             * @param name the name for the endpoint
+             * @return the first stage of an endpoint definition
+             */
+            AfdEndpoint.UpdateDefinitionStages.Blank<Update> defineNewAfdEndpoint(String name);
+
+            /**
              * Adds new endpoint to current Premium Verizon CDN profile.
              *
              * @param endpointOriginHostname the endpoint origin hostname
@@ -436,6 +459,14 @@ public interface CdnProfile
             CdnEndpoint.UpdateStandardEndpoint updateEndpoint(String name);
 
             /**
+             * Begins the description of an update of an existing Azure Front Door endpoint in current profile.
+             *
+             * @param name the name of an existing endpoint
+             * @return the first stage of the update of the endpoint
+             */
+            AfdEndpoint.Update updateAfdEndpoint(String name);
+
+            /**
              * Begins the description of an update of an existing endpoint in current Premium Verizon profile.
              *
              * @param name the name of the endpoint
@@ -450,6 +481,14 @@ public interface CdnProfile
              * @return the next stage of the CDN profile update
              */
             Update withoutEndpoint(String name);
+
+            /**
+             * Removes an Azure Front Door endpoint from the profile.
+             *
+             * @param name the name of an existing endpoint
+             * @return the next stage of the CDN profile update
+             */
+            Update withoutAfdEndpoint(String name);
         }
     }
 

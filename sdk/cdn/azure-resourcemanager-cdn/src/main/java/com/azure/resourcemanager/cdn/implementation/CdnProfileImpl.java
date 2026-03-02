@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.cdn.CdnManager;
 import com.azure.resourcemanager.cdn.fluent.models.ProfileInner;
 import com.azure.resourcemanager.cdn.fluent.models.SsoUriInner;
+import com.azure.resourcemanager.cdn.models.AfdEndpoint;
 import com.azure.resourcemanager.cdn.models.LoadParameters;
 import com.azure.resourcemanager.cdn.models.ProfileUpdateParameters;
 import com.azure.resourcemanager.cdn.models.PurgeParameters;
@@ -32,16 +33,23 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, CdnProfileImpl, CdnManager>
     implements CdnProfile, CdnProfile.Definition, CdnProfile.Update {
 
-    private CdnEndpointsImpl endpoints;
+    private final CdnEndpointsImpl endpoints;
+    private final AfdEndpointsImpl afdEndpoints;
 
     CdnProfileImpl(String name, final ProfileInner innerModel, final CdnManager cdnManager) {
         super(name, innerModel, cdnManager);
         this.endpoints = new CdnEndpointsImpl(this);
+        this.afdEndpoints = new AfdEndpointsImpl(this);
     }
 
     @Override
     public Map<String, CdnEndpoint> endpoints() {
         return this.endpoints.endpointsAsMap();
+    }
+
+    @Override
+    public Map<String, AfdEndpoint> afdEndpoints() {
+        return this.afdEndpoints.endpointsAsMap();
     }
 
     @Override
@@ -207,6 +215,7 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
     public Mono<Void> afterPostRunAsync(final boolean isGroupFaulted) {
         if (isGroupFaulted) {
             endpoints.clear();
+            afdEndpoints.clear();
             return Mono.empty();
         } else {
             return this.refreshAsync().then();
@@ -217,6 +226,7 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
     public Mono<CdnProfile> refreshAsync() {
         return super.refreshAsync().map(cdnProfile -> {
             endpoints.clear();
+            afdEndpoints.clear();
             return cdnProfile;
         });
     }
@@ -274,6 +284,11 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
     }
 
     @Override
+    public AfdEndpointImpl defineNewAfdEndpoint(String name) {
+        return this.afdEndpoints.defineNewEndpoint(name);
+    }
+
+    @Override
     public CdnProfileImpl withNewPremiumEndpoint(String endpointOriginHostname) {
         return this.withNewEndpoint(endpointOriginHostname);
     }
@@ -304,13 +319,29 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
     }
 
     @Override
+    public AfdEndpointImpl updateAfdEndpoint(String name) {
+        return this.afdEndpoints.updateEndpoint(name);
+    }
+
+    @Override
     public Update withoutEndpoint(String name) {
         this.endpoints.remove(name);
         return this;
     }
 
+    @Override
+    public Update withoutAfdEndpoint(String name) {
+        this.afdEndpoints.remove(name);
+        return this;
+    }
+
     CdnProfileImpl withEndpoint(CdnEndpointImpl endpoint) {
         this.endpoints.addEndpoint(endpoint);
+        return this;
+    }
+
+    CdnProfileImpl withAfdEndpoint(AfdEndpointImpl endpoint) {
+        this.afdEndpoints.addEndpoint(endpoint);
         return this;
     }
 

@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.cdn.models.AfdEndpoint;
 import com.azure.resourcemanager.cdn.models.CacheBehavior;
 import com.azure.resourcemanager.cdn.models.CacheExpirationActionParameters;
 import com.azure.resourcemanager.cdn.models.CacheType;
@@ -19,6 +20,8 @@ import com.azure.resourcemanager.cdn.models.DeliveryRuleCacheExpirationAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleHttpVersionCondition;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestSchemeCondition;
 import com.azure.resourcemanager.cdn.models.DestinationProtocol;
+import com.azure.resourcemanager.cdn.models.EnabledState;
+import com.azure.resourcemanager.cdn.models.EnforceMtlsEnabledState;
 import com.azure.resourcemanager.cdn.models.HttpVersionMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.HttpVersionOperator;
 import com.azure.resourcemanager.cdn.models.RedirectType;
@@ -33,6 +36,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -105,10 +109,9 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertEquals(0, cdnProfile.endpoints().size());
 
         cdnProfile.update()
-            .defineNewEndpoint(cdnEndpointName)
-            .withOrigin("origin1", "www.someDomain.net")
-            .withHttpAllowed(true)
-            .withHttpsAllowed(true)
+            .defineNewAfdEndpoint(cdnEndpointName)
+            .withEnabledState(EnabledState.ENABLED)
+            .withEnforceMtls(EnforceMtlsEnabledState.ENABLED)
             .attach()
             .apply();
 
@@ -137,38 +140,41 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .withGlobal()
             .withExistingResourceGroup(resourceGroup)
             .withSku(SkuName.STANDARD_AZURE_FRONT_DOOR)
-            .defineNewEndpoint(cdnEndpointName)
-            .withOrigin("origin1", "www.someDomain.net")
-            .withHttpAllowed(false)
-            .withHttpsAllowed(true)
+            .defineNewAfdEndpoint(cdnEndpointName)
+            .withEnabledState(EnabledState.ENABLED)
+            .withEnforceMtls(EnforceMtlsEnabledState.ENABLED)
             .attach()
             .create();
 
         Assertions.assertNotNull(cdnProfile);
         Assertions.assertEquals(cdnProfileName, cdnProfile.name());
 
-        Map<String, CdnEndpoint> cdnEndpointMap = cdnProfile.endpoints();
-        Assertions.assertEquals(1, cdnProfile.endpoints().size());
+        Map<String, AfdEndpoint> cdnEndpointMap = cdnProfile.afdEndpoints();
+        Assertions.assertEquals(1, cdnEndpointMap.size());
 
-        CdnEndpoint cdnEndpoint = cdnEndpointMap.get(cdnEndpointName);
+        AfdEndpoint cdnEndpoint = cdnEndpointMap.get(cdnEndpointName);
         Assertions.assertNotNull(cdnEndpoint);
-        Assertions.assertFalse(cdnEndpoint.isHttpAllowed());
-        Assertions.assertTrue(cdnEndpoint.isHttpsAllowed());
-        Assertions.assertEquals(0, cdnEndpoint.customDomains().size());
+        Assertions.assertEquals(EnabledState.ENABLED, cdnEndpoint.enabledState());
+        Assertions.assertEquals(EnforceMtlsEnabledState.ENABLED, cdnEndpoint.enforceMtls());
 
         cdnProfile.update()
-            .updateEndpoint(cdnEndpointName)
-            .withHttpAllowed(true)
-            .withHttpsAllowed(false)
+            .updateAfdEndpoint(cdnEndpointName)
+            .withEnabledState(EnabledState.DISABLED)
+            .withEnforceMtls(EnforceMtlsEnabledState.DISABLED)
             .parent()
             .apply();
 
         cdnEndpoint.refresh();
-        Assertions.assertTrue(cdnEndpoint.isHttpAllowed());
-        Assertions.assertFalse(cdnEndpoint.isHttpsAllowed());
-        Assertions.assertTrue(TestUtilities.getSize(cdnEndpoint.listResourceUsage()) > 0);
+        Assertions.assertEquals(EnabledState.DISABLED, cdnEndpoint.enabledState());
+        Assertions.assertEquals(EnforceMtlsEnabledState.DISABLED, cdnEndpoint.enforceMtls());
+
+        cdnProfile.update().withoutAfdEndpoint(cdnEndpointName).apply();
+
+        cdnEndpointMap = cdnProfile.afdEndpoints();
+        Assertions.assertTrue(cdnEndpointMap.isEmpty());
     }
 
+    @Disabled("Use rule set and rules")
     @Test
     public void canCrudStandardRulesEngineRules() {
         String cdnProfileName = generateRandomResourceName("cdnp", 15);
@@ -306,6 +312,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertEquals(2, cdnProfile.endpoints().get(cdnEndpointName).standardRulesEngineRules().size());
     }
 
+    @Disabled("Domain registration is deprecated from appservice")
     @Test
     public void canCreateWithCustomDomain() {
         String cdnProfileName = generateRandomResourceName("cdnp", 15);

@@ -2,6 +2,10 @@
 
 ## 2.54.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported `defineNewAfdEndpoint` method in `CdnProfile` for Azure Front Door Standard/Premium Sku.
+
 ### Breaking Changes
 
 - Changed `typeName()` return type from `String` to enum types (`DeliveryRuleActionParametersType`, `DeliveryRuleConditionParametersType`, `CertificateSourceParametersType`, `KeyVaultSigningKeyParametersType`) in condition/action parameter classes.
