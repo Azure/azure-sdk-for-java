@@ -14,7 +14,7 @@
 ### Breaking Changes
 
 - Removed `ContainerAppAgentDefinition` class and `AgentKind.CONTAINER_APP` enum value. The `container_app` agent kind is no longer supported.
-- Removed `CONTAINER_AGENTS_V1_PREVIEW` from `AgentDefinitionFeatureKeys` and `FoundryFeaturesOptInKeys`. The `ContainerAgents=V1Preview` feature flag is no longer valid.
+- Removed `CONTAINER_AGENTS_V1_PREVIEW` from `AgentDefinitionOptInKeys` and `FoundryFeaturesOptInKeys`. The `ContainerAgents=V1Preview` feature flag is no longer valid.
 - Renamed computer action classes to use `Param` suffix:
   - `Drag` → `DragParam`
   - `DragPoint` → `CoordParam`
