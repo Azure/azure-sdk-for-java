@@ -335,4 +335,71 @@ public class ServiceBusProcessorGracefulShutdownTest {
         neverReleasedLatch.countDown();
         subscription.get().dispose();
     }
+
+    /**
+     * Verifies that calling {@code drainHandlers()} from within a message handler (re-entrant)
+     * does not deadlock. This simulates a user calling {@code processor.close()} from inside
+     * their {@code processMessage} callback.
+     * <p>
+     * Without the re-entrancy guard, the handler thread would enter {@code drainHandlers()},
+     * which waits for {@code activeHandlerCount} to reach 0. But the handler itself has
+     * incremented the counter and won't decrement it until it returns — classic self-deadlock.
+     * </p>
+     * <p>
+     * The fix detects the re-entrant call via a {@link ThreadLocal} flag and skips the drain,
+     * returning {@code false} with a warning log.
+     * </p>
+     */
+    @Test
+    public void v2DrainFromWithinHandlerShouldNotDeadlock() throws InterruptedException {
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
+
+        when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(client.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(client.getEntityPath()).thenReturn("entityPath");
+        when(client.isConnectionClosed()).thenReturn(false);
+        when(client.isAutoLockRenewRequested()).thenReturn(false);
+        when(client.nonSessionProcessorReceiveV2())
+            .thenReturn(Flux.concat(Flux.just(message), Flux.<ServiceBusReceivedMessage>never())
+                .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        when(client.complete(any())).thenReturn(Mono.empty());
+        doNothing().when(client).close();
+
+        final CountDownLatch handlerStarted = new CountDownLatch(1);
+        final CountDownLatch handlerDone = new CountDownLatch(1);
+        final AtomicBoolean drainReturnedFalse = new AtomicBoolean(false);
+
+        // Create the pump first, then reference it inside the handler via AtomicReference.
+        final AtomicReference<MessagePump> pumpRef = new AtomicReference<>();
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            handlerStarted.countDown();
+            // Simulate user calling close() from within processMessage, which triggers drainHandlers().
+            // With the re-entrancy guard, this should return false immediately instead of deadlocking.
+            boolean result = pumpRef.get().drainHandlers(Duration.ofSeconds(5));
+            drainReturnedFalse.set(!result);
+            handlerDone.countDown();
+        };
+
+        final MessagePump pump = new MessagePump(client, messageConsumer, e -> {
+        }, 1, false);
+        pumpRef.set(pump);
+
+        // Subscribe to start pumping.
+        final AtomicReference<reactor.core.Disposable> subscription = new AtomicReference<>();
+        subscription.set(pump.begin().subscribe());
+
+        // Wait for the handler to start and complete (should NOT deadlock).
+        assertTrue(handlerStarted.await(5, TimeUnit.SECONDS), "Handler should have started processing");
+        assertTrue(handlerDone.await(5, TimeUnit.SECONDS),
+            "Handler should have completed without deadlocking on re-entrant drainHandlers()");
+
+        // The re-entrant drain should have returned false (skipped).
+        assertTrue(drainReturnedFalse.get(),
+            "Re-entrant drainHandlers() should return false (skip drain to avoid self-deadlock)");
+
+        // Clean up.
+        subscription.get().dispose();
+    }
 }

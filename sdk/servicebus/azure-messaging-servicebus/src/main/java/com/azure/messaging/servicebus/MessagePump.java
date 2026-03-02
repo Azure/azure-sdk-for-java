@@ -60,6 +60,7 @@ final class MessagePump {
     private final ServiceBusReceiverInstrumentation instrumentation;
     private final AtomicInteger activeHandlerCount = new AtomicInteger(0);
     private final Object drainLock = new Object();
+    private final ThreadLocal<Boolean> isHandlerThread = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
     /**
      * Instantiate {@link MessagePump} that pumps messages emitted by the given {@code client}. The messages
@@ -143,6 +144,7 @@ final class MessagePump {
 
     private void handleMessage(ServiceBusReceivedMessage message) {
         activeHandlerCount.incrementAndGet();
+        isHandlerThread.set(Boolean.TRUE);
         try {
             instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
                 final Disposable lockRenewDisposable;
@@ -163,6 +165,7 @@ final class MessagePump {
                 return error;
             });
         } finally {
+            isHandlerThread.set(Boolean.FALSE);
             if (activeHandlerCount.decrementAndGet() == 0) {
                 synchronized (drainLock) {
                     drainLock.notifyAll();
@@ -216,6 +219,16 @@ final class MessagePump {
      * @return true if all handlers completed within the timeout, false otherwise.
      */
     boolean drainHandlers(Duration timeout) {
+        if (isHandlerThread.get()) {
+            // Re-entrant call from within a message handler (e.g., user called close() inside processMessage).
+            // Waiting here would self-deadlock because this thread's handler incremented the counter and
+            // cannot decrement it until it returns. Skip the drain — remaining handlers (if any) will
+            // complete naturally after this handler returns.
+            logger.atWarning()
+                .log("drainHandlers called from within a message handler (re-entrant). "
+                    + "Skipping drain to avoid self-deadlock.");
+            return false;
+        }
         final long deadline = System.nanoTime() + timeout.toNanos();
         synchronized (drainLock) {
             while (activeHandlerCount.get() > 0) {

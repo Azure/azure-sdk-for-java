@@ -209,6 +209,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     // V1 handler tracking for graceful shutdown (not used in V2 path).
     private final AtomicInteger activeV1HandlerCount = new AtomicInteger(0);
     private final Object v1DrainLock = new Object();
+    private final ThreadLocal<Boolean> isV1HandlerThread = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -462,6 +463,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 @Override
                 public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
                     activeV1HandlerCount.incrementAndGet();
+                    isV1HandlerThread.set(Boolean.TRUE);
                     try {
                         Context span = serviceBusMessageContext.getMessage() != null
                             ? serviceBusMessageContext.getMessage().getContext()
@@ -495,6 +497,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                             tracer.endSpan(exception, span, scope);
                         }
                     } finally {
+                        isV1HandlerThread.set(Boolean.FALSE);
                         if (activeV1HandlerCount.decrementAndGet() == 0) {
                             synchronized (v1DrainLock) {
                                 v1DrainLock.notifyAll();
@@ -584,6 +587,15 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @param timeout the maximum time to wait for handlers to complete.
      */
     private void drainV1Handlers(Duration timeout) {
+        if (isV1HandlerThread.get()) {
+            // Re-entrant call from within a V1 message handler (e.g., user called close() inside processMessage).
+            // Waiting here would self-deadlock because this thread's handler incremented the counter and
+            // cannot decrement it until it returns. Skip the drain — remaining handlers (if any) will
+            // complete naturally after this handler returns.
+            LOGGER.warning("drainV1Handlers called from within a V1 message handler (re-entrant). "
+                + "Skipping drain to avoid self-deadlock.");
+            return;
+        }
         final long deadline = System.nanoTime() + timeout.toNanos();
         synchronized (v1DrainLock) {
             while (activeV1HandlerCount.get() > 0) {
