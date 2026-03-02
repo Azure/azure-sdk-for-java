@@ -12,6 +12,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.Context;
+import com.azure.core.http.HttpClient;
 
 import java.util.function.Supplier;
 
@@ -47,8 +48,17 @@ public final class AuthenticationUtil {
      * @return A {@link Supplier} which returns the bearer token as a {@link String}.
      */
     public static Supplier<String> getBearerTokenSupplier(TokenCredential credential, String... scopes) {
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new BearerTokenAuthenticationPolicy(credential, scopes)).build();
+        return getBearerTokenSupplier(credential, null, scopes);
+    }
+
+    static Supplier<String> getBearerTokenSupplier(TokenCredential credential, HttpClient httpClient,
+        String... scopes) {
+        HttpPipelineBuilder pipelineBuilder
+            = new HttpPipelineBuilder().policies(new BearerTokenAuthenticationPolicy(credential, scopes));
+        if (httpClient != null) {
+            pipelineBuilder.httpClient(httpClient);
+        }
+        HttpPipeline pipeline = pipelineBuilder.build();
         return () -> {
             // This request will never need to go anywhere; it is simply to cause the policy to interact with
             // the user's credential

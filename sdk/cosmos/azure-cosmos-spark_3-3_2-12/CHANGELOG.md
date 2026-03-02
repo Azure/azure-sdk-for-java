@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.44.0-beta.1 (Unreleased)
+### 4.45.0-beta.1 (Unreleased)
 
 #### Features Added
 * Added `customHeaders` support  to allow setting custom HTTP headers (e.g., `x-ms-cosmos-workload-id`) that are sent with every request. - See [PR 48128](https://github.com/Azure/azure-sdk-for-java/pull/48128)
@@ -8,10 +8,22 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 4.44.0 (2026-02-27)
+
+#### Features Added
+* Added config entry `spark.cosmos.account.azureEnvironment.management.scope` to allow specifying the Entra ID scope/audience to be used when retrieving tokens to authenticate against the ARM/management endpoint of non-public clouds. - See [PR 48137](https://github.com/Azure/azure-sdk-for-java/pull/48137)
+
+### 4.43.1 (2026-02-25)
+
+#### Bugs Fixed
 * Fixed an issue where `TransientIOErrorsRetryingIterator` would trigger extra query during retries and on close. - See [PR 47996](https://github.com/Azure/azure-sdk-for-java/pull/47996)
 
 #### Other Changes
 * Added status code history in `BulkWriterNoProgressException` error message. - See [PR 48022](https://github.com/Azure/azure-sdk-for-java/pull/48022)
+* Reduced the log noise level for frequent transient errors - for example throttling - in Gateway mode - [PR 48112](https://github.com/Azure/azure-sdk-for-java/pull/48112)
 
 ### 4.43.0 (2026-02-10)
 
