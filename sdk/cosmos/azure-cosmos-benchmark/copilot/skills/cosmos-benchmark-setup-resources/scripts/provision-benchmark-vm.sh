@@ -3,16 +3,18 @@
 # See §6.5 of the test plan for full details.
 #
 # Usage:
-#   ./provision-benchmark-vm.sh --new --location eastus [--create-key] [--ssh-key <pub>] [options]
-#   ./provision-benchmark-vm.sh --existing --ip <ip> --user <user> --key <private-key>
-#   ./provision-benchmark-vm.sh --existing --rg <rg> --vm-name <name> --key <private-key>
+#   ./provision-benchmark-vm.sh --new --location westus2 [--create-key] [--ssh-key <pub>] [--config-dir <path>] [options]
+#   ./provision-benchmark-vm.sh --existing --ip <ip> --user <user> --key <private-key> [--config-dir <path>]
+#   ./provision-benchmark-vm.sh --existing --rg <rg> --vm-name <name> --key <private-key> [--config-dir <path>]
+#
+# Config directory: where VM connection info is saved. Required.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 MODE=""
-LOCATION="eastus"
-RG="rg-cosmos-benchmark"
+LOCATION="westus2"
+RG="rg-cosmos-benchmark-$(date +%Y%m%d)"
 VM_NAME="vm-benchmark-01"
 VM_SIZE="Standard_D16s_v5"
 VM_IP=""
@@ -23,6 +25,7 @@ CREATE_KEY=false
 CREATE_KEY_PATH=""
 DISK_SIZE=256
 SETUP_AFTER_CREATE=true
+CONFIG_DIR=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -44,6 +47,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         --disk-size)    DISK_SIZE="$2"; shift ;;
         --skip-setup)   SETUP_AFTER_CREATE=false ;;
+        --config-dir)   CONFIG_DIR="$2"; shift ;;
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
     shift
@@ -96,8 +100,23 @@ if [[ "$MODE" == "new" ]]; then
     echo "VM created. IP: $VM_IP"
 
     if [[ "$SETUP_AFTER_CREATE" == "true" ]]; then
-        echo "=== Running setup script ==="
-        $(ssh_cmd) -o StrictHostKeyChecking=no "${SSH_USER}@${VM_IP}" 'bash -s' < "$SCRIPT_DIR/setup-benchmark-vm.sh"
+        echo "=== Installing tools on VM ==="
+        $(ssh_cmd) -o StrictHostKeyChecking=no "${SSH_USER}@${VM_IP}" 'bash -s' << 'SETUP_SCRIPT'
+set -euo pipefail
+echo "=== Installing JDK, Maven, tools ==="
+sudo apt-get update && sudo apt-get install -y openjdk-21-jdk git net-tools iproute2 sysstat procps tmux
+
+wget -q https://dlcdn.apache.org/maven/maven-3/3.9.12/binaries/apache-maven-3.9.12-bin.tar.gz -O /tmp/maven.tar.gz
+sudo tar -xzf /tmp/maven.tar.gz -C /opt/
+sudo ln -sf /opt/apache-maven-3.9.12/bin/mvn /usr/local/bin/mvn
+
+wget -qO /tmp/async-profiler.tar.gz \
+  https://github.com/async-profiler/async-profiler/releases/download/v3.0/async-profiler-3.0-linux-x64.tar.gz
+sudo tar -xzf /tmp/async-profiler.tar.gz -C /opt/
+echo 'export PATH=$PATH:/opt/apache-maven-3.9.12/bin:/opt/async-profiler-3.0-linux-x64/bin' >> ~/.bashrc
+
+echo "=== VM tool setup complete ==="
+SETUP_SCRIPT
     fi
 
 elif [[ "$MODE" == "existing" ]]; then
@@ -111,13 +130,18 @@ else
     exit 1
 fi
 
-echo "$VM_IP" > benchmark-config/vm-ip
-echo "$SSH_USER" > benchmark-config/vm-user
-echo "$SSH_PRIVATE_KEY" > benchmark-config/vm-key
+if [[ -z "$CONFIG_DIR" ]]; then
+    echo "ERROR: --config-dir <path> is required" >&2
+    exit 1
+fi
 
-# Also save to benchmark-config/ for organized access
-mkdir -p benchmark-config
-echo "VM_IP=$VM_IP" > benchmark-config/vm-config.env
-echo "VM_USER=$SSH_USER" >> benchmark-config/vm-config.env
-echo "VM_KEY_PATH=$SSH_PRIVATE_KEY" >> benchmark-config/vm-config.env
+mkdir -p "$CONFIG_DIR"
+echo "$VM_IP" > "$CONFIG_DIR/vm-ip"
+echo "$SSH_USER" > "$CONFIG_DIR/vm-user"
+echo "$SSH_PRIVATE_KEY" > "$CONFIG_DIR/vm-key"
+
+echo "VM_IP=$VM_IP" > "$CONFIG_DIR/vm-config.env"
+echo "VM_USER=$SSH_USER" >> "$CONFIG_DIR/vm-config.env"
+echo "VM_KEY_PATH=$SSH_PRIVATE_KEY" >> "$CONFIG_DIR/vm-config.env"
 echo "=== Ready: $(ssh_cmd) ${SSH_USER}@${VM_IP} ==="
+echo "=== Config saved to: $CONFIG_DIR ==="

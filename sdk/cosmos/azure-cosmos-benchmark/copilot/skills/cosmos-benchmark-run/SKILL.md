@@ -1,123 +1,118 @@
 ---
 name: cosmos-benchmark-run
-description: Run a Cosmos DB benchmark scenario. Supports branch/PR/commit checkout, CHURN preset and custom scenarios, auto-configures App Insights monitoring from provision output, runs in tmux on remote VMs, and supports multi-VM parallel execution. Triggers on "run benchmark", "execute test", "test fix on branch", "run from PR", "start benchmark", "DR drill".
+description: Build and run Cosmos DB benchmarks — clone repo at a branch/PR/commit, generate tenants.json, build the benchmark JAR, and execute scenarios on remote VMs. Supports multiple refs for comparison. Triggers on "run benchmark", "execute test", "start benchmark", "build benchmark", "create tenants.json", "DR drill".
 ---
 
-# Run a Benchmark
+# Run Benchmark
 
-Execute a benchmark on one or more VMs. Always uses `run-benchmark.sh` wrapper (includes `monitor.sh` + git metadata capture).
+Clone, build, and execute a benchmark on a provisioned VM. All operations are implemented as scripts. Each ref uses a single SSH session for checkout → build → verify → run.
 
 ## VM Connection
 
-Auto-detect from provision output:
+Read VM connection info from the config directory provided during resource setup:
 
 ```bash
-VM_IP=$(cat benchmark-config/vm-ip)
-VM_USER=$(cat benchmark-config/vm-user)
-VM_KEY=$(cat benchmark-config/vm-key)
-SSH_CMD="ssh -i $VM_KEY $VM_USER@$VM_IP"
+CONFIG_DIR="<path-from-setup-resources-step>"
 ```
 
-## 1. Configure Monitoring
+## Step 1 — Collect Inputs
 
-### Application Insights (auto-configure from provision output)
+Ask the user for:
 
-If `benchmark-config/app-insights-connection-string.txt` exists:
+1. **Refs to benchmark** — one or more branches, commits, PRs, or tags:
+   - Single: `main`
+   - Multiple for comparison: `main, fix/telemetry-leak`
+   - PR + baseline: `PR#12345, main`
+   - Commit SHAs: `abc1234, def5678`
+
+2. **Scenario preset** (default: `SIMPLE`):
+
+   | Preset | Operations | Duration | Use case |
+   |---|---|---|---|
+   | **SIMPLE** | ReadThroughput | ~30 min | Quick validation, single-op benchmark |
+   | **EXPAND** | ReadThroughput → WriteThroughput → QueryOrderby | ~90 min | Full performance profile |
+   | **CHURN** | Configurable (cycles) | Varies | Leak detection, resource cleanup validation |
+
+   See `references/scenarios.md` for custom operation flags.
+
+3. **tenants.json customization** — use defaults or adjust operation, concurrency, connection mode.
+
+## Step 2 — Generate Config
+
+Generate `tenants.json` from the credentials exported during resource setup:
 
 ```bash
-AI_CONN_STR=$(cat benchmark-config/app-insights-connection-string.txt)
-$SSH_CMD "echo 'export APPLICATIONINSIGHTS_CONNECTION_STRING=\"$AI_CONN_STR\"' >> ~/.bashrc"
+bash scripts/generate-tenants.sh \
+  --config-dir "$CONFIG_DIR" \
+  --output tenants.json \
+  --copy-to-vm
 ```
 
-If not found, ask the user whether to:
-- Provide an App Insights connection string
-- Skip App Insights (local CSV metrics only)
+Options:
+| Flag | Default | Description |
+|---|---|---|
+| `--config-dir` | — | **Required.** Path to config directory |
+| `--output` | `tenants.json` | Output file path |
+| `--operation` | `ReadThroughput` | Default operation |
+| `--connection-mode` | `GATEWAY` | `GATEWAY` or `DIRECT` |
+| `--concurrency` | `20` | Concurrent operations |
+| `--copy-to-vm` | false | SCP the file to `~/tenants.json` on VM |
 
-### Graphite (optional)
+Ensure `tenants.json` and `clientHostAndKey.txt` are in `.gitignore` — they contain secrets.
+
+## Step 3 — Run Benchmarks
+
+### Single or multiple refs
 
 ```bash
-$SSH_CMD "echo 'export GRAPHITE_SERVICE_ADDRESS=\"<host>:<port>\"' >> ~/.bashrc"
+bash scripts/run-all-refs.sh \
+  --config-dir "$CONFIG_DIR" \
+  --refs "main, fix/telemetry-leak" \
+  --scenario SIMPLE
 ```
 
-## 2. Scenario Selection
+The orchestrator, for each ref, uses **a single SSH session** to:
+1. Checkout the ref (auto-detects branch/PR/commit/tag)
+2. Build linting-extensions + cosmos benchmark JAR
+3. Verify readiness (JDK, JAR, config, disk)
+4. Execute the benchmark
 
-Read `references/presets.md` for preset flag recipes.
+Results are saved to `results/<date>-<scenario>-<ref-label>/` on the VM.
 
-### CHURN preset (default — leak detection)
+If any ref fails, it's skipped and the next ref proceeds. A summary is printed at the end.
 
-Tests client create/close resource leaks (threads, connections, memory).
+### Multiple VMs (parallel)
 
-```
--cycles 5 -numberOfOperations 500
-```
-
-The harness auto-applies when cycles > 1:
-- `settleTimeMs=90000`
-- `suppressCleanup=true`
-- `gcBetweenCycles=true`
-
-### Custom scenarios
-
-Read `references/scenarios.md` for the full operation catalog (20 types) and tuning parameters.
-Users can pass any combination of CLI flags for custom workloads.
-
-## 3. Execute on Single VM
-
-Always run inside tmux so the benchmark survives SSH disconnection.
+Run `run-all-refs.sh` with different `--config-dir` paths pointing to different VMs:
 
 ```bash
-$SSH_CMD "tmux new-session -d -s bench 'cd ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark && \
-  bash copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh CHURN ~/tenants.json ./results/<run-name> [extra-flags]'"
+bash scripts/run-all-refs.sh --config-dir "$CONFIG_DIR_VM1" --refs "main" --scenario SIMPLE &
+bash scripts/run-all-refs.sh --config-dir "$CONFIG_DIR_VM2" --refs "fix/leak" --scenario SIMPLE &
+wait
+```
+
+### Run naming convention
+
+Runs are named `<date>-<scenario>-<ref-label>`, e.g.:
+```
+20260302-SIMPLE-main
+20260302-EXPAND-fix-telemetry-leak
+20260302-CHURN-PR-12345
 ```
 
 ### Monitor progress
 
 ```bash
-# Attach to tmux session
-$SSH_CMD -t "tmux attach -t bench"
+SSH_CMD="ssh -i $(cat $CONFIG_DIR/vm-key) $(cat $CONFIG_DIR/vm-user)@$(cat $CONFIG_DIR/vm-ip)"
 
-# Or peek at output without attaching
+# Peek at output
 $SSH_CMD "tmux capture-pane -t bench -p | tail -30"
 
-# Check if monitor.csv is growing
+# Check monitor.csv
 $SSH_CMD "wc -l ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark/results/<run-name>/monitor.csv"
 ```
 
-### Run naming convention
-
-Use descriptive names: `<date>-<scenario>-<branch>`, e.g.:
-```
-20260226-CHURN-fix-telemetry-leak
-20260226-CHURN-main-baseline
-```
-
-## 4. Execute on Multiple VMs (parallel)
-
-For comparing versions or running different scenarios simultaneously:
-
-```bash
-# VM 1: baseline (main branch)
-ssh -i $VM_KEY $VM_USER@<VM1_IP> "tmux new-session -d -s bench \
-  'cd ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark && \
-   bash copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh CHURN ~/tenants.json ./results/baseline-main'"
-
-# VM 2: fix branch
-ssh -i $VM_KEY $VM_USER@<VM2_IP> "tmux new-session -d -s bench \
-  'cd ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark && \
-   bash copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh CHURN ~/tenants.json ./results/fix-branch'"
-```
-
-To test different SDK versions on different VMs, use the **setup** skill on each VM with different branch/PR/commit targets before running.
-
-## 5. What run-benchmark.sh Does
-
-The wrapper script (`copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh`) handles:
-1. Captures git metadata (branch, commit) → `git-info.json`
-2. Launches JVM with `-Xmx8g -XX:+UseG1GC` + GC logging
-3. Spawns `monitor.sh` in parallel for external JVM monitoring → `monitor.csv`
-4. Cleans up monitoring on exit
-
-### Output directory structure
+## Output Directory Structure
 
 ```
 results/<run-name>/
@@ -130,11 +125,18 @@ results/<run-name>/
 
 ## After Run
 
-Suggest using the **cosmos-benchmark-analyze** skill to analyze results.
+Suggest using the **cosmos-benchmark-analyze** skill to download and analyze results.
 
-## References
+## Scripts Reference
 
-- **Preset flag recipes**: `references/presets.md`
-- **Full operation catalog & custom scenarios**: `references/scenarios.md`
-- **Run script**: `scripts/run-benchmark.sh`
-- **Trigger script**: `scripts/trigger-benchmark.sh`
+| Script | Purpose |
+|---|---|
+| `scripts/run-all-refs.sh` | **Orchestrator.** For each ref: sends `vm-prepare-and-run.sh` to VM via single SSH. |
+| `scripts/vm-prepare-and-run.sh` | **Runs ON VM.** Checkout → build → verify → run for one ref. |
+| `scripts/generate-tenants.sh` | Generate tenants.json from clientHostAndKey.txt. |
+| `scripts/run-benchmark.sh` | Execute benchmark with monitoring (git metadata, GC log, monitor.csv). |
+| `scripts/monitor.sh` | External JVM monitoring (spawned by run-benchmark.sh). |
+| `scripts/capture-diagnostics.sh` | Capture thread/heap dumps and JFR recordings during a live run. |
+| `references/tenants-sample.json` | Template for tenants.json structure. |
+| `references/presets.md` | Preset flag recipes (SIMPLE, EXPAND, CHURN). |
+| `references/scenarios.md` | Full operation catalog (20+ types). |

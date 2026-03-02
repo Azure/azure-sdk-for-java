@@ -1,196 +1,127 @@
 ---
 name: cosmos-benchmark-analyze
-description: Analyze Cosmos DB benchmark results — download from VM, parse CSV metrics, compare runs, analyze heap/thread dumps, generate markdown reports, export to Kusto, and query Application Insights. Triggers on "analyze results", "compare runs", "leak check", "did it pass", "heap dump", "thread dump", "generate report", "export to kusto", "regression check", monitor.csv, or result directories.
+description: Analyze Cosmos DB benchmark results — download from VM, generate markdown reports with time-series charts and comparison tables, apply pass/fail thresholds. Triggers on "analyze results", "compare runs", "leak check", "did it pass", "generate report", "regression check", or result directories.
 ---
 
 # Analyze Benchmark Results
 
-Comprehensive post-run analysis: download results, CSV metrics, run comparison, heap/thread dumps, reports, and Kusto export.
+Download results, generate a markdown report with metrics analysis, time-series charts, and multi-run comparison.
 
-## 1. Download Results from VM
+## Step 1 — Download Results
 
-Auto-detect VM connection:
-```bash
-VM_IP=$(cat benchmark-config/vm-ip); VM_USER=$(cat benchmark-config/vm-user); VM_KEY=$(cat benchmark-config/vm-key)
-```
-
-Download a run's results:
-```bash
-scp -i $VM_KEY -r $VM_USER@$VM_IP:~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark/results/<run-name> \
-  ./results/<run-name>
-```
-
-Each run lives in its own directory. Never overwrite previous results — this enables baseline tracking.
-
-## 2. CSV Metrics Analysis
-
-### Workflow
-
-1. Find `monitor.csv` in the result directory.
-2. Parse CSV columns (see `references/thresholds.md` for column definitions).
-3. Cross-reference with lifecycle events from the benchmark log file (pattern: `[LIFECYCLE] <event> timestamp=<ISO>`).
-4. Extract snapshots:
-   - **Baseline** = first row after `PRE_CREATE`
-   - **Peak** = row with highest `heap_used_kb`
-   - **Final** = last row (after `POST_CLOSE` + settle)
-5. Compute: `thread_delta`, `heap_ratio`
-6. Apply thresholds from `references/thresholds.md`.
-
-### Output Format
-
-```
-📊 Benchmark Results: <directory>
-Branch: <branch>  Commit: <commit>  Scenario: <scenario>
-
-HEAP:    Baseline=<X>MB  Peak=<Y>MB  After close=<Z>MB
-THREADS: Baseline=<X>  Peak=<Y>  After close=<Z>
-FDs:     Peak=<X>
-GC:      Count=<X>  Time=<Y>ms
-
-✅/🔴 Thread leak: delta=<N> (threshold: ≤2)
-✅/🔴 Memory leak: ratio=<N> (threshold: ≤1.1)
-
-Overall: ✅ PASSED / 🔴 FAILED
-```
-
-## 3. Compare Two Runs
-
-1. Read `monitor.csv` from both directories.
-2. Extract baseline, peak, final for each.
-3. Read `git-info.json` from each for branch/commit.
-4. Compute deltas.
-
-### Output
-
-```
-📊 Comparing:
-   Before: <dir1> (branch: <branch1>, commit: <commit1>)
-   After:  <dir2> (branch: <branch2>, commit: <commit2>)
-
-| Metric                    | Before | After  | Delta   | Status |
-|---------------------------|--------|--------|---------|--------|
-| Threads after close       |    218 |     19 |    -199 | ✅     |
-| Heap after close (MB)     |    342 |    134 |    -208 | ✅     |
-| Heap ratio                |   2.67 |   1.05 |  -1.62  | ✅     |
-| Peak FDs                  |   4428 |   4312 |    -116 | ✅     |
-| GC count                  |    847 |    812 |     -35 | ✅     |
-
-Overall: ✅ Fix validated / 🔴 Regression detected
-```
-
-Status: ✅ improved, 🟡 marginal (<10%), 🔴 regressed (>10% worse)
-
-## 4. Heap Dump Analysis
-
-### Locate heap dumps
-
-```
-results/<run-name>/heap-dumps/heap-PRE_CLOSE-*.hprof
-results/<run-name>/heap-dumps/heap-POST_CLOSE-*.hprof
-```
-
-### Option A: HeapDumpAnalyzer (built into benchmark JAR)
+Download results from the VM to the local config directory:
 
 ```bash
-java -cp azure-cosmos-benchmark-*-jar-with-dependencies.jar \
-  com.azure.cosmos.benchmark.HeapDumpAnalyzer <pre.hprof> <post.hprof>
+# List available runs on VM
+bash scripts/download-results.sh --config-dir "$CONFIG_DIR" --list
+
+# Download a specific run
+bash scripts/download-results.sh --config-dir "$CONFIG_DIR" --run-name <run-name>
+
+# Download all runs
+bash scripts/download-results.sh --config-dir "$CONFIG_DIR" --all
 ```
 
-### Option B: Python hprof parser (lightweight, no deps)
+Results are saved to `$CONFIG_DIR/results/<run-name>/`. Each run directory contains:
+
+```
+<run-name>/
+├── monitor.csv            # JVM metrics (threads, heap, FDs, GC, RSS, CPU)
+├── metrics/               # Codahale CSV metrics (throughput, latency per operation)
+│   ├── #Successful Operations.csv
+│   ├── #Unsuccessful Operations.csv
+│   └── ...                # Per-tenant and per-operation variants
+├── git-info.json          # branch, commit SHA
+├── gc.log                 # G1GC log
+└── benchmark.log          # Benchmark stdout/stderr
+```
+
+## Step 2 — Generate Report
+
+Generate a markdown report from the downloaded results:
 
 ```bash
-python3 references/parse_hprof.py <pre.hprof> --top 30
-python3 references/parse_hprof.py --diff <pre.hprof> <post.hprof> --top 20
+python3 scripts/generate-report.py \
+  --results-dir "$CONFIG_DIR/results" \
+  --output "$CONFIG_DIR/results/report.md"
 ```
 
-### Option C: YourKit (detailed, requires license)
-
-If YourKit is installed on the VM:
+To analyze specific runs only:
 
 ```bash
-# Open snapshot in YourKit CLI
-<yourkit-dir>/bin/profiler.sh -export -snapshot=<file.hprof> -csv -outdir=<output>
+python3 scripts/generate-report.py \
+  --results-dir "$CONFIG_DIR/results" \
+  --runs "20260302-SIMPLE-main,20260302-SIMPLE-fix-leak"
 ```
 
-Or analyze interactively via YourKit GUI by downloading the .hprof files locally.
+### What the report contains
 
-### Interpret results
+#### Per-run summary
 
-Look for classes with more instances/bytes after close — these indicate objects not released during `CosmosAsyncClient.close()`. Common suspects: Reactor schedulers, Netty connection pools, background threads, unbounded caches.
+For each run, the report includes:
+- **Git info**: branch, commit
+- **JVM metrics table**: baseline, peak, and final values for threads, heap, RSS, FDs, GC
+- **Pass/fail verdict**: thread leak (delta ≤2) and memory leak (ratio ≤1.1) checks
+- **Throughput table**: Codahale metrics (ops/sec mean, 1m, 5m rates) from `metrics/*.csv`
+- **Time-series SVG charts**: inline sparklines for threads, heap, FDs, RSS, GC count, CPU over time
 
-## 5. Thread Dump Analysis
+#### Multi-run comparison table (when ≥2 runs)
 
-### Capture thread dump during benchmark
+If multiple runs are present, the report includes:
+- **Side-by-side metrics comparison**: threads, heap, heap ratio, thread delta, FDs, GC, RSS for each run
+- **Throughput comparison**: ops/sec for each operation across runs
 
-```bash
-# On the VM, while benchmark is running:
-jcmd <pid> Thread.print > results/<run-name>/thread-dump-$(date +%s).txt
+### Metrics analyzed
 
-# Or using jstack:
-jstack <pid> > results/<run-name>/thread-dump-$(date +%s).txt
-```
+From **`monitor.csv`** (JVM-level, sampled every 60s):
+| Metric | Description |
+|---|---|
+| threads | Live thread count |
+| heap_used_kb | Used heap (S1U+EU+OU from jstat) |
+| heap_max_kb | Max heap capacity |
+| rss_kb | Resident set size |
+| fds | Open file descriptors |
+| cpu_pct | CPU usage percentage |
+| gc_count | Cumulative GC count |
+| gc_time_ms | Cumulative GC time |
 
-Capture multiple dumps at intervals to identify stuck or leaked threads:
-```bash
-for i in 1 2 3; do jcmd <pid> Thread.print > results/<run-name>/thread-dump-$i.txt; sleep 30; done
-```
+From **`metrics/*.csv`** (Codahale, per-operation):
+| File | Metrics |
+|---|---|
+| `#Successful Operations.csv` | count, mean_rate, m1_rate, m5_rate |
+| `#Unsuccessful Operations.csv` | count, mean_rate, m1_rate, m5_rate |
+| Per-tenant/operation variants | Same columns per operation type |
 
-### Analyze thread dumps
+### Pass/fail thresholds
+
+See `references/thresholds.md` for full details:
+
+| Check | Threshold | Verdict |
+|---|---|---|
+| Thread delta (final − baseline) | ≤ 2 | ✅ / 🔴 |
+| Heap ratio (final / baseline) | ≤ 1.1 | ✅ / 🔴 |
+| P99 latency scaling | < 5× at N=100 vs N=1 | 🟡 warn |
+| Throughput scaling | > 0.7× at N=100 vs N=1 | 🟡 warn |
+
+## Step 3 — Thread Dump Analysis (optional)
+
+If thread dumps were captured during the run (via `capture-diagnostics.sh`):
 
 Look for:
-- **Thread count growth**: Compare total thread counts across dumps
-- **Stuck threads**: Same thread in same stack across multiple dumps
-- **Leaked pools**: Thread pool threads that should have been shut down after client close
-- **Daemon vs non-daemon**: Non-daemon threads prevent JVM exit
+- **Thread count growth**: compare total counts across dumps
+- **Stuck threads**: same thread in same stack across dumps
+- **Leaked pools**: threads that should have been shut down after client close
 
-Key thread name patterns in Cosmos SDK:
+Key Cosmos SDK thread name patterns:
 - `cosmos-parallel-*` — SDK parallel scheduler
 - `reactor-http-*` — Reactor Netty event loop
 - `boundedElastic-*` — Reactor bounded elastic pool
 - `globalEndpointManager-*` — Cosmos endpoint refresh
 
-## 6. Generate Markdown Report
+## Scripts Reference
 
-Produce a markdown report with embedded charts (as inline base64 images or Plotly HTML):
-
-### Using generate-dashboard.py
-
-```bash
-python3 copilot/skills/cosmos-benchmark-analyze/scripts/generate-dashboard.py \
-  <results-dir>/metrics \
-  <results-dir>/benchmark.log \
-  <results-dir>/report.html \
-  <results-dir>/monitor.csv
-```
-
-Arguments: `<metrics-dir> <log-file> <output-html> [monitor.csv]`
-
-Then reference the HTML dashboard in the markdown report or generate a standalone markdown file with metrics tables and verdicts.
-
-## 7. Export to Kusto
-
-See `references/kusto-schema.md` for:
-- Table schema (`BenchmarkResults`, `BenchmarkSummary`)
-- CSV enrichment commands (add run metadata to monitor.csv)
-- `.ingest` commands for Azure Data Explorer
-- Sample queries (latest runs, compare runs, trend over time)
-
-## 8. Application Insights Queries
-
-If the benchmark was run with `APPLICATIONINSIGHTS_CONNECTION_STRING`, query metrics:
-
-```bash
-az monitor app-insights query \
-  --app <app-insights-name> \
-  --resource-group rg-cosmos-benchmark \
-  --analytics-query "<KQL-query>"
-```
-
-Placeholder: user will provide specific KQL queries for latency percentiles, error rates, and throughput over time.
-
-## References
-
-- **Pass/fail thresholds and CSV columns**: `references/thresholds.md`
-- **Python hprof parser**: `references/parse_hprof.py`
-- **Kusto table schema & ingestion**: `references/kusto-schema.md`
-- **Dashboard generator**: `scripts/generate-dashboard.py`
+| Script | Purpose |
+|---|---|
+| `scripts/download-results.sh` | Download results from VM to `$CONFIG_DIR/results/`. |
+| `scripts/generate-report.py` | Generate markdown report with metrics, charts, and comparison tables. |
+| `references/thresholds.md` | Pass/fail thresholds and monitor.csv column definitions. |

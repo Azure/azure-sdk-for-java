@@ -1,0 +1,1 @@
+../../sdk/cosmos/azure-cosmos-benchmark/copilot/agents/cosmos-benchmark.agent.md
