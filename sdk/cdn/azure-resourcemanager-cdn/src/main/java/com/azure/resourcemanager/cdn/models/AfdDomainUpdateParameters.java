@@ -79,7 +79,7 @@ public final class AfdDomainUpdateParameters implements JsonSerializable<AfdDoma
      * 
      * @return the mtlsSettings value.
      */
-    public AFDDomainMtlsParameters mtlsSettings() {
+    public AfdDomainMtlsParameters mtlsSettings() {
         return this.innerProperties() == null ? null : this.innerProperties().mtlsSettings();
     }
 
@@ -90,7 +90,7 @@ public final class AfdDomainUpdateParameters implements JsonSerializable<AfdDoma
      * @param mtlsSettings the mtlsSettings value to set.
      * @return the AfdDomainUpdateParameters object itself.
      */
-    public AfdDomainUpdateParameters withMtlsSettings(AFDDomainMtlsParameters mtlsSettings) {
+    public AfdDomainUpdateParameters withMtlsSettings(AfdDomainMtlsParameters mtlsSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AfdDomainUpdatePropertiesParameters();
         }

@@ -312,7 +312,7 @@ public final class RouteUpdateParameters implements JsonSerializable<RouteUpdate
      * 
      * @return the grpcState value.
      */
-    public AFDRouteGrpcState grpcState() {
+    public AfdRouteGrpcState grpcState() {
         return this.innerProperties() == null ? null : this.innerProperties().grpcState();
     }
 
@@ -323,7 +323,7 @@ public final class RouteUpdateParameters implements JsonSerializable<RouteUpdate
      * @param grpcState the grpcState value to set.
      * @return the RouteUpdateParameters object itself.
      */
-    public RouteUpdateParameters withGrpcState(AFDRouteGrpcState grpcState) {
+    public RouteUpdateParameters withGrpcState(AfdRouteGrpcState grpcState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RouteUpdatePropertiesParameters();
         }

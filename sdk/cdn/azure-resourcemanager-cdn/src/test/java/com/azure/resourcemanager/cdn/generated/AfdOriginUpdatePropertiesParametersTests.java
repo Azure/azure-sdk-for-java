@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cdn.fluent.models.AFDOriginUpdatePropertiesParameters;
+import com.azure.resourcemanager.cdn.fluent.models.AfdOriginUpdatePropertiesParameters;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.OriginCapacityResourceProperties;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
@@ -13,12 +13,12 @@ import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceProperties;
 import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceStatus;
 import org.junit.jupiter.api.Assertions;
 
-public final class AFDOriginUpdatePropertiesParametersTests {
+public final class AfdOriginUpdatePropertiesParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AFDOriginUpdatePropertiesParameters model = BinaryData.fromString(
+        AfdOriginUpdatePropertiesParameters model = BinaryData.fromString(
             "{\"originGroupName\":\"lddxbjhwua\",\"azureOrigin\":{\"id\":\"zjosp\"},\"hostName\":\"oulpjrv\",\"httpPort\":1536946764,\"httpsPort\":1986199851,\"originHostHeader\":\"imjwosyt\",\"priority\":802895356,\"weight\":835762361,\"sharedPrivateLinkResource\":{\"privateLink\":{\"id\":\"k\"},\"privateLinkLocation\":\"umiekkezzi\",\"groupId\":\"ly\",\"requestMessage\":\"hdgqggeb\",\"status\":\"Approved\"},\"originCapacityResource\":{\"enabled\":\"Disabled\",\"region\":\"qidbqfatpxllrxcy\",\"originRequestRateThreshold\":8725801999952390480,\"originIngressRateThreshold\":1283659685300016609},\"enabledState\":\"Enabled\",\"enforceCertificateNameCheck\":false}")
-            .toObject(AFDOriginUpdatePropertiesParameters.class);
+            .toObject(AfdOriginUpdatePropertiesParameters.class);
         Assertions.assertEquals("zjosp", model.azureOrigin().id());
         Assertions.assertEquals("oulpjrv", model.hostname());
         Assertions.assertEquals(1536946764, model.httpPort());
@@ -41,8 +41,8 @@ public final class AFDOriginUpdatePropertiesParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AFDOriginUpdatePropertiesParameters model
-            = new AFDOriginUpdatePropertiesParameters().withAzureOrigin(new ResourceReference().withId("zjosp"))
+        AfdOriginUpdatePropertiesParameters model
+            = new AfdOriginUpdatePropertiesParameters().withAzureOrigin(new ResourceReference().withId("zjosp"))
                 .withHostname("oulpjrv")
                 .withHttpPort(1536946764)
                 .withHttpsPort(1986199851)
@@ -61,7 +61,7 @@ public final class AFDOriginUpdatePropertiesParametersTests {
                     .withOriginIngressRateThreshold(1283659685300016609L))
                 .withEnabledState(EnabledState.ENABLED)
                 .withEnforceCertificateNameCheck(false);
-        model = BinaryData.fromObject(model).toObject(AFDOriginUpdatePropertiesParameters.class);
+        model = BinaryData.fromObject(model).toObject(AfdOriginUpdatePropertiesParameters.class);
         Assertions.assertEquals("zjosp", model.azureOrigin().id());
         Assertions.assertEquals("oulpjrv", model.hostname());
         Assertions.assertEquals(1536946764, model.httpPort());

@@ -7,9 +7,9 @@ package com.azure.resourcemanager.cdn.generated;
 import com.azure.resourcemanager.cdn.models.CheckHostnameAvailabilityInput;
 
 /**
- * Samples for AFDProfiles CheckHostNameAvailability.
+ * Samples for AfdProfiles CheckHostnameAvailability.
  */
-public final class AFDProfilesCheckHostNameAvailabilitySamples {
+public final class AfdProfilesCheckHostnameAvailabilitySamples {
     /*
      * x-ms-original-file: 2025-09-01-preview/AFDProfiles_CheckHostNameAvailability.json
      */
@@ -22,8 +22,8 @@ public final class AFDProfilesCheckHostNameAvailabilitySamples {
         azure.cdnProfiles()
             .manager()
             .serviceClient()
-            .getAFDProfiles()
-            .checkHostNameAvailabilityWithResponse("RG", "profile1",
+            .getAfdProfiles()
+            .checkHostnameAvailabilityWithResponse("RG", "profile1",
                 new CheckHostnameAvailabilityInput().withHostname("www.someDomain.net"),
                 com.azure.core.util.Context.NONE);
     }

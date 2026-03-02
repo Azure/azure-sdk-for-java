@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cdn.models.DeploymentVersionAFDOriginChange;
+import com.azure.resourcemanager.cdn.models.DeploymentVersionAfdOriginChange;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceStatus;
 import org.junit.jupiter.api.Assertions;
 
-public final class DeploymentVersionAFDOriginChangeTests {
+public final class DeploymentVersionAfdOriginChangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentVersionAFDOriginChange model = BinaryData.fromString(
+        DeploymentVersionAfdOriginChange model = BinaryData.fromString(
             "{\"resourceType\":\"Microsoft.Cdn/profiles/originGroups/origins\",\"previousProperties\":{\"originGroupName\":\"wfmdurage\",\"azureOrigin\":{\"id\":\"vcjfelisdjubggb\"},\"hostName\":\"gkxkbsazgakg\",\"httpPort\":1269328196,\"httpsPort\":246436279,\"originHostHeader\":\"jdmspofapvuhryln\",\"priority\":140299176,\"weight\":790608035,\"sharedPrivateLinkResource\":{\"privateLink\":{\"id\":\"jed\"},\"privateLinkLocation\":\"tkvnlvxbcuiiznkt\",\"groupId\":\"ansnvp\",\"requestMessage\":\"bmikost\",\"status\":\"Pending\"},\"originCapacityResource\":{\"enabled\":\"Enabled\",\"region\":\"uqn\",\"originRequestRateThreshold\":3178116527930737291,\"originIngressRateThreshold\":1789136312219443734},\"enabledState\":\"Disabled\",\"enforceCertificateNameCheck\":true,\"provisioningState\":\"Updating\",\"deploymentStatus\":\"Succeeded\"},\"currentProperties\":{\"originGroupName\":\"nezzcezelfwyfwlw\",\"azureOrigin\":{\"id\":\"etnpsihcl\"},\"hostName\":\"zvaylptrsqqw\",\"httpPort\":794270999,\"httpsPort\":82358613,\"originHostHeader\":\"kchcxwa\",\"priority\":307394034,\"weight\":754983653,\"sharedPrivateLinkResource\":{\"privateLink\":{\"id\":\"exfdeqvhpsylk\"},\"privateLinkLocation\":\"hkbffmbm\",\"groupId\":\"jrgywwpgjxsn\",\"requestMessage\":\"fujg\",\"status\":\"Approved\"},\"originCapacityResource\":{\"enabled\":\"Enabled\",\"region\":\"pttaqutd\",\"originRequestRateThreshold\":658827524889285941,\"originIngressRateThreshold\":3740922293737514976},\"enabledState\":\"Disabled\",\"enforceCertificateNameCheck\":true,\"provisioningState\":\"Creating\",\"deploymentStatus\":\"InProgress\"},\"resourceId\":\"ehkfkimrtixok\",\"resourceName\":\"qyinl\"}")
-            .toObject(DeploymentVersionAFDOriginChange.class);
+            .toObject(DeploymentVersionAfdOriginChange.class);
         Assertions.assertEquals("ehkfkimrtixok", model.resourceId());
         Assertions.assertEquals("qyinl", model.resourceName());
         Assertions.assertEquals("vcjfelisdjubggb", model.previousProperties().azureOrigin().id());

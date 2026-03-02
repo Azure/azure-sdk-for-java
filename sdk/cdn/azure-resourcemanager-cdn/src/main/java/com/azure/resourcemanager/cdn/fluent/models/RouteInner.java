@@ -10,11 +10,11 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.cdn.models.AFDRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.AfdRouteCacheConfiguration;
+import com.azure.resourcemanager.cdn.models.AfdRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
@@ -382,7 +382,7 @@ public final class RouteInner extends ProxyResource {
      * 
      * @return the grpcState value.
      */
-    public AFDRouteGrpcState grpcState() {
+    public AfdRouteGrpcState grpcState() {
         return this.innerProperties() == null ? null : this.innerProperties().grpcState();
     }
 
@@ -393,7 +393,7 @@ public final class RouteInner extends ProxyResource {
      * @param grpcState the grpcState value to set.
      * @return the RouteInner object itself.
      */
-    public RouteInner withGrpcState(AFDRouteGrpcState grpcState) {
+    public RouteInner withGrpcState(AfdRouteGrpcState grpcState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RouteProperties();
         }

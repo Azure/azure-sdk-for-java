@@ -30,7 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.cdn.fluent.AFDProfilesClient;
+import com.azure.resourcemanager.cdn.fluent.AfdProfilesClient;
 import com.azure.resourcemanager.cdn.fluent.models.CheckEndpointNameAvailabilityOutputInner;
 import com.azure.resourcemanager.cdn.fluent.models.CheckNameAvailabilityOutputInner;
 import com.azure.resourcemanager.cdn.fluent.models.ProfileInner;
@@ -46,13 +46,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in AFDProfilesClient.
+ * An instance of this class provides access to all the operations defined in AfdProfilesClient.
  */
-public final class AFDProfilesClientImpl implements AFDProfilesClient {
+public final class AfdProfilesClientImpl implements AfdProfilesClient {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final AFDProfilesService service;
+    private final AfdProfilesService service;
 
     /**
      * The service client containing this operation class.
@@ -60,23 +60,23 @@ public final class AFDProfilesClientImpl implements AFDProfilesClient {
     private final CdnManagementClientImpl client;
 
     /**
-     * Initializes an instance of AFDProfilesClientImpl.
+     * Initializes an instance of AfdProfilesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AFDProfilesClientImpl(CdnManagementClientImpl client) {
+    AfdProfilesClientImpl(CdnManagementClientImpl client) {
         this.service
-            = RestProxy.create(AFDProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            = RestProxy.create(AfdProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CdnManagementClientAFDProfiles to be used by the proxy service to
+     * The interface defining all the services for CdnManagementClientAfdProfiles to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CdnManagementClientAFDProfiles")
-    public interface AFDProfilesService {
+    @ServiceInterface(name = "CdnManagementClientAfdProfiles")
+    public interface AfdProfilesService {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkEndpointNameAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -100,7 +100,7 @@ public final class AFDProfilesClientImpl implements AFDProfilesClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkHostNameAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityOutputInner>> checkHostNameAvailability(
+        Mono<Response<CheckNameAvailabilityOutputInner>> checkHostnameAvailability(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
@@ -450,7 +450,7 @@ public final class AFDProfilesClientImpl implements AFDProfilesClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CheckNameAvailabilityOutputInner>> checkHostNameAvailabilityWithResponseAsync(
+    public Mono<Response<CheckNameAvailabilityOutputInner>> checkHostnameAvailabilityWithResponseAsync(
         String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostNameAvailabilityInput) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -476,7 +476,7 @@ public final class AFDProfilesClientImpl implements AFDProfilesClient {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.checkHostNameAvailability(this.client.getEndpoint(),
+            .withContext(context -> service.checkHostnameAvailability(this.client.getEndpoint(),
                 this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, profileName,
                 contentType, accept, checkHostNameAvailabilityInput, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -497,7 +497,7 @@ public final class AFDProfilesClientImpl implements AFDProfilesClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityOutputInner>> checkHostNameAvailabilityWithResponseAsync(
+    private Mono<Response<CheckNameAvailabilityOutputInner>> checkHostnameAvailabilityWithResponseAsync(
         String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostNameAvailabilityInput,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -524,7 +524,7 @@ public final class AFDProfilesClientImpl implements AFDProfilesClient {
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.checkHostNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.checkHostnameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, profileName, contentType, accept,
             checkHostNameAvailabilityInput, context);
     }
@@ -542,9 +542,9 @@ public final class AFDProfilesClientImpl implements AFDProfilesClient {
      * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckNameAvailabilityOutputInner> checkHostNameAvailabilityAsync(String resourceGroupName,
+    public Mono<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityAsync(String resourceGroupName,
         String profileName, CheckHostnameAvailabilityInput checkHostNameAvailabilityInput) {
-        return checkHostNameAvailabilityWithResponseAsync(resourceGroupName, profileName,
+        return checkHostnameAvailabilityWithResponseAsync(resourceGroupName, profileName,
             checkHostNameAvailabilityInput).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -562,9 +562,9 @@ public final class AFDProfilesClientImpl implements AFDProfilesClient {
      * @return output of check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityOutputInner> checkHostNameAvailabilityWithResponse(String resourceGroupName,
+    public Response<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityWithResponse(String resourceGroupName,
         String profileName, CheckHostnameAvailabilityInput checkHostNameAvailabilityInput, Context context) {
-        return checkHostNameAvailabilityWithResponseAsync(resourceGroupName, profileName,
+        return checkHostnameAvailabilityWithResponseAsync(resourceGroupName, profileName,
             checkHostNameAvailabilityInput, context).block();
     }
 
@@ -581,9 +581,9 @@ public final class AFDProfilesClientImpl implements AFDProfilesClient {
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityOutputInner checkHostNameAvailability(String resourceGroupName, String profileName,
+    public CheckNameAvailabilityOutputInner checkHostnameAvailability(String resourceGroupName, String profileName,
         CheckHostnameAvailabilityInput checkHostNameAvailabilityInput) {
-        return checkHostNameAvailabilityWithResponse(resourceGroupName, profileName, checkHostNameAvailabilityInput,
+        return checkHostnameAvailabilityWithResponse(resourceGroupName, profileName, checkHostNameAvailabilityInput,
             Context.NONE).getValue();
     }
 

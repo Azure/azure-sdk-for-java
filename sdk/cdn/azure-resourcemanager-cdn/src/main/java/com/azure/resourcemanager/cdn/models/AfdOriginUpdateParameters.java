@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.cdn.fluent.models.AFDOriginUpdatePropertiesParameters;
+import com.azure.resourcemanager.cdn.fluent.models.AfdOriginUpdatePropertiesParameters;
 import java.io.IOException;
 
 /**
@@ -20,7 +20,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
     /*
      * The JSON object that contains the properties of the origin.
      */
-    private AFDOriginUpdatePropertiesParameters innerProperties;
+    private AfdOriginUpdatePropertiesParameters innerProperties;
 
     /**
      * Creates an instance of AfdOriginUpdateParameters class.
@@ -33,7 +33,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
      * 
      * @return the innerProperties value.
      */
-    private AFDOriginUpdatePropertiesParameters innerProperties() {
+    private AfdOriginUpdatePropertiesParameters innerProperties() {
         return this.innerProperties;
     }
 
@@ -63,7 +63,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
      */
     public AfdOriginUpdateParameters withAzureOrigin(ResourceReference azureOrigin) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AFDOriginUpdatePropertiesParameters();
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }
         this.innerProperties().withAzureOrigin(azureOrigin);
         return this;
@@ -88,7 +88,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
      */
     public AfdOriginUpdateParameters withHostname(String hostname) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AFDOriginUpdatePropertiesParameters();
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }
         this.innerProperties().withHostname(hostname);
         return this;
@@ -111,7 +111,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
      */
     public AfdOriginUpdateParameters withHttpPort(Integer httpPort) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AFDOriginUpdatePropertiesParameters();
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }
         this.innerProperties().withHttpPort(httpPort);
         return this;
@@ -134,7 +134,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
      */
     public AfdOriginUpdateParameters withHttpsPort(Integer httpsPort) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AFDOriginUpdatePropertiesParameters();
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }
         this.innerProperties().withHttpsPort(httpsPort);
         return this;
@@ -163,7 +163,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
      */
     public AfdOriginUpdateParameters withOriginHostHeader(String originHostHeader) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AFDOriginUpdatePropertiesParameters();
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }
         this.innerProperties().withOriginHostHeader(originHostHeader);
         return this;
@@ -188,7 +188,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
      */
     public AfdOriginUpdateParameters withPriority(Integer priority) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AFDOriginUpdatePropertiesParameters();
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }
         this.innerProperties().withPriority(priority);
         return this;
@@ -213,7 +213,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
      */
     public AfdOriginUpdateParameters withWeight(Integer weight) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AFDOriginUpdatePropertiesParameters();
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }
         this.innerProperties().withWeight(weight);
         return this;
@@ -237,7 +237,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
     public AfdOriginUpdateParameters
         withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AFDOriginUpdatePropertiesParameters();
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }
         this.innerProperties().withSharedPrivateLinkResource(sharedPrivateLinkResource);
         return this;
@@ -261,7 +261,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
     public AfdOriginUpdateParameters
         withOriginCapacityResource(OriginCapacityResourceProperties originCapacityResource) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AFDOriginUpdatePropertiesParameters();
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }
         this.innerProperties().withOriginCapacityResource(originCapacityResource);
         return this;
@@ -288,7 +288,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
      */
     public AfdOriginUpdateParameters withEnabledState(EnabledState enabledState) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AFDOriginUpdatePropertiesParameters();
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }
         this.innerProperties().withEnabledState(enabledState);
         return this;
@@ -311,7 +311,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
      */
     public AfdOriginUpdateParameters withEnforceCertificateNameCheck(Boolean enforceCertificateNameCheck) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AFDOriginUpdatePropertiesParameters();
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }
         this.innerProperties().withEnforceCertificateNameCheck(enforceCertificateNameCheck);
         return this;
@@ -355,7 +355,7 @@ public final class AfdOriginUpdateParameters implements JsonSerializable<AfdOrig
 
                 if ("properties".equals(fieldName)) {
                     deserializedAfdOriginUpdateParameters.innerProperties
-                        = AFDOriginUpdatePropertiesParameters.fromJson(reader);
+                        = AfdOriginUpdatePropertiesParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

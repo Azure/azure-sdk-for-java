@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cdn.models.AFDRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdQueryStringCachingBehavior;
+import com.azure.resourcemanager.cdn.models.AfdRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.DeploymentVersionRouteChange;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
@@ -40,7 +40,7 @@ public final class DeploymentVersionRouteChangeTests {
         Assertions.assertEquals(LinkToDefaultDomain.ENABLED, model.previousProperties().linkToDefaultDomain());
         Assertions.assertEquals(HttpsRedirect.ENABLED, model.previousProperties().httpsRedirect());
         Assertions.assertEquals(EnabledState.ENABLED, model.previousProperties().enabledState());
-        Assertions.assertEquals(AFDRouteGrpcState.ENABLED, model.previousProperties().grpcState());
+        Assertions.assertEquals(AfdRouteGrpcState.ENABLED, model.previousProperties().grpcState());
         Assertions.assertEquals("idsxwaabzmifry", model.currentProperties().customDomains().get(0).id());
         Assertions.assertEquals("lxecwcrojphslh", model.currentProperties().originGroup().id());
         Assertions.assertEquals("wjutifdwfmv", model.currentProperties().originPath());
@@ -58,6 +58,6 @@ public final class DeploymentVersionRouteChangeTests {
         Assertions.assertEquals(LinkToDefaultDomain.DISABLED, model.currentProperties().linkToDefaultDomain());
         Assertions.assertEquals(HttpsRedirect.DISABLED, model.currentProperties().httpsRedirect());
         Assertions.assertEquals(EnabledState.ENABLED, model.currentProperties().enabledState());
-        Assertions.assertEquals(AFDRouteGrpcState.ENABLED, model.currentProperties().grpcState());
+        Assertions.assertEquals(AfdRouteGrpcState.ENABLED, model.currentProperties().grpcState());
     }
 }

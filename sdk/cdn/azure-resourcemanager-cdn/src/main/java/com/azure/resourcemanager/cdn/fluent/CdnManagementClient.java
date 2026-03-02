@@ -198,11 +198,11 @@ public interface CdnManagementClient {
     AfdCustomDomainsClient getAfdCustomDomains();
 
     /**
-     * Gets the AFDProfilesClient object to access its operations.
+     * Gets the AfdProfilesClient object to access its operations.
      * 
-     * @return the AFDProfilesClient object.
+     * @return the AfdProfilesClient object.
      */
-    AFDProfilesClient getAFDProfiles();
+    AfdProfilesClient getAfdProfiles();
 
     /**
      * Gets the LogAnalyticsClient object to access its operations.

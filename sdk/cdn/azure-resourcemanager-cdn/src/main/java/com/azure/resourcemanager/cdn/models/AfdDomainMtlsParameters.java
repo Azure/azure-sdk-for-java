@@ -16,16 +16,16 @@ import java.io.IOException;
  * custom domains with wildcard host names.
  */
 @Immutable
-public class AFDDomainMtlsParameters implements JsonSerializable<AFDDomainMtlsParameters> {
+public class AfdDomainMtlsParameters implements JsonSerializable<AfdDomainMtlsParameters> {
     /*
      * Supported scenarios for establishing mTLS connection.
      */
-    private MtlsScenarioType scenario = MtlsScenarioType.fromString("AFDDomainMtlsParameters");
+    private MtlsScenarioType scenario = MtlsScenarioType.fromString("AfdDomainMtlsParameters");
 
     /**
-     * Creates an instance of AFDDomainMtlsParameters class.
+     * Creates an instance of AfdDomainMtlsParameters class.
      */
-    public AFDDomainMtlsParameters() {
+    public AfdDomainMtlsParameters() {
     }
 
     /**
@@ -56,14 +56,14 @@ public class AFDDomainMtlsParameters implements JsonSerializable<AFDDomainMtlsPa
     }
 
     /**
-     * Reads an instance of AFDDomainMtlsParameters from the JsonReader.
+     * Reads an instance of AfdDomainMtlsParameters from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AFDDomainMtlsParameters if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of AfdDomainMtlsParameters if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AFDDomainMtlsParameters.
+     * @throws IOException If an error occurs while reading the AfdDomainMtlsParameters.
      */
-    public static AFDDomainMtlsParameters fromJson(JsonReader jsonReader) throws IOException {
+    public static AfdDomainMtlsParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -94,21 +94,21 @@ public class AFDDomainMtlsParameters implements JsonSerializable<AFDDomainMtlsPa
         });
     }
 
-    static AFDDomainMtlsParameters fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static AfdDomainMtlsParameters fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AFDDomainMtlsParameters deserializedAFDDomainMtlsParameters = new AFDDomainMtlsParameters();
+            AfdDomainMtlsParameters deserializedAfdDomainMtlsParameters = new AfdDomainMtlsParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("scenario".equals(fieldName)) {
-                    deserializedAFDDomainMtlsParameters.scenario = MtlsScenarioType.fromString(reader.getString());
+                    deserializedAfdDomainMtlsParameters.scenario = MtlsScenarioType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAFDDomainMtlsParameters;
+            return deserializedAfdDomainMtlsParameters;
         });
     }
 }

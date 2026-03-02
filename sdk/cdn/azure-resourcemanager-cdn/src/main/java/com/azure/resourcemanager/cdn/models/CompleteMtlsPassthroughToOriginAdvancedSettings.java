@@ -14,7 +14,7 @@ import java.io.IOException;
  * Advanced settings for MtlsScenarioType enum value: CompleteMtlsPassthroughToOrigin.
  */
 @Immutable
-public final class CompleteMtlsPassthroughToOriginAdvancedSettings extends AFDDomainMtlsParameters {
+public final class CompleteMtlsPassthroughToOriginAdvancedSettings extends AfdDomainMtlsParameters {
     /*
      * Supported scenarios for establishing mTLS connection.
      */

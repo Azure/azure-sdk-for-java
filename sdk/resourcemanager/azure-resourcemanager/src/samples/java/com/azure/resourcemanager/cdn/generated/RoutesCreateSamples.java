@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.resourcemanager.cdn.fluent.models.RouteInner;
-import com.azure.resourcemanager.cdn.models.AFDRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdQueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.AfdRouteCacheConfiguration;
+import com.azure.resourcemanager.cdn.models.AfdRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.CompressionSettings;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
@@ -54,6 +54,6 @@ public final class RoutesCreateSamples {
                 .withLinkToDefaultDomain(LinkToDefaultDomain.ENABLED)
                 .withHttpsRedirect(HttpsRedirect.ENABLED)
                 .withEnabledState(EnabledState.ENABLED)
-                .withGrpcState(AFDRouteGrpcState.ENABLED), com.azure.core.util.Context.NONE);
+                .withGrpcState(AfdRouteGrpcState.ENABLED), com.azure.core.util.Context.NONE);
     }
 }

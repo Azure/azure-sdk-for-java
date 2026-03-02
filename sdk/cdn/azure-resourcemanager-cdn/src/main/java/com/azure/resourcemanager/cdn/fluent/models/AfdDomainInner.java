@@ -10,8 +10,8 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.cdn.models.AFDDomainMtlsParameters;
 import com.azure.resourcemanager.cdn.models.AfdDomainHttpsParameters;
+import com.azure.resourcemanager.cdn.models.AfdDomainMtlsParameters;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.DomainValidationProperties;
@@ -147,7 +147,7 @@ public final class AfdDomainInner extends ProxyResource {
      * 
      * @return the mtlsSettings value.
      */
-    public AFDDomainMtlsParameters mtlsSettings() {
+    public AfdDomainMtlsParameters mtlsSettings() {
         return this.innerProperties() == null ? null : this.innerProperties().mtlsSettings();
     }
 
@@ -158,7 +158,7 @@ public final class AfdDomainInner extends ProxyResource {
      * @param mtlsSettings the mtlsSettings value to set.
      * @return the AfdDomainInner object itself.
      */
-    public AfdDomainInner withMtlsSettings(AFDDomainMtlsParameters mtlsSettings) {
+    public AfdDomainInner withMtlsSettings(AfdDomainMtlsParameters mtlsSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AfdDomainProperties();
         }

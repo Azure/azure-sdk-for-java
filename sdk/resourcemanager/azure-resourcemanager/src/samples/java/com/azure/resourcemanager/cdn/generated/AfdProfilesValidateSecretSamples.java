@@ -9,9 +9,9 @@ import com.azure.resourcemanager.cdn.models.SecretType;
 import com.azure.resourcemanager.cdn.models.ValidateSecretInput;
 
 /**
- * Samples for AFDProfiles ValidateSecret.
+ * Samples for AfdProfiles ValidateSecret.
  */
-public final class AFDProfilesValidateSecretSamples {
+public final class AfdProfilesValidateSecretSamples {
     /*
      * x-ms-original-file: 2025-09-01-preview/AFDProfiles_ValidateSecret.json
      */
@@ -24,7 +24,7 @@ public final class AFDProfilesValidateSecretSamples {
         azure.cdnProfiles()
             .manager()
             .serviceClient()
-            .getAFDProfiles()
+            .getAfdProfiles()
             .validateSecretWithResponse("RG", "profile1", new ValidateSecretInput()
                 .withSecretType(SecretType.CUSTOMER_CERTIFICATE)
                 .withSecretSource(new ResourceReference().withId(

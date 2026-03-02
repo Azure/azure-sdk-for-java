@@ -10,9 +10,9 @@ import com.azure.resourcemanager.cdn.models.ResourceReference;
 import java.util.Arrays;
 
 /**
- * Samples for AFDProfiles Upgrade.
+ * Samples for AfdProfiles Upgrade.
  */
-public final class AFDProfilesUpgradeSamples {
+public final class AfdProfilesUpgradeSamples {
     /*
      * x-ms-original-file: 2025-09-01-preview/AFDProfiles_Upgrade.json
      */
@@ -25,7 +25,7 @@ public final class AFDProfilesUpgradeSamples {
         azure.cdnProfiles()
             .manager()
             .serviceClient()
-            .getAFDProfiles()
+            .getAfdProfiles()
             .upgrade("RG", "profile1",
                 new ProfileUpgradeParameters().withWafMappingList(Arrays.asList(new ProfileChangeSkuWafMapping()
                     .withSecurityPolicyName("securityPolicy1")

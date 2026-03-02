@@ -14,7 +14,7 @@ import java.io.IOException;
  * Advanced settings for MtlsScenarioType enum value: ClientCertificateRequiredAndOriginValidates.
  */
 @Immutable
-public final class ClientCertificateRequiredAndOriginValidatesAdvancedSettings extends AFDDomainMtlsParameters {
+public final class ClientCertificateRequiredAndOriginValidatesAdvancedSettings extends AfdDomainMtlsParameters {
     /*
      * Supported scenarios for establishing mTLS connection.
      */

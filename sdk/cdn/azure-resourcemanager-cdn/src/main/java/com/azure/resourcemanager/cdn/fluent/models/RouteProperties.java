@@ -9,11 +9,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.cdn.models.AFDRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.AfdRouteCacheConfiguration;
+import com.azure.resourcemanager.cdn.models.AfdRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
@@ -93,7 +93,7 @@ public final class RouteProperties implements JsonSerializable<RouteProperties> 
     /*
      * Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or 'Disabled'
      */
-    private AFDRouteGrpcState grpcState;
+    private AfdRouteGrpcState grpcState;
 
     /*
      * Provisioning status
@@ -352,7 +352,7 @@ public final class RouteProperties implements JsonSerializable<RouteProperties> 
      * 
      * @return the grpcState value.
      */
-    public AFDRouteGrpcState grpcState() {
+    public AfdRouteGrpcState grpcState() {
         return this.grpcState;
     }
 
@@ -363,7 +363,7 @@ public final class RouteProperties implements JsonSerializable<RouteProperties> 
      * @param grpcState the grpcState value to set.
      * @return the RouteProperties object itself.
      */
-    public RouteProperties withGrpcState(AFDRouteGrpcState grpcState) {
+    public RouteProperties withGrpcState(AfdRouteGrpcState grpcState) {
         this.grpcState = grpcState;
         return this;
     }
@@ -478,7 +478,7 @@ public final class RouteProperties implements JsonSerializable<RouteProperties> 
                 } else if ("enabledState".equals(fieldName)) {
                     deserializedRouteProperties.enabledState = EnabledState.fromString(reader.getString());
                 } else if ("grpcState".equals(fieldName)) {
-                    deserializedRouteProperties.grpcState = AFDRouteGrpcState.fromString(reader.getString());
+                    deserializedRouteProperties.grpcState = AfdRouteGrpcState.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedRouteProperties.provisioningState = AfdProvisioningState.fromString(reader.getString());
                 } else if ("deploymentStatus".equals(fieldName)) {

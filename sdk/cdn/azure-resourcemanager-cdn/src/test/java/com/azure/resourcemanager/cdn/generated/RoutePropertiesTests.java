@@ -6,11 +6,11 @@ package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cdn.fluent.models.RouteProperties;
-import com.azure.resourcemanager.cdn.models.AFDRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdQueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.AfdRouteCacheConfiguration;
+import com.azure.resourcemanager.cdn.models.AfdRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.CompressionSettings;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
@@ -41,7 +41,7 @@ public final class RoutePropertiesTests {
         Assertions.assertEquals(LinkToDefaultDomain.DISABLED, model.linkToDefaultDomain());
         Assertions.assertEquals(HttpsRedirect.DISABLED, model.httpsRedirect());
         Assertions.assertEquals(EnabledState.ENABLED, model.enabledState());
-        Assertions.assertEquals(AFDRouteGrpcState.ENABLED, model.grpcState());
+        Assertions.assertEquals(AfdRouteGrpcState.ENABLED, model.grpcState());
     }
 
     @org.junit.jupiter.api.Test
@@ -68,7 +68,7 @@ public final class RoutePropertiesTests {
             .withLinkToDefaultDomain(LinkToDefaultDomain.DISABLED)
             .withHttpsRedirect(HttpsRedirect.DISABLED)
             .withEnabledState(EnabledState.ENABLED)
-            .withGrpcState(AFDRouteGrpcState.ENABLED);
+            .withGrpcState(AfdRouteGrpcState.ENABLED);
         model = BinaryData.fromObject(model).toObject(RouteProperties.class);
         Assertions.assertEquals("kby", model.customDomains().get(0).id());
         Assertions.assertEquals("ngqqmoakuf", model.originGroup().id());
@@ -85,6 +85,6 @@ public final class RoutePropertiesTests {
         Assertions.assertEquals(LinkToDefaultDomain.DISABLED, model.linkToDefaultDomain());
         Assertions.assertEquals(HttpsRedirect.DISABLED, model.httpsRedirect());
         Assertions.assertEquals(EnabledState.ENABLED, model.enabledState());
-        Assertions.assertEquals(AFDRouteGrpcState.ENABLED, model.grpcState());
+        Assertions.assertEquals(AfdRouteGrpcState.ENABLED, model.grpcState());
     }
 }

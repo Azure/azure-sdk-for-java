@@ -6,9 +6,9 @@ package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cdn.implementation.models.RouteListResult;
-import com.azure.resourcemanager.cdn.models.AFDRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdQueryStringCachingBehavior;
+import com.azure.resourcemanager.cdn.models.AfdRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
 import com.azure.resourcemanager.cdn.models.HttpsRedirect;
@@ -37,7 +37,7 @@ public final class RouteListResultTests {
         Assertions.assertEquals(LinkToDefaultDomain.ENABLED, model.value().get(0).linkToDefaultDomain());
         Assertions.assertEquals(HttpsRedirect.ENABLED, model.value().get(0).httpsRedirect());
         Assertions.assertEquals(EnabledState.DISABLED, model.value().get(0).enabledState());
-        Assertions.assertEquals(AFDRouteGrpcState.DISABLED, model.value().get(0).grpcState());
+        Assertions.assertEquals(AfdRouteGrpcState.DISABLED, model.value().get(0).grpcState());
         Assertions.assertEquals("ovvtgseinqfiu", model.nextLink());
     }
 }

@@ -25,11 +25,11 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.cdn.fluent.AFDProfilesClient;
 import com.azure.resourcemanager.cdn.fluent.AfdCustomDomainsClient;
 import com.azure.resourcemanager.cdn.fluent.AfdEndpointsClient;
 import com.azure.resourcemanager.cdn.fluent.AfdOriginGroupsClient;
 import com.azure.resourcemanager.cdn.fluent.AfdOriginsClient;
+import com.azure.resourcemanager.cdn.fluent.AfdProfilesClient;
 import com.azure.resourcemanager.cdn.fluent.CdnManagementClient;
 import com.azure.resourcemanager.cdn.fluent.CustomDomainsClient;
 import com.azure.resourcemanager.cdn.fluent.DeploymentVersionsClient;
@@ -437,17 +437,17 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The AFDProfilesClient object to access its operations.
+     * The AfdProfilesClient object to access its operations.
      */
-    private final AFDProfilesClient aFDProfiles;
+    private final AfdProfilesClient afdProfiles;
 
     /**
-     * Gets the AFDProfilesClient object to access its operations.
+     * Gets the AfdProfilesClient object to access its operations.
      * 
-     * @return the AFDProfilesClient object.
+     * @return the AfdProfilesClient object.
      */
-    public AFDProfilesClient getAFDProfiles() {
-        return this.aFDProfiles;
+    public AfdProfilesClient getAfdProfiles() {
+        return this.afdProfiles;
     }
 
     /**
@@ -559,7 +559,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         this.webAgents = new WebAgentsClientImpl(this);
         this.knowledgeSources = new KnowledgeSourcesClientImpl(this);
         this.afdCustomDomains = new AfdCustomDomainsClientImpl(this);
-        this.aFDProfiles = new AFDProfilesClientImpl(this);
+        this.afdProfiles = new AfdProfilesClientImpl(this);
         this.logAnalytics = new LogAnalyticsClientImpl(this);
         this.policies = new PoliciesClientImpl(this);
         this.resourceUsages = new ResourceUsagesClientImpl(this);

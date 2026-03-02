@@ -9,8 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.cdn.models.AFDDomainMtlsParameters;
 import com.azure.resourcemanager.cdn.models.AfdDomainHttpsParameters;
+import com.azure.resourcemanager.cdn.models.AfdDomainMtlsParameters;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import java.io.IOException;
 
@@ -35,7 +35,7 @@ public final class AfdDomainUpdatePropertiesParameters
      * The configuration specifying how to enable mutual TLS for the domain, including specifying allowed FQDNs and
      * which server certificate(s) to use.
      */
-    private AFDDomainMtlsParameters mtlsSettings;
+    private AfdDomainMtlsParameters mtlsSettings;
 
     /*
      * Resource reference to the Azure DNS zone
@@ -92,7 +92,7 @@ public final class AfdDomainUpdatePropertiesParameters
      * 
      * @return the mtlsSettings value.
      */
-    public AFDDomainMtlsParameters mtlsSettings() {
+    public AfdDomainMtlsParameters mtlsSettings() {
         return this.mtlsSettings;
     }
 
@@ -103,7 +103,7 @@ public final class AfdDomainUpdatePropertiesParameters
      * @param mtlsSettings the mtlsSettings value to set.
      * @return the AfdDomainUpdatePropertiesParameters object itself.
      */
-    public AfdDomainUpdatePropertiesParameters withMtlsSettings(AFDDomainMtlsParameters mtlsSettings) {
+    public AfdDomainUpdatePropertiesParameters withMtlsSettings(AfdDomainMtlsParameters mtlsSettings) {
         this.mtlsSettings = mtlsSettings;
         return this;
     }
@@ -207,7 +207,7 @@ public final class AfdDomainUpdatePropertiesParameters
                         = AfdDomainHttpsParameters.fromJson(reader);
                 } else if ("mtlsSettings".equals(fieldName)) {
                     deserializedAfdDomainUpdatePropertiesParameters.mtlsSettings
-                        = AFDDomainMtlsParameters.fromJson(reader);
+                        = AfdDomainMtlsParameters.fromJson(reader);
                 } else if ("azureDnsZone".equals(fieldName)) {
                     deserializedAfdDomainUpdatePropertiesParameters.azureDnsZone = ResourceReference.fromJson(reader);
                 } else if ("preValidatedCustomDomainResourceId".equals(fieldName)) {

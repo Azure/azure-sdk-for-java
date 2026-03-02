@@ -9,9 +9,9 @@ import com.azure.resourcemanager.cdn.models.CheckEndpointNameAvailabilityInput;
 import com.azure.resourcemanager.cdn.models.ResourceType;
 
 /**
- * Samples for AFDProfiles CheckEndpointNameAvailability.
+ * Samples for AfdProfiles CheckEndpointNameAvailability.
  */
-public final class AFDProfilesCheckEndpointNameAvailabilitySamples {
+public final class AfdProfilesCheckEndpointNameAvailabilitySamples {
     /*
      * x-ms-original-file: 2025-09-01-preview/AFDProfiles_CheckEndpointNameAvailability.json
      */
@@ -24,7 +24,7 @@ public final class AFDProfilesCheckEndpointNameAvailabilitySamples {
         azure.cdnProfiles()
             .manager()
             .serviceClient()
-            .getAFDProfiles()
+            .getAfdProfiles()
             .checkEndpointNameAvailabilityWithResponse("myResourceGroup", "profile1",
                 new CheckEndpointNameAvailabilityInput().withName("sampleName")
                     .withType(ResourceType.MICROSOFT_CDN_PROFILES_AFD_ENDPOINTS)

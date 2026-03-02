@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.cdn.generated;
 
 /**
- * Samples for AFDProfiles ListResourceUsage.
+ * Samples for AfdProfiles ListResourceUsage.
  */
-public final class AFDProfilesListResourceUsageSamples {
+public final class AfdProfilesListResourceUsageSamples {
     /*
      * x-ms-original-file: 2025-09-01-preview/AFDProfiles_ListResourceUsage.json
      */
@@ -20,7 +20,7 @@ public final class AFDProfilesListResourceUsageSamples {
         azure.cdnProfiles()
             .manager()
             .serviceClient()
-            .getAFDProfiles()
+            .getAfdProfiles()
             .listResourceUsage("RG", "profile1", com.azure.core.util.Context.NONE);
     }
 }

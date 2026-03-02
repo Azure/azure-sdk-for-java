@@ -16,7 +16,7 @@ import java.util.List;
  * Advanced settings for MtlsScenarioType enum value: ClientCertificateValidatedIfPresented.
  */
 @Fluent
-public final class ClientCertificateValidatedIfPresentedAdvancedSettings extends AFDDomainMtlsParameters {
+public final class ClientCertificateValidatedIfPresentedAdvancedSettings extends AfdDomainMtlsParameters {
     /*
      * Supported scenarios for establishing mTLS connection.
      */

@@ -134,9 +134,9 @@ public class DeploymentVersionChange implements JsonSerializable<DeploymentVersi
                 if ("Microsoft.Cdn/profiles/afdEndpoints/routes".equals(discriminatorValue)) {
                     return DeploymentVersionRouteChange.fromJson(readerToUse.reset());
                 } else if ("Microsoft.Cdn/profiles/originGroups".equals(discriminatorValue)) {
-                    return DeploymentVersionAFDOriginGroupChange.fromJson(readerToUse.reset());
+                    return DeploymentVersionAfdOriginGroupChange.fromJson(readerToUse.reset());
                 } else if ("Microsoft.Cdn/profiles/originGroups/origins".equals(discriminatorValue)) {
-                    return DeploymentVersionAFDOriginChange.fromJson(readerToUse.reset());
+                    return DeploymentVersionAfdOriginChange.fromJson(readerToUse.reset());
                 } else if ("Microsoft.Cdn/profiles/ruleSets".equals(discriminatorValue)) {
                     return DeploymentVersionRuleSetChange.fromJson(readerToUse.reset());
                 } else if ("Microsoft.Cdn/profiles/ruleSets/rules".equals(discriminatorValue)) {

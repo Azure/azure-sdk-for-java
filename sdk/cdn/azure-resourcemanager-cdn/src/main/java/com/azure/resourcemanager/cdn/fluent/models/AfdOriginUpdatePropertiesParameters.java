@@ -19,8 +19,8 @@ import java.io.IOException;
  * The JSON object that contains the properties of the origin.
  */
 @Fluent
-public final class AFDOriginUpdatePropertiesParameters
-    implements JsonSerializable<AFDOriginUpdatePropertiesParameters> {
+public final class AfdOriginUpdatePropertiesParameters
+    implements JsonSerializable<AfdOriginUpdatePropertiesParameters> {
     /*
      * The name of the origin group which contains this origin.
      */
@@ -87,9 +87,9 @@ public final class AFDOriginUpdatePropertiesParameters
     private Boolean enforceCertificateNameCheck;
 
     /**
-     * Creates an instance of AFDOriginUpdatePropertiesParameters class.
+     * Creates an instance of AfdOriginUpdatePropertiesParameters class.
      */
-    public AFDOriginUpdatePropertiesParameters() {
+    public AfdOriginUpdatePropertiesParameters() {
     }
 
     /**
@@ -114,9 +114,9 @@ public final class AFDOriginUpdatePropertiesParameters
      * Set the azureOrigin property: Resource reference to the Azure origin resource.
      * 
      * @param azureOrigin the azureOrigin value to set.
-     * @return the AFDOriginUpdatePropertiesParameters object itself.
+     * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AFDOriginUpdatePropertiesParameters withAzureOrigin(ResourceReference azureOrigin) {
+    public AfdOriginUpdatePropertiesParameters withAzureOrigin(ResourceReference azureOrigin) {
         this.azureOrigin = azureOrigin;
         return this;
     }
@@ -136,9 +136,9 @@ public final class AFDOriginUpdatePropertiesParameters
      * supported.This should be unique across all origins in an endpoint.
      * 
      * @param hostname the hostname value to set.
-     * @return the AFDOriginUpdatePropertiesParameters object itself.
+     * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AFDOriginUpdatePropertiesParameters withHostname(String hostname) {
+    public AfdOriginUpdatePropertiesParameters withHostname(String hostname) {
         this.hostname = hostname;
         return this;
     }
@@ -156,9 +156,9 @@ public final class AFDOriginUpdatePropertiesParameters
      * Set the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
      * 
      * @param httpPort the httpPort value to set.
-     * @return the AFDOriginUpdatePropertiesParameters object itself.
+     * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AFDOriginUpdatePropertiesParameters withHttpPort(Integer httpPort) {
+    public AfdOriginUpdatePropertiesParameters withHttpPort(Integer httpPort) {
         this.httpPort = httpPort;
         return this;
     }
@@ -176,9 +176,9 @@ public final class AFDOriginUpdatePropertiesParameters
      * Set the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
      * 
      * @param httpsPort the httpsPort value to set.
-     * @return the AFDOriginUpdatePropertiesParameters object itself.
+     * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AFDOriginUpdatePropertiesParameters withHttpsPort(Integer httpsPort) {
+    public AfdOriginUpdatePropertiesParameters withHttpsPort(Integer httpsPort) {
         this.httpsPort = httpsPort;
         return this;
     }
@@ -202,9 +202,9 @@ public final class AFDOriginUpdatePropertiesParameters
      * header defined at Endpoint.
      * 
      * @param originHostHeader the originHostHeader value to set.
-     * @return the AFDOriginUpdatePropertiesParameters object itself.
+     * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AFDOriginUpdatePropertiesParameters withOriginHostHeader(String originHostHeader) {
+    public AfdOriginUpdatePropertiesParameters withOriginHostHeader(String originHostHeader) {
         this.originHostHeader = originHostHeader;
         return this;
     }
@@ -224,9 +224,9 @@ public final class AFDOriginUpdatePropertiesParameters
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
      * 
      * @param priority the priority value to set.
-     * @return the AFDOriginUpdatePropertiesParameters object itself.
+     * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AFDOriginUpdatePropertiesParameters withPriority(Integer priority) {
+    public AfdOriginUpdatePropertiesParameters withPriority(Integer priority) {
         this.priority = priority;
         return this;
     }
@@ -246,9 +246,9 @@ public final class AFDOriginUpdatePropertiesParameters
      * 1000.
      * 
      * @param weight the weight value to set.
-     * @return the AFDOriginUpdatePropertiesParameters object itself.
+     * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AFDOriginUpdatePropertiesParameters withWeight(Integer weight) {
+    public AfdOriginUpdatePropertiesParameters withWeight(Integer weight) {
         this.weight = weight;
         return this;
     }
@@ -266,9 +266,9 @@ public final class AFDOriginUpdatePropertiesParameters
      * Set the sharedPrivateLinkResource property: The properties of the private link resource for private origin.
      * 
      * @param sharedPrivateLinkResource the sharedPrivateLinkResource value to set.
-     * @return the AFDOriginUpdatePropertiesParameters object itself.
+     * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AFDOriginUpdatePropertiesParameters
+    public AfdOriginUpdatePropertiesParameters
         withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
         this.sharedPrivateLinkResource = sharedPrivateLinkResource;
         return this;
@@ -287,9 +287,9 @@ public final class AFDOriginUpdatePropertiesParameters
      * Set the originCapacityResource property: Origin capacity settings for an origin.
      * 
      * @param originCapacityResource the originCapacityResource value to set.
-     * @return the AFDOriginUpdatePropertiesParameters object itself.
+     * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AFDOriginUpdatePropertiesParameters
+    public AfdOriginUpdatePropertiesParameters
         withOriginCapacityResource(OriginCapacityResourceProperties originCapacityResource) {
         this.originCapacityResource = originCapacityResource;
         return this;
@@ -312,9 +312,9 @@ public final class AFDOriginUpdatePropertiesParameters
      * pool.
      * 
      * @param enabledState the enabledState value to set.
-     * @return the AFDOriginUpdatePropertiesParameters object itself.
+     * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AFDOriginUpdatePropertiesParameters withEnabledState(EnabledState enabledState) {
+    public AfdOriginUpdatePropertiesParameters withEnabledState(EnabledState enabledState) {
         this.enabledState = enabledState;
         return this;
     }
@@ -332,9 +332,9 @@ public final class AFDOriginUpdatePropertiesParameters
      * Set the enforceCertificateNameCheck property: Whether to enable certificate name check at origin level.
      * 
      * @param enforceCertificateNameCheck the enforceCertificateNameCheck value to set.
-     * @return the AFDOriginUpdatePropertiesParameters object itself.
+     * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AFDOriginUpdatePropertiesParameters withEnforceCertificateNameCheck(Boolean enforceCertificateNameCheck) {
+    public AfdOriginUpdatePropertiesParameters withEnforceCertificateNameCheck(Boolean enforceCertificateNameCheck) {
         this.enforceCertificateNameCheck = enforceCertificateNameCheck;
         return this;
     }
@@ -377,55 +377,55 @@ public final class AFDOriginUpdatePropertiesParameters
     }
 
     /**
-     * Reads an instance of AFDOriginUpdatePropertiesParameters from the JsonReader.
+     * Reads an instance of AfdOriginUpdatePropertiesParameters from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AFDOriginUpdatePropertiesParameters if the JsonReader was pointing to an instance of it,
+     * @return An instance of AfdOriginUpdatePropertiesParameters if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AFDOriginUpdatePropertiesParameters.
+     * @throws IOException If an error occurs while reading the AfdOriginUpdatePropertiesParameters.
      */
-    public static AFDOriginUpdatePropertiesParameters fromJson(JsonReader jsonReader) throws IOException {
+    public static AfdOriginUpdatePropertiesParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AFDOriginUpdatePropertiesParameters deserializedAFDOriginUpdatePropertiesParameters
-                = new AFDOriginUpdatePropertiesParameters();
+            AfdOriginUpdatePropertiesParameters deserializedAfdOriginUpdatePropertiesParameters
+                = new AfdOriginUpdatePropertiesParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("originGroupName".equals(fieldName)) {
-                    deserializedAFDOriginUpdatePropertiesParameters.originGroupName = reader.getString();
+                    deserializedAfdOriginUpdatePropertiesParameters.originGroupName = reader.getString();
                 } else if ("azureOrigin".equals(fieldName)) {
-                    deserializedAFDOriginUpdatePropertiesParameters.azureOrigin = ResourceReference.fromJson(reader);
+                    deserializedAfdOriginUpdatePropertiesParameters.azureOrigin = ResourceReference.fromJson(reader);
                 } else if ("hostName".equals(fieldName)) {
-                    deserializedAFDOriginUpdatePropertiesParameters.hostname = reader.getString();
+                    deserializedAfdOriginUpdatePropertiesParameters.hostname = reader.getString();
                 } else if ("httpPort".equals(fieldName)) {
-                    deserializedAFDOriginUpdatePropertiesParameters.httpPort = reader.getNullable(JsonReader::getInt);
+                    deserializedAfdOriginUpdatePropertiesParameters.httpPort = reader.getNullable(JsonReader::getInt);
                 } else if ("httpsPort".equals(fieldName)) {
-                    deserializedAFDOriginUpdatePropertiesParameters.httpsPort = reader.getNullable(JsonReader::getInt);
+                    deserializedAfdOriginUpdatePropertiesParameters.httpsPort = reader.getNullable(JsonReader::getInt);
                 } else if ("originHostHeader".equals(fieldName)) {
-                    deserializedAFDOriginUpdatePropertiesParameters.originHostHeader = reader.getString();
+                    deserializedAfdOriginUpdatePropertiesParameters.originHostHeader = reader.getString();
                 } else if ("priority".equals(fieldName)) {
-                    deserializedAFDOriginUpdatePropertiesParameters.priority = reader.getNullable(JsonReader::getInt);
+                    deserializedAfdOriginUpdatePropertiesParameters.priority = reader.getNullable(JsonReader::getInt);
                 } else if ("weight".equals(fieldName)) {
-                    deserializedAFDOriginUpdatePropertiesParameters.weight = reader.getNullable(JsonReader::getInt);
+                    deserializedAfdOriginUpdatePropertiesParameters.weight = reader.getNullable(JsonReader::getInt);
                 } else if ("sharedPrivateLinkResource".equals(fieldName)) {
-                    deserializedAFDOriginUpdatePropertiesParameters.sharedPrivateLinkResource
+                    deserializedAfdOriginUpdatePropertiesParameters.sharedPrivateLinkResource
                         = SharedPrivateLinkResourceProperties.fromJson(reader);
                 } else if ("originCapacityResource".equals(fieldName)) {
-                    deserializedAFDOriginUpdatePropertiesParameters.originCapacityResource
+                    deserializedAfdOriginUpdatePropertiesParameters.originCapacityResource
                         = OriginCapacityResourceProperties.fromJson(reader);
                 } else if ("enabledState".equals(fieldName)) {
-                    deserializedAFDOriginUpdatePropertiesParameters.enabledState
+                    deserializedAfdOriginUpdatePropertiesParameters.enabledState
                         = EnabledState.fromString(reader.getString());
                 } else if ("enforceCertificateNameCheck".equals(fieldName)) {
-                    deserializedAFDOriginUpdatePropertiesParameters.enforceCertificateNameCheck
+                    deserializedAfdOriginUpdatePropertiesParameters.enforceCertificateNameCheck
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAFDOriginUpdatePropertiesParameters;
+            return deserializedAfdOriginUpdatePropertiesParameters;
         });
     }
 }

@@ -27,9 +27,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in AFDProfilesClient.
+ * An instance of this class provides access to all the operations defined in AfdProfilesClient.
  */
-public interface AFDProfilesClient {
+public interface AfdProfilesClient {
     /**
      * Check the availability of an afdx endpoint name, and return the globally unique endpoint host name.
      * 
@@ -155,7 +155,7 @@ public interface AFDProfilesClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckNameAvailabilityOutputInner>> checkHostNameAvailabilityWithResponseAsync(
+    Mono<Response<CheckNameAvailabilityOutputInner>> checkHostnameAvailabilityWithResponseAsync(
         String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostNameAvailabilityInput);
 
     /**
@@ -171,7 +171,7 @@ public interface AFDProfilesClient {
      * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckNameAvailabilityOutputInner> checkHostNameAvailabilityAsync(String resourceGroupName, String profileName,
+    Mono<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityAsync(String resourceGroupName, String profileName,
         CheckHostnameAvailabilityInput checkHostNameAvailabilityInput);
 
     /**
@@ -188,7 +188,7 @@ public interface AFDProfilesClient {
      * @return output of check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityOutputInner> checkHostNameAvailabilityWithResponse(String resourceGroupName,
+    Response<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityWithResponse(String resourceGroupName,
         String profileName, CheckHostnameAvailabilityInput checkHostNameAvailabilityInput, Context context);
 
     /**
@@ -204,7 +204,7 @@ public interface AFDProfilesClient {
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityOutputInner checkHostNameAvailability(String resourceGroupName, String profileName,
+    CheckNameAvailabilityOutputInner checkHostnameAvailability(String resourceGroupName, String profileName,
         CheckHostnameAvailabilityInput checkHostNameAvailabilityInput);
 
     /**

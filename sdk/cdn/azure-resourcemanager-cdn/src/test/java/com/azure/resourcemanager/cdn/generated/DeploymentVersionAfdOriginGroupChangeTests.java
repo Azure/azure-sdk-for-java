@@ -5,19 +5,19 @@
 package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cdn.models.DeploymentVersionAFDOriginGroupChange;
+import com.azure.resourcemanager.cdn.models.DeploymentVersionAfdOriginGroupChange;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.HealthProbeRequestType;
 import com.azure.resourcemanager.cdn.models.OriginAuthenticationType;
 import com.azure.resourcemanager.cdn.models.ProbeProtocol;
 import org.junit.jupiter.api.Assertions;
 
-public final class DeploymentVersionAFDOriginGroupChangeTests {
+public final class DeploymentVersionAfdOriginGroupChangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentVersionAFDOriginGroupChange model = BinaryData.fromString(
+        DeploymentVersionAfdOriginGroupChange model = BinaryData.fromString(
             "{\"resourceType\":\"Microsoft.Cdn/profiles/originGroups\",\"previousProperties\":{\"profileName\":\"v\",\"loadBalancingSettings\":{\"sampleSize\":1448410077,\"successfulSamplesRequired\":666736445,\"additionalLatencyInMilliseconds\":1805110370},\"healthProbeSettings\":{\"probePath\":\"gzwywak\",\"probeRequestType\":\"HEAD\",\"probeProtocol\":\"Http\",\"probeIntervalInSeconds\":639113448},\"trafficRestorationTimeToHealedOrNewEndpointsInMinutes\":1453718102,\"sessionAffinityState\":\"Enabled\",\"authentication\":{\"type\":\"UserAssignedIdentity\",\"userAssignedIdentity\":{\"id\":\"ymzotqyryuzcbmq\"},\"scope\":\"xmvwfg\"},\"provisioningState\":\"Deleting\",\"deploymentStatus\":\"Succeeded\"},\"currentProperties\":{\"profileName\":\"upeujlzqnhcvsq\",\"loadBalancingSettings\":{\"sampleSize\":1936009218,\"successfulSamplesRequired\":664913836,\"additionalLatencyInMilliseconds\":643755351},\"healthProbeSettings\":{\"probePath\":\"gnxf\",\"probeRequestType\":\"NotSet\",\"probeProtocol\":\"Http\",\"probeIntervalInSeconds\":1114487691},\"trafficRestorationTimeToHealedOrNewEndpointsInMinutes\":1811066896,\"sessionAffinityState\":\"Disabled\",\"authentication\":{\"type\":\"SystemAssignedIdentity\",\"userAssignedIdentity\":{\"id\":\"iqxeiiqbimht\"},\"scope\":\"winhehfqpo\"},\"provisioningState\":\"Failed\",\"deploymentStatus\":\"Succeeded\"},\"resourceId\":\"lembnkbwvqvxkdi\",\"resourceName\":\"ihebwtsw\"}")
-            .toObject(DeploymentVersionAFDOriginGroupChange.class);
+            .toObject(DeploymentVersionAfdOriginGroupChange.class);
         Assertions.assertEquals("lembnkbwvqvxkdi", model.resourceId());
         Assertions.assertEquals("ihebwtsw", model.resourceName());
         Assertions.assertEquals(1448410077, model.previousProperties().loadBalancingSettings().sampleSize());

@@ -9,10 +9,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.cdn.models.AFDRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdRouteCacheConfiguration;
+import com.azure.resourcemanager.cdn.models.AfdRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
 import com.azure.resourcemanager.cdn.models.HttpsRedirect;
@@ -91,7 +91,7 @@ public final class RouteUpdatePropertiesParameters implements JsonSerializable<R
     /*
      * Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or 'Disabled'
      */
-    private AFDRouteGrpcState grpcState;
+    private AfdRouteGrpcState grpcState;
 
     /**
      * Creates an instance of RouteUpdatePropertiesParameters class.
@@ -340,7 +340,7 @@ public final class RouteUpdatePropertiesParameters implements JsonSerializable<R
      * 
      * @return the grpcState value.
      */
-    public AFDRouteGrpcState grpcState() {
+    public AfdRouteGrpcState grpcState() {
         return this.grpcState;
     }
 
@@ -351,7 +351,7 @@ public final class RouteUpdatePropertiesParameters implements JsonSerializable<R
      * @param grpcState the grpcState value to set.
      * @return the RouteUpdatePropertiesParameters object itself.
      */
-    public RouteUpdatePropertiesParameters withGrpcState(AFDRouteGrpcState grpcState) {
+    public RouteUpdatePropertiesParameters withGrpcState(AfdRouteGrpcState grpcState) {
         this.grpcState = grpcState;
         return this;
     }
@@ -454,7 +454,7 @@ public final class RouteUpdatePropertiesParameters implements JsonSerializable<R
                         = EnabledState.fromString(reader.getString());
                 } else if ("grpcState".equals(fieldName)) {
                     deserializedRouteUpdatePropertiesParameters.grpcState
-                        = AFDRouteGrpcState.fromString(reader.getString());
+                        = AfdRouteGrpcState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
