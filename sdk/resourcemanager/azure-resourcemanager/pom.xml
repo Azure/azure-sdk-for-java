@@ -197,7 +197,8 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cdn</artifactId>
-      <version>2.53.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cdn;dependency} -->    </dependency>
+      <version>2.53.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cdn;dependency} -->
+    </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-search</artifactId>
