@@ -36,7 +36,95 @@ Various documentation is available to help you get started
 
 ## Key concepts
 
+### STAC (SpatioTemporal Asset Catalog)
+
+The PlanetaryComputer service is built around the [STAC specification](https://stacspec.org/), which provides a common structure for describing geospatial information. Key STAC concepts include:
+
+- **Collection** — A grouping of related geospatial assets (e.g., satellite imagery, land cover data). Each collection has metadata including spatial and temporal extents, license information, and provider details.
+- **Item** — A GeoJSON Feature representing a single spatiotemporal asset within a collection. Items contain geometry, temporal metadata, and references to data assets.
+- **Asset** — A file or resource associated with a collection or item, such as a GeoTIFF image, thumbnail, or metadata file.
+- **Mosaic** — A composite view of multiple items that can be queried as a single tiled layer for map visualization.
+- **Queryable** — A field definition that describes searchable properties within a collection.
+
+### Service Clients
+
+The SDK provides four client pairs (synchronous and asynchronous) built from a single `PlanetaryComputerProClientBuilder`:
+
+| Client | Purpose |
+|--------|---------|
+| `StacClient` / `StacAsyncClient` | Manage STAC catalog resources — collections, items, mosaics, render options, queryables, and search |
+| `DataClient` / `DataAsyncClient` | Tiler operations — map tiles, previews, statistics, static images, and legends |
+| `IngestionClient` / `IngestionAsyncClient` | Manage data ingestion — definitions, runs, sources, and operations |
+| `SharedAccessSignatureClient` / `SharedAccessSignatureAsyncClient` | Generate and manage SAS tokens for accessing underlying Azure Blob Storage |
+
+### Long-Running Operations
+
+Some operations such as creating collections, deleting collections, and creating items are long-running operations (LROs). These methods return a `SyncPoller<Operation, Void>` (or `PollerFlux` for async) that can be used to track the operation status.
+
 ## Examples
+
+The following sections provide code snippets covering common PlanetaryComputer tasks:
+
+- [Create a client](#create-a-client)
+- [Get a STAC collection](#get-a-stac-collection)
+- [Search for STAC items](#search-for-stac-items)
+- [Generate a SAS token](#generate-a-sas-token)
+
+### Create a client
+
+All clients are created using `PlanetaryComputerProClientBuilder`. The builder requires an endpoint and a `TokenCredential` for authentication.
+
+```java readme-sample-createStacClient
+StacClient stacClient = new PlanetaryComputerProClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint("<your-endpoint>")
+    .buildStacClient();
+```
+
+To create an asynchronous client, call `buildStacAsyncClient()` instead:
+
+```java readme-sample-createStacAsyncClient
+StacAsyncClient stacAsyncClient = new PlanetaryComputerProClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint("<your-endpoint>")
+    .buildStacAsyncClient();
+```
+
+### Get a STAC collection
+
+Retrieve a specific collection by its identifier:
+
+```java readme-sample-getCollection
+StacCollection collection = stacClient.getCollection("naip-atl", null, null);
+System.out.printf("Collection ID: %s, Description: %s%n",
+    collection.getId(), collection.getDescription());
+```
+
+### Search for STAC items
+
+Use `StacSearchParameters` to search across collections with spatial and temporal filters:
+
+```java readme-sample-searchItems
+StacItemCollection results = stacClient.search(
+    new StacSearchParameters()
+        .setCollections(Arrays.asList("naip-atl"))
+        .setDatetime("2021-01-01T00:00:00Z/2022-12-31T00:00:00Z")
+        .setLimit(10),
+    null, null);
+System.out.printf("Found %d items%n", results.getFeatures().size());
+```
+
+### Generate a SAS token
+
+Generate a SAS token to access data assets in Azure Blob Storage:
+
+```java readme-sample-getToken
+SharedAccessSignatureClient sasClient = new PlanetaryComputerProClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint("<your-endpoint>")
+    .buildSharedAccessSignatureClient();
+SharedAccessSignatureToken token = sasClient.getToken("naip-atl", null);
+```
 
 ### Building the package
 
