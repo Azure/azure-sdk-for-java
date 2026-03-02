@@ -98,7 +98,7 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
-      <version>2.0.2</version> <!-- {x-version-update;springboot3_org.testcontainers:testcontainers;external_dependency} -->
+      <version>2.0.3</version> <!-- {x-version-update;springboot3_org.testcontainers:testcontainers;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
@@ -209,7 +209,7 @@
                 <include>org.apache.commons:commons-lang3:[3.17.0]</include> <!-- {x-include-update;springboot3_org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-testcontainers:[3.5.4]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
                 <include>org.testcontainers:azure:[2.0.3]</include> <!-- {x-include-update;springboot3_org.testcontainers:testcontainers-azure;external_dependency} -->
-                <include>org.testcontainers:testcontainers:[2.0.2]</include> <!-- {x-include-update;springboot3_org.testcontainers:testcontainers;external_dependency} -->
+                <include>org.testcontainers:testcontainers:[2.0.3]</include> <!-- {x-include-update;springboot3_org.testcontainers:testcontainers;external_dependency} -->
                 <include>com.microsoft.sqlserver:mssql-jdbc:[13.2.1.jre11]</include> <!-- {x-include-update;springboot3_com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
               </includes>
             </bannedDependencies>

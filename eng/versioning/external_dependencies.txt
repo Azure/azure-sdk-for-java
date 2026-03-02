@@ -413,7 +413,7 @@ springboot3_org.springframework:spring-web;6.2.9
 springboot3_org.springframework:spring-webmvc;6.2.9
 springboot3_org.testcontainers:testcontainers-junit-jupiter;2.0.3
 springboot3_org.testcontainers:testcontainers-azure;2.0.3
-springboot3_org.testcontainers:testcontainers;2.0.2
+springboot3_org.testcontainers:testcontainers;2.0.3
 springboot3_org.awaitility:awaitility;4.3.0
 springboot3_com.microsoft.sqlserver:mssql-jdbc;13.2.1.jre11
 # Used for Spring version updates
