@@ -71,13 +71,13 @@
     <dependency>
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
-      <version>9.5.0</version> <!-- {x-version-update;springboot4_com.mysql:mysql-connector-j;external_dependency} -->
+      <version>9.6.0</version> <!-- {x-version-update;springboot4_com.mysql:mysql-connector-j;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-jdbc</artifactId>
-      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-jdbc;external_dependency} -->
+      <version>4.0.3</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-jdbc;external_dependency} -->
     </dependency>
   </dependencies>
 

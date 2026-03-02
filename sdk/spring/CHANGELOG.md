@@ -1,4 +1,6 @@
 # Release History
+# (Unreleased)
+Upgrade Spring Boot dependencies version to 4.0.3 and Spring Cloud dependencies version to 2025.1.0
 
 ## 7.1.0 (Not Released)
 
@@ -36,6 +38,14 @@ This section includes changes in `spring-cloud-azure-starter-monitor` module.
 #### Other Changes
 
 - Support spring-cloud-azure-starter-monitor in Spring Boot 4. [#47624](https://github.com/Azure/azure-sdk-for-java/issues/47624)
+
+### Spring Messaging Azure Service Bus
+
+This section includes changes in `spring-messaging-azure-servicebus` module.
+
+#### Bugs Fixed
+
+- Fixed `DefaultServiceBusNamespaceProcessorFactory` not removing closed/disposed `ServiceBusProcessorClient` instances from its internal cache, causing subsequent `createProcessor()` calls to return stale, non-functional processors. [#48030](https://github.com/Azure/azure-sdk-for-java/issues/48030)
 
 ## 7.0.0 (2026-02-03)
 - This release is compatible with Spring Boot 4.0.0-4.0.2. (Note: 4.0.x (x>2) should be supported, but they aren't tested with this release.)
