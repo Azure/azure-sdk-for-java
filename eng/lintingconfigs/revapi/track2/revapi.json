@@ -874,6 +874,68 @@
             "match": "class com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*ListResult"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\.(ListClusters|ListDataCenters|PartitionUsagesResult|UsagesResult)"
+          },
+          "justification": "Pageable/List models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\.(ExtendedResourceProperties|ManagedCassandraArmResourceProperties)"
+          },
+          "justification": "Models removed as part of TypeSpec migration. Base types consolidated."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Setter return type changed from GetPropertiesResource to Resource in TypeSpec migration."
         }
       ]
     }
