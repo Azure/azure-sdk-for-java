@@ -9564,9 +9564,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -9575,14 +9575,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlRoleDefinitionGetResultsInner>>
-        getSqlRoleDefinitionWithResponseAsync(String resourceGroupName, String accountName, String roleDefinitionId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        getSqlRoleDefinitionWithResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+        if (roleDefinitionId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -9590,10 +9586,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (roleDefinitionId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -9605,9 +9597,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -9617,14 +9609,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlRoleDefinitionGetResultsInner>> getSqlRoleDefinitionWithResponseAsync(
-        String resourceGroupName, String accountName, String roleDefinitionId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
+        if (roleDefinitionId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -9632,10 +9620,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (roleDefinitionId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -9646,27 +9630,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL Role Definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionAsync(String resourceGroupName,
-        String accountName, String roleDefinitionId) {
-        return getSqlRoleDefinitionWithResponseAsync(resourceGroupName, accountName, roleDefinitionId)
+    public Mono<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionAsync(String roleDefinitionId,
+        String resourceGroupName, String accountName) {
+        return getSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -9674,35 +9658,35 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionWithResponse(String resourceGroupName,
-        String accountName, String roleDefinitionId, Context context) {
-        return getSqlRoleDefinitionWithResponseAsync(resourceGroupName, accountName, roleDefinitionId, context).block();
+    public Response<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionWithResponse(String roleDefinitionId,
+        String resourceGroupName, String accountName, Context context) {
+        return getSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName, context).block();
     }
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlRoleDefinitionGetResultsInner getSqlRoleDefinition(String resourceGroupName, String accountName,
-        String roleDefinitionId) {
-        return getSqlRoleDefinitionWithResponse(resourceGroupName, accountName, roleDefinitionId, Context.NONE)
+    public SqlRoleDefinitionGetResultsInner getSqlRoleDefinition(String roleDefinitionId, String resourceGroupName,
+        String accountName) {
+        return getSqlRoleDefinitionWithResponse(roleDefinitionId, resourceGroupName, accountName, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -9711,16 +9695,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinitionWithResponseAsync(String resourceGroupName,
-        String accountName, String roleDefinitionId,
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinitionWithResponseAsync(String roleDefinitionId,
+        String resourceGroupName, String accountName,
         SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (roleDefinitionId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -9728,10 +9708,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (roleDefinitionId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (createUpdateSqlRoleDefinitionParameters == null) {
             return Mono.error(new IllegalArgumentException(
@@ -9751,9 +9727,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9763,16 +9739,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinitionWithResponseAsync(String resourceGroupName,
-        String accountName, String roleDefinitionId,
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinitionWithResponseAsync(String roleDefinitionId,
+        String resourceGroupName, String accountName,
         SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (roleDefinitionId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -9780,10 +9752,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (roleDefinitionId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (createUpdateSqlRoleDefinitionParameters == null) {
             return Mono.error(new IllegalArgumentException(
@@ -9802,9 +9770,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -9813,10 +9781,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
-        beginCreateUpdateSqlRoleDefinitionAsync(String resourceGroupName, String accountName, String roleDefinitionId,
+        beginCreateUpdateSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName,
             SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlRoleDefinitionWithResponseAsync(resourceGroupName,
-            accountName, roleDefinitionId, createUpdateSqlRoleDefinitionParameters);
+        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlRoleDefinitionWithResponseAsync(roleDefinitionId,
+            resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters);
         return this.client.<SqlRoleDefinitionGetResultsInner, SqlRoleDefinitionGetResultsInner>getLroResult(mono,
             this.client.getHttpPipeline(), SqlRoleDefinitionGetResultsInner.class,
             SqlRoleDefinitionGetResultsInner.class, this.client.getContext());
@@ -9825,9 +9793,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9837,11 +9805,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
-        beginCreateUpdateSqlRoleDefinitionAsync(String resourceGroupName, String accountName, String roleDefinitionId,
+        beginCreateUpdateSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName,
             SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlRoleDefinitionWithResponseAsync(resourceGroupName,
-            accountName, roleDefinitionId, createUpdateSqlRoleDefinitionParameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlRoleDefinitionWithResponseAsync(roleDefinitionId,
+            resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters, context);
         return this.client.<SqlRoleDefinitionGetResultsInner, SqlRoleDefinitionGetResultsInner>getLroResult(mono,
             this.client.getHttpPipeline(), SqlRoleDefinitionGetResultsInner.class,
             SqlRoleDefinitionGetResultsInner.class, context);
@@ -9850,9 +9818,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -9861,10 +9829,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
-        beginCreateUpdateSqlRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId,
+        beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName,
             SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
         return this
-            .beginCreateUpdateSqlRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId,
+            .beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
                 createUpdateSqlRoleDefinitionParameters)
             .getSyncPoller();
     }
@@ -9872,9 +9840,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9884,10 +9852,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
-        beginCreateUpdateSqlRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId,
+        beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName,
             SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
         return this
-            .beginCreateUpdateSqlRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId,
+            .beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
                 createUpdateSqlRoleDefinitionParameters, context)
             .getSyncPoller();
     }
@@ -9895,9 +9863,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -9905,19 +9873,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(String resourceGroupName,
-        String accountName, String roleDefinitionId,
+    public Mono<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(String roleDefinitionId,
+        String resourceGroupName, String accountName,
         SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
-        return beginCreateUpdateSqlRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId,
+        return beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
             createUpdateSqlRoleDefinitionParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9926,19 +9894,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(String resourceGroupName,
-        String accountName, String roleDefinitionId,
+    private Mono<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(String roleDefinitionId,
+        String resourceGroupName, String accountName,
         SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
-        return beginCreateUpdateSqlRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId,
+        return beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
             createUpdateSqlRoleDefinitionParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -9946,18 +9914,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(String resourceGroupName, String accountName,
-        String roleDefinitionId, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
-        return createUpdateSqlRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId,
+    public SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(String roleDefinitionId,
+        String resourceGroupName, String accountName,
+        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
+        return createUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
             createUpdateSqlRoleDefinitionParameters).block();
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param createUpdateSqlRoleDefinitionParameters The properties required to create or update a Role Definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9966,34 +9935,30 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(String resourceGroupName, String accountName,
-        String roleDefinitionId, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters,
-        Context context) {
-        return createUpdateSqlRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId,
+    public SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(String roleDefinitionId,
+        String resourceGroupName, String accountName,
+        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
+        return createUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
             createUpdateSqlRoleDefinitionParameters, context).block();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinitionWithResponseAsync(String resourceGroupName,
-        String accountName, String roleDefinitionId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+    public Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinitionWithResponseAsync(String roleDefinitionId,
+        String resourceGroupName, String accountName) {
+        if (roleDefinitionId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -10001,10 +9966,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (roleDefinitionId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         return FluxUtil
             .withContext(
@@ -10016,9 +9977,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10026,15 +9987,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinitionWithResponseAsync(String resourceGroupName,
-        String accountName, String roleDefinitionId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+    private Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinitionWithResponseAsync(String roleDefinitionId,
+        String resourceGroupName, String accountName, Context context) {
+        if (roleDefinitionId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -10042,10 +9999,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (roleDefinitionId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
         return service.deleteSqlRoleDefinition(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -10055,19 +10008,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(String resourceGroupName,
-        String accountName, String roleDefinitionId) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(String roleDefinitionId,
+        String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteSqlRoleDefinitionWithResponseAsync(resourceGroupName, accountName, roleDefinitionId);
+            = deleteSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -10075,9 +10028,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10085,11 +10038,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(String resourceGroupName,
-        String accountName, String roleDefinitionId, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(String roleDefinitionId,
+        String resourceGroupName, String accountName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteSqlRoleDefinitionWithResponseAsync(resourceGroupName, accountName, roleDefinitionId, context);
+            = deleteSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -10097,26 +10050,26 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(String resourceGroupName, String accountName,
-        String roleDefinitionId) {
-        return this.beginDeleteSqlRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(String roleDefinitionId,
+        String resourceGroupName, String accountName) {
+        return this.beginDeleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName).getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10124,36 +10077,36 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(String resourceGroupName, String accountName,
-        String roleDefinitionId, Context context) {
-        return this.beginDeleteSqlRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId, context)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(String roleDefinitionId,
+        String resourceGroupName, String accountName, Context context) {
+        return this.beginDeleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSqlRoleDefinitionAsync(String resourceGroupName, String accountName,
-        String roleDefinitionId) {
-        return beginDeleteSqlRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId).last()
+    public Mono<Void> deleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName,
+        String accountName) {
+        return beginDeleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10161,42 +10114,42 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteSqlRoleDefinitionAsync(String resourceGroupName, String accountName,
-        String roleDefinitionId, Context context) {
-        return beginDeleteSqlRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId, context).last()
+    private Mono<Void> deleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName,
+        String accountName, Context context) {
+        return beginDeleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId) {
-        deleteSqlRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId).block();
+    public void deleteSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName) {
+        deleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName).block();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
      * 
+     * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId,
+    public void deleteSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName,
         Context context) {
-        deleteSqlRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId, context).block();
+        deleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, context).block();
     }
 
     /**
@@ -10346,9 +10299,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10356,14 +10309,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlRoleAssignmentGetResultsInner>>
-        getSqlRoleAssignmentWithResponseAsync(String resourceGroupName, String accountName, String roleAssignmentId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        getSqlRoleAssignmentWithResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+        if (roleAssignmentId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -10371,10 +10320,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (roleAssignmentId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -10386,9 +10331,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10397,14 +10342,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlRoleAssignmentGetResultsInner>> getSqlRoleAssignmentWithResponseAsync(
-        String resourceGroupName, String accountName, String roleAssignmentId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
+        if (roleAssignmentId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -10412,10 +10353,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (roleAssignmentId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -10426,27 +10363,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Role Assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentAsync(String resourceGroupName,
-        String accountName, String roleAssignmentId) {
-        return getSqlRoleAssignmentWithResponseAsync(resourceGroupName, accountName, roleAssignmentId)
+    public Mono<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentAsync(String roleAssignmentId,
+        String resourceGroupName, String accountName) {
+        return getSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10454,35 +10391,35 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentWithResponse(String resourceGroupName,
-        String accountName, String roleAssignmentId, Context context) {
-        return getSqlRoleAssignmentWithResponseAsync(resourceGroupName, accountName, roleAssignmentId, context).block();
+    public Response<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentWithResponse(String roleAssignmentId,
+        String resourceGroupName, String accountName, Context context) {
+        return getSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName, context).block();
     }
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlRoleAssignmentGetResultsInner getSqlRoleAssignment(String resourceGroupName, String accountName,
-        String roleAssignmentId) {
-        return getSqlRoleAssignmentWithResponse(resourceGroupName, accountName, roleAssignmentId, Context.NONE)
+    public SqlRoleAssignmentGetResultsInner getSqlRoleAssignment(String roleAssignmentId, String resourceGroupName,
+        String accountName) {
+        return getSqlRoleAssignmentWithResponse(roleAssignmentId, resourceGroupName, accountName, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10490,16 +10427,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignmentWithResponseAsync(String resourceGroupName,
-        String accountName, String roleAssignmentId,
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignmentWithResponseAsync(String roleAssignmentId,
+        String resourceGroupName, String accountName,
         SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (roleAssignmentId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -10507,10 +10440,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (roleAssignmentId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (createUpdateSqlRoleAssignmentParameters == null) {
             return Mono.error(new IllegalArgumentException(
@@ -10530,9 +10459,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10541,16 +10470,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignmentWithResponseAsync(String resourceGroupName,
-        String accountName, String roleAssignmentId,
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignmentWithResponseAsync(String roleAssignmentId,
+        String resourceGroupName, String accountName,
         SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (roleAssignmentId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -10558,10 +10483,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (roleAssignmentId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (createUpdateSqlRoleAssignmentParameters == null) {
             return Mono.error(new IllegalArgumentException(
@@ -10580,9 +10501,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10591,10 +10512,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
-        beginCreateUpdateSqlRoleAssignmentAsync(String resourceGroupName, String accountName, String roleAssignmentId,
+        beginCreateUpdateSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName,
             SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlRoleAssignmentWithResponseAsync(resourceGroupName,
-            accountName, roleAssignmentId, createUpdateSqlRoleAssignmentParameters);
+        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlRoleAssignmentWithResponseAsync(roleAssignmentId,
+            resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters);
         return this.client.<SqlRoleAssignmentGetResultsInner, SqlRoleAssignmentGetResultsInner>getLroResult(mono,
             this.client.getHttpPipeline(), SqlRoleAssignmentGetResultsInner.class,
             SqlRoleAssignmentGetResultsInner.class, this.client.getContext());
@@ -10603,9 +10524,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10615,11 +10536,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
-        beginCreateUpdateSqlRoleAssignmentAsync(String resourceGroupName, String accountName, String roleAssignmentId,
+        beginCreateUpdateSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName,
             SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlRoleAssignmentWithResponseAsync(resourceGroupName,
-            accountName, roleAssignmentId, createUpdateSqlRoleAssignmentParameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlRoleAssignmentWithResponseAsync(roleAssignmentId,
+            resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters, context);
         return this.client.<SqlRoleAssignmentGetResultsInner, SqlRoleAssignmentGetResultsInner>getLroResult(mono,
             this.client.getHttpPipeline(), SqlRoleAssignmentGetResultsInner.class,
             SqlRoleAssignmentGetResultsInner.class, context);
@@ -10628,9 +10549,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10639,10 +10560,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
-        beginCreateUpdateSqlRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId,
+        beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName,
             SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
         return this
-            .beginCreateUpdateSqlRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId,
+            .beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
                 createUpdateSqlRoleAssignmentParameters)
             .getSyncPoller();
     }
@@ -10650,9 +10571,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10662,10 +10583,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
-        beginCreateUpdateSqlRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId,
+        beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName,
             SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
         return this
-            .beginCreateUpdateSqlRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId,
+            .beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
                 createUpdateSqlRoleAssignmentParameters, context)
             .getSyncPoller();
     }
@@ -10673,9 +10594,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10683,19 +10604,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(String resourceGroupName,
-        String accountName, String roleAssignmentId,
+    public Mono<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(String roleAssignmentId,
+        String resourceGroupName, String accountName,
         SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
-        return beginCreateUpdateSqlRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId,
+        return beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
             createUpdateSqlRoleAssignmentParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10704,19 +10625,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(String resourceGroupName,
-        String accountName, String roleAssignmentId,
+    private Mono<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(String roleAssignmentId,
+        String resourceGroupName, String accountName,
         SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
-        return beginCreateUpdateSqlRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId,
+        return beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
             createUpdateSqlRoleAssignmentParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10724,18 +10645,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(String resourceGroupName, String accountName,
-        String roleAssignmentId, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
-        return createUpdateSqlRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId,
+    public SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(String roleAssignmentId,
+        String resourceGroupName, String accountName,
+        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
+        return createUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
             createUpdateSqlRoleAssignmentParameters).block();
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param createUpdateSqlRoleAssignmentParameters The properties required to create or update a Role Assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10744,34 +10666,30 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(String resourceGroupName, String accountName,
-        String roleAssignmentId, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters,
-        Context context) {
-        return createUpdateSqlRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId,
+    public SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(String roleAssignmentId,
+        String resourceGroupName, String accountName,
+        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
+        return createUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
             createUpdateSqlRoleAssignmentParameters, context).block();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignmentWithResponseAsync(String resourceGroupName,
-        String accountName, String roleAssignmentId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+    public Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignmentWithResponseAsync(String roleAssignmentId,
+        String resourceGroupName, String accountName) {
+        if (roleAssignmentId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -10779,10 +10697,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (roleAssignmentId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         return FluxUtil
             .withContext(
@@ -10794,9 +10708,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10804,15 +10718,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignmentWithResponseAsync(String resourceGroupName,
-        String accountName, String roleAssignmentId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+    private Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignmentWithResponseAsync(String roleAssignmentId,
+        String resourceGroupName, String accountName, Context context) {
+        if (roleAssignmentId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -10820,10 +10730,6 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (roleAssignmentId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
         return service.deleteSqlRoleAssignment(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -10833,19 +10739,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(String resourceGroupName,
-        String accountName, String roleAssignmentId) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(String roleAssignmentId,
+        String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteSqlRoleAssignmentWithResponseAsync(resourceGroupName, accountName, roleAssignmentId);
+            = deleteSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -10853,9 +10759,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10863,11 +10769,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(String resourceGroupName,
-        String accountName, String roleAssignmentId, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(String roleAssignmentId,
+        String resourceGroupName, String accountName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteSqlRoleAssignmentWithResponseAsync(resourceGroupName, accountName, roleAssignmentId, context);
+            = deleteSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -10875,26 +10781,26 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(String resourceGroupName, String accountName,
-        String roleAssignmentId) {
-        return this.beginDeleteSqlRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(String roleAssignmentId,
+        String resourceGroupName, String accountName) {
+        return this.beginDeleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName).getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10902,36 +10808,36 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(String resourceGroupName, String accountName,
-        String roleAssignmentId, Context context) {
-        return this.beginDeleteSqlRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId, context)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(String roleAssignmentId,
+        String resourceGroupName, String accountName, Context context) {
+        return this.beginDeleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSqlRoleAssignmentAsync(String resourceGroupName, String accountName,
-        String roleAssignmentId) {
-        return beginDeleteSqlRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId).last()
+    public Mono<Void> deleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName,
+        String accountName) {
+        return beginDeleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -10939,42 +10845,42 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteSqlRoleAssignmentAsync(String resourceGroupName, String accountName,
-        String roleAssignmentId, Context context) {
-        return beginDeleteSqlRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId, context).last()
+    private Mono<Void> deleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName,
+        String accountName, Context context) {
+        return beginDeleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId) {
-        deleteSqlRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId).block();
+    public void deleteSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName) {
+        deleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName).block();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
      * 
+     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId,
+    public void deleteSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName,
         Context context) {
-        deleteSqlRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId, context).block();
+        deleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, context).block();
     }
 
     /**
