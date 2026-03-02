@@ -141,11 +141,12 @@ bash scripts/provision-all.sh \
 ```
 
 The orchestrator:
-1. Creates the resource group
-2. Launches **in parallel**: Cosmos DB accounts, App Insights, and VM creation
-3. Waits for all three to complete
-4. Exports Cosmos DB credentials to `$CONFIG_DIR/clientHostAndKey.txt`
-5. Runs `verify-resources.sh` to confirm everything is ready
+1. **Pre-flight capacity gate** — runs `validate-capacity.sh` to verify all resources are available in the region. **Blocks creation unless all checks pass** (override with `--skip-capacity-check`)
+2. Creates the resource group
+3. Launches **in parallel**: Cosmos DB accounts, App Insights, and VM creation
+4. Waits for all three to complete (with elapsed time logging)
+5. Exports Cosmos DB credentials to `$CONFIG_DIR/clientHostAndKey.txt`
+6. Runs `verify-resources.sh` to confirm everything is ready
 
 Each sub-task logs to `$CONFIG_DIR/logs/` for debugging if anything fails.
 
@@ -228,7 +229,7 @@ Proceed to the **cosmos-benchmark-run** skill to:
 
 | Script | Purpose |
 |---|---|
-| `scripts/provision-all.sh` | **Orchestrator.** Creates RG → launches Cosmos/AppInsights/VM in parallel → exports credentials → verifies. |
+| `scripts/provision-all.sh` | **Orchestrator.** Pre-flight capacity gate → RG → parallel Cosmos/AppInsights/VM → credentials → verify. `--skip-capacity-check` overrides gate. |
 | `scripts/validate-capacity.sh` | Check region capacity (VM SKU, quotas, restrictions). Logs progress. Finds alternative SKUs. JSON output. |
 | `scripts/find-region.sh` | 4-phase region search: exact→similar in preferred, then fallbacks. Supports `--fallback-regions`, `--stop-on-first`. |
 | `scripts/create-cosmos-accounts.sh` | Create N Cosmos DB accounts with progress logging. |
