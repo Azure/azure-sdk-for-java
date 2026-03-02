@@ -28,6 +28,7 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_3-5_2-13
 | Connector | Supported Spark Versions | Minimum Java Version  | Supported Scala Versions  | Supported Databricks Runtimes | Supported Fabric Runtimes |
 |-----------|--------------------------|-----------------------|---------------------------|-------------------------------|---------------------------|
+| 4.44.0    | 3.5.0                    | [17]                  | 2.13                      | 16.4 LTS                      | TBD                       |
 | 4.43.1    | 3.5.0                    | [17]                  | 2.13                      | 16.4 LTS                      | TBD                       |
 | 4.43.0    | 3.5.0                    | [17]                  | 2.13                      | 16.4 LTS                      | TBD                       |
 
@@ -37,6 +38,7 @@ to use the same version of Scala that Spark was compiled for.
 #### azure-cosmos-spark_3-3_2-12
 | Connector | Supported Spark Versions | Supported JVM Versions | Supported Scala Versions | Supported Databricks Runtimes |
 |-----------|--------------------------|------------------------|--------------------------|-------------------------------|
+| 4.44.0    | 3.3.0 - 3.3.2            | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
 | 4.43.1    | 3.3.0 - 3.3.2            | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
 | 4.43.0    | 3.3.0 - 3.3.2            | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
 | 4.42.0    | 3.3.0 - 3.3.2            | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
@@ -88,6 +90,7 @@ to use the same version of Scala that Spark was compiled for.
 #### azure-cosmos-spark_3-4_2-12
 | Connector | Supported Spark Versions | Supported JVM Versions | Supported Scala Versions | Supported Databricks Runtimes | Supported Fabric Runtimes |
 |-----------|--------------------------|------------------------|--------------------------|-------------------------------|---------------------------|
+| 4.44.0    | 3.4.0 - 3.4.1            | [8, 11]                | 2.12                     | 13.\*                         |                           |
 | 4.43.1    | 3.4.0 - 3.4.1            | [8, 11]                | 2.12                     | 13.\*                         |                           |
 | 4.43.0    | 3.4.0 - 3.4.1            | [8, 11]                | 2.12                     | 13.\*                         |                           |
 | 4.42.0    | 3.4.0 - 3.4.1            | [8, 11]                | 2.12                     | 13.\*                         |                           |
@@ -130,6 +133,7 @@ to use the same version of Scala that Spark was compiled for.
 #### azure-cosmos-spark_3-5_2-12
 | Connector | Supported Spark Versions | Minimum Java Version  | Supported Scala Versions  | Supported Databricks Runtimes | Supported Fabric Runtimes |
 |-----------|--------------------------|-----------------------|---------------------------|-------------------------------|---------------------------|
+| 4.44.0    | 3.5.0                    | [8, 11, 17]           | 2.12                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
 | 4.43.1    | 3.5.0                    | [8, 11, 17]           | 2.12                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
 | 4.43.0    | 3.5.0                    | [8, 11, 17]           | 2.12                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
 | 4.42.0    | 3.5.0                    | [8, 11, 17]           | 2.12                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
@@ -158,6 +162,7 @@ to use the same version of Scala that Spark was compiled for.
 #### azure-cosmos-spark_4-0_2-13
 | Connector | Supported Spark Versions | Minimum Java Version | Supported Scala Versions  | Supported Databricks Runtimes | Supported Fabric Runtimes |
 |-----------|--------------------------|----------------------|---------------------------|-------------------------------|---------------------------|
+| 4.44.0    | 4.0.0                    | [17, 21]             | 2.13                      | 17.\*                         | TBD                       |
 | 4.43.1    | 4.0.0                    | [17, 21]             | 2.13                      | 17.\*                         | TBD                       |
 | 4.43.0    | 4.0.0                    | [17, 21]             | 2.13                      | 17.\*                         | TBD                       |
 
@@ -167,11 +172,11 @@ to use Scala 2.13 that Spark 4.0 was compiled for.
 ### Download
 
 You can use the maven coordinate of the jar to auto install the Spark Connector to your Databricks Runtime from Maven:
-`com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13:4.43.1`
+`com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13:4.44.0`
 
 You can also integrate against Cosmos DB Spark Connector in your SBT project:
 ```scala
-libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-5_2-13" % "4.43.1"
+libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-5_2-13" % "4.44.0"
 ```
 
 Cosmos DB Spark Connector is available on [Maven Central Repo](https://central.sonatype.com/search?namespace=com.azure.cosmos.spark).
