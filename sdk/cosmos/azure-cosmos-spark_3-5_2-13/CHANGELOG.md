@@ -1,15 +1,9 @@
 ## Release History
 
-### 4.44.0-beta.1 (Unreleased)
+### 4.44.0 (2026-02-27)
 
 #### Features Added
 * Added config entry `spark.cosmos.account.azureEnvironment.management.scope` to allow specifying the Entra ID scope/audience to be used when retrieving tokens to authenticate against the ARM/management endpoint of non-public clouds. - See [PR 48137](https://github.com/Azure/azure-sdk-for-java/pull/48137)
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
 
 ### 4.43.1 (2026-02-25)
 
