@@ -73,6 +73,9 @@ public class Configuration {
     @Parameter(names = "-maxConnectionPoolSize", description = "Max Connection Pool Size")
     private Integer maxConnectionPoolSize = 1000;
 
+    @Parameter(names = "-connectionSharingAcrossClientsEnabled", description = "Enable connection sharing across CosmosClient instances (Gateway mode). Reduces connection count for multi-tenant scenarios.")
+    private boolean connectionSharingAcrossClientsEnabled = false;
+
     @Parameter(names = "-diagnosticsThresholdDuration", description = "Latency threshold for printing diagnostics", converter = DurationConverter.class)
     private Duration diagnosticsThresholdDuration = Duration.ofSeconds(60);
 
@@ -91,6 +94,9 @@ public class Configuration {
 
     @Parameter(names = "-enableJvmStats", description = "Enables JVM Stats")
     private boolean enableJvmStats;
+
+    @Parameter(names = "-enableNettyHttpMetrics", description = "Enables Reactor Netty HTTP client metrics (connection pool gauges via COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED)")
+    private boolean enableNettyHttpMetrics;
 
     @Parameter(names = "-throughput", description = "provisioned throughput for test container")
     private int throughput = 100000;
@@ -488,6 +494,10 @@ public class Configuration {
         return maxConnectionPoolSize;
     }
 
+    public boolean isConnectionSharingAcrossClientsEnabled() {
+        return connectionSharingAcrossClientsEnabled;
+    }
+
     public ConnectionMode getConnectionMode() {
         return connectionMode;
     }
@@ -538,6 +548,10 @@ public class Configuration {
 
     public boolean isEnableJvmStats() {
         return enableJvmStats;
+    }
+
+    public boolean isEnableNettyHttpMetrics() {
+        return enableNettyHttpMetrics;
     }
 
     public MeterRegistry getAzureMonitorMeterRegistry() {
