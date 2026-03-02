@@ -73,17 +73,19 @@ bash scripts/validate-capacity.sh \
   --vm-size <vm-size> \
   --vm-count <vm-count> \
   --cosmos-count <cosmos-count> \
-  --app-insights-count 1
+  --app-insights-count 1 \
+  --find-alternatives true
 ```
 
-The script checks:
-- VM SKU availability in the region (and suggests similar SKUs if exact match unavailable)
-- vCPU quota (enough headroom for requested VMs)
+The script checks (with timestamped progress logging to stderr):
+- Resource provider registration (auto-registers if needed)
+- VM SKU availability (detects all restriction types: Zone, NotAvailableForSubscription)
+- Alternative D-series SKUs with matching vCPU count (single API call, if `--find-alternatives true`)
+- vCPU quota (dynamically resolves the quota family from the effective SKU)
 - Cosmos DB account quota (subscription-wide limit of ~50)
 - Application Insights quota (per-region limit of ~200)
-- Resource provider registration (auto-registers if needed)
 
-**Output**: JSON summary with per-check pass/fail, available capacity, and messages.
+**Output**: JSON summary with per-check pass/fail, `restriction_reason`, `suggested_alternative`, and messages.
 
 ### If preferred region fails
 
@@ -94,15 +96,30 @@ bash scripts/find-region.sh \
   --preferred <preferred-region> \
   --vm-size <vm-size> \
   --vm-count <vm-count> \
-  --cosmos-count <cosmos-count>
+  --cosmos-count <cosmos-count> \
+  --fallback-regions "eastus,centralus,westeurope" \
+  --stop-on-first true
 ```
 
-The script:
-1. Validates the preferred region first
-2. If it fails, tries candidates: `westus2`, `eastus`, `eastus2`, `westus3`, `centralus`, `northeurope`, `westeurope`, `southeastasia`, `australiaeast`
-3. Outputs the first region where all checks pass
-4. If a region has a similar but not identical VM SKU, reports the alternative
-5. If no region works, outputs `NONE` and a failure summary
+The script uses a 4-phase search strategy:
+1. Preferred region with exact SKU
+2. Preferred region with similar SKUs (finds alternatives before giving up on the region)
+3. Fallback regions with exact SKU
+4. Fallback regions with similar SKUs
+
+Progress is reported to stderr as each region is checked:
+```
+[1/9] westus2: ❌ Standard_D16s_v5 restricted (similar: Standard_D16ads_v7 available)
+[2/9] eastus: ❌ not listed
+[3/9] centralus: ✅ Standard_D16s_v5 available
+```
+
+**Output** (stdout): Line 1 = region, Line 2 = VM size (may differ if alternative), Line 3+ = JSON.
+
+| Flag | Default | Description |
+|---|---|---|
+| `--fallback-regions` | (built-in list) | Comma-separated regions to try instead of defaults |
+| `--stop-on-first` | `true` | Stop at first exact match; `false` checks all regions |
 
 **Present the result to the user for confirmation** before proceeding.
 
@@ -212,8 +229,8 @@ Proceed to the **cosmos-benchmark-run** skill to:
 | Script | Purpose |
 |---|---|
 | `scripts/provision-all.sh` | **Orchestrator.** Creates RG → launches Cosmos/AppInsights/VM in parallel → exports credentials → verifies. |
-| `scripts/validate-capacity.sh` | Check region capacity (VM SKU, quotas). JSON output. |
-| `scripts/find-region.sh` | Find first region passing all capacity checks. |
+| `scripts/validate-capacity.sh` | Check region capacity (VM SKU, quotas, restrictions). Logs progress. Finds alternative SKUs. JSON output. |
+| `scripts/find-region.sh` | 4-phase region search: exact→similar in preferred, then fallbacks. Supports `--fallback-regions`, `--stop-on-first`. |
 | `scripts/create-cosmos-accounts.sh` | Create N Cosmos DB accounts with progress logging. |
 | `scripts/export-cosmos-credentials.sh` | Export Cosmos DB credentials to `clientHostAndKey.txt`. |
 | `scripts/provision-benchmark-vm.sh` | Create/connect VM, install tools (JDK/Maven/tmux), save config. |
