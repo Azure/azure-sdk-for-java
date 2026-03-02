@@ -1,4 +1,4 @@
-# Java SDK Generation Pipeline Troubleshooting Guide (v5.0)
+# Java SDK Generation Pipeline Troubleshooting Guide
 
 This guide helps you **identify which category** a pipeline failure belongs to and **apply the solution**.
 
@@ -14,14 +14,6 @@ This guide helps you **identify which category** a pipeline failure belongs to a
 
 ---
 
-## Verification Status
-
-- ✅ **Verified** — confirmed by real pipeline cases
-- ⚠️ **Unverified** — inferred from docs/logs; not yet validated end-to-end
-- ⚠️ **Unable to Verify** — intermittent/infra; not reliably reproducible on demand
-
----
-
 ## Quick Triage
 
 Find the most specific signal in the failure log and jump directly:
@@ -30,16 +22,11 @@ Find the most specific signal in the failure log and jump directly:
 |---|---|---|
 | `[VALIDATE][tspconfig.yaml]` | tspconfig | [1. tspconfig Errors](#1-tspconfig-errors) |
 | `namespace is REQUIRED` | tspconfig | [1.1 Missing `namespace`](#11-missing-namespace) |
-| `namespace SHOULD start with "com.azure."` | tspconfig | [1.2 Invalid `namespace` Format](#12-invalid-namespace-format) |
 | `PackageName` + `must match pattern` | tspconfig | [1.4 Namespace Segment Too Long](#14-namespace-segment-too-long) |
 | `Google Java Formatter encountered errors` + `<identifier> expected` | tspconfig | [1.3 Invalid Namespace Characters](#13-invalid-namespace-characters) |
 | `not supported by Fluent Premium` | tspconfig | [1.5 Unsupported Emitter Option (Fluent Premium)](#15-unsupported-emitter-option-fluent-premium) |
-| `[GENERATE] Code generation failed. No sdk folder found.` | tspconfig | [1.7 No SDK Folder Found](#17-no-sdk-folder-found) |
 | `[COMPILE] Maven build fail.` + customization class/method referenced | customization | [2. Customization Errors](#2-customization-errors) |
-| `Generate a fresh package from TypeSpec` | customization fallback | [2.4 Pipeline Customization Fallback](#24-pipeline-customization-fallback) |
 | `Could not resolve dependencies` / `Could not transfer artifact` | intermittent | [3.1 Maven Dependency Download Failure](#31-maven-dependency-download-failure) |
-| `npm ci` fails / `tsp-client init` fails | intermittent | [3.3 npm / tsp-client Installation Failure](#33-npm--tsp-client-installation-failure) |
-| `Component Detection` task fails | intermittent | [3.5 Component Detection / CI Infrastructure Failure](#35-component-detection--ci-infrastructure-failure) |
 | None match | unknown | [Escalation](#escalation) |
 
 ---
@@ -48,9 +35,12 @@ Find the most specific signal in the failure log and jump directly:
 
 **How to identify:** The error message contains `[VALIDATE][tspconfig.yaml]` or `[GENERATE] ...`, or generation output lands in the wrong directory.
 
-### 1.1 Missing `namespace`
+**References:**
+- TypeSpec configuration (tspconfig): https://typespec.io/docs/handbook/configuration/configuration/
+- Azure TypeSpec Autorest emitter reference: https://azure.github.io/typespec-azure/docs/emitters/typespec-autorest/reference/emitter/
+- Azure TypeSpec Java emitter reference: https://azure.github.io/typespec-azure/docs/emitters/clients/typespec-java/reference/emitter/
 
-**Status:** ✅ Verified
+### 1.1 Missing `namespace`
 
 **Error:**
 ```
@@ -77,22 +67,7 @@ options:
 Could not find the selected project in the reactor
 ```
 
-### 1.2 Invalid `namespace` Format
-
-**Status:** ⚠️ Unverified
-
-**Error:**
-```
-[VALIDATE][tspconfig.yaml] namespace SHOULD start with "com.azure."
-```
-
-**Solution:** Namespace must match `com\.azure(\.\w+)+`. Examples:
-- `com.azure.resourcemanager.fabric` (mgmt)
-- `com.azure.ai.contentsafety` (data-plane)
-
 ### 1.3 Invalid Namespace Characters
-
-**Status:** ✅ Verified
 
 **Error (common pattern):**
 - `Google Java Formatter encountered errors`
@@ -117,8 +92,6 @@ options:
 
 ### 1.4 Namespace Segment Too Long
 
-**Status:** ✅ Verified
-
 **Error (common pattern):**
 - `[COMPILE] Maven build fail.`
 - Checkstyle `PackageName` error with `must match pattern`
@@ -136,8 +109,6 @@ options:
 
 ### 1.5 Unsupported Emitter Option (Fluent Premium)
 
-**Status:** ✅ Verified
-
 **Error (common pattern):**
 - `not supported by Fluent Premium`
 
@@ -151,28 +122,6 @@ java.lang.IllegalStateException: Package 'com.azure.resourcemanager.<pkg>' is no
 
 **Solution:** Remove the unsupported option from `options.@azure-tools/typespec-java`.
 
-### 1.6 Mismatched `emitter-output-dir`
-
-**Status:** ⚠️ Unverified
-
-**Error:** Generation succeeds but output lands in wrong directory, or POM/CI integration fails.
-
-**Solution:** Ensure `emitter-output-dir` matches the convention:
-```yaml
-emitter-output-dir: "{project-root}/sdk/{service}/{package-name}"
-```
-
-### 1.7 No SDK Folder Found
-
-**Status:** ⚠️ Unverified
-
-**Error:**
-```
-[GENERATE] Code generation failed. No sdk folder found.
-```
-
-**Solution:** Verify `tspconfig.yaml` has a valid `@azure-tools/typespec-java` section with correct `namespace` and `emitter-output-dir`.
-
 ---
 
 ## 2. Customization Errors
@@ -183,7 +132,11 @@ Generate a fresh package from TypeSpec. If there was prior customization on the 
 please check whether it causes failure, and fix them before apiview.
 ```
 
-> **Background:** Azure SDK packages contain both *generated code* (auto-produced from TypeSpec) and *customization code* (hand-written by SDK developers). See [SDK Code Structure](sdk-code-structure.md) for details.
+> **Background:** Azure SDK packages usually contain both *generated code* (auto-produced from TypeSpec) and *customization code* (hand-written by SDK developers):
+> - *generated code*: produced by the generator; API surface may change when the spec or generator changes, which can break compilation.
+> - *customization code*: maintained by SDK developers; commonly wired via `customization-class` and preserved during regeneration with `partial-update: true`.
+>
+> Reference: autorest.java customization-base: https://github.com/Azure/autorest.java/tree/main/customization-base
 
 **Prerequisites for customization:** When adding customization code, two options must be set in `tspconfig.yaml`:
 ```yaml
@@ -194,48 +147,6 @@ options:
 ```
 - **`customization-class`** — the Java package containing your hand-written customization classes
 - **`partial-update`** — set to `true` so the generator preserves your custom files instead of overwriting the entire output directory
-
-### 2.1 Customization Incompatible with New Generated Code
-
-**Status:** ⚠️ Unverified
-
-**Error:** Compilation errors referencing customization classes or methods that no longer exist after spec update.
-
-**Solution:**
-1. Review the compilation errors in the pipeline log
-2. Update your customization code to match the new generated API surface
-3. Push the fix and re-trigger the pipeline
-
-### 2.2 Missing or Merged Members After Spec Update
-
-**Status:** ⚠️ Unverified
-
-**Error:** Compilation errors referencing types, methods, or properties that were renamed/removed/merged.
-
-**Solution:**
-1. Check the spec PR diff to see what changed
-2. Update your code to match the new generated surface
-
-### 2.3 Duplicate or Ambiguous Operations
-
-**Status:** ⚠️ Unverified
-
-**Error:** Two operations resolve to the same Java method name, or a hand-written method conflicts with a generated one.
-
-**Solution:** Rename the conflicting operation in the TypeSpec spec using `@clientName` directive, or adjust the customization code.
-
-### 2.4 Pipeline Customization Fallback
-
-**Status:** ⚠️ Unverified
-
-**Symptom:** Pipeline succeeds but PR shows:
-```
-Generate a fresh package from TypeSpec...
-```
-
-**Root cause:** First compile (with customization) failed → pipeline regenerates with customization disabled → second run passes but **drops all customization**.
-
-**Solution:** Fix the *first* customization compilation failure and rerun. Do not merge a fallback result if customization should be preserved.
 
 ---
 
@@ -249,8 +160,6 @@ Generate a fresh package from TypeSpec...
 
 ### 3.1 Maven Dependency Download Failure
 
-**Status:** ✅ Verified
-
 **Error:** `[COMPILE] Maven build fail.` with `Could not resolve dependencies` / `Could not transfer artifact` / connection timeout.
 
 **Error (real-world example):**
@@ -260,30 +169,6 @@ Could not transfer artifact ... from/to central (https://repo.maven.apache.org/m
 Connect to repo.maven.apache.org:443 ... failed: Network is unreachable (connect failed)
 and 'parent.relativePath' points at wrong local POM
 ```
-
-### 3.2 Maven Central JAR Download Failure (Changelog)
-
-**Status:** ⚠️ Unable to Verify
-
-**Error:** Pipeline fails during changelog generation after successful compile (downloading previous JAR from Maven Central).
-
-### 3.3 npm / tsp-client Installation Failure
-
-**Status:** ⚠️ Unable to Verify
-
-**Error:** `npm ci` fails or `tsp-client init` fails with npm registry errors.
-
-### 3.4 Git Operations Failure
-
-**Status:** ⚠️ Unable to Verify
-
-**Error:** `[GENERATE] Code generation failed. Finding sdk folder fails: {error}`
-
-### 3.5 Component Detection / CI Infrastructure Failure
-
-**Status:** ⚠️ Unable to Verify
-
-**Error:** Pipeline fails on injected tasks like "Component Detection".
 
 ---
 
