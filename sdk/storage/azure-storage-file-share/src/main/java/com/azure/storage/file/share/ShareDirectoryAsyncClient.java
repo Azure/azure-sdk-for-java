@@ -346,7 +346,8 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> createWithResponse(ShareDirectoryCreateOptions options) {
         try {
             return withContext(context -> createWithResponse(options.getSmbProperties(), options.getFilePermission(),
-                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(), null, context));
+                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(),
+                options.getFilePropertySemantics(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
