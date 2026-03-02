@@ -141,6 +141,7 @@ final class ServiceBusProcessor {
         private static final RuntimeException DISPOSED_ERROR
             = new RuntimeException("The Processor closure disposed the RollingMessagePump.");
         private static final Duration NEXT_PUMP_BACKOFF = Duration.ofSeconds(5);
+        private static final Duration DRAIN_TIMEOUT = Duration.ofSeconds(30);
         private final ClientLogger logger;
         private final Kind kind;
         private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder nonSessionBuilder;
@@ -151,6 +152,7 @@ final class ServiceBusProcessor {
         private final Boolean enableAutoDisposition;
         private final Disposable.Composite disposable = Disposables.composite();
         private final AtomicReference<String> clientIdentifier = new AtomicReference<>();
+        private volatile MessagePump currentPump;
 
         /**
          * Instantiate {@link RollingMessagePump} that stream messages using {@link MessagePump}.
@@ -228,6 +230,7 @@ final class ServiceBusProcessor {
                     clientIdentifier.set(client.getIdentifier());
                     final MessagePump pump
                         = new MessagePump(client, processMessage, processError, concurrency, enableAutoDisposition);
+                    currentPump = pump;
                     return pump.begin();
                 }, client -> {
                     client.close();
@@ -256,6 +259,15 @@ final class ServiceBusProcessor {
         }
 
         void dispose() {
+            // Drain in-flight message handlers BEFORE disposing the subscription.
+            // Disposing cancels the reactive chain, which interrupts handler threads (via Reactor's
+            // publishOn worker disposal). Draining first ensures handlers can complete message
+            // settlement before the client is closed.
+            // See https://github.com/Azure/azure-sdk-for-java/issues/45716
+            final MessagePump pump = currentPump;
+            if (pump != null) {
+                pump.drainHandlers(DRAIN_TIMEOUT);
+            }
             disposable.dispose();
         }
 

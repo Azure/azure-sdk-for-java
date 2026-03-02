@@ -1,0 +1,338 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.messaging.servicebus;
+
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusProcessor.RollingMessagePump;
+import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+/**
+ * Tests for graceful shutdown behavior during processor close.
+ * <p>
+ * Validates that when a processor is closed, in-flight message handlers are allowed to complete
+ * (including message settlement) before the underlying client is disposed. This prevents
+ * {@link IllegalStateException} when handlers attempt to settle messages on a disposed receiver.
+ * </p>
+ *
+ * <h3>Coverage Matrix</h3>
+ * <ul>
+ *   <li><b>V2 Non-Session</b> — {@link #v2CloseShouldWaitForInFlightHandlerBeforeClosingClient()}:
+ *       Tests drain in {@code RollingMessagePump.dispose()} → {@code MessagePump.drainHandlers()}</li>
+ *   <li><b>V1 Non-Session</b> — {@link #v1CloseShouldWaitForInFlightHandlerBeforeClosingClient()}:
+ *       Tests drain in {@code ServiceBusProcessorClient.close()} → {@code drainV1Handlers()}</li>
+ *   <li><b>Drain Timeout</b> — {@link #v2DrainShouldRespectTimeout()}:
+ *       Tests {@code MessagePump.drainHandlers()} timeout behavior directly</li>
+ *   <li><b>V2 Session</b> — Not directly unit-testable. The drain in
+ *       {@code SessionsMessagePump.RollingSessionReceiver.terminate()} uses the identical
+ *       {@code AtomicInteger} + {@code Object} monitor wait/notifyAll pattern as {@code MessagePump}.
+ *       {@code SessionsMessagePump} requires a {@code ServiceBusSessionAcquirer} (AMQP connections)
+ *       and {@code RollingSessionReceiver} is a private inner class, making unit testing infeasible.
+ *       The session drain behavior should be verified via live/integration tests.</li>
+ * </ul>
+ *
+ * @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/45716">Issue #45716</a>
+ */
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated
+public class ServiceBusProcessorGracefulShutdownTest {
+    private static final ServiceBusReceiverInstrumentation INSTRUMENTATION
+        = new ServiceBusReceiverInstrumentation(null, null, "FQDN", "entityPath", null, ReceiverKind.PROCESSOR);
+
+    private AutoCloseable mocksCloseable;
+
+    @BeforeEach
+    public void setup() {
+        mocksCloseable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void teardown() throws Exception {
+        Mockito.framework().clearInlineMock(this);
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
+    }
+
+    /**
+     * Verifies that when the V2 processor pump is disposed, in-flight message handlers
+     * are allowed to complete before the underlying client is closed.
+     * <p>
+     * Regression test for <a href="https://github.com/Azure/azure-sdk-for-java/issues/45716">#45716</a>.
+     * Before the fix, disposing the pump would immediately cancel the reactive chain (interrupting
+     * handler threads via Reactor's publishOn worker disposal), then close the client. Handlers
+     * that called {@code client.complete(message).block()} would fail with
+     * {@link IllegalStateException}: "Cannot perform operation on a disposed receiver".
+     * </p>
+     * <p>
+     * The fix drains in-flight handlers in {@code RollingMessagePump.dispose()} BEFORE disposing
+     * the subscription, ensuring handlers complete message settlement first.
+     * </p>
+     */
+    @Test
+    public void v2CloseShouldWaitForInFlightHandlerBeforeClosingClient() throws InterruptedException {
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
+
+        when(builder.buildAsyncClientForProcessor()).thenReturn(client);
+        when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(client.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(client.getEntityPath()).thenReturn("entityPath");
+        when(client.isConnectionClosed()).thenReturn(false);
+        when(client.isAutoLockRenewRequested()).thenReturn(false);
+        // Emit one message on boundedElastic then hang. publishOn ensures the handler doesn't block
+        // the subscription thread when concurrency=1 (which uses Schedulers.immediate() for the worker).
+        when(client.nonSessionProcessorReceiveV2())
+            .thenReturn(Flux.concat(Flux.just(message), Flux.<ServiceBusReceivedMessage>never())
+                .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        when(client.complete(any())).thenReturn(Mono.empty());
+        doNothing().when(client).close();
+
+        // Latches to coordinate between the handler thread and the test thread.
+        final CountDownLatch handlerStarted = new CountDownLatch(1);
+        final CountDownLatch handlerCanProceed = new CountDownLatch(1);
+        final AtomicBoolean handlerCompleted = new AtomicBoolean(false);
+
+        // The handler signals when it starts, then waits for the test to allow it to proceed.
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            handlerStarted.countDown();
+            try {
+                handlerCanProceed.await(10, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            handlerCompleted.set(true);
+        };
+
+        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> {
+        }, 1, true);
+
+        // Start the pump.
+        pump.begin();
+
+        // Wait for the handler to start processing the message.
+        assertTrue(handlerStarted.await(5, TimeUnit.SECONDS), "Handler should have started processing");
+
+        // Dispose the pump while the handler is still in-flight.
+        // dispose() now drains FIRST (before cancelling the subscription), so it blocks until
+        // the handler completes. Run on a separate thread to avoid blocking the test.
+        final CountDownLatch disposeDone = new CountDownLatch(1);
+        final Thread disposeThread = new Thread(() -> {
+            pump.dispose();
+            disposeDone.countDown();
+        });
+        disposeThread.start();
+
+        // Give dispose a moment to start; it should be blocked in drainHandlers().
+        Thread.sleep(200);
+
+        // Verify: client has NOT been closed yet (handler is still running, drain is blocking dispose).
+        verify(client, never()).close();
+        assertFalse(handlerCompleted.get(), "Handler should still be in-flight");
+
+        // Now let the handler complete.
+        handlerCanProceed.countDown();
+
+        // Wait for dispose to finish.
+        assertTrue(disposeDone.await(5, TimeUnit.SECONDS), "Dispose should complete after handler finishes");
+        assertTrue(handlerCompleted.get(), "Handler should have completed");
+
+        // Verify the client was closed (after the handler completed and drain returned).
+        verify(client, timeout(2000)).close();
+        // Verify complete was called (auto-disposition is enabled).
+        verify(client).complete(any());
+    }
+
+    /**
+     * Verifies that when the V1 processor is closed, in-flight message handlers are allowed to
+     * complete before the underlying client is closed.
+     * <p>
+     * Regression test for <a href="https://github.com/Azure/azure-sdk-for-java/issues/45716">#45716</a>.
+     * Before the fix, the V1 path would cancel subscriptions (which interrupts handler threads
+     * via Reactor's publishOn worker disposal) and then immediately close the async client.
+     * </p>
+     * <p>
+     * The fix drains in-flight handlers BEFORE cancelling subscriptions. Setting
+     * {@code isRunning = false} prevents new message requests while the drain waits for
+     * in-flight handlers to complete.
+     * </p>
+     */
+    @Test
+    public void v1CloseShouldWaitForInFlightHandlerBeforeClosingClient() throws InterruptedException {
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Flux<ServiceBusReceivedMessage> messageFlux = Flux.concat(Flux.just(message), Flux.never());
+
+        final ServiceBusReceiverClientBuilder receiverBuilder = mock(ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(asyncClient.getEntityPath()).thenReturn("entityPath");
+        when(asyncClient.isConnectionClosed()).thenReturn(false);
+        final ServiceBusReceiverInstrumentation instrumentation
+            = new ServiceBusReceiverInstrumentation(null, null, "FQDN", "entityPath", null, ReceiverKind.PROCESSOR);
+        when(asyncClient.getInstrumentation()).thenReturn(instrumentation);
+        // V1 path uses receiveMessagesWithContext, publishOn(boundedElastic) matches real behavior
+        // and ensures the handler runs on a separate thread (needed for drain testing).
+        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new)
+            .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        doNothing().when(asyncClient).close();
+
+        // Latches to coordinate between the handler thread and the test thread.
+        final CountDownLatch handlerStarted = new CountDownLatch(1);
+        final CountDownLatch handlerCanProceed = new CountDownLatch(1);
+        final AtomicBoolean handlerCompleted = new AtomicBoolean(false);
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            handlerStarted.countDown();
+            try {
+                handlerCanProceed.await(10, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            handlerCompleted.set(true);
+        };
+
+        // Build V1 processor (isV2 = false by NOT setting options.setV2(true))
+        final ServiceBusProcessorClientOptions options
+            = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1);
+        // V1 path: do not set V2
+        final ServiceBusProcessorClient processorClient
+            = new ServiceBusProcessorClient(receiverBuilder, "entityPath", null, null, messageConsumer, error -> {
+            }, options);
+
+        // Start the processor (V1 path).
+        processorClient.start();
+
+        // Wait for the handler to start processing the message.
+        assertTrue(handlerStarted.await(5, TimeUnit.SECONDS), "Handler should have started processing");
+
+        // Close the processor while the handler is still in-flight.
+        // close() now drains FIRST (before cancelling subscriptions), so it blocks until
+        // the handler completes. Run on a separate thread to avoid blocking the test.
+        final CountDownLatch closeDone = new CountDownLatch(1);
+        final Thread closeThread = new Thread(() -> {
+            processorClient.close();
+            closeDone.countDown();
+        });
+        closeThread.start();
+
+        // Give close a moment to start; it should be blocked in drainV1Handlers().
+        Thread.sleep(200);
+
+        // Verify: client has NOT been closed yet (handler is still running, drain is blocking close).
+        verify(asyncClient, never()).close();
+        assertFalse(handlerCompleted.get(), "Handler should still be in-flight");
+
+        // Now let the handler complete.
+        handlerCanProceed.countDown();
+
+        // Wait for close to finish.
+        assertTrue(closeDone.await(5, TimeUnit.SECONDS), "Close should complete after handler finishes");
+        assertTrue(handlerCompleted.get(), "Handler should have completed");
+
+        // Verify the client was closed (after the handler completed).
+        verify(asyncClient, timeout(2000)).close();
+    }
+
+    /**
+     * Verifies that the V2 drain mechanism respects the timeout. If a handler takes longer than
+     * the drain timeout, {@code drainHandlers} returns false and the processor doesn't hang
+     * indefinitely.
+     * <p>
+     * This tests the drain mechanism directly on a {@link MessagePump} without going through
+     * the full RollingMessagePump dispose path. The handler blocks forever, and we verify
+     * that {@code drainHandlers()} with a short timeout returns false after approximately
+     * the timeout duration.
+     * </p>
+     */
+    @Test
+    public void v2DrainShouldRespectTimeout() throws InterruptedException {
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
+
+        when(builder.buildAsyncClientForProcessor()).thenReturn(client);
+        when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(client.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(client.getEntityPath()).thenReturn("entityPath");
+        when(client.isConnectionClosed()).thenReturn(false);
+        when(client.isAutoLockRenewRequested()).thenReturn(false);
+        when(client.nonSessionProcessorReceiveV2())
+            .thenReturn(Flux.concat(Flux.just(message), Flux.<ServiceBusReceivedMessage>never())
+                .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        when(client.complete(any())).thenReturn(Mono.empty());
+        doNothing().when(client).close();
+
+        // Handler blocks forever (never releases the latch).
+        final CountDownLatch handlerStarted = new CountDownLatch(1);
+        final CountDownLatch neverReleasedLatch = new CountDownLatch(1);
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            handlerStarted.countDown();
+            try {
+                neverReleasedLatch.await(); // Block forever
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        };
+
+        final MessagePump pump = new MessagePump(client, messageConsumer, e -> {
+        }, 1, false);
+
+        // Subscribe to start pumping.
+        final AtomicReference<reactor.core.Disposable> subscription = new AtomicReference<>();
+        subscription.set(pump.begin().subscribe());
+
+        // Wait for the handler to start.
+        assertTrue(handlerStarted.await(5, TimeUnit.SECONDS), "Handler should have started processing");
+
+        // Call drainHandlers with a very short timeout while the handler is still running.
+        // DO NOT dispose the subscription first — disposing cancels the reactive chain, which
+        // interrupts the handler's thread via Reactor's publishOn worker disposal. The drain must
+        // be called while the subscription (and handler) is still active.
+        final long startTime = System.nanoTime();
+        final boolean drained = pump.drainHandlers(Duration.ofMillis(500));
+        final long elapsed = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
+
+        // Drain should return false (timed out) and should take close to 500ms.
+        assertFalse(drained, "Drain should return false when timeout expires with active handlers");
+        assertTrue(elapsed >= 400,
+            "Drain should wait at least close to the timeout duration, but took " + elapsed + "ms");
+        assertTrue(elapsed < 3000, "Drain should not take excessively long, but took " + elapsed + "ms");
+
+        // Clean up: release the blocked handler and dispose the subscription.
+        neverReleasedLatch.countDown();
+        subscription.get().dispose();
+    }
+}

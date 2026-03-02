@@ -34,7 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -361,12 +363,15 @@ final class SessionsMessagePump {
         private static final String ROLLER_ID_KEY = "roller-id";
         private static final State<ServiceBusSessionReactorReceiver> INIT = State.init();
         private static final State<ServiceBusSessionReactorReceiver> TERMINATED = State.terminated();
+        private static final Duration DRAIN_TIMEOUT = Duration.ofSeconds(30);
         private final ClientLogger logger;
         private final long pumpId;
         private final int rollerId;
         private final String fullyQualifiedNamespace;
         private final String entityPath;
         private final int concurrency;
+        private final AtomicInteger activeHandlerCount = new AtomicInteger(0);
+        private final Object drainLock = new Object();
         private final Consumer<ServiceBusReceivedMessageContext> processMessage;
         private final Consumer<ServiceBusErrorContext> processError;
         private final boolean enableAutoDisposition;
@@ -445,8 +450,45 @@ final class SessionsMessagePump {
             // by the ServiceBusSessionReactorReceiver.
             logger.atInfo().log("Roller terminated. rollerId:" + rollerId + " signal:" + signalType);
             nextSessionStream.close();
+            // Drain in-flight message handlers BEFORE disposing the worker scheduler.
+            // Disposing the scheduler interrupts handler threads (via ScheduledExecutorService.shutdownNow()).
+            // Draining first ensures handlers can complete message settlement before threads are interrupted.
+            // See https://github.com/Azure/azure-sdk-for-java/issues/45716
+            drainHandlers(DRAIN_TIMEOUT);
             workerScheduler.dispose();
             return Mono.empty();
+        }
+
+        /**
+         * Wait for all in-flight session message handlers to complete, up to the specified timeout.
+         * Called during session receiver termination to ensure graceful shutdown — all messages currently
+         * being processed are allowed to complete (including settlement) before the worker scheduler
+         * is disposed.
+         *
+         * @param timeout the maximum time to wait for in-flight handlers to complete.
+         */
+        private void drainHandlers(Duration timeout) {
+            final long deadline = System.nanoTime() + timeout.toNanos();
+            synchronized (drainLock) {
+                while (activeHandlerCount.get() > 0) {
+                    final long remainingNanos = deadline - System.nanoTime();
+                    if (remainingNanos <= 0) {
+                        logger.atWarning()
+                            .addKeyValue("activeHandlers", activeHandlerCount.get())
+                            .log("Session drain timeout expired with active handlers still running.");
+                        return;
+                    }
+                    try {
+                        final long millis = TimeUnit.NANOSECONDS.toMillis(remainingNanos);
+                        final int nanos = (int) (remainingNanos % 1_000_000);
+                        drainLock.wait(millis, nanos);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        logger.atWarning().log("Session drain interrupted while waiting for in-flight handlers.");
+                        return;
+                    }
+                }
+            }
         }
 
         private ServiceBusSessionReactorReceiver nextSessionReceiver(ServiceBusSessionAcquirer.Session nextSession) {
@@ -485,22 +527,31 @@ final class SessionsMessagePump {
             final ServiceBusReceivedMessage message
                 = serializer.deserialize(qpidMessage, ServiceBusReceivedMessage.class);
 
-            instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
-                logger.atVerbose()
-                    .addKeyValue(SESSION_ID_KEY, message.getSessionId())
-                    .addKeyValue(MESSAGE_ID_LOGGING_KEY, message.getMessageId())
-                    .log("Received message.");
+            activeHandlerCount.incrementAndGet();
+            try {
+                instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
+                    logger.atVerbose()
+                        .addKeyValue(SESSION_ID_KEY, message.getSessionId())
+                        .addKeyValue(MESSAGE_ID_LOGGING_KEY, message.getMessageId())
+                        .log("Received message.");
 
-                final Throwable error = notifyMessage(msg);
-                if (enableAutoDisposition) {
-                    if (error == null) {
-                        complete(msg);
-                    } else {
-                        abandon(msg);
+                    final Throwable error = notifyMessage(msg);
+                    if (enableAutoDisposition) {
+                        if (error == null) {
+                            complete(msg);
+                        } else {
+                            abandon(msg);
+                        }
+                    }
+                    return error;
+                });
+            } finally {
+                if (activeHandlerCount.decrementAndGet() == 0) {
+                    synchronized (drainLock) {
+                        drainLock.notifyAll();
                     }
                 }
-                return error;
-            });
+            }
         }
 
         private Throwable notifyMessage(ServiceBusReceivedMessage message) {

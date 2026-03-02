@@ -17,6 +17,8 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -56,6 +58,8 @@ final class MessagePump {
     private final boolean enableAutoLockRenew;
     private final Scheduler workerScheduler;
     private final ServiceBusReceiverInstrumentation instrumentation;
+    private final AtomicInteger activeHandlerCount = new AtomicInteger(0);
+    private final Object drainLock = new Object();
 
     /**
      * Instantiate {@link MessagePump} that pumps messages emitted by the given {@code client}. The messages
@@ -138,24 +142,33 @@ final class MessagePump {
     }
 
     private void handleMessage(ServiceBusReceivedMessage message) {
-        instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
-            final Disposable lockRenewDisposable;
-            if (enableAutoLockRenew) {
-                lockRenewDisposable = client.beginLockRenewal(message);
-            } else {
-                lockRenewDisposable = Disposables.disposed();
-            }
-            final Throwable error = notifyMessage(message);
-            if (enableAutoDisposition) {
-                if (error == null) {
-                    complete(message);
+        activeHandlerCount.incrementAndGet();
+        try {
+            instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
+                final Disposable lockRenewDisposable;
+                if (enableAutoLockRenew) {
+                    lockRenewDisposable = client.beginLockRenewal(message);
                 } else {
-                    abandon(message);
+                    lockRenewDisposable = Disposables.disposed();
+                }
+                final Throwable error = notifyMessage(message);
+                if (enableAutoDisposition) {
+                    if (error == null) {
+                        complete(message);
+                    } else {
+                        abandon(message);
+                    }
+                }
+                lockRenewDisposable.dispose();
+                return error;
+            });
+        } finally {
+            if (activeHandlerCount.decrementAndGet() == 0) {
+                synchronized (drainLock) {
+                    drainLock.notifyAll();
                 }
             }
-            lockRenewDisposable.dispose();
-            return error;
-        });
+        }
     }
 
     private Throwable notifyMessage(ServiceBusReceivedMessage message) {
@@ -191,6 +204,40 @@ final class MessagePump {
         } catch (Exception e) {
             logger.atVerbose().log("Failed to abandon message", e);
         }
+    }
+
+    /**
+     * Wait for all in-flight message handlers to complete, up to the specified timeout.
+     * This is called during processor close to ensure graceful shutdown — all messages currently
+     * being processed are allowed to complete (including settlement) before the underlying client
+     * is disposed.
+     *
+     * @param timeout the maximum time to wait for in-flight handlers to complete.
+     * @return true if all handlers completed within the timeout, false otherwise.
+     */
+    boolean drainHandlers(Duration timeout) {
+        final long deadline = System.nanoTime() + timeout.toNanos();
+        synchronized (drainLock) {
+            while (activeHandlerCount.get() > 0) {
+                final long remainingNanos = deadline - System.nanoTime();
+                if (remainingNanos <= 0) {
+                    logger.atWarning()
+                        .addKeyValue("activeHandlers", activeHandlerCount.get())
+                        .log("Drain timeout expired with active handlers still running.");
+                    return false;
+                }
+                try {
+                    final long millis = TimeUnit.NANOSECONDS.toMillis(remainingNanos);
+                    final int nanos = (int) (remainingNanos % 1_000_000);
+                    drainLock.wait(millis, nanos);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    logger.atWarning().log("Drain interrupted while waiting for in-flight handlers.");
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void logCPUResourcesConcurrencyMismatch() {

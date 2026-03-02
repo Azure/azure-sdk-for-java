@@ -14,11 +14,13 @@ import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -186,6 +188,7 @@ import java.util.function.Consumer;
 public final class ServiceBusProcessorClient implements AutoCloseable {
 
     private static final int SCHEDULER_INTERVAL_IN_SECONDS = 10;
+    private static final Duration V1_DRAIN_TIMEOUT = Duration.ofSeconds(30);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusProcessorClient.class);
     private final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder;
     private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder;
@@ -203,6 +206,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private Disposable monitorDisposable;
     private boolean wasStopped = false;
     private final ServiceBusProcessor processorV2;
+    // V1 handler tracking for graceful shutdown (not used in V2 path).
+    private final AtomicInteger activeV1HandlerCount = new AtomicInteger(0);
+    private final Object v1DrainLock = new Object();
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -352,6 +358,12 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             return;
         }
         isRunning.set(false);
+        // Drain in-flight V1 message handlers BEFORE cancelling subscriptions.
+        // Cancelling subscriptions triggers Reactor's publishOn worker disposal, which interrupts
+        // handler threads. Draining first ensures handlers can complete message settlement
+        // before the underlying client is closed.
+        // See https://github.com/Azure/azure-sdk-for-java/issues/45716
+        drainV1Handlers(V1_DRAIN_TIMEOUT);
         receiverSubscriptions.keySet().forEach(Subscription::cancel);
         receiverSubscriptions.clear();
         if (monitorDisposable != null) {
@@ -449,36 +461,45 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 @SuppressWarnings("try")
                 @Override
                 public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
-                    Context span = serviceBusMessageContext.getMessage() != null
-                        ? serviceBusMessageContext.getMessage().getContext()
-                        : Context.NONE;
-                    Exception exception = null;
-                    AutoCloseable scope = tracer.makeSpanCurrent(span);
+                    activeV1HandlerCount.incrementAndGet();
                     try {
-                        if (serviceBusMessageContext.hasError()) {
-                            handleError(serviceBusMessageContext.getThrowable());
-                        } else {
-                            ServiceBusReceivedMessageContext serviceBusReceivedMessageContext
-                                = new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
+                        Context span = serviceBusMessageContext.getMessage() != null
+                            ? serviceBusMessageContext.getMessage().getContext()
+                            : Context.NONE;
+                        Exception exception = null;
+                        AutoCloseable scope = tracer.makeSpanCurrent(span);
+                        try {
+                            if (serviceBusMessageContext.hasError()) {
+                                handleError(serviceBusMessageContext.getThrowable());
+                            } else {
+                                ServiceBusReceivedMessageContext serviceBusReceivedMessageContext
+                                    = new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
 
-                            try {
-                                processMessage.accept(serviceBusReceivedMessageContext);
-                            } catch (Exception ex) {
-                                handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
+                                try {
+                                    processMessage.accept(serviceBusReceivedMessageContext);
+                                } catch (Exception ex) {
+                                    handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
 
-                                if (!processorOptions.isDisableAutoComplete()) {
-                                    LOGGER.warning("Error when processing message. Abandoning message.", ex);
-                                    abandonMessage(serviceBusMessageContext, receiverClient);
+                                    if (!processorOptions.isDisableAutoComplete()) {
+                                        LOGGER.warning("Error when processing message. Abandoning message.", ex);
+                                        abandonMessage(serviceBusMessageContext, receiverClient);
+                                    }
+                                    exception = ex;
                                 }
-                                exception = ex;
                             }
-                        }
-                        if (isRunning.get()) {
-                            LOGGER.verbose("Requesting 1 more message from upstream");
-                            subscription.request(1);
+                            if (isRunning.get()) {
+                                LOGGER.verbose("Requesting 1 more message from upstream");
+                                subscription.request(1);
+                            }
+                        } finally {
+                            tracer.endSpan(exception, span, scope);
                         }
                     } finally {
-                        tracer.endSpan(exception, span, scope);
+                        if (activeV1HandlerCount.decrementAndGet() == 0) {
+                            synchronized (v1DrainLock) {
+                                v1DrainLock.notifyAll();
+                            }
+                        }
                     }
                 }
 
@@ -554,5 +575,34 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         return this.receiverBuilder == null
             ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
             : this.receiverBuilder.buildAsyncClientForProcessor();
+    }
+
+    /**
+     * Wait for all in-flight V1 message handlers to complete, up to the specified timeout.
+     * Called during V1 close to ensure graceful shutdown before disposing the underlying client.
+     *
+     * @param timeout the maximum time to wait for handlers to complete.
+     */
+    private void drainV1Handlers(Duration timeout) {
+        final long deadline = System.nanoTime() + timeout.toNanos();
+        synchronized (v1DrainLock) {
+            while (activeV1HandlerCount.get() > 0) {
+                final long remainingNanos = deadline - System.nanoTime();
+                if (remainingNanos <= 0) {
+                    LOGGER.warning("V1 drain timeout expired with {} active handlers still running.",
+                        activeV1HandlerCount.get());
+                    return;
+                }
+                try {
+                    final long millis = TimeUnit.NANOSECONDS.toMillis(remainingNanos);
+                    final int nanos = (int) (remainingNanos % 1_000_000);
+                    v1DrainLock.wait(millis, nanos);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    LOGGER.warning("V1 drain interrupted while waiting for in-flight handlers.");
+                    return;
+                }
+            }
+        }
     }
 }
