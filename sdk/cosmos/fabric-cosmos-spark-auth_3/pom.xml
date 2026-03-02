@@ -12,7 +12,7 @@
 
   <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>fabric-cosmos-spark-auth_3</artifactId>
-  <version>1.2.0-beta.1</version>  <!-- {x-version-update;com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;current} -->
+  <version>1.1.0</version>  <!-- {x-version-update;com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;current} -->
   <packaging>jar</packaging>
   <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/fabric-cosmos-spark-auth_3</url>
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API Account Data Resolver for Fabric</name>
