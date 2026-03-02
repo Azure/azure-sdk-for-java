@@ -14,7 +14,6 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
-import com.azure.resourcemanager.netapp.models.BreakthroughMode;
 import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
@@ -23,15 +22,14 @@ import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
-import com.azure.resourcemanager.netapp.models.LargeVolumeType;
-import com.azure.resourcemanager.netapp.models.LdapServerType;
-import com.azure.resourcemanager.netapp.models.ListQuotaReportResponse;
+import com.azure.resourcemanager.netapp.models.ListQuotaReportResult;
 import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
 import com.azure.resourcemanager.netapp.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
+import com.azure.resourcemanager.netapp.models.QuotaReportFilterRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
 import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
 import com.azure.resourcemanager.netapp.models.Replication;
@@ -41,7 +39,6 @@ import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.Volume;
-import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
@@ -242,10 +239,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().ldapEnabled();
     }
 
-    public LdapServerType ldapServerType() {
-        return this.innerModel().ldapServerType();
-    }
-
     public Boolean coolAccess() {
         return this.innerModel().coolAccess();
     }
@@ -348,24 +341,12 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().isLargeVolume();
     }
 
-    public LargeVolumeType largeVolumeType() {
-        return this.innerModel().largeVolumeType();
-    }
-
     public String originatingResourceId() {
         return this.innerModel().originatingResourceId();
     }
 
     public Long inheritedSizeInBytes() {
         return this.innerModel().inheritedSizeInBytes();
-    }
-
-    public VolumeLanguage language() {
-        return this.innerModel().language();
-    }
-
-    public BreakthroughMode breakthroughMode() {
-        return this.innerModel().breakthroughMode();
     }
 
     public Region region() {
@@ -650,12 +631,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().revertRelocation(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
-    public ListQuotaReportResponse listQuotaReport() {
+    public ListQuotaReportResult listQuotaReport() {
         return serviceManager.volumes().listQuotaReport(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public ListQuotaReportResponse listQuotaReport(Context context) {
-        return serviceManager.volumes().listQuotaReport(resourceGroupName, accountName, poolName, volumeName, context);
+    public ListQuotaReportResult listQuotaReport(QuotaReportFilterRequest body, Context context) {
+        return serviceManager.volumes()
+            .listQuotaReport(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public VolumeImpl withRegion(Region location) {
@@ -835,11 +817,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    public VolumeImpl withLdapServerType(LdapServerType ldapServerType) {
-        this.innerModel().withLdapServerType(ldapServerType);
-        return this;
-    }
-
     public VolumeImpl withCoolAccess(Boolean coolAccess) {
         if (isInCreateMode()) {
             this.innerModel().withCoolAccess(coolAccess);
@@ -952,21 +929,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withIsLargeVolume(Boolean isLargeVolume) {
         this.innerModel().withIsLargeVolume(isLargeVolume);
-        return this;
-    }
-
-    public VolumeImpl withLargeVolumeType(LargeVolumeType largeVolumeType) {
-        this.innerModel().withLargeVolumeType(largeVolumeType);
-        return this;
-    }
-
-    public VolumeImpl withLanguage(VolumeLanguage language) {
-        this.innerModel().withLanguage(language);
-        return this;
-    }
-
-    public VolumeImpl withBreakthroughMode(BreakthroughMode breakthroughMode) {
-        this.innerModel().withBreakthroughMode(breakthroughMode);
         return this;
     }
 

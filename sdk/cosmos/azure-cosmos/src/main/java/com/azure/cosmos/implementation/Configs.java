@@ -54,6 +54,10 @@ public class Configs {
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
+    private static final boolean DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED = false;
+    private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
+    private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE = "COSMOS_NETTY_HTTP_CLIENT_METRICS_ENABLED";
+
     private static final String MAX_HTTP_BODY_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_BODY_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_CHUNK_SIZE_IN_BYTES = "COSMOS.MAX_HTTP_CHUNK_SIZE_IN_BYTES";
@@ -515,6 +519,14 @@ public class Configs {
         }
 
         return DEFAULT_THINCLIENT_ENABLED;
+    }
+
+    public static boolean isNettyHttpClientMetricsEnabled() {
+        return Boolean.parseBoolean(
+            System.getProperty(NETTY_HTTP_CLIENT_METRICS_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED))));
     }
 
     public static boolean isClientLeakDetectionEnabled() {
