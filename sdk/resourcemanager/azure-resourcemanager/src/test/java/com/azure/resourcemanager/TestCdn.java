@@ -17,6 +17,7 @@ import com.azure.resourcemanager.cdn.models.ResourceUsage;
 import com.azure.resourcemanager.cdn.models.SkuName;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
     private static final ClientLogger LOGGER = new ClientLogger(TestCdn.class);
 
+    @Disabled("SKU STANDARD_MICROSOFT does not allow create new profiles; STANDARD_AZURE_FRONT_DOOR needs location=global")
     @Override
     public CdnProfile createResource(CdnProfiles profiles) throws Exception {
         final Region region = Region.US_EAST;
@@ -43,7 +45,7 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
         CdnProfile cdnProfile = profiles.define(cdnProfileName)
             .withRegion(region)
             .withNewResourceGroup(groupName)
-            .withStandardVerizonSku()
+            .withSku(SkuName.STANDARD_AZURE_FRONT_DOOR)
             .defineNewEndpoint(cdnEndpointName)
             .withOrigin(cdnOriginHostName)
             .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, CountryIsoCode.ARGENTINA)

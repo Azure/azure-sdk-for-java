@@ -313,4 +313,10 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
         this.endpoints.addEndpoint(endpoint);
         return this;
     }
+
+    @Override
+    public CdnProfileImpl withGlobal() {
+        this.innerModel().withLocation("global");
+        return this;
+    }
 }

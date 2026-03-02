@@ -193,6 +193,7 @@ public interface CdnProfile
          * The first stage of a CDN profile definition.
          */
         interface Blank extends DefinitionWithRegion<WithGroup> {
+            WithGroup withGlobal();
         }
 
         /**
@@ -214,8 +215,7 @@ public interface CdnProfile
              *             Azure CDN Standard from Akamai profiles still active on 31 October 2023 will be migrated
              *             by Azure CDN product engineering to another Azure CDN profile with feature and pricing parity
              *             beginning 1 November 2023.
-             *             Use {@link WithSku#withStandardVerizonSku()} , {@link WithSku#withSku(SkuName)} or
-             *             {@link WithSku#withStandardMicrosoftSku()} instead.
+             *             Use {@link WithSku#withSku(SkuName)} with {@link SkuName#STANDARD_AZURE_FRONT_DOOR} or {@link SkuName#PREMIUM_AZURE_FRONT_DOOR}.Use {@link WithSku#withSku(SkuName)} with {@link SkuName#STANDARD_AZURE_FRONT_DOOR} or {@link SkuName#PREMIUM_AZURE_FRONT_DOOR}.
              */
             @Deprecated
             WithStandardCreate withStandardAkamaiSku();
@@ -224,21 +224,29 @@ public interface CdnProfile
              * Selects the Standard Verizon SKU.
              *
              * @return the next stage of the definition.
+             * @deprecated Use {@link WithSku#withSku(SkuName)} with {@link SkuName#STANDARD_AZURE_FRONT_DOOR} or {@link SkuName#PREMIUM_AZURE_FRONT_DOOR}.
              */
+            @Deprecated
             WithStandardCreate withStandardVerizonSku();
 
             /**
              * Selects the Premium Verizon SKU.
              *
              * @return the next stage of the definition.
+             * @deprecated Use {@link WithSku#withSku(SkuName)} with {@link SkuName#STANDARD_AZURE_FRONT_DOOR} or {@link SkuName#PREMIUM_AZURE_FRONT_DOOR}.
              */
+            @Deprecated
             WithPremiumVerizonCreate withPremiumVerizonSku();
 
             /**
              * Selects the Standard Microsoft SKU.
              *
              * @return the next stage of the definition
+             * @deprecated On September 30th, 2027, Azure CDN Standard from Microsoft (classic) will be retired. To avoid service disruptions, you’ll need to migrate to Azure Front Door Standard or Premium by that date.  
+             *             As a result of this retirement, you’ll no longer be able to create new Azure CDN Standard from Microsoft (classic) resources via the Azure portal, Terraform, or command line tools starting October 1st, 2025. After that date, all new resources will need to be created using Azure Front Door Standard or Premium. 
+             *             Use {@link WithSku#withSku(SkuName)} with {@link SkuName#STANDARD_AZURE_FRONT_DOOR} or {@link SkuName#PREMIUM_AZURE_FRONT_DOOR}.
              */
+            @Deprecated
             WithStandardCreate withStandardMicrosoftSku();
 
             /**

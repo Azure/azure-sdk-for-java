@@ -24,6 +24,7 @@ import com.azure.resourcemanager.cdn.models.HttpVersionOperator;
 import com.azure.resourcemanager.cdn.models.RedirectType;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParametersMatchValuesItem;
+import com.azure.resourcemanager.cdn.models.SkuName;
 import com.azure.resourcemanager.cdn.models.UrlRedirectAction;
 import com.azure.resourcemanager.cdn.models.UrlRedirectActionParameters;
 import com.azure.resourcemanager.dns.models.DnsZone;
@@ -64,9 +65,9 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         CdnProfile cdnProfile = cdnManager.profiles()
             .define(cdnProfileName)
-            .withRegion(region)
+            .withGlobal()
             .withExistingResourceGroup(resourceGroup)
-            .withStandardMicrosoftSku()
+            .withSku(SkuName.STANDARD_AZURE_FRONT_DOOR)
             .create();
 
         Assertions.assertNotNull(cdnProfile);
@@ -94,9 +95,9 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         CdnProfile cdnProfile = cdnManager.profiles()
             .define(cdnProfileName)
-            .withRegion(region)
+            .withGlobal()
             .withExistingResourceGroup(resourceGroup)
-            .withStandardMicrosoftSku()
+            .withSku(SkuName.STANDARD_AZURE_FRONT_DOOR)
             .create();
 
         Assertions.assertNotNull(cdnProfile);
@@ -133,9 +134,9 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         CdnProfile cdnProfile = cdnManager.profiles()
             .define(cdnProfileName)
-            .withRegion(region)
+            .withGlobal()
             .withExistingResourceGroup(resourceGroup)
-            .withStandardMicrosoftSku()
+            .withSku(SkuName.STANDARD_AZURE_FRONT_DOOR)
             .defineNewEndpoint(cdnEndpointName)
             .withOrigin("origin1", "www.someDomain.net")
             .withHttpAllowed(false)
@@ -187,9 +188,9 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         // create cdnProfile with one cdnEndpoint, with 1 rule
         CdnProfile cdnProfile = cdnManager.profiles()
             .define(cdnProfileName)
-            .withRegion(region)
+            .withGlobal()
             .withExistingResourceGroup(resourceGroup)
-            .withStandardMicrosoftSku()
+            .withSku(SkuName.STANDARD_AZURE_FRONT_DOOR)
             .defineNewEndpoint(cdnEndpointName)
             .withOrigin(originName1, "www.someDomain.net")
             .withHttpAllowed(false)
@@ -344,9 +345,9 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         CdnProfile cdnProfile = cdnManager.profiles()
             .define(cdnProfileName)
-            .withRegion(region)
+            .withGlobal()
             .withNewResourceGroup(rgName)
-            .withStandardMicrosoftSku()
+            .withSku(SkuName.STANDARD_AZURE_FRONT_DOOR)
             .defineNewEndpoint(cdnEndpointName)
             .withOrigin("origin1", "www.someDomain.net")
             .withHttpAllowed(false)
