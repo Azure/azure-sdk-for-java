@@ -933,7 +933,7 @@
           "code": "java.method.parameterTypeChanged",
           "old" : {
             "matcher": "regex",
-            "match": "parameter .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:withTypeName)\\(.*\\)"
+            "match": "parameter .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:withTypeName\\(.*\\)"
           },
           "justification": "TypeSpec uses proper enum types for discriminator fields instead of raw strings."
         },

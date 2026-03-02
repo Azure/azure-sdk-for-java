@@ -7,7 +7,6 @@ package com.azure.resourcemanager.cdn.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParametersMatchValuesItem;
-import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParametersOperator;
 import com.azure.resourcemanager.cdn.models.Transform;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -16,26 +15,23 @@ public final class RequestSchemeMatchConditionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RequestSchemeMatchConditionParameters model = BinaryData.fromString(
-            "{\"typeName\":\"DeliveryRuleRequestSchemeConditionParameters\",\"operator\":\"Equal\",\"negateCondition\":true,\"transforms\":[\"Lowercase\",\"Uppercase\"],\"matchValues\":[\"HTTPS\",\"HTTP\"]}")
+            "{\"typeName\":\"DeliveryRuleRequestSchemeConditionParameters\",\"negateCondition\":false,\"transforms\":[\"Trim\",\"Lowercase\",\"Uppercase\"],\"matchValues\":[\"HTTPS\",\"HTTP\"]}")
             .toObject(RequestSchemeMatchConditionParameters.class);
-        Assertions.assertEquals(RequestSchemeMatchConditionParametersOperator.EQUAL, model.operator());
-        Assertions.assertTrue(model.negateCondition());
-        Assertions.assertEquals(Transform.LOWERCASE, model.transforms().get(0));
+        Assertions.assertFalse(model.negateCondition());
+        Assertions.assertEquals(Transform.TRIM, model.transforms().get(0));
         Assertions.assertEquals(RequestSchemeMatchConditionParametersMatchValuesItem.HTTPS, model.matchValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RequestSchemeMatchConditionParameters model = new RequestSchemeMatchConditionParameters()
-            .withOperator(RequestSchemeMatchConditionParametersOperator.EQUAL)
-            .withNegateCondition(true)
-            .withTransforms(Arrays.asList(Transform.LOWERCASE, Transform.UPPERCASE))
-            .withMatchValues(Arrays.asList(RequestSchemeMatchConditionParametersMatchValuesItem.HTTPS,
-                RequestSchemeMatchConditionParametersMatchValuesItem.HTTP));
+        RequestSchemeMatchConditionParameters model
+            = new RequestSchemeMatchConditionParameters().withNegateCondition(false)
+                .withTransforms(Arrays.asList(Transform.TRIM, Transform.LOWERCASE, Transform.UPPERCASE))
+                .withMatchValues(Arrays.asList(RequestSchemeMatchConditionParametersMatchValuesItem.HTTPS,
+                    RequestSchemeMatchConditionParametersMatchValuesItem.HTTP));
         model = BinaryData.fromObject(model).toObject(RequestSchemeMatchConditionParameters.class);
-        Assertions.assertEquals(RequestSchemeMatchConditionParametersOperator.EQUAL, model.operator());
-        Assertions.assertTrue(model.negateCondition());
-        Assertions.assertEquals(Transform.LOWERCASE, model.transforms().get(0));
+        Assertions.assertFalse(model.negateCondition());
+        Assertions.assertEquals(Transform.TRIM, model.transforms().get(0));
         Assertions.assertEquals(RequestSchemeMatchConditionParametersMatchValuesItem.HTTPS, model.matchValues().get(0));
     }
 }

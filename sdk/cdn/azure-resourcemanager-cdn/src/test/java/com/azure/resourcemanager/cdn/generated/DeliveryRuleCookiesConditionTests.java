@@ -16,28 +16,28 @@ public final class DeliveryRuleCookiesConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryRuleCookiesCondition model = BinaryData.fromString(
-            "{\"name\":\"Cookies\",\"parameters\":{\"typeName\":\"DeliveryRuleCookiesConditionParameters\",\"selector\":\"ipwoqonmacjek\",\"operator\":\"Equal\",\"negateCondition\":true,\"matchValues\":[\"vcimpev\"],\"transforms\":[\"Trim\",\"RemoveNulls\",\"UrlDecode\"]}}")
+            "{\"name\":\"Cookies\",\"parameters\":{\"typeName\":\"DeliveryRuleCookiesConditionParameters\",\"selector\":\"qvci\",\"operator\":\"GreaterThanOrEqual\",\"negateCondition\":true,\"matchValues\":[\"mblrrilbywd\",\"smiccwrwfscj\"],\"transforms\":[\"Trim\",\"Uppercase\"]}}")
             .toObject(DeliveryRuleCookiesCondition.class);
-        Assertions.assertEquals("ipwoqonmacjek", model.parameters().selector());
-        Assertions.assertEquals(CookiesOperator.EQUAL, model.parameters().operator());
+        Assertions.assertEquals("qvci", model.parameters().selector());
+        Assertions.assertEquals(CookiesOperator.GREATER_THAN_OR_EQUAL, model.parameters().operator());
         Assertions.assertTrue(model.parameters().negateCondition());
-        Assertions.assertEquals("vcimpev", model.parameters().matchValues().get(0));
+        Assertions.assertEquals("mblrrilbywd", model.parameters().matchValues().get(0));
         Assertions.assertEquals(Transform.TRIM, model.parameters().transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeliveryRuleCookiesCondition model = new DeliveryRuleCookiesCondition()
-            .withParameters(new CookiesMatchConditionParameters().withSelector("ipwoqonmacjek")
-                .withOperator(CookiesOperator.EQUAL)
+            .withParameters(new CookiesMatchConditionParameters().withSelector("qvci")
+                .withOperator(CookiesOperator.GREATER_THAN_OR_EQUAL)
                 .withNegateCondition(true)
-                .withMatchValues(Arrays.asList("vcimpev"))
-                .withTransforms(Arrays.asList(Transform.TRIM, Transform.REMOVE_NULLS, Transform.URL_DECODE)));
+                .withMatchValues(Arrays.asList("mblrrilbywd", "smiccwrwfscj"))
+                .withTransforms(Arrays.asList(Transform.TRIM, Transform.UPPERCASE)));
         model = BinaryData.fromObject(model).toObject(DeliveryRuleCookiesCondition.class);
-        Assertions.assertEquals("ipwoqonmacjek", model.parameters().selector());
-        Assertions.assertEquals(CookiesOperator.EQUAL, model.parameters().operator());
+        Assertions.assertEquals("qvci", model.parameters().selector());
+        Assertions.assertEquals(CookiesOperator.GREATER_THAN_OR_EQUAL, model.parameters().operator());
         Assertions.assertTrue(model.parameters().negateCondition());
-        Assertions.assertEquals("vcimpev", model.parameters().matchValues().get(0));
+        Assertions.assertEquals("mblrrilbywd", model.parameters().matchValues().get(0));
         Assertions.assertEquals(Transform.TRIM, model.parameters().transforms().get(0));
     }
 }

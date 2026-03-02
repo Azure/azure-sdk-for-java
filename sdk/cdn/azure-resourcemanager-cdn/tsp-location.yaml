@@ -1,4 +1,4 @@
 directory: specification/cdn/resource-manager/Microsoft.Cdn/Cdn
-commit: 82a44bd3a765aede2c12057a2969f1d2f27ac20e
+commit: HEAD
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

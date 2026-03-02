@@ -13,18 +13,18 @@ public final class UrlSigningParamIdentifierTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UrlSigningParamIdentifier model
-            = BinaryData.fromString("{\"paramIndicator\":\"Expires\",\"paramName\":\"uisavokq\"}")
+            = BinaryData.fromString("{\"paramIndicator\":\"Expires\",\"paramName\":\"juisavokqdzf\"}")
                 .toObject(UrlSigningParamIdentifier.class);
         Assertions.assertEquals(ParamIndicator.EXPIRES, model.paramIndicator());
-        Assertions.assertEquals("uisavokq", model.paramName());
+        Assertions.assertEquals("juisavokqdzf", model.paramName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UrlSigningParamIdentifier model
-            = new UrlSigningParamIdentifier().withParamIndicator(ParamIndicator.EXPIRES).withParamName("uisavokq");
+            = new UrlSigningParamIdentifier().withParamIndicator(ParamIndicator.EXPIRES).withParamName("juisavokqdzf");
         model = BinaryData.fromObject(model).toObject(UrlSigningParamIdentifier.class);
         Assertions.assertEquals(ParamIndicator.EXPIRES, model.paramIndicator());
-        Assertions.assertEquals("uisavokq", model.paramName());
+        Assertions.assertEquals("juisavokqdzf", model.paramName());
     }
 }

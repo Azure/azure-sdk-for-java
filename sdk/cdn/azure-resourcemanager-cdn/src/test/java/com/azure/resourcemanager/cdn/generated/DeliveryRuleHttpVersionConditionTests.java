@@ -16,12 +16,12 @@ public final class DeliveryRuleHttpVersionConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryRuleHttpVersionCondition model = BinaryData.fromString(
-            "{\"name\":\"HttpVersion\",\"parameters\":{\"typeName\":\"DeliveryRuleHttpVersionConditionParameters\",\"operator\":\"Equal\",\"negateCondition\":true,\"matchValues\":[\"uzaofjchvcyyy\",\"fgdo\"],\"transforms\":[\"UrlEncode\",\"RemoveNulls\",\"UrlEncode\",\"UrlEncode\"]}}")
+            "{\"name\":\"HttpVersion\",\"parameters\":{\"typeName\":\"DeliveryRuleHttpVersionConditionParameters\",\"operator\":\"Equal\",\"negateCondition\":true,\"matchValues\":[\"euzaof\",\"chvcyyysfgdo\",\"cubiipuipw\",\"qonmacj\"],\"transforms\":[\"Uppercase\",\"UrlEncode\",\"Uppercase\"]}}")
             .toObject(DeliveryRuleHttpVersionCondition.class);
         Assertions.assertEquals(HttpVersionOperator.EQUAL, model.parameters().operator());
         Assertions.assertTrue(model.parameters().negateCondition());
-        Assertions.assertEquals("uzaofjchvcyyy", model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.URL_ENCODE, model.parameters().transforms().get(0));
+        Assertions.assertEquals("euzaof", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.UPPERCASE, model.parameters().transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -29,13 +29,12 @@ public final class DeliveryRuleHttpVersionConditionTests {
         DeliveryRuleHttpVersionCondition model = new DeliveryRuleHttpVersionCondition()
             .withParameters(new HttpVersionMatchConditionParameters().withOperator(HttpVersionOperator.EQUAL)
                 .withNegateCondition(true)
-                .withMatchValues(Arrays.asList("uzaofjchvcyyy", "fgdo"))
-                .withTransforms(Arrays.asList(Transform.URL_ENCODE, Transform.REMOVE_NULLS, Transform.URL_ENCODE,
-                    Transform.URL_ENCODE)));
+                .withMatchValues(Arrays.asList("euzaof", "chvcyyysfgdo", "cubiipuipw", "qonmacj"))
+                .withTransforms(Arrays.asList(Transform.UPPERCASE, Transform.URL_ENCODE, Transform.UPPERCASE)));
         model = BinaryData.fromObject(model).toObject(DeliveryRuleHttpVersionCondition.class);
         Assertions.assertEquals(HttpVersionOperator.EQUAL, model.parameters().operator());
         Assertions.assertTrue(model.parameters().negateCondition());
-        Assertions.assertEquals("uzaofjchvcyyy", model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.URL_ENCODE, model.parameters().transforms().get(0));
+        Assertions.assertEquals("euzaof", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.UPPERCASE, model.parameters().transforms().get(0));
     }
 }

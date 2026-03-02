@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -26,7 +25,7 @@ public final class RequestSchemeMatchConditionParameters extends DeliveryRuleCon
     /*
      * Describes operator to be matched
      */
-    private RequestSchemeMatchConditionParametersOperator operator;
+    private final String operator = "Equal";
 
     /*
      * Describes if this is negate condition or not
@@ -64,19 +63,8 @@ public final class RequestSchemeMatchConditionParameters extends DeliveryRuleCon
      * 
      * @return the operator value.
      */
-    public RequestSchemeMatchConditionParametersOperator operator() {
+    public String operator() {
         return this.operator;
-    }
-
-    /**
-     * Set the operator property: Describes operator to be matched.
-     * 
-     * @param operator the operator value to set.
-     * @return the RequestSchemeMatchConditionParameters object itself.
-     */
-    public RequestSchemeMatchConditionParameters withOperator(RequestSchemeMatchConditionParametersOperator operator) {
-        this.operator = operator;
-        return this;
     }
 
     /**
@@ -147,14 +135,7 @@ public final class RequestSchemeMatchConditionParameters extends DeliveryRuleCon
      */
     @Override
     public void validate() {
-        if (operator() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property operator in model RequestSchemeMatchConditionParameters"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(RequestSchemeMatchConditionParameters.class);
 
     /**
      * {@inheritDoc}
@@ -162,7 +143,7 @@ public final class RequestSchemeMatchConditionParameters extends DeliveryRuleCon
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeStringField("operator", this.operator);
         jsonWriter.writeStringField("typeName", this.typeName == null ? null : this.typeName.toString());
         jsonWriter.writeBooleanField("negateCondition", this.negateCondition);
         jsonWriter.writeArrayField("transforms", this.transforms,
@@ -189,10 +170,7 @@ public final class RequestSchemeMatchConditionParameters extends DeliveryRuleCon
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("operator".equals(fieldName)) {
-                    deserializedRequestSchemeMatchConditionParameters.operator
-                        = RequestSchemeMatchConditionParametersOperator.fromString(reader.getString());
-                } else if ("typeName".equals(fieldName)) {
+                if ("typeName".equals(fieldName)) {
                     deserializedRequestSchemeMatchConditionParameters.typeName
                         = DeliveryRuleConditionParametersType.fromString(reader.getString());
                 } else if ("negateCondition".equals(fieldName)) {

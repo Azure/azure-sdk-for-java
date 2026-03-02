@@ -16,12 +16,12 @@ public final class DeliveryRuleServerPortConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryRuleServerPortCondition model = BinaryData.fromString(
-            "{\"name\":\"ServerPort\",\"parameters\":{\"typeName\":\"DeliveryRuleServerPortConditionParameters\",\"operator\":\"RegEx\",\"negateCondition\":false,\"matchValues\":[\"vizqzdwl\",\"w\",\"youpfgfbkj\"],\"transforms\":[\"RemoveNulls\",\"Trim\",\"UrlDecode\"]}}")
+            "{\"name\":\"ServerPort\",\"parameters\":{\"typeName\":\"DeliveryRuleServerPortConditionParameters\",\"operator\":\"RegEx\",\"negateCondition\":false,\"matchValues\":[\"vwlyoup\"],\"transforms\":[\"Uppercase\",\"Uppercase\",\"Lowercase\",\"UrlDecode\"]}}")
             .toObject(DeliveryRuleServerPortCondition.class);
         Assertions.assertEquals(ServerPortOperator.REG_EX, model.parameters().operator());
         Assertions.assertFalse(model.parameters().negateCondition());
-        Assertions.assertEquals("vizqzdwl", model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.REMOVE_NULLS, model.parameters().transforms().get(0));
+        Assertions.assertEquals("vwlyoup", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.UPPERCASE, model.parameters().transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -29,12 +29,13 @@ public final class DeliveryRuleServerPortConditionTests {
         DeliveryRuleServerPortCondition model = new DeliveryRuleServerPortCondition()
             .withParameters(new ServerPortMatchConditionParameters().withOperator(ServerPortOperator.REG_EX)
                 .withNegateCondition(false)
-                .withMatchValues(Arrays.asList("vizqzdwl", "w", "youpfgfbkj"))
-                .withTransforms(Arrays.asList(Transform.REMOVE_NULLS, Transform.TRIM, Transform.URL_DECODE)));
+                .withMatchValues(Arrays.asList("vwlyoup"))
+                .withTransforms(Arrays.asList(Transform.UPPERCASE, Transform.UPPERCASE, Transform.LOWERCASE,
+                    Transform.URL_DECODE)));
         model = BinaryData.fromObject(model).toObject(DeliveryRuleServerPortCondition.class);
         Assertions.assertEquals(ServerPortOperator.REG_EX, model.parameters().operator());
         Assertions.assertFalse(model.parameters().negateCondition());
-        Assertions.assertEquals("vizqzdwl", model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.REMOVE_NULLS, model.parameters().transforms().get(0));
+        Assertions.assertEquals("vwlyoup", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.UPPERCASE, model.parameters().transforms().get(0));
     }
 }

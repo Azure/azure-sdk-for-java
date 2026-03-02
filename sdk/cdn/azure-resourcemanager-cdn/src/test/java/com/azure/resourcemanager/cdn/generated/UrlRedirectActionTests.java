@@ -15,31 +15,31 @@ public final class UrlRedirectActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UrlRedirectAction model = BinaryData.fromString(
-            "{\"name\":\"UrlRedirect\",\"parameters\":{\"typeName\":\"DeliveryRuleUrlRedirectActionParameters\",\"redirectType\":\"Found\",\"destinationProtocol\":\"Http\",\"customPath\":\"zivj\",\"customHostname\":\"rqttbajlkatnw\",\"customQueryString\":\"iopid\",\"customFragment\":\"qfkuvscxkdmli\"}}")
+            "{\"name\":\"UrlRedirect\",\"parameters\":{\"typeName\":\"DeliveryRuleUrlRedirectActionParameters\",\"redirectType\":\"PermanentRedirect\",\"destinationProtocol\":\"Https\",\"customPath\":\"jlfrq\",\"customHostname\":\"bajlka\",\"customQueryString\":\"wxyiopidkqq\",\"customFragment\":\"uvscxkdmligov\"}}")
             .toObject(UrlRedirectAction.class);
-        Assertions.assertEquals(RedirectType.FOUND, model.parameters().redirectType());
-        Assertions.assertEquals(DestinationProtocol.HTTP, model.parameters().destinationProtocol());
-        Assertions.assertEquals("zivj", model.parameters().customPath());
-        Assertions.assertEquals("rqttbajlkatnw", model.parameters().customHostname());
-        Assertions.assertEquals("iopid", model.parameters().customQueryString());
-        Assertions.assertEquals("qfkuvscxkdmli", model.parameters().customFragment());
+        Assertions.assertEquals(RedirectType.PERMANENT_REDIRECT, model.parameters().redirectType());
+        Assertions.assertEquals(DestinationProtocol.HTTPS, model.parameters().destinationProtocol());
+        Assertions.assertEquals("jlfrq", model.parameters().customPath());
+        Assertions.assertEquals("bajlka", model.parameters().customHostname());
+        Assertions.assertEquals("wxyiopidkqq", model.parameters().customQueryString());
+        Assertions.assertEquals("uvscxkdmligov", model.parameters().customFragment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UrlRedirectAction model = new UrlRedirectAction()
-            .withParameters(new UrlRedirectActionParameters().withRedirectType(RedirectType.FOUND)
-                .withDestinationProtocol(DestinationProtocol.HTTP)
-                .withCustomPath("zivj")
-                .withCustomHostname("rqttbajlkatnw")
-                .withCustomQueryString("iopid")
-                .withCustomFragment("qfkuvscxkdmli"));
+            .withParameters(new UrlRedirectActionParameters().withRedirectType(RedirectType.PERMANENT_REDIRECT)
+                .withDestinationProtocol(DestinationProtocol.HTTPS)
+                .withCustomPath("jlfrq")
+                .withCustomHostname("bajlka")
+                .withCustomQueryString("wxyiopidkqq")
+                .withCustomFragment("uvscxkdmligov"));
         model = BinaryData.fromObject(model).toObject(UrlRedirectAction.class);
-        Assertions.assertEquals(RedirectType.FOUND, model.parameters().redirectType());
-        Assertions.assertEquals(DestinationProtocol.HTTP, model.parameters().destinationProtocol());
-        Assertions.assertEquals("zivj", model.parameters().customPath());
-        Assertions.assertEquals("rqttbajlkatnw", model.parameters().customHostname());
-        Assertions.assertEquals("iopid", model.parameters().customQueryString());
-        Assertions.assertEquals("qfkuvscxkdmli", model.parameters().customFragment());
+        Assertions.assertEquals(RedirectType.PERMANENT_REDIRECT, model.parameters().redirectType());
+        Assertions.assertEquals(DestinationProtocol.HTTPS, model.parameters().destinationProtocol());
+        Assertions.assertEquals("jlfrq", model.parameters().customPath());
+        Assertions.assertEquals("bajlka", model.parameters().customHostname());
+        Assertions.assertEquals("wxyiopidkqq", model.parameters().customQueryString());
+        Assertions.assertEquals("uvscxkdmligov", model.parameters().customFragment());
     }
 }

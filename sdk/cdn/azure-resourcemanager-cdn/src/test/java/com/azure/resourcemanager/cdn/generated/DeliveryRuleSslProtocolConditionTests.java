@@ -17,25 +17,26 @@ public final class DeliveryRuleSslProtocolConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryRuleSslProtocolCondition model = BinaryData.fromString(
-            "{\"name\":\"SslProtocol\",\"parameters\":{\"typeName\":\"DeliveryRuleSslProtocolConditionParameters\",\"operator\":\"Equal\",\"negateCondition\":false,\"matchValues\":[\"TLSv1.1\",\"TLSv1\",\"TLSv1.2\"],\"transforms\":[\"Lowercase\",\"Uppercase\",\"Trim\"]}}")
+            "{\"name\":\"SslProtocol\",\"parameters\":{\"typeName\":\"DeliveryRuleSslProtocolConditionParameters\",\"operator\":\"Equal\",\"negateCondition\":true,\"matchValues\":[\"TLSv1\",\"TLSv1.2\",\"TLSv1.2\"],\"transforms\":[\"UrlDecode\",\"Lowercase\",\"Lowercase\",\"Uppercase\"]}}")
             .toObject(DeliveryRuleSslProtocolCondition.class);
         Assertions.assertEquals(SslProtocolOperator.EQUAL, model.parameters().operator());
-        Assertions.assertFalse(model.parameters().negateCondition());
-        Assertions.assertEquals(SslProtocol.TLSV1_1, model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.LOWERCASE, model.parameters().transforms().get(0));
+        Assertions.assertTrue(model.parameters().negateCondition());
+        Assertions.assertEquals(SslProtocol.TLSV1, model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.URL_DECODE, model.parameters().transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeliveryRuleSslProtocolCondition model = new DeliveryRuleSslProtocolCondition()
             .withParameters(new SslProtocolMatchConditionParameters().withOperator(SslProtocolOperator.EQUAL)
-                .withNegateCondition(false)
-                .withMatchValues(Arrays.asList(SslProtocol.TLSV1_1, SslProtocol.TLSV1, SslProtocol.TLSV1_2))
-                .withTransforms(Arrays.asList(Transform.LOWERCASE, Transform.UPPERCASE, Transform.TRIM)));
+                .withNegateCondition(true)
+                .withMatchValues(Arrays.asList(SslProtocol.TLSV1, SslProtocol.TLSV1_2, SslProtocol.TLSV1_2))
+                .withTransforms(Arrays.asList(Transform.URL_DECODE, Transform.LOWERCASE, Transform.LOWERCASE,
+                    Transform.UPPERCASE)));
         model = BinaryData.fromObject(model).toObject(DeliveryRuleSslProtocolCondition.class);
         Assertions.assertEquals(SslProtocolOperator.EQUAL, model.parameters().operator());
-        Assertions.assertFalse(model.parameters().negateCondition());
-        Assertions.assertEquals(SslProtocol.TLSV1_1, model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.LOWERCASE, model.parameters().transforms().get(0));
+        Assertions.assertTrue(model.parameters().negateCondition());
+        Assertions.assertEquals(SslProtocol.TLSV1, model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.URL_DECODE, model.parameters().transforms().get(0));
     }
 }

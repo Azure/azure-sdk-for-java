@@ -14,11 +14,11 @@ public final class UrlRedirectActionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UrlRedirectActionParameters model = BinaryData.fromString(
-            "{\"typeName\":\"DeliveryRuleUrlRedirectActionParameters\",\"redirectType\":\"Found\",\"destinationProtocol\":\"Http\",\"customPath\":\"rxkpmloazuruoc\",\"customHostname\":\"oorb\",\"customQueryString\":\"oybfhjxakvvj\",\"customFragment\":\"lordilmywwtkgkxn\"}")
+            "{\"typeName\":\"DeliveryRuleUrlRedirectActionParameters\",\"redirectType\":\"Moved\",\"destinationProtocol\":\"Http\",\"customPath\":\"pmloazuruoc\",\"customHostname\":\"oorb\",\"customQueryString\":\"oybfhjxakvvj\",\"customFragment\":\"lordilmywwtkgkxn\"}")
             .toObject(UrlRedirectActionParameters.class);
-        Assertions.assertEquals(RedirectType.FOUND, model.redirectType());
+        Assertions.assertEquals(RedirectType.MOVED, model.redirectType());
         Assertions.assertEquals(DestinationProtocol.HTTP, model.destinationProtocol());
-        Assertions.assertEquals("rxkpmloazuruoc", model.customPath());
+        Assertions.assertEquals("pmloazuruoc", model.customPath());
         Assertions.assertEquals("oorb", model.customHostname());
         Assertions.assertEquals("oybfhjxakvvj", model.customQueryString());
         Assertions.assertEquals("lordilmywwtkgkxn", model.customFragment());
@@ -26,16 +26,16 @@ public final class UrlRedirectActionParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UrlRedirectActionParameters model = new UrlRedirectActionParameters().withRedirectType(RedirectType.FOUND)
+        UrlRedirectActionParameters model = new UrlRedirectActionParameters().withRedirectType(RedirectType.MOVED)
             .withDestinationProtocol(DestinationProtocol.HTTP)
-            .withCustomPath("rxkpmloazuruoc")
+            .withCustomPath("pmloazuruoc")
             .withCustomHostname("oorb")
             .withCustomQueryString("oybfhjxakvvj")
             .withCustomFragment("lordilmywwtkgkxn");
         model = BinaryData.fromObject(model).toObject(UrlRedirectActionParameters.class);
-        Assertions.assertEquals(RedirectType.FOUND, model.redirectType());
+        Assertions.assertEquals(RedirectType.MOVED, model.redirectType());
         Assertions.assertEquals(DestinationProtocol.HTTP, model.destinationProtocol());
-        Assertions.assertEquals("rxkpmloazuruoc", model.customPath());
+        Assertions.assertEquals("pmloazuruoc", model.customPath());
         Assertions.assertEquals("oorb", model.customHostname());
         Assertions.assertEquals("oybfhjxakvvj", model.customQueryString());
         Assertions.assertEquals("lordilmywwtkgkxn", model.customFragment());

@@ -16,25 +16,25 @@ public final class DeliveryRuleUrlFileNameConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryRuleUrlFileNameCondition model = BinaryData.fromString(
-            "{\"name\":\"UrlFileName\",\"parameters\":{\"typeName\":\"DeliveryRuleUrlFilenameConditionParameters\",\"operator\":\"LessThanOrEqual\",\"negateCondition\":true,\"matchValues\":[\"nhxmsi\",\"fomiloxgg\"],\"transforms\":[\"RemoveNulls\"]}}")
+            "{\"name\":\"UrlFileName\",\"parameters\":{\"typeName\":\"DeliveryRuleUrlFilenameConditionParameters\",\"operator\":\"Equal\",\"negateCondition\":false,\"matchValues\":[\"talywjhhgdnhxms\",\"v\",\"omi\",\"ox\"],\"transforms\":[\"RemoveNulls\",\"Lowercase\"]}}")
             .toObject(DeliveryRuleUrlFileNameCondition.class);
-        Assertions.assertEquals(UrlFileNameOperator.LESS_THAN_OR_EQUAL, model.parameters().operator());
-        Assertions.assertTrue(model.parameters().negateCondition());
-        Assertions.assertEquals("nhxmsi", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(UrlFileNameOperator.EQUAL, model.parameters().operator());
+        Assertions.assertFalse(model.parameters().negateCondition());
+        Assertions.assertEquals("talywjhhgdnhxms", model.parameters().matchValues().get(0));
         Assertions.assertEquals(Transform.REMOVE_NULLS, model.parameters().transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeliveryRuleUrlFileNameCondition model = new DeliveryRuleUrlFileNameCondition().withParameters(
-            new UrlFileNameMatchConditionParameters().withOperator(UrlFileNameOperator.LESS_THAN_OR_EQUAL)
-                .withNegateCondition(true)
-                .withMatchValues(Arrays.asList("nhxmsi", "fomiloxgg"))
-                .withTransforms(Arrays.asList(Transform.REMOVE_NULLS)));
+        DeliveryRuleUrlFileNameCondition model = new DeliveryRuleUrlFileNameCondition()
+            .withParameters(new UrlFileNameMatchConditionParameters().withOperator(UrlFileNameOperator.EQUAL)
+                .withNegateCondition(false)
+                .withMatchValues(Arrays.asList("talywjhhgdnhxms", "v", "omi", "ox"))
+                .withTransforms(Arrays.asList(Transform.REMOVE_NULLS, Transform.LOWERCASE)));
         model = BinaryData.fromObject(model).toObject(DeliveryRuleUrlFileNameCondition.class);
-        Assertions.assertEquals(UrlFileNameOperator.LESS_THAN_OR_EQUAL, model.parameters().operator());
-        Assertions.assertTrue(model.parameters().negateCondition());
-        Assertions.assertEquals("nhxmsi", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(UrlFileNameOperator.EQUAL, model.parameters().operator());
+        Assertions.assertFalse(model.parameters().negateCondition());
+        Assertions.assertEquals("talywjhhgdnhxms", model.parameters().matchValues().get(0));
         Assertions.assertEquals(Transform.REMOVE_NULLS, model.parameters().transforms().get(0));
     }
 }

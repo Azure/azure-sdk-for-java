@@ -16,25 +16,25 @@ public final class DeliveryRuleUrlPathConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryRuleUrlPathCondition model = BinaryData.fromString(
-            "{\"name\":\"UrlPath\",\"parameters\":{\"typeName\":\"DeliveryRuleUrlPathMatchConditionParameters\",\"operator\":\"Equal\",\"negateCondition\":true,\"matchValues\":[\"auorsukokw\",\"qplhlvnu\"],\"transforms\":[\"UrlDecode\",\"Uppercase\"]}}")
+            "{\"name\":\"UrlPath\",\"parameters\":{\"typeName\":\"DeliveryRuleUrlPathMatchConditionParameters\",\"operator\":\"Any\",\"negateCondition\":true,\"matchValues\":[\"fozauorsuk\"],\"transforms\":[\"Trim\",\"UrlDecode\"]}}")
             .toObject(DeliveryRuleUrlPathCondition.class);
-        Assertions.assertEquals(UrlPathOperator.EQUAL, model.parameters().operator());
+        Assertions.assertEquals(UrlPathOperator.ANY, model.parameters().operator());
         Assertions.assertTrue(model.parameters().negateCondition());
-        Assertions.assertEquals("auorsukokw", model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.URL_DECODE, model.parameters().transforms().get(0));
+        Assertions.assertEquals("fozauorsuk", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.TRIM, model.parameters().transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeliveryRuleUrlPathCondition model = new DeliveryRuleUrlPathCondition()
-            .withParameters(new UrlPathMatchConditionParameters().withOperator(UrlPathOperator.EQUAL)
+            .withParameters(new UrlPathMatchConditionParameters().withOperator(UrlPathOperator.ANY)
                 .withNegateCondition(true)
-                .withMatchValues(Arrays.asList("auorsukokw", "qplhlvnu"))
-                .withTransforms(Arrays.asList(Transform.URL_DECODE, Transform.UPPERCASE)));
+                .withMatchValues(Arrays.asList("fozauorsuk"))
+                .withTransforms(Arrays.asList(Transform.TRIM, Transform.URL_DECODE)));
         model = BinaryData.fromObject(model).toObject(DeliveryRuleUrlPathCondition.class);
-        Assertions.assertEquals(UrlPathOperator.EQUAL, model.parameters().operator());
+        Assertions.assertEquals(UrlPathOperator.ANY, model.parameters().operator());
         Assertions.assertTrue(model.parameters().negateCondition());
-        Assertions.assertEquals("auorsukokw", model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.URL_DECODE, model.parameters().transforms().get(0));
+        Assertions.assertEquals("fozauorsuk", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.TRIM, model.parameters().transforms().get(0));
     }
 }

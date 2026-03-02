@@ -16,25 +16,25 @@ public final class DeliveryRuleHostnameConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryRuleHostnameCondition model = BinaryData.fromString(
-            "{\"name\":\"HostName\",\"parameters\":{\"typeName\":\"DeliveryRuleHostNameConditionParameters\",\"operator\":\"EndsWith\",\"negateCondition\":true,\"matchValues\":[\"sgow\",\"fttsttk\",\"lahb\"],\"transforms\":[\"Lowercase\",\"RemoveNulls\",\"RemoveNulls\"]}}")
+            "{\"name\":\"HostName\",\"parameters\":{\"typeName\":\"DeliveryRuleHostNameConditionParameters\",\"operator\":\"LessThanOrEqual\",\"negateCondition\":false,\"matchValues\":[\"kfm\",\"nsgowzfttst\"],\"transforms\":[\"UrlDecode\",\"UrlDecode\"]}}")
             .toObject(DeliveryRuleHostnameCondition.class);
-        Assertions.assertEquals(HostnameOperator.ENDS_WITH, model.parameters().operator());
-        Assertions.assertTrue(model.parameters().negateCondition());
-        Assertions.assertEquals("sgow", model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.LOWERCASE, model.parameters().transforms().get(0));
+        Assertions.assertEquals(HostnameOperator.LESS_THAN_OR_EQUAL, model.parameters().operator());
+        Assertions.assertFalse(model.parameters().negateCondition());
+        Assertions.assertEquals("kfm", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.URL_DECODE, model.parameters().transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeliveryRuleHostnameCondition model = new DeliveryRuleHostnameCondition()
-            .withParameters(new HostnameMatchConditionParameters().withOperator(HostnameOperator.ENDS_WITH)
-                .withNegateCondition(true)
-                .withMatchValues(Arrays.asList("sgow", "fttsttk", "lahb"))
-                .withTransforms(Arrays.asList(Transform.LOWERCASE, Transform.REMOVE_NULLS, Transform.REMOVE_NULLS)));
+            .withParameters(new HostnameMatchConditionParameters().withOperator(HostnameOperator.LESS_THAN_OR_EQUAL)
+                .withNegateCondition(false)
+                .withMatchValues(Arrays.asList("kfm", "nsgowzfttst"))
+                .withTransforms(Arrays.asList(Transform.URL_DECODE, Transform.URL_DECODE)));
         model = BinaryData.fromObject(model).toObject(DeliveryRuleHostnameCondition.class);
-        Assertions.assertEquals(HostnameOperator.ENDS_WITH, model.parameters().operator());
-        Assertions.assertTrue(model.parameters().negateCondition());
-        Assertions.assertEquals("sgow", model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.LOWERCASE, model.parameters().transforms().get(0));
+        Assertions.assertEquals(HostnameOperator.LESS_THAN_OR_EQUAL, model.parameters().operator());
+        Assertions.assertFalse(model.parameters().negateCondition());
+        Assertions.assertEquals("kfm", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.URL_DECODE, model.parameters().transforms().get(0));
     }
 }

@@ -16,25 +16,25 @@ public final class DeliveryRuleUrlFileExtensionConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryRuleUrlFileExtensionCondition model = BinaryData.fromString(
-            "{\"name\":\"UrlFileExtension\",\"parameters\":{\"typeName\":\"DeliveryRuleUrlFileExtensionMatchConditionParameters\",\"operator\":\"RegEx\",\"negateCondition\":false,\"matchValues\":[\"soldweyuqdunv\",\"nnrwrbiork\"],\"transforms\":[\"UrlDecode\",\"UrlEncode\"]}}")
+            "{\"name\":\"UrlFileExtension\",\"parameters\":{\"typeName\":\"DeliveryRuleUrlFileExtensionMatchConditionParameters\",\"operator\":\"GreaterThanOrEqual\",\"negateCondition\":true,\"matchValues\":[\"nuuepzlrp\",\"wzsoldweyuqdunv\"],\"transforms\":[\"RemoveNulls\",\"Uppercase\",\"Trim\"]}}")
             .toObject(DeliveryRuleUrlFileExtensionCondition.class);
-        Assertions.assertEquals(UrlFileExtensionOperator.REG_EX, model.parameters().operator());
-        Assertions.assertFalse(model.parameters().negateCondition());
-        Assertions.assertEquals("soldweyuqdunv", model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.URL_DECODE, model.parameters().transforms().get(0));
+        Assertions.assertEquals(UrlFileExtensionOperator.GREATER_THAN_OR_EQUAL, model.parameters().operator());
+        Assertions.assertTrue(model.parameters().negateCondition());
+        Assertions.assertEquals("nuuepzlrp", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.REMOVE_NULLS, model.parameters().transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeliveryRuleUrlFileExtensionCondition model = new DeliveryRuleUrlFileExtensionCondition()
-            .withParameters(new UrlFileExtensionMatchConditionParameters().withOperator(UrlFileExtensionOperator.REG_EX)
-                .withNegateCondition(false)
-                .withMatchValues(Arrays.asList("soldweyuqdunv", "nnrwrbiork"))
-                .withTransforms(Arrays.asList(Transform.URL_DECODE, Transform.URL_ENCODE)));
+        DeliveryRuleUrlFileExtensionCondition model = new DeliveryRuleUrlFileExtensionCondition().withParameters(
+            new UrlFileExtensionMatchConditionParameters().withOperator(UrlFileExtensionOperator.GREATER_THAN_OR_EQUAL)
+                .withNegateCondition(true)
+                .withMatchValues(Arrays.asList("nuuepzlrp", "wzsoldweyuqdunv"))
+                .withTransforms(Arrays.asList(Transform.REMOVE_NULLS, Transform.UPPERCASE, Transform.TRIM)));
         model = BinaryData.fromObject(model).toObject(DeliveryRuleUrlFileExtensionCondition.class);
-        Assertions.assertEquals(UrlFileExtensionOperator.REG_EX, model.parameters().operator());
-        Assertions.assertFalse(model.parameters().negateCondition());
-        Assertions.assertEquals("soldweyuqdunv", model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.URL_DECODE, model.parameters().transforms().get(0));
+        Assertions.assertEquals(UrlFileExtensionOperator.GREATER_THAN_OR_EQUAL, model.parameters().operator());
+        Assertions.assertTrue(model.parameters().negateCondition());
+        Assertions.assertEquals("nuuepzlrp", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.REMOVE_NULLS, model.parameters().transforms().get(0));
     }
 }

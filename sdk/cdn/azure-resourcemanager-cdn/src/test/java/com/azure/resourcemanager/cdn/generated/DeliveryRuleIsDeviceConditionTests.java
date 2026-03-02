@@ -17,13 +17,13 @@ public final class DeliveryRuleIsDeviceConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryRuleIsDeviceCondition model = BinaryData.fromString(
-            "{\"name\":\"IsDevice\",\"parameters\":{\"typeName\":\"DeliveryRuleIsDeviceConditionParameters\",\"operator\":\"Equal\",\"negateCondition\":false,\"matchValues\":[\"Mobile\",\"Mobile\"],\"transforms\":[\"Lowercase\",\"Trim\",\"Lowercase\"]}}")
+            "{\"name\":\"IsDevice\",\"parameters\":{\"typeName\":\"DeliveryRuleIsDeviceConditionParameters\",\"operator\":\"Equal\",\"negateCondition\":false,\"matchValues\":[\"Desktop\"],\"transforms\":[\"UrlDecode\",\"Lowercase\"]}}")
             .toObject(DeliveryRuleIsDeviceCondition.class);
         Assertions.assertEquals(IsDeviceOperator.EQUAL, model.parameters().operator());
         Assertions.assertFalse(model.parameters().negateCondition());
-        Assertions.assertEquals(IsDeviceMatchConditionParametersMatchValuesItem.MOBILE,
+        Assertions.assertEquals(IsDeviceMatchConditionParametersMatchValuesItem.DESKTOP,
             model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.LOWERCASE, model.parameters().transforms().get(0));
+        Assertions.assertEquals(Transform.URL_DECODE, model.parameters().transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -31,14 +31,13 @@ public final class DeliveryRuleIsDeviceConditionTests {
         DeliveryRuleIsDeviceCondition model = new DeliveryRuleIsDeviceCondition()
             .withParameters(new IsDeviceMatchConditionParameters().withOperator(IsDeviceOperator.EQUAL)
                 .withNegateCondition(false)
-                .withMatchValues(Arrays.asList(IsDeviceMatchConditionParametersMatchValuesItem.MOBILE,
-                    IsDeviceMatchConditionParametersMatchValuesItem.MOBILE))
-                .withTransforms(Arrays.asList(Transform.LOWERCASE, Transform.TRIM, Transform.LOWERCASE)));
+                .withMatchValues(Arrays.asList(IsDeviceMatchConditionParametersMatchValuesItem.DESKTOP))
+                .withTransforms(Arrays.asList(Transform.URL_DECODE, Transform.LOWERCASE)));
         model = BinaryData.fromObject(model).toObject(DeliveryRuleIsDeviceCondition.class);
         Assertions.assertEquals(IsDeviceOperator.EQUAL, model.parameters().operator());
         Assertions.assertFalse(model.parameters().negateCondition());
-        Assertions.assertEquals(IsDeviceMatchConditionParametersMatchValuesItem.MOBILE,
+        Assertions.assertEquals(IsDeviceMatchConditionParametersMatchValuesItem.DESKTOP,
             model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.LOWERCASE, model.parameters().transforms().get(0));
+        Assertions.assertEquals(Transform.URL_DECODE, model.parameters().transforms().get(0));
     }
 }

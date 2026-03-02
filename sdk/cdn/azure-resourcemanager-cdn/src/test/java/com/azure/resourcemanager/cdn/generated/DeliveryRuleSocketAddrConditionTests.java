@@ -16,12 +16,12 @@ public final class DeliveryRuleSocketAddrConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryRuleSocketAddrCondition model = BinaryData.fromString(
-            "{\"name\":\"SocketAddr\",\"parameters\":{\"typeName\":\"DeliveryRuleSocketAddrConditionParameters\",\"operator\":\"Any\",\"negateCondition\":true,\"matchValues\":[\"scjfnyns\",\"qujizdvo\",\"ytibyow\",\"blgyavutpthj\"],\"transforms\":[\"UrlEncode\",\"Lowercase\",\"UrlEncode\",\"Lowercase\"]}}")
+            "{\"name\":\"SocketAddr\",\"parameters\":{\"typeName\":\"DeliveryRuleSocketAddrConditionParameters\",\"operator\":\"Any\",\"negateCondition\":true,\"matchValues\":[\"owbb\"],\"transforms\":[\"Lowercase\",\"UrlEncode\",\"RemoveNulls\",\"Lowercase\"]}}")
             .toObject(DeliveryRuleSocketAddrCondition.class);
         Assertions.assertEquals(SocketAddrOperator.ANY, model.parameters().operator());
         Assertions.assertTrue(model.parameters().negateCondition());
-        Assertions.assertEquals("scjfnyns", model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.URL_ENCODE, model.parameters().transforms().get(0));
+        Assertions.assertEquals("owbb", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.LOWERCASE, model.parameters().transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -29,13 +29,13 @@ public final class DeliveryRuleSocketAddrConditionTests {
         DeliveryRuleSocketAddrCondition model = new DeliveryRuleSocketAddrCondition()
             .withParameters(new SocketAddrMatchConditionParameters().withOperator(SocketAddrOperator.ANY)
                 .withNegateCondition(true)
-                .withMatchValues(Arrays.asList("scjfnyns", "qujizdvo", "ytibyow", "blgyavutpthj"))
-                .withTransforms(Arrays.asList(Transform.URL_ENCODE, Transform.LOWERCASE, Transform.URL_ENCODE,
+                .withMatchValues(Arrays.asList("owbb"))
+                .withTransforms(Arrays.asList(Transform.LOWERCASE, Transform.URL_ENCODE, Transform.REMOVE_NULLS,
                     Transform.LOWERCASE)));
         model = BinaryData.fromObject(model).toObject(DeliveryRuleSocketAddrCondition.class);
         Assertions.assertEquals(SocketAddrOperator.ANY, model.parameters().operator());
         Assertions.assertTrue(model.parameters().negateCondition());
-        Assertions.assertEquals("scjfnyns", model.parameters().matchValues().get(0));
-        Assertions.assertEquals(Transform.URL_ENCODE, model.parameters().transforms().get(0));
+        Assertions.assertEquals("owbb", model.parameters().matchValues().get(0));
+        Assertions.assertEquals(Transform.LOWERCASE, model.parameters().transforms().get(0));
     }
 }
