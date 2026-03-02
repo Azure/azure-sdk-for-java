@@ -154,7 +154,7 @@ com.azure:azure-messaging-eventgrid;4.31.5;4.32.0-beta.1
 com.azure:azure-messaging-eventgrid-systemevents;1.0.0;1.1.0-beta.1
 com.azure:azure-messaging-eventgrid-namespaces;1.1.9;1.2.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-messaging-eventhubs;5.21.3;5.22.0-beta.1
+com.azure:azure-messaging-eventhubs;5.21.3;5.21.3
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.21.3;1.21.4
 com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
@@ -192,12 +192,12 @@ com.azure:azure-sdk-template-three;1.0.0-beta.1;1.0.0-beta.1
 com.azure.v2:azure-sdk-template;1.0.1-beta.1;1.0.1-beta.1
 com.azure.v2:azure-sdk-template-two;1.0.0-beta.1;1.0.0-beta.1
 com.azure.v2:azure-sdk-template-three;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-blob;12.33.2;12.34.0-beta.2
+com.azure:azure-storage-blob;12.33.2;12.33.2
 com.azure:azure-storage-blob-batch;12.29.1;12.29.2
 com.azure:azure-storage-blob-changefeed;12.0.0-beta.35;12.0.0-beta.36
 com.azure:azure-storage-blob-cryptography;12.32.1;12.32.2
 com.azure:azure-storage-blob-nio;12.0.0-beta.36;12.0.0-beta.37
-com.azure:azure-storage-common;12.32.2;12.33.0-beta.2
+com.azure:azure-storage-common;12.32.2;12.32.2
 com.azure:azure-storage-file-share;12.29.2;12.30.0-beta.2
 com.azure:azure-storage-file-datalake;12.26.2;12.27.0-beta.2
 com.azure:azure-storage-internal-avro;12.18.1;12.18.2
