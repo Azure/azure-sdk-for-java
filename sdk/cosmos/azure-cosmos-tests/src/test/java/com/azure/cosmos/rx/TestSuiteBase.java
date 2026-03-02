@@ -285,6 +285,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             SHARED_DATABASE_INTERNAL.setId(databaseId);
             SHARED_DATABASE_INTERNAL.setResourceId(databaseResourceId);
             SHARED_DATABASE_INTERNAL.setSelfLink(String.format("dbs/%s", databaseId));
+            SHARED_DATABASE_INTERNAL.setAltLink(String.format("dbs/%s", databaseId));
 
             SHARED_MULTI_PARTITION_COLLECTION_INTERNAL = getInternalDocumentCollection(SHARED_MULTI_PARTITION_COLLECTION, databaseId);
             SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL = getInternalDocumentCollection(SHARED_SINGLE_PARTITION_COLLECTION, databaseId);
