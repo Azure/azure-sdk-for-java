@@ -13,6 +13,9 @@ import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Metrics;
+
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -123,24 +126,46 @@ public class BenchmarkOrchestrator {
                 config.getResultUploadDatabase(), config.getResultUploadContainer());
         }
 
+        // Netty HTTP connection pool metrics reporter (only when enabled)
+        NettyHttpMetricsReporter nettyMetricsReporter = null;
+        SimpleMeterRegistry nettyHttpMeterRegistry = null;
+        // Add a SimpleMeterRegistry to globalRegistry when netty metrics are enabled,
+        if (config.isEnableNettyHttpMetrics() && config.getReportingDirectory() != null) {
+            nettyHttpMeterRegistry = new SimpleMeterRegistry();
+            Metrics.addRegistry(nettyHttpMeterRegistry);
+            logger.info("SimpleMeterRegistry added to globalRegistry for Reactor Netty pool gauge backing");
+
+            Path nettyMetricsDir = Paths.get(config.getReportingDirectory());
+            nettyMetricsReporter = new NettyHttpMetricsReporter(nettyHttpMeterRegistry, nettyMetricsDir);
+            nettyMetricsReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+        }
+
         reporter.report();
         logger.info("[LIFECYCLE] PRE_CREATE timestamp={}", Instant.now());
         logger.info("BenchmarkConfig: {}", config);
 
         // ======== Lifecycle loop ========
-        runLifecycleLoop(config, registry, reporter);
-
-        // Cleanup reporters
-        reporter.report();
-        reporter.stop();
-        if (resultReporter != null) {
-            resultReporter.report();
-            resultReporter.stop();
+        try {
+            runLifecycleLoop(config, registry, reporter);
+        } finally {
+            // Cleanup reporters
+            reporter.report();
+            reporter.stop();
+            if (resultReporter != null) {
+                resultReporter.report();
+                resultReporter.stop();
+            }
+            if (resultUploaderClient != null) {
+                resultUploaderClient.close();
+            }
+            if (nettyMetricsReporter != null) {
+                nettyMetricsReporter.stop();
+            }
+            if (nettyHttpMeterRegistry != null) {
+                Metrics.removeRegistry(nettyHttpMeterRegistry);
+            }
+            clearGlobalSystemProperties();
         }
-        if (resultUploaderClient != null) {
-            resultUploaderClient.close();
-        }
-        clearGlobalSystemProperties();
     }
 
     // ======== Lifecycle loop (create -> run -> close -> settle x N) ========
@@ -348,6 +373,7 @@ public class BenchmarkOrchestrator {
         System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF");
         System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF");
         System.clearProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT");
+        System.clearProperty("COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED");
     }
 
     private void setGlobalSystemProperties(BenchmarkConfig config) {
@@ -371,6 +397,11 @@ public class BenchmarkOrchestrator {
         if (config.getMinConnectionPoolSizePerEndpoint() >= 1) {
             System.setProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT",
                 String.valueOf(config.getMinConnectionPoolSizePerEndpoint()));
+        }
+
+        if (config.isEnableNettyHttpMetrics()) {
+            System.setProperty("COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED", "true");
+            logger.info("Reactor Netty HTTP connection pool metrics enabled");
         }
 
         logger.info("Global system properties set (circuit breaker: {}, PPAF: {}, minConnPoolSize: {})",

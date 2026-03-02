@@ -92,7 +92,8 @@ abstract class AsyncBenchmark<T> {
                 .preferredRegions(cfg.getPreferredRegionsList())
                 .consistencyLevel(cfg.getConsistencyLevel())
                 .userAgentSuffix(cfg.getApplicationName())
-                .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled());
+                .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
+                .connectionSharingAcrossClientsEnabled(cfg.isConnectionSharingAcrossClientsEnabled());
 
         clientBuilderAccessor
             .setRegionScopedSessionCapturingEnabled(benchmarkSpecificClientBuilder, cfg.isRegionScopedSessionContainerEnabled());
@@ -252,7 +253,14 @@ abstract class AsyncBenchmark<T> {
             }
         }
 
-        docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();
+        if (createDocumentObservables.isEmpty()) {
+            docsToRead = new ArrayList<>();
+        } else {
+            int prePopConcurrency = Math.max(1, Math.min(cfg.getConcurrency(), 100));
+            docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), prePopConcurrency)
+                .collectList()
+                .block();
+        }
         logger.info("Finished pre-populating {} documents", cfg.getNumberOfPreCreatedDocuments());
 
         init();

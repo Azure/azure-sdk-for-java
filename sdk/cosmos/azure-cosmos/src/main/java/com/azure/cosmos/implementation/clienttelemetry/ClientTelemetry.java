@@ -208,8 +208,10 @@ public class ClientTelemetry {
             })
         )
         .onErrorResume(throwable -> {
-            logger.debug("Client is not on azure vm");
-            logger.debug("Unable to get azure vm metadata", throwable);
+            logger.debug(
+                "Unable to retrieve Azure VM metadata from IMDS; assuming metadata is not available. "
+                    + "This may indicate the client is not running on an Azure VM or there was a transient issue contacting IMDS.",
+                throwable);
             return Mono.just(METADATA_NOT_AVAILABLE);
         })
         .subscribeOn(reactor.core.scheduler.Schedulers.boundedElastic());
