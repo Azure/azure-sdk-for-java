@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * File search
+ *
  * A tool that searches for relevant content from uploaded files. Learn more about the [file search
  * tool](https://platform.openai.com/docs/guides/tools-file-search).
  */
@@ -38,7 +40,7 @@ public final class FileSearchTool extends Tool {
     private RankingOptions rankingOptions;
 
     /*
-     * A filter to apply.
+     * The filters property.
      */
     @Generated
     private BinaryData filters;
@@ -97,7 +99,7 @@ public final class FileSearchTool extends Tool {
     }
 
     /**
-     * Get the filters property: A filter to apply.
+     * Get the filters property: The filters property.
      *
      * @return the filters value.
      */
@@ -107,7 +109,7 @@ public final class FileSearchTool extends Tool {
     }
 
     /**
-     * Set the filters property: A filter to apply.
+     * Set the filters property: The filters property.
      *
      * @param filters the filters value to set.
      * @return the FileSearchTool object itself.
@@ -151,7 +153,7 @@ public final class FileSearchTool extends Tool {
         return jsonReader.readObject(reader -> {
             List<String> vectorStoreIds = null;
             ToolType type = ToolType.FILE_SEARCH;
-            Integer maxResults = null;
+            Long maxResults = null;
             RankingOptions rankingOptions = null;
             BinaryData filters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -162,7 +164,7 @@ public final class FileSearchTool extends Tool {
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
                 } else if ("max_num_results".equals(fieldName)) {
-                    maxResults = reader.getNullable(JsonReader::getInt);
+                    maxResults = reader.getNullable(JsonReader::getLong);
                 } else if ("ranking_options".equals(fieldName)) {
                     rankingOptions = RankingOptions.fromJson(reader);
                 } else if ("filters".equals(fieldName)) {
@@ -184,7 +186,7 @@ public final class FileSearchTool extends Tool {
      * The maximum number of results to return. This number should be between 1 and 50 inclusive.
      */
     @Generated
-    private Integer maxResults;
+    private Long maxResults;
 
     /**
      * Get the maxResults property: The maximum number of results to return. This number should be between 1 and 50
@@ -193,7 +195,7 @@ public final class FileSearchTool extends Tool {
      * @return the maxResults value.
      */
     @Generated
-    public Integer getMaxResults() {
+    public Long getMaxResults() {
         return this.maxResults;
     }
 
@@ -205,7 +207,7 @@ public final class FileSearchTool extends Tool {
      * @return the FileSearchTool object itself.
      */
     @Generated
-    public FileSearchTool setMaxResults(Integer maxResults) {
+    public FileSearchTool setMaxResults(Long maxResults) {
         this.maxResults = maxResults;
         return this;
     }

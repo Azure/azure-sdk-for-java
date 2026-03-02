@@ -68,6 +68,7 @@
     <module>sdk/containerservicefleet</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
+    <module>sdk/contentunderstanding</module>
     <module>sdk/core</module>
     <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
@@ -274,6 +275,7 @@
     <module>sdk/virtualenclaves</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
+    <module>sdk/voicelive</module>
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
     <module>sdk/weightsandbiases</module>

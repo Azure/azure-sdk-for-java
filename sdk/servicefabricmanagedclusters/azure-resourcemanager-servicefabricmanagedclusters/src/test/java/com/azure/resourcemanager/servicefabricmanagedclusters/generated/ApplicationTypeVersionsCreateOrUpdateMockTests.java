@@ -23,7 +23,7 @@ public final class ApplicationTypeVersionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"appPackageUrl\":\"wxdzaumweoohgu\"},\"tags\":{\"olbaemwmdx\":\"zboyjathwt\",\"f\":\"ebwjscjpahlxvea\",\"qcttadijaeukmrsi\":\"xnmwmqtibxyijddt\"},\"location\":\"kpn\",\"id\":\"aapm\",\"name\":\"dqmeqwigpibudq\",\"type\":\"yxeb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"appPackageUrl\":\"avft\"},\"tags\":{\"civmmg\":\"dqazkmtgguwpijra\",\"fiwrxgkn\":\"f\",\"oxgsgbpfgzdjtx\":\"uvyinzqodfvpgs\",\"qvlgafcqusrdvetn\":\"zflbqvg\"},\"location\":\"dtutnwldu\",\"id\":\"vuzhyr\",\"name\":\"ewipm\",\"type\":\"ekdxuku\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class ApplicationTypeVersionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationTypeVersionResource response = manager.applicationTypeVersions()
-            .define("smkss")
-            .withExistingApplicationType("ppipifhpfeoa", "vgcxtx", "csheafidltugsr")
-            .withRegion("nkjpdnjzha")
-            .withTags(mapOf("hm", "biqtgdq", "lllibph", "wsldrizetpwbr", "a", "qzmiza"))
-            .withAppPackageUrl("egprhptil")
+            .define("wpfaj")
+            .withExistingApplicationType("qxzhem", "yhohujswtwkozzwc", "lkb")
+            .withRegion("djhlimm")
+            .withTags(mapOf("azul", "imlnwiaaomylw", "jhlfzswpchwahf", "sethwwn", "wlyxgncxyk", "ousnfepgfewe"))
+            .withAppPackageUrl("vkcdmxzr")
             .create();
 
-        Assertions.assertEquals("zboyjathwt", response.tags().get("olbaemwmdx"));
-        Assertions.assertEquals("kpn", response.location());
-        Assertions.assertEquals("wxdzaumweoohgu", response.appPackageUrl());
+        Assertions.assertEquals("dqazkmtgguwpijra", response.tags().get("civmmg"));
+        Assertions.assertEquals("dtutnwldu", response.location());
+        Assertions.assertEquals("avft", response.appPackageUrl());
     }
 
     // Use "Map.of" if available

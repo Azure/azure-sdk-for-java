@@ -47,7 +47,7 @@ public final class MemoryStoreUpdateResponse implements JsonSerializable<MemoryS
      * Error object that describes the error when status is "failed".
      */
     @Generated
-    private Error error;
+    private OpenAIError error;
 
     /**
      * Creates an instance of MemoryStoreUpdateResponse class.
@@ -109,7 +109,7 @@ public final class MemoryStoreUpdateResponse implements JsonSerializable<MemoryS
      * @return the error value.
      */
     @Generated
-    public Error getError() {
+    public OpenAIError getError() {
         return this.error;
     }
 
@@ -144,7 +144,7 @@ public final class MemoryStoreUpdateResponse implements JsonSerializable<MemoryS
             MemoryStoreUpdateStatus status = null;
             String supersededBy = null;
             MemoryStoreUpdateCompletedResult result = null;
-            Error error = null;
+            OpenAIError error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -157,7 +157,7 @@ public final class MemoryStoreUpdateResponse implements JsonSerializable<MemoryS
                 } else if ("result".equals(fieldName)) {
                     result = MemoryStoreUpdateCompletedResult.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
-                    error = Error.fromJson(reader);
+                    error = OpenAIError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

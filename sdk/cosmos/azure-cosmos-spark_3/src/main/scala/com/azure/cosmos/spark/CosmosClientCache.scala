@@ -993,9 +993,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this] class CosmosAccessTokenCredential(val tokenProvider: List[String] =>CosmosAccessToken) extends TokenCredential {
     override def getToken(tokenRequestContext: TokenRequestContext): Mono[AccessToken] = {
+      val scopes = tokenRequestContext.getScopes.asScala.toList
+      logDebug(s"CosmosAccessTokenCredential:getToken(${scopes.mkString(", ")} - Callstack = ${Thread.currentThread().getStackTrace.mkString("\n")})")
       val returnValue: Mono[AccessToken] = Mono.fromCallable(() => {
         val token = tokenProvider
-          .apply(tokenRequestContext.getScopes.asScala.toList)
+          .apply(scopes)
 
         new AccessToken(token.token, token.Offset)
       })
