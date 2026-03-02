@@ -91,6 +91,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
     private RxClientCollectionCache collectionCache;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
+    private final Map<String, String> customHeaders;
 
     public RxGatewayStoreModel(
         DiagnosticsClientContext clientContext,
@@ -100,7 +101,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         UserAgentContainer userAgentContainer,
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
-        ApiType apiType) {
+        ApiType apiType,
+        Map<String, String> customHeaders) {
 
         this.clientContext = clientContext;
 
@@ -116,6 +118,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         this.httpClient = httpClient;
         this.sessionContainer = sessionContainer;
+        this.customHeaders = customHeaders;
     }
 
     public RxGatewayStoreModel(RxGatewayStoreModel inner) {
@@ -127,6 +130,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         this.httpClient = inner.httpClient;
         this.sessionContainer = inner.sessionContainer;
+        this.customHeaders = inner.customHeaders;
     }
 
     protected Map<String, String> getDefaultHeaders(
@@ -277,6 +281,17 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         try {
             if (request.requestContext.cosmosDiagnostics == null) {
                 request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
+            }
+
+            // Apply client-level custom headers (e.g., workload-id) to all requests
+            // including metadata requests (collection cache, partition key range, etc.)
+            if (this.customHeaders != null && !this.customHeaders.isEmpty()) {
+                for (Map.Entry<String, String> entry : this.customHeaders.entrySet()) {
+                    // Only set if not already present — request-level headers take precedence
+                    if (!request.getHeaders().containsKey(entry.getKey())) {
+                        request.getHeaders().put(entry.getKey(), entry.getValue());
+                    }
+                }
             }
 
             URI uri = getUri(request);

@@ -7,7 +7,7 @@ import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ReadConsistencyStrategy, spark}
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
-import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings, Utils}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosContainerIdentity, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange, PartitionKeyDefinition}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
@@ -735,9 +735,14 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     key = CosmosConfigNames.CustomHeaders,
     mandatory = false,
     parseFromStringFunction = headersJson => {
-      val mapper = new com.fasterxml.jackson.databind.ObjectMapper()
-      val typeRef = new com.fasterxml.jackson.core.`type`.TypeReference[java.util.Map[String, String]]() {}
-      mapper.readValue(headersJson, typeRef).asScala.toMap
+      try {
+        val typeRef = new com.fasterxml.jackson.core.`type`.TypeReference[java.util.Map[String, String]]() {}
+        Utils.getSimpleObjectMapperWithAllowDuplicates.readValue(headersJson, typeRef).asScala.toMap
+      } catch {
+        case e: Exception => throw new IllegalArgumentException(
+          s"Invalid JSON for '${CosmosConfigNames.CustomHeaders}': '$headersJson'. " +
+            "Expected format: {\"x-ms-cosmos-workload-id\": \"15\"}", e)
+      }
     },
     helpMessage = "Optional custom headers as JSON map. Example: {\"x-ms-cosmos-workload-id\": \"15\"}")
 

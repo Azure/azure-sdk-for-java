@@ -863,7 +863,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.userAgentContainer,
                 this.globalEndpointManager,
                 this.reactorHttpClient,
-                this.apiType);
+                this.apiType,
+                this.customHeaders);
 
             this.thinProxy = createThinProxy(this.sessionContainer,
                 this.consistencyLevel,
@@ -969,7 +970,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             //     this.gatewayConfigurationReader,
             null,
             this.connectionPolicy,
-            this.apiType);
+            this.apiType,
+            this.customHeaders);
 
         this.storeClientFactory = new StoreClientFactory(
             this.addressResolver,
@@ -1013,7 +1015,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                              UserAgentContainer userAgentContainer,
                                              GlobalEndpointManager globalEndpointManager,
                                              HttpClient httpClient,
-                                             ApiType apiType) {
+                                             ApiType apiType,
+                                             Map<String, String> customHeaders) {
         return new RxGatewayStoreModel(
                 this,
                 sessionContainer,
@@ -1022,7 +1025,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 userAgentContainer,
                 globalEndpointManager,
                 httpClient,
-                apiType);
+                apiType,
+                customHeaders);
     }
 
     ThinClientStoreModel createThinProxy(ISessionContainer sessionContainer,

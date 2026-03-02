@@ -9,6 +9,7 @@ import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import org.testng.annotations.Test;
 
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Unit tests for the custom headers (workload-id) feature on CosmosClientBuilder and request options classes.
@@ -73,23 +75,40 @@ public class CustomHeadersTests {
     }
 
     /**
-     * Verifies that multiple custom headers can be set at once on the builder and
-     * all entries are preserved and retrievable with correct keys and values.
+     * Verifies that headers not in the allowlist are rejected with IllegalArgumentException.
+     * This ensures consistent behavior across Gateway and Direct modes — only headers with
+     * RNTBD encoding support are allowed.
      */
     @Test(groups = { "unit" })
-    public void multipleCustomHeadersSupported() {
+    public void unknownHeaderRejectedByAllowlist() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("x-ms-custom-header", "value");
+
+        assertThatThrownBy(() -> new CosmosClientBuilder()
+            .endpoint("https://test.documents.azure.com:443/")
+            .key("dGVzdEtleQ==")
+            .customHeaders(headers))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("x-ms-custom-header")
+            .hasMessageContaining("not allowed");
+    }
+
+    /**
+     * Verifies that a map containing both an allowed header and a disallowed header
+     * is rejected — the entire map must pass the allowlist check.
+     */
+    @Test(groups = { "unit" })
+    public void mixedAllowedAndDisallowedHeadersRejected() {
         Map<String, String> headers = new HashMap<>();
         headers.put("x-ms-cosmos-workload-id", "15");
         headers.put("x-ms-custom-header", "value");
 
-        CosmosClientBuilder builder = new CosmosClientBuilder()
+        assertThatThrownBy(() -> new CosmosClientBuilder()
             .endpoint("https://test.documents.azure.com:443/")
             .key("dGVzdEtleQ==")
-            .customHeaders(headers);
-
-        assertThat(builder.getCustomHeaders()).hasSize(2);
-        assertThat(builder.getCustomHeaders()).containsEntry("x-ms-cosmos-workload-id", "15");
-        assertThat(builder.getCustomHeaders()).containsEntry("x-ms-custom-header", "value");
+            .customHeaders(headers))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("x-ms-custom-header");
     }
 
     /**
@@ -159,6 +178,19 @@ public class CustomHeadersTests {
     }
 
     /**
+     * Verifies that the new delegating setHeader() method on CosmosReadManyRequestOptions
+     * is publicly accessible and supports fluent chaining for per-request header
+     * overrides on read-many operations.
+     */
+    @Test(groups = { "unit" })
+    public void setHeaderOnReadManyRequestOptionsIsPublic() {
+        CosmosReadManyRequestOptions options = new CosmosReadManyRequestOptions()
+            .setHeader("x-ms-cosmos-workload-id", "40");
+
+        assertThat(options).isNotNull();
+    }
+
+    /**
      * Verifies that the WORKLOAD_ID constant in HttpConstants.HttpHeaders is defined
      * with the correct canonical header name "x-ms-cosmos-workload-id" as expected
      * by the Cosmos DB service.
@@ -166,5 +198,59 @@ public class CustomHeadersTests {
     @Test(groups = { "unit" })
     public void workloadIdHttpHeaderConstant() {
         assertThat(HttpConstants.HttpHeaders.WORKLOAD_ID).isEqualTo("x-ms-cosmos-workload-id");
+    }
+
+    /**
+     * Verifies that a non-numeric workload-id value is rejected at builder level with
+     * IllegalArgumentException. This covers both Gateway and Direct modes consistently
+     * (unlike RntbdRequestHeaders.addWorkloadId() which only covers Direct mode).
+     */
+    @Test(groups = { "unit" })
+    public void nonNumericWorkloadIdRejectedAtBuilderLevel() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "abc");
+
+        assertThatThrownBy(() -> new CosmosClientBuilder()
+            .endpoint("https://test.documents.azure.com:443/")
+            .key("dGVzdEtleQ==")
+            .customHeaders(headers))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("abc")
+            .hasMessageContaining("valid integer");
+    }
+
+    /**
+     * Verifies that out-of-range workload-id values (e.g., 51) are accepted by the SDK.
+     * Range validation [1, 50] is the backend's responsibility — the SDK only validates
+     * that the value is a valid integer. This avoids hardcoding a range the backend team
+     * might change in the future.
+     */
+    @Test(groups = { "unit" })
+    public void outOfRangeWorkloadIdAcceptedByBuilder() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "51");
+
+        CosmosClientBuilder builder = new CosmosClientBuilder()
+            .endpoint("https://test.documents.azure.com:443/")
+            .key("dGVzdEtleQ==")
+            .customHeaders(headers);
+
+        assertThat(builder.getCustomHeaders()).containsEntry(HttpConstants.HttpHeaders.WORKLOAD_ID, "51");
+    }
+
+    /**
+     * Verifies that a valid workload-id value passes builder validation.
+     */
+    @Test(groups = { "unit" })
+    public void validWorkloadIdAcceptedByBuilder() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "15");
+
+        CosmosClientBuilder builder = new CosmosClientBuilder()
+            .endpoint("https://test.documents.azure.com:443/")
+            .key("dGVzdEtleQ==")
+            .customHeaders(headers);
+
+        assertThat(builder.getCustomHeaders()).containsEntry(HttpConstants.HttpHeaders.WORKLOAD_ID, "15");
     }
 }

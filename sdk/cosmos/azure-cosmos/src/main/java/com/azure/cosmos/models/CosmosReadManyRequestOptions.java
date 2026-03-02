@@ -366,6 +366,22 @@ public final class CosmosReadManyRequestOptions {
         return this.actualRequestOptions.getKeywordIdentifiers();
     }
 
+    /**
+     * Sets a custom header to be included with this specific request.
+     * <p>
+     * This allows per-request header customization, such as setting a workload ID
+     * that overrides the client-level default set via
+     * {@link com.azure.cosmos.CosmosClientBuilder#customHeaders(java.util.Map)}.
+     *
+     * @param name  the header name (e.g., "x-ms-cosmos-workload-id")
+     * @param value the header value (e.g., "20")
+     * @return the CosmosReadManyRequestOptions.
+     */
+    public CosmosReadManyRequestOptions setHeader(String name, String value) {
+        this.actualRequestOptions.setHeader(name, value);
+        return this;
+    }
+
     CosmosQueryRequestOptionsBase<?> getImpl() {
         return this.actualRequestOptions;
     }

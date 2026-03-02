@@ -123,7 +123,8 @@ public class GatewayAddressCache implements IAddressCache {
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
         ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
-        GatewayServerErrorInjector gatewayServerErrorInjector) {
+        GatewayServerErrorInjector gatewayServerErrorInjector,
+        Map<String, String> customHeaders) {
 
         this.clientContext = clientContext;
         try {
@@ -165,6 +166,14 @@ public class GatewayAddressCache implements IAddressCache {
             HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
             HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
 
+        // Apply client-level custom headers (e.g., workload-id) to metadata requests
+        // Use putIfAbsent to ensure SDK system headers (USER_AGENT, VERSION, etc.) are not overwritten
+        if (customHeaders != null && !customHeaders.isEmpty()) {
+            for (Map.Entry<String, String> entry : customHeaders.entrySet()) {
+                this.defaultRequestHeaders.putIfAbsent(entry.getKey(), entry.getValue());
+            }
+        }
+
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
@@ -188,7 +197,8 @@ public class GatewayAddressCache implements IAddressCache {
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
         ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
-        GatewayServerErrorInjector gatewayServerErrorInjector) {
+        GatewayServerErrorInjector gatewayServerErrorInjector,
+        Map<String, String> customHeaders) {
         this(clientContext,
                 serviceEndpoint,
                 protocol,
@@ -200,7 +210,8 @@ public class GatewayAddressCache implements IAddressCache {
                 globalEndpointManager,
                 connectionPolicy,
                 proactiveOpenConnectionsProcessor,
-                gatewayServerErrorInjector);
+                gatewayServerErrorInjector,
+                customHeaders);
     }
 
     @Override

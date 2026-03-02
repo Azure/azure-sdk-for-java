@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -157,6 +158,20 @@ public class CosmosClientBuilder implements
 
     private Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory = null;
     private Map<String, String> customHeaders;
+
+    /**
+     * Allowlist of headers permitted in {@link #customHeaders(Map)}.
+     * <p>
+     * In Direct mode (RNTBD), only headers with explicit encoding support in
+     * {@code RntbdRequestHeaders} are sent on the wire. Unknown headers are silently dropped.
+     * This allowlist ensures consistent behavior across Gateway and Direct modes - if a header
+     * is allowed here, it works in both modes. To add a new allowed header, you must also add
+     * RNTBD encoding support ({@code RntbdConstants.RntbdRequestHeader} enum entry +
+     * {@code RntbdRequestHeaders.addXxx()} method).
+     */
+    private static final Set<String> ALLOWED_CUSTOM_HEADERS = Collections.unmodifiableSet(
+        new HashSet<>(Collections.singletonList(HttpConstants.HttpHeaders.WORKLOAD_ID))
+    );
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -739,9 +754,13 @@ public class CosmosClientBuilder implements
     /**
      * Sets custom HTTP headers that will be included with every request from this client.
      * <p>
-     * These headers are sent with all requests. For Direct/RNTBD mode, only known headers
-     * (like {@code x-ms-cosmos-workload-id}) will be encoded and sent. Unknown headers
-     * work only in Gateway mode.
+     * Only headers in the SDK's allowlist are permitted. Currently the only allowed header is
+     * {@code x-ms-cosmos-workload-id}. Passing any other header key will throw
+     * {@link IllegalArgumentException}.
+     * <p>
+     * This restriction exists because in Direct mode (RNTBD), only headers with explicit
+     * encoding support are sent on the wire. Unknown headers are silently dropped. The allowlist
+     * ensures consistent behavior across both Gateway and Direct modes.
      * <p>
      * If the same header is also set on request options (e.g.,
      * {@code CosmosItemRequestOptions.setHeader(String, String)}),
@@ -749,8 +768,33 @@ public class CosmosClientBuilder implements
      *
      * @param customHeaders map of header name to value
      * @return current CosmosClientBuilder
+     * @throws IllegalArgumentException if any header key is not in the allowlist, or if the
+     *         workload-id value is not a valid integer
      */
     public CosmosClientBuilder customHeaders(Map<String, String> customHeaders) {
+        if (customHeaders != null) {
+            for (Map.Entry<String, String> entry : customHeaders.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+
+                if (!ALLOWED_CUSTOM_HEADERS.contains(key)) {
+                    throw new IllegalArgumentException(
+                        "Header '" + key + "' is not allowed in customHeaders. "
+                        + "Allowed headers: " + ALLOWED_CUSTOM_HEADERS);
+                }
+
+                // Validate workload-id value is a valid integer (range validation is left to the backend)
+                if (HttpConstants.HttpHeaders.WORKLOAD_ID.equals(key) && value != null) {
+                    try {
+                        Integer.parseInt(value);
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException(
+                            "Invalid value '" + value + "' for header '" + key
+                            + "'. The value must be a valid integer.", e);
+                    }
+                }
+            }
+        }
         this.customHeaders = customHeaders;
         return this;
     }

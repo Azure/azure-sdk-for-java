@@ -8,9 +8,6 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.models.CosmosBulkExecutionOptions;
-import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -19,6 +16,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -32,6 +30,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * End-to-end integration tests for the custom headers / workload-id feature.
  * <p>
  * Test type: EMULATOR INTEGRATION TEST — requires the Cosmos DB Emulator to be running locally.
+ * <p>
+ * Uses {@code @Factory(dataProvider = "simpleClientBuilderGatewaySession")} to run all tests
+ * against both Gateway mode (HTTP headers) and Direct mode (RNTBD binary token 0x00DC),
+ * ensuring the workload-id header is correctly encoded and sent in both transport paths.
  */
 public class WorkloadIdE2ETests extends TestSuiteBase {
 
@@ -42,10 +44,9 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
     private CosmosAsyncDatabase database;
     private CosmosAsyncContainer container;
 
-    public WorkloadIdE2ETests() {
-        super(new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY));
+    @Factory(dataProvider = "simpleClientBuilderGatewaySession")
+    public WorkloadIdE2ETests(CosmosClientBuilder clientBuilder) {
+        super(clientBuilder);
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
@@ -53,9 +54,7 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "15");
 
-        clientWithWorkloadId = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
+        clientWithWorkloadId = getClientBuilder()
             .customHeaders(headers)
             .buildAsyncClient();
 
@@ -218,9 +217,7 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void clientWithNoCustomHeadersStillWorks() {
         // Verify that a client without custom headers works normally (no regression)
-        CosmosAsyncClient clientWithoutHeaders = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
+        CosmosAsyncClient clientWithoutHeaders = copyCosmosClientBuilder(getClientBuilder())
             .buildAsyncClient();
 
         try {
@@ -248,9 +245,7 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void clientWithEmptyCustomHeaders() {
         // Verify that a client with empty custom headers map works normally
-        CosmosAsyncClient clientWithEmptyHeaders = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
+        CosmosAsyncClient clientWithEmptyHeaders = copyCosmosClientBuilder(getClientBuilder())
             .customHeaders(new HashMap<>())
             .buildAsyncClient();
 
@@ -272,38 +267,19 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
     }
 
     /**
-     * Verifies that a client can be configured with multiple custom headers simultaneously
-     * (workload-id plus an additional custom header). Confirms that all headers flow
-     * through the pipeline without interfering with each other.
+     * Verifies that unknown headers in customHeaders are rejected by the allowlist.
+     * In Direct mode (RNTBD), unknown headers are silently dropped, so the allowlist
+     * ensures consistent behavior across Gateway and Direct modes.
      */
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void clientWithMultipleCustomHeaders() {
-        // Verify that multiple custom headers can be set simultaneously
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
+    public void unknownCustomHeadersRejectedByAllowlist() {
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "20");
         headers.put("x-ms-custom-test-header", "test-value");
 
-        CosmosAsyncClient clientWithMultipleHeaders = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .customHeaders(headers)
-            .buildAsyncClient();
-
-        try {
-            CosmosAsyncContainer c = clientWithMultipleHeaders
-                .getDatabase(DATABASE_ID)
-                .getContainer(CONTAINER_ID);
-
-            TestObject doc = TestObject.create();
-            CosmosItemResponse<TestObject> response = c
-                .createItem(doc, new PartitionKey(doc.getMypk()), new CosmosItemRequestOptions())
-                .block();
-
-            assertThat(response).isNotNull();
-            assertThat(response.getStatusCode()).isEqualTo(201);
-        } finally {
-            safeClose(clientWithMultipleHeaders);
-        }
+        // Should throw IllegalArgumentException due to unknown header
+        copyCosmosClientBuilder(getClientBuilder())
+            .customHeaders(headers);
     }
 
     @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

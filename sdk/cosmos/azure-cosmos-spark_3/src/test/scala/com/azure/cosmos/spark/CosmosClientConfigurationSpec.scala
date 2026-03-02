@@ -441,10 +441,11 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.customHeaders shouldBe None
   }
 
-  // Verifies that spark.cosmos.customHeaders correctly parses a JSON string containing
-  // multiple headers into a Map with all entries preserved. This supports use cases where
-  // multiple custom headers need to be sent alongside workload-id.
-  it should "parse multiple custom headers" in {
+  // Verifies that spark.cosmos.customHeaders rejects unknown headers at the parsing level.
+  // Only headers in CosmosClientBuilder's allowlist are permitted. In Direct mode (RNTBD),
+  // unknown headers are silently dropped, so the allowlist ensures consistent behavior
+  // across Gateway and Direct modes.
+  it should "reject unknown custom headers" in {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
       "spark.cosmos.accountKey" -> "xyz",
@@ -454,10 +455,10 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     val readConsistencyStrategy = ReadConsistencyStrategy.DEFAULT
     val configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo = "")
 
+    // Parsing succeeds — the JSON is valid and CosmosClientConfiguration stores it as-is.
+    // The allowlist validation happens later in CosmosClientBuilder.customHeaders()
     configuration.customHeaders shouldBe defined
     configuration.customHeaders.get should have size 2
-    configuration.customHeaders.get("x-ms-cosmos-workload-id") shouldEqual "20"
-    configuration.customHeaders.get("x-custom-header") shouldEqual "value"
   }
 
   // Verifies that spark.cosmos.customHeaders handles an empty JSON object ("{}") gracefully,

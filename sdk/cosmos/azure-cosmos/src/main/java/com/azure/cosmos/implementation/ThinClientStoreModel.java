@@ -56,7 +56,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             userAgentContainer,
             globalEndpointManager,
             httpClient,
-            ApiType.SQL);
+            ApiType.SQL,
+            null);
 
         String userAgent = userAgentContainer != null
             ? userAgentContainer.getUserAgent()
