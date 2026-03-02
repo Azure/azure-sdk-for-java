@@ -83,54 +83,6 @@ BeforeAll {
 </project>
 "@
 
-    # Sample ci.yml (single-artifact management library)
-    $script:SampleCiYml = @"
-# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
-
-trigger:
-  branches:
-    include:
-      - main
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/network/
-    exclude:
-      - sdk/network/pom.xml
-      - sdk/network/azure-resourcemanager-network/pom.xml
-
-pr:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/network/
-    exclude:
-      - sdk/network/pom.xml
-      - sdk/network/azure-resourcemanager-network/pom.xml
-
-parameters:
-- name: release_azureresourcemanagernetwork
-  displayName: 'azure-resourcemanager-network'
-  type: boolean
-  default: false
-
-extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
-  parameters:
-    ServiceDirectory: network
-    Artifacts:
-      - name: azure-resourcemanager-network
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagernetwork
-        releaseInBatch: `${{ parameters.release_azureresourcemanagernetwork }}
-"@
-
     # Sample POM with profiles (as in the root pom)
     $script:SamplePomWithProfiles = @"
 <project>
@@ -500,251 +452,6 @@ Describe "Update-ServicePom" {
 }
 
 # ============================================================================
-# Update-CiYml tests
-# ============================================================================
-Describe "Update-CiYml" {
-    BeforeEach {
-        $script:TestSdkRoot = Join-Path $script:TestRoot "sdk-ci-$(New-Guid)"
-        New-Item -ItemType Directory -Path (Join-Path $script:TestSdkRoot "sdk" "network") -Force | Out-Null
-    }
-
-    AfterEach {
-        if (Test-Path $script:TestSdkRoot) {
-            Remove-Item -Path $script:TestSdkRoot -Recurse -Force
-        }
-    }
-
-    It "Should skip ci.yml creation when file does not exist (new service)" {
-        Update-CiYml -SdkRepoPath $script:TestSdkRoot -Service "newservice" `
-                      -Module "azure-resourcemanager-newservice" -GroupId "com.azure.resourcemanager"
-
-        $ciFile = Join-Path $script:TestSdkRoot "sdk" "newservice" "ci.yml"
-        Test-Path $ciFile | Should -Be $false
-    }
-
-    It "Should add artifact to existing ci.yml for existing service" {
-        $ciFile = Join-Path $script:TestSdkRoot "sdk" "network" "ci.yml"
-        Set-Content -Path $ciFile -Value $script:SampleCiYml
-
-        Update-CiYml -SdkRepoPath $script:TestSdkRoot -Service "network" `
-                      -Module "azure-resourcemanager-network-extra" -GroupId "com.azure.resourcemanager"
-
-        $content = Get-Content $ciFile -Raw
-        $content | Should -Match "name: azure-resourcemanager-network-extra"
-        $content | Should -Match "groupId: com.azure.resourcemanager"
-        $content | Should -Match "safeName: azureresourcemanagernetworkextra"
-        $content | Should -Match "release_azureresourcemanagernetworkextra"
-    }
-
-    It "Should skip when artifact already exists in ci.yml" {
-        $ciFile = Join-Path $script:TestSdkRoot "sdk" "network" "ci.yml"
-        Set-Content -Path $ciFile -Value $script:SampleCiYml
-
-        Update-CiYml -SdkRepoPath $script:TestSdkRoot -Service "network" `
-                      -Module "azure-resourcemanager-network" -GroupId "com.azure.resourcemanager"
-
-        $content = Get-Content $ciFile -Raw
-        # Should have exactly one artifact entry for azure-resourcemanager-network
-        $count = ([regex]::Matches($content, 'name: azure-resourcemanager-network\s')).Count
-        $count | Should -Be 1
-    }
-
-    It "Should not rename data-plane ci.yml when SDKType is data (handled separately)" {
-        $ciFile = Join-Path $script:TestSdkRoot "sdk" "network" "ci.yml"
-        $dataCi = @"
-trigger:
-  branches:
-    include:
-      - main
-
-extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
-  parameters:
-    SDKType: data
-    ServiceDirectory: network
-    Artifacts: []
-"@
-        Set-Content -Path $ciFile -Value $dataCi
-
-        Update-CiYml -SdkRepoPath $script:TestSdkRoot -Service "network" `
-                      -Module "azure-resourcemanager-network" -GroupId "com.azure.resourcemanager"
-
-        # ci.yml should still exist as-is with the new artifact appended
-        $content = Get-Content $ciFile -Raw
-        $content | Should -Match "name: azure-resourcemanager-network"
-
-        # ci.data.yml should NOT have been created (rename is not this script's job)
-        $dataFile = Join-Path $script:TestSdkRoot "sdk" "network" "ci.data.yml"
-        Test-Path $dataFile | Should -Be $false
-    }
-
-    It "Should add artifact with correct format to existing ci.yml" {
-        # Set up existing ci.yml with one artifact
-        $existingCi = @"
-# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
-
-trigger:
-  branches:
-    include:
-      - main
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/testservice/ci.yml
-      - sdk/testservice/azure-messaging-testservice/
-    exclude:
-      - sdk/testservice/pom.xml
-      - sdk/testservice/azure-messaging-testservice/pom.xml
-
-pr:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/testservice/ci.yml
-      - sdk/testservice/azure-messaging-testservice/
-    exclude:
-      - sdk/testservice/pom.xml
-      - sdk/testservice/azure-messaging-testservice/pom.xml
-
-parameters:
-- name: release_azuremessagingtestservice
-  displayName: 'azure-messaging-testservice'
-  type: boolean
-  default: true
-
-extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
-  parameters:
-    ServiceDirectory: testservice
-    Artifacts:
-      - name: azure-messaging-testservice
-        groupId: com.azure
-        safeName: azuremessagingtestservice
-        releaseInBatch: `${{ parameters.release_azuremessagingtestservice }}
-"@
-        $testSvcDir = Join-Path $script:TestSdkRoot "sdk" "testservice"
-        New-Item -ItemType Directory -Path $testSvcDir -Force | Out-Null
-        $ciFile = Join-Path $testSvcDir "ci.yml"
-        Set-Content -Path $ciFile -Value $existingCi
-
-        Update-CiYml -SdkRepoPath $script:TestSdkRoot -Service "testservice" `
-                      -Module "azure-resourcemanager-testservice" -GroupId "com.azure.resourcemanager"
-
-        $content = Get-Content $ciFile -Raw
-
-        # Verify new artifact added
-        $content | Should -Match "name: azure-resourcemanager-testservice"
-        $content | Should -Match "groupId: com.azure.resourcemanager"
-        $content | Should -Match "safeName: azureresourcemanagertestservice"
-        $content | Should -Match "release_azureresourcemanagertestservice"
-        $content | Should -Match "displayName: 'azure-resourcemanager-testservice'"
-        $content | Should -Match "default: false"
-
-        # Verify existing artifact still present
-        $content | Should -Match "name: azure-messaging-testservice"
-
-        # Verify paths were added
-        $content | Should -Match "sdk/testservice/azure-resourcemanager-testservice/"
-        $content | Should -Match "sdk/testservice/azure-resourcemanager-testservice/pom.xml"
-    }
-}
-
-# ============================================================================
-# Add-PathToCiYml tests
-# ============================================================================
-Describe "Add-PathToCiYml" {
-    It "Should add include and exclude paths for a new module" {
-        $ci = @"
-trigger:
-  paths:
-    include:
-      - sdk/svc/existing-module/
-    exclude:
-      - sdk/svc/existing-module/pom.xml
-
-pr:
-  paths:
-    include:
-      - sdk/svc/existing-module/
-    exclude:
-      - sdk/svc/existing-module/pom.xml
-
-parameters:
-"@
-        $result = Add-PathToCiYml -CiContent $ci -Service "svc" -Module "new-module"
-        $result | Should -Match "sdk/svc/new-module/"
-        $result | Should -Match "sdk/svc/new-module/pom.xml"
-    }
-
-    It "Should not add duplicate paths when module already present" {
-        $ci = @"
-trigger:
-  paths:
-    include:
-      - sdk/svc/my-module/
-    exclude:
-      - sdk/svc/my-module/pom.xml
-
-pr:
-  paths:
-    include:
-      - sdk/svc/my-module/
-    exclude:
-      - sdk/svc/my-module/pom.xml
-
-parameters:
-"@
-        $result = Add-PathToCiYml -CiContent $ci -Service "svc" -Module "my-module"
-        $includeCount = ([regex]::Matches($result, 'sdk/svc/my-module/')).Count
-        # Each occurrence in include + exclude for trigger + pr = 4
-        $includeCount | Should -BeLessOrEqual 4
-    }
-}
-
-# ============================================================================
-# Write-NewCiYmlFile tests
-# ============================================================================
-Describe "Write-NewCiYmlFile" {
-    BeforeEach {
-        $script:TestCiDir = Join-Path $script:TestRoot "ci-test-$(New-Guid)"
-        New-Item -ItemType Directory -Path $script:TestCiDir -Force | Out-Null
-    }
-
-    AfterEach {
-        if (Test-Path $script:TestCiDir) {
-            Remove-Item -Path $script:TestCiDir -Recurse -Force
-        }
-    }
-
-    It "Should create a properly formatted ci.yml" {
-        $ciFile = Join-Path $script:TestCiDir "ci.yml"
-        Write-NewCiYmlFile -CiFile $ciFile -Service "myservice" -Module "azure-resourcemanager-myservice" `
-                           -GroupId "com.azure.resourcemanager" -SafeName "azureresourcemanagermyservice" `
-                           -ReleaseParameterName "release_azureresourcemanagermyservice" -ReleaseDefault "false"
-
-        Test-Path $ciFile | Should -Be $true
-        $content = Get-Content $ciFile -Raw
-        $content | Should -Match "ServiceDirectory: myservice"
-        $content | Should -Match "name: azure-resourcemanager-myservice"
-        $content | Should -Match "groupId: com.azure.resourcemanager"
-    }
-
-    It "Should create parent directory if needed" {
-        $ciFile = Join-Path $script:TestCiDir "subdir" "ci.yml"
-        Write-NewCiYmlFile -CiFile $ciFile -Service "s" -Module "m" -GroupId "g" `
-                           -SafeName "m" -ReleaseParameterName "release_m" -ReleaseDefault "true"
-
-        Test-Path $ciFile | Should -Be $true
-    }
-}
-
-# ============================================================================
 # Script integration tests
 # ============================================================================
 Describe "Script Integration" {
@@ -761,11 +468,9 @@ Describe "Script Integration" {
         $scriptContent = Get-Content $scriptPath -Raw
 
         $scriptContent | Should -Not -Match 'function Get-ServiceAndModuleFromPath'
-        $scriptContent | Should -Not -Match 'function Get-GroupIdFromPom'
         $scriptContent | Should -Not -Match 'function Add-ModuleToPom'
         $scriptContent | Should -Not -Match 'function Update-RootPom'
         $scriptContent | Should -Not -Match 'function Update-ServicePom'
-        $scriptContent | Should -Not -Match 'function Update-CiYml'
     }
 
     It "Should verify the helper file exports all required functions" {
@@ -780,9 +485,6 @@ Describe "Script Integration" {
         Get-Command Add-ModuleToDefaultProfile -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
         Get-Command Update-RootPom -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
         Get-Command Update-ServicePom -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
-        Get-Command Update-CiYml -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
-        Get-Command Write-NewCiYmlFile -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
-        Get-Command Add-PathToCiYml -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
     }
 
     It "Should verify swagger_to_sdk_config.json references the metadata script" {
@@ -801,12 +503,11 @@ Describe "End-to-End: Existing Service, New Package" {
         $script:E2ERoot = Join-Path $script:TestRoot "e2e-case1-$(New-Guid)"
         New-Item -ItemType Directory -Path $script:E2ERoot -Force | Out-Null
 
-        # Set up SDK repo with existing service (already in root pom, has service pom and ci.yml)
+        # Set up SDK repo with existing service (already in root pom, has service pom)
         Set-Content -Path (Join-Path $script:E2ERoot "pom.xml") -Value $script:SampleRootPomXml
         $svcDir = Join-Path $script:E2ERoot "sdk" "network"
         New-Item -ItemType Directory -Path $svcDir -Force | Out-Null
         Set-Content -Path (Join-Path $svcDir "pom.xml") -Value $script:SampleServicePomXml
-        Set-Content -Path (Join-Path $svcDir "ci.yml") -Value $script:SampleCiYml
 
         # Package directory exists
         $pkgDir = Join-Path $svcDir "azure-resourcemanager-network-extra"
@@ -820,16 +521,14 @@ Describe "End-to-End: Existing Service, New Package" {
         }
     }
 
-    It "Should update service pom and ci.yml but skip root pom" {
+    It "Should update service pom but skip root pom" {
         $service = "network"
         $module = "azure-resourcemanager-network-extra"
-        $groupId = "com.azure.resourcemanager"
 
         $rootPomBefore = Get-Content (Join-Path $script:E2ERoot "pom.xml") -Raw
 
         Update-RootPom -SdkRepoPath $script:E2ERoot -Service $service
         Update-ServicePom -SdkRepoPath $script:E2ERoot -Service $service -Module $module
-        Update-CiYml -SdkRepoPath $script:E2ERoot -Service $service -Module $module -GroupId $groupId
 
         # Root pom unchanged (service already existed)
         $rootPomAfter = Get-Content (Join-Path $script:E2ERoot "pom.xml") -Raw
@@ -839,39 +538,28 @@ Describe "End-to-End: Existing Service, New Package" {
         $svcPomContent = Get-Content (Join-Path $script:E2ERoot "sdk" "network" "pom.xml") -Raw
         $svcPomContent | Should -Match "<module>azure-resourcemanager-network</module>"
         $svcPomContent | Should -Match "<module>azure-resourcemanager-network-extra</module>"
-
-        # ci.yml has the new artifact
-        $ciContent = Get-Content (Join-Path $script:E2ERoot "sdk" "network" "ci.yml") -Raw
-        $ciContent | Should -Match "name: azure-resourcemanager-network-extra"
-        $ciContent | Should -Match "groupId: com.azure.resourcemanager"
     }
 
     It "Should be idempotent when run twice" {
         $service = "network"
         $module = "azure-resourcemanager-network-extra"
-        $groupId = "com.azure.resourcemanager"
 
         # First run
         Update-RootPom -SdkRepoPath $script:E2ERoot -Service $service
         Update-ServicePom -SdkRepoPath $script:E2ERoot -Service $service -Module $module
-        Update-CiYml -SdkRepoPath $script:E2ERoot -Service $service -Module $module -GroupId $groupId
 
         $rootPom1 = Get-Content (Join-Path $script:E2ERoot "pom.xml") -Raw
         $svcPom1 = Get-Content (Join-Path $script:E2ERoot "sdk" "network" "pom.xml") -Raw
-        $ci1 = Get-Content (Join-Path $script:E2ERoot "sdk" "network" "ci.yml") -Raw
 
         # Second run
         Update-RootPom -SdkRepoPath $script:E2ERoot -Service $service
         Update-ServicePom -SdkRepoPath $script:E2ERoot -Service $service -Module $module
-        Update-CiYml -SdkRepoPath $script:E2ERoot -Service $service -Module $module -GroupId $groupId
 
         $rootPom2 = Get-Content (Join-Path $script:E2ERoot "pom.xml") -Raw
         $svcPom2 = Get-Content (Join-Path $script:E2ERoot "sdk" "network" "pom.xml") -Raw
-        $ci2 = Get-Content (Join-Path $script:E2ERoot "sdk" "network" "ci.yml") -Raw
 
         $rootPom2 | Should -Be $rootPom1
         $svcPom2 | Should -Be $svcPom1
-        $ci2 | Should -Be $ci1
     }
 }
 
@@ -896,14 +584,12 @@ Describe "End-to-End: New Service" {
         }
     }
 
-    It "Should update root pom and create service pom, but skip ci.yml" {
+    It "Should update root pom and create service pom" {
         $service = "compute"
         $module = "azure-resourcemanager-compute"
-        $groupId = "com.azure.resourcemanager"
 
         Update-RootPom -SdkRepoPath $script:E2ERoot -Service $service
         Update-ServicePom -SdkRepoPath $script:E2ERoot -Service $service -Module $module
-        Update-CiYml -SdkRepoPath $script:E2ERoot -Service $service -Module $module -GroupId $groupId
 
         # Verify root pom has new service
         $rootPom = Get-Content (Join-Path $script:E2ERoot "pom.xml") -Raw
@@ -914,21 +600,15 @@ Describe "End-to-End: New Service" {
         Test-Path $svcPom | Should -Be $true
         $svcPomContent = Get-Content $svcPom -Raw
         $svcPomContent | Should -Match "<module>azure-resourcemanager-compute</module>"
-
-        # Verify ci.yml was NOT created (handled by a separate script)
-        $ciFile = Join-Path $script:E2ERoot "sdk" "compute" "ci.yml"
-        Test-Path $ciFile | Should -Be $false
     }
 
     It "Should be idempotent when run twice" {
         $service = "compute"
         $module = "azure-resourcemanager-compute"
-        $groupId = "com.azure.resourcemanager"
 
         # First run
         Update-RootPom -SdkRepoPath $script:E2ERoot -Service $service
         Update-ServicePom -SdkRepoPath $script:E2ERoot -Service $service -Module $module
-        Update-CiYml -SdkRepoPath $script:E2ERoot -Service $service -Module $module -GroupId $groupId
 
         $rootPom1 = Get-Content (Join-Path $script:E2ERoot "pom.xml") -Raw
         $svcPom1 = Get-Content (Join-Path $script:E2ERoot "sdk" "compute" "pom.xml") -Raw
@@ -936,16 +616,11 @@ Describe "End-to-End: New Service" {
         # Second run
         Update-RootPom -SdkRepoPath $script:E2ERoot -Service $service
         Update-ServicePom -SdkRepoPath $script:E2ERoot -Service $service -Module $module
-        Update-CiYml -SdkRepoPath $script:E2ERoot -Service $service -Module $module -GroupId $groupId
 
         $rootPom2 = Get-Content (Join-Path $script:E2ERoot "pom.xml") -Raw
         $svcPom2 = Get-Content (Join-Path $script:E2ERoot "sdk" "compute" "pom.xml") -Raw
 
         $rootPom2 | Should -Be $rootPom1
         $svcPom2 | Should -Be $svcPom1
-
-        # ci.yml should still not exist
-        $ciFile = Join-Path $script:E2ERoot "sdk" "compute" "ci.yml"
-        Test-Path $ciFile | Should -Be $false
     }
 }
