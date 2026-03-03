@@ -497,7 +497,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                             tracer.endSpan(exception, span, scope);
                         }
                     } finally {
-                        isV1HandlerThread.set(Boolean.FALSE);
+                        isV1HandlerThread.remove();
                         if (activeV1HandlerCount.decrementAndGet() == 0) {
                             synchronized (v1DrainLock) {
                                 v1DrainLock.notifyAll();

@@ -170,7 +170,7 @@ final class MessagePump {
                 return error;
             });
         } finally {
-            isHandlerThread.set(Boolean.FALSE);
+            isHandlerThread.remove();
             if (activeHandlerCount.decrementAndGet() == 0) {
                 synchronized (drainLock) {
                     drainLock.notifyAll();
