@@ -4,8 +4,8 @@
 # Usage:
 #   ./run-all-refs.sh --config-dir <path> --refs "main,fix/leak" [--scenario SIMPLE]
 #
-# For each ref, runs vm-prepare-and-run.sh on the VM via a single SSH session
-# (checkout → build → verify → run — all in one connection).
+# Copies scripts to the VM via SCP, then for each ref executes
+# vm-prepare-and-run.sh remotely (checkout → build → verify → run).
 
 set -uo pipefail
 
@@ -37,6 +37,19 @@ VM_IP=$(cat "$CONFIG_DIR/vm-ip")
 VM_USER=$(cat "$CONFIG_DIR/vm-user")
 VM_KEY=$(cat "$CONFIG_DIR/vm-key")
 SSH_CMD="ssh -i $VM_KEY -o StrictHostKeyChecking=no $VM_USER@$VM_IP"
+SCP_CMD="scp -i $VM_KEY -o StrictHostKeyChecking=no"
+
+# Copy scripts to VM (avoids stdin piping issues with heredocs)
+VM_SCRIPTS_DIR="~/benchmark-scripts"
+$SSH_CMD "mkdir -p $VM_SCRIPTS_DIR"
+for SCRIPT_FILE in vm-prepare-and-run.sh run-benchmark.sh monitor.sh capture-diagnostics.sh; do
+  if [[ -f "$SCRIPT_DIR/$SCRIPT_FILE" ]]; then
+    $SCP_CMD "$SCRIPT_DIR/$SCRIPT_FILE" "$VM_USER@$VM_IP:$VM_SCRIPTS_DIR/$SCRIPT_FILE"
+  fi
+done
+$SSH_CMD "chmod +x $VM_SCRIPTS_DIR/*.sh"
+echo "Scripts copied to VM:$VM_SCRIPTS_DIR"
+echo ""
 
 IFS=',' read -ra REFS <<< "$REFS_CSV"
 TOTAL=${#REFS[@]}
@@ -65,9 +78,9 @@ for i in "${!REFS[@]}"; do
   echo "$SEQ Starting: $REF → $RUN_NAME"
   echo "   (single SSH session: checkout → build → verify → run)"
 
-  # Send vm-prepare-and-run.sh to VM and execute — 1 SSH session per ref
-  $SSH_CMD "bash -s" < "$SCRIPT_DIR/vm-prepare-and-run.sh" \
-    -- "$REF" "$SCENARIO" "$TENANTS_FILE" "$RUN_NAME" $EXTRA_FLAGS
+  # Execute the script already on the VM (copied via SCP at startup)
+  $SSH_CMD "bash $VM_SCRIPTS_DIR/vm-prepare-and-run.sh \
+    '$REF' '$SCENARIO' '$TENANTS_FILE' '$RUN_NAME' $EXTRA_FLAGS"
   RUN_EXIT=$?
 
   if [[ $RUN_EXIT -eq 0 ]]; then

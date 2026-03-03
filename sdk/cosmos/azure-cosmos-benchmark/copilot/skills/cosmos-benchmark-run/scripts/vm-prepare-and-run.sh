@@ -150,8 +150,9 @@ cat > "$RESULTS_DIR/.run.sh" <<EOF
 #!/bin/bash
 set -uo pipefail
 cd "$BENCH_DIR"
-if [[ -f "copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh" ]]; then
-  bash copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh \\
+VM_SCRIPTS_DIR=~/benchmark-scripts
+if [[ -f "\$VM_SCRIPTS_DIR/run-benchmark.sh" ]]; then
+  bash "\$VM_SCRIPTS_DIR/run-benchmark.sh" \\
     "$SCENARIO" "$TENANTS_RESOLVED" "$RESULTS_DIR" $EXTRA_FLAGS
 else
   echo "WARNING: run-benchmark.sh not found, running JAR directly"
