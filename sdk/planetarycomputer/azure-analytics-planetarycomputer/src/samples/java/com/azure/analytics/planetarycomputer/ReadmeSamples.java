@@ -11,11 +11,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
 
 public final class ReadmeSamples {
-    public void readmeSamples() {
-        // BEGIN: com.azure.analytics.planetarycomputer.readme
-        // END: com.azure.analytics.planetarycomputer.readme
-    }
-
     public void createStacClient() {
         // BEGIN: readme-sample-createStacClient
         StacClient stacClient = new PlanetaryComputerProClientBuilder()

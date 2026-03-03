@@ -134,11 +134,6 @@ To compile the package into a standalone jar, use the following command from the
 mvn clean package -f sdk/planetarycomputer/azure-analytics-planetarycomputer/pom.xml
 ```
 
-### Code samples
-
-```java com.azure.analytics.planetarycomputer.readme
-```
-
 ### Service API versions
 
 The client library targets the latest service API version by default.
