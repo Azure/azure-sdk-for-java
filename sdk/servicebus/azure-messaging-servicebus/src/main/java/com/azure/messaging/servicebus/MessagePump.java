@@ -171,7 +171,7 @@ final class MessagePump {
             });
         } finally {
             isHandlerThread.remove();
-            if (activeHandlerCount.decrementAndGet() == 0) {
+            if (activeHandlerCount.decrementAndGet() <= 1) {
                 synchronized (drainLock) {
                     drainLock.notifyAll();
                 }
@@ -225,19 +225,25 @@ final class MessagePump {
      */
     boolean drainHandlers(Duration timeout) {
         closing = true;
+        final int threshold;
         if (isHandlerThread.get()) {
             // Re-entrant call from within a message handler (e.g., user called close() inside processMessage).
-            // Waiting here would self-deadlock because this thread's handler incremented the counter and
-            // cannot decrement it until it returns. Skip the drain — remaining handlers (if any) will
-            // complete naturally after this handler returns.
-            logger.atWarning()
+            // Cannot wait for this thread's own handler to complete (would self-deadlock), but we can
+            // wait for OTHER concurrent handlers to finish settlement before the underlying client is disposed.
+            threshold = 1;
+            if (activeHandlerCount.get() <= threshold) {
+                return true;
+            }
+            logger.atInfo()
+                .addKeyValue("otherActiveHandlers", activeHandlerCount.get() - 1)
                 .log("drainHandlers called from within a message handler (re-entrant). "
-                    + "Skipping drain to avoid self-deadlock.");
-            return false;
+                    + "Waiting for other active handlers to complete.");
+        } else {
+            threshold = 0;
         }
         final long deadline = System.nanoTime() + timeout.toNanos();
         synchronized (drainLock) {
-            while (activeHandlerCount.get() > 0) {
+            while (activeHandlerCount.get() > threshold) {
                 final long remainingNanos = deadline - System.nanoTime();
                 if (remainingNanos <= 0) {
                     logger.atWarning()

@@ -52,6 +52,12 @@ import static org.mockito.Mockito.when;
  *       Tests drain in {@code ServiceBusProcessorClient.close()} → {@code drainV1Handlers()}</li>
  *   <li><b>Drain Timeout</b> — {@link #v2DrainShouldRespectTimeout()}:
  *       Tests {@code MessagePump.drainHandlers()} timeout behavior directly</li>
+ *   <li><b>Re-entrant (single)</b> — {@link #v2DrainFromWithinHandlerShouldNotDeadlock()}:
+ *       Tests re-entrant drain with no other concurrent handlers (returns true immediately)</li>
+ *   <li><b>Closing Flag</b> — {@link #v2ClosingFlagPreventsNewHandlersAfterDrainStarts()}:
+ *       Tests that the closing flag prevents new handler dispatch during drain</li>
+ *   <li><b>Re-entrant (concurrent)</b> — {@link #v1ReentrantCloseWaitsForOtherConcurrentHandlers()}:
+ *       Tests re-entrant drain with concurrent handlers — waits for other handlers before closing</li>
  *   <li><b>V2 Session</b> — Not directly unit-testable. The drain in
  *       {@code SessionsMessagePump.RollingSessionReceiver.terminate()} uses the identical
  *       {@code AtomicInteger} + {@code Object} monitor wait/notifyAll pattern as {@code MessagePump}.
@@ -339,15 +345,16 @@ public class ServiceBusProcessorGracefulShutdownTest {
     /**
      * Verifies that calling {@code drainHandlers()} from within a message handler (re-entrant)
      * does not deadlock. This simulates a user calling {@code processor.close()} from inside
-     * their {@code processMessage} callback.
+     * their {@code processMessage} callback when only this handler is active (no concurrent handlers).
      * <p>
      * Without the re-entrancy guard, the handler thread would enter {@code drainHandlers()},
      * which waits for {@code activeHandlerCount} to reach 0. But the handler itself has
      * incremented the counter and won't decrement it until it returns — classic self-deadlock.
      * </p>
      * <p>
-     * The fix detects the re-entrant call via a {@link ThreadLocal} flag and skips the drain,
-     * returning {@code false} with a warning log.
+     * The fix detects the re-entrant call via a {@link ThreadLocal} flag and uses a threshold of 1
+     * (only wait for OTHER handlers). With no other handlers active, it returns {@code true}
+     * immediately.
      * </p>
      */
     @Test
@@ -368,7 +375,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
 
         final CountDownLatch handlerStarted = new CountDownLatch(1);
         final CountDownLatch handlerDone = new CountDownLatch(1);
-        final AtomicBoolean drainReturnedFalse = new AtomicBoolean(false);
+        final AtomicBoolean drainReturnedTrue = new AtomicBoolean(false);
 
         // Create the pump first, then reference it inside the handler via AtomicReference.
         final AtomicReference<MessagePump> pumpRef = new AtomicReference<>();
@@ -376,9 +383,10 @@ public class ServiceBusProcessorGracefulShutdownTest {
         final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
             handlerStarted.countDown();
             // Simulate user calling close() from within processMessage, which triggers drainHandlers().
-            // With the re-entrancy guard, this should return false immediately instead of deadlocking.
+            // With only the current handler active (no other concurrent handlers), the re-entrant drain
+            // should return true immediately (nothing to drain) instead of deadlocking.
             boolean result = pumpRef.get().drainHandlers(Duration.ofSeconds(5));
-            drainReturnedFalse.set(!result);
+            drainReturnedTrue.set(result);
             handlerDone.countDown();
         };
 
@@ -395,9 +403,9 @@ public class ServiceBusProcessorGracefulShutdownTest {
         assertTrue(handlerDone.await(5, TimeUnit.SECONDS),
             "Handler should have completed without deadlocking on re-entrant drainHandlers()");
 
-        // The re-entrant drain should have returned false (skipped).
-        assertTrue(drainReturnedFalse.get(),
-            "Re-entrant drainHandlers() should return false (skip drain to avoid self-deadlock)");
+        // Re-entrant drain with no other concurrent handlers should return true (nothing to drain).
+        assertTrue(drainReturnedTrue.get(),
+            "Re-entrant drainHandlers() with no other concurrent handlers should return true");
 
         // Clean up.
         subscription.get().dispose();
@@ -491,5 +499,99 @@ public class ServiceBusProcessorGracefulShutdownTest {
 
         // Clean up.
         subscription.get().dispose();
+    }
+
+    /**
+     * Verifies that when a V1 handler calls {@code close()} re-entrantly with other concurrent
+     * handlers running, the re-entrant drain waits for those other handlers to complete before
+     * proceeding to cancel subscriptions and close the underlying client.
+     * <p>
+     * With {@code maxConcurrentCalls=2}, two handlers run concurrently on separate
+     * {@code boundedElastic} threads. Handler B calls {@code processorClient.close()} while
+     * Handler A is still processing. {@code drainV1Handlers()} detects the re-entrant call
+     * (threshold=1) and waits until only the calling handler remains before allowing
+     * {@code close()} to proceed with subscription cancellation and client disposal.
+     * </p>
+     * <p>
+     * Without this fix, the re-entrant drain would return immediately, and {@code close()}
+     * would cancel subscriptions and call {@code asyncClient.close()} while Handler A
+     * is mid-settlement, reintroducing the original failure mode from issue #45716.
+     * </p>
+     */
+    @Test
+    public void v1ReentrantCloseWaitsForOtherConcurrentHandlers() throws InterruptedException {
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
+
+        final ServiceBusReceiverClientBuilder receiverBuilder = mock(ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(asyncClient.getEntityPath()).thenReturn("entityPath");
+        when(asyncClient.isConnectionClosed()).thenReturn(false);
+        when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        // Two messages arrive on separate parallel rails, processed concurrently.
+        when(asyncClient.receiveMessagesWithContext()).thenReturn(Flux.just(message1, message2)
+            .map(ServiceBusMessageContext::new)
+            .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        doNothing().when(asyncClient).close();
+
+        final CountDownLatch handler1Started = new CountDownLatch(1);
+        final CountDownLatch handler1CanProceed = new CountDownLatch(1);
+        final CountDownLatch handler2Started = new CountDownLatch(1);
+        final AtomicBoolean handler1Completed = new AtomicBoolean(false);
+        final AtomicReference<ServiceBusProcessorClient> processorRef = new AtomicReference<>();
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            if (messageContext.getMessage() == message1) {
+                handler1Started.countDown();
+                try {
+                    handler1CanProceed.await(10, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                handler1Completed.set(true);
+            } else {
+                handler2Started.countDown();
+                // Wait for handler1 to start before calling close(), ensuring both handlers
+                // are running concurrently when the re-entrant close occurs.
+                try {
+                    handler1Started.await(5, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                // Re-entrant close from within a handler. The drain should wait for handler1
+                // (the other concurrent handler) before proceeding to close the client.
+                processorRef.get().close();
+            }
+        };
+
+        final ServiceBusProcessorClientOptions options
+            = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(2);
+        final ServiceBusProcessorClient processorClient
+            = new ServiceBusProcessorClient(receiverBuilder, "entityPath", null, null, messageConsumer, error -> {
+            }, options);
+        processorRef.set(processorClient);
+
+        processorClient.start();
+
+        // Wait for both handlers to start.
+        assertTrue(handler1Started.await(5, TimeUnit.SECONDS), "Handler1 should have started processing");
+        assertTrue(handler2Started.await(5, TimeUnit.SECONDS), "Handler2 should have started processing");
+
+        // Give handler2's close() a moment to enter drainV1Handlers and start waiting.
+        Thread.sleep(300);
+
+        // Handler1 is still running, handler2 is blocked in close() waiting for handler1 to finish.
+        verify(asyncClient, never()).close();
+        assertFalse(handler1Completed.get(), "Handler1 should still be in-flight");
+
+        // Release handler1.
+        handler1CanProceed.countDown();
+
+        // Handler2's close() should now complete (handler1 finished, drain threshold reached).
+        verify(asyncClient, timeout(5000)).close();
+        assertTrue(handler1Completed.get(), "Handler1 should have completed before client was closed");
     }
 }

@@ -498,7 +498,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                         }
                     } finally {
                         isV1HandlerThread.remove();
-                        if (activeV1HandlerCount.decrementAndGet() == 0) {
+                        if (activeV1HandlerCount.decrementAndGet() <= 1) {
                             synchronized (v1DrainLock) {
                                 v1DrainLock.notifyAll();
                             }
@@ -587,18 +587,24 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @param timeout the maximum time to wait for handlers to complete.
      */
     private void drainV1Handlers(Duration timeout) {
+        final int threshold;
         if (isV1HandlerThread.get()) {
             // Re-entrant call from within a V1 message handler (e.g., user called close() inside processMessage).
-            // Waiting here would self-deadlock because this thread's handler incremented the counter and
-            // cannot decrement it until it returns. Skip the drain — remaining handlers (if any) will
-            // complete naturally after this handler returns.
-            LOGGER.warning("drainV1Handlers called from within a V1 message handler (re-entrant). "
-                + "Skipping drain to avoid self-deadlock.");
-            return;
+            // Cannot wait for this thread's own handler to complete (would self-deadlock), but we can
+            // wait for OTHER concurrent handlers to finish settlement before cancelling subscriptions
+            // and closing the underlying client.
+            threshold = 1;
+            if (activeV1HandlerCount.get() <= threshold) {
+                return;
+            }
+            LOGGER.info("drainV1Handlers called from within a V1 message handler (re-entrant). "
+                + "Waiting for {} other active handler(s) to complete.", activeV1HandlerCount.get() - 1);
+        } else {
+            threshold = 0;
         }
         final long deadline = System.nanoTime() + timeout.toNanos();
         synchronized (v1DrainLock) {
-            while (activeV1HandlerCount.get() > 0) {
+            while (activeV1HandlerCount.get() > threshold) {
                 final long remainingNanos = deadline - System.nanoTime();
                 if (remainingNanos <= 0) {
                     LOGGER.warning("V1 drain timeout expired with {} active handlers still running.",
