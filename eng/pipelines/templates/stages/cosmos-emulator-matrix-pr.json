@@ -17,7 +17,7 @@
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.8",
         "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true",
-        "BuildOptions": "-Dshade.skip=true"
+        "BuildOptions": "-Dshade.skip=true -Dmaven.antrun.skip=true"
       },
       "Emulator Only Integration Tests Tcp - Java 17": {
         "ProfileFlag": "-Pemulator",
@@ -25,7 +25,7 @@
         "DESIRED_CONSISTENCIES": "[\"Strong\"]",
         "JavaTestVersion": "1.17",
         "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true",
-        "BuildOptions": "-Dshade.skip=true"
+        "BuildOptions": "-Dshade.skip=true -Dmaven.antrun.skip=true"
       },
       "Long Emulator Only Integration Tests Tcp - Java 8": {
         "ProfileFlag": "-Plong-emulator",
@@ -33,7 +33,7 @@
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.8",
         "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true",
-        "BuildOptions": "-Dshade.skip=true"
+        "BuildOptions": "-Dshade.skip=true -Dmaven.antrun.skip=true"
       },
       "Long Emulator Only Integration Tests Tcp - Java 17": {
         "ProfileFlag": "-Plong-emulator",
@@ -41,7 +41,7 @@
         "DESIRED_CONSISTENCIES": "[\"Strong\"]",
         "JavaTestVersion": "1.17",
         "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true",
-        "BuildOptions": "-Dshade.skip=true"
+        "BuildOptions": "-Dshade.skip=true -Dmaven.antrun.skip=true"
       },
       "Encryption Emulator Only Integration Tests": {
         "ProfileFlag": "-Pencryption-integration",
@@ -49,7 +49,7 @@
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.8",
         "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true",
-        "BuildOptions": "-Dshade.skip=true"
+        "BuildOptions": "-Dshade.skip=true -Dmaven.antrun.skip=true"
       },
       "Spark 3.3 Integration Tests targeting Cosmos Emulator - Java 8'": {
         "ProfileFlag": "-Dspark-e2e_3-3",
