@@ -373,6 +373,7 @@ final class SessionsMessagePump {
         private final AtomicInteger activeHandlerCount = new AtomicInteger(0);
         private final Object drainLock = new Object();
         private final ThreadLocal<Boolean> isHandlerThread = ThreadLocal.withInitial(() -> Boolean.FALSE);
+        private volatile boolean closing;
         private final Consumer<ServiceBusReceivedMessageContext> processMessage;
         private final Consumer<ServiceBusErrorContext> processError;
         private final boolean enableAutoDisposition;
@@ -469,6 +470,7 @@ final class SessionsMessagePump {
          * @param timeout the maximum time to wait for in-flight handlers to complete.
          */
         private void drainHandlers(Duration timeout) {
+            closing = true;
             if (isHandlerThread.get()) {
                 // Re-entrant call from within a session message handler (e.g., user called close() inside processMessage).
                 // Waiting here would self-deadlock because this thread's handler incremented the counter and
@@ -541,6 +543,10 @@ final class SessionsMessagePump {
             activeHandlerCount.incrementAndGet();
             isHandlerThread.set(Boolean.TRUE);
             try {
+                if (closing) {
+                    logger.atVerbose().log("Skipping handler execution, session pump is closing.");
+                    return;
+                }
                 instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
                     logger.atVerbose()
                         .addKeyValue(SESSION_ID_KEY, message.getSessionId())

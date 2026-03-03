@@ -61,6 +61,7 @@ final class MessagePump {
     private final AtomicInteger activeHandlerCount = new AtomicInteger(0);
     private final Object drainLock = new Object();
     private final ThreadLocal<Boolean> isHandlerThread = ThreadLocal.withInitial(() -> Boolean.FALSE);
+    private volatile boolean closing;
 
     /**
      * Instantiate {@link MessagePump} that pumps messages emitted by the given {@code client}. The messages
@@ -146,6 +147,10 @@ final class MessagePump {
         activeHandlerCount.incrementAndGet();
         isHandlerThread.set(Boolean.TRUE);
         try {
+            if (closing) {
+                logger.atVerbose().log("Skipping handler execution, pump is closing.");
+                return;
+            }
             instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
                 final Disposable lockRenewDisposable;
                 if (enableAutoLockRenew) {
@@ -219,6 +224,7 @@ final class MessagePump {
      * @return true if all handlers completed within the timeout, false otherwise.
      */
     boolean drainHandlers(Duration timeout) {
+        closing = true;
         if (isHandlerThread.get()) {
             // Re-entrant call from within a message handler (e.g., user called close() inside processMessage).
             // Waiting here would self-deadlock because this thread's handler incremented the counter and

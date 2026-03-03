@@ -402,4 +402,96 @@ public class ServiceBusProcessorGracefulShutdownTest {
         // Clean up.
         subscription.get().dispose();
     }
+
+    /**
+     * Verifies that the closing flag prevents new message handlers from processing after
+     * {@code drainHandlers()} is called.
+     * <p>
+     * Race condition scenario: with {@code flatMap(concurrency=2)}, two messages are emitted.
+     * The first handler blocks (simulating in-flight work). {@code drainHandlers()} is called
+     * on a separate thread, which sets {@code closing = true} and waits for the first handler
+     * to complete. A second message arrives while closing is true. The second handler should
+     * see the closing flag and skip processing.
+     * </p>
+     * <p>
+     * Without the closing flag, the second handler could start real work (including settlement)
+     * between drain returning and subscription disposal, reintroducing the original failure mode.
+     * </p>
+     */
+    @Test
+    public void v2ClosingFlagPreventsNewHandlersAfterDrainStarts() throws InterruptedException {
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
+
+        when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(client.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(client.getEntityPath()).thenReturn("entityPath");
+        when(client.isConnectionClosed()).thenReturn(false);
+        when(client.isAutoLockRenewRequested()).thenReturn(false);
+        when(client.complete(any())).thenReturn(Mono.empty());
+        doNothing().when(client).close();
+
+        // Emit message1 immediately, then message2 after a short delay (to ensure message1's handler starts first).
+        // Use concurrency=2 so flatMap can dispatch both handlers concurrently.
+        when(client.nonSessionProcessorReceiveV2())
+            .thenReturn(Flux.concat(
+                Flux.just(message1),
+                Flux.just(message2).delayElements(Duration.ofMillis(200)),
+                Flux.<ServiceBusReceivedMessage>never())
+                .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+
+        final CountDownLatch handler1Started = new CountDownLatch(1);
+        final CountDownLatch handler1CanProceed = new CountDownLatch(1);
+        final AtomicBoolean handler2ProcessMessageInvoked = new AtomicBoolean(false);
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            if (messageContext.getMessage() == message1) {
+                handler1Started.countDown();
+                try {
+                    handler1CanProceed.await(10, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            } else {
+                // If this executes, the closing flag did NOT prevent the second handler.
+                handler2ProcessMessageInvoked.set(true);
+            }
+        };
+
+        final MessagePump pump = new MessagePump(client, messageConsumer, e -> {
+        }, 2, false);
+
+        final AtomicReference<reactor.core.Disposable> subscription = new AtomicReference<>();
+        subscription.set(pump.begin().subscribe());
+
+        // Wait for handler1 to start.
+        assertTrue(handler1Started.await(5, TimeUnit.SECONDS), "Handler1 should have started processing");
+
+        // Call drainHandlers on a separate thread. This sets closing=true and waits for handler1.
+        final CountDownLatch drainDone = new CountDownLatch(1);
+        final AtomicBoolean drainResult = new AtomicBoolean(false);
+        final Thread drainThread = new Thread(() -> {
+            drainResult.set(pump.drainHandlers(Duration.ofSeconds(10)));
+            drainDone.countDown();
+        });
+        drainThread.start();
+
+        // Give time for drain to start (sets closing=true) and for message2 to arrive.
+        Thread.sleep(500);
+
+        // Release handler1 so the drain can complete.
+        handler1CanProceed.countDown();
+
+        // Wait for drain to finish.
+        assertTrue(drainDone.await(5, TimeUnit.SECONDS), "Drain should complete after handler1 finishes");
+        assertTrue(drainResult.get(), "Drain should return true (all handlers completed)");
+
+        // The second message's handler should NOT have invoked processMessage because closing was true.
+        assertFalse(handler2ProcessMessageInvoked.get(),
+            "Second handler should have been skipped by the closing flag");
+
+        // Clean up.
+        subscription.get().dispose();
+    }
 }
