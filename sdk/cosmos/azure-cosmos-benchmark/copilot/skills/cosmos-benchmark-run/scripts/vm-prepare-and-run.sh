@@ -80,6 +80,17 @@ BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "detached")
 COMMIT=$(git rev-parse --short HEAD)
 echo "Checked out: $BRANCH @ $COMMIT"
 
+# Resolve script directory: prefer repo scripts (match the ref), fall back to ~/benchmark-scripts
+REPO_SCRIPTS_DIR="$BENCH_DIR/copilot/skills/cosmos-benchmark-run/scripts"
+FALLBACK_SCRIPTS_DIR=~/benchmark-scripts
+if [[ -d "$REPO_SCRIPTS_DIR" ]]; then
+  VM_SCRIPTS_DIR="$REPO_SCRIPTS_DIR"
+  echo "Using repo scripts: $VM_SCRIPTS_DIR"
+else
+  VM_SCRIPTS_DIR="$FALLBACK_SCRIPTS_DIR"
+  echo "Using fallback scripts: $VM_SCRIPTS_DIR"
+fi
+
 # --- Step 2: Build ---
 echo ""
 echo "=== [2/4] Build ==="
@@ -150,9 +161,8 @@ cat > "$RESULTS_DIR/.run.sh" <<EOF
 #!/bin/bash
 set -uo pipefail
 cd "$BENCH_DIR"
-VM_SCRIPTS_DIR=~/benchmark-scripts
-if [[ -f "\$VM_SCRIPTS_DIR/run-benchmark.sh" ]]; then
-  bash "\$VM_SCRIPTS_DIR/run-benchmark.sh" \\
+if [[ -f "$VM_SCRIPTS_DIR/run-benchmark.sh" ]]; then
+  bash "$VM_SCRIPTS_DIR/run-benchmark.sh" \\
     "$SCENARIO" "$TENANTS_RESOLVED" "$RESULTS_DIR" $EXTRA_FLAGS
 else
   echo "WARNING: run-benchmark.sh not found, running JAR directly"

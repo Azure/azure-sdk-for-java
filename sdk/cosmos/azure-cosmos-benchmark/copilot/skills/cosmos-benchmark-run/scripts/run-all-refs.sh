@@ -39,16 +39,16 @@ VM_KEY=$(cat "$CONFIG_DIR/vm-key")
 SSH_CMD="ssh -i $VM_KEY -o StrictHostKeyChecking=no $VM_USER@$VM_IP"
 SCP_CMD="scp -i $VM_KEY -o StrictHostKeyChecking=no"
 
-# Copy scripts to VM (avoids stdin piping issues with heredocs)
+# Copy bootstrapper to VM (avoids stdin piping issues with heredocs).
+# Only vm-prepare-and-run.sh is copied here — after checkout, the remaining
+# scripts (run-benchmark.sh, monitor.sh, etc.) are resolved from the cloned
+# repo so they match the ref being benchmarked. Falls back to ~/benchmark-scripts/
+# if the repo version doesn't include them yet.
 VM_SCRIPTS_DIR="~/benchmark-scripts"
 $SSH_CMD "mkdir -p $VM_SCRIPTS_DIR"
-for SCRIPT_FILE in vm-prepare-and-run.sh run-benchmark.sh monitor.sh capture-diagnostics.sh; do
-  if [[ -f "$SCRIPT_DIR/$SCRIPT_FILE" ]]; then
-    $SCP_CMD "$SCRIPT_DIR/$SCRIPT_FILE" "$VM_USER@$VM_IP:$VM_SCRIPTS_DIR/$SCRIPT_FILE"
-  fi
-done
+$SCP_CMD "$SCRIPT_DIR/vm-prepare-and-run.sh" "$VM_USER@$VM_IP:$VM_SCRIPTS_DIR/vm-prepare-and-run.sh"
 $SSH_CMD "chmod +x $VM_SCRIPTS_DIR/*.sh"
-echo "Scripts copied to VM:$VM_SCRIPTS_DIR"
+echo "Bootstrapper copied to VM:$VM_SCRIPTS_DIR/vm-prepare-and-run.sh"
 echo ""
 
 IFS=',' read -ra REFS <<< "$REFS_CSV"
