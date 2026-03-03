@@ -27,7 +27,7 @@ Use the Azure VoiceLive client library for Java to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-voicelive</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -58,7 +58,7 @@ First, add the Azure Identity package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.18.1</version>
+    <version>1.18.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

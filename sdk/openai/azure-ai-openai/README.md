@@ -52,7 +52,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.16</version>
+    <version>1.0.0-beta.17</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
