@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed `KeyVaultJcaProvider` being registered as the highest-priority JCA security provider, which overrides standard JCA services (`KeyManagerFactory.SunX509`, `Signature` algorithms) and breaks mTLS with standard keystores (JKS, PKCS12). The provider is now added at the end of the provider list, allowing JCA's delayed provider selection to route `KeyVaultPrivateKey` signing operations to the KeyVault implementations without interfering with standard SSL/TLS operations. [#48276](https://github.com/Azure/azure-sdk-for-java/issues/48276)
+
 ### Other Changes
 
 ## 7.0.0 (2026-02-03)
