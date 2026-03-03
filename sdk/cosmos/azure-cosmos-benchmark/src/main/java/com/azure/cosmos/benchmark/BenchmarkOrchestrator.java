@@ -166,7 +166,7 @@ public class BenchmarkOrchestrator {
                 logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
 
                 // 1. Create clients
-                List<AsyncBenchmark<?>> benchmarks = createBenchmarks(config, registry);
+                List<AsyncBenchmark<?>> benchmarks = createBenchmarks(config, registry, executor);
                 reporter.report();
                 logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
                     cycle, benchmarks.size(), Instant.now());
@@ -219,11 +219,23 @@ public class BenchmarkOrchestrator {
             totalCycles, durationSec, Instant.now());
     }
 
-    private List<AsyncBenchmark<?>> createBenchmarks(BenchmarkConfig config, MetricRegistry registry) {
-        List<AsyncBenchmark<?>> benchmarks = new ArrayList<>();
-        for (TenantWorkloadConfig tenant : config.getTenantWorkloads()) {
-            benchmarks.add(createBenchmarkForOperation(tenant, registry));
+    private List<AsyncBenchmark<?>> createBenchmarks(BenchmarkConfig config, MetricRegistry registry,
+                                                      ExecutorService executor) {
+        List<TenantWorkloadConfig> tenants = config.getTenantWorkloads();
+        List<Future<AsyncBenchmark<?>>> futures = new ArrayList<>(tenants.size());
+        for (TenantWorkloadConfig tenant : tenants) {
+            futures.add(executor.submit(() -> createBenchmarkForOperation(tenant, registry)));
         }
+
+        List<AsyncBenchmark<?>> benchmarks = new ArrayList<>(tenants.size());
+        for (Future<AsyncBenchmark<?>> f : futures) {
+            try {
+                benchmarks.add(f.get());
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to create benchmark client", e);
+            }
+        }
+        logger.info("Created {} benchmark clients in parallel", benchmarks.size());
         return benchmarks;
     }
 
