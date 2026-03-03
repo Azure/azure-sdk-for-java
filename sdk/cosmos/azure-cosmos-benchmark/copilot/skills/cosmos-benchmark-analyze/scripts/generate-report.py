@@ -260,39 +260,92 @@ def format_run_section(summary):
 
 
 def format_comparison(summaries):
-    """Format a comparison table across multiple runs."""
+    """Format a unified comparison table with baseline/peak/final for all runs."""
     lines = []
-    lines.append("## Comparison")
+
+    # Git info header per run
+    lines.append("## Runs")
+    lines.append("")
+    for s in summaries:
+        label = get_run_label(s)
+        git = s["git"]
+        branch = git.get("branch", git.get("branchName", "?"))
+        commit = git.get("commitId", git.get("commit", "?"))
+        lines.append(f"- **{label}**: branch=`{branch}`, commit=`{commit}`")
     lines.append("")
 
-    # Header
+    # Unified JVM metrics table
+    lines.append("## JVM Metrics")
+    lines.append("")
+
+    # Build header with sub-columns per run
     header = "| Metric |"
     separator = "|--------|"
     for s in summaries:
         label = get_run_label(s)
-        header += f" {label} |"
-        separator += "--------|"
+        header += f" {label} (baseline) | (peak) | (final) |"
+        separator += "--------|--------|--------|"
     lines.append(header)
     lines.append(separator)
 
-    # Rows
-    metrics = [
-        ("Threads (final)", lambda s: s["monitor"]["final"]["threads"] if s["monitor"] else "—"),
-        ("Thread delta", lambda s: s["monitor"]["final"]["threads"] - s["monitor"]["baseline"]["threads"] if s["monitor"] else "—"),
-        ("Heap final (MB)", lambda s: s["monitor"]["final"]["heap_used_kb"] // 1024 if s["monitor"] else "—"),
-        ("Peak FDs", lambda s: max(r["fds"] for r in s["monitor"]["rows"]) if s["monitor"] else "—"),
-        ("GC count", lambda s: s["monitor"]["final"]["gc_count"] if s["monitor"] else "—"),
-        ("GC time (ms)", lambda s: s["monitor"]["final"]["gc_time_ms"] if s["monitor"] else "—"),
-        ("RSS peak (MB)", lambda s: max(r["rss_kb"] for r in s["monitor"]["rows"]) // 1024 if s["monitor"] else "—"),
-        ("CPU peak %", lambda s: f"{max(r['cpu_pct'] for r in s['monitor']['rows']):.1f}" if s["monitor"] else "—"),
-    ]
-
-    for label, extractor in metrics:
-        row = f"| {label} |"
+    def fmt_row(metric_label, key, transform=None):
+        row = f"| {metric_label} |"
         for s in summaries:
-            val = extractor(s)
-            row += f" {val} |"
+            if s["monitor"]:
+                b_val = s["monitor"]["baseline"][key]
+                p_val = max(r[key] for r in s["monitor"]["rows"])
+                f_val = s["monitor"]["final"][key]
+                if transform:
+                    row += f" {transform(b_val)} | {transform(p_val)} | {transform(f_val)} |"
+                else:
+                    row += f" {b_val} | {p_val} | {f_val} |"
+            else:
+                row += " — | — | — |"
         lines.append(row)
+
+    fmt_row("Threads", "threads")
+    fmt_row("Heap (MB)", "heap_used_kb", lambda v: v // 1024)
+    fmt_row("RSS (MB)", "rss_kb", lambda v: v // 1024)
+    fmt_row("FDs", "fds")
+    fmt_row("CPU %", "cpu_pct", lambda v: f"{v:.1f}")
+
+    # GC is cumulative, show baseline and final only
+    row = "| GC count |"
+    for s in summaries:
+        if s["monitor"]:
+            row += f" {s['monitor']['baseline']['gc_count']} | — | {s['monitor']['final']['gc_count']} |"
+        else:
+            row += " — | — | — |"
+    lines.append(row)
+
+    row = "| GC time (ms) |"
+    for s in summaries:
+        if s["monitor"]:
+            row += f" {s['monitor']['baseline']['gc_time_ms']} | — | {s['monitor']['final']['gc_time_ms']} |"
+        else:
+            row += " — | — | — |"
+    lines.append(row)
+
+    # Derived metrics
+    row = "| Thread delta |"
+    for s in summaries:
+        if s["monitor"]:
+            delta = s["monitor"]["final"]["threads"] - s["monitor"]["baseline"]["threads"]
+            row += f" — | — | {delta} |"
+        else:
+            row += " — | — | — |"
+    lines.append(row)
+
+    row = "| Heap ratio |"
+    for s in summaries:
+        if s["monitor"] and s["monitor"]["baseline"]["heap_used_kb"] > 0:
+            ratio = s["monitor"]["final"]["heap_used_kb"] / s["monitor"]["baseline"]["heap_used_kb"]
+            row += f" — | — | {ratio:.2f} |"
+        else:
+            row += " — | — | — |"
+    lines.append(row)
+
+    lines.append("")
 
     # Throughput comparison
     all_throughput_keys = set()
@@ -300,28 +353,28 @@ def format_comparison(summaries):
         all_throughput_keys.update(s["throughput"].keys())
 
     if all_throughput_keys:
-        lines.append("")
-        lines.append("### Throughput Comparison")
+        lines.append("## Throughput")
         lines.append("")
         header = "| Metric |"
         separator = "|--------|"
         for s in summaries:
             label = get_run_label(s)
-            header += f" {label} |"
-            separator += "--------|"
+            header += f" {label} (count) | (mean ops/s) | (1m rate) |"
+            separator += "--------|--------|--------|"
         lines.append(header)
         lines.append(separator)
 
         for key in sorted(all_throughput_keys):
-            row = f"| {key} (ops/s) |"
+            row = f"| {key} |"
             for s in summaries:
                 if key in s["throughput"]:
-                    row += f" {s['throughput'][key]['mean_rate']:.1f} |"
+                    d = s["throughput"][key]
+                    row += f" {d['count']:,} | {d['mean_rate']:.1f} | {d['m1_rate']:.1f} |"
                 else:
-                    row += " — |"
+                    row += " — | — | — |"
             lines.append(row)
+        lines.append("")
 
-    lines.append("")
     return "\n".join(lines)
 
 
@@ -402,20 +455,11 @@ def main():
     report.append(f"Runs: {len(summaries)}")
     report.append(f"")
 
-    # Comparison table (if multiple runs)
-    if len(summaries) > 1:
-        report.append(format_comparison(summaries))
+    # Unified comparison table (works for 1 or more runs)
+    report.append(format_comparison(summaries))
 
     # Overlay charts
     report.append(format_overlay_charts(summaries))
-
-    # Per-run details
-    report.append("## Run Details")
-    report.append("")
-    for s in summaries:
-        report.append(format_run_section(s))
-        report.append("---")
-        report.append("")
 
     # Write output
     content = "\n".join(report)
