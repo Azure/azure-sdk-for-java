@@ -24,6 +24,9 @@ import java.util.Map;
 
 // DO NOT modify this helper class
 
+// Re-apply after regeneration: constructor wraps options with AgentsServicePollUtils.withFoundryFeatures(),
+// poll() override delegates to super then remaps statuses via AgentsServicePollUtils.remapStatus().
+
 /**
  * Implements a synchronous operation location polling strategy, from Operation-Location.
  *
