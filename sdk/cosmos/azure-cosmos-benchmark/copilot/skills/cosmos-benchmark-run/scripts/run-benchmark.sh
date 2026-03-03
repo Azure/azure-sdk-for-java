@@ -18,7 +18,13 @@ EXTRA_ARGS="$*"
 
 mkdir -p "$OUTPUT_DIR"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# MODULE_DIR: use the script's parent if it contains a target/ dir (repo layout),
+# otherwise use the current working directory (caller is expected to cd to the
+# benchmark module before invoking this script).
 MODULE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+if [[ ! -d "$MODULE_DIR/target" && -d "$PWD/target" ]]; then
+    MODULE_DIR="$PWD"
+fi
 
 # Git metadata
 BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
