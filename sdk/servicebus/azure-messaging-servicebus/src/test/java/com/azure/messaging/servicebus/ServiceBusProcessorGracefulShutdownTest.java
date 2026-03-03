@@ -58,6 +58,8 @@ import static org.mockito.Mockito.when;
  *       Tests that the V2 closing flag prevents new handler dispatch during drain</li>
  *   <li><b>V1 Closing Flag</b> — {@link #v1ClosingFlagPreventsNewHandlersAfterDrainStarts()}:
  *       Tests that the V1 closing flag prevents new handler dispatch in the drain-to-cancel window</li>
+ *   <li><b>V1 Restart</b> — {@link #v1StartAfterCloseResetsClosingFlag()}:
+ *       Tests that {@code start()} after {@code close()} resets {@code v1Closing} so handlers run</li>
  *   <li><b>Re-entrant (concurrent)</b> — {@link #v1ReentrantCloseWaitsForOtherConcurrentHandlers()}:
  *       Tests re-entrant drain with concurrent handlers — waits for other handlers before closing</li>
  *   <li><b>V2 Session</b> — Not directly unit-testable. The drain in
@@ -696,5 +698,69 @@ public class ServiceBusProcessorGracefulShutdownTest {
         // The second message's handler should NOT have invoked processMessage because v1Closing was true.
         assertFalse(handler2ProcessMessageInvoked.get(),
             "Second handler should have been skipped by the V1 closing flag");
+    }
+
+    /**
+     * Verifies that calling {@code start()} after {@code close()} resets the {@code v1Closing}
+     * flag so that the processor can begin a new processing cycle. Without the reset, all
+     * {@code onNext} calls would short-circuit and no messages would be processed.
+     */
+    @Test
+    public void v1StartAfterCloseResetsClosingFlag() throws InterruptedException {
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+
+        final ServiceBusReceiverClientBuilder receiverBuilder = mock(ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient asyncClient1 = mock(ServiceBusReceiverAsyncClient.class);
+        final ServiceBusReceiverAsyncClient asyncClient2 = mock(ServiceBusReceiverAsyncClient.class);
+
+        // First call returns asyncClient1 (constructor), second returns asyncClient2 (restart after close).
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient1, asyncClient2);
+
+        for (ServiceBusReceiverAsyncClient client : new ServiceBusReceiverAsyncClient[] {
+            asyncClient1,
+            asyncClient2 }) {
+            when(client.getFullyQualifiedNamespace()).thenReturn("FQDN");
+            when(client.getEntityPath()).thenReturn("entityPath");
+            when(client.isConnectionClosed()).thenReturn(false);
+            when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
+            doNothing().when(client).close();
+        }
+
+        // First cycle: emit nothing (just close immediately).
+        when(asyncClient1.receiveMessagesWithContext()).thenReturn(
+            Flux.<ServiceBusMessageContext>never().publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+
+        // Second cycle: emit one message, then never complete.
+        when(asyncClient2.receiveMessagesWithContext()).thenReturn(Flux.just(message)
+            .map(ServiceBusMessageContext::new)
+            .concatWith(Flux.<ServiceBusMessageContext>never())
+            .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+
+        final CountDownLatch messageProcessed = new CountDownLatch(1);
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            messageProcessed.countDown();
+        };
+
+        final ServiceBusProcessorClientOptions options
+            = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1);
+        final ServiceBusProcessorClient processorClient
+            = new ServiceBusProcessorClient(receiverBuilder, "entityPath", null, null, messageConsumer, error -> {
+            }, options);
+
+        try {
+            // First cycle: start then close (sets v1Closing=true during drain).
+            processorClient.start();
+            processorClient.close();
+
+            // Second cycle: start again. If v1Closing is not reset, onNext will skip the handler.
+            processorClient.start();
+
+            // Verify the handler runs, proving v1Closing was reset.
+            assertTrue(messageProcessed.await(5, TimeUnit.SECONDS),
+                "Handler should run after restart, proving v1Closing was reset");
+        } finally {
+            processorClient.close();
+        }
     }
 }

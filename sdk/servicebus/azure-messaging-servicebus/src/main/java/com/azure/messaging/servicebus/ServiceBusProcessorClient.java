@@ -309,6 +309,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             return;
         }
 
+        // Reset shutdown-only state so the processor can restart after a close() cycle.
+        v1Closing = false;
+
         if (wasStopped) {
             wasStopped = false;
             LOGGER.warning(
