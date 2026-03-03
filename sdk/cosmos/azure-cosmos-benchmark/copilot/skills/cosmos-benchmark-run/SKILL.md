@@ -127,10 +127,12 @@ bash scripts/check-status.sh --config-dir "$CONFIG_DIR"
 
 The benchmark itself runs in a **tmux session** (`bench`) on the VM, so it survives SSH disconnections. Even if the local orchestrator process is interrupted, the benchmark continues on the VM.
 
-After verification, the user can:
-- **Continue working** on other tasks in the main context
-- **Check status** at any time (see Monitor progress below)
-- **Get notified** when the orchestrator reports completion via `read_bash`
+After verification, the user can continue working. The agent MUST:
+- **Proactively poll** for completion using `read_bash` on the orchestrator shell
+- When the orchestrator exits, **immediately notify** the user with the result (✅/❌ per ref)
+- **Suggest analysis** if all refs succeeded
+
+Do NOT wait for the user to ask "peek" to discover the run has completed. If the user is idle and the shell completes, report the result immediately.
 
 ### Monitor progress
 

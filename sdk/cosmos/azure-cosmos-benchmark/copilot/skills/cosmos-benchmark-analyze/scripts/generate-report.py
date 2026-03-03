@@ -9,11 +9,10 @@ Reads:
   - monitor.csv           (JVM metrics: threads, heap, FDs, GC)
   - metrics/*.csv         (Codahale: throughput, latency)
   - git-info.json         (branch, commit)
-  - gc.log                (GC pause summary)
 
 Generates:
-  - Markdown report with per-run summaries, time-series tables, inline SVG charts,
-    and a comparison table if multiple runs are present.
+  - Markdown report with comparison table, overlay time-series charts,
+    throughput comparison, and per-run details.
 """
 
 import argparse
@@ -23,6 +22,10 @@ import os
 import sys
 from datetime import datetime
 from pathlib import Path
+
+
+# Colors for multi-run overlay charts
+COLORS = ["#0066cc", "#cc3300", "#339933", "#9933cc", "#cc6600", "#006699"]
 
 
 def read_csv(path):
@@ -111,32 +114,69 @@ def parse_throughput(metrics_dir):
     return result
 
 
-def generate_svg_chart(rows, key, label, width=600, height=150):
-    """Generate an inline SVG sparkline chart for a metric over time."""
-    values = [r[key] for r in rows]
-    if not values or max(values) == 0:
+def generate_overlay_chart(all_series, key, label, width=700, height=180):
+    """Generate an SVG chart overlaying the same metric from multiple runs.
+
+    all_series: list of (run_label, color, rows)
+    """
+    # Compute global min/max across all runs
+    all_values = []
+    for _, _, rows in all_series:
+        all_values.extend([r[key] for r in rows])
+    if not all_values or max(all_values) == 0:
         return ""
 
-    n = len(values)
-    max_val = max(values)
-    min_val = min(values)
+    max_val = max(all_values)
+    min_val = min(all_values)
     val_range = max_val - min_val if max_val != min_val else 1
-    padding = 10
+    padding_left = 10
+    padding_right = 10
+    padding_top = 40
+    padding_bottom = 30
+    chart_w = width - padding_left - padding_right
+    chart_h = height - padding_top - padding_bottom
 
-    points = []
-    for i, v in enumerate(values):
-        x = padding + (i / max(n - 1, 1)) * (width - 2 * padding)
-        y = height - padding - ((v - min_val) / val_range) * (height - 2 * padding)
-        points.append(f"{x:.1f},{y:.1f}")
+    svg_parts = []
+    svg_parts.append(f'<svg width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">')
+    svg_parts.append(f'  <style>text {{ font-family: Consolas, Monaco, monospace; }}</style>')
 
-    polyline = " ".join(points)
+    # Title
+    svg_parts.append(f'  <text x="{padding_left}" y="16" font-size="14" font-weight="bold" fill="#222">{label}</text>')
 
-    svg = f"""<svg width="{width}" height="{height + 30}" xmlns="http://www.w3.org/2000/svg">
-  <text x="{padding}" y="12" font-size="12" fill="#333">{label} (min={min_val:,.0f}, max={max_val:,.0f})</text>
-  <rect x="{padding}" y="18" width="{width - 2 * padding}" height="{height}" fill="#f8f9fa" stroke="#ddd"/>
-  <polyline points="{polyline}" fill="none" stroke="#0066cc" stroke-width="1.5"/>
-</svg>"""
-    return svg
+    # Background
+    svg_parts.append(f'  <rect x="{padding_left}" y="{padding_top}" width="{chart_w}" height="{chart_h}" fill="#ffffff" stroke="#ccc"/>')
+
+    # Grid lines (4 horizontal)
+    for i in range(5):
+        y = padding_top + (i / 4) * chart_h
+        val = max_val - (i / 4) * val_range
+        svg_parts.append(f'  <line x1="{padding_left}" y1="{y:.0f}" x2="{padding_left + chart_w}" y2="{y:.0f}" stroke="#eee" stroke-width="0.5"/>')
+        svg_parts.append(f'  <text x="{padding_left + chart_w + 4}" y="{y + 4:.0f}" font-size="10" fill="#666">{val:,.0f}</text>')
+
+    # Plot each series
+    for run_label, color, rows in all_series:
+        values = [r[key] for r in rows]
+        n = len(values)
+        if n < 2:
+            continue
+        points = []
+        for i, v in enumerate(values):
+            x = padding_left + (i / max(n - 1, 1)) * chart_w
+            y = padding_top + chart_h - ((v - min_val) / val_range) * chart_h
+            points.append(f"{x:.1f},{y:.1f}")
+        polyline = " ".join(points)
+        svg_parts.append(f'  <polyline points="{polyline}" fill="none" stroke="{color}" stroke-width="2" opacity="0.85"/>')
+
+    # Legend
+    legend_x = padding_left + 10
+    legend_y = 24
+    for i, (run_label, color, _) in enumerate(all_series):
+        lx = legend_x + i * 280
+        svg_parts.append(f'  <rect x="{lx}" y="{legend_y}" width="12" height="12" fill="{color}"/>')
+        svg_parts.append(f'  <text x="{lx + 16}" y="{legend_y + 10}" font-size="11" fill="#444">{run_label}</text>')
+
+    svg_parts.append('</svg>')
+    return "\n".join(svg_parts)
 
 
 def run_summary(run_dir):
@@ -154,6 +194,19 @@ def run_summary(run_dir):
         "monitor": monitor,
         "throughput": throughput,
     }
+
+
+def get_run_label(summary):
+    """Short label for a run: use ref name from run-name, fallback to branch/commit."""
+    name = summary["name"]
+    # Strip date-scenario prefix: 20260302-SIMPLE-origin-main -> origin-main
+    parts = name.split("-", 2)
+    if len(parts) >= 3:
+        return parts[2]
+    git = summary["git"]
+    branch = git.get("branch", "?")
+    commit = git.get("commitId", git.get("commit", "?"))[:7]
+    return f"{branch} ({commit})"
 
 
 def format_run_section(summary):
@@ -176,9 +229,6 @@ def format_run_section(summary):
         b, p, f_ = monitor["baseline"], monitor["peak"], monitor["final"]
         thread_delta = f_["threads"] - b["threads"]
         heap_ratio = f_["heap_used_kb"] / b["heap_used_kb"] if b["heap_used_kb"] > 0 else 0
-        thread_status = "✅" if thread_delta <= 2 else "🔴"
-        heap_status = "✅" if heap_ratio <= 1.1 else "🔴"
-        overall = "✅ PASSED" if (thread_delta <= 2 and heap_ratio <= 1.1) else "🔴 FAILED"
 
         lines.append("#### JVM Metrics")
         lines.append("")
@@ -190,29 +240,9 @@ def format_run_section(summary):
         lines.append(f"| FDs | {b['fds']} | {p['fds']} | {f_['fds']} |")
         lines.append(f"| GC count | {b['gc_count']} | — | {f_['gc_count']} |")
         lines.append(f"| GC time (ms) | {b['gc_time_ms']} | — | {f_['gc_time_ms']} |")
+        lines.append(f"| Thread delta | — | — | {thread_delta} |")
+        lines.append(f"| Heap ratio | — | — | {heap_ratio:.2f} |")
         lines.append("")
-        lines.append(f"- {thread_status} Thread leak: delta={thread_delta} (threshold: ≤2)")
-        lines.append(f"- {heap_status} Memory leak: ratio={heap_ratio:.2f} (threshold: ≤1.1)")
-        lines.append(f"- **Overall: {overall}**")
-        lines.append("")
-
-        # Time-series charts
-        rows = monitor["rows"]
-        if len(rows) > 2:
-            lines.append("#### Time Series")
-            lines.append("")
-            for key, label in [
-                ("threads", "Threads"),
-                ("heap_used_kb", "Heap Used (KB)"),
-                ("fds", "File Descriptors"),
-                ("rss_kb", "RSS (KB)"),
-                ("gc_count", "GC Count"),
-                ("cpu_pct", "CPU %"),
-            ]:
-                svg = generate_svg_chart(rows, key, label)
-                if svg:
-                    lines.append(svg)
-                    lines.append("")
 
     if throughput:
         lines.append("#### Throughput Metrics")
@@ -239,9 +269,8 @@ def format_comparison(summaries):
     header = "| Metric |"
     separator = "|--------|"
     for s in summaries:
-        branch = s["git"].get("branch", s["git"].get("branchName", "?"))
-        commit = s["git"].get("commitId", s["git"].get("commit", "?"))[:7]
-        header += f" {branch} ({commit}) |"
+        label = get_run_label(s)
+        header += f" {label} |"
         separator += "--------|"
     lines.append(header)
     lines.append(separator)
@@ -249,13 +278,13 @@ def format_comparison(summaries):
     # Rows
     metrics = [
         ("Threads (final)", lambda s: s["monitor"]["final"]["threads"] if s["monitor"] else "—"),
-        ("Heap final (MB)", lambda s: s["monitor"]["final"]["heap_used_kb"] // 1024 if s["monitor"] else "—"),
-        ("Heap ratio", lambda s: f"{s['monitor']['final']['heap_used_kb'] / s['monitor']['baseline']['heap_used_kb']:.2f}" if s["monitor"] and s["monitor"]["baseline"]["heap_used_kb"] > 0 else "—"),
         ("Thread delta", lambda s: s["monitor"]["final"]["threads"] - s["monitor"]["baseline"]["threads"] if s["monitor"] else "—"),
-        ("Peak FDs", lambda s: s["monitor"]["peak"]["fds"] if s["monitor"] else "—"),
+        ("Heap final (MB)", lambda s: s["monitor"]["final"]["heap_used_kb"] // 1024 if s["monitor"] else "—"),
+        ("Peak FDs", lambda s: max(r["fds"] for r in s["monitor"]["rows"]) if s["monitor"] else "—"),
         ("GC count", lambda s: s["monitor"]["final"]["gc_count"] if s["monitor"] else "—"),
         ("GC time (ms)", lambda s: s["monitor"]["final"]["gc_time_ms"] if s["monitor"] else "—"),
-        ("RSS peak (MB)", lambda s: s["monitor"]["peak"]["rss_kb"] // 1024 if s["monitor"] else "—"),
+        ("RSS peak (MB)", lambda s: max(r["rss_kb"] for r in s["monitor"]["rows"]) // 1024 if s["monitor"] else "—"),
+        ("CPU peak %", lambda s: f"{max(r['cpu_pct'] for r in s['monitor']['rows']):.1f}" if s["monitor"] else "—"),
     ]
 
     for label, extractor in metrics:
@@ -277,8 +306,8 @@ def format_comparison(summaries):
         header = "| Metric |"
         separator = "|--------|"
         for s in summaries:
-            branch = s["git"].get("branch", s["git"].get("branchName", "?"))[:20]
-            header += f" {branch} |"
+            label = get_run_label(s)
+            header += f" {label} |"
             separator += "--------|"
         lines.append(header)
         lines.append(separator)
@@ -293,6 +322,39 @@ def format_comparison(summaries):
             lines.append(row)
 
     lines.append("")
+    return "\n".join(lines)
+
+
+def format_overlay_charts(summaries):
+    """Generate overlay charts section — one chart per metric with all runs overlaid."""
+    lines = []
+    lines.append("## Time Series (all runs overlaid)")
+    lines.append("")
+
+    # Build series list
+    all_series = []
+    for i, s in enumerate(summaries):
+        if s["monitor"] and len(s["monitor"]["rows"]) > 2:
+            label = get_run_label(s)
+            color = COLORS[i % len(COLORS)]
+            all_series.append((label, color, s["monitor"]["rows"]))
+
+    if not all_series:
+        return ""
+
+    for key, label in [
+        ("threads", "Threads"),
+        ("heap_used_kb", "Heap Used (KB)"),
+        ("fds", "File Descriptors"),
+        ("rss_kb", "RSS (KB)"),
+        ("gc_count", "GC Count"),
+        ("cpu_pct", "CPU %"),
+    ]:
+        svg = generate_overlay_chart(all_series, key, label)
+        if svg:
+            lines.append(svg)
+            lines.append("")
+
     return "\n".join(lines)
 
 
@@ -344,6 +406,9 @@ def main():
     if len(summaries) > 1:
         report.append(format_comparison(summaries))
 
+    # Overlay charts
+    report.append(format_overlay_charts(summaries))
+
     # Per-run details
     report.append("## Run Details")
     report.append("")
@@ -360,13 +425,8 @@ def main():
     print(f"✅ Report generated: {output_path}")
     print(f"   Runs analyzed: {len(summaries)}")
     for s in summaries:
-        branch = s["git"].get("branch", s["git"].get("branchName", "?"))
-        overall = "?"
-        if s["monitor"]:
-            td = s["monitor"]["final"]["threads"] - s["monitor"]["baseline"]["threads"]
-            hr = s["monitor"]["final"]["heap_used_kb"] / s["monitor"]["baseline"]["heap_used_kb"] if s["monitor"]["baseline"]["heap_used_kb"] > 0 else 0
-            overall = "✅" if (td <= 2 and hr <= 1.1) else "🔴"
-        print(f"   {overall} {s['name']} ({branch})")
+        label = get_run_label(s)
+        print(f"   📊 {s['name']} ({label})")
 
 
 if __name__ == "__main__":

@@ -61,7 +61,6 @@ python3 scripts/generate-report.py \
 For each run, the report includes:
 - **Git info**: branch, commit
 - **JVM metrics table**: baseline, peak, and final values for threads, heap, RSS, FDs, GC
-- **Pass/fail verdict**: thread leak (delta ≤2) and memory leak (ratio ≤1.1) checks
 - **Throughput table**: Codahale metrics (ops/sec mean, 1m, 5m rates) from `metrics/*.csv`
 - **Time-series SVG charts**: inline sparklines for threads, heap, FDs, RSS, GC count, CPU over time
 
@@ -92,16 +91,9 @@ From **`metrics/*.csv`** (Codahale, per-operation):
 | `#Unsuccessful Operations.csv` | count, mean_rate, m1_rate, m5_rate |
 | Per-tenant/operation variants | Same columns per operation type |
 
-### Pass/fail thresholds
+### Metrics reference
 
-See `references/thresholds.md` for full details:
-
-| Check | Threshold | Verdict |
-|---|---|---|
-| Thread delta (final − baseline) | ≤ 2 | ✅ / 🔴 |
-| Heap ratio (final / baseline) | ≤ 1.1 | ✅ / 🔴 |
-| P99 latency scaling | < 5× at N=100 vs N=1 | 🟡 warn |
-| Throughput scaling | > 0.7× at N=100 vs N=1 | 🟡 warn |
+See `references/thresholds.md` for monitor.csv column definitions and metric descriptions.
 
 ## Step 3 — Thread Dump Analysis (optional)
 
