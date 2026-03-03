@@ -10,6 +10,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added a default connect timeout of 5s for Gateway V2 (thin client) data-plane endpoints. - See []()
 
 ### 4.78.0 (2026-02-10)
 

@@ -73,7 +73,8 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     @BeforeClass(groups = {TEST_GROUP}, timeOut = TIMEOUT)
     public void beforeClass() {
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS", "1");
+        // Use the default THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS (5s) — no override.
+        // Tests are designed around the 5s default to match production behavior.
 
         this.client = getClientBuilder().buildAsyncClient();
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
@@ -93,7 +94,6 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
         // Safety: remove any leftover iptables rules
         removeIptablesDropOnPort(10250);
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-        System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
         safeClose(this.client);
     }
 
@@ -282,18 +282,17 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     // ========================================================================
 
     /**
-     * Proves that the GW V2 data plane connect timeout (1s) fires when TCP SYN is dropped.
+     * Proves that the GW V2 data plane connect timeout (5s default) fires when TCP SYN is dropped.
      *
      * Flow:
      * 1. Close + recreate client to force a fresh TCP connection on next request
      * 2. Add iptables DROP SYN on port 10250 (GW V2 data plane)
-     * 3. Attempt a read → CONNECT_TIMEOUT_MILLIS (1s) fires, request fails
-     * 4. Assert failure latency is ~1-3s (1s timeout + SDK retry overhead), NOT 45s
+     * 3. Attempt a read → CONNECT_TIMEOUT_MILLIS (5s) fires, request fails
+     * 4. Assert failure latency is within e2e budget (30s), NOT 45s per attempt
      * 5. Remove iptables rule
      * 6. Verify recovery read succeeds
      *
-     * The 10s e2e timeout prevents the SDK from burning through full retry budgets
-     * (6s+6s+10s=22s) so the test completes quickly.
+     * The 30s e2e timeout allows multiple 5s connect attempts + SDK retry overhead.
      */
     @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
     public void connectTimeout_GwV2_DataPlane_1sFiresOnDroppedSyn() throws Exception {
@@ -303,9 +302,10 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
         this.client = getClientBuilder().buildAsyncClient();
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
 
-        // e2e timeout caps total wait so the test doesn't hang for 45s on retry
+        // e2e timeout caps total wait so the test doesn't hang for 45s on retry.
+        // With 5s connect timeout, 30s budget allows ~5-6 connect attempts.
         CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy =
-            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(10)).enable(true).build();
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(30)).enable(true).build();
         CosmosItemRequestOptions opts = new CosmosItemRequestOptions();
         opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
 
@@ -322,16 +322,15 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
             logger.info("Full diagnostics: {}",
                 e.getDiagnostics() != null ? e.getDiagnostics().toString() : "null");
 
-            // The key assertion: failure should happen within ~10s (e2e budget),
-            // and each individual connect attempt should be bounded to ~1s.
+            // The key assertion: failure should happen within ~30s (e2e budget),
+            // and each individual connect attempt should be bounded to ~5s.
             // If the per-request CONNECT_TIMEOUT_MILLIS is NOT applied (i.e., falls back to 45s),
-            // the first connect attempt alone would take 45s, exceeding the 10s e2e budget at the
-            // connection acquisition stage.
+            // the first connect attempt alone would take 45s, exceeding the 30s e2e budget.
             assertThat(failureLatency)
-                .as("Failure latency should be within e2e budget (10s), proving connect timeout " +
-                    "is NOT 45s. With 1s connect timeout, the SDK can attempt multiple retries " +
-                    "before the 10s e2e budget expires.")
-                .isLessThan(Duration.ofSeconds(12)); // 10s e2e + 2s buffer
+                .as("Failure latency should be within e2e budget (30s), proving connect timeout " +
+                    "is NOT 45s. With 5s connect timeout, the SDK can attempt multiple retries " +
+                    "before the 30s e2e budget expires.")
+                .isLessThan(Duration.ofSeconds(35)); // 30s e2e + 5s buffer
 
             assertThat(e.getStatusCode())
                 .as("Should be 408 or 503 due to connect timeout / e2e timeout")
@@ -395,13 +394,13 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     /**
      * Measures the precise connect timeout boundary.
      *
-     * With THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS=1, a single TCP connect attempt
-     * to a blackholed port 10250 should fail in ~1s. We measure multiple individual
-     * attempts by using a tight e2e timeout of 3s (enough for 2 connect attempts at 1s each).
+     * With THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS=5 (default), a single TCP connect attempt
+     * to a blackholed port 10250 should fail in ~5s. We measure multiple individual
+     * attempts by using an e2e timeout of 12s (enough for 2 connect attempts at 5s each).
      *
-     * If CONNECT_TIMEOUT_MILLIS were 45s (the default), a single connect attempt would
-     * consume the full 3s e2e budget — and the diagnostics would show 0 completed retries.
-     * With 1s CONNECT_TIMEOUT_MILLIS, we expect at least 1-2 retries within the 3s budget.
+     * If CONNECT_TIMEOUT_MILLIS were 45s (the gateway default), a single connect attempt would
+     * consume the full 12s e2e budget — and the diagnostics would show 0 completed retries.
+     * With 5s CONNECT_TIMEOUT_MILLIS, we expect at least 2 retries within the 12s budget.
      */
     @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
     public void connectTimeout_GwV2_PreciseTiming() throws Exception {
@@ -409,10 +408,10 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
         this.client = getClientBuilder().buildAsyncClient();
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
 
-        // Very tight e2e: 3s. With 1s connect timeout, expect 2-3 connect attempts.
+        // e2e: 12s. With 5s connect timeout, expect 2 connect attempts.
         // With 45s connect timeout, only 1 attempt (which wouldn't even complete).
         CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy =
-            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(3)).enable(true).build();
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(12)).enable(true).build();
         CosmosItemRequestOptions opts = new CosmosItemRequestOptions();
         opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
 
@@ -431,23 +430,23 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
             logger.info("Full diagnostics: {}",
                 failedDiagnostics != null ? failedDiagnostics.toString() : "null");
 
-            // Should complete within ~3-5s (3s e2e + buffer)
+            // Should complete within ~12-15s (12s e2e + buffer)
             assertThat(failureLatency)
                 .as("Should complete within e2e budget + small buffer")
-                .isLessThan(Duration.ofSeconds(6));
+                .isLessThan(Duration.ofSeconds(16));
 
             // Parse diagnostics to count gatewayStatisticsList entries
-            // Each entry = one network attempt. With 1s connect timeout + 3s e2e,
-            // expect at least 2 entries (2 connect attempts that timed out at 1s each).
+            // Each entry = one network attempt. With 5s connect timeout + 12s e2e,
+            // expect at least 2 entries (2 connect attempts that timed out at 5s each).
             if (failedDiagnostics != null) {
                 ObjectNode diagNode = (ObjectNode) Utils.getSimpleObjectMapper()
                     .readTree(failedDiagnostics.toString());
                 JsonNode gwStats = diagNode.get("gatewayStatisticsList");
                 if (gwStats != null && gwStats.isArray()) {
-                    logger.info("gatewayStatisticsList entries: {} (with 1s connect timeout, " +
-                        "expect >= 2 in 3s budget)", gwStats.size());
+                    logger.info("gatewayStatisticsList entries: {} (with 5s connect timeout, " +
+                        "expect >= 2 in 12s budget)", gwStats.size());
                     assertThat(gwStats.size())
-                        .as("With 1s CONNECT_TIMEOUT_MILLIS and 3s e2e budget, should have " +
+                        .as("With 5s CONNECT_TIMEOUT_MILLIS and 12s e2e budget, should have " +
                             ">= 2 gateway stats entries (each = one connect attempt). " +
                             "If only 1 entry, the connect timeout may still be 45s.")
                         .isGreaterThanOrEqualTo(2);
@@ -493,41 +492,41 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
         // Close existing client to force new TCP connections on next use
         safeClose(this.client);
 
-        // Apply SYN-only delay: 5s on BOTH ports.
+        // Apply SYN-only delay: 7s on BOTH ports.
         // Only the initial TCP SYN packet is delayed — all other traffic flows normally.
-        // Port 443:   CONNECT_TIMEOUT = 45s → 5s delay < 45s → connect SUCCEEDS
-        // Port 10250: CONNECT_TIMEOUT = 1s  → 5s delay > 1s  → connect FAILS (ConnectTimeoutException at 1s)
-        addPerPortSynDelay(5000, 5000);
+        // Port 443:   CONNECT_TIMEOUT = 45s → 7s delay < 45s → connect SUCCEEDS
+        // Port 10250: CONNECT_TIMEOUT = 5s  → 7s delay > 5s  → connect FAILS (ConnectTimeoutException at 5s)
+        addPerPortSynDelay(7000, 7000);
 
         try {
             // Step 1: Create a new client — metadata requests go to port 443.
-            // The 5s SYN delay means the TCP handshake takes ~5s.
+            // The 7s SYN delay means the TCP handshake takes ~7s.
             // Since the gateway CONNECT_TIMEOUT is 45s, the connect SUCCEEDS.
-            // If the thin client timeout (1s) were applied, the connect would FAIL at 1s
-            // (before the SYN-ACK arrives at 5s). This is the decisive proof.
+            // If the thin client timeout (5s) were applied, the connect would FAIL at 5s
+            // (before the SYN-ACK arrives at 7s). This is the decisive proof.
             Instant metadataStart = Instant.now();
             this.client = getClientBuilder().buildAsyncClient();
             this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
             Duration metadataLatency = Duration.between(metadataStart, Instant.now());
 
-            logger.info("Client + container setup succeeded with 5s SYN delay on port 443. " +
-                "Metadata latency: {}ms (includes 5s SYN delay + TLS + HTTP at normal speed)",
+            logger.info("Client + container setup succeeded with 7s SYN delay on port 443. " +
+                "Metadata latency: {}ms (includes 7s SYN delay + TLS + HTTP at normal speed)",
                 metadataLatency.toMillis());
 
-            // Metadata latency should be >= 4s (5s SYN delay - jitter) but < 30s
-            // (5s for SYN + normal speed TLS/HTTP should complete quickly)
+            // Metadata latency should be >= 6s (7s SYN delay - jitter) but < 30s
+            // (7s for SYN + normal speed TLS/HTTP should complete quickly)
             assertThat(metadataLatency)
-                .as("Metadata should succeed despite 5s SYN delay (5s < 45s gateway CONNECT_TIMEOUT). " +
-                    "If thin client timeout (1s) were applied, connect would fail at 1s.")
-                .isGreaterThanOrEqualTo(Duration.ofSeconds(4))
+                .as("Metadata should succeed despite 7s SYN delay (7s < 45s gateway CONNECT_TIMEOUT). " +
+                    "If thin client timeout (5s) were applied, connect would fail at 5s.")
+                .isGreaterThanOrEqualTo(Duration.ofSeconds(6))
                 .isLessThan(Duration.ofSeconds(30));
 
             // Step 2: Attempt a document read — this goes to port 10250.
-            // The SAME 5s SYN delay is applied, but CONNECT_TIMEOUT_MILLIS is 1s.
-            // The connect timeout fires at 1s (before the delayed SYN-ACK arrives at 5s).
+            // The SAME 7s SYN delay is applied, but CONNECT_TIMEOUT_MILLIS is 5s (default).
+            // The connect timeout fires at 5s (before the delayed SYN-ACK arrives at 7s).
             // This is the bifurcation: same delay, port 443 succeeded, port 10250 fails.
             CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy =
-                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(10))
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(30))
                     .enable(true).build();
             CosmosItemRequestOptions opts = new CosmosItemRequestOptions();
             opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
@@ -536,7 +535,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
             try {
                 this.cosmosAsyncContainer.readItem(
                     seedItem.getId(), new PartitionKey(seedItem.getId()), opts, TestObject.class).block();
-                fail("Data plane request should have failed — 5s SYN delay exceeds 1s connect timeout");
+                fail("Data plane request should have failed — 7s SYN delay exceeds 5s connect timeout");
             } catch (CosmosException e) {
                 Duration dataPlaneLatency = Duration.between(dataPlaneStart, Instant.now());
                 logger.info("Data plane failed as expected: statusCode={}, latency={}ms",
@@ -546,9 +545,9 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
 
                 // Data plane should fail within the e2e budget
                 assertThat(dataPlaneLatency)
-                    .as("Data plane should fail within e2e budget (10s). " +
-                        "Each connect attempt times out at 1s (not 5s), proving 1s CONNECT_TIMEOUT.")
-                    .isLessThan(Duration.ofSeconds(12));
+                    .as("Data plane should fail within e2e budget (30s). " +
+                        "Each connect attempt times out at 5s (not 45s), proving 5s CONNECT_TIMEOUT.")
+                    .isLessThan(Duration.ofSeconds(35));
 
                 assertThat(e.getStatusCode())
                     .as("Should be 408 or 503 due to connect timeout")
