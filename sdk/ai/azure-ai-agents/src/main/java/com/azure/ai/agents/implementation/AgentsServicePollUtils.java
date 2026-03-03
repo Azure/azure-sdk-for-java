@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.implementation;
 
+import com.azure.ai.agents.models.MemoryStoreUpdateStatus;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
@@ -30,8 +31,6 @@ final class AgentsServicePollUtils {
     private AgentsServicePollUtils() {
     }
 
-    // ---- header injection -------------------------------------------------
-
     /**
      * Adds the {@code Foundry-Features} header to the given {@link PollingStrategyOptions}'s
      * {@link Context}.  If the context already carries {@link HttpHeaders} under the
@@ -52,17 +51,15 @@ final class AgentsServicePollUtils {
         return options.setContext(context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
     }
 
-    // ---- status remapping -------------------------------------------------
-
     /**
      * Remaps a {@link PollResponse} whose status may contain a custom service terminal state
      * ({@code "completed"}, {@code "superseded"}) that the base {@code OperationResourcePollingStrategy}
-     * cannot recognise.  If no remapping is needed the original response is returned as-is.
+     * cannot recognize.  If no remapping is needed the original response is returned as-is.
      *
-     * <p>The Memory Stores TypeSpec defines:</p>
+     * <p>The Memory Stores Azure core defines:</p>
      * <ul>
-     *   <li>{@code "completed"} &rarr; {@link LongRunningOperationStatus#SUCCESSFULLY_COMPLETED}</li>
-     *   <li>{@code "superseded"} &rarr; {@link LongRunningOperationStatus#USER_CANCELLED}</li>
+     *   <li>{@code "completed"} {@link LongRunningOperationStatus#SUCCESSFULLY_COMPLETED}</li>
+     *   <li>{@code "superseded"}  {@link LongRunningOperationStatus#USER_CANCELLED}</li>
      * </ul>
      */
     static <T> PollResponse<T> remapStatus(PollResponse<T> response) {
@@ -78,9 +75,9 @@ final class AgentsServicePollUtils {
         // Standard statuses (Succeeded, Failed, Canceled, InProgress, NotStarted) are already
         // mapped correctly by the parent's PollResult; only remap the custom ones.
         String name = status.toString();
-        if ("completed".equalsIgnoreCase(name)) {
+        if (MemoryStoreUpdateStatus.COMPLETED.toString().equalsIgnoreCase(name)) {
             return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-        } else if ("superseded".equalsIgnoreCase(name)) {
+        } else if (MemoryStoreUpdateStatus.SUPERSEDED.toString().equalsIgnoreCase(name)) {
             return LongRunningOperationStatus.USER_CANCELLED;
         }
         return status;
