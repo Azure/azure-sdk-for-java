@@ -53,32 +53,32 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>7.0.3</version> <!-- {x-version-update;springboot4_org.springframework:spring-core;external_dependency} -->
+      <version>7.0.5</version> <!-- {x-version-update;springboot4_org.springframework:spring-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>7.0.3</version> <!-- {x-version-update;springboot4_org.springframework:spring-web;external_dependency} -->
+      <version>7.0.5</version> <!-- {x-version-update;springboot4_org.springframework:spring-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
-      <version>7.0.3</version> <!-- {x-version-update;springboot4_org.springframework:spring-beans;external_dependency} -->
+      <version>7.0.5</version> <!-- {x-version-update;springboot4_org.springframework:spring-beans;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>7.0.3</version> <!-- {x-version-update;springboot4_org.springframework:spring-context;external_dependency} -->
+      <version>7.0.5</version> <!-- {x-version-update;springboot4_org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>7.0.3</version> <!-- {x-version-update;springboot4_org.springframework:spring-tx;external_dependency} -->
+      <version>7.0.5</version> <!-- {x-version-update;springboot4_org.springframework:spring-tx;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
-      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
+      <version>4.0.3</version> <!-- {x-version-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -89,12 +89,12 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-expression</artifactId>
-      <version>7.0.3</version> <!-- {x-version-update;springboot4_org.springframework:spring-expression;external_dependency} -->
+      <version>7.0.5</version> <!-- {x-version-update;springboot4_org.springframework:spring-expression;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-persistence</artifactId>
-      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-persistence;external_dependency} -->
+      <version>4.0.3</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-persistence;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -156,7 +156,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>4.0.3</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -168,7 +168,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.8.2</version> <!-- {x-version-update;springboot4_io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.8.3</version> <!-- {x-version-update;springboot4_io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -254,14 +254,14 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-beans:[7.0.3]</include> <!-- {x-include-update;springboot4_org.springframework:spring-beans;external_dependency} -->
-                <include>org.springframework:spring-web:[7.0.3]</include> <!-- {x-include-update;springboot4_org.springframework:spring-web;external_dependency} -->
-                <include>org.springframework:spring-tx:[7.0.3]</include> <!-- {x-include-update;springboot4_org.springframework:spring-tx;external_dependency} -->
-                <include>org.springframework:spring-expression:[7.0.3]</include> <!-- {x-include-update;springboot4_org.springframework:spring-expression;external_dependency} -->
-                <include>org.springframework:spring-core:[7.0.3]</include> <!-- {x-include-update;springboot4_org.springframework:spring-core;external_dependency} -->
-                <include>org.springframework:spring-context:[7.0.3]</include> <!-- {x-include-update;springboot4_org.springframework:spring-context;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-persistence:[4.0.2]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-persistence;external_dependency} -->
-                <include>org.springframework.data:spring-data-commons:[4.0.2]</include> <!-- {x-include-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>org.springframework:spring-beans:[7.0.5]</include> <!-- {x-include-update;springboot4_org.springframework:spring-beans;external_dependency} -->
+                <include>org.springframework:spring-web:[7.0.5]</include> <!-- {x-include-update;springboot4_org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-tx:[7.0.5]</include> <!-- {x-include-update;springboot4_org.springframework:spring-tx;external_dependency} -->
+                <include>org.springframework:spring-expression:[7.0.5]</include> <!-- {x-include-update;springboot4_org.springframework:spring-expression;external_dependency} -->
+                <include>org.springframework:spring-core:[7.0.5]</include> <!-- {x-include-update;springboot4_org.springframework:spring-core;external_dependency} -->
+                <include>org.springframework:spring-context:[7.0.5]</include> <!-- {x-include-update;springboot4_org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-persistence:[4.0.3]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-persistence;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[4.0.3]</include> <!-- {x-include-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
                 <include>org.javatuples:javatuples:[1.2]</include> <!-- {x-include-update;springboot4_org.javatuples:javatuples;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.20]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jdk8:[2.20.2]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->

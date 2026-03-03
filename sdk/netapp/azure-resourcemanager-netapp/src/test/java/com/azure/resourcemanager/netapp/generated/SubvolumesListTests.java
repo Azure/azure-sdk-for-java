@@ -12,11 +12,11 @@ public final class SubvolumesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubvolumesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"path\":\"bbpihehcecy\",\"size\":7250788889653826955,\"parentPath\":\"rjb\",\"provisioningState\":\"pxdlv\"},\"id\":\"frexcrseqw\",\"name\":\"ksghudgzhxogjgg\",\"type\":\"voujkxibdafhrk\"}],\"nextLink\":\"yomkxfbvfbhdy\"}")
+            "{\"value\":[{\"properties\":{\"path\":\"vxwmygd\",\"size\":5636888396415086824,\"parentPath\":\"chisze\",\"provisioningState\":\"nb\"},\"id\":\"rxgibbd\",\"name\":\"xconfozauors\",\"type\":\"kokwbqplhlvnu\"},{\"properties\":{\"path\":\"zlrphwzs\",\"size\":1934599669073503654,\"parentPath\":\"yuqdu\",\"provisioningState\":\"mnnrwr\"},\"id\":\"ork\",\"name\":\"alywjhhgdn\",\"type\":\"xmsivfomiloxggdu\"}],\"nextLink\":\"q\"}")
             .toObject(SubvolumesList.class);
-        Assertions.assertEquals("bbpihehcecy", model.value().get(0).path());
-        Assertions.assertEquals(7250788889653826955L, model.value().get(0).size());
-        Assertions.assertEquals("rjb", model.value().get(0).parentPath());
-        Assertions.assertEquals("yomkxfbvfbhdy", model.nextLink());
+        Assertions.assertEquals("vxwmygd", model.value().get(0).path());
+        Assertions.assertEquals(5636888396415086824L, model.value().get(0).size());
+        Assertions.assertEquals("chisze", model.value().get(0).parentPath());
+        Assertions.assertEquals("q", model.nextLink());
     }
 }
