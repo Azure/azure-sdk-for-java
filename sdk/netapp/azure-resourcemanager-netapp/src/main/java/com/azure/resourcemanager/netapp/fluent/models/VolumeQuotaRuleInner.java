@@ -11,7 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.ProvisioningState;
-import com.azure.resourcemanager.netapp.models.Type;
+import com.azure.resourcemanager.netapp.models.QuotaType;
 import java.io.IOException;
 import java.util.Map;
 
@@ -154,7 +154,7 @@ public final class VolumeQuotaRuleInner extends Resource {
      * 
      * @return the quotaType value.
      */
-    public Type quotaType() {
+    public QuotaType quotaType() {
         return this.innerProperties() == null ? null : this.innerProperties().quotaType();
     }
 
@@ -164,7 +164,7 @@ public final class VolumeQuotaRuleInner extends Resource {
      * @param quotaType the quotaType value to set.
      * @return the VolumeQuotaRuleInner object itself.
      */
-    public VolumeQuotaRuleInner withQuotaType(Type quotaType) {
+    public VolumeQuotaRuleInner withQuotaType(QuotaType quotaType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VolumeQuotaRulesProperties();
         }

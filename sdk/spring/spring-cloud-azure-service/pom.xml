@@ -151,13 +151,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>6.0.2</version> <!-- {x-version-update;springboot4_org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>6.0.3</version> <!-- {x-version-update;springboot4_org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>7.0.3</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
+      <version>7.0.5</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -215,7 +215,7 @@
             <bannedDependencies>
               <includes>
                 <include>org.apache.kafka:kafka-clients:[4.1.1]</include> <!-- {x-include-update;springboot4_org.apache.kafka:kafka-clients;external_dependency} -->
-                <include>org.postgresql:postgresql:[42.7.9]</include> <!-- {x-include-update;springboot4_org.postgresql:postgresql;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.7.10]</include> <!-- {x-include-update;springboot4_org.postgresql:postgresql;external_dependency} -->
                 <include>com.nimbusds:nimbus-jose-jwt:[10.8]</include> <!-- {x-include-update;springboot4_com.nimbusds:nimbus-jose-jwt;external_dependency} -->
               </includes>
             </bannedDependencies>

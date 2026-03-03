@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Changed default service API version from `2025-10-01` to `2026-01-01-preview`
+
 ## 1.0.0-beta.5 (2026-02-13)
 
 ### Features Added

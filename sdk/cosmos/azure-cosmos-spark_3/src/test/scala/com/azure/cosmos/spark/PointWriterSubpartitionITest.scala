@@ -207,7 +207,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false, bulkTransactional = false)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
     val pointWriter = new PointWriter(
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
