@@ -101,24 +101,36 @@ Runs are named `<date>-<scenario>-<ref-label>`, e.g.:
 20260302-CHURN-PR-12345
 ```
 
-### Async execution (non-blocking)
+### Launch and verify (required two-step)
 
-**Always run the orchestrator in async mode** so the user can continue working while benchmarks run. Use the `bash` tool with `mode="async"`:
+**Step A — Launch the orchestrator** using `mode="sync"` with `initial_wait: 60`. This gives enough time to see script copy + tmux launch output while keeping the shell attached for polling:
 
 ```bash
-# Launches in background, returns a shellId for monitoring
 bash scripts/run-all-refs.sh \
   --config-dir "$CONFIG_DIR" \
   --refs "main, fix/telemetry-leak" \
   --scenario SIMPLE
 ```
 
-After launching, the user can:
+**Step B — Verify the run is progressing** (MANDATORY, do not skip). Within 90 seconds of launch, run `check-status.sh` to confirm the tmux session is alive and a new results directory exists:
+
+```bash
+bash scripts/check-status.sh --config-dir "$CONFIG_DIR"
+```
+
+**What to check**:
+- ✅ Tmux session is "Running"
+- ✅ A new results directory matching `<date>-<scenario>-<ref-label>` exists
+- ✅ Status is "⏳ Starting or build-only" or "🔄 Running" (not "❌ Failed")
+
+**If any check fails**, investigate immediately — read `benchmark.log`, diagnose the issue, and report to the user before retrying. Do NOT tell the user "it's running" without verifying.
+
+The benchmark itself runs in a **tmux session** (`bench`) on the VM, so it survives SSH disconnections. Even if the local orchestrator process is interrupted, the benchmark continues on the VM.
+
+After verification, the user can:
 - **Continue working** on other tasks in the main context
 - **Check status** at any time (see Monitor progress below)
 - **Get notified** when the orchestrator reports completion via `read_bash`
-
-The benchmark itself runs in a **tmux session** (`bench`) on the VM, so it survives SSH disconnections. Even if the local orchestrator process is interrupted, the benchmark continues on the VM.
 
 ### Monitor progress
 
@@ -148,7 +160,7 @@ Use `read_bash` with the shellId from the async launch.
 
 ### Early exit detection and troubleshooting
 
-After launching the orchestrator in async mode, **proactively verify** that the run is progressing. If the async shell exits within a few minutes (expected runtime is 30–90+ min), the run likely failed early.
+The mandatory verify step (Step B above) catches most early failures. Additionally, if the orchestrator shell exits unexpectedly during polling (expected runtime is 30–90+ min), investigate immediately.
 
 **Detection**: When checking status via `read_bash`, if the shell has already exited or accepts new commands, investigate immediately — do not assume success.
 
