@@ -162,6 +162,7 @@ public class SessionTokenHelper {
                     return parentSessionToken;
                 }
             }
+        }
 
         return null;
     }
