@@ -2201,8 +2201,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             throw ex;
         }
 
-        // Wait for the feed processor to receive and process the documents.
-        Thread.sleep(sleepTime);
+        // Poll until all documents are received instead of sleeping the full duration.
+        // This returns as soon as documents arrive, saving significant time in CI.
+        long deadline = System.currentTimeMillis() + sleepTime;
+        while (System.currentTimeMillis() < deadline && receivedDocuments.size() < createdDocuments.size()) {
+            Thread.sleep(100);
+        }
 
         assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
