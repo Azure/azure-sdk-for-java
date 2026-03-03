@@ -144,7 +144,9 @@ public class SessionTokenHelper {
             } else {
                 ISessionToken parentSessionToken = null;
 
-                Collection<String> parents = request.requestContext.resolvedPartitionKeyRange.getParents();
+                Collection<String> parents = request.requestContext.resolvedPartitionKeyRange != null
+                    ? request.requestContext.resolvedPartitionKeyRange.getParents()
+                    : null;
                 if (parents != null && !parents.isEmpty()) {
                     List<String> parentsList = new ArrayList<>(parents);
                     for (int i = parentsList.size() - 1; i >= 0; i--) {
@@ -160,7 +162,6 @@ public class SessionTokenHelper {
                     return parentSessionToken;
                 }
             }
-        }
 
         return null;
     }
@@ -190,7 +191,9 @@ public class SessionTokenHelper {
             } else {
                 ISessionToken parentSessionToken = null;
 
-                Collection<String> parents = request.requestContext.resolvedPartitionKeyRange.getParents();
+                Collection<String> parents = request.requestContext.resolvedPartitionKeyRange != null
+                    ? request.requestContext.resolvedPartitionKeyRange.getParents()
+                    : null;
                 if (parents != null && !parents.isEmpty()) {
                     List<String> parentsList = new ArrayList<>(parents);
                     for (int i = parentsList.size() - 1; i >= 0; i--) {
