@@ -115,24 +115,69 @@ if [[ "$READY" != "true" ]]; then
   exit 1
 fi
 
-# --- Step 4: Run ---
+# --- Step 4: Run in tmux (survives SSH disconnection) ---
 echo ""
-echo "=== [4/4] Run: $SCENARIO ==="
+echo "=== [4/4] Run: $SCENARIO (tmux session: bench) ==="
 
 cd "$BENCH_DIR"
+RESULTS_DIR="./results/$RUN_NAME"
+mkdir -p "$RESULTS_DIR"
+
+# End any previous benchmark tmux session gracefully
+tmux send-keys -t bench C-c 2>/dev/null || true
+sleep 1
+tmux send-keys -t bench "exit" Enter 2>/dev/null || true
+sleep 1
+
+# Write run script with resolved paths (executed inside tmux)
+cat > "$RESULTS_DIR/.run.sh" <<EOF
+#!/bin/bash
+set -uo pipefail
+cd "$BENCH_DIR"
 if [[ -f "copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh" ]]; then
-  bash copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh \
-    "$SCENARIO" "$TENANTS_FILE" "./results/$RUN_NAME" $EXTRA_FLAGS
+  bash copilot/skills/cosmos-benchmark-run/scripts/run-benchmark.sh \\
+    "$SCENARIO" "$TENANTS_RESOLVED" "$RESULTS_DIR" $EXTRA_FLAGS
 else
   echo "WARNING: run-benchmark.sh not found, running JAR directly"
-  mkdir -p "results/$RUN_NAME"
-  java -Xmx8g -Xms8g -XX:+UseG1GC \
-    -Xlog:gc*:"results/$RUN_NAME/gc.log" \
-    -jar "$JAR" \
-    -tenantsFile "$TENANTS_RESOLVED" \
-    -reportingDirectory "results/$RUN_NAME/metrics" \
-    2>&1 | tee "results/$RUN_NAME/benchmark.log"
+  JAR=\$(ls target/*jar-with-dependencies.jar 2>/dev/null | head -1)
+  java -Xmx8g -Xms8g -XX:+UseG1GC \\
+    -Xlog:gc*:"$RESULTS_DIR/gc.log" \\
+    -jar "\$JAR" \\
+    -tenantsFile "$TENANTS_RESOLVED" \\
+    -reportingDirectory "$RESULTS_DIR/metrics" \\
+    2>&1 | tee "$RESULTS_DIR/benchmark.log"
 fi
+echo \$? > "$RESULTS_DIR/.exit-code"
+EOF
+chmod +x "$RESULTS_DIR/.run.sh"
 
-echo ""
-echo "✅ Completed: $REF ($BRANCH @ $COMMIT) → results/$RUN_NAME"
+# Start benchmark in tmux -- process persists even if SSH disconnects
+tmux new-session -d -s bench "bash '$RESULTS_DIR/.run.sh'"
+echo "  Benchmark running in tmux session 'bench'"
+echo "  Monitor:  tmux capture-pane -t bench -p | tail -30"
+
+# Poll interval based on scenario duration (SIMPLE ~30min, EXPAND ~90min, CHURN varies)
+case "$SCENARIO" in
+  SIMPLE)  POLL_INTERVAL=120 ;;   # 2 min
+  EXPAND)  POLL_INTERVAL=300 ;;   # 5 min
+  CHURN)   POLL_INTERVAL=300 ;;   # 5 min
+  *)       POLL_INTERVAL=120 ;;   # 2 min default
+esac
+
+# Wait for tmux session to complete
+echo "  Poll interval: ${POLL_INTERVAL}s"
+while tmux has-session -t bench 2>/dev/null; do
+  sleep $POLL_INTERVAL
+done
+
+# Read exit code written by the run script
+BENCH_EXIT=$(cat "$RESULTS_DIR/.exit-code" 2>/dev/null || echo 1)
+
+if [[ "$BENCH_EXIT" -eq 0 ]]; then
+  echo ""
+  echo "Completed: $REF ($BRANCH @ $COMMIT) -> results/$RUN_NAME"
+else
+  echo ""
+  echo "Benchmark failed (exit code: $BENCH_EXIT)"
+  exit "$BENCH_EXIT"
+fi

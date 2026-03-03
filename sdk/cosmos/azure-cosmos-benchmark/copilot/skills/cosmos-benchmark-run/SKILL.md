@@ -5,7 +5,7 @@ description: Build and run Cosmos DB benchmarks — clone repo at a branch/PR/co
 
 # Run Benchmark
 
-Clone, build, and execute a benchmark on a provisioned VM. All operations are implemented as scripts. Each ref uses a single SSH session for checkout → build → verify → run.
+Clone, build, and execute a benchmark on a provisioned VM. All operations are implemented as scripts. Each ref uses a single SSH session for checkout → build → verify → run. The benchmark execution runs inside a **tmux session** on the VM for resilience against SSH disconnections.
 
 ## VM Connection
 
@@ -75,7 +75,7 @@ The orchestrator, for each ref, uses **a single SSH session** to:
 1. Checkout the ref (auto-detects branch/PR/commit/tag)
 2. Build linting-extensions + cosmos benchmark JAR
 3. Verify readiness (JDK, JAR, config, disk)
-4. Execute the benchmark
+4. Execute the benchmark (inside a tmux session for resilience)
 
 Results are saved to `results/<date>-<scenario>-<ref-label>/` on the VM.
 
@@ -100,16 +100,47 @@ Runs are named `<date>-<scenario>-<ref-label>`, e.g.:
 20260302-CHURN-PR-12345
 ```
 
+### Async execution (non-blocking)
+
+**Always run the orchestrator in async mode** so the user can continue working while benchmarks run. Use the `bash` tool with `mode="async"`:
+
+```bash
+# Launches in background, returns a shellId for monitoring
+bash scripts/run-all-refs.sh \
+  --config-dir "$CONFIG_DIR" \
+  --refs "main, fix/telemetry-leak" \
+  --scenario SIMPLE
+```
+
+After launching, the user can:
+- **Continue working** on other tasks in the main context
+- **Check status** at any time (see Monitor progress below)
+- **Get notified** when the orchestrator reports completion via `read_bash`
+
+The benchmark itself runs in a **tmux session** (`bench`) on the VM, so it survives SSH disconnections. Even if the local orchestrator process is interrupted, the benchmark continues on the VM.
+
 ### Monitor progress
+
+**Local orchestrator output** (shows which ref is running, build progress):
+
+Use `read_bash` with the shellId from the async launch to check the latest output.
+
+**VM-side benchmark output** (real-time metrics, live logs):
 
 ```bash
 SSH_CMD="ssh -i $(cat $CONFIG_DIR/vm-key) $(cat $CONFIG_DIR/vm-user)@$(cat $CONFIG_DIR/vm-ip)"
 
-# Peek at output
+# Peek at live benchmark output in the tmux session
 $SSH_CMD "tmux capture-pane -t bench -p | tail -30"
 
-# Check monitor.csv
+# Check if tmux session is still running
+$SSH_CMD "tmux has-session -t bench 2>/dev/null && echo 'Running' || echo 'Finished'"
+
+# Check monitor.csv row count (grows every 60s)
 $SSH_CMD "wc -l ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark/results/<run-name>/monitor.csv"
+
+# Attach to live session (interactive — for debugging only)
+$SSH_CMD -t "tmux attach -t bench"
 ```
 
 ## Output Directory Structure
