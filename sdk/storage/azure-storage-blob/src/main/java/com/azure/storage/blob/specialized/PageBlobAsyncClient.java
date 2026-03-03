@@ -59,7 +59,8 @@ import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.implementation.contentvalidation.StorageChecksumAlgorithm;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

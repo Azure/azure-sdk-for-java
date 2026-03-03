@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.implementation.contentvalidation.StorageChecksumAlgorithm;
 
 /**
  * Extended options that may be passed when opening a blob input stream.

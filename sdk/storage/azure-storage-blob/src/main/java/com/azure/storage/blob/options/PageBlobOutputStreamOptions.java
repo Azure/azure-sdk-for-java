@@ -6,8 +6,8 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.contentvalidation.StorageChecksumAlgorithm;
 
 /**
  * Extended options that may be passed when opening an output stream to a page blob.

@@ -88,12 +88,13 @@ import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.contentvalidation.StorageChecksumAlgorithm;
+
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
