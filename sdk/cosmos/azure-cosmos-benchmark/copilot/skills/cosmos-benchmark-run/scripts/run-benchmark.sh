@@ -59,9 +59,8 @@ JVM_OPTS="-Xmx8g -Xms8g -XX:+UseG1GC -XX:MaxDirectMemorySize=2g \
 java $JVM_OPTS \
   -cp "$BENCHMARK_JAR" \
   com.azure.cosmos.benchmark.Main \
-  --tenantsFile "$TENANTS_FILE" \
-  --scenario "$SCENARIO" \
-  --outputDir "$OUTPUT_DIR" \
+  -tenantsFile "$TENANTS_FILE" \
+  -reportingDirectory "${OUTPUT_DIR}/metrics" \
   $EXTRA_ARGS \
   > >(tee "${OUTPUT_DIR}/benchmark.log") 2>&1 &
 JAVA_PID=$!
