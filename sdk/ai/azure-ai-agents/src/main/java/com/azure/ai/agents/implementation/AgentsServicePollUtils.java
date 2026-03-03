@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.implementation;
 
+import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.MemoryStoreUpdateStatus;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -25,8 +26,7 @@ final class AgentsServicePollUtils {
 
     /** Required preview-feature header for Memory Stores operations. */
     private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
-
-    private static final String FOUNDRY_FEATURES_VALUE = "MemoryStores=V1Preview";
+    private static final String FOUNDRY_FEATURES_VALUE = FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString();
 
     private AgentsServicePollUtils() {
     }
