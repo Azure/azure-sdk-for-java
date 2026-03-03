@@ -122,27 +122,29 @@ The benchmark itself runs in a **tmux session** (`bench`) on the VM, so it survi
 
 ### Monitor progress
 
-**Local orchestrator output** (shows which ref is running, build progress):
-
-Use `read_bash` with the shellId from the async launch to check the latest output.
-
-**VM-side benchmark output** (real-time metrics, live logs):
+**Quick status check** — use the `check-status.sh` script:
 
 ```bash
-SSH_CMD="ssh -i $(cat $CONFIG_DIR/vm-key) $(cat $CONFIG_DIR/vm-user)@$(cat $CONFIG_DIR/vm-ip)"
+bash scripts/check-status.sh --config-dir "$CONFIG_DIR"
 
-# Peek at live benchmark output in the tmux session
-$SSH_CMD "tmux capture-pane -t bench -p | tail -30"
+# With run-specific details
+bash scripts/check-status.sh --config-dir "$CONFIG_DIR" --run-name 20260303-SIMPLE-main
 
-# Check if tmux session is still running
-$SSH_CMD "tmux has-session -t bench 2>/dev/null && echo 'Running' || echo 'Finished'"
-
-# Check monitor.csv row count (grows every 60s)
-$SSH_CMD "wc -l ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark/results/<run-name>/monitor.csv"
-
-# Attach to live session (interactive — for debugging only)
-$SSH_CMD -t "tmux attach -t bench"
+# With system resource info
+bash scripts/check-status.sh --config-dir "$CONFIG_DIR" --verbose
 ```
+
+The script checks in a single call:
+- Tmux session status (running / completed) with latest output
+- Results directories with per-run status (in progress / completed / failed)
+- Git state (branch, commit)
+- Build status (JAR present)
+- Run-specific details when `--run-name` is provided (monitor samples, metrics, disk)
+- System resources when `--verbose` is set (disk, memory, load)
+
+**Local orchestrator output** (shows which ref is currently running):
+
+Use `read_bash` with the shellId from the async launch.
 
 ### Early exit detection and troubleshooting
 
@@ -150,22 +152,10 @@ After launching the orchestrator in async mode, **proactively verify** that the 
 
 **Detection**: When checking status via `read_bash`, if the shell has already exited or accepts new commands, investigate immediately — do not assume success.
 
-**Diagnosis steps** (run on the VM via SSH):
+**Diagnosis**: Run `check-status.sh` which checks all of the above in one call:
 
 ```bash
-SSH_CMD="ssh -i $(cat $CONFIG_DIR/vm-key) $(cat $CONFIG_DIR/vm-user)@$(cat $CONFIG_DIR/vm-ip)"
-
-# 1. Check if any new results directories were created today
-$SSH_CMD "ls -lt ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark/results/ | head -5"
-
-# 2. Check git state (last checkout, remotes available)
-$SSH_CMD "cd ~/azure-sdk-for-java && git log --oneline -1 && git remote -v"
-
-# 3. Check if the benchmark JAR exists
-$SSH_CMD "ls ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark/target/*jar-with-dependencies.jar 2>/dev/null || echo 'JAR not found — build may have failed'"
-
-# 4. Check tmux session
-$SSH_CMD "tmux has-session -t bench 2>/dev/null && echo 'Running' || echo 'No session'"
+bash scripts/check-status.sh --config-dir "$CONFIG_DIR" --verbose
 ```
 
 **Common failures and fixes**:
@@ -204,6 +194,7 @@ Suggest using the **cosmos-benchmark-analyze** skill to download and analyze res
 | `scripts/run-benchmark.sh` | Execute benchmark with monitoring (git metadata, GC log, monitor.csv). |
 | `scripts/monitor.sh` | External JVM monitoring (spawned by run-benchmark.sh). |
 | `scripts/capture-diagnostics.sh` | Capture thread/heap dumps and JFR recordings during a live run. |
+| `scripts/check-status.sh` | **Status checker.** Tmux, results, git, build, system resources — all in one call. |
 | `references/tenants-sample.json` | Template for tenants.json structure. |
 | `references/presets.md` | Preset flag recipes (SIMPLE, EXPAND, CHURN). |
 | `references/scenarios.md` | Full operation catalog (20+ types). |
