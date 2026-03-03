@@ -58,7 +58,7 @@ JVM_OPTS="-Xmx8g -Xms8g -XX:+UseG1GC -XX:MaxDirectMemorySize=2g \
 # Start benchmark process (not piped, so we get the real PID)
 java $JVM_OPTS \
   -cp "$BENCHMARK_JAR" \
-  com.azure.cosmos.benchmark.BenchmarkOrchestrator \
+  com.azure.cosmos.benchmark.Main \
   --tenantsFile "$TENANTS_FILE" \
   --scenario "$SCENARIO" \
   --outputDir "$OUTPUT_DIR" \
