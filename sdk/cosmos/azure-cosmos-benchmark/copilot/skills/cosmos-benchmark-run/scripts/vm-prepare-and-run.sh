@@ -14,7 +14,19 @@
 
 set -uo pipefail
 
-REF="${1:?Usage: $0 <ref> <scenario> <tenants-file> <run-name> [extra-flags...]}"
+# Extract --force-scripts flag if present (can appear anywhere in args)
+FORCE_SCRIPTS=false
+ARGS=()
+for arg in "$@"; do
+  if [[ "$arg" == "--force-scripts" ]]; then
+    FORCE_SCRIPTS=true
+  else
+    ARGS+=("$arg")
+  fi
+done
+set -- "${ARGS[@]}"
+
+REF="${1:?Usage: $0 <ref> <scenario> <tenants-file> <run-name> [--force-scripts] [extra-flags...]}"
 SCENARIO="${2:-SIMPLE}"
 TENANTS_FILE="${3:-~/tenants.json}"
 RUN_NAME="${4:-$(date +%Y%m%d)-${SCENARIO}-run}"
@@ -80,10 +92,15 @@ BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "detached")
 COMMIT=$(git rev-parse --short HEAD)
 echo "Checked out: $BRANCH @ $COMMIT"
 
-# Resolve script directory: prefer repo scripts (match the ref), fall back to ~/benchmark-scripts
+# Resolve script directory:
+#   --force-scripts → use ~/benchmark-scripts/ (for testing local script changes)
+#   default         → prefer repo scripts (match the ref), fall back to ~/benchmark-scripts/
 REPO_SCRIPTS_DIR="$BENCH_DIR/copilot/skills/cosmos-benchmark-run/scripts"
 FALLBACK_SCRIPTS_DIR=~/benchmark-scripts
-if [[ -d "$REPO_SCRIPTS_DIR" ]]; then
+if [[ "$FORCE_SCRIPTS" == "true" ]]; then
+  VM_SCRIPTS_DIR="$FALLBACK_SCRIPTS_DIR"
+  echo "Using forced scripts: $VM_SCRIPTS_DIR (--force-scripts)"
+elif [[ -d "$REPO_SCRIPTS_DIR" ]]; then
   VM_SCRIPTS_DIR="$REPO_SCRIPTS_DIR"
   echo "Using repo scripts: $VM_SCRIPTS_DIR"
 else

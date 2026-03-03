@@ -3,6 +3,7 @@
 #
 # Usage:
 #   ./run-all-refs.sh --config-dir <path> --refs "main,fix/leak" [--scenario SIMPLE]
+#   ./run-all-refs.sh --config-dir <path> --refs "main" --force-copy-scripts
 #
 # Copies scripts to the VM via SCP, then for each ref executes
 # vm-prepare-and-run.sh remotely (checkout → build → verify → run).
@@ -16,6 +17,7 @@ SCENARIO="SIMPLE"
 REFS_CSV=""
 TENANTS_FILE="~/tenants.json"
 EXTRA_FLAGS=""
+FORCE_COPY_SCRIPTS=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -24,6 +26,7 @@ while [[ $# -gt 0 ]]; do
     --refs)          REFS_CSV="$2"; shift 2 ;;
     --tenants-file)  TENANTS_FILE="$2"; shift 2 ;;
     --extra-flags)   EXTRA_FLAGS="$2"; shift 2 ;;
+    --force-copy-scripts) FORCE_COPY_SCRIPTS=true; shift ;;
     *) echo "Unknown option: $1" >&2; exit 1 ;;
   esac
 done
@@ -39,16 +42,26 @@ VM_KEY=$(cat "$CONFIG_DIR/vm-key")
 SSH_CMD="ssh -i $VM_KEY -o StrictHostKeyChecking=no $VM_USER@$VM_IP"
 SCP_CMD="scp -i $VM_KEY -o StrictHostKeyChecking=no"
 
-# Copy bootstrapper to VM (avoids stdin piping issues with heredocs).
-# Only vm-prepare-and-run.sh is copied here — after checkout, the remaining
-# scripts (run-benchmark.sh, monitor.sh, etc.) are resolved from the cloned
-# repo so they match the ref being benchmarked. Falls back to ~/benchmark-scripts/
-# if the repo version doesn't include them yet.
+# Copy scripts to VM.
+# Default: only the bootstrapper (vm-prepare-and-run.sh) is copied; after
+# checkout, remaining scripts are resolved from the cloned repo.
+# --force-copy-scripts: copies ALL scripts and tells the bootstrapper to
+# prefer ~/benchmark-scripts/ over repo versions (for testing local changes).
 VM_SCRIPTS_DIR="~/benchmark-scripts"
 $SSH_CMD "mkdir -p $VM_SCRIPTS_DIR"
-$SCP_CMD "$SCRIPT_DIR/vm-prepare-and-run.sh" "$VM_USER@$VM_IP:$VM_SCRIPTS_DIR/vm-prepare-and-run.sh"
-$SSH_CMD "chmod +x $VM_SCRIPTS_DIR/*.sh"
-echo "Bootstrapper copied to VM:$VM_SCRIPTS_DIR/vm-prepare-and-run.sh"
+if [[ "$FORCE_COPY_SCRIPTS" == "true" ]]; then
+  for SCRIPT_FILE in vm-prepare-and-run.sh run-benchmark.sh monitor.sh capture-diagnostics.sh; do
+    if [[ -f "$SCRIPT_DIR/$SCRIPT_FILE" ]]; then
+      $SCP_CMD "$SCRIPT_DIR/$SCRIPT_FILE" "$VM_USER@$VM_IP:$VM_SCRIPTS_DIR/$SCRIPT_FILE"
+    fi
+  done
+  $SSH_CMD "chmod +x $VM_SCRIPTS_DIR/*.sh"
+  echo "All scripts copied to VM:$VM_SCRIPTS_DIR (force mode)"
+else
+  $SCP_CMD "$SCRIPT_DIR/vm-prepare-and-run.sh" "$VM_USER@$VM_IP:$VM_SCRIPTS_DIR/vm-prepare-and-run.sh"
+  $SSH_CMD "chmod +x $VM_SCRIPTS_DIR/*.sh"
+  echo "Bootstrapper copied to VM:$VM_SCRIPTS_DIR/vm-prepare-and-run.sh"
+fi
 echo ""
 
 IFS=',' read -ra REFS <<< "$REFS_CSV"
@@ -79,8 +92,10 @@ for i in "${!REFS[@]}"; do
   echo "   (single SSH session: checkout → build → verify → run)"
 
   # Execute the script already on the VM (copied via SCP at startup)
+  FORCE_FLAG=""
+  [[ "$FORCE_COPY_SCRIPTS" == "true" ]] && FORCE_FLAG="--force-scripts"
   $SSH_CMD "bash $VM_SCRIPTS_DIR/vm-prepare-and-run.sh \
-    '$REF' '$SCENARIO' '$TENANTS_FILE' '$RUN_NAME' $EXTRA_FLAGS"
+    '$REF' '$SCENARIO' '$TENANTS_FILE' '$RUN_NAME' $FORCE_FLAG $EXTRA_FLAGS"
   RUN_EXIT=$?
 
   if [[ $RUN_EXIT -eq 0 ]]; then
