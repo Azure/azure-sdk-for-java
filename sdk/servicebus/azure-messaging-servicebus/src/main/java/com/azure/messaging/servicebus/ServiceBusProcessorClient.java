@@ -351,6 +351,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     /**
      * Stops message processing and closes the processor. The receiving links and sessions are closed and calling
      * {@link #start()} will create a new processing cycle with new links and new sessions.
+     *
+     * <p>This method blocks while waiting for in-flight message handlers to complete (up to 30 seconds) before
+     * cancelling subscriptions and closing the underlying client. This ensures handlers can finish message
+     * settlement without encountering a disposed receiver. Callers should avoid invoking {@code close()} on
+     * latency-sensitive threads. If the drain timeout expires, the processor proceeds with shutdown regardless.</p>
+     *
+     * @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/45716">Issue #45716</a>
      */
     @Override
     public synchronized void close() {

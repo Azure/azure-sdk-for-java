@@ -159,24 +159,29 @@ public class ServiceBusProcessorGracefulShutdownTest {
         });
         disposeThread.start();
 
-        // Give dispose a moment to start; it should be blocked in drainHandlers().
-        Thread.sleep(200);
+        try {
+            // Give dispose a moment to start; it should be blocked in drainHandlers().
+            Thread.sleep(200);
 
-        // Verify: client has NOT been closed yet (handler is still running, drain is blocking dispose).
-        verify(client, never()).close();
-        assertFalse(handlerCompleted.get(), "Handler should still be in-flight");
+            // Verify: client has NOT been closed yet (handler is still running, drain is blocking dispose).
+            verify(client, never()).close();
+            assertFalse(handlerCompleted.get(), "Handler should still be in-flight");
 
-        // Now let the handler complete.
-        handlerCanProceed.countDown();
+            // Now let the handler complete.
+            handlerCanProceed.countDown();
 
-        // Wait for dispose to finish.
-        assertTrue(disposeDone.await(5, TimeUnit.SECONDS), "Dispose should complete after handler finishes");
-        assertTrue(handlerCompleted.get(), "Handler should have completed");
+            // Wait for dispose to finish.
+            assertTrue(disposeDone.await(5, TimeUnit.SECONDS), "Dispose should complete after handler finishes");
+            assertTrue(handlerCompleted.get(), "Handler should have completed");
 
-        // Verify the client was closed (after the handler completed and drain returned).
-        verify(client, timeout(2000)).close();
-        // Verify complete was called (auto-disposition is enabled).
-        verify(client).complete(any());
+            // Verify the client was closed (after the handler completed and drain returned).
+            verify(client, timeout(2000)).close();
+            // Verify complete was called (auto-disposition is enabled).
+            verify(client).complete(any());
+        } finally {
+            handlerCanProceed.countDown();
+            disposeThread.join(5000);
+        }
     }
 
     /**
@@ -253,22 +258,27 @@ public class ServiceBusProcessorGracefulShutdownTest {
         });
         closeThread.start();
 
-        // Give close a moment to start; it should be blocked in drainV1Handlers().
-        Thread.sleep(200);
+        try {
+            // Give close a moment to start; it should be blocked in drainV1Handlers().
+            Thread.sleep(200);
 
-        // Verify: client has NOT been closed yet (handler is still running, drain is blocking close).
-        verify(asyncClient, never()).close();
-        assertFalse(handlerCompleted.get(), "Handler should still be in-flight");
+            // Verify: client has NOT been closed yet (handler is still running, drain is blocking close).
+            verify(asyncClient, never()).close();
+            assertFalse(handlerCompleted.get(), "Handler should still be in-flight");
 
-        // Now let the handler complete.
-        handlerCanProceed.countDown();
+            // Now let the handler complete.
+            handlerCanProceed.countDown();
 
-        // Wait for close to finish.
-        assertTrue(closeDone.await(5, TimeUnit.SECONDS), "Close should complete after handler finishes");
-        assertTrue(handlerCompleted.get(), "Handler should have completed");
+            // Wait for close to finish.
+            assertTrue(closeDone.await(5, TimeUnit.SECONDS), "Close should complete after handler finishes");
+            assertTrue(handlerCompleted.get(), "Handler should have completed");
 
-        // Verify the client was closed (after the handler completed).
-        verify(asyncClient, timeout(2000)).close();
+            // Verify the client was closed (after the handler completed).
+            verify(asyncClient, timeout(2000)).close();
+        } finally {
+            handlerCanProceed.countDown();
+            closeThread.join(5000);
+        }
     }
 
     /**
