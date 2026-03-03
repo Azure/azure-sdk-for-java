@@ -108,6 +108,8 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
     interface DefinitionStages {
         /**
          * The first stage of an AFD endpoint definition.
+         *
+         * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithAttach<ParentT> {
             /**
@@ -137,12 +139,16 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
 
         /**
          * The stage of the definition containing all optional settings prior to attachment.
+         *
+         * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends Attachable<ParentT> {
         }
 
         /**
          * The final stage of an AFD endpoint definition.
+         *
+         * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
          */
         interface Attachable<ParentT> {
             /**
@@ -156,6 +162,8 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
 
     /**
      * The entirety of an AFD endpoint definition.
+     *
+     * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends DefinitionStages.Blank<ParentT> {
     }
@@ -166,6 +174,8 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
     interface UpdateDefinitionStages {
         /**
          * The first stage of an AFD endpoint definition inside a profile update.
+         *
+         * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithAttach<ParentT> {
             /**
@@ -187,12 +197,16 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
 
         /**
          * The stage of the definition containing all optional settings prior to attachment.
+         *
+         * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends Attachable<ParentT> {
         }
 
         /**
          * The final stage of an AFD endpoint definition inside a profile update.
+         *
+         * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
          */
         interface Attachable<ParentT> {
             /**
