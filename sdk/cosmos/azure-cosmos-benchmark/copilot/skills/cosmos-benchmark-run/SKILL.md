@@ -144,6 +144,41 @@ $SSH_CMD "wc -l ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark/results/<
 $SSH_CMD -t "tmux attach -t bench"
 ```
 
+### Early exit detection and troubleshooting
+
+After launching the orchestrator in async mode, **proactively verify** that the run is progressing. If the async shell exits within a few minutes (expected runtime is 30–90+ min), the run likely failed early.
+
+**Detection**: When checking status via `read_bash`, if the shell has already exited or accepts new commands, investigate immediately — do not assume success.
+
+**Diagnosis steps** (run on the VM via SSH):
+
+```bash
+SSH_CMD="ssh -i $(cat $CONFIG_DIR/vm-key) $(cat $CONFIG_DIR/vm-user)@$(cat $CONFIG_DIR/vm-ip)"
+
+# 1. Check if any new results directories were created today
+$SSH_CMD "ls -lt ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark/results/ | head -5"
+
+# 2. Check git state (last checkout, remotes available)
+$SSH_CMD "cd ~/azure-sdk-for-java && git log --oneline -1 && git remote -v"
+
+# 3. Check if the benchmark JAR exists
+$SSH_CMD "ls ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark/target/*jar-with-dependencies.jar 2>/dev/null || echo 'JAR not found — build may have failed'"
+
+# 4. Check tmux session
+$SSH_CMD "tmux has-session -t bench 2>/dev/null && echo 'Running' || echo 'No session'"
+```
+
+**Common failures and fixes**:
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| No new results directory | Checkout failed | Check if ref exists; for fork branches use `remote/branch` format (e.g., `xinlian12/branchName`) — the script auto-detects remotes configured on the VM |
+| JAR not found | Build failed | SSH in and check Maven output; common issues: disk space, dependency download failures |
+| tmux session exited immediately | Benchmark startup error | Check `results/<run-name>/benchmark.log` for errors (e.g., invalid tenants.json, connection failures) |
+| Orchestrator exits but tmux still running | SSH timeout during poll wait | Benchmark is fine — tmux session survives. Check results via SSH directly |
+
+**If diagnosis reveals an issue**, fix it and confirm with the user before relaunching. Do not silently retry.
+
 ## Output Directory Structure
 
 ```
