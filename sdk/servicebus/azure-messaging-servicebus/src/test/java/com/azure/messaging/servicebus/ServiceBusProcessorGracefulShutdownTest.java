@@ -435,10 +435,9 @@ public class ServiceBusProcessorGracefulShutdownTest {
         // Emit message1 immediately, then message2 after a short delay (to ensure message1's handler starts first).
         // Use concurrency=2 so flatMap can dispatch both handlers concurrently.
         when(client.nonSessionProcessorReceiveV2())
-            .thenReturn(Flux.concat(
-                Flux.just(message1),
-                Flux.just(message2).delayElements(Duration.ofMillis(200)),
-                Flux.<ServiceBusReceivedMessage>never())
+            .thenReturn(Flux
+                .concat(Flux.just(message1), Flux.just(message2).delayElements(Duration.ofMillis(200)),
+                    Flux.<ServiceBusReceivedMessage>never())
                 .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
 
         final CountDownLatch handler1Started = new CountDownLatch(1);
@@ -488,8 +487,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         assertTrue(drainResult.get(), "Drain should return true (all handlers completed)");
 
         // The second message's handler should NOT have invoked processMessage because closing was true.
-        assertFalse(handler2ProcessMessageInvoked.get(),
-            "Second handler should have been skipped by the closing flag");
+        assertFalse(handler2ProcessMessageInvoked.get(), "Second handler should have been skipped by the closing flag");
 
         // Clean up.
         subscription.get().dispose();
