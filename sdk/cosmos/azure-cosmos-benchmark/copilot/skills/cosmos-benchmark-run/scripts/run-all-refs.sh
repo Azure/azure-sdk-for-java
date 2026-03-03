@@ -94,17 +94,22 @@ for i in "${!REFS[@]}"; do
   FORCE_FLAG=""
   [[ "$FORCE_COPY_SCRIPTS" == "true" ]] && FORCE_FLAG="--force-scripts"
   BENCH_DIR_VM="~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark"
-  EXIT_CODE_FILE="$BENCH_DIR_VM/results/$RUN_NAME/.exit-code"
 
   # End any previous tmux session gracefully
-  $SSH_CMD "tmux send-keys -t bench C-c 2>/dev/null; sleep 1; tmux send-keys -t bench exit Enter 2>/dev/null; sleep 1" 2>/dev/null || true
+  $SSH_CMD 'tmux send-keys -t bench C-c 2>/dev/null; sleep 1; tmux send-keys -t bench exit Enter 2>/dev/null; sleep 1' 2>/dev/null || true
+
+  # Write a small launcher script on the VM to avoid nested quoting issues
+  $SSH_CMD "cat > /tmp/bench-launch.sh << 'LAUNCHER'
+#!/bin/bash
+bash ~/benchmark-scripts/vm-prepare-and-run.sh "\$@"
+EXIT_CODE=\$?
+echo \$EXIT_CODE > ~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark/results/\$4/.exit-code
+exit \$EXIT_CODE
+LAUNCHER
+chmod +x /tmp/bench-launch.sh"
 
   # Start entire pipeline in tmux (all steps survive SSH disconnection)
-  $SSH_CMD "mkdir -p $BENCH_DIR_VM/results/$RUN_NAME && \
-    tmux new-session -d -s bench \
-    'bash $VM_SCRIPTS_DIR/vm-prepare-and-run.sh \
-      \"$REF\" \"$SCENARIO\" \"$TENANTS_FILE\" \"$RUN_NAME\" $FORCE_FLAG $EXTRA_FLAGS; \
-      echo \$? > $EXIT_CODE_FILE'"
+  $SSH_CMD "mkdir -p $BENCH_DIR_VM/results/$RUN_NAME && tmux new-session -d -s bench 'bash /tmp/bench-launch.sh $REF $SCENARIO $TENANTS_FILE $RUN_NAME $FORCE_FLAG $EXTRA_FLAGS'"
   echo "$SEQ tmux session started on VM"
 
   # Poll until tmux session ends
@@ -120,7 +125,7 @@ for i in "${!REFS[@]}"; do
   done
 
   # Read exit code from the VM
-  RUN_EXIT=$($SSH_CMD "cat $EXIT_CODE_FILE 2>/dev/null || echo 1" 2>/dev/null)
+  RUN_EXIT=$($SSH_CMD "cat $BENCH_DIR_VM/results/$RUN_NAME/.exit-code 2>/dev/null || echo 1" 2>/dev/null)
   RUN_EXIT=$(echo "$RUN_EXIT" | tr -d '[:space:]')
 
   if [[ $RUN_EXIT -eq 0 ]]; then
