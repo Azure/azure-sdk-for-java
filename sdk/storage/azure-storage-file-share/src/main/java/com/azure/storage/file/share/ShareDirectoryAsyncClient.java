@@ -449,14 +449,14 @@ public class ShareDirectoryAsyncClient {
         try {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             return createWithResponse(options.getSmbProperties(), options.getFilePermission(),
-                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(), null, context)
-                    .onErrorResume(
-                        t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
-                        t -> {
-                            HttpResponse response = ((ShareStorageException) t).getResponse();
-                            return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                                response.getHeaders(), null));
-                        });
+                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(),
+                options.getFilePropertySemantics(), context).onErrorResume(
+                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
+                    t -> {
+                        HttpResponse response = ((ShareStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), null));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
