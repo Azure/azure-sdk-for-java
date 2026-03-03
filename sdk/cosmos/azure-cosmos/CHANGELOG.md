@@ -10,6 +10,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added aggressive HTTP timeout policies for document operations routed to Gateway V2. - [PR 47879](https://github.com/Azure/azure-sdk-for-java/pull/47879)
 * Added a default connect timeout of 5s for Gateway V2 (thin client) data-plane endpoints. - See []()
 
 ### 4.78.0 (2026-02-10)
@@ -23,7 +24,6 @@
 
 #### Other Changes
 * Added `x-ms-hub-region-processing-only` header to allow hub-region stickiness when 404 `READ SESSION NOT AVAIALBLE` is hit for Single-Writer accounts. - [PR 47631](https://github.com/Azure/azure-sdk-for-java/pull/47631)
-* Added aggressive HTTP timeout policies for document operations routed to Gateway V2. - [PR 47879](https://github.com/Azure/azure-sdk-for-java/pull/47879)
 
 ### 4.77.0 (2026-01-26)
 
