@@ -93,7 +93,7 @@ for i in "${!REFS[@]}"; do
 
   FORCE_FLAG=""
   [[ "$FORCE_COPY_SCRIPTS" == "true" ]] && FORCE_FLAG="--force-scripts"
-  BENCH_DIR_VM="~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark"
+  BENCH_DIR_VM="\$HOME/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark"
 
   # End any previous tmux session gracefully
   $SSH_CMD 'tmux send-keys -t bench C-c 2>/dev/null; sleep 1; tmux send-keys -t bench exit Enter 2>/dev/null; sleep 1' 2>/dev/null || true
