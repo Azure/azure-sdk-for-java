@@ -272,9 +272,26 @@ public class WorkflowTest {
         options.setOfferThroughput(10000);
         AsyncDocumentClient housekeepingClient = Utils.housekeepingClient();
         database = Utils.createDatabaseForTest(housekeepingClient);
-        collection = housekeepingClient.createCollection("dbs/" + database.getId(),
-            getCollectionDefinitionWithRangeRangeIndex(),
-            options).block().getResource();
+        // Retry collection creation on transient failures (408, 429, 503)
+        int maxRetries = 3;
+        for (int attempt = 0; attempt <= maxRetries; attempt++) {
+            try {
+                collection = housekeepingClient.createCollection("dbs/" + database.getId(),
+                    getCollectionDefinitionWithRangeRangeIndex(),
+                    options).block().getResource();
+                break;
+            } catch (Exception e) {
+                if (attempt == maxRetries) {
+                    throw e;
+                }
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(ie);
+                }
+            }
+        }
         housekeepingClient.close();
     }
 
