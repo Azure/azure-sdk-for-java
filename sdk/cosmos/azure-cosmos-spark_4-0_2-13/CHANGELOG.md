@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.45.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.44.1 (2026-03-03)
 
 #### Other Changes
+* Reduced noisy warning logs in Gateway mode - [PR 48189](https://github.com/Azure/azure-sdk-for-java/pull/48189)
 
 ### 4.44.0 (2026-02-27)
 
