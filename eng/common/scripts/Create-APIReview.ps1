@@ -96,14 +96,14 @@ function Upload-SourceArtifact($filePath, $apiLabel, $releaseStatus, $packageVer
     }
 
     $uri = "${APIViewUri}/upload"
-
+    
     # Get Bearer token for authentication
     $bearerToken = Get-ApiViewBearerToken
     if (-not $bearerToken) {
         Write-Error "Failed to acquire Bearer token for APIView authentication."
         return [System.Net.HttpStatusCode]::Unauthorized
     }
-
+    
     $headers = @{
         "Authorization" = "Bearer $bearerToken";
         "content-type" = "multipart/form-data"
@@ -147,14 +147,14 @@ function Upload-ReviewTokenFile($packageName, $apiLabel, $releaseStatus, $review
     }
 
     Write-Host "Request to APIView: $uri"
-
+    
     # Get Bearer token for authentication
     $bearerToken = Get-ApiViewBearerToken
     if (-not $bearerToken) {
         Write-Error "Failed to acquire Bearer token for APIView authentication."
         return [System.Net.HttpStatusCode]::Unauthorized
     }
-
+    
     $headers = @{
         "Authorization" = "Bearer $bearerToken"
     }
@@ -234,13 +234,13 @@ function ProcessPackage($packageInfo)
         # Check if the function supports the packageInfo parameter
         $functionInfo = Get-Command $FindArtifactForApiReviewFn -ErrorAction SilentlyContinue
         $supportsPackageInfoParam = $false
-
+        
         if ($functionInfo -and $functionInfo.Parameters) {
             # Check if function specifically supports packageInfo parameter
             $parameterNames = $functionInfo.Parameters.Keys
             $supportsPackageInfoParam = $parameterNames -contains 'packageInfo'
         }
-
+        
         # Call function with appropriate parameters
         if ($supportsPackageInfoParam) {
             LogInfo "Calling $FindArtifactForApiReviewFn with packageInfo parameter"
