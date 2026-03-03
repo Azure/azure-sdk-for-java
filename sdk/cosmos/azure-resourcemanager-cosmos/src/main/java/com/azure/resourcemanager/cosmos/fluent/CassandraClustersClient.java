@@ -891,8 +891,8 @@ public interface CassandraClustersClient extends InnerSupportsGet<ClusterResourc
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -900,7 +900,7 @@ public interface CassandraClustersClient extends InnerSupportsGet<ClusterResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String clusterName,
-        String xMsForceDeallocate);
+        String forceDeallocate);
 
     /**
      * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
@@ -909,8 +909,8 @@ public interface CassandraClustersClient extends InnerSupportsGet<ClusterResourc
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -918,7 +918,7 @@ public interface CassandraClustersClient extends InnerSupportsGet<ClusterResourc
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String clusterName,
-        String xMsForceDeallocate);
+        String forceDeallocate);
 
     /**
      * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
@@ -957,8 +957,8 @@ public interface CassandraClustersClient extends InnerSupportsGet<ClusterResourc
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -967,7 +967,7 @@ public interface CassandraClustersClient extends InnerSupportsGet<ClusterResourc
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String clusterName,
-        String xMsForceDeallocate, Context context);
+        String forceDeallocate, Context context);
 
     /**
      * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
@@ -976,15 +976,15 @@ public interface CassandraClustersClient extends InnerSupportsGet<ClusterResourc
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deallocateAsync(String resourceGroupName, String clusterName, String xMsForceDeallocate);
+    Mono<Void> deallocateAsync(String resourceGroupName, String clusterName, String forceDeallocate);
 
     /**
      * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
@@ -1022,15 +1022,15 @@ public interface CassandraClustersClient extends InnerSupportsGet<ClusterResourc
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deallocate(String resourceGroupName, String clusterName, String xMsForceDeallocate, Context context);
+    void deallocate(String resourceGroupName, String clusterName, String forceDeallocate, Context context);
 
     /**
      * Start the Managed Cassandra Cluster and Associated Data Centers. Start will start the host virtual machine of

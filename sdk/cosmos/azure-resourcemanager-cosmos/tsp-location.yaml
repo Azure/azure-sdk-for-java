@@ -1,4 +1,4 @@
 directory: specification/cosmos-db/CosmosDB.Management
-commit: 04d5a6a141f08be6a62832fb9389c22adcfa7374
+commit: 5f2c8fbb205beb833f70e26595da526921025927
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

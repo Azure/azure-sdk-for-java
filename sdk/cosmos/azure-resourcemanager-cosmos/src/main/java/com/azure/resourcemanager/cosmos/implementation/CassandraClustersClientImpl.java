@@ -198,7 +198,7 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
         Mono<Response<Flux<ByteBuffer>>> deallocate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @HeaderParam("x-ms-force-deallocate") String xMsForceDeallocate, Context context);
+            @HeaderParam("x-ms-force-deallocate") String forceDeallocate, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/start")
@@ -2305,8 +2305,8 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2314,7 +2314,7 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String clusterName,
-        String xMsForceDeallocate) {
+        String forceDeallocate) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2332,7 +2332,7 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
         }
         return FluxUtil
             .withContext(context -> service.deallocate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, xMsForceDeallocate, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, forceDeallocate, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2343,8 +2343,8 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2353,7 +2353,7 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String clusterName,
-        String xMsForceDeallocate, Context context) {
+        String forceDeallocate, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2371,7 +2371,7 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
         }
         context = this.client.mergeContext(context);
         return service.deallocate(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, xMsForceDeallocate, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, forceDeallocate, context);
     }
 
     /**
@@ -2381,8 +2381,8 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2390,9 +2390,9 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String clusterName,
-        String xMsForceDeallocate) {
+        String forceDeallocate) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deallocateWithResponseAsync(resourceGroupName, clusterName, xMsForceDeallocate);
+            = deallocateWithResponseAsync(resourceGroupName, clusterName, forceDeallocate);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -2411,9 +2411,9 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String clusterName) {
-        final String xMsForceDeallocate = null;
+        final String forceDeallocate = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deallocateWithResponseAsync(resourceGroupName, clusterName, xMsForceDeallocate);
+            = deallocateWithResponseAsync(resourceGroupName, clusterName, forceDeallocate);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -2425,8 +2425,8 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2435,10 +2435,10 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String clusterName,
-        String xMsForceDeallocate, Context context) {
+        String forceDeallocate, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deallocateWithResponseAsync(resourceGroupName, clusterName, xMsForceDeallocate, context);
+            = deallocateWithResponseAsync(resourceGroupName, clusterName, forceDeallocate, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -2457,8 +2457,8 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String clusterName) {
-        final String xMsForceDeallocate = null;
-        return this.beginDeallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate).getSyncPoller();
+        final String forceDeallocate = null;
+        return this.beginDeallocateAsync(resourceGroupName, clusterName, forceDeallocate).getSyncPoller();
     }
 
     /**
@@ -2468,8 +2468,8 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2478,8 +2478,8 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String clusterName,
-        String xMsForceDeallocate, Context context) {
-        return this.beginDeallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate, context).getSyncPoller();
+        String forceDeallocate, Context context) {
+        return this.beginDeallocateAsync(resourceGroupName, clusterName, forceDeallocate, context).getSyncPoller();
     }
 
     /**
@@ -2489,16 +2489,16 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deallocateAsync(String resourceGroupName, String clusterName, String xMsForceDeallocate) {
-        return beginDeallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate).last()
+    public Mono<Void> deallocateAsync(String resourceGroupName, String clusterName, String forceDeallocate) {
+        return beginDeallocateAsync(resourceGroupName, clusterName, forceDeallocate).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2516,8 +2516,8 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deallocateAsync(String resourceGroupName, String clusterName) {
-        final String xMsForceDeallocate = null;
-        return beginDeallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate).last()
+        final String forceDeallocate = null;
+        return beginDeallocateAsync(resourceGroupName, clusterName, forceDeallocate).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2528,8 +2528,8 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2537,9 +2537,9 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deallocateAsync(String resourceGroupName, String clusterName, String xMsForceDeallocate,
+    private Mono<Void> deallocateAsync(String resourceGroupName, String clusterName, String forceDeallocate,
         Context context) {
-        return beginDeallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate, context).last()
+        return beginDeallocateAsync(resourceGroupName, clusterName, forceDeallocate, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2556,8 +2556,8 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deallocate(String resourceGroupName, String clusterName) {
-        final String xMsForceDeallocate = null;
-        deallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate).block();
+        final String forceDeallocate = null;
+        deallocateAsync(resourceGroupName, clusterName, forceDeallocate).block();
     }
 
     /**
@@ -2567,16 +2567,16 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
-     * of Cluster Type Production might cause data loss.
+     * @param forceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of
+     * Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deallocate(String resourceGroupName, String clusterName, String xMsForceDeallocate, Context context) {
-        deallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate, context).block();
+    public void deallocate(String resourceGroupName, String clusterName, String forceDeallocate, Context context) {
+        deallocateAsync(resourceGroupName, clusterName, forceDeallocate, context).block();
     }
 
     /**
