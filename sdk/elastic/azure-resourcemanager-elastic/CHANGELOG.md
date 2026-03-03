@@ -1,14 +1,232 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2026-03-03)
 
-### Features Added
+- Azure Resource Manager Elastic client library for Java. This package contains Microsoft Azure SDK for Elastic Management SDK.  Package api-version 2025-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ElasticVersionsListResponse` was removed
 
-### Other Changes
+#### `models.MonitoredSubscriptionPropertiesList` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.CreateAndAssociateIpFilters` was removed
+
+#### `models.ElasticMonitorResourceListResponse` was removed
+
+#### `models.ConnectedPartnerResourcesListResponse` was removed
+
+#### `models.MonitoringTagRulesListResponse` was removed
+
+#### `models.VMHostListResponse` was removed
+
+#### `models.MonitoredResourceListResponse` was removed
+
+#### `models.OpenAIIntegrationRPModelListResponse` was removed
+
+#### `models.IdentityProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ElasticProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ElasticMonitorResourceUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.MonitoredSubscription` was modified
+
+* `validate()` was removed
+
+#### `models.ElasticOrganizationToAzureSubscriptionMappingResponseProperties` was modified
+
+* `ElasticOrganizationToAzureSubscriptionMappingResponseProperties()` was changed to private access
+* `withElasticOrganizationName(java.lang.String)` was removed
+* `validate()` was removed
+* `withElasticOrganizationId(java.lang.String)` was removed
+* `withBilledAzureSubscriptionId(java.lang.String)` was removed
+
+#### `models.ConnectedPartnerResourceProperties` was modified
+
+* `ConnectedPartnerResourceProperties()` was changed to private access
+* `withType(java.lang.String)` was removed
+* `validate()` was removed
+* `withAzureResourceId(java.lang.String)` was removed
+* `withLocation(java.lang.String)` was removed
+* `withPartnerDeploymentUri(java.lang.String)` was removed
+* `withPartnerDeploymentName(java.lang.String)` was removed
+
+#### `models.ExternalUserInfo` was modified
+
+* `validate()` was removed
+
+#### `models.MarketplaceSaaSInfoMarketplaceSubscription` was modified
+
+* `MarketplaceSaaSInfoMarketplaceSubscription()` was changed to private access
+* `validate()` was removed
+* `withPublisherId(java.lang.String)` was removed
+* `withOfferId(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.CompanyInfo` was modified
+
+* `validate()` was removed
+
+#### `models.UserEmailId` was modified
+
+* `validate()` was removed
+
+#### `models.ResubscribeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ElasticCloudUser` was modified
+
+* `validate()` was removed
+
+#### `models.MonitorProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ElasticMonitorUpgrade` was modified
+
+* `validate()` was removed
+
+#### `ElasticManager` was modified
+
+* `createAndAssociateIpFilters()` was removed
+
+#### `models.MonitoringTagRulesProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MarketplaceSaaSInfo` was modified
+
+* `MarketplaceSaaSInfo()` was changed to private access
+* `withMarketplaceStatus(java.lang.String)` was removed
+* `validate()` was removed
+* `withMarketplaceSubscription(models.MarketplaceSaaSInfoMarketplaceSubscription)` was removed
+* `withBilledAzureSubscriptionId(java.lang.String)` was removed
+* `withMarketplaceResourceId(java.lang.String)` was removed
+* `withMarketplaceName(java.lang.String)` was removed
+* `withSubscribed(java.lang.Boolean)` was removed
+
+#### `models.OpenAIIntegrationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.UserInfo` was modified
+
+* `validate()` was removed
+
+#### `models.ElasticTrafficFilterRule` was modified
+
+* `ElasticTrafficFilterRule()` was changed to private access
+* `withAzureEndpointName(java.lang.String)` was removed
+* `withSource(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `validate()` was removed
+* `withAzureEndpointGuid(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.ProjectDetails` was modified
+
+* `validate()` was removed
+
+#### `models.ElasticTrafficFilter` was modified
+
+* `ElasticTrafficFilter()` was changed to private access
+* `withRegion(java.lang.String)` was removed
+* `withRules(java.util.List)` was removed
+* `withId(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withType(models.Type)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withIncludeByDefault(java.lang.Boolean)` was removed
+* `validate()` was removed
+
+#### `models.PartnerBillingEntity` was modified
+
+* `PartnerBillingEntity()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withPartnerEntityUri(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ElasticVersionListProperties` was modified
+
+* `ElasticVersionListProperties()` was changed to private access
+* `validate()` was removed
+* `withVersion(java.lang.String)` was removed
+
+#### `models.SubscriptionList` was modified
+
+* `validate()` was removed
+
+#### `models.LogRules` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceSku` was modified
+
+* `validate()` was removed
+
+#### `models.FilteringTag` was modified
+
+* `validate()` was removed
+
+#### `models.PlanDetails` was modified
+
+* `validate()` was removed
+
+#### `models.ElasticCloudDeployment` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.VMCollectionUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.OpenAIIntegrationStatusResponseProperties` was modified
+
+* `OpenAIIntegrationStatusResponseProperties()` was changed to private access
+* `withStatus(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.UserApiKeyResponseProperties` was modified
+
+* `UserApiKeyResponseProperties()` was changed to private access
+* `validate()` was removed
+* `withApiKey(java.lang.String)` was removed
+
+### Features Added
+
+* `models.CreateAndAssociateIPFilters` was added
+
+#### `models.OpenAIIntegrationRPModel` was modified
+
+* `systemData()` was added
+
+#### `models.MonitoredSubscriptionProperties` was modified
+
+* `systemData()` was added
+
+#### `ElasticManager` was modified
+
+* `createAndAssociateIPFilters()` was added
 
 ## 1.1.0 (2025-10-20)
 
