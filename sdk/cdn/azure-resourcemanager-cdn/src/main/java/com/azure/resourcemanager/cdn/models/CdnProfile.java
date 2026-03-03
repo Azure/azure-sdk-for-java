@@ -200,6 +200,11 @@ public interface CdnProfile
          * The first stage of a CDN profile definition.
          */
         interface Blank extends DefinitionWithRegion<WithGroup> {
+            /**
+             * Specifies that the resource is global/non-regional.
+             *
+             * @return the next stage of the definition.
+             */
             WithGroup withGlobal();
         }
 
