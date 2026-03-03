@@ -95,16 +95,18 @@ class ConnectionManager {
      * @return the next active AppConfigurationReplicaClient
      */
     AppConfigurationReplicaClient getNextActiveClient(boolean useLastActive) {
-        if (activeClients.isEmpty()) {
-            lastActiveClient = "";
-            return null;
-        } else if (useLastActive) {
-            for (AppConfigurationReplicaClient client: getAvailableClients()) {
+        if (useLastActive) {
+            List<AppConfigurationReplicaClient> clients = getAvailableClients();
+            for (AppConfigurationReplicaClient client: clients) {
                 if (client.getEndpoint().equals(lastActiveClient)) {
                     return client;
                 }
             }
         }
+        if (activeClients.isEmpty()) {
+            lastActiveClient = "";
+            return null;
+        } 
 
         if (!configStore.isLoadBalancingEnabled()) {
             if (!activeClients.isEmpty()) {
@@ -113,6 +115,7 @@ class ConnectionManager {
             return null;
         }
 
+        // Remove the current client from the list. The list will be rebuilt and rotated on the next refresh cycle by findActiveClients().
         AppConfigurationReplicaClient nextClient = activeClients.remove(0);
         lastActiveClient = nextClient.getEndpoint();
         return nextClient;

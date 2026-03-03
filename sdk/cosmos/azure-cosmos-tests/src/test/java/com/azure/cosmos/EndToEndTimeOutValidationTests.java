@@ -133,7 +133,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = 10000L, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -338,7 +338,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = 10000L, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void clientLevelEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");

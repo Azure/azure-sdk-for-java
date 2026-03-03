@@ -13,13 +13,6 @@ import java.util.Collection;
 public final class AgentDefinitionFeatureKeys extends ExpandableStringEnum<AgentDefinitionFeatureKeys> {
 
     /**
-     * Static value ContainerAgents=V1Preview for AgentDefinitionFeatureKeys.
-     */
-    @Generated
-    public static final AgentDefinitionFeatureKeys CONTAINER_AGENTS_V1_PREVIEW
-        = fromString("ContainerAgents=V1Preview");
-
-    /**
      * Static value HostedAgents=V1Preview for AgentDefinitionFeatureKeys.
      */
     @Generated

@@ -4,7 +4,27 @@
 
 ### Features Added
 
+- Added `action` property to `ImageGenTool` with new `ImageGenActionEnum` (values: `GENERATE`, `EDIT`, `AUTO`).
+- Added `GPT_IMAGE_1_5` to `ImageGenToolModel`.
+- Added container skill types: `ContainerSkill`, `ContainerSkillType`, `ContainerAutoParam`, `ContainerNetworkPolicyParam`, and related network policy types (`ContainerNetworkPolicyAllowlistParam`, `ContainerNetworkPolicyDisabledParam`, `ContainerNetworkPolicyDomainSecretParam`, `ContainerNetworkPolicyParamType`).
+- Added environment configuration for `FunctionShellToolParam` and `InputItemFunctionShellCallItemParam` via new `FunctionShellToolParamEnvironment`, `FunctionShellCallItemParamEnvironment`, and related container/local environment parameter types.
+- Added `MessageContent` and `MessageContentType` model types.
+- Added skill parameter types: `InlineSkillParam`, `InlineSkillSourceParam`, `LocalSkillParam`, `SkillReferenceParam`.
+
 ### Breaking Changes
+
+- Removed `ContainerAppAgentDefinition` class and `AgentKind.CONTAINER_APP` enum value. The `container_app` agent kind is no longer supported.
+- Removed `CONTAINER_AGENTS_V1_PREVIEW` from `AgentDefinitionFeatureKeys` and `FoundryFeaturesOptInKeys`. The `ContainerAgents=V1Preview` feature flag is no longer valid.
+- Renamed computer action classes to use `Param` suffix:
+  - `Drag` → `DragParam`
+  - `DragPoint` → `CoordParam`
+  - `Move` → `MoveParam`
+  - `Screenshot` → `ScreenshotParam`
+  - `Scroll` → `ScrollParam`
+  - `Type` → `TypeParam`
+  - `Wait` → `WaitParam`
+- `CodeInterpreterContainerAuto` renamed to `AutoCodeInterpreterToolParam`.
+- `Summary` renamed to `SummaryTextContent`.
 
 ### Bugs Fixed
 
