@@ -23,8 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 class AgentsServicePollUtilsTest {
 
-    // ---- remapStatus tests ------------------------------------------------
-
     static Stream<Arguments> remapStatusCases() {
         return Stream.of(
             // Custom statuses that need remapping
@@ -75,8 +73,6 @@ class AgentsServicePollUtilsTest {
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, remapped.getStatus());
         assertEquals(retryAfter, remapped.getRetryAfter());
     }
-
-    // ---- withFoundryFeatures tests ----------------------------------------
 
     @Test
     void withFoundryFeaturesAddsHeaderToContext() {
