@@ -55,9 +55,25 @@ elif [[ "$REF" =~ ^[0-9a-f]{7,40}$ ]]; then
   git fetch origin
   git checkout "$REF"
 else
-  git fetch --depth 1 origin "$REF"
-  git checkout "$REF"
-  git pull origin "$REF" 2>/dev/null || true
+  # Detect remote/branch format (e.g., xinlian12/wireConnectionSharingInBenchmark)
+  if [[ "$REF" == */* ]]; then
+    REMOTE_NAME="${REF%%/*}"
+    BRANCH_NAME="${REF#*/}"
+    if git remote | grep -qx "$REMOTE_NAME"; then
+      echo "Fetching $BRANCH_NAME from remote $REMOTE_NAME"
+      git fetch --depth 1 "$REMOTE_NAME" "$BRANCH_NAME"
+      git checkout FETCH_HEAD
+    else
+      # Slash is part of the branch name (e.g., feature/foo on origin)
+      git fetch --depth 1 origin "$REF"
+      git checkout "$REF"
+      git pull origin "$REF" 2>/dev/null || true
+    fi
+  else
+    git fetch --depth 1 origin "$REF"
+    git checkout "$REF"
+    git pull origin "$REF" 2>/dev/null || true
+  fi
 fi
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "detached")

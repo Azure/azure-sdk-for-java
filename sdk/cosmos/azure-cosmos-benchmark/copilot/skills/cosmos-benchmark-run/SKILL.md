@@ -24,6 +24,7 @@ Ask the user for:
    - Multiple for comparison: `main, fix/telemetry-leak`
    - PR + baseline: `PR#12345, main`
    - Commit SHAs: `abc1234, def5678`
+   - Fork branches: `xinlian12/wireConnectionSharingInBenchmark` (auto-detects remote)
 
 2. **Scenario preset** (default: `SIMPLE`):
 
