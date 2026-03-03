@@ -210,7 +210,7 @@ class AzureKeyVaultSslBundleRegistrarTests {
     }
 
     @Test
-    void keyVaultProviderNotInsertedAtHighestPriority(CapturedOutput capturedOutput) {
+    void keyVaultProviderNotInsertedAtHighestPriority() {
         AzureKeyVaultJcaProperties jcaProperties = new AzureKeyVaultJcaProperties();
         AzureKeyVaultSslBundleProperties sslBundleProperties = new AzureKeyVaultSslBundleProperties();
         AzureKeyVaultSslBundleRegistrar registrar = new AzureKeyVaultSslBundleRegistrar(jcaProperties, sslBundleProperties);
@@ -219,7 +219,7 @@ class AzureKeyVaultSslBundleRegistrarTests {
 
         try (MockedStatic<KeyStore> keyStoreMockedStatic = mockStatic(KeyStore.class)) {
             KeyStore keyStore = Mockito.mock(KeyStore.class);
-            keyStoreMockedStatic.when(() -> KeyStore.getInstance("AzureKeyVault")).thenReturn(keyStore);
+            keyStoreMockedStatic.when(() -> KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME)).thenReturn(keyStore);
 
             String keyvaultName = "keyvault1";
             AzureKeyVaultJcaProperties.JcaVaultProperties jcaVaultProperties = new AzureKeyVaultJcaProperties.JcaVaultProperties();
