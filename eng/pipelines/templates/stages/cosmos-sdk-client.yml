@@ -62,6 +62,7 @@ extends:
               - AZURE_TEST.*=.*/
               - .*Version=1.2(1|5)/1.17
             BuildParallelization: 2
+            BuildOptions: '-Dshade.skip=true -Dmaven.antrun.skip=true'
             TestOptions: '-Punit'
 
       - stage: TestEmulator
