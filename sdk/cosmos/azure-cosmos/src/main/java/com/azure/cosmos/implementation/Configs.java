@@ -56,9 +56,9 @@ public class Configs {
 
     // Thin client connect/acquire timeout — controls CONNECT_TIMEOUT_MILLIS for Gateway V2 data plane endpoints.
     // Data plane requests are routed to the thin client regional endpoint (from RegionalRoutingContext)
-    // which uses a non-443 port. These get an aggressive 1s connect/acquire timeout.
+    // which uses a non-443 port. These get a shorter 5s connect/acquire timeout.
     // Metadata requests target Gateway V1 endpoint (port 443) and retain the full 45s/60s timeout (unchanged).
-    private static final int DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS = 1;
+    private static final int DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS = 5;
     private static final String THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS = "COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS";
     private static final String THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS_VARIABLE = "COSMOS_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS";
 
