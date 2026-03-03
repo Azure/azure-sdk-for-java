@@ -193,7 +193,7 @@ public class ReactorNettyClient implements HttpClient {
         // Note: CONNECT_TIMEOUT_MILLIS controls TCP SYN→SYN-ACK timeout for NEW connections.
         // For H2, once a TCP connection exists, stream acquisition is near-instant (~sub-ms)
         // so pendingAcquireTimeout (pool-level 45s) is effectively never hit.
-        int connectTimeoutMs = resolveConnectTimeoutMs(request);
+        int connectTimeoutMs = this.resolveConnectTimeoutMs(request);
 
         return this.httpClient
             .keepAlive(this.httpClientConfig.isConnectionKeepAlive())
