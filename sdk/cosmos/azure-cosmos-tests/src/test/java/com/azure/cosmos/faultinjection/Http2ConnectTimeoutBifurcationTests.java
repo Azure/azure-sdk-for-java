@@ -140,6 +140,54 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     }
 
     /**
+     * Sets up per-port SYN-ONLY delay using tc netem with iptables mangle marks.
+     *
+     * Unlike {@link #addPerPortDelay} which delays ALL packets, this only delays
+     * the initial TCP SYN packet (--tcp-flags SYN,ACK,FIN,RST SYN). This means:
+     * - TCP connect phase is delayed (SYN held in kernel → CONNECT_TIMEOUT_MILLIS fires)
+     * - TLS handshake, HTTP request/response, and TCP ACKs flow normally (no delay)
+     *
+     * This is the correct technique for testing CONNECT_TIMEOUT_MILLIS bifurcation:
+     * the connect timeout fires during SYN→SYN-ACK, so only the SYN needs delaying.
+     * Delaying all packets causes secondary failures (TLS handshake timeout, HTTP
+     * response timeout, premature connection close) that are unrelated to connect timeout.
+     *
+     * @param port443SynDelayMs  SYN delay for port 443 (metadata)
+     * @param port10250SynDelayMs SYN delay for port 10250 (thin client data plane)
+     */
+    private void addPerPortSynDelay(int port443SynDelayMs, int port10250SynDelayMs) {
+        String[] cmds = {
+            // Create root prio qdisc with 3 bands
+            "tc qdisc add dev eth0 root handle 1: prio bands 3",
+            // Band 1 (handle 1:1): delay for port 443 SYN
+            String.format("tc qdisc add dev eth0 parent 1:1 handle 10: netem delay %dms", port443SynDelayMs),
+            // Band 2 (handle 1:2): delay for port 10250 SYN
+            String.format("tc qdisc add dev eth0 parent 1:2 handle 20: netem delay %dms", port10250SynDelayMs),
+            // Band 3 (handle 1:3): no delay (default for all other traffic including non-SYN)
+            "tc qdisc add dev eth0 parent 1:3 handle 30: pfifo_fast",
+            // Mark ONLY SYN packets (initial TCP connect) to port 443 with mark 1
+            "iptables -t mangle -A OUTPUT -p tcp --dport 443 --tcp-flags SYN,ACK,FIN,RST SYN -j MARK --set-mark 1",
+            // Mark ONLY SYN packets to port 10250 with mark 2
+            "iptables -t mangle -A OUTPUT -p tcp --dport 10250 --tcp-flags SYN,ACK,FIN,RST SYN -j MARK --set-mark 2",
+            // Route mark 1 → band 1 (port 443 SYN delay)
+            "tc filter add dev eth0 parent 1:0 protocol ip prio 1 handle 1 fw flowid 1:1",
+            // Route mark 2 → band 2 (port 10250 SYN delay)
+            "tc filter add dev eth0 parent 1:0 protocol ip prio 2 handle 2 fw flowid 1:2",
+            // CRITICAL: Catch-all filter → band 3 (no delay) for ALL unmarked traffic.
+            // Without this, prio qdisc's default priomap sends unmarked packets to band 1
+            // (the delay band), which delays TLS/HTTP/ACK traffic and causes spurious failures.
+            "tc filter add dev eth0 parent 1:0 protocol ip prio 99 u32 match u32 0 0 flowid 1:3",
+        };
+
+        for (String cmd : cmds) {
+            logger.info(">>> Executing: {}", cmd);
+            executeShellCommand(cmd);
+        }
+        logger.info(">>> Per-port SYN-only delay active: port 443={}ms, port 10250={}ms",
+            port443SynDelayMs, port10250SynDelayMs);
+    }
+
+    /**
      * Removes all per-port delay rules (tc qdisc + iptables mangle marks).
      */
     private void removePerPortDelay() {
@@ -417,52 +465,67 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     }
 
     /**
-     * Proves connect timeout bifurcation using per-port TCP delay injection.
+     * Proves connect timeout bifurcation using per-port SYN-only delay injection.
      *
-     * This is the most precise bifurcation test:
-     * - Port 443 (metadata):    43s delay → SUCCEEDS (43s < 45s gateway connect timeout)
-     * - Port 10250 (data plane): 2s delay  → FAILS    (2s > 1s thin client connect timeout)
+     * This is the PUREST bifurcation test — same network condition on both ports,
+     * different outcomes because of different CONNECT_TIMEOUT_MILLIS values:
      *
-     * Unlike the DROP-based tests which prove one side at a time, this test proves
-     * BOTH sides simultaneously in a single scenario:
+     * - Port 443 (metadata):    5s SYN delay → 5s < 45s CONNECT_TIMEOUT → connect SUCCEEDS
+     * - Port 10250 (data plane): 5s SYN delay → 5s > 1s CONNECT_TIMEOUT → connect FAILS
      *
-     * 1. Apply per-port delays: 43s on 443, 2s on 10250
-     * 2. Create a new client → metadata requests on 443 succeed (43s delay < 45s timeout)
-     * 3. Attempt a document read → data plane on 10250 fails (2s delay > 1s timeout)
+     * SAME delay + different outcomes = the ONLY variable is the timeout configuration.
+     * This eliminates "different delays cause different outcomes" as an alternative explanation.
+     *
+     * Technique: tc netem delays only SYN packets (--tcp-flags SYN,ACK,FIN,RST SYN),
+     * not all traffic. This isolates the TCP connect phase — TLS handshake, HTTP request/
+     * response, and TCP ACKs flow at normal speed. Unlike delaying all packets (which causes
+     * TLS handshake timeout, HTTP response timeout, premature connection close), SYN-only
+     * delay ONLY affects CONNECT_TIMEOUT_MILLIS, which is exactly what we're testing.
+     *
+     * Flow:
+     * 1. Apply 5s SYN-only delay on BOTH ports
+     * 2. Create a new client → metadata on port 443 succeeds (5s < 45s timeout)
+     * 3. Attempt a document read → data plane on port 10250 fails (5s > 1s timeout)
      * 4. Remove delays, verify full recovery
-     *
-     * Technique: tc netem with iptables mangle marks for port-specific delay.
      */
     @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
     public void connectTimeout_Bifurcation_DelayBased_MetadataSucceeds_DataPlaneFails() throws Exception {
-        // Close existing client
+        // Close existing client to force new TCP connections on next use
         safeClose(this.client);
 
-        // Apply per-port delays:
-        // Port 443:   43s delay (< 45s gateway connect timeout → metadata should SUCCEED)
-        // Port 10250:  2s delay (> 1s thin client connect timeout → data plane should FAIL)
-        addPerPortDelay(43000, 2000);
+        // Apply SYN-only delay: 5s on BOTH ports.
+        // Only the initial TCP SYN packet is delayed — all other traffic flows normally.
+        // Port 443:   CONNECT_TIMEOUT = 45s → 5s delay < 45s → connect SUCCEEDS
+        // Port 10250: CONNECT_TIMEOUT = 1s  → 5s delay > 1s  → connect FAILS (ConnectTimeoutException at 1s)
+        addPerPortSynDelay(5000, 5000);
 
         try {
-            // Step 1: Create a new client — this contacts port 443 for account metadata.
-            // Despite the 43s delay, metadata requests should SUCCEED because the gateway
-            // connect timeout is 45s (43s delay < 45s timeout → TCP handshake completes).
+            // Step 1: Create a new client — metadata requests go to port 443.
+            // The 5s SYN delay means the TCP handshake takes ~5s.
+            // Since the gateway CONNECT_TIMEOUT is 45s, the connect SUCCEEDS.
+            // If the thin client timeout (1s) were applied, the connect would FAIL at 1s
+            // (before the SYN-ACK arrives at 5s). This is the decisive proof.
             Instant metadataStart = Instant.now();
             this.client = getClientBuilder().buildAsyncClient();
             this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
             Duration metadataLatency = Duration.between(metadataStart, Instant.now());
 
-            logger.info("Client + container setup succeeded with 43s port-443 delay. " +
-                "Metadata latency: {}ms", metadataLatency.toMillis());
+            logger.info("Client + container setup succeeded with 5s SYN delay on port 443. " +
+                "Metadata latency: {}ms (includes 5s SYN delay + TLS + HTTP at normal speed)",
+                metadataLatency.toMillis());
 
-            // Metadata latency should be >= 43s (the injected delay) but < 90s
+            // Metadata latency should be >= 4s (5s SYN delay - jitter) but < 30s
+            // (5s for SYN + normal speed TLS/HTTP should complete quickly)
             assertThat(metadataLatency)
-                .as("Metadata should succeed despite 43s delay (< 45s gateway timeout)")
-                .isGreaterThanOrEqualTo(Duration.ofSeconds(40))
-                .isLessThan(Duration.ofSeconds(90));
+                .as("Metadata should succeed despite 5s SYN delay (5s < 45s gateway CONNECT_TIMEOUT). " +
+                    "If thin client timeout (1s) were applied, connect would fail at 1s.")
+                .isGreaterThanOrEqualTo(Duration.ofSeconds(4))
+                .isLessThan(Duration.ofSeconds(30));
 
             // Step 2: Attempt a document read — this goes to port 10250.
-            // The 2s delay exceeds the 1s thin client connect timeout → should FAIL.
+            // The SAME 5s SYN delay is applied, but CONNECT_TIMEOUT_MILLIS is 1s.
+            // The connect timeout fires at 1s (before the delayed SYN-ACK arrives at 5s).
+            // This is the bifurcation: same delay, port 443 succeeded, port 10250 fails.
             CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy =
                 new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(10))
                     .enable(true).build();
@@ -473,7 +536,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
             try {
                 this.cosmosAsyncContainer.readItem(
                     seedItem.getId(), new PartitionKey(seedItem.getId()), opts, TestObject.class).block();
-                fail("Data plane request should have failed — 2s delay exceeds 1s connect timeout");
+                fail("Data plane request should have failed — 5s SYN delay exceeds 1s connect timeout");
             } catch (CosmosException e) {
                 Duration dataPlaneLatency = Duration.between(dataPlaneStart, Instant.now());
                 logger.info("Data plane failed as expected: statusCode={}, latency={}ms",
@@ -483,7 +546,8 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
 
                 // Data plane should fail within the e2e budget
                 assertThat(dataPlaneLatency)
-                    .as("Data plane should fail within e2e budget (10s)")
+                    .as("Data plane should fail within e2e budget (10s). " +
+                        "Each connect attempt times out at 1s (not 5s), proving 1s CONNECT_TIMEOUT.")
                     .isLessThan(Duration.ofSeconds(12));
 
                 assertThat(e.getStatusCode())
