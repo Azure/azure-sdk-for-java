@@ -88,15 +88,40 @@ for i in "${!REFS[@]}"; do
   SEQ="[$((i+1))/$TOTAL]"
 
   echo ""
-  echo "$SEQ Starting: $REF → $RUN_NAME"
-  echo "   (single SSH session: checkout → build → verify → run)"
+  echo "$SEQ Starting: $REF -> $RUN_NAME"
+  echo "   (tmux session: checkout -> build -> verify -> run)"
 
-  # Execute the script already on the VM (copied via SCP at startup)
   FORCE_FLAG=""
   [[ "$FORCE_COPY_SCRIPTS" == "true" ]] && FORCE_FLAG="--force-scripts"
-  $SSH_CMD "bash $VM_SCRIPTS_DIR/vm-prepare-and-run.sh \
-    '$REF' '$SCENARIO' '$TENANTS_FILE' '$RUN_NAME' $FORCE_FLAG $EXTRA_FLAGS"
-  RUN_EXIT=$?
+  BENCH_DIR_VM="~/azure-sdk-for-java/sdk/cosmos/azure-cosmos-benchmark"
+  EXIT_CODE_FILE="$BENCH_DIR_VM/results/$RUN_NAME/.exit-code"
+
+  # End any previous tmux session gracefully
+  $SSH_CMD "tmux send-keys -t bench C-c 2>/dev/null; sleep 1; tmux send-keys -t bench exit Enter 2>/dev/null; sleep 1" 2>/dev/null || true
+
+  # Start entire pipeline in tmux (all steps survive SSH disconnection)
+  $SSH_CMD "mkdir -p $BENCH_DIR_VM/results/$RUN_NAME && \
+    tmux new-session -d -s bench \
+    'bash $VM_SCRIPTS_DIR/vm-prepare-and-run.sh \
+      \"$REF\" \"$SCENARIO\" \"$TENANTS_FILE\" \"$RUN_NAME\" $FORCE_FLAG $EXTRA_FLAGS; \
+      echo \$? > $EXIT_CODE_FILE'"
+  echo "$SEQ tmux session started on VM"
+
+  # Poll until tmux session ends
+  case "$SCENARIO" in
+    SIMPLE)  POLL_INTERVAL=120 ;;
+    EXPAND)  POLL_INTERVAL=300 ;;
+    CHURN)   POLL_INTERVAL=300 ;;
+    *)       POLL_INTERVAL=120 ;;
+  esac
+  echo "$SEQ Polling every ${POLL_INTERVAL}s..."
+  while $SSH_CMD "tmux has-session -t bench 2>/dev/null" 2>/dev/null; do
+    sleep $POLL_INTERVAL
+  done
+
+  # Read exit code from the VM
+  RUN_EXIT=$($SSH_CMD "cat $EXIT_CODE_FILE 2>/dev/null || echo 1" 2>/dev/null)
+  RUN_EXIT=$(echo "$RUN_EXIT" | tr -d '[:space:]')
 
   if [[ $RUN_EXIT -eq 0 ]]; then
     echo "$SEQ ✅ Completed: $REF → results/$RUN_NAME"

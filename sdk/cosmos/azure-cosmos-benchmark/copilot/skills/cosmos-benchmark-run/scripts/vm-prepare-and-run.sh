@@ -159,63 +159,31 @@ if [[ "$READY" != "true" ]]; then
   exit 1
 fi
 
-# --- Step 4: Run in tmux (survives SSH disconnection) ---
+# --- Step 4: Run ---
+# The entire vm-prepare-and-run.sh runs inside a tmux session started by
+# run-all-refs.sh, so all steps (checkout, build, verify, run) survive
+# SSH disconnection. No nested tmux needed here.
 echo ""
-echo "=== [4/4] Run: $SCENARIO (tmux session: bench) ==="
+echo "=== [4/4] Run: $SCENARIO ==="
 
 cd "$BENCH_DIR"
 RESULTS_DIR="./results/$RUN_NAME"
 mkdir -p "$RESULTS_DIR"
 
-# End any previous benchmark tmux session gracefully
-tmux send-keys -t bench C-c 2>/dev/null || true
-sleep 1
-tmux send-keys -t bench "exit" Enter 2>/dev/null || true
-sleep 1
-
-# Write run script with resolved paths (executed inside tmux)
-cat > "$RESULTS_DIR/.run.sh" <<EOF
-#!/bin/bash
-set -uo pipefail
-cd "$BENCH_DIR"
 if [[ -f "$VM_SCRIPTS_DIR/run-benchmark.sh" ]]; then
-  bash "$VM_SCRIPTS_DIR/run-benchmark.sh" \\
+  bash "$VM_SCRIPTS_DIR/run-benchmark.sh" \
     "$SCENARIO" "$TENANTS_RESOLVED" "$RESULTS_DIR" $EXTRA_FLAGS
+  BENCH_EXIT=$?
 else
   echo "WARNING: run-benchmark.sh not found, running JAR directly"
-  JAR=\$(ls target/*jar-with-dependencies.jar 2>/dev/null | head -1)
-  java -Xmx8g -Xms8g -XX:+UseG1GC \\
-    -Xlog:gc*:"$RESULTS_DIR/gc.log" \\
-    -jar "\$JAR" \\
-    -tenantsFile "$TENANTS_RESOLVED" \\
-    -reportingDirectory "$RESULTS_DIR/metrics" \\
+  java -Xmx8g -Xms8g -XX:+UseG1GC \
+    -Xlog:gc*:"$RESULTS_DIR/gc.log" \
+    -jar "$JAR" \
+    -tenantsFile "$TENANTS_RESOLVED" \
+    -reportingDirectory "$RESULTS_DIR/metrics" \
     2>&1 | tee "$RESULTS_DIR/benchmark.log"
+  BENCH_EXIT=$?
 fi
-echo \$? > "$RESULTS_DIR/.exit-code"
-EOF
-chmod +x "$RESULTS_DIR/.run.sh"
-
-# Start benchmark in tmux -- process persists even if SSH disconnects
-tmux new-session -d -s bench "bash '$RESULTS_DIR/.run.sh'"
-echo "  Benchmark running in tmux session 'bench'"
-echo "  Monitor:  tmux capture-pane -t bench -p | tail -30"
-
-# Poll interval based on scenario duration (SIMPLE ~30min, EXPAND ~90min, CHURN varies)
-case "$SCENARIO" in
-  SIMPLE)  POLL_INTERVAL=120 ;;   # 2 min
-  EXPAND)  POLL_INTERVAL=300 ;;   # 5 min
-  CHURN)   POLL_INTERVAL=300 ;;   # 5 min
-  *)       POLL_INTERVAL=120 ;;   # 2 min default
-esac
-
-# Wait for tmux session to complete
-echo "  Poll interval: ${POLL_INTERVAL}s"
-while tmux has-session -t bench 2>/dev/null; do
-  sleep $POLL_INTERVAL
-done
-
-# Read exit code written by the run script
-BENCH_EXIT=$(cat "$RESULTS_DIR/.exit-code" 2>/dev/null || echo 1)
 
 if [[ "$BENCH_EXIT" -eq 0 ]]; then
   echo ""
