@@ -210,6 +210,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final AtomicInteger activeV1HandlerCount = new AtomicInteger(0);
     private final Object v1DrainLock = new Object();
     private final ThreadLocal<Boolean> isV1HandlerThread = ThreadLocal.withInitial(() -> Boolean.FALSE);
+    private volatile boolean v1Closing;
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -472,6 +473,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                     activeV1HandlerCount.incrementAndGet();
                     isV1HandlerThread.set(Boolean.TRUE);
                     try {
+                        if (v1Closing) {
+                            LOGGER.verbose("Skipping V1 handler execution, processor is closing.");
+                            return;
+                        }
                         Context span = serviceBusMessageContext.getMessage() != null
                             ? serviceBusMessageContext.getMessage().getContext()
                             : Context.NONE;
@@ -594,6 +599,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @param timeout the maximum time to wait for handlers to complete.
      */
     private void drainV1Handlers(Duration timeout) {
+        v1Closing = true;
         final int threshold;
         if (isV1HandlerThread.get()) {
             // Re-entrant call from within a V1 message handler (e.g., user called close() inside processMessage).

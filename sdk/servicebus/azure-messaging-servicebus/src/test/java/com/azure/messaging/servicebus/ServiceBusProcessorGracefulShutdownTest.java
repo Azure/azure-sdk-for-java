@@ -55,7 +55,9 @@ import static org.mockito.Mockito.when;
  *   <li><b>Re-entrant (single)</b> — {@link #v2DrainFromWithinHandlerShouldNotDeadlock()}:
  *       Tests re-entrant drain with no other concurrent handlers (returns true immediately)</li>
  *   <li><b>Closing Flag</b> — {@link #v2ClosingFlagPreventsNewHandlersAfterDrainStarts()}:
- *       Tests that the closing flag prevents new handler dispatch during drain</li>
+ *       Tests that the V2 closing flag prevents new handler dispatch during drain</li>
+ *   <li><b>V1 Closing Flag</b> — {@link #v1ClosingFlagPreventsNewHandlersAfterDrainStarts()}:
+ *       Tests that the V1 closing flag prevents new handler dispatch in the drain-to-cancel window</li>
  *   <li><b>Re-entrant (concurrent)</b> — {@link #v1ReentrantCloseWaitsForOtherConcurrentHandlers()}:
  *       Tests re-entrant drain with concurrent handlers — waits for other handlers before closing</li>
  *   <li><b>V2 Session</b> — Not directly unit-testable. The drain in
@@ -603,5 +605,96 @@ public class ServiceBusProcessorGracefulShutdownTest {
         // Handler2's close() should now complete (handler1 finished, drain threshold reached).
         verify(asyncClient, timeout(5000)).close();
         assertTrue(handler1Completed.get(), "Handler1 should have completed before client was closed");
+    }
+
+    /**
+     * Verifies that the V1 closing flag prevents new message handlers from executing user
+     * callback/settlement after {@code drainV1Handlers()} is triggered.
+     * <p>
+     * Race condition scenario: with {@code maxConcurrentCalls=1}, a single message is
+     * in-flight when {@code close()} is called. {@code drainV1Handlers()} sets
+     * {@code v1Closing = true} and waits for the handler. Meanwhile, the subscriber still
+     * has an outstanding {@code request(1)}, so a second message can arrive via
+     * {@code onNext} during the drain-to-cancel window. The closing flag ensures that
+     * no user callback runs for messages arriving after shutdown begins.
+     * </p>
+     */
+    @Test
+    public void v1ClosingFlagPreventsNewHandlersAfterDrainStarts() throws InterruptedException {
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
+
+        final ServiceBusReceiverClientBuilder receiverBuilder = mock(ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(asyncClient.getEntityPath()).thenReturn("entityPath");
+        when(asyncClient.isConnectionClosed()).thenReturn(false);
+        when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        // Emit message1 immediately, then message2 after a delay (simulating a message arriving
+        // during the drain-to-cancel window).
+        when(asyncClient.receiveMessagesWithContext()).thenReturn(Flux
+            .concat(Flux.just(message1), Flux.just(message2).delayElements(Duration.ofMillis(300)),
+                Flux.<ServiceBusReceivedMessage>never())
+            .map(ServiceBusMessageContext::new)
+            .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        doNothing().when(asyncClient).close();
+
+        final CountDownLatch handler1Started = new CountDownLatch(1);
+        final CountDownLatch handler1CanProceed = new CountDownLatch(1);
+        final AtomicBoolean handler2ProcessMessageInvoked = new AtomicBoolean(false);
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            if (messageContext.getMessage() == message1) {
+                handler1Started.countDown();
+                try {
+                    handler1CanProceed.await(10, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            } else {
+                // If this executes, the V1 closing flag did NOT prevent the second handler.
+                handler2ProcessMessageInvoked.set(true);
+            }
+        };
+
+        final ServiceBusProcessorClientOptions options
+            = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1);
+        final ServiceBusProcessorClient processorClient
+            = new ServiceBusProcessorClient(receiverBuilder, "entityPath", null, null, messageConsumer, error -> {
+            }, options);
+
+        processorClient.start();
+
+        // Wait for handler1 to start processing.
+        assertTrue(handler1Started.await(5, TimeUnit.SECONDS), "Handler1 should have started processing");
+
+        // Close the processor on a separate thread. This sets v1Closing=true and drains handler1.
+        final CountDownLatch closeDone = new CountDownLatch(1);
+        final Thread closeThread = new Thread(() -> {
+            processorClient.close();
+            closeDone.countDown();
+        });
+        closeThread.start();
+
+        try {
+            // Give close a moment to enter drainV1Handlers (sets v1Closing=true).
+            Thread.sleep(200);
+
+            // Release handler1 so the drain completes. After drain returns, close() proceeds to
+            // cancel subscriptions. Message2 may arrive in this window via the outstanding request(1).
+            handler1CanProceed.countDown();
+
+            // Wait for close to finish.
+            assertTrue(closeDone.await(5, TimeUnit.SECONDS), "Close should complete");
+        } finally {
+            handler1CanProceed.countDown();
+            closeThread.join(5000);
+        }
+
+        // The second message's handler should NOT have invoked processMessage because v1Closing was true.
+        assertFalse(handler2ProcessMessageInvoked.get(),
+            "Second handler should have been skipped by the V1 closing flag");
     }
 }
