@@ -1,5 +1,11 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 
+parameters:
+  - name: release_azureresourcemanagerelastic
+    displayName: azure-resourcemanager-elastic
+    type: boolean
+    default: false
+
 trigger:
   branches:
     include:
@@ -37,3 +43,4 @@ extends:
       - name: azure-resourcemanager-elastic
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerelastic
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerelastic }}
