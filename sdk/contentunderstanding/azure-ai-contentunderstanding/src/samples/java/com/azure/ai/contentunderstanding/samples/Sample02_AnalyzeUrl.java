@@ -6,14 +6,14 @@ package com.azure.ai.contentunderstanding.samples;
 
 import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
-import com.azure.ai.contentunderstanding.models.MediaContent;
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -83,13 +83,13 @@ public class Sample02_AnalyzeUrl {
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(uriSource);
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
 
-        AnalyzeResult result = operation.getFinalResult();
+        AnalysisResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeUrl
 
         System.out.println("Analysis operation completed");
@@ -97,7 +97,7 @@ public class Sample02_AnalyzeUrl {
             + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
 
         // A PDF file has only one content element even if it contains multiple pages
-        MediaContent content = null;
+        AnalysisContent content = null;
         if (result.getContents() == null || result.getContents().isEmpty()) {
             System.out.println("(No content returned from analysis)");
         } else {
@@ -145,7 +145,7 @@ public class Sample02_AnalyzeUrl {
                 }
             }
         } else {
-            System.out.println("Content is MediaContent (not document-specific), skipping document properties");
+            System.out.println("Content is AnalysisContent (not document-specific), skipping document properties");
         }
 
         System.out.println("\nURL document analysis completed successfully");
@@ -164,19 +164,19 @@ public class Sample02_AnalyzeUrl {
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(uriSource);
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
-        AnalyzeResult result = operation.getFinalResult();
+        AnalysisResult result = operation.getFinalResult();
 
         // prebuilt-videoSearch can detect video segments, so we should iterate through all segments
         int segmentIndex = 1;
-        for (MediaContent media : result.getContents()) {
-            // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
-            // AudioVisualContent derives from MediaContent and provides additional properties
+        for (AnalysisContent media : result.getContents()) {
+            // Cast AnalysisContent to AudioVisualContent to access audio/visual-specific properties
+            // AudioVisualContent derives from AnalysisContent and provides additional properties
             // to access full information about audio/video, including timing, transcript phrases, and many others
             AudioVisualContent videoContent = (AudioVisualContent) media;
             System.out.println("--- Segment " + segmentIndex + " ---");
@@ -190,7 +190,7 @@ public class Sample02_AnalyzeUrl {
                 : "";
             System.out.println("Summary: " + summary);
 
-            System.out.println("Start: " + videoContent.getStartTimeMs() + " ms, End: " + videoContent.getEndTimeMs() + " ms");
+            System.out.println("Start: " + videoContent.getStartTime().toMillis() + " ms, End: " + videoContent.getEndTime().toMillis() + " ms");
             System.out.println("Frame size: " + videoContent.getWidth() + " x " + videoContent.getHeight());
 
             System.out.println("---------------------");
@@ -211,16 +211,16 @@ public class Sample02_AnalyzeUrl {
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(uriSource);
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input));
 
-        AnalyzeResult result = operation.getFinalResult();
+        AnalysisResult result = operation.getFinalResult();
 
-        // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
-        // AudioVisualContent derives from MediaContent and provides additional properties
+        // Cast AnalysisContent to AudioVisualContent to access audio/visual-specific properties
+        // AudioVisualContent derives from AnalysisContent and provides additional properties
         // to access full information about audio/video, including timing, transcript phrases, and many others
         AudioVisualContent audioContent = (AudioVisualContent) result.getContents().get(0);
         System.out.println("Markdown:");
@@ -242,7 +242,7 @@ public class Sample02_AnalyzeUrl {
                 if (count >= 2) {
                     break;
                 }
-                System.out.println("  [" + phrase.getSpeaker() + "] " + phrase.getStartTimeMs() + " ms: " + phrase.getText());
+                System.out.println("  [" + phrase.getSpeaker() + "] " + phrase.getStartTime().toMillis() + " ms: " + phrase.getText());
                 count++;
             }
         }
@@ -261,15 +261,15 @@ public class Sample02_AnalyzeUrl {
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(uriSource);
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyze("prebuilt-imageSearch", Arrays.asList(input));
 
-        AnalyzeResult result = operation.getFinalResult();
+        AnalysisResult result = operation.getFinalResult();
 
-        MediaContent content = result.getContents().get(0);
+        AnalysisContent content = result.getContents().get(0);
         System.out.println("Markdown:");
         System.out.println(content.getMarkdown());
 

@@ -97,8 +97,8 @@ public class Sample15_GrantCopyAuth {
 
         // Step 1: Create the source analyzer
         ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-        config.setEnableLayout(true);
-        config.setEnableOcr(true);
+        config.setLayoutEnabled(true);
+        config.setOcrEnabled(true);
 
         Map<String, ContentFieldDefinition> fields = new HashMap<>();
         ContentFieldDefinition companyNameField = new ContentFieldDefinition();

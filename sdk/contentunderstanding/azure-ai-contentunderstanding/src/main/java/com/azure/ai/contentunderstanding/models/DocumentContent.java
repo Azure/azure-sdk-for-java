@@ -17,12 +17,12 @@ import java.util.Map;
  * Document content. Ex. text/plain, application/pdf, image/jpeg.
  */
 @Immutable
-public final class DocumentContent extends MediaContent {
+public final class DocumentContent extends AnalysisContent {
     /*
      * Content kind.
      */
     @Generated
-    private MediaContentKind kind = MediaContentKind.DOCUMENT;
+    private AnalysisContentKind kind = AnalysisContentKind.DOCUMENT;
 
     /*
      * Start page number (1-indexed) of the content.
@@ -112,7 +112,7 @@ public final class DocumentContent extends MediaContent {
      */
     @Generated
     @Override
-    public MediaContentKind getKind() {
+    public AnalysisContentKind getKind() {
         return this.kind;
     }
 
@@ -276,7 +276,7 @@ public final class DocumentContent extends MediaContent {
             Map<String, ContentField> fields = null;
             int startPageNumber = 0;
             int endPageNumber = 0;
-            MediaContentKind kind = MediaContentKind.DOCUMENT;
+            AnalysisContentKind kind = AnalysisContentKind.DOCUMENT;
             LengthUnit unit = null;
             List<DocumentPage> pages = null;
             List<DocumentParagraph> paragraphs = null;
@@ -307,7 +307,7 @@ public final class DocumentContent extends MediaContent {
                 } else if ("endPageNumber".equals(fieldName)) {
                     endPageNumber = reader.getInt();
                 } else if ("kind".equals(fieldName)) {
-                    kind = MediaContentKind.fromString(reader.getString());
+                    kind = AnalysisContentKind.fromString(reader.getString());
                 } else if ("unit".equals(fieldName)) {
                     unit = LengthUnit.fromString(reader.getString());
                 } else if ("pages".equals(fieldName)) {

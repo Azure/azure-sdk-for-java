@@ -12,27 +12,13 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Default settings for this Content Understanding resource. Can include multiple kinds of settings;
- * for example, mapping required large language models to model deployment names in Microsoft Foundry (see
- * modelDeployments).
+ * Default settings for this Content Understanding resource.
  */
 public final class ContentUnderstandingDefaults implements JsonSerializable<ContentUnderstandingDefaults> {
 
     /*
-     * Dictionary of supported large language model (LLM) name (key) to your model deployment name in Microsoft Foundry
-     * (value). Both keys and values are strings.
-     * Prebuilt and custom analyzers that use large language models require model deployment names in Microsoft Foundry
-     * for their supported models.
-     * The mapping applies to all analyzers you intend to use: ensure each supported model for those analyzers is
-     * mapped. To get supported model names for a given analyzer, call Get Analyzer (GET /analyzers/{analyzerId}); the
-     * response includes supportedModels.
-     * Deploy the required models in your Microsoft Foundry resource (portal or API); each deployment has a model name
-     * and a model deployment name.
-     * Call Update Defaults (PATCH /defaults) with this dictionary to map each supported LLM name to your model
-     * deployment name in Microsoft Foundry.
-     * To get more information for a quickstart for REST API, see https://aka.ms/cudoc-quickstart-rest.
-     * Example: { "gpt-4.1": "myGpt41Deployment", "gpt-4.1-mini": "myGpt41MiniDeployment", "text-embedding-3-large":
-     * "myEmbeddingDeployment" }.
+     * Specify the default mapping of model names to LLM/embedding deployments in Microsoft Foundry. For details and
+     * current semantics, see https://aka.ms/cudoc-quickstart-rest.
      */
     @Generated
     private final Map<String, String> modelDeployments;
@@ -49,20 +35,8 @@ public final class ContentUnderstandingDefaults implements JsonSerializable<Cont
     }
 
     /**
-     * Get the modelDeployments property: Dictionary of supported large language model (LLM) name (key) to your model
-     * deployment name in Microsoft Foundry (value). Both keys and values are strings.
-     * Prebuilt and custom analyzers that use large language models require model deployment names in Microsoft Foundry
-     * for their supported models.
-     * The mapping applies to all analyzers you intend to use: ensure each supported model for those analyzers is
-     * mapped. To get supported model names for a given analyzer, call Get Analyzer (GET /analyzers/{analyzerId}); the
-     * response includes supportedModels.
-     * Deploy the required models in your Microsoft Foundry resource (portal or API); each deployment has a model name
-     * and a model deployment name.
-     * Call Update Defaults (PATCH /defaults) with this dictionary to map each supported LLM name to your model
-     * deployment name in Microsoft Foundry.
-     * To get more information for a quickstart for REST API, see https://aka.ms/cudoc-quickstart-rest.
-     * Example: { "gpt-4.1": "myGpt41Deployment", "gpt-4.1-mini": "myGpt41MiniDeployment", "text-embedding-3-large":
-     * "myEmbeddingDeployment" }.
+     * Get the modelDeployments property: Specify the default mapping of model names to LLM/embedding deployments in
+     * Microsoft Foundry. For details and current semantics, see https://aka.ms/cudoc-quickstart-rest.
      *
      * @return the modelDeployments value.
      */

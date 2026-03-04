@@ -6,12 +6,12 @@ package com.azure.ai.contentunderstanding.samples;
 
 import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
-import com.azure.ai.contentunderstanding.models.MediaContent;
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
@@ -62,7 +62,7 @@ public class Sample01_AnalyzeBinaryAsync {
         // BEGIN:ContentUnderstandingAnalyzeBinaryAsyncAsync
         // Use the simplified beginAnalyzeBinary overload - contentType defaults to "application/octet-stream"
         // For PDFs, you can also explicitly specify "application/pdf" using the full method signature
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
         CountDownLatch latch = new CountDownLatch(1);
@@ -84,7 +84,7 @@ public class Sample01_AnalyzeBinaryAsync {
 
                 // BEGIN:ContentUnderstandingExtractMarkdownAsync
                 // A PDF file has only one content element even if it contains multiple pages
-                MediaContent content = null;
+                AnalysisContent content = null;
                 if (result.getContents() == null || result.getContents().isEmpty()) {
                     System.out.println("(No content returned from analysis)");
                 } else {
@@ -135,7 +135,7 @@ public class Sample01_AnalyzeBinaryAsync {
                         }
                     }
                 } else {
-                    System.out.println("Content is MediaContent (not document-specific), skipping document properties");
+                    System.out.println("Content is AnalysisContent (not document-specific), skipping document properties");
                 }
                 // END:ContentUnderstandingAccessDocumentPropertiesAsync
 

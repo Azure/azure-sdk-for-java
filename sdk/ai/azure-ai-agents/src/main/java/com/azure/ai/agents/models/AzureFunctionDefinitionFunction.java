@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * The AzureFunctionDefinitionFunction model.
@@ -34,19 +35,7 @@ public final class AzureFunctionDefinitionFunction implements JsonSerializable<A
      * The parameters the functions accepts, described as a JSON Schema object.
      */
     @Generated
-    private final BinaryData parameters;
-
-    /**
-     * Creates an instance of AzureFunctionDefinitionFunction class.
-     *
-     * @param name the name value to set.
-     * @param parameters the parameters value to set.
-     */
-    @Generated
-    public AzureFunctionDefinitionFunction(String name, BinaryData parameters) {
-        this.name = name;
-        this.parameters = parameters;
-    }
+    private final Map<String, BinaryData> parameters;
 
     /**
      * Get the name property: The name of the function to be called.
@@ -88,7 +77,7 @@ public final class AzureFunctionDefinitionFunction implements JsonSerializable<A
      * @return the parameters value.
      */
     @Generated
-    public BinaryData getParameters() {
+    public Map<String, BinaryData> getParameters() {
         return this.parameters;
     }
 
@@ -100,8 +89,13 @@ public final class AzureFunctionDefinitionFunction implements JsonSerializable<A
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeFieldName("parameters");
-        this.parameters.writeTo(jsonWriter);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
@@ -119,7 +113,7 @@ public final class AzureFunctionDefinitionFunction implements JsonSerializable<A
     public static AzureFunctionDefinitionFunction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            BinaryData parameters = null;
+            Map<String, BinaryData> parameters = null;
             String description = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -127,8 +121,8 @@ public final class AzureFunctionDefinitionFunction implements JsonSerializable<A
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("parameters".equals(fieldName)) {
-                    parameters
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    parameters = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else {
@@ -140,5 +134,17 @@ public final class AzureFunctionDefinitionFunction implements JsonSerializable<A
             deserializedAzureFunctionDefinitionFunction.description = description;
             return deserializedAzureFunctionDefinitionFunction;
         });
+    }
+
+    /**
+     * Creates an instance of AzureFunctionDefinitionFunction class.
+     *
+     * @param name the name value to set.
+     * @param parameters the parameters value to set.
+     */
+    @Generated
+    public AzureFunctionDefinitionFunction(String name, Map<String, BinaryData> parameters) {
+        this.name = name;
+        this.parameters = parameters;
     }
 }

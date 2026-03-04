@@ -76,8 +76,8 @@ public class Sample09_DeleteAnalyzerAsync {
             .setBaseAnalyzerId("prebuilt-document")
             .setDescription("Temporary analyzer for deletion demo")
             .setConfig(new ContentAnalyzerConfig()
-                .setEnableOcr(true)
-                .setEnableLayout(true))
+                .setOcrEnabled(true)
+                .setLayoutEnabled(true))
             .setFieldSchema(fieldSchema)
             .setModels(models);
 

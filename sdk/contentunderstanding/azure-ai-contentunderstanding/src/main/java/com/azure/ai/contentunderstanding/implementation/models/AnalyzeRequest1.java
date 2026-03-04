@@ -4,7 +4,7 @@
 
 package com.azure.ai.contentunderstanding.implementation.models;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -24,25 +24,23 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
      * Inputs to analyze. Currently, only pro mode supports multiple inputs.
      */
     @Generated
-    private List<AnalyzeInput> inputs;
+    private final List<AnalysisInput> inputs;
 
     /*
-     * Override the resource-level default mapping of supported large language model (LLM) names to model deployment
-     * names in Microsoft Foundry. Dictionary of string to string
-     * (LLM model name -> model deployment name in Microsoft Foundry). Keys must be supported model names for the
-     * analyzer you are calling (get them via Get Analyzer, GET /analyzers/{analyzerId}, response.supportedModels).
-     * Values are model deployment names in your Microsoft Foundry resource.
-     * To get more information for a quickstart for REST API, see https://aka.ms/cudoc-quickstart-rest.
-     * Example: { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
+     * Specify the default mapping of model names to LLM/embedding deployments in Microsoft Foundry. For details and
+     * current semantics, see https://aka.ms/cudoc-quickstart-rest.
      */
     @Generated
     private Map<String, String> modelDeployments;
 
     /**
      * Creates an instance of AnalyzeRequest1 class.
+     * 
+     * @param inputs the inputs value to set.
      */
     @Generated
-    public AnalyzeRequest1() {
+    public AnalyzeRequest1(List<AnalysisInput> inputs) {
+        this.inputs = inputs;
     }
 
     /**
@@ -51,30 +49,13 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
      * @return the inputs value.
      */
     @Generated
-    public List<AnalyzeInput> getInputs() {
+    public List<AnalysisInput> getInputs() {
         return this.inputs;
     }
 
     /**
-     * Set the inputs property: Inputs to analyze. Currently, only pro mode supports multiple inputs.
-     * 
-     * @param inputs the inputs value to set.
-     * @return the AnalyzeRequest1 object itself.
-     */
-    @Generated
-    public AnalyzeRequest1 setInputs(List<AnalyzeInput> inputs) {
-        this.inputs = inputs;
-        return this;
-    }
-
-    /**
-     * Get the modelDeployments property: Override the resource-level default mapping of supported large language model
-     * (LLM) names to model deployment names in Microsoft Foundry. Dictionary of string to string
-     * (LLM model name -&gt; model deployment name in Microsoft Foundry). Keys must be supported model names for the
-     * analyzer you are calling (get them via Get Analyzer, GET /analyzers/{analyzerId}, response.supportedModels).
-     * Values are model deployment names in your Microsoft Foundry resource.
-     * To get more information for a quickstart for REST API, see https://aka.ms/cudoc-quickstart-rest.
-     * Example: { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
+     * Get the modelDeployments property: Specify the default mapping of model names to LLM/embedding deployments in
+     * Microsoft Foundry. For details and current semantics, see https://aka.ms/cudoc-quickstart-rest.
      * 
      * @return the modelDeployments value.
      */
@@ -84,13 +65,8 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
     }
 
     /**
-     * Set the modelDeployments property: Override the resource-level default mapping of supported large language model
-     * (LLM) names to model deployment names in Microsoft Foundry. Dictionary of string to string
-     * (LLM model name -&gt; model deployment name in Microsoft Foundry). Keys must be supported model names for the
-     * analyzer you are calling (get them via Get Analyzer, GET /analyzers/{analyzerId}, response.supportedModels).
-     * Values are model deployment names in your Microsoft Foundry resource.
-     * To get more information for a quickstart for REST API, see https://aka.ms/cudoc-quickstart-rest.
-     * Example: { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
+     * Set the modelDeployments property: Specify the default mapping of model names to LLM/embedding deployments in
+     * Microsoft Foundry. For details and current semantics, see https://aka.ms/cudoc-quickstart-rest.
      * 
      * @param modelDeployments the modelDeployments value to set.
      * @return the AnalyzeRequest1 object itself.
@@ -120,26 +96,28 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AnalyzeRequest1 if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeRequest1.
      */
     @Generated
     public static AnalyzeRequest1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AnalyzeRequest1 deserializedAnalyzeRequest1 = new AnalyzeRequest1();
+            List<AnalysisInput> inputs = null;
+            Map<String, String> modelDeployments = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("inputs".equals(fieldName)) {
-                    List<AnalyzeInput> inputs = reader.readArray(reader1 -> AnalyzeInput.fromJson(reader1));
-                    deserializedAnalyzeRequest1.inputs = inputs;
+                    inputs = reader.readArray(reader1 -> AnalysisInput.fromJson(reader1));
                 } else if ("modelDeployments".equals(fieldName)) {
-                    Map<String, String> modelDeployments = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAnalyzeRequest1.modelDeployments = modelDeployments;
+                    modelDeployments = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
+            AnalyzeRequest1 deserializedAnalyzeRequest1 = new AnalyzeRequest1(inputs);
+            deserializedAnalyzeRequest1.modelDeployments = modelDeployments;
 
             return deserializedAnalyzeRequest1;
         });

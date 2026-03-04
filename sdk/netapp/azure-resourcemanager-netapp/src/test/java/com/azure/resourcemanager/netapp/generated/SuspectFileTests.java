@@ -11,7 +11,7 @@ public final class SuspectFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SuspectFile model
-            = BinaryData.fromString("{\"suspectFileName\":\"lmctlpd\",\"fileTimestamp\":\"2021-05-25T04:36:04Z\"}")
+            = BinaryData.fromString("{\"suspectFileName\":\"uzkopbminrfd\",\"fileTimestamp\":\"2021-12-10T08:12:44Z\"}")
                 .toObject(SuspectFile.class);
     }
 }

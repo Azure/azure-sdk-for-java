@@ -6,8 +6,8 @@ package com.azure.ai.contentunderstanding.samples;
 
 import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
@@ -51,10 +51,10 @@ public class Sample13_DeleteResultAsync {
         String documentUrl
             = "https://github.com/Azure-Samples/cognitive-services-REST-api-samples/raw/master/curl/form-recognizer/sample-invoice.pdf";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(documentUrl);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
             = client.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
         // Wait for operation to complete
@@ -67,9 +67,9 @@ public class Sample13_DeleteResultAsync {
                 if (pollResponse.getStatus().isComplete()) {
                     System.out.println("Polling completed successfully");
                     
-                    // Get the operation ID using the getOperationId() convenience method
+                    // Get the operation ID using the getId() convenience method
                     // This ID is extracted from the Operation-Location header and is needed for deleteResult()
-                    String operationId = pollResponse.getValue().getOperationId();
+                    String operationId = pollResponse.getValue().getId();
                     System.out.println("Operation ID: " + operationId);
                     
                     return pollResponse.getFinalResult()
@@ -84,7 +84,7 @@ public class Sample13_DeleteResultAsync {
             })
             .doOnNext(entry -> {
                 String operationId = entry.getKey();
-                AnalyzeResult result = entry.getValue();
+                AnalysisResult result = entry.getValue();
                 
                 System.out.println("Analysis completed successfully!");
 
@@ -98,7 +98,7 @@ public class Sample13_DeleteResultAsync {
                             System.out.println("Total fields extracted: " + fields.size());
                             ContentField customerNameField = fields.get("CustomerName");
                             if (customerNameField != null) {
-                                // Use getValue() instead of casting to StringField
+                                // Use getValue() instead of casting to ContentStringField
                                 String customerName = (String) customerNameField.getValue();
                                 System.out.println("Customer Name: " + (customerName != null ? customerName : "(not found)"));
                             }

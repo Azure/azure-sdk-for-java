@@ -6,8 +6,8 @@ package com.azure.ai.contentunderstanding.samples;
 
 import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -56,10 +57,10 @@ public class Sample12_GetResultFileAsync {
             = "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4";
 
         // Step 1: Start the video analysis operation
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(videoUrl);
 
-        PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
+        PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
             = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         System.out.println("Started analysis operation");
@@ -71,10 +72,10 @@ public class Sample12_GetResultFileAsync {
                 if (pollResponse.getStatus().isComplete()) {
                     System.out.println("Polling completed successfully");
 
-                    // Get the operation ID from the polling result using the getOperationId() convenience method
+                    // Get the operation ID from the polling result using the getId() convenience method
                     // The operation ID is extracted from the Operation-Location header and can be used with
                     // getResultFile() and deleteResult() APIs
-                    String operationId = pollResponse.getValue().getOperationId();
+                    String operationId = pollResponse.getValue().getId();
                     System.out.println("Operation ID: " + operationId);
 
                     return pollResponse.getFinalResult()
@@ -89,7 +90,7 @@ public class Sample12_GetResultFileAsync {
             })
             .doOnNext(entry -> {
                 String operationId = entry.getKey();
-                AnalyzeResult result = entry.getValue();
+                AnalysisResult result = entry.getValue();
 
                 System.out.println("Analysis completed successfully!");
                 System.out.println("Video URL: " + videoUrl);
@@ -106,13 +107,13 @@ public class Sample12_GetResultFileAsync {
                 }
 
                 if (videoContent != null
-                    && videoContent.getKeyFrameTimesMs() != null
-                    && !videoContent.getKeyFrameTimesMs().isEmpty()) {
-                    List<Long> keyFrameTimes = videoContent.getKeyFrameTimesMs();
+                    && videoContent.getKeyFrameTimes() != null
+                    && !videoContent.getKeyFrameTimes().isEmpty()) {
+                    List<Duration> keyFrameTimes = videoContent.getKeyFrameTimes();
                     System.out.println("Total keyframes: " + keyFrameTimes.size());
 
                     // Get the first keyframe
-                    long firstFrameTimeMs = keyFrameTimes.get(0);
+                    long firstFrameTimeMs = keyFrameTimes.get(0).toMillis();
                     System.out.println("First keyframe time: " + firstFrameTimeMs + " ms");
 
                     // Construct the keyframe path
@@ -168,7 +169,7 @@ public class Sample12_GetResultFileAsync {
                     System.out.println("Total keyframes: " + keyFrameTimes.size());
 
                     // Get keyframe statistics
-                    long lastFrameTimeMs = keyFrameTimes.get(keyFrameTimes.size() - 1);
+                    long lastFrameTimeMs = keyFrameTimes.get(keyFrameTimes.size() - 1).toMillis();
                     double avgFrameInterval = keyFrameTimes.size() > 1
                         ? (double) (lastFrameTimeMs - firstFrameTimeMs) / (keyFrameTimes.size() - 1)
                         : 0;
@@ -206,7 +207,7 @@ public class Sample12_GetResultFileAsync {
                         System.out.println("\nTesting additional keyframes (" + (keyFrameTimes.size() - 1)
                             + " more available)...");
                         int middleIndex = keyFrameTimes.size() / 2;
-                        long middleFrameTimeMs = keyFrameTimes.get(middleIndex);
+                        long middleFrameTimeMs = keyFrameTimes.get(middleIndex).toMillis();
                         String middleFramePath = "keyframes/" + middleFrameTimeMs;
 
                         // Note: Using .block() in retry loops is acceptable per skill documentation
@@ -229,7 +230,7 @@ public class Sample12_GetResultFileAsync {
                     System.out.println("\nGetResultFile API Usage Example:");
                     System.out.println("   For video analysis with keyframes:");
                     System.out.println("   1. Analyze video with prebuilt-videoSearch");
-                    System.out.println("   2. Get keyframe times from AudioVisualContent.getKeyFrameTimesMs()");
+                    System.out.println("   2. Get keyframe times from AudioVisualContent.getKeyFrameTimes()");
                     System.out.println("   3. Retrieve keyframes using getResultFile():");
                     System.out.println("      Mono<BinaryData> fileData = client.getResultFile(\"" + operationId
                         + "\", \"keyframes/1000\");");

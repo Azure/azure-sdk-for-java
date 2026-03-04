@@ -88,7 +88,7 @@ public class Sample05_CreateClassifierAsync {
         // Create analyzer configuration with content categories
         ContentAnalyzerConfig config = new ContentAnalyzerConfig()
             .setReturnDetails(true)
-            .setEnableSegment(true) // Enable automatic segmentation by category
+            .setSegmentEnabled(true) // Enable automatic segmentation by category
             .setContentCategories(categories);
 
         // Create the classifier analyzer
@@ -142,8 +142,8 @@ public class Sample05_CreateClassifierAsync {
                     });
                 }
 
-                if (result.getConfig() != null && result.getConfig().isEnableSegment() != null) {
-                    System.out.println("  Segmentation enabled: " + result.getConfig().isEnableSegment());
+                if (result.getConfig() != null && result.getConfig().isSegmentEnabled() != null) {
+                    System.out.println("  Segmentation enabled: " + result.getConfig().isSegmentEnabled());
                 }
             })
             .then(Mono.fromRunnable(() -> {

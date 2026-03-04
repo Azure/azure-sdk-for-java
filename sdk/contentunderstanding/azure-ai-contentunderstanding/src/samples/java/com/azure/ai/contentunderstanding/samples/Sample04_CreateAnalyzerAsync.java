@@ -6,8 +6,8 @@ package com.azure.ai.contentunderstanding.samples;
 
 import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
@@ -19,8 +19,8 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
-import com.azure.ai.contentunderstanding.models.NumberField;
-import com.azure.ai.contentunderstanding.models.StringField;
+import com.azure.ai.contentunderstanding.models.ContentNumberField;
+import com.azure.ai.contentunderstanding.models.ContentStringField;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -115,9 +115,9 @@ public class Sample04_CreateAnalyzerAsync {
             .setBaseAnalyzerId("prebuilt-document")
             .setDescription("Custom analyzer for extracting company information")
             .setConfig(new ContentAnalyzerConfig()
-                .setEnableOcr(true)
-                .setEnableLayout(true)
-                .setEnableFormula(true)
+                .setOcrEnabled(true)
+                .setLayoutEnabled(true)
+                .setFormulaEnabled(true)
                 .setEstimateFieldSourceAndConfidence(true)
                 .setReturnDetails(true))
             .setFieldSchema(fieldSchema)
@@ -166,13 +166,13 @@ public class Sample04_CreateAnalyzerAsync {
                 String documentUrl
                     = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
 
-                AnalyzeInput input = new AnalyzeInput();
+                AnalysisInput input = new AnalysisInput();
                 input.setUrl(documentUrl);
                 return input;
             }))
             .flatMap(input -> {
                 // Analyze a document using the custom analyzer
-                PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> analyzeOperation
+                PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzeOperation
                     = client.beginAnalyze(finalAnalyzerId, Arrays.asList(input));
                 
                 return analyzeOperation.last()
@@ -197,15 +197,15 @@ public class Sample04_CreateAnalyzerAsync {
                     // Extract field (literal text extraction)
                     ContentField companyNameField
                         = content.getFields() != null ? content.getFields().get("company_name") : null;
-                    if (companyNameField instanceof StringField) {
-                        StringField sf = (StringField) companyNameField;
-                        String companyName = sf.getValueString();
+                    if (companyNameField instanceof ContentStringField) {
+                        ContentStringField sf = (ContentStringField) companyNameField;
+                        String companyName = sf.getValue();
                         System.out.println("Company Name (extract): " + (companyName != null ? companyName : "(not found)"));
                         System.out.println("  Confidence: " + (companyNameField.getConfidence() != null
                             ? String.format("%.2f", companyNameField.getConfidence())
                             : "N/A"));
                         System.out.println("  Source: "
-                            + (companyNameField.getSource() != null ? companyNameField.getSource() : "N/A"));
+                            + (companyNameField.getSources() != null ? companyNameField.getSources() : "N/A"));
                         List<ContentSpan> spans = companyNameField.getSpans();
                         if (spans != null && !spans.isEmpty()) {
                             ContentSpan span = spans.get(0);
@@ -217,16 +217,16 @@ public class Sample04_CreateAnalyzerAsync {
                     // Extract field (literal text extraction)
                     ContentField totalAmountField
                         = content.getFields() != null ? content.getFields().get("total_amount") : null;
-                    if (totalAmountField instanceof NumberField) {
-                        NumberField nf = (NumberField) totalAmountField;
-                        Double totalAmount = nf.getValueNumber();
+                    if (totalAmountField instanceof ContentNumberField) {
+                        ContentNumberField nf = (ContentNumberField) totalAmountField;
+                        Double totalAmount = nf.getValue();
                         System.out.println("Total Amount (extract): "
                             + (totalAmount != null ? String.format("%.2f", totalAmount) : "(not found)"));
                         System.out.println("  Confidence: " + (totalAmountField.getConfidence() != null
                             ? String.format("%.2f", totalAmountField.getConfidence())
                             : "N/A"));
                         System.out.println("  Source: "
-                            + (totalAmountField.getSource() != null ? totalAmountField.getSource() : "N/A"));
+                            + (totalAmountField.getSources() != null ? totalAmountField.getSources() : "N/A"));
                         List<ContentSpan> spans = totalAmountField.getSpans();
                         if (spans != null && !spans.isEmpty()) {
                             ContentSpan span = spans.get(0);
@@ -238,32 +238,32 @@ public class Sample04_CreateAnalyzerAsync {
                     // Generate field (AI-generated value)
                     ContentField summaryField
                         = content.getFields() != null ? content.getFields().get("document_summary") : null;
-                    if (summaryField instanceof StringField) {
-                        StringField sf = (StringField) summaryField;
-                        String summary = sf.getValueString();
+                    if (summaryField instanceof ContentStringField) {
+                        ContentStringField sf = (ContentStringField) summaryField;
+                        String summary = sf.getValue();
                         System.out.println("Document Summary (generate): " + (summary != null ? summary : "(not found)"));
                         System.out.println("  Confidence: " + (summaryField.getConfidence() != null
                             ? String.format("%.2f", summaryField.getConfidence())
                             : "N/A"));
                         // Note: Generated fields may not have source information
-                        if (summaryField.getSource() != null && !summaryField.getSource().isEmpty()) {
-                            System.out.println("  Source: " + summaryField.getSource());
+                        if (summaryField.getSources() != null && !summaryField.getSources().isEmpty()) {
+                            System.out.println("  Source: " + summaryField.getSources());
                         }
                     }
 
                     // Classify field (classification against predefined categories)
                     ContentField documentTypeField
                         = content.getFields() != null ? content.getFields().get("document_type") : null;
-                    if (documentTypeField instanceof StringField) {
-                        StringField sf = (StringField) documentTypeField;
-                        String documentType = sf.getValueString();
+                    if (documentTypeField instanceof ContentStringField) {
+                        ContentStringField sf = (ContentStringField) documentTypeField;
+                        String documentType = sf.getValue();
                         System.out.println("Document Type (classify): " + (documentType != null ? documentType : "(not found)"));
                         System.out.println("  Confidence: " + (documentTypeField.getConfidence() != null
                             ? String.format("%.2f", documentTypeField.getConfidence())
                             : "N/A"));
                         // Note: Classified fields may not have source information
-                        if (documentTypeField.getSource() != null && !documentTypeField.getSource().isEmpty()) {
-                            System.out.println("  Source: " + documentTypeField.getSource());
+                        if (documentTypeField.getSources() != null && !documentTypeField.getSources().isEmpty()) {
+                            System.out.println("  Source: " + documentTypeField.getSources());
                         }
                     }
                 }

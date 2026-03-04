@@ -8,11 +8,12 @@ import com.azure.ai.contentunderstanding.implementation.JsonMergePatchHelper;
 import com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1;
 import com.azure.ai.contentunderstanding.implementation.models.CopyAnalyzerRequest;
 import com.azure.ai.contentunderstanding.implementation.models.GrantCopyAuthorizationRequest1;
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults;
 import com.azure.ai.contentunderstanding.models.CopyAuthorization;
 import com.azure.ai.contentunderstanding.models.ProcessingLocation;
@@ -29,6 +30,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -69,8 +71,8 @@ public final class ContentUnderstandingClient {
      * <pre>
      * {@code
      * {
-     *     inputs (Optional): [
-     *          (Optional){
+     *     inputs (Required): [
+     *          (Required){
      *             url: String (Optional)
      *             data: byte[] (Optional)
      *             name: String (Optional)
@@ -152,7 +154,7 @@ public final class ContentUnderstandingClient {
      * </pre>
      *
      * @param analyzerId The unique identifier of the analyzer.
-     * @param analyzeRequest1 The analyzeRequest1 parameter.
+     * @param analyzeRequest The analyzeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -162,9 +164,9 @@ public final class ContentUnderstandingClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyze(String analyzerId, BinaryData analyzeRequest1,
+    public SyncPoller<BinaryData, BinaryData> beginAnalyze(String analyzerId, BinaryData analyzeRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginAnalyze(analyzerId, analyzeRequest1, requestOptions);
+        return this.serviceClient.beginAnalyze(analyzerId, analyzeRequest, requestOptions);
     }
 
     /**
@@ -1109,7 +1111,7 @@ public final class ContentUnderstandingClient {
      * </pre>
      *
      * @param analyzerId The unique identifier of the analyzer.
-     * @param grantCopyAuthorizationRequest1 The grantCopyAuthorizationRequest1 parameter.
+     * @param grantCopyAuthorizationRequest The grantCopyAuthorizationRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1120,8 +1122,8 @@ public final class ContentUnderstandingClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> grantCopyAuthorizationWithResponse(String analyzerId,
-        BinaryData grantCopyAuthorizationRequest1, RequestOptions requestOptions) {
-        return this.serviceClient.grantCopyAuthorizationWithResponse(analyzerId, grantCopyAuthorizationRequest1,
+        BinaryData grantCopyAuthorizationRequest, RequestOptions requestOptions) {
+        return this.serviceClient.grantCopyAuthorizationWithResponse(analyzerId, grantCopyAuthorizationRequest,
             requestOptions);
     }
 
@@ -1520,16 +1522,11 @@ public final class ContentUnderstandingClient {
      * Extract content and fields from input.
      *
      * @param analyzerId The unique identifier of the analyzer.
+     * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
      * @param stringEncoding The string encoding format for content spans in the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
-     * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
-     * @param modelDeployments Override the resource-level default mapping of supported large language model (LLM) names
-     * to model deployment names in Microsoft Foundry. Dictionary of string to string
-     * (LLM model name -&gt; model deployment name in Microsoft Foundry). Keys must be supported model names for the
-     * analyzer you are calling (get them via Get Analyzer, GET /analyzers/{analyzerId}, response.supportedModels).
-     * Values are model deployment names in your Microsoft Foundry resource.
-     * To get more information for a quickstart for REST API, see https://aka.ms/cudoc-quickstart-rest.
-     * Example: { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
+     * @param modelDeployments Specify the default mapping of model names to LLM/embedding deployments in Microsoft
+     * Foundry. For details and current semantics, see https://aka.ms/cudoc-quickstart-rest.
      * @param processingLocation The location where the data may be processed. Defaults to global.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1541,13 +1538,12 @@ public final class ContentUnderstandingClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyze(String analyzerId,
-        String stringEncoding, List<AnalyzeInput> inputs, Map<String, String> modelDeployments,
+    SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
+        List<AnalysisInput> inputs, String stringEncoding, Map<String, String> modelDeployments,
         ProcessingLocation processingLocation) {
         // Generated convenience method for beginAnalyzeWithModel
         RequestOptions requestOptions = new RequestOptions();
-        AnalyzeRequest1 analyzeRequest1Obj
-            = new AnalyzeRequest1().setInputs(inputs).setModelDeployments(modelDeployments);
+        AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);
         BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);
         requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
         if (processingLocation != null) {
@@ -1560,6 +1556,7 @@ public final class ContentUnderstandingClient {
      * Extract content and fields from input.
      *
      * @param analyzerId The unique identifier of the analyzer.
+     * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
      * @param stringEncoding The string encoding format for content spans in the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1572,11 +1569,11 @@ public final class ContentUnderstandingClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyze(String analyzerId,
-        String stringEncoding) {
+    SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
+        List<AnalysisInput> inputs, String stringEncoding) {
         // Generated convenience method for beginAnalyzeWithModel
         RequestOptions requestOptions = new RequestOptions();
-        AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1();
+        AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs);
         BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);
         requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
         return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest1, requestOptions);
@@ -1589,9 +1586,9 @@ public final class ContentUnderstandingClient {
      * @param binaryInput The binary content of the document to analyze.
      * @param stringEncoding The string encoding format for content spans in the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
-     * @param inputRange Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page numbers,
-     * while audio visual content uses integer milliseconds.
      * @param contentType Request content type.
+     * @param contentRange Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page numbers,
+     * while audio visual content uses integer milliseconds.
      * @param processingLocation The location where the data may be processed. Defaults to global.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1603,18 +1600,44 @@ public final class ContentUnderstandingClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
-        BinaryData binaryInput, String stringEncoding, String inputRange, String contentType,
+    SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinary(String analyzerId,
+        BinaryData binaryInput, String stringEncoding, String contentType, String contentRange,
         ProcessingLocation processingLocation) {
         // Generated convenience method for beginAnalyzeBinaryWithModel
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
-        if (inputRange != null) {
-            requestOptions.addQueryParam("range", inputRange, false);
+        if (contentRange != null) {
+            requestOptions.addQueryParam("range", contentRange, false);
         }
         if (processingLocation != null) {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
         }
+        return serviceClient.beginAnalyzeBinaryWithModel(analyzerId, contentType, binaryInput, requestOptions);
+    }
+
+    /**
+     * Extract content and fields from input.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param binaryInput The binary content of the document to analyze.
+     * @param stringEncoding The string encoding format for content spans in the response.
+     * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
+     * @param contentType Request content type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of provides status details for analyze operations.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinary(String analyzerId,
+        BinaryData binaryInput, String stringEncoding, String contentType) {
+        // Generated convenience method for beginAnalyzeBinaryWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
         return serviceClient.beginAnalyzeBinaryWithModel(analyzerId, contentType, binaryInput, requestOptions);
     }
 
@@ -1976,6 +1999,7 @@ public final class ContentUnderstandingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ContentUnderstandingDefaults updateDefaults(Map<String, String> modelDeployments) {
         ContentUnderstandingDefaults defaults = new ContentUnderstandingDefaults(modelDeployments);
         Response<BinaryData> response = updateDefaultsWithResponse(BinaryData.fromObject(defaults), null);
@@ -1992,6 +2016,7 @@ public final class ContentUnderstandingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ContentUnderstandingDefaults updateDefaults(ContentUnderstandingDefaults defaults) {
         Response<BinaryData> response = updateDefaultsWithResponse(BinaryData.fromObject(defaults), null);
         return response.getValue().toObject(ContentUnderstandingDefaults.class);
@@ -2008,18 +2033,21 @@ public final class ContentUnderstandingClient {
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
+    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput) {
-        return beginAnalyzeBinary(analyzerId, binaryInput, null, "application/octet-stream", null);
+        return beginAnalyzeBinary(analyzerId, binaryInput, (ContentRange) null, "application/octet-stream", null);
     }
 
     /**
      * Extract content and fields from binary input. Uses default string encoding (utf16).
      *
+     * Use factory methods such as {@link ContentRange#pages(int, int)}, {@link ContentRange#timeRange(long, long)}, or
+     * {@link ContentRange#combine(ContentRange...)} to build the range.
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param binaryInput The binary content of the document to analyze.
-     * @param inputRange Range of the input to analyze (ex. 1-3,5,9-). Document content uses 1-based page numbers; audio
-     * visual uses milliseconds.
+     * @param contentRange Range of the input to analyze. Use ContentRange factory methods to build the range, or null
+     * to skip.
      * @param contentType Request content type.
      * @param processingLocation The location where the data may be processed. Set to null for service default.
      * @return the {@link SyncPoller} for polling of the analyze operation.
@@ -2027,17 +2055,18 @@ public final class ContentUnderstandingClient {
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
-        BinaryData binaryInput, String inputRange, String contentType, ProcessingLocation processingLocation) {
+    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeBinary(String analyzerId,
+        BinaryData binaryInput, ContentRange contentRange, String contentType, ProcessingLocation processingLocation) {
         RequestOptions requestOptions = new RequestOptions();
-        if (inputRange != null) {
-            requestOptions.addQueryParam("range", inputRange, false);
+        if (contentRange != null) {
+            requestOptions.addQueryParam("range", contentRange.toString(), false);
         }
         if (processingLocation != null) {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
         }
         requestOptions.addQueryParam("stringEncoding", "utf16", false);
-        return serviceClient.beginAnalyzeBinaryWithModel(analyzerId, contentType, binaryInput, requestOptions);
+        return serviceClient.beginAnalyzeBinaryWithModel(analyzerId, contentType, binaryInput, requestOptions)
+            .setPollInterval(Duration.ofSeconds(3));
     }
 
     /**
@@ -2051,8 +2080,8 @@ public final class ContentUnderstandingClient {
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyze(String analyzerId,
-        List<AnalyzeInput> inputs) {
+    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
+        List<AnalysisInput> inputs) {
         return beginAnalyze(analyzerId, inputs, null, null);
     }
 
@@ -2068,16 +2097,16 @@ public final class ContentUnderstandingClient {
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyze(String analyzerId,
-        List<AnalyzeInput> inputs, Map<String, String> modelDeployments, ProcessingLocation processingLocation) {
+    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyze(String analyzerId,
+        List<AnalysisInput> inputs, Map<String, String> modelDeployments, ProcessingLocation processingLocation) {
         RequestOptions requestOptions = new RequestOptions();
         if (processingLocation != null) {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
         }
         requestOptions.addQueryParam("stringEncoding", "utf16", false);
-        AnalyzeRequest1 analyzeRequest1Obj
-            = new AnalyzeRequest1().setInputs(inputs).setModelDeployments(modelDeployments);
+        AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);
         BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);
-        return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest1, requestOptions);
+        return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest1, requestOptions)
+            .setPollInterval(Duration.ofSeconds(3));
     }
 }
