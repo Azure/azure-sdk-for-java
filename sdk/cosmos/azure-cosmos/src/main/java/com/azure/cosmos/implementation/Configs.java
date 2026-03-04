@@ -54,6 +54,10 @@ public class Configs {
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
+    private static final boolean DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED = false;
+    private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
+    private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE = "COSMOS_NETTY_HTTP_CLIENT_METRICS_ENABLED";
+
     // Thin client connect/acquire timeout — controls CONNECT_TIMEOUT_MILLIS for Gateway V2 data plane endpoints.
     // Data plane requests are routed to the thin client regional endpoint (from RegionalRoutingContext)
     // which uses a non-443 port. These get a shorter 5s connect/acquire timeout.

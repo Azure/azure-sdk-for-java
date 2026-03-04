@@ -13,6 +13,10 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Add ConnectionDetails for ServiceBus. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
 - Add ConnectionDetails for EventHubs. [#47926](https://github.com/Azure/azure-sdk-for-java/pull/47926).
 
+#### Bugs Fixed
+
+- Fixed `KeyVaultJcaProvider` being registered as the highest-priority JCA security provider, which overrides standard JCA services (`KeyManagerFactory.SunX509`, `Signature` algorithms) and breaks mTLS with standard keystores (JKS, PKCS12). The provider is now added at the end of the provider list, allowing JCA's delayed provider selection to route `KeyVaultPrivateKey` signing operations to the KeyVault implementations without interfering with standard SSL/TLS operations. [#48183](https://github.com/Azure/azure-sdk-for-java/issues/48183)
+
 ### Spring Cloud Azure Docker Compose
 
 This section includes changes in `spring-cloud-azure-docker-compose` module.
