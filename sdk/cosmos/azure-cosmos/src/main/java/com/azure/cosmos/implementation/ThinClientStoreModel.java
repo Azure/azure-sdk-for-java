@@ -114,7 +114,9 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         }
 
         if (content.readableBytes() == 0) {
-            safeSilentRelease(content);
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
 
@@ -143,13 +145,13 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                             payloadBuf
                         );
 
-                        if (payloadBuf == Unpooled.EMPTY_BUFFER) {
+                        if (payloadBuf == Unpooled.EMPTY_BUFFER && content.refCnt() > 0) {
                             safeSilentRelease(content);
                         }
 
                         return storeResponse;
                     } catch (Throwable t) {
-                        if (payloadBuf == Unpooled.EMPTY_BUFFER) {
+                        if (payloadBuf == Unpooled.EMPTY_BUFFER && content.refCnt() > 0) {
                             safeSilentRelease(content);
                         }
 
@@ -157,15 +159,21 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                     }
                 }
 
-                safeSilentRelease(content);
+                if (content.refCnt() > 0) {
+                    safeSilentRelease(content);
+                }
                 return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
             }
 
-            safeSilentRelease(content);
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
             throw new IllegalStateException("Invalid rntbd response");
         } catch (Throwable t) {
             // Ensure container is not leaked on any unexpected path
-            safeSilentRelease(content);
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
             throw t;
         }
     }
@@ -227,9 +235,12 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 requestUri,
                 requestUri.getPort(),
                 headers,
-                Flux.just(contentAsByteArray));
+                Flux.just(contentAsByteArray))
+                .withThinClientRequest(true);
         } finally {
-            safeSilentRelease(byteBuf);
+            if (byteBuf.refCnt() > 0) {
+                safeSilentRelease(byteBuf);
+            }
         }
     }
 
