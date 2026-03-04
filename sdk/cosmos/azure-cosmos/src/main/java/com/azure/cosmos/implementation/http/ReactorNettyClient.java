@@ -188,7 +188,8 @@ public class ReactorNettyClient implements HttpClient {
 
         // Per-request CONNECT_TIMEOUT_MILLIS via reactor-netty's immutable HttpClient.
         // .option() returns a new config snapshot — does NOT mutate the shared httpClient.
-        // Thin client requests (isThinClientRequest=true): 5s connect timeout (default) to fail fast.
+        // Thin client requests (isThinClientRequest=true): connect timeout is configured via
+        // HttpClientConfig.getThinClientConnectTimeoutMs() (default 5s) to fail fast.
         // Standard gateway requests: 45s (default).
         // Note: CONNECT_TIMEOUT_MILLIS controls TCP SYN→SYN-ACK timeout for NEW connections.
         // For H2, once a TCP connection exists, stream acquisition is near-instant (~sub-ms)
@@ -255,16 +256,20 @@ public class ReactorNettyClient implements HttpClient {
     /**
      * Resolves the TCP connect timeout (CONNECT_TIMEOUT_MILLIS) based on the request type.
      *
-     * Thin client requests (identified by {@link HttpRequest#isThinClientRequest()}) use a shorter
-     * connect timeout (default 5s) to fail fast when the thin client proxy is unreachable.
+     * Thin client requests (identified by {@link HttpRequest#isThinClientRequest()}) use the thin
+     * client connection timeout configured via {@link Configs#getThinClientConnectionTimeoutInSeconds()}
+     * (default 5s) to fail fast when the thin client proxy is unreachable.
      * Standard gateway requests use the configured connection acquire timeout (default 45s).
+     *
+     * The thin client timeout is eagerly cached in {@link HttpClientConfig} at construction time
+     * to avoid per-request System.getProperty/getenv overhead.
      *
      * @param request the HTTP request
      * @return the connect timeout in milliseconds
      */
     private int resolveConnectTimeoutMs(HttpRequest request) {
         if (request.isThinClientRequest()) {
-            return Configs.getThinClientConnectionTimeoutInSeconds() * 1000;
+            return this.httpClientConfig.getThinClientConnectTimeoutMs();
         }
         return (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis();
     }

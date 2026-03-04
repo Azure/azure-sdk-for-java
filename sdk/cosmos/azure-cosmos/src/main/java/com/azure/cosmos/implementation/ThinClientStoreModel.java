@@ -144,13 +144,13 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                             payloadBuf
                         );
 
-                        if (payloadBuf == Unpooled.EMPTY_BUFFER && content.refCnt() > 0) {
+                        if (payloadBuf == Unpooled.EMPTY_BUFFER) {
                             safeSilentRelease(content);
                         }
 
                         return storeResponse;
                     } catch (Throwable t) {
-                        if (payloadBuf == Unpooled.EMPTY_BUFFER && content.refCnt() > 0) {
+                        if (payloadBuf == Unpooled.EMPTY_BUFFER) {
                             safeSilentRelease(content);
                         }
 
@@ -158,21 +158,15 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                     }
                 }
 
-                if (content.refCnt() > 0) {
-                    safeSilentRelease(content);
-                }
+                safeSilentRelease(content);
                 return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
             }
 
-            if (content.refCnt() > 0) {
-                safeSilentRelease(content);
-            }
+            safeSilentRelease(content);
             throw new IllegalStateException("Invalid rntbd response");
         } catch (Throwable t) {
             // Ensure container is not leaked on any unexpected path
-            if (content.refCnt() > 0) {
-                safeSilentRelease(content);
-            }
+            safeSilentRelease(content);
             throw t;
         }
     }
@@ -245,12 +239,25 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         return this.defaultHeaders;
     }
 
-    private static void safeSilentRelease(Object msg) {
+    /**
+     * Releases a reference-counted object if it is still retained (refCnt > 0).
+     * Swallows exceptions silently — ReferenceCountUtil.safeRelease would log a WARN
+     * on double-release, which is noise for the rare race conditions in this class.
+     *
+     * @param msg the reference-counted object to release
+     */
+    static void safeSilentRelease(Object msg) {
         try {
-            ReferenceCountUtil.release(msg);
+            if (msg instanceof io.netty.util.ReferenceCounted) {
+                io.netty.util.ReferenceCounted rc = (io.netty.util.ReferenceCounted) msg;
+                if (rc.refCnt() > 0) {
+                    ReferenceCountUtil.release(msg);
+                }
+            } else {
+                ReferenceCountUtil.release(msg);
+            }
         } catch (Throwable t) {
-            // ReferenceCountUtil.safeRelease would always log a WARN on double-release.
-            // In this class we only need this for a rare race condition — swallow silently.
+            // Swallow — see javadoc above.
         }
     }
 

@@ -203,6 +203,25 @@ public class ConfigsTests {
     }
 
     @Test(groups = { "unit" })
+    public void thinClientConnectionTimeoutRejectsZeroAndNegative() {
+        // Zero should fall back to default (5s)
+        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS", "0");
+        try {
+            assertThat(Configs.getThinClientConnectionTimeoutInSeconds()).isEqualTo(5);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+        }
+
+        // Negative should fall back to default (5s)
+        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS", "-1");
+        try {
+            assertThat(Configs.getThinClientConnectionTimeoutInSeconds()).isEqualTo(5);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+        }
+    }
+
+    @Test(groups = { "unit" })
     public void httpRequestThinClientFlagDefaultFalse() throws Exception {
         // HttpRequest should default to isThinClientRequest=false
         com.azure.cosmos.implementation.http.HttpRequest httpRequest =

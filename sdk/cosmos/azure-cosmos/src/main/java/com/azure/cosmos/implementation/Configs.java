@@ -593,25 +593,46 @@ public class Configs {
      * Default: 5 seconds.
      */
     public static int getThinClientConnectionTimeoutInSeconds() {
+        int value = DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS;
+
         String valueFromSystemProperty = System.getProperty(THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
             try {
-                return Integer.parseInt(valueFromSystemProperty);
+                value = Integer.parseInt(valueFromSystemProperty);
             } catch (NumberFormatException e) {
-                // fall through to env variable
+                logger.warn(
+                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
+                    valueFromSystemProperty,
+                    THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS);
+                valueFromSystemProperty = null;
             }
         }
 
-        String valueFromEnvVariable = System.getenv(THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS_VARIABLE);
-        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            try {
-                return Integer.parseInt(valueFromEnvVariable);
-            } catch (NumberFormatException e) {
-                // fall through to default
+        if (valueFromSystemProperty == null || valueFromSystemProperty.isEmpty()) {
+            String valueFromEnvVariable = System.getenv(THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS_VARIABLE);
+            if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+                try {
+                    value = Integer.parseInt(valueFromEnvVariable);
+                } catch (NumberFormatException e) {
+                    logger.warn(
+                        "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}s.",
+                        valueFromEnvVariable,
+                        THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS_VARIABLE,
+                        DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS);
+                }
             }
         }
 
-        return DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS;
+        // Guard against invalid values — timeout must be at least 1 second
+        if (value <= 0) {
+            logger.warn(
+                "Invalid thin client connection timeout: {}s. Must be > 0. Falling back to default: {}s.",
+                value,
+                DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS);
+            return DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS;
+        }
+
+        return value;
     }
 
     public static int getHttpResponseTimeoutInSeconds() {
