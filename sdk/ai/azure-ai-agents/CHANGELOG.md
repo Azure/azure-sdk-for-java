@@ -29,10 +29,17 @@
 - `Summary` renamed to `SummaryTextContent` and moved to `implementation/models` (internal).
 - Moved ~100 model classes from `com.azure.ai.agents.models` to `com.azure.ai.agents.implementation.models`, removing them from the public API surface. This includes `InputItem` and all subtypes, `Annotation`, output content types, and related types.
 - Removed public methods from `MemoryStoresClient`/`MemoryStoresAsyncClient`: `searchMemoriesWithResponse` and `beginUpdateMemories` (protocol methods accepting `BinaryData`), `searchMemories(name, scope)` (minimal convenience overload), and `searchMemories`/`beginUpdateMemories` overloads accepting `List<ResponseInputItem>`.
+- Renamed model classes for naming consistency:
+  - `AgentObjectVersions` renamed to `AgentDetailsVersions`
+  - `OpenAIError` renamed to `ApiError`
+  - `AzureFunctionDefinitionFunction` renamed to `AzureFunctionDefinitionDetails`
+- `OpenApiFunctionDefinition`: `getDefaultParams()` and `setDefaultParams()` renamed to `getDefaultParameters()` and `setDefaultParameters()`
 
 ### Bugs Fixed
 
 - Fixed request parameter name from `"agent"` to `"agent_reference"` in `ResponsesClient` and `ResponsesAsyncClient` methods `createWithAgent` and `createWithAgentConversation`
+
+### Other Changes
 
 ## 2.0.0-beta.1 (2026-02-25)
 
