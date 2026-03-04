@@ -1,14 +1,123 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2026-03-04)
 
-### Features Added
+- Azure Resource Manager ConfidentialLedger client library for Java. This package contains Microsoft Azure SDK for ConfidentialLedger Management SDK. Microsoft Azure Confidential Compute Ledger Managed CCF Control Plane REST API version 2025-06-10-preview. Package api-version 2025-06-10-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.AadBasedSecurityPrincipal` was removed
 
-### Other Changes
+#### `models.ManagedCcfRestore` was removed
+
+#### `models.ManagedCcf$Update` was removed
+
+#### `models.ManagedCcfBackup` was removed
+
+#### `models.ManagedCcf$UpdateStages` was removed
+
+#### `models.ManagedCcf$Definition` was removed
+
+#### `models.ManagedCcf$DefinitionStages` was removed
+
+#### `models.ManagedCcfs` was removed
+
+#### `models.ManagedCcfRestoreResponse` was removed
+
+#### `models.ManagedCcfProperties` was removed
+
+#### `models.ConfidentialLedgerList` was removed
+
+#### `models.ManagedCcfList` was removed
+
+#### `models.ResourceProviderOperationList` was removed
+
+#### `models.ManagedCcf` was removed
+
+#### `models.ManagedCcfBackupResponse` was removed
+
+#### `models.MemberIdentityCertificate` was modified
+
+* `withTags(java.lang.Object)` was removed
+* `validate()` was removed
+* `java.lang.Object tags()` -> `com.azure.core.util.BinaryData tags()`
+
+#### `models.ConfidentialLedgerBackup` was modified
+
+* `validate()` was removed
+
+#### `models.CertBasedSecurityPrincipal` was modified
+
+* `validate()` was removed
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.LedgerProperties` was modified
+
+* `validate()` was removed
+* `withEnclavePlatform(models.EnclavePlatform)` was removed
+
+#### `ConfidentialLedgerManager` was modified
+
+* `managedCcfs()` was removed
+
+#### `models.ConfidentialLedgerRestore` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceProviderOperationDisplay` was modified
+
+* `ResourceProviderOperationDisplay()` was changed to private access
+* `withProvider(java.lang.String)` was removed
+* `validate()` was removed
+* `withResource(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+
+#### `models.DeploymentType` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.ManagedCCF$Definition` was added
+
+* `models.ManagedCCF$DefinitionStages` was added
+
+* `models.ManagedCCFBackup` was added
+
+* `models.ManagedCCFs` was added
+
+* `models.AADBasedSecurityPrincipal` was added
+
+* `models.ManagedCCFRestoreResponse` was added
+
+* `models.ManagedCCF$UpdateStages` was added
+
+* `models.ManagedCCFBackupResponse` was added
+
+* `models.ManagedCCFRestore` was added
+
+* `models.ManagedCCF` was added
+
+* `models.ManagedCCF$Update` was added
+
+* `models.ManagedCCFProperties` was added
+
+#### `models.MemberIdentityCertificate` was modified
+
+* `withTags(com.azure.core.util.BinaryData)` was added
+
+#### `models.LedgerProperties` was modified
+
+* `scittConfiguration()` was added
+* `withScittConfiguration(java.lang.String)` was added
+
+#### `ConfidentialLedgerManager` was modified
+
+* `managedCCFs()` was added
 
 ## 1.1.0-beta.1 (2025-05-15)
 
