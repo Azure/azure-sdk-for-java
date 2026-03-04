@@ -51,7 +51,9 @@ public interface CdnProfile
      *
      * @return AFD endpoints in the CDN manager profile, indexed by name
      */
-    Map<String, AfdEndpoint> afdEndpoints();
+    default Map<String, AfdEndpoint> afdEndpoints() {
+        throw new UnsupportedOperationException("[afdEndpoints] is not supported in " + getClass());
+    }
 
     /**
      * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal used for advanced management tasks.
@@ -316,7 +318,9 @@ public interface CdnProfile
              * @param name a new endpoint name
              * @return the first stage of a new AFD endpoint definition
              */
-            AfdEndpoint.DefinitionStages.Blank<WithStandardCreate> defineNewAfdEndpoint(String name);
+            default AfdEndpoint.DefinitionStages.Blank<WithStandardCreate> defineNewAfdEndpoint(String name) {
+                throw new UnsupportedOperationException("[defineNewAfdEndpoint] is not supported in " + getClass());
+            }
         }
 
         /**
@@ -418,7 +422,9 @@ public interface CdnProfile
              * @param name the name for the endpoint
              * @return the first stage of an endpoint definition
              */
-            AfdEndpoint.UpdateDefinitionStages.Blank<Update> defineNewAfdEndpoint(String name);
+            default AfdEndpoint.UpdateDefinitionStages.Blank<Update> defineNewAfdEndpoint(String name) {
+                throw new UnsupportedOperationException("[defineNewAfdEndpoint] is not supported in " + getClass());
+            }
 
             /**
              * Adds new endpoint to current Premium Verizon CDN profile.
@@ -469,7 +475,9 @@ public interface CdnProfile
              * @param name the name of an existing endpoint
              * @return the first stage of the update of the endpoint
              */
-            AfdEndpoint.Update updateAfdEndpoint(String name);
+            default AfdEndpoint.Update updateAfdEndpoint(String name) {
+                throw new UnsupportedOperationException("[updateAfdEndpoint] is not supported in " + getClass());
+            }
 
             /**
              * Begins the description of an update of an existing endpoint in current Premium Verizon profile.
@@ -493,7 +501,9 @@ public interface CdnProfile
              * @param name the name of an existing endpoint
              * @return the next stage of the CDN profile update
              */
-            Update withoutAfdEndpoint(String name);
+            default Update withoutAfdEndpoint(String name) {
+                throw new UnsupportedOperationException("[withoutAfdEndpoint] is not supported in " + getClass());
+            }
         }
     }
 
