@@ -139,6 +139,12 @@ class AfdOriginGroupImpl
     }
 
     @Override
+    protected Mono<Void> afterPostRunAsync(boolean isGroupFaulted) {
+        this.afdOrigins.clear();
+        return Mono.empty();
+    }
+
+    @Override
     public CdnProfileImpl attach() {
         return this.parent().withAfdOriginGroup(this);
     }
