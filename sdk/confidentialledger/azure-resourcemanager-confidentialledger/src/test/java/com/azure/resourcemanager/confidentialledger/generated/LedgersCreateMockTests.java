@@ -10,7 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager;
-import com.azure.resourcemanager.confidentialledger.models.AADBasedSecurityPrincipal;
+import com.azure.resourcemanager.confidentialledger.models.AadBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.ApplicationType;
 import com.azure.resourcemanager.confidentialledger.models.CertBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedger;
@@ -50,10 +50,10 @@ public final class LedgersCreateMockTests {
                 .withLedgerType(LedgerType.UNKNOWN)
                 .withLedgerSku(LedgerSku.STANDARD)
                 .withAadBasedSecurityPrincipals(Arrays.asList(
-                    new AADBasedSecurityPrincipal().withPrincipalId("fkbey")
+                    new AadBasedSecurityPrincipal().withPrincipalId("fkbey")
                         .withTenantId("wrmjmwvvjektc")
                         .withLedgerRoleName(LedgerRoleName.READER),
-                    new AADBasedSecurityPrincipal().withPrincipalId("hwlrsf")
+                    new AadBasedSecurityPrincipal().withPrincipalId("hwlrsf")
                         .withTenantId("zpwv")
                         .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR)))
                 .withCertBasedSecurityPrincipals(Arrays.asList(

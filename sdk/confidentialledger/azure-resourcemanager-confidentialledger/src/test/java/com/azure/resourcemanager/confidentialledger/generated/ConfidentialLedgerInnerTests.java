@@ -6,7 +6,7 @@ package com.azure.resourcemanager.confidentialledger.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.confidentialledger.fluent.models.ConfidentialLedgerInner;
-import com.azure.resourcemanager.confidentialledger.models.AADBasedSecurityPrincipal;
+import com.azure.resourcemanager.confidentialledger.models.AadBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.ApplicationType;
 import com.azure.resourcemanager.confidentialledger.models.CertBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
@@ -55,13 +55,13 @@ public final class ConfidentialLedgerInnerTests {
                 .withLedgerType(LedgerType.UNKNOWN)
                 .withLedgerSku(LedgerSku.UNKNOWN)
                 .withAadBasedSecurityPrincipals(Arrays.asList(
-                    new AADBasedSecurityPrincipal().withPrincipalId("k")
+                    new AadBasedSecurityPrincipal().withPrincipalId("k")
                         .withTenantId("txukcdmp")
                         .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
-                    new AADBasedSecurityPrincipal().withPrincipalId("y")
+                    new AadBasedSecurityPrincipal().withPrincipalId("y")
                         .withTenantId("nzwuxzd")
                         .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
-                    new AADBasedSecurityPrincipal().withPrincipalId("rlhm")
+                    new AadBasedSecurityPrincipal().withPrincipalId("rlhm")
                         .withTenantId("fp")
                         .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR)))
                 .withCertBasedSecurityPrincipals(Arrays.asList(

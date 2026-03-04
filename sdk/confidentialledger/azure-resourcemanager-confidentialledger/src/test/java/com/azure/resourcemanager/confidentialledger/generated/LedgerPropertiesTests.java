@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.confidentialledger.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.confidentialledger.models.AADBasedSecurityPrincipal;
+import com.azure.resourcemanager.confidentialledger.models.AadBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.ApplicationType;
 import com.azure.resourcemanager.confidentialledger.models.CertBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
@@ -46,16 +46,16 @@ public final class LedgerPropertiesTests {
             .withLedgerType(LedgerType.UNKNOWN)
             .withLedgerSku(LedgerSku.STANDARD)
             .withAadBasedSecurityPrincipals(Arrays.asList(
-                new AADBasedSecurityPrincipal().withPrincipalId("ailzydehojwyahu")
+                new AadBasedSecurityPrincipal().withPrincipalId("ailzydehojwyahu")
                     .withTenantId("npmqnjaqwixjspro")
                     .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
-                new AADBasedSecurityPrincipal().withPrincipalId("utegjvwmfdats")
+                new AadBasedSecurityPrincipal().withPrincipalId("utegjvwmfdats")
                     .withTenantId("dvpjhulsuuvmk")
                     .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
-                new AADBasedSecurityPrincipal().withPrincipalId("rwfndiod")
+                new AadBasedSecurityPrincipal().withPrincipalId("rwfndiod")
                     .withTenantId("slwejdpvw")
                     .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
-                new AADBasedSecurityPrincipal().withPrincipalId("psoacctazakljl")
+                new AadBasedSecurityPrincipal().withPrincipalId("psoacctazakljl")
                     .withTenantId("bcryffdfd")
                     .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR)))
             .withCertBasedSecurityPrincipals(Arrays.asList(

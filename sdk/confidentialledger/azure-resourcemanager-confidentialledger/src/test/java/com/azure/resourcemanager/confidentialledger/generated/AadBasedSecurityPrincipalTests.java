@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.confidentialledger.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.confidentialledger.models.AADBasedSecurityPrincipal;
+import com.azure.resourcemanager.confidentialledger.models.AadBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.LedgerRoleName;
 import org.junit.jupiter.api.Assertions;
 
-public final class AADBasedSecurityPrincipalTests {
+public final class AadBasedSecurityPrincipalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AADBasedSecurityPrincipal model = BinaryData
+        AadBasedSecurityPrincipal model = BinaryData
             .fromString("{\"principalId\":\"hpf\",\"tenantId\":\"ypininm\",\"ledgerRoleName\":\"Administrator\"}")
-            .toObject(AADBasedSecurityPrincipal.class);
+            .toObject(AadBasedSecurityPrincipal.class);
         Assertions.assertEquals("hpf", model.principalId());
         Assertions.assertEquals("ypininm", model.tenantId());
         Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR, model.ledgerRoleName());
@@ -22,10 +22,10 @@ public final class AADBasedSecurityPrincipalTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AADBasedSecurityPrincipal model = new AADBasedSecurityPrincipal().withPrincipalId("hpf")
+        AadBasedSecurityPrincipal model = new AadBasedSecurityPrincipal().withPrincipalId("hpf")
             .withTenantId("ypininm")
             .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR);
-        model = BinaryData.fromObject(model).toObject(AADBasedSecurityPrincipal.class);
+        model = BinaryData.fromObject(model).toObject(AadBasedSecurityPrincipal.class);
         Assertions.assertEquals("hpf", model.principalId());
         Assertions.assertEquals("ypininm", model.tenantId());
         Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR, model.ledgerRoleName());

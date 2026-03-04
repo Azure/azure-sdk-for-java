@@ -6,8 +6,6 @@
 
 ### Breaking Changes
 
-#### `models.AadBasedSecurityPrincipal` was removed
-
 #### `models.ManagedCcfRestore` was removed
 
 #### `models.ManagedCcf$Update` was removed
@@ -38,9 +36,13 @@
 
 #### `models.MemberIdentityCertificate` was modified
 
-* `withTags(java.lang.Object)` was removed
-* `validate()` was removed
 * `java.lang.Object tags()` -> `com.azure.core.util.BinaryData tags()`
+* `validate()` was removed
+* `withTags(java.lang.Object)` was removed
+
+#### `models.AadBasedSecurityPrincipal` was modified
+
+* `validate()` was removed
 
 #### `models.ConfidentialLedgerBackup` was modified
 
@@ -56,8 +58,8 @@
 
 #### `models.LedgerProperties` was modified
 
-* `validate()` was removed
 * `withEnclavePlatform(models.EnclavePlatform)` was removed
+* `validate()` was removed
 
 #### `ConfidentialLedgerManager` was modified
 
@@ -70,10 +72,10 @@
 #### `models.ResourceProviderOperationDisplay` was modified
 
 * `ResourceProviderOperationDisplay()` was changed to private access
-* `withProvider(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
 * `validate()` was removed
 * `withResource(java.lang.String)` was removed
-* `withDescription(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
 * `withOperation(java.lang.String)` was removed
 
 #### `models.DeploymentType` was modified
@@ -89,8 +91,6 @@
 * `models.ManagedCCFBackup` was added
 
 * `models.ManagedCCFs` was added
-
-* `models.AADBasedSecurityPrincipal` was added
 
 * `models.ManagedCCFRestoreResponse` was added
 
@@ -112,8 +112,8 @@
 
 #### `models.LedgerProperties` was modified
 
-* `scittConfiguration()` was added
 * `withScittConfiguration(java.lang.String)` was added
+* `scittConfiguration()` was added
 
 #### `ConfidentialLedgerManager` was modified
 

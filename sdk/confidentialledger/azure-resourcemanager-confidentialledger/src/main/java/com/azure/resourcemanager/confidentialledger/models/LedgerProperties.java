@@ -60,7 +60,7 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
     /*
      * Array of all AAD based Security Principals.
      */
-    private List<AADBasedSecurityPrincipal> aadBasedSecurityPrincipals;
+    private List<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals;
 
     /*
      * Array of all cert based Security Principals.
@@ -228,7 +228,7 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
      * 
      * @return the aadBasedSecurityPrincipals value.
      */
-    public List<AADBasedSecurityPrincipal> aadBasedSecurityPrincipals() {
+    public List<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals() {
         return this.aadBasedSecurityPrincipals;
     }
 
@@ -238,7 +238,7 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
      * @param aadBasedSecurityPrincipals the aadBasedSecurityPrincipals value to set.
      * @return the LedgerProperties object itself.
      */
-    public LedgerProperties withAadBasedSecurityPrincipals(List<AADBasedSecurityPrincipal> aadBasedSecurityPrincipals) {
+    public LedgerProperties withAadBasedSecurityPrincipals(List<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals) {
         this.aadBasedSecurityPrincipals = aadBasedSecurityPrincipals;
         return this;
     }
@@ -496,8 +496,8 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
                 } else if ("ledgerSku".equals(fieldName)) {
                     deserializedLedgerProperties.ledgerSku = LedgerSku.fromString(reader.getString());
                 } else if ("aadBasedSecurityPrincipals".equals(fieldName)) {
-                    List<AADBasedSecurityPrincipal> aadBasedSecurityPrincipals
-                        = reader.readArray(reader1 -> AADBasedSecurityPrincipal.fromJson(reader1));
+                    List<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals
+                        = reader.readArray(reader1 -> AadBasedSecurityPrincipal.fromJson(reader1));
                     deserializedLedgerProperties.aadBasedSecurityPrincipals = aadBasedSecurityPrincipals;
                 } else if ("certBasedSecurityPrincipals".equals(fieldName)) {
                     List<CertBasedSecurityPrincipal> certBasedSecurityPrincipals

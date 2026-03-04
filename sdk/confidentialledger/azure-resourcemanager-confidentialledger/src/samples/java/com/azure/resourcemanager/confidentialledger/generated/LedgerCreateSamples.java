@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.confidentialledger.generated;
 
-import com.azure.resourcemanager.confidentialledger.models.AADBasedSecurityPrincipal;
+import com.azure.resourcemanager.confidentialledger.models.AadBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.CertBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
 import com.azure.resourcemanager.confidentialledger.models.LedgerRoleName;
@@ -36,7 +36,7 @@ public final class LedgerCreateSamples {
             .withProperties(new LedgerProperties().withLedgerType(LedgerType.PUBLIC)
                 .withLedgerSku(LedgerSku.STANDARD)
                 .withAadBasedSecurityPrincipals(Arrays
-                    .asList(new AADBasedSecurityPrincipal().withPrincipalId("34621747-6fc8-4771-a2eb-72f31c461f2e")
+                    .asList(new AadBasedSecurityPrincipal().withPrincipalId("34621747-6fc8-4771-a2eb-72f31c461f2e")
                         .withTenantId("bce123b9-2b7b-4975-8360-5ca0b9b1cd08")
                         .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR)))
                 .withCertBasedSecurityPrincipals(Arrays.asList(new CertBasedSecurityPrincipal().withCert(
