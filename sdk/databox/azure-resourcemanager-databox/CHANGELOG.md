@@ -1,14 +1,531 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2026-03-04)
 
-### Features Added
+- Azure Resource Manager Data Box client library for Java. This package contains Microsoft Azure SDK for Data Box Management SDK.  Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.UnencryptedCredentialsList` was removed
 
-### Other Changes
+#### `models.OperationList` was removed
+
+#### `models.JobResourceList` was removed
+
+#### `models.AvailableSkusResult` was removed
+
+#### `models.DataBoxAccountCopyLogDetails` was modified
+
+* `DataBoxAccountCopyLogDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.TransportAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DataBoxDiskCopyProgress` was modified
+
+* `DataBoxDiskCopyProgress()` was changed to private access
+* `validate()` was removed
+
+#### `models.TransferConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.TransferConfigurationTransferAllDetails` was modified
+
+* `validate()` was removed
+
+#### `models.AccountCredentialDetails` was modified
+
+* `AccountCredentialDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.UpdateJobDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DataBoxCustomerDiskCopyLogDetails` was modified
+
+* `DataBoxCustomerDiskCopyLogDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.DataBoxDiskGranularCopyProgress` was modified
+
+* `DataBoxDiskGranularCopyProgress()` was changed to private access
+* `validate()` was removed
+
+#### `models.DeviceCapabilityDetails` was modified
+
+* `DeviceCapabilityDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.DataboxJobSecrets` was modified
+
+* `DataboxJobSecrets()` was changed to private access
+* `validate()` was removed
+* `withPodSecrets(java.util.List)` was removed
+
+#### `models.DataBoxHeavyJobDetails` was modified
+
+* `validate()` was removed
+
+#### `models.JobResourceUpdateParameter` was modified
+
+* `validate()` was removed
+
+#### `models.JobDelayDetails` was modified
+
+* `JobDelayDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.JobDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DataBoxHeavyAccountCopyLogDetails` was modified
+
+* `DataBoxHeavyAccountCopyLogDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.PackageShippingDetails` was modified
+
+* `PackageShippingDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.FilterFileDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DataImportDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DataBoxDiskJobSecrets` was modified
+
+* `DataBoxDiskJobSecrets()` was changed to private access
+* `validate()` was removed
+
+#### `models.IdentityProperties` was modified
+
+* `validate()` was removed
+
+#### `models.TransferConfigurationTransferFilterDetails` was modified
+
+* `validate()` was removed
+
+#### `models.JobSecrets` was modified
+
+* `validate()` was removed
+
+#### `models.SkuAvailabilityValidationRequest` was modified
+
+* `validate()` was removed
+
+#### `models.TransportAvailabilityDetails` was modified
+
+* `TransportAvailabilityDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.DataAccountDetails` was modified
+
+* `validate()` was removed
+
+#### `models.TransferFilterDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DiskScheduleAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.PreferencesValidationResponseProperties` was modified
+
+* `PreferencesValidationResponseProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.DeviceCapabilityResponse` was modified
+
+* `DeviceCapabilityResponse()` was changed to private access
+* `validate()` was removed
+
+#### `models.ShareCredentialDetails` was modified
+
+* `ShareCredentialDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.ScheduleAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ContactDetails` was modified
+
+* `validate()` was removed
+
+#### `models.StorageAccountDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DataBoxJobDetails` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.CancellationReason` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+* `withResource(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+
+#### `models.AdditionalErrorInfo` was modified
+
+* `AdditionalErrorInfo()` was changed to private access
+* `withInfo(java.lang.Object)` was removed
+* `withType(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.DcAccessSecurityCode` was modified
+
+* `DcAccessSecurityCode()` was changed to private access
+* `withReverseDCAccessCode(java.lang.String)` was removed
+* `withForwardDCAccessCode(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ManagedDiskDetails` was modified
+
+* `validate()` was removed
+
+#### `models.BlobFilterDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DataBoxDiskJobDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DataTransferDetailsValidationResponseProperties` was modified
+
+* `DataTransferDetailsValidationResponseProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.DataExportDetails` was modified
+
+* `validate()` was removed
+
+#### `models.CustomerDiskJobSecrets` was modified
+
+* `CustomerDiskJobSecrets()` was changed to private access
+* `validate()` was removed
+
+#### `models.HeavyScheduleAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DeviceCapabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.Preferences` was modified
+
+* `validate()` was removed
+
+#### `models.SubscriptionIsAllowedToCreateJobValidationRequest` was modified
+
+* `validate()` was removed
+
+#### `models.JobDeliveryInfo` was modified
+
+* `validate()` was removed
+
+#### `models.DataBoxCustomerDiskCopyProgress` was modified
+
+* `DataBoxCustomerDiskCopyProgress()` was changed to private access
+* `validate()` was removed
+
+#### `models.ValidationInputResponse` was modified
+
+* `validate()` was removed
+
+#### `models.PackageCarrierInfo` was modified
+
+* `validate()` was removed
+
+#### `models.PackageCarrierDetails` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduleAvailabilityResponse` was modified
+
+* `ScheduleAvailabilityResponse()` was changed to private access
+* `validate()` was removed
+
+#### `models.ImportDiskDetails` was modified
+
+* `validate()` was removed
+
+#### `models.TransferAllDetails` was modified
+
+* `validate()` was removed
+
+#### `models.ExportDiskDetails` was modified
+
+* `ExportDiskDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.LastMitigationActionOnJob` was modified
+
+* `LastMitigationActionOnJob()` was changed to private access
+* `validate()` was removed
+* `withCustomerResolution(models.CustomerResolutionCode)` was removed
+* `withIsPerformedByCustomer(java.lang.Boolean)` was removed
+* `withActionDateTimeInUtc(java.time.OffsetDateTime)` was removed
+
+#### `models.RegionConfigurationRequest` was modified
+
+* `validate()` was removed
+
+#### `models.SkuCapacity` was modified
+
+* `SkuCapacity()` was changed to private access
+* `validate()` was removed
+
+#### `models.CloudError` was modified
+
+* `CloudError()` was changed to private access
+* `withMessage(java.lang.String)` was removed
+* `withTarget(java.lang.String)` was removed
+* `withCode(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.MarkDevicesShippedRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DatacenterAddressResponse` was modified
+
+* `validate()` was removed
+
+#### `models.JobStages` was modified
+
+* `JobStages()` was changed to private access
+* `validate()` was removed
+
+#### `models.EncryptionPreferences` was modified
+
+* `validate()` was removed
+
+#### `models.ApplianceNetworkConfiguration` was modified
+
+* `ApplianceNetworkConfiguration()` was changed to private access
+* `validate()` was removed
+
+#### `models.DataTransferDetailsValidationRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ContactInfo` was modified
+
+* `validate()` was removed
+
+#### `models.DataBoxDiskCopyLogDetails` was modified
+
+* `DataBoxDiskCopyLogDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.SkuCost` was modified
+
+* `SkuCost()` was changed to private access
+* `validate()` was removed
+
+#### `models.DatacenterAddressLocationResponse` was modified
+
+* `DatacenterAddressLocationResponse()` was changed to private access
+* `validate()` was removed
+
+#### `models.CreateOrderLimitForSubscriptionValidationResponseProperties` was modified
+
+* `CreateOrderLimitForSubscriptionValidationResponseProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.DeviceErasureDetails` was modified
+
+* `DeviceErasureDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.AvailableSkuRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DataBoxScheduleAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DiskSecret` was modified
+
+* `DiskSecret()` was changed to private access
+* `validate()` was removed
+
+#### `models.SkuAvailabilityValidationResponseProperties` was modified
+
+* `SkuAvailabilityValidationResponseProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.CreateJobValidations` was modified
+
+* `validate()` was removed
+
+#### `models.TransportPreferences` was modified
+
+* `validate()` was removed
+
+#### `models.ValidationInputRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ShippingAddress` was modified
+
+* `validate()` was removed
+
+#### `models.AddressValidationProperties` was modified
+
+* `AddressValidationProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.MitigateJobRequest` was modified
+
+* `validate()` was removed
+
+#### `models.NotificationPreference` was modified
+
+* `validate()` was removed
+
+#### `models.ShipmentPickUpRequest` was modified
+
+* `validate()` was removed
+
+#### `models.Operation` was modified
+
+* `properties()` was removed
+
+#### `models.DataBoxCustomerDiskJobDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DatacenterAddressInstructionResponse` was modified
+
+* `DatacenterAddressInstructionResponse()` was changed to private access
+* `validate()` was removed
+
+#### `models.KeyEncryptionKey` was modified
+
+* `validate()` was removed
+
+#### `models.GranularCopyProgress` was modified
+
+* `validate()` was removed
+
+#### `models.ValidateAddress` was modified
+
+* `validate()` was removed
+
+#### `models.DataLocationToServiceLocationMap` was modified
+
+* `DataLocationToServiceLocationMap()` was changed to private access
+* `validate()` was removed
+
+#### `models.DatacenterAddressRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ReverseShippingDetails` was modified
+
+* `validate()` was removed
+
+#### `models.SubscriptionIsAllowedToCreateJobValidationResponseProperties` was modified
+
+* `SubscriptionIsAllowedToCreateJobValidationResponseProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.CreateOrderLimitForSubscriptionValidationRequest` was modified
+
+* `validate()` was removed
+
+#### `models.GranularCopyLogDetails` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.ValidationRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DataBoxSecret` was modified
+
+* `DataBoxSecret()` was changed to private access
+* `validate()` was removed
+
+#### `models.DataBoxHeavySecret` was modified
+
+* `DataBoxHeavySecret()` was changed to private access
+* `validate()` was removed
+
+#### `models.DataBoxHeavyJobSecrets` was modified
+
+* `DataBoxHeavyJobSecrets()` was changed to private access
+* `validate()` was removed
+
+#### `models.TransportAvailabilityResponse` was modified
+
+* `TransportAvailabilityResponse()` was changed to private access
+* `validate()` was removed
+
+#### `models.CopyProgress` was modified
+
+* `validate()` was removed
+
+#### `models.DataBoxDiskGranularCopyLogDetails` was modified
+
+* `DataBoxDiskGranularCopyLogDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.AzureFileFilterDetails` was modified
+
+* `validate()` was removed
+
+#### `models.PreferencesValidationRequest` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CopyLogDetails` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+#### `models.DeviceErasureDetails` was modified
+
+* `secureErasureCertificateSasKey()` was added
 
 ## 1.1.0 (2025-03-27)
 

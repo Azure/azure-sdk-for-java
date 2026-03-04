@@ -41,8 +41,7 @@ import java.time.OffsetDateTime;
  */
 public final class JobsBookShipmentPickUpSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/BookShipmentPickupPost.json
+     * x-ms-original-file: 2025-07-01/BookShipmentPickupPost.json
      */
     /**
      * Sample code: BookShipmentPickupPost.
@@ -70,8 +69,7 @@ import com.azure.resourcemanager.databox.models.CancellationReason;
  */
 public final class JobsCancelSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCancelPost.json
+     * x-ms-original-file: 2025-07-01/JobsCancelPost.json
      */
     /**
      * Sample code: JobsCancelPost.
@@ -119,8 +117,7 @@ import java.util.Map;
  */
 public final class JobsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateDevicePassword.json
+     * x-ms-original-file: 2025-07-01/JobsCreateDevicePassword.json
      */
     /**
      * Sample code: JobsCreateDevicePassword.
@@ -156,8 +153,7 @@ public final class JobsCreateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreate.json
+     * x-ms-original-file: 2025-07-01/JobsCreate.json
      */
     /**
      * Sample code: JobsCreate.
@@ -191,9 +187,7 @@ public final class JobsCreateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateDoubleEncryption.
-     * json
+     * x-ms-original-file: 2025-07-01/JobsCreateDoubleEncryption.json
      */
     /**
      * Sample code: JobsCreateDoubleEncryption.
@@ -229,8 +223,7 @@ public final class JobsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/
-     * JobsCreateWithUserAssignedIdentity.json
+     * x-ms-original-file: 2025-07-01/JobsCreateWithUserAssignedIdentity.json
      */
     /**
      * Sample code: JobsCreateWithUserAssignedIdentity.
@@ -268,8 +261,7 @@ public final class JobsCreateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateExport.json
+     * x-ms-original-file: 2025-07-01/JobsCreateExport.json
      */
     /**
      * Sample code: JobsCreateExport.
@@ -330,8 +322,7 @@ public final class JobsCreateSamples {
  */
 public final class JobsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsDelete.json
+     * x-ms-original-file: 2025-07-01/JobsDelete.json
      */
     /**
      * Sample code: JobsDelete.
@@ -352,8 +343,7 @@ public final class JobsDeleteSamples {
  */
 public final class JobsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGet.json
+     * x-ms-original-file: 2025-07-01/JobsGet.json
      */
     /**
      * Sample code: JobsGet.
@@ -367,8 +357,7 @@ public final class JobsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGetCmk.json
+     * x-ms-original-file: 2025-07-01/JobsGetCmk.json
      */
     /**
      * Sample code: JobsGetCmk.
@@ -382,8 +371,7 @@ public final class JobsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGetExport.json
+     * x-ms-original-file: 2025-07-01/JobsGetExport.json
      */
     /**
      * Sample code: JobsGetExport.
@@ -397,8 +385,7 @@ public final class JobsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGetCopyStuck.json
+     * x-ms-original-file: 2025-07-01/JobsGetCopyStuck.json
      */
     /**
      * Sample code: JobsGetCopyStuck.
@@ -412,8 +399,7 @@ public final class JobsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGetWaitingForAction.json
+     * x-ms-original-file: 2025-07-01/JobsGetWaitingForAction.json
      */
     /**
      * Sample code: JobsGetWaitingForAction.
@@ -436,8 +422,7 @@ public final class JobsGetByResourceGroupSamples {
  */
 public final class JobsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsList.json
+     * x-ms-original-file: 2025-07-01/JobsList.json
      */
     /**
      * Sample code: JobsList.
@@ -458,8 +443,7 @@ public final class JobsListSamples {
  */
 public final class JobsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsListByResourceGroup.json
+     * x-ms-original-file: 2025-07-01/JobsListByResourceGroup.json
      */
     /**
      * Sample code: JobsListByResourceGroup.
@@ -480,8 +464,7 @@ public final class JobsListByResourceGroupSamples {
  */
 public final class JobsListCredentialsSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsListCredentials.json
+     * x-ms-original-file: 2025-07-01/JobsListCredentials.json
      */
     /**
      * Sample code: JobsListCredentials.
@@ -505,8 +488,7 @@ import com.azure.resourcemanager.databox.models.PackageCarrierInfo;
  */
 public final class JobsMarkDevicesShippedSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/MarkDevicesShipped.json
+     * x-ms-original-file: 2025-07-01/MarkDevicesShipped.json
      */
     /**
      * Sample code: MarkDevicesShipped.
@@ -515,7 +497,7 @@ public final class JobsMarkDevicesShippedSamples {
      */
     public static void markDevicesShipped(com.azure.resourcemanager.databox.DataBoxManager manager) {
         manager.jobs()
-            .markDevicesShippedWithResponse("TestJobName1", "YourResourceGroupName",
+            .markDevicesShippedWithResponse("YourResourceGroupName", "TestJobName1",
                 new MarkDevicesShippedRequest().withDeliverToDcPackageDetails(
                     new PackageCarrierInfo().withCarrierName("testCarrier").withTrackingId("000000")),
                 com.azure.core.util.Context.NONE);
@@ -546,8 +528,7 @@ import java.util.Map;
  */
 public final class JobsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsPatchCmk.json
+     * x-ms-original-file: 2025-07-01/JobsPatchCmk.json
      */
     /**
      * Sample code: JobsPatchCmk.
@@ -569,8 +550,7 @@ public final class JobsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/
-     * JobsPatchSystemAssignedToUserAssigned.json
+     * x-ms-original-file: 2025-07-01/JobsPatchSystemAssignedToUserAssigned.json
      */
     /**
      * Sample code: JobsPatchSystemAssignedToUserAssigned.
@@ -599,8 +579,7 @@ public final class JobsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsPatch.json
+     * x-ms-original-file: 2025-07-01/JobsPatch.json
      */
     /**
      * Sample code: JobsPatch.
@@ -651,8 +630,7 @@ public final class JobsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/OperationsGet.json
+     * x-ms-original-file: 2025-07-01/OperationsGet.json
      */
     /**
      * Sample code: OperationsGet.
@@ -678,8 +656,7 @@ import java.util.Map;
  */
 public final class ResourceProviderMitigateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobMitigate.json
+     * x-ms-original-file: 2025-07-01/JobMitigate.json
      */
     /**
      * Sample code: Mitigate.
@@ -688,7 +665,7 @@ public final class ResourceProviderMitigateSamples {
      */
     public static void mitigate(com.azure.resourcemanager.databox.DataBoxManager manager) {
         manager.resourceProviders()
-            .mitigateWithResponse("TestJobName1", "YourResourceGroupName",
+            .mitigateWithResponse("YourResourceGroupName", "TestJobName1",
                 new MitigateJobRequest().withSerialNumberCustomerResolutionMap(mapOf("testDISK-1",
                     CustomerResolutionCode.MOVE_TO_CLEAN_UP_DEVICE, "testDISK-2", CustomerResolutionCode.RESUME)),
                 com.azure.core.util.Context.NONE);
@@ -719,8 +696,7 @@ import com.azure.resourcemanager.databox.models.TransferType;
  */
 public final class ServiceListAvailableSkusByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/AvailableSkusPost.json
+     * x-ms-original-file: 2025-07-01/AvailableSkusPost.json
      */
     /**
      * Sample code: AvailableSkusPost.
@@ -752,8 +728,7 @@ import com.azure.resourcemanager.databox.models.SkuName;
  */
 public final class ServiceRegionConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/RegionConfiguration.json
+     * x-ms-original-file: 2025-07-01/RegionConfiguration.json
      */
     /**
      * Sample code: RegionConfiguration.
@@ -786,8 +761,7 @@ import com.azure.resourcemanager.databox.models.SkuName;
  */
 public final class ServiceRegionConfigurationByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/
-     * RegionConfigurationByResourceGroup.json
+     * x-ms-original-file: 2025-07-01/RegionConfigurationByResourceGroup.json
      */
     /**
      * Sample code: RegionConfigurationByResourceGroup.
@@ -822,8 +796,7 @@ import com.azure.resourcemanager.databox.models.ValidateAddress;
  */
 public final class ServiceValidateAddressSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/ValidateAddressPost.json
+     * x-ms-original-file: 2025-07-01/ValidateAddressPost.json
      */
     /**
      * Sample code: ValidateAddressPost.
@@ -876,8 +849,7 @@ import java.util.Arrays;
  */
 public final class ServiceValidateInputsSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/ValidateInputs.json
+     * x-ms-original-file: 2025-07-01/ValidateInputs.json
      */
     /**
      * Sample code: ValidateInputs.
@@ -951,9 +923,7 @@ import java.util.Arrays;
  */
 public final class ServiceValidateInputsByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/ValidateInputsByResourceGroup
-     * .json
+     * x-ms-original-file: 2025-07-01/ValidateInputsByResourceGroup.json
      */
     /**
      * Sample code: ValidateInputsByResourceGroup.
