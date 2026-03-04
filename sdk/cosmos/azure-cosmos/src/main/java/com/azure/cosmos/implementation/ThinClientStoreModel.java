@@ -18,7 +18,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ResourceLeakDetector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -237,28 +236,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     @Override
     public Map<String, String> getDefaultHeaders() {
         return this.defaultHeaders;
-    }
-
-    /**
-     * Releases a reference-counted object if it is still retained (refCnt > 0).
-     * Swallows exceptions silently — ReferenceCountUtil.safeRelease would log a WARN
-     * on double-release, which is noise for the rare race conditions in this class.
-     *
-     * @param msg the reference-counted object to release
-     */
-    static void safeSilentRelease(Object msg) {
-        try {
-            if (msg instanceof io.netty.util.ReferenceCounted) {
-                io.netty.util.ReferenceCounted rc = (io.netty.util.ReferenceCounted) msg;
-                if (rc.refCnt() > 0) {
-                    ReferenceCountUtil.release(msg);
-                }
-            } else {
-                ReferenceCountUtil.release(msg);
-            }
-        } catch (Throwable t) {
-            // Swallow — see javadoc above.
-        }
     }
 
     private HttpHeaders getHttpHeaders() {
