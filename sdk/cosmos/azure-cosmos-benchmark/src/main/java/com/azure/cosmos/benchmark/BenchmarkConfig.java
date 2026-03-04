@@ -18,7 +18,7 @@ import java.util.List;
  * Contains lifecycle params, reporting config, and fully-resolved tenant workloads.
  *
  * <p>Each {@link TenantWorkloadConfig} carries its complete effective config
- * (account info + workload params), so no separate globalDefaults map is needed.</p>
+ * (account info + workload params), so no separate tenantDefaults map is needed.</p>
  *
  * <p>When {@code cycles > 1}, sensible defaults are applied automatically
  * unless explicitly overridden (settleTimeMs=90s, suppressCleanup=true).</p>
@@ -136,15 +136,15 @@ public class BenchmarkConfig {
     }
 
     /**
-     * Reads JVM-global system properties from the globalDefaults section of the workload config file.
+     * Reads JVM-global system properties from the tenantDefaults section of the workload config file.
      * These properties are JVM-wide and cannot vary per tenant.
      */
     private void loadGlobalSystemPropertiesFromWorkloadConfig(File workloadConfigFile) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(workloadConfigFile);
 
-        // JVM-global system properties from globalDefaults
-        JsonNode defaults = root.get("globalDefaults");
+        // JVM-global system properties from tenantDefaults
+        JsonNode defaults = root.get("tenantDefaults");
         if (defaults != null && defaults.isObject()) {
             if (defaults.has("isPartitionLevelCircuitBreakerEnabled")) {
                 isPartitionLevelCircuitBreakerEnabled =

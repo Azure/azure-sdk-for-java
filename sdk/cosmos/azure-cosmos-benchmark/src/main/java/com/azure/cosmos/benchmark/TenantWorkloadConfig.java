@@ -29,7 +29,7 @@ import java.util.Map;
  * Fully-resolved configuration for a single tenant workload.
  * Contains account connection info, AAD auth, workload params, and connection
  * settings. Each instance is the effective config after merging
- * globalDefaults with per-tenant overrides at parse time.
+ * tenantDefaults with per-tenant overrides at parse time.
  *
  * <p>This is the single config object passed to {@link AsyncBenchmark} --
  * no intermediate Configuration conversion needed.</p>
@@ -528,19 +528,19 @@ public class TenantWorkloadConfig {
     public static List<TenantWorkloadConfig> parseWorkloadConfig(File workloadConfigFile) throws IOException {
         JsonNode root = OBJECT_MAPPER.readTree(workloadConfigFile);
 
-        Map<String, String> globalDefaults = new HashMap<>();
-        JsonNode defaultsNode = root.get("globalDefaults");
+        Map<String, String> tenantDefaults = new HashMap<>();
+        JsonNode defaultsNode = root.get("tenantDefaults");
         if (defaultsNode != null && defaultsNode.isObject()) {
             Iterator<Map.Entry<String, JsonNode>> fields = defaultsNode.fields();
             while (fields.hasNext()) {
                 Map.Entry<String, JsonNode> entry = fields.next();
-                globalDefaults.put(entry.getKey(), entry.getValue().asText());
+                tenantDefaults.put(entry.getKey(), entry.getValue().asText());
             }
         }
 
-        if (!globalDefaults.isEmpty()) {
-            logger.info("globalDefaults applied to all tenants (per-tenant values take priority): {}",
-                globalDefaults.keySet());
+        if (!tenantDefaults.isEmpty()) {
+            logger.info("tenantDefaults applied to all tenants (per-tenant values take priority): {}",
+                tenantDefaults.keySet());
         }
 
         List<TenantWorkloadConfig> tenants = new ArrayList<>();
@@ -549,7 +549,7 @@ public class TenantWorkloadConfig {
         if (tenantsNode != null && tenantsNode.isArray()) {
             for (JsonNode tenantNode : tenantsNode) {
                 TenantWorkloadConfig tenant = OBJECT_MAPPER.treeToValue(tenantNode, TenantWorkloadConfig.class);
-                tenant.applyMap(globalDefaults, false);
+                tenant.applyMap(tenantDefaults, false);
                 validateTenantConfig(tenant);
                 tenants.add(tenant);
             }
