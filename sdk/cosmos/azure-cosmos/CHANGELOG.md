@@ -12,7 +12,7 @@
 
 #### Other Changes
 * Added aggressive HTTP timeout policies for document operations routed to Gateway V2. - [PR 47879](https://github.com/Azure/azure-sdk-for-java/pull/47879)
-* Added a default connect timeout of 5s for Gateway V2 (thin client) data-plane endpoints. - See []()
+* Added a default connect timeout of 5s for Gateway V2 (thin client) data-plane endpoints. - See [PR 48174](https://github.com/Azure/azure-sdk-for-java/pull/48174)
 
 ### 4.78.0 (2026-02-10)
 
