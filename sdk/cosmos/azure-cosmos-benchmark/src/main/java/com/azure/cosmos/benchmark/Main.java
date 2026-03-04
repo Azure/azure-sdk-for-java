@@ -28,7 +28,6 @@ public class Main {
         try {
             LOGGER.debug("Parsing the arguments ...");
             Configuration cfg = new Configuration();
-            cfg.tryGetValuesFromSystem();
 
             JCommander jcommander = new JCommander(cfg, args);
             if (cfg.isHelp()) {
@@ -36,19 +35,23 @@ public class Main {
                 return;
             }
 
-            validateConfiguration(cfg);
+            // Build BenchmarkConfig (requires workload config file)
+            BenchmarkConfig benchConfig = BenchmarkConfig.fromConfiguration(cfg);
+            TenantWorkloadConfig firstTenant = benchConfig.getTenantWorkloads().get(0);
 
-            if (cfg.isSync()) {
-                syncBenchmark(cfg);
+            validateConfiguration(firstTenant, cfg);
+
+            if (firstTenant.isSync()) {
+                syncBenchmark(firstTenant, benchConfig);
             } else {
-                if (cfg.getOperationType().equals(CtlWorkload)) {
-                    asyncCtlWorkload(cfg);
-                } else if (cfg.getOperationType().equals(LinkedInCtlWorkload)) {
-                    linkedInCtlWorkload(cfg);
-                } else if (cfg.isEncryptionEnabled()) {
-                    asyncEncryptionBenchmark(cfg);
+                if (firstTenant.getOperationType().equals(CtlWorkload)) {
+                    asyncCtlWorkload(firstTenant, benchConfig);
+                } else if (firstTenant.getOperationType().equals(LinkedInCtlWorkload)) {
+                    linkedInCtlWorkload(firstTenant, benchConfig);
+                } else if (firstTenant.isEncryptionEnabled()) {
+                    asyncEncryptionBenchmark(firstTenant, benchConfig);
                 } else {
-                    asyncBenchmark(cfg);
+                    asyncBenchmark(benchConfig);
                 }
             }
         } catch (ParameterException e) {
@@ -58,49 +61,46 @@ public class Main {
         }
     }
 
-    private static void validateConfiguration(Configuration cfg) {
-        switch (cfg.getOperationType()) {
+    private static void validateConfiguration(TenantWorkloadConfig workloadCfg, Configuration cfg) {
+        switch (workloadCfg.getOperationType()) {
             case WriteLatency:
             case WriteThroughput:
                 break;
             default:
-                if (!cfg.isContentResponseOnWriteEnabled()) {
+                if (!workloadCfg.isContentResponseOnWriteEnabled()) {
                     throw new IllegalArgumentException("contentResponseOnWriteEnabled parameter can only be set to false " +
                         "for write latency and write throughput operations");
                 }
         }
 
-        switch (cfg.getOperationType()) {
+        switch (workloadCfg.getOperationType()) {
             case ReadLatency:
             case ReadThroughput:
                 break;
             default:
-                if (cfg.getSparsityWaitTime() != null) {
-                    throw new IllegalArgumentException("sparsityWaitTime is not supported for " + cfg.getOperationType());
+                if (workloadCfg.getSparsityWaitTime() != null) {
+                    throw new IllegalArgumentException("sparsityWaitTime is not supported for " + workloadCfg.getOperationType());
                 }
         }
     }
 
-    private static void syncBenchmark(Configuration cfg) throws Exception {
+    private static void syncBenchmark(TenantWorkloadConfig workloadCfg, BenchmarkConfig benchConfig) throws Exception {
         LOGGER.info("Sync benchmark ...");
         SyncBenchmark<?> benchmark = null;
         try {
-            switch (cfg.getOperationType()) {
+            switch (workloadCfg.getOperationType()) {
                 case ReadThroughput:
                 case ReadLatency:
-                    benchmark = new SyncReadBenchmark(cfg);
+                    benchmark = new SyncReadBenchmark(workloadCfg, benchConfig);
                     break;
-
                 case WriteLatency:
                 case WriteThroughput:
-                    benchmark = new SyncWriteBenchmark(cfg);
+                    benchmark = new SyncWriteBenchmark(workloadCfg, benchConfig);
                     break;
-
                 default:
-                    throw new RuntimeException(cfg.getOperationType() + " is not supported");
+                    throw new RuntimeException(workloadCfg.getOperationType() + " is not supported");
             }
-
-            LOGGER.info("Starting {}", cfg.getOperationType());
+            LOGGER.info("Starting {}", workloadCfg.getOperationType());
             benchmark.run();
         } finally {
             if (benchmark != null) {
@@ -111,48 +111,42 @@ public class Main {
 
     /**
      * Async benchmark path: builds BenchmarkConfig from CLI args and delegates to BenchmarkOrchestrator.
-     * Handles both single-tenant (CLI args) and multi-tenant (tenants.json) modes.
+     * Handles both single-tenant and multi-tenant modes via workload config file.
      */
-    private static void asyncBenchmark(Configuration cfg) throws Exception {
-        BenchmarkConfig benchConfig = BenchmarkConfig.fromConfiguration(cfg);
+    private static void asyncBenchmark(BenchmarkConfig benchConfig) throws Exception {
         LOGGER.info("Async benchmark via BenchmarkOrchestrator ({} tenants, {} cycles)...",
             benchConfig.getTenantWorkloads().size(), benchConfig.getCycles());
         new BenchmarkOrchestrator().run(benchConfig);
     }
 
-    private static void asyncEncryptionBenchmark(Configuration cfg) throws Exception {
+    private static void asyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg, BenchmarkConfig benchConfig) throws Exception {
         LOGGER.info("Async encryption benchmark ...");
         AsyncEncryptionBenchmark<?> benchmark = null;
         try {
-            switch (cfg.getOperationType()) {
+            switch (workloadCfg.getOperationType()) {
                 case WriteThroughput:
                 case WriteLatency:
-                    benchmark = new AsyncEncryptionWriteBenchmark(cfg);
+                    benchmark = new AsyncEncryptionWriteBenchmark(workloadCfg, benchConfig);
                     break;
-
                 case ReadThroughput:
                 case ReadLatency:
-                    benchmark = new AsyncEncryptionReadBenchmark(cfg);
+                    benchmark = new AsyncEncryptionReadBenchmark(workloadCfg, benchConfig);
                     break;
-
                 case QueryCross:
                 case QuerySingle:
                 case QueryParallel:
                 case QueryOrderby:
                 case QueryTopOrderby:
                 case QueryInClauseParallel:
-                    benchmark = new AsyncEncryptionQueryBenchmark(cfg);
+                    benchmark = new AsyncEncryptionQueryBenchmark(workloadCfg, benchConfig);
                     break;
-
                 case QuerySingleMany:
-                    benchmark = new AsyncEncryptionQuerySinglePartitionMultiple(cfg);
+                    benchmark = new AsyncEncryptionQuerySinglePartitionMultiple(workloadCfg, benchConfig);
                     break;
-
                 default:
-                    throw new RuntimeException(cfg.getOperationType() + " is not supported");
+                    throw new RuntimeException(workloadCfg.getOperationType() + " is not supported");
             }
-
-            LOGGER.info("Starting {}", cfg.getOperationType());
+            LOGGER.info("Starting {}", workloadCfg.getOperationType());
             benchmark.run();
         } finally {
             if (benchmark != null) {
@@ -161,12 +155,12 @@ public class Main {
         }
     }
 
-    private static void asyncCtlWorkload(Configuration cfg) throws Exception {
+    private static void asyncCtlWorkload(TenantWorkloadConfig workloadCfg, BenchmarkConfig benchConfig) throws Exception {
         LOGGER.info("Async ctl workload");
         AsyncCtlWorkload benchmark = null;
         try {
-            benchmark = new AsyncCtlWorkload(cfg);
-            LOGGER.info("Starting {}", cfg.getOperationType());
+            benchmark = new AsyncCtlWorkload(workloadCfg, benchConfig);
+            LOGGER.info("Starting {}", workloadCfg.getOperationType());
             benchmark.run();
         } finally {
             if (benchmark != null) {
@@ -175,22 +169,19 @@ public class Main {
         }
     }
 
-    private static void linkedInCtlWorkload(Configuration cfg) {
+    private static void linkedInCtlWorkload(TenantWorkloadConfig workloadCfg, BenchmarkConfig benchConfig) {
         LOGGER.info("Executing the LinkedIn ctl workload");
         LICtlWorkload workload = null;
         try {
-            workload = new LICtlWorkload(cfg);
-
+            workload = new LICtlWorkload(workloadCfg, benchConfig);
             LOGGER.info("Setting up the LinkedIn ctl workload");
             workload.setup();
-
             LOGGER.info("Starting the LinkedIn ctl workload");
             workload.run();
         } catch (Exception e) {
             LOGGER.error("Exception received while executing the LinkedIn ctl workload", e);
             throw e;
-        }
-        finally {
+        } finally {
             Optional.ofNullable(workload)
                 .ifPresent(LICtlWorkload::shutdown);
         }

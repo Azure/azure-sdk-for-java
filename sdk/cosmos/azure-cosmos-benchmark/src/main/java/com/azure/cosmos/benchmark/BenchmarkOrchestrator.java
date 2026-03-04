@@ -354,12 +354,55 @@ public class BenchmarkOrchestrator {
             StringUtils.defaultString(
                 com.google.common.base.Strings.emptyToNull(
                     System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")), null));
-        if (instrumentationKey != null || appInsightsConnStr != null) {
-            Configuration tempCfg = new Configuration();
-            return tempCfg.getAzureMonitorMeterRegistry();
+        if (instrumentationKey == null && appInsightsConnStr == null) {
+            return null;
         }
 
-        return null;
+        java.time.Duration step = java.time.Duration.ofSeconds(
+            Integer.getInteger("azure.cosmos.monitoring.azureMonitor.step", 10));
+        String testCategoryTag = System.getProperty("azure.cosmos.monitoring.azureMonitor.testCategory");
+        boolean enabled = !Boolean.getBoolean("azure.cosmos.monitoring.azureMonitor.disabled");
+
+        final String connStr = appInsightsConnStr;
+        final String instrKey = instrumentationKey;
+        final io.micrometer.azuremonitor.AzureMonitorConfig amConfig = new io.micrometer.azuremonitor.AzureMonitorConfig() {
+            @Override
+            public String get(String key) { return null; }
+
+            @Override
+            public String instrumentationKey() {
+                return connStr != null ? null : instrKey;
+            }
+
+            @Override
+            public String connectionString() { return connStr; }
+
+            @Override
+            public java.time.Duration step() { return step; }
+
+            @Override
+            public boolean enabled() { return enabled; }
+        };
+
+        String roleName = System.getenv("APPLICATIONINSIGHTS_ROLE_NAME");
+        if (roleName != null) {
+            com.microsoft.applicationinsights.TelemetryConfiguration.getActive().setRoleName(roleName);
+        }
+
+        MeterRegistry registry = new io.micrometer.azuremonitor.AzureMonitorMeterRegistry(
+            amConfig, io.micrometer.core.instrument.Clock.SYSTEM);
+        java.util.List<io.micrometer.core.instrument.Tag> globalTags = new java.util.ArrayList<>();
+        if (!com.google.common.base.Strings.isNullOrEmpty(testCategoryTag)) {
+            globalTags.add(io.micrometer.core.instrument.Tag.of("TestCategory", testCategoryTag));
+        }
+
+        String roleInstance = System.getenv("APPLICATIONINSIGHTS_ROLE_INSTANCE");
+        if (roleName != null) {
+            globalTags.add(io.micrometer.core.instrument.Tag.of("cloud_RoleInstance", roleInstance));
+        }
+
+        registry.config().commonTags(globalTags);
+        return registry;
     }
 
     // ======== Global system properties ========

@@ -5,8 +5,9 @@ package com.azure.cosmos.benchmark.linkedin;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.BenchmarkConfig;
 import com.azure.cosmos.benchmark.ScheduledReporterFactory;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.data.InvitationsEntityConfiguration;
 import com.codahale.metrics.MetricRegistry;
@@ -32,7 +33,8 @@ public class LICtlWorkload {
         COMPOSITE_READ
     }
 
-    private final Configuration _configuration;
+    private final TenantWorkloadConfig _workloadConfig;
+    private final BenchmarkConfig _benchConfig;
     private final EntityConfiguration _entityConfiguration;
     private final CosmosAsyncClient _client;
     private final CosmosAsyncClient _bulkLoadClient;
@@ -42,24 +44,26 @@ public class LICtlWorkload {
     private final DataLoader _dataLoader;
     private final TestRunner _testRunner;
 
-    public LICtlWorkload(final Configuration configuration) {
-        Preconditions.checkNotNull(configuration, "The Workload configuration defining the parameters can not be null");
+    public LICtlWorkload(final TenantWorkloadConfig workloadCfg, final BenchmarkConfig benchConfig) {
+        Preconditions.checkNotNull(workloadCfg, "The Workload configuration defining the parameters can not be null");
+        Preconditions.checkNotNull(benchConfig, "The benchmark configuration defining the parameters can not be null");
 
-        _configuration = configuration;
-        _entityConfiguration = new InvitationsEntityConfiguration(configuration);
-        _client = AsyncClientFactory.buildAsyncClient(configuration);
-        _bulkLoadClient = AsyncClientFactory.buildBulkLoadAsyncClient(configuration);
+        _workloadConfig = workloadCfg;
+        _benchConfig = benchConfig;
+        _entityConfiguration = new InvitationsEntityConfiguration(workloadCfg);
+        _client = AsyncClientFactory.buildAsyncClient(workloadCfg);
+        _bulkLoadClient = AsyncClientFactory.buildBulkLoadAsyncClient(workloadCfg);
         _metricsRegistry =  new MetricRegistry();
-        _reporter = ScheduledReporterFactory.create(_configuration, _metricsRegistry);
-        _resourceManager = _configuration.shouldManageDatabase()
-            ? new DatabaseResourceManager(_configuration, _entityConfiguration, _client)
-            : new CollectionResourceManager(_configuration, _entityConfiguration, _client);
-        _dataLoader = new DataLoader(_configuration, _entityConfiguration, _bulkLoadClient);
-        _testRunner = createTestRunner(_configuration);
+        _reporter = ScheduledReporterFactory.create(_benchConfig, _metricsRegistry);
+        _resourceManager = workloadCfg.shouldManageDatabase()
+            ? new DatabaseResourceManager(workloadCfg, _entityConfiguration, _client)
+            : new CollectionResourceManager(workloadCfg, _entityConfiguration, _client);
+        _dataLoader = new DataLoader(workloadCfg, _entityConfiguration, _bulkLoadClient);
+        _testRunner = createTestRunner(workloadCfg);
     }
 
     public void setup() throws CosmosException {
-        if (_configuration.isEnableJvmStats()) {
+        if (_benchConfig.isEnableJvmStats()) {
             LOGGER.info("Enabling JVM stats collection");
             _metricsRegistry.register("gc", new GarbageCollectorMetricSet());
             _metricsRegistry.register("threads", new CachedThreadStatesGaugeSet(10, TimeUnit.SECONDS));
@@ -80,7 +84,7 @@ public class LICtlWorkload {
 
     public void run() {
         LOGGER.info("Executing the CosmosDB test");
-        _reporter.start(_configuration.getPrintingInterval(), TimeUnit.SECONDS);
+        _reporter.start(_benchConfig.getPrintingInterval(), TimeUnit.SECONDS);
 
         _testRunner.run();
 
@@ -97,16 +101,16 @@ public class LICtlWorkload {
         _reporter.close();
     }
 
-    private TestRunner createTestRunner(Configuration configuration) {
-        final Scenario scenario = Scenario.valueOf(configuration.getTestScenario());
+    private TestRunner createTestRunner(TenantWorkloadConfig workloadCfg) {
+        final Scenario scenario = Scenario.valueOf(workloadCfg.getTestScenario());
         switch (scenario) {
             case QUERY:
-                return new QueryTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);
+                return new QueryTestRunner(workloadCfg, _client, _metricsRegistry, _entityConfiguration);
             case COMPOSITE_READ:
-                return new CompositeReadTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);
+                return new CompositeReadTestRunner(workloadCfg, _client, _metricsRegistry, _entityConfiguration);
             case GET:
             default:
-                return new GetTestRunner(_configuration, _client, _metricsRegistry, _entityConfiguration);
+                return new GetTestRunner(workloadCfg, _client, _metricsRegistry, _entityConfiguration);
         }
     }
 }
