@@ -1,85 +1,68 @@
 # Code snippets and samples
 
 
-## ResourceProvider
+## Addresses
 
-- [CancelOrderItem](#resourceprovider_cancelorderitem)
-- [CreateAddress](#resourceprovider_createaddress)
-- [CreateOrderItem](#resourceprovider_createorderitem)
-- [Delete](#resourceprovider_delete)
-- [DeleteOrderItemByName](#resourceprovider_deleteorderitembyname)
-- [GetByResourceGroup](#resourceprovider_getbyresourcegroup)
-- [GetOrderByName](#resourceprovider_getorderbyname)
-- [GetOrderItemByName](#resourceprovider_getorderitembyname)
-- [List](#resourceprovider_list)
-- [ListByResourceGroup](#resourceprovider_listbyresourcegroup)
-- [ListConfigurations](#resourceprovider_listconfigurations)
-- [ListOperations](#resourceprovider_listoperations)
-- [ListOrderAtResourceGroupLevel](#resourceprovider_listorderatresourcegrouplevel)
-- [ListOrderAtSubscriptionLevel](#resourceprovider_listorderatsubscriptionlevel)
-- [ListOrderItemsAtResourceGroupLevel](#resourceprovider_listorderitemsatresourcegrouplevel)
-- [ListOrderItemsAtSubscriptionLevel](#resourceprovider_listorderitemsatsubscriptionlevel)
-- [ListProductFamilies](#resourceprovider_listproductfamilies)
-- [ListProductFamiliesMetadata](#resourceprovider_listproductfamiliesmetadata)
-- [ReturnOrderItem](#resourceprovider_returnorderitem)
-- [UpdateAddress](#resourceprovider_updateaddress)
-- [UpdateOrderItem](#resourceprovider_updateorderitem)
-### ResourceProvider_CancelOrderItem
+- [Create](#addresses_create)
+- [Delete](#addresses_delete)
+- [GetByResourceGroup](#addresses_getbyresourcegroup)
+- [List](#addresses_list)
+- [ListByResourceGroup](#addresses_listbyresourcegroup)
+- [Update](#addresses_update)
 
-```java
-import com.azure.resourcemanager.edgeorder.models.CancellationReason;
+## Operations
 
-/**
- * Samples for ResourceProvider CancelOrderItem.
- */
-public final class ResourceProviderCancelOrderItemSamples {
-    /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/CancelOrderItem.json
-     */
-    /**
-     * Sample code: CancelOrderItem.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void cancelOrderItem(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .cancelOrderItemWithResponse("TestOrderItemName3", "YourResourceGroupName",
-                new CancellationReason().withReason("Order cancelled"), com.azure.core.util.Context.NONE);
-    }
-}
-```
+- [List](#operations_list)
 
-### ResourceProvider_CreateAddress
+## OrderItems
+
+- [Cancel](#orderitems_cancel)
+- [Create](#orderitems_create)
+- [Delete](#orderitems_delete)
+- [GetByResourceGroup](#orderitems_getbyresourcegroup)
+- [List](#orderitems_list)
+- [ListByResourceGroup](#orderitems_listbyresourcegroup)
+- [ReturnMethod](#orderitems_returnmethod)
+- [Update](#orderitems_update)
+
+## Orders
+
+- [Get](#orders_get)
+- [List](#orders_list)
+- [ListByResourceGroup](#orders_listbyresourcegroup)
+
+## ProductsAndConfigurations
+
+- [ListConfigurations](#productsandconfigurations_listconfigurations)
+- [ListProductFamilies](#productsandconfigurations_listproductfamilies)
+- [ListProductFamiliesMetadata](#productsandconfigurations_listproductfamiliesmetadata)
+### Addresses_Create
 
 ```java
+import com.azure.resourcemanager.edgeorder.models.AddressClassification;
 import com.azure.resourcemanager.edgeorder.models.AddressType;
 import com.azure.resourcemanager.edgeorder.models.ContactDetails;
 import com.azure.resourcemanager.edgeorder.models.ShippingAddress;
 import java.util.Arrays;
 
 /**
- * Samples for ResourceProvider CreateAddress.
+ * Samples for Addresses Create.
  */
-public final class ResourceProviderCreateAddressSamples {
+public final class AddressesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/CreateAddress.json
+     * x-ms-original-file: 2024-02-01/CreateAddress.json
      */
     /**
      * Sample code: CreateAddress.
      * 
-     * @param manager Entry point to EdgeOrderManager.
+     * @param manager Entry point to EdgeorderManager.
      */
-    public static void createAddress(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .defineAddress("TestAddressName2")
+    public static void createAddress(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.addresses()
+            .define("TestAddressName2")
             .withRegion("eastus")
             .withExistingResourceGroup("YourResourceGroupName")
-            .withContactDetails(new ContactDetails().withContactName("XXXX XXXX")
-                .withPhone("0000000000")
-                .withPhoneExtension("")
-                .withEmailList(Arrays.asList("xxxx@xxxx.xxx")))
+            .withAddressClassification(AddressClassification.SHIPPING)
             .withShippingAddress(new ShippingAddress().withStreetAddress1("16 TOWNSEND ST")
                 .withStreetAddress2("UNIT 1")
                 .withCity("San Francisco")
@@ -88,487 +71,103 @@ public final class ResourceProviderCreateAddressSamples {
                 .withPostalCode("fakeTokenPlaceholder")
                 .withCompanyName("Microsoft")
                 .withAddressType(AddressType.NONE))
+            .withContactDetails(new ContactDetails().withContactName("XXXX XXXX")
+                .withPhone("0000000000")
+                .withPhoneExtension("")
+                .withEmailList(Arrays.asList("xxxx@xxxx.xxx")))
             .create();
     }
 }
 ```
 
-### ResourceProvider_CreateOrderItem
-
-```java
-import com.azure.resourcemanager.edgeorder.fluent.models.AddressProperties;
-import com.azure.resourcemanager.edgeorder.models.AddressDetails;
-import com.azure.resourcemanager.edgeorder.models.AddressType;
-import com.azure.resourcemanager.edgeorder.models.ContactDetails;
-import com.azure.resourcemanager.edgeorder.models.HierarchyInformation;
-import com.azure.resourcemanager.edgeorder.models.OrderItemDetails;
-import com.azure.resourcemanager.edgeorder.models.OrderItemType;
-import com.azure.resourcemanager.edgeorder.models.Preferences;
-import com.azure.resourcemanager.edgeorder.models.ProductDetails;
-import com.azure.resourcemanager.edgeorder.models.ShippingAddress;
-import com.azure.resourcemanager.edgeorder.models.TransportPreferences;
-import com.azure.resourcemanager.edgeorder.models.TransportShipmentTypes;
-import java.util.Arrays;
-
-/**
- * Samples for ResourceProvider CreateOrderItem.
- */
-public final class ResourceProviderCreateOrderItemSamples {
-    /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/CreateOrderItem.json
-     */
-    /**
-     * Sample code: CreateOrderItem.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void createOrderItem(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .defineOrderItem("TestOrderItemName2")
-            .withRegion("eastus")
-            .withExistingResourceGroup("YourResourceGroupName")
-            .withOrderItemDetails(new OrderItemDetails()
-                .withProductDetails(new ProductDetails()
-                    .withHierarchyInformation(new HierarchyInformation().withProductFamilyName("azurestackedge")
-                        .withProductLineName("azurestackedge")
-                        .withProductName("azurestackedgegpu")
-                        .withConfigurationName("edgep_base")))
-                .withOrderItemType(OrderItemType.PURCHASE)
-                .withPreferences(new Preferences().withTransportPreferences(
-                    new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED))))
-            .withAddressDetails(new AddressDetails().withForwardAddress(new AddressProperties()
-                .withShippingAddress(new ShippingAddress().withStreetAddress1("16 TOWNSEND ST")
-                    .withStreetAddress2("UNIT 1")
-                    .withCity("San Francisco")
-                    .withStateOrProvince("CA")
-                    .withCountry("US")
-                    .withPostalCode("fakeTokenPlaceholder")
-                    .withCompanyName("Microsoft")
-                    .withAddressType(AddressType.NONE))
-                .withContactDetails(new ContactDetails().withContactName("XXXX XXXX")
-                    .withPhone("0000000000")
-                    .withPhoneExtension("")
-                    .withEmailList(Arrays.asList("xxxx@xxxx.xxx")))))
-            .withOrderId(
-                "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/locations/eastus/orders/TestOrderName2")
-            .create();
-    }
-}
-```
-
-### ResourceProvider_Delete
+### Addresses_Delete
 
 ```java
 /**
- * Samples for ResourceProvider Delete.
+ * Samples for Addresses Delete.
  */
-public final class ResourceProviderDeleteSamples {
+public final class AddressesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/DeleteAddressByName.json
+     * x-ms-original-file: 2024-02-01/DeleteAddressByName.json
      */
     /**
      * Sample code: DeleteAddressByName.
      * 
-     * @param manager Entry point to EdgeOrderManager.
+     * @param manager Entry point to EdgeorderManager.
      */
-    public static void deleteAddressByName(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .delete("YourResourceGroupName", "TestAddressName1", com.azure.core.util.Context.NONE);
+    public static void deleteAddressByName(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.addresses().delete("YourResourceGroupName", "TestAddressName1", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### ResourceProvider_DeleteOrderItemByName
+### Addresses_GetByResourceGroup
 
 ```java
 /**
- * Samples for ResourceProvider DeleteOrderItemByName.
+ * Samples for Addresses GetByResourceGroup.
  */
-public final class ResourceProviderDeleteOrderItemByNameSamples {
+public final class AddressesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/DeleteOrderItemByName.
-     * json
-     */
-    /**
-     * Sample code: DeleteOrderItemByName.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void deleteOrderItemByName(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .deleteOrderItemByName("TestOrderItemName3", "YourResourceGroupName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ResourceProvider_GetByResourceGroup
-
-```java
-/**
- * Samples for ResourceProvider GetByResourceGroup.
- */
-public final class ResourceProviderGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetAddressByName.json
+     * x-ms-original-file: 2024-02-01/GetAddressByName.json
      */
     /**
      * Sample code: GetAddressByName.
      * 
-     * @param manager Entry point to EdgeOrderManager.
+     * @param manager Entry point to EdgeorderManager.
      */
-    public static void getAddressByName(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
+    public static void getAddressByName(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.addresses()
             .getByResourceGroupWithResponse("YourResourceGroupName", "TestAddressName1",
                 com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### ResourceProvider_GetOrderByName
+### Addresses_List
 
 ```java
 /**
- * Samples for ResourceProvider GetOrderByName.
+ * Samples for Addresses List.
  */
-public final class ResourceProviderGetOrderByNameSamples {
+public final class AddressesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetOrderByName.json
-     */
-    /**
-     * Sample code: GetOrderByName.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void getOrderByName(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .getOrderByNameWithResponse("TestOrderName3", "YourResourceGroupName", "eastus",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ResourceProvider_GetOrderItemByName
-
-```java
-/**
- * Samples for ResourceProvider GetOrderItemByName.
- */
-public final class ResourceProviderGetOrderItemByNameSamples {
-    /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetOrderItemByName.json
-     */
-    /**
-     * Sample code: GetOrderItemByName.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void getOrderItemByName(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .getOrderItemByNameWithResponse("TestOrderItemName1", "YourResourceGroupName", null,
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ResourceProvider_List
-
-```java
-/**
- * Samples for ResourceProvider List.
- */
-public final class ResourceProviderListSamples {
-    /*
-     * x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/
-     * ListAddressesAtSubscriptionLevel.json
+     * x-ms-original-file: 2024-02-01/ListAddressesAtSubscriptionLevel.json
      */
     /**
      * Sample code: ListAddressesAtSubscriptionLevel.
      * 
-     * @param manager Entry point to EdgeOrderManager.
+     * @param manager Entry point to EdgeorderManager.
      */
-    public static void listAddressesAtSubscriptionLevel(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders().list(null, null, com.azure.core.util.Context.NONE);
+    public static void listAddressesAtSubscriptionLevel(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.addresses().list(null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### ResourceProvider_ListByResourceGroup
+### Addresses_ListByResourceGroup
 
 ```java
 /**
- * Samples for ResourceProvider ListByResourceGroup.
+ * Samples for Addresses ListByResourceGroup.
  */
-public final class ResourceProviderListByResourceGroupSamples {
+public final class AddressesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/
-     * ListAddressesAtResourceGroupLevel.json
+     * x-ms-original-file: 2024-02-01/ListAddressesAtResourceGroupLevel.json
      */
     /**
      * Sample code: ListAddressesAtResourceGroupLevel.
      * 
-     * @param manager Entry point to EdgeOrderManager.
+     * @param manager Entry point to EdgeorderManager.
      */
-    public static void listAddressesAtResourceGroupLevel(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .listByResourceGroup("YourResourceGroupName", null, null, com.azure.core.util.Context.NONE);
+    public static void listAddressesAtResourceGroupLevel(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.addresses()
+            .listByResourceGroup("YourResourceGroupName", null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### ResourceProvider_ListConfigurations
-
-```java
-import com.azure.resourcemanager.edgeorder.models.ConfigurationFilters;
-import com.azure.resourcemanager.edgeorder.models.ConfigurationsRequest;
-import com.azure.resourcemanager.edgeorder.models.FilterableProperty;
-import com.azure.resourcemanager.edgeorder.models.HierarchyInformation;
-import com.azure.resourcemanager.edgeorder.models.SupportedFilterTypes;
-import java.util.Arrays;
-
-/**
- * Samples for ResourceProvider ListConfigurations.
- */
-public final class ResourceProviderListConfigurationsSamples {
-    /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListConfigurations.json
-     */
-    /**
-     * Sample code: ListConfigurations.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void listConfigurations(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .listConfigurations(
-                new ConfigurationsRequest().withConfigurationFilters(Arrays.asList(new ConfigurationFilters()
-                    .withHierarchyInformation(new HierarchyInformation().withProductFamilyName("azurestackedge")
-                        .withProductLineName("azurestackedge")
-                        .withProductName("azurestackedgegpu"))
-                    .withFilterableProperty(
-                        Arrays.asList(new FilterableProperty().withType(SupportedFilterTypes.SHIP_TO_COUNTRIES)
-                            .withSupportedValues(Arrays.asList("US")))))),
-                null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ResourceProvider_ListOperations
-
-```java
-/**
- * Samples for ResourceProvider ListOperations.
- */
-public final class ResourceProviderListOperationsSamples {
-    /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOperations.json
-     */
-    /**
-     * Sample code: ListOperations.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void listOperations(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders().listOperations(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ResourceProvider_ListOrderAtResourceGroupLevel
-
-```java
-/**
- * Samples for ResourceProvider ListOrderAtResourceGroupLevel.
- */
-public final class ResourceProviderListOrderAtResourceGroupLevelSamples {
-    /*
-     * x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/
-     * ListOrderAtResourceGroupLevel.json
-     */
-    /**
-     * Sample code: ListOrderAtResourceGroupLevel.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void listOrderAtResourceGroupLevel(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .listOrderAtResourceGroupLevel("YourResourceGroupName", null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ResourceProvider_ListOrderAtSubscriptionLevel
-
-```java
-/**
- * Samples for ResourceProvider ListOrderAtSubscriptionLevel.
- */
-public final class ResourceProviderListOrderAtSubscriptionLevelSamples {
-    /*
-     * x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/
-     * ListOrderAtSubscriptionLevel.json
-     */
-    /**
-     * Sample code: ListOrderAtSubscriptionLevel.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void listOrderAtSubscriptionLevel(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders().listOrderAtSubscriptionLevel(null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ResourceProvider_ListOrderItemsAtResourceGroupLevel
-
-```java
-/**
- * Samples for ResourceProvider ListOrderItemsAtResourceGroupLevel.
- */
-public final class ResourceProviderListOrderItemsAtResourceGroupLevelSamples {
-    /*
-     * x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/
-     * ListOrderItemsAtResourceGroupLevel.json
-     */
-    /**
-     * Sample code: ListOrderItemsAtResourceGroupLevel.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void
-        listOrderItemsAtResourceGroupLevel(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .listOrderItemsAtResourceGroupLevel("YourResourceGroupName", null, null, null,
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ResourceProvider_ListOrderItemsAtSubscriptionLevel
-
-```java
-/**
- * Samples for ResourceProvider ListOrderItemsAtSubscriptionLevel.
- */
-public final class ResourceProviderListOrderItemsAtSubscriptionLevelSamples {
-    /*
-     * x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/
-     * ListOrderItemsAtSubscriptionLevel.json
-     */
-    /**
-     * Sample code: ListOrderItemsAtSubscriptionLevel.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void listOrderItemsAtSubscriptionLevel(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .listOrderItemsAtSubscriptionLevel(null, null, null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ResourceProvider_ListProductFamilies
-
-```java
-import com.azure.resourcemanager.edgeorder.models.FilterableProperty;
-import com.azure.resourcemanager.edgeorder.models.ProductFamiliesRequest;
-import com.azure.resourcemanager.edgeorder.models.SupportedFilterTypes;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for ResourceProvider ListProductFamilies.
- */
-public final class ResourceProviderListProductFamiliesSamples {
-    /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListProductFamilies.json
-     */
-    /**
-     * Sample code: ListProductFamilies.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void listProductFamilies(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .listProductFamilies(
-                new ProductFamiliesRequest().withFilterableProperties(mapOf("azurestackedge",
-                    Arrays.asList(new FilterableProperty().withType(SupportedFilterTypes.SHIP_TO_COUNTRIES)
-                        .withSupportedValues(Arrays.asList("US"))))),
-                "configurations", null, com.azure.core.util.Context.NONE);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### ResourceProvider_ListProductFamiliesMetadata
-
-```java
-/**
- * Samples for ResourceProvider ListProductFamiliesMetadata.
- */
-public final class ResourceProviderListProductFamiliesMetadataSamples {
-    /*
-     * x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/
-     * ListProductFamiliesMetadata.json
-     */
-    /**
-     * Sample code: ListProductFamiliesMetadata.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void listProductFamiliesMetadata(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders().listProductFamiliesMetadata(null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ResourceProvider_ReturnOrderItem
-
-```java
-import com.azure.resourcemanager.edgeorder.models.ReturnOrderItemDetails;
-
-/**
- * Samples for ResourceProvider ReturnOrderItem.
- */
-public final class ResourceProviderReturnOrderItemSamples {
-    /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ReturnOrderItem.json
-     */
-    /**
-     * Sample code: ReturnOrderItem.
-     * 
-     * @param manager Entry point to EdgeOrderManager.
-     */
-    public static void returnOrderItem(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders()
-            .returnOrderItem("TestOrderName4", "YourResourceGroupName",
-                new ReturnOrderItemDetails().withReturnReason("Order returned"), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ResourceProvider_UpdateAddress
+### Addresses_Update
 
 ```java
 import com.azure.resourcemanager.edgeorder.models.AddressResource;
@@ -580,20 +179,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for ResourceProvider UpdateAddress.
+ * Samples for Addresses Update.
  */
-public final class ResourceProviderUpdateAddressSamples {
+public final class AddressesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/UpdateAddress.json
+     * x-ms-original-file: 2024-02-01/UpdateAddress.json
      */
     /**
      * Sample code: UpdateAddress.
      * 
-     * @param manager Entry point to EdgeOrderManager.
+     * @param manager Entry point to EdgeorderManager.
      */
-    public static void updateAddress(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        AddressResource resource = manager.resourceProviders()
+    public static void updateAddress(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        AddressResource resource = manager.addresses()
             .getByResourceGroupWithResponse("YourResourceGroupName", "TestAddressName2",
                 com.azure.core.util.Context.NONE)
             .getValue();
@@ -628,7 +226,229 @@ public final class ResourceProviderUpdateAddressSamples {
 }
 ```
 
-### ResourceProvider_UpdateOrderItem
+### Operations_List
+
+```java
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/ListOperations.json
+     */
+    /**
+     * Sample code: ListOperations.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void listOperations(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OrderItems_Cancel
+
+```java
+import com.azure.resourcemanager.edgeorder.models.CancellationReason;
+
+/**
+ * Samples for OrderItems Cancel.
+ */
+public final class OrderItemsCancelSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/CancelOrderItem.json
+     */
+    /**
+     * Sample code: CancelOrderItem.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void cancelOrderItem(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.orderItems()
+            .cancelWithResponse("YourResourceGroupName", "TestOrderItemName3",
+                new CancellationReason().withReason("Order cancelled"), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OrderItems_Create
+
+```java
+import com.azure.resourcemanager.edgeorder.fluent.models.AddressProperties;
+import com.azure.resourcemanager.edgeorder.models.AddressDetails;
+import com.azure.resourcemanager.edgeorder.models.AddressType;
+import com.azure.resourcemanager.edgeorder.models.ContactDetails;
+import com.azure.resourcemanager.edgeorder.models.HierarchyInformation;
+import com.azure.resourcemanager.edgeorder.models.OrderItemDetails;
+import com.azure.resourcemanager.edgeorder.models.OrderItemType;
+import com.azure.resourcemanager.edgeorder.models.Preferences;
+import com.azure.resourcemanager.edgeorder.models.ProductDetails;
+import com.azure.resourcemanager.edgeorder.models.ShippingAddress;
+import com.azure.resourcemanager.edgeorder.models.TransportPreferences;
+import com.azure.resourcemanager.edgeorder.models.TransportShipmentTypes;
+import java.util.Arrays;
+
+/**
+ * Samples for OrderItems Create.
+ */
+public final class OrderItemsCreateSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/CreateOrderItem.json
+     */
+    /**
+     * Sample code: CreateOrderItem.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void createOrderItem(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.orderItems()
+            .define("TestOrderItemName2")
+            .withRegion("eastus")
+            .withExistingResourceGroup("YourResourceGroupName")
+            .withOrderItemDetails(new OrderItemDetails()
+                .withProductDetails(new ProductDetails()
+                    .withHierarchyInformation(new HierarchyInformation().withProductFamilyName("azurestackedge")
+                        .withProductLineName("azurestackedge")
+                        .withProductName("azurestackedgegpu")
+                        .withConfigurationName("edgep_base")))
+                .withOrderItemType(OrderItemType.PURCHASE)
+                .withPreferences(new Preferences().withTransportPreferences(
+                    new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED))))
+            .withOrderId(
+                "/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/locations/eastus/orders/TestOrderName2")
+            .withAddressDetails(new AddressDetails().withForwardAddress(new AddressProperties()
+                .withShippingAddress(new ShippingAddress().withStreetAddress1("16 TOWNSEND ST")
+                    .withStreetAddress2("UNIT 1")
+                    .withCity("San Francisco")
+                    .withStateOrProvince("CA")
+                    .withCountry("US")
+                    .withPostalCode("fakeTokenPlaceholder")
+                    .withCompanyName("Microsoft")
+                    .withAddressType(AddressType.NONE))
+                .withContactDetails(new ContactDetails().withContactName("XXXX XXXX")
+                    .withPhone("0000000000")
+                    .withPhoneExtension("")
+                    .withEmailList(Arrays.asList("xxxx@xxxx.xxx")))))
+            .create();
+    }
+}
+```
+
+### OrderItems_Delete
+
+```java
+/**
+ * Samples for OrderItems Delete.
+ */
+public final class OrderItemsDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/DeleteOrderItemByName.json
+     */
+    /**
+     * Sample code: DeleteOrderItemByName.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void deleteOrderItemByName(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.orderItems().delete("YourResourceGroupName", "TestOrderItemName3", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OrderItems_GetByResourceGroup
+
+```java
+/**
+ * Samples for OrderItems GetByResourceGroup.
+ */
+public final class OrderItemsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/GetOrderItemByName.json
+     */
+    /**
+     * Sample code: GetOrderItemByName.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void getOrderItemByName(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.orderItems()
+            .getByResourceGroupWithResponse("YourResourceGroupName", "TestOrderItemName1", null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OrderItems_List
+
+```java
+/**
+ * Samples for OrderItems List.
+ */
+public final class OrderItemsListSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/ListOrderItemsAtSubscriptionLevel.json
+     */
+    /**
+     * Sample code: ListOrderItemsAtSubscriptionLevel.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void listOrderItemsAtSubscriptionLevel(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.orderItems().list(null, null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OrderItems_ListByResourceGroup
+
+```java
+/**
+ * Samples for OrderItems ListByResourceGroup.
+ */
+public final class OrderItemsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/ListOrderItemsAtResourceGroupLevel.json
+     */
+    /**
+     * Sample code: ListOrderItemsAtResourceGroupLevel.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void
+        listOrderItemsAtResourceGroupLevel(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.orderItems()
+            .listByResourceGroup("YourResourceGroupName", null, null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OrderItems_ReturnMethod
+
+```java
+import com.azure.resourcemanager.edgeorder.models.ReturnOrderItemDetails;
+
+/**
+ * Samples for OrderItems ReturnMethod.
+ */
+public final class OrderItemsReturnMethodSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/ReturnOrderItem.json
+     */
+    /**
+     * Sample code: ReturnOrderItem.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void returnOrderItem(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.orderItems()
+            .returnMethod("YourResourceGroupName", "TestOrderName4",
+                new ReturnOrderItemDetails().withReturnReason("Order returned"), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OrderItems_Update
 
 ```java
 import com.azure.resourcemanager.edgeorder.models.OrderItemResource;
@@ -637,27 +457,192 @@ import com.azure.resourcemanager.edgeorder.models.TransportPreferences;
 import com.azure.resourcemanager.edgeorder.models.TransportShipmentTypes;
 
 /**
- * Samples for ResourceProvider UpdateOrderItem.
+ * Samples for OrderItems Update.
  */
-public final class ResourceProviderUpdateOrderItemSamples {
+public final class OrderItemsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/UpdateOrderItem.json
+     * x-ms-original-file: 2024-02-01/UpdateOrderItem.json
      */
     /**
      * Sample code: UpdateOrderItem.
      * 
-     * @param manager Entry point to EdgeOrderManager.
+     * @param manager Entry point to EdgeorderManager.
      */
-    public static void updateOrderItem(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        OrderItemResource resource = manager.resourceProviders()
-            .getOrderItemByNameWithResponse("TestOrderItemName3", "YourResourceGroupName", null,
+    public static void updateOrderItem(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        OrderItemResource resource = manager.orderItems()
+            .getByResourceGroupWithResponse("YourResourceGroupName", "TestOrderItemName3", null,
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withPreferences(new Preferences().withTransportPreferences(
                 new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.CUSTOMER_MANAGED)))
             .apply();
+    }
+}
+```
+
+### Orders_Get
+
+```java
+/**
+ * Samples for Orders Get.
+ */
+public final class OrdersGetSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/GetOrderByName.json
+     */
+    /**
+     * Sample code: GetOrderByName.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void getOrderByName(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.orders()
+            .getWithResponse("YourResourceGroupName", "eastus", "TestOrderName3", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Orders_List
+
+```java
+/**
+ * Samples for Orders List.
+ */
+public final class OrdersListSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/ListOrderAtSubscriptionLevel.json
+     */
+    /**
+     * Sample code: ListOrderAtSubscriptionLevel.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void listOrderAtSubscriptionLevel(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.orders().list(null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Orders_ListByResourceGroup
+
+```java
+/**
+ * Samples for Orders ListByResourceGroup.
+ */
+public final class OrdersListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/ListOrderAtResourceGroupLevel.json
+     */
+    /**
+     * Sample code: ListOrderAtResourceGroupLevel.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void listOrderAtResourceGroupLevel(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.orders().listByResourceGroup("YourResourceGroupName", null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ProductsAndConfigurations_ListConfigurations
+
+```java
+import com.azure.resourcemanager.edgeorder.models.ConfigurationFilter;
+import com.azure.resourcemanager.edgeorder.models.ConfigurationsRequest;
+import com.azure.resourcemanager.edgeorder.models.FilterableProperty;
+import com.azure.resourcemanager.edgeorder.models.HierarchyInformation;
+import com.azure.resourcemanager.edgeorder.models.SupportedFilterTypes;
+import java.util.Arrays;
+
+/**
+ * Samples for ProductsAndConfigurations ListConfigurations.
+ */
+public final class ProductsAndConfigurationsListConfigurationsSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/ListConfigurations.json
+     */
+    /**
+     * Sample code: ListConfigurations.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void listConfigurations(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.productsAndConfigurations()
+            .listConfigurations(new ConfigurationsRequest().withConfigurationFilter(new ConfigurationFilter()
+                .withHierarchyInformation(new HierarchyInformation().withProductFamilyName("azurestackedge")
+                    .withProductLineName("azurestackedge")
+                    .withProductName("azurestackedgegpu"))
+                .withFilterableProperty(
+                    Arrays.asList(new FilterableProperty().withType(SupportedFilterTypes.SHIP_TO_COUNTRIES)
+                        .withSupportedValues(Arrays.asList("US"))))),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ProductsAndConfigurations_ListProductFamilies
+
+```java
+import com.azure.resourcemanager.edgeorder.models.FilterableProperty;
+import com.azure.resourcemanager.edgeorder.models.ProductFamiliesRequest;
+import com.azure.resourcemanager.edgeorder.models.SupportedFilterTypes;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ProductsAndConfigurations ListProductFamilies.
+ */
+public final class ProductsAndConfigurationsListProductFamiliesSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/ListProductFamilies.json
+     */
+    /**
+     * Sample code: ListProductFamilies.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void listProductFamilies(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.productsAndConfigurations()
+            .listProductFamilies(
+                new ProductFamiliesRequest().withFilterableProperties(mapOf("azurestackedge",
+                    Arrays.asList(new FilterableProperty().withType(SupportedFilterTypes.SHIP_TO_COUNTRIES)
+                        .withSupportedValues(Arrays.asList("US"))))),
+                "configurations", null, com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### ProductsAndConfigurations_ListProductFamiliesMetadata
+
+```java
+/**
+ * Samples for ProductsAndConfigurations ListProductFamiliesMetadata.
+ */
+public final class ProductsAndConfigurationsListProductFamiliesMetadataSamples {
+    /*
+     * x-ms-original-file: 2024-02-01/ListProductFamiliesMetadata.json
+     */
+    /**
+     * Sample code: ListProductFamiliesMetadata.
+     * 
+     * @param manager Entry point to EdgeorderManager.
+     */
+    public static void listProductFamiliesMetadata(com.azure.resourcemanager.edgeorder.EdgeorderManager manager) {
+        manager.productsAndConfigurations().listProductFamiliesMetadata(null, com.azure.core.util.Context.NONE);
     }
 }
 ```
