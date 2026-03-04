@@ -182,10 +182,10 @@ public class ConfigsTests {
 
     @Test(groups = { "unit" })
     public void thinClientConnectionTimeoutDefaultTest() {
-        // Default thin client connection timeout should be 1 second
+        // Default thin client connection timeout should be 5 seconds
         System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
         try {
-            assertThat(Configs.getThinClientConnectionTimeoutInSeconds()).isEqualTo(1);
+            assertThat(Configs.getThinClientConnectionTimeoutInSeconds()).isEqualTo(5);
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
         }
