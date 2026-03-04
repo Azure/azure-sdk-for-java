@@ -24,7 +24,7 @@ public final class SkypeChannelTests {
         Assertions.assertFalse(model.properties().enableScreenSharing());
         Assertions.assertTrue(model.properties().enableGroups());
         Assertions.assertEquals("fnjhfjxwmszkkfo", model.properties().groupsMode());
-        Assertions.assertEquals("eyfkzikfja", model.properties().callingWebHook());
+        Assertions.assertEquals("eyfkzikfja", model.properties().callingWebhook());
         Assertions.assertEquals("eaivxwczel", model.properties().incomingCallRoute());
         Assertions.assertFalse(model.properties().isEnabled());
     }
@@ -40,7 +40,7 @@ public final class SkypeChannelTests {
                 .withEnableScreenSharing(false)
                 .withEnableGroups(true)
                 .withGroupsMode("fnjhfjxwmszkkfo")
-                .withCallingWebHook("eyfkzikfja")
+                .withCallingWebhook("eyfkzikfja")
                 .withIncomingCallRoute("eaivxwczel")
                 .withIsEnabled(false));
         model = BinaryData.fromObject(model).toObject(SkypeChannel.class);
@@ -53,7 +53,7 @@ public final class SkypeChannelTests {
         Assertions.assertFalse(model.properties().enableScreenSharing());
         Assertions.assertTrue(model.properties().enableGroups());
         Assertions.assertEquals("fnjhfjxwmszkkfo", model.properties().groupsMode());
-        Assertions.assertEquals("eyfkzikfja", model.properties().callingWebHook());
+        Assertions.assertEquals("eyfkzikfja", model.properties().callingWebhook());
         Assertions.assertEquals("eaivxwczel", model.properties().incomingCallRoute());
         Assertions.assertFalse(model.properties().isEnabled());
     }

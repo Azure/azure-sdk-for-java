@@ -40,7 +40,7 @@ public final class BotsUpdateSamples {
                 .withMsaAppType(MsaAppType.USER_ASSIGNED_MSI)
                 .withMsaAppId("msaappid")
                 .withMsaAppTenantId("msaapptenantid")
-                .withMsaAppMSIResourceId(
+                .withMsaAppMsiResourceId(
                     "/subscriptions/foo/resourcegroups/bar/providers/microsoft.managedidentity/userassignedidentities/sampleId")
                 .withDeveloperAppInsightKey("fakeTokenPlaceholder")
                 .withDeveloperAppInsightsApiKey("fakeTokenPlaceholder")

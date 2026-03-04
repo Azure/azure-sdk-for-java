@@ -16,9 +16,7 @@
 
 #### `models.TelephonyChannelProperties` was modified
 
-* `withPremiumSku(java.lang.String)` was removed
 * `validate()` was removed
-* `premiumSku()` was removed
 
 #### `models.ServiceProviderProperties` was modified
 
@@ -33,9 +31,7 @@
 
 #### `models.SmsChannelProperties` was modified
 
-* `accountSid()` was removed
 * `validate()` was removed
-* `withAccountSid(java.lang.String)` was removed
 
 #### `models.Channel` was modified
 
@@ -44,17 +40,17 @@
 #### `models.ChannelSettings` was modified
 
 * `ChannelSettings()` was changed to private access
-* `withExtensionKey2(java.lang.String)` was removed
-* `withChannelId(java.lang.String)` was removed
-* `withChannelDisplayName(java.lang.String)` was removed
-* `withExtensionKey1(java.lang.String)` was removed
-* `validate()` was removed
-* `withBotIconUrl(java.lang.String)` was removed
 * `withRequireTermsAgreement(java.lang.Boolean)` was removed
-* `withSites(java.util.List)` was removed
+* `validate()` was removed
+* `withChannelId(java.lang.String)` was removed
 * `withBotId(java.lang.String)` was removed
+* `withExtensionKey1(java.lang.String)` was removed
+* `withExtensionKey2(java.lang.String)` was removed
 * `withDisableLocalAuth(java.lang.Boolean)` was removed
 * `withIsEnabled(java.lang.Boolean)` was removed
+* `withChannelDisplayName(java.lang.String)` was removed
+* `withBotIconUrl(java.lang.String)` was removed
+* `withSites(java.util.List)` was removed
 
 #### `models.DirectLineChannel` was modified
 
@@ -67,10 +63,6 @@
 #### `models.DirectLineChannelProperties` was modified
 
 * `validate()` was removed
-
-#### `models.OperationEntity` was modified
-
-* `java.lang.Object properties()` -> `com.azure.core.util.BinaryData properties()`
 
 #### `models.Sku` was modified
 
@@ -94,8 +86,6 @@
 
 #### `models.BotProperties` was modified
 
-* `withMsaAppMsiResourceId(java.lang.String)` was removed
-* `msaAppMsiResourceId()` was removed
 * `validate()` was removed
 
 #### `models.SiteInfo` was modified
@@ -120,8 +110,6 @@
 
 #### `models.Site` was modified
 
-* `withEtag(java.lang.String)` was removed
-* `etag()` was removed
 * `validate()` was removed
 
 #### `models.FacebookChannel` was modified
@@ -149,8 +137,6 @@
 #### `models.SkypeChannelProperties` was modified
 
 * `validate()` was removed
-* `withCallingWebhook(java.lang.String)` was removed
-* `callingWebhook()` was removed
 
 #### `models.WebChatChannelProperties` was modified
 
@@ -177,8 +163,8 @@
 #### `models.ServiceProvider` was modified
 
 * `ServiceProvider()` was changed to private access
-* `validate()` was removed
 * `withProperties(models.ServiceProviderProperties)` was removed
+* `validate()` was removed
 
 #### `models.ConnectionSettingParameter` was modified
 
@@ -186,14 +172,11 @@
 
 #### `models.KikChannelProperties` was modified
 
-* `username()` was removed
 * `validate()` was removed
-* `withUsername(java.lang.String)` was removed
 
 #### `models.DirectLineSite` was modified
 
 * `validate()` was removed
-* `withEtag(java.lang.String)` was removed
 
 #### `models.LineRegistration` was modified
 
@@ -214,10 +197,10 @@
 #### `models.OperationDisplayInfo` was modified
 
 * `OperationDisplayInfo()` was changed to private access
-* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
 * `withOperation(java.lang.String)` was removed
 * `withResource(java.lang.String)` was removed
-* `withDescription(java.lang.String)` was removed
+* `validate()` was removed
 * `withProvider(java.lang.String)` was removed
 
 #### `models.SkypeChannel` was modified
@@ -252,7 +235,6 @@
 #### `models.WebChatSite` was modified
 
 * `validate()` was removed
-* `withEtag(java.lang.String)` was removed
 
 #### `models.TelephonyPhoneNumbers` was modified
 
@@ -361,19 +343,9 @@
 
 * `systemData()` was added
 
-#### `models.TelephonyChannelProperties` was modified
-
-* `withPremiumSKU(java.lang.String)` was added
-* `premiumSKU()` was added
-
 #### `models.Bot` was modified
 
 * `systemData()` was added
-
-#### `models.SmsChannelProperties` was modified
-
-* `withAccountSID(java.lang.String)` was added
-* `accountSID()` was added
 
 #### `models.ListChannelWithKeysResponse` was modified
 
@@ -381,36 +353,15 @@
 
 #### `models.BotProperties` was modified
 
-* `msaAppMSIResourceId()` was added
-* `privateEndpointConnections()` was added
-* `withMsaAppMSIResourceId(java.lang.String)` was added
 * `networkSecurityPerimeterConfigurations()` was added
-
-#### `models.Site` was modified
-
-* `withETag(java.lang.String)` was added
-* `eTag()` was added
+* `privateEndpointConnections()` was added
 
 #### `models.ConnectionSettingProperties` was modified
 
-* `withName(java.lang.String)` was added
+* `withId(java.lang.String)` was added
 * `id()` was added
 * `name()` was added
-* `withId(java.lang.String)` was added
-
-#### `models.SkypeChannelProperties` was modified
-
-* `callingWebHook()` was added
-* `withCallingWebHook(java.lang.String)` was added
-
-#### `models.KikChannelProperties` was modified
-
-* `userName()` was added
-* `withUserName(java.lang.String)` was added
-
-#### `models.DirectLineSite` was modified
-
-* `withETag(java.lang.String)` was added
+* `withName(java.lang.String)` was added
 
 #### `models.SlackChannelProperties` was modified
 
@@ -420,10 +371,6 @@
 
 * `systemData()` was added
 
-#### `models.WebChatSite` was modified
-
-* `withETag(java.lang.String)` was added
-
 #### `models.EmailChannelAuthMethod` was modified
 
 * `fromInt(int)` was added
@@ -431,11 +378,11 @@
 
 #### `BotServiceManager` was modified
 
-* `networkSecurityPerimeterConfigurations()` was added
+* `emails()` was added
+* `qnAMakerEndpointKeys()` was added
 * `privateEndpointConnections()` was added
 * `privateLinkResources()` was added
-* `qnAMakerEndpointKeys()` was added
-* `emails()` was added
+* `networkSecurityPerimeterConfigurations()` was added
 * `operationResults()` was added
 
 ## 1.0.0 (2025-01-02)

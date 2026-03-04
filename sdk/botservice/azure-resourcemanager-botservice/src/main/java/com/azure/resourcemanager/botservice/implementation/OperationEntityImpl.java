@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.botservice.implementation;
 
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.botservice.fluent.models.OperationEntityInner;
 import com.azure.resourcemanager.botservice.models.OperationDisplayInfo;
 import com.azure.resourcemanager.botservice.models.OperationEntity;
@@ -32,7 +31,7 @@ public final class OperationEntityImpl implements OperationEntity {
         return this.innerModel().origin();
     }
 
-    public BinaryData properties() {
+    public Object properties() {
         return this.innerModel().properties();
     }
 

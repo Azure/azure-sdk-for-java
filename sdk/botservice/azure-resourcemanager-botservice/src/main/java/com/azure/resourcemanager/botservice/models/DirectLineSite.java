@@ -151,8 +151,8 @@ public final class DirectLineSite extends Site {
      * {@inheritDoc}
      */
     @Override
-    public DirectLineSite withETag(String eTag) {
-        super.withETag(eTag);
+    public DirectLineSite withEtag(String etag) {
+        super.withEtag(etag);
         return this;
     }
 
@@ -232,7 +232,7 @@ public final class DirectLineSite extends Site {
         jsonWriter.writeBooleanField("isDetailedLoggingEnabled", isDetailedLoggingEnabled());
         jsonWriter.writeBooleanField("isBlockUserUploadEnabled", isBlockUserUploadEnabled());
         jsonWriter.writeBooleanField("isNoStorageEnabled", isNoStorageEnabled());
-        jsonWriter.writeStringField("eTag", eTag());
+        jsonWriter.writeStringField("eTag", etag());
         jsonWriter.writeStringField("appId", appId());
         jsonWriter.writeBooleanField("isV1Enabled", isV1Enabled());
         jsonWriter.writeBooleanField("isV3Enabled", isV3Enabled());
@@ -284,7 +284,7 @@ public final class DirectLineSite extends Site {
                 } else if ("isNoStorageEnabled".equals(fieldName)) {
                     deserializedDirectLineSite.withIsNoStorageEnabled(reader.getNullable(JsonReader::getBoolean));
                 } else if ("eTag".equals(fieldName)) {
-                    deserializedDirectLineSite.withETag(reader.getString());
+                    deserializedDirectLineSite.withEtag(reader.getString());
                 } else if ("appId".equals(fieldName)) {
                     deserializedDirectLineSite.withAppId(reader.getString());
                 } else if ("isV1Enabled".equals(fieldName)) {

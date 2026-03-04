@@ -78,7 +78,7 @@ public final class BotProperties implements JsonSerializable<BotProperties> {
     /*
      * Microsoft App Managed Identity Resource Id for the bot
      */
-    private String msaAppMSIResourceId;
+    private String msaAppMsiResourceId;
 
     /*
      * Collection of channels for which the bot is configured
@@ -416,22 +416,22 @@ public final class BotProperties implements JsonSerializable<BotProperties> {
     }
 
     /**
-     * Get the msaAppMSIResourceId property: Microsoft App Managed Identity Resource Id for the bot.
+     * Get the msaAppMsiResourceId property: Microsoft App Managed Identity Resource Id for the bot.
      * 
-     * @return the msaAppMSIResourceId value.
+     * @return the msaAppMsiResourceId value.
      */
-    public String msaAppMSIResourceId() {
-        return this.msaAppMSIResourceId;
+    public String msaAppMsiResourceId() {
+        return this.msaAppMsiResourceId;
     }
 
     /**
-     * Set the msaAppMSIResourceId property: Microsoft App Managed Identity Resource Id for the bot.
+     * Set the msaAppMsiResourceId property: Microsoft App Managed Identity Resource Id for the bot.
      * 
-     * @param msaAppMSIResourceId the msaAppMSIResourceId value to set.
+     * @param msaAppMsiResourceId the msaAppMsiResourceId value to set.
      * @return the BotProperties object itself.
      */
-    public BotProperties withMsaAppMSIResourceId(String msaAppMSIResourceId) {
-        this.msaAppMSIResourceId = msaAppMSIResourceId;
+    public BotProperties withMsaAppMsiResourceId(String msaAppMsiResourceId) {
+        this.msaAppMsiResourceId = msaAppMsiResourceId;
         return this;
     }
 
@@ -846,7 +846,7 @@ public final class BotProperties implements JsonSerializable<BotProperties> {
         jsonWriter.writeStringField("manifestUrl", this.manifestUrl);
         jsonWriter.writeStringField("msaAppType", this.msaAppType == null ? null : this.msaAppType.toString());
         jsonWriter.writeStringField("msaAppTenantId", this.msaAppTenantId);
-        jsonWriter.writeStringField("msaAppMSIResourceId", this.msaAppMSIResourceId);
+        jsonWriter.writeStringField("msaAppMSIResourceId", this.msaAppMsiResourceId);
         jsonWriter.writeStringField("developerAppInsightKey", this.developerAppInsightKey);
         jsonWriter.writeStringField("developerAppInsightsApiKey", this.developerAppInsightsApiKey);
         jsonWriter.writeStringField("developerAppInsightsApplicationId", this.developerAppInsightsApplicationId);
@@ -908,7 +908,7 @@ public final class BotProperties implements JsonSerializable<BotProperties> {
                 } else if ("msaAppTenantId".equals(fieldName)) {
                     deserializedBotProperties.msaAppTenantId = reader.getString();
                 } else if ("msaAppMSIResourceId".equals(fieldName)) {
-                    deserializedBotProperties.msaAppMSIResourceId = reader.getString();
+                    deserializedBotProperties.msaAppMsiResourceId = reader.getString();
                 } else if ("configuredChannels".equals(fieldName)) {
                     List<String> configuredChannels = reader.readArray(reader1 -> reader1.getString());
                     deserializedBotProperties.configuredChannels = configuredChannels;

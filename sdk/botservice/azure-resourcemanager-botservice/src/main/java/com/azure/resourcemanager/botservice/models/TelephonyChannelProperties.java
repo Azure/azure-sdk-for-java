@@ -45,7 +45,7 @@ public final class TelephonyChannelProperties implements JsonSerializable<Teleph
     /*
      * The premium SKU applied to the channel
      */
-    private String premiumSKU;
+    private String premiumSku;
 
     /*
      * Whether the channel is enabled
@@ -160,22 +160,22 @@ public final class TelephonyChannelProperties implements JsonSerializable<Teleph
     }
 
     /**
-     * Get the premiumSKU property: The premium SKU applied to the channel.
+     * Get the premiumSku property: The premium SKU applied to the channel.
      * 
-     * @return the premiumSKU value.
+     * @return the premiumSku value.
      */
-    public String premiumSKU() {
-        return this.premiumSKU;
+    public String premiumSku() {
+        return this.premiumSku;
     }
 
     /**
-     * Set the premiumSKU property: The premium SKU applied to the channel.
+     * Set the premiumSku property: The premium SKU applied to the channel.
      * 
-     * @param premiumSKU the premiumSKU value to set.
+     * @param premiumSku the premiumSku value to set.
      * @return the TelephonyChannelProperties object itself.
      */
-    public TelephonyChannelProperties withPremiumSKU(String premiumSKU) {
-        this.premiumSKU = premiumSKU;
+    public TelephonyChannelProperties withPremiumSku(String premiumSku) {
+        this.premiumSku = premiumSku;
         return this;
     }
 
@@ -211,7 +211,7 @@ public final class TelephonyChannelProperties implements JsonSerializable<Teleph
         jsonWriter.writeStringField("cognitiveServiceSubscriptionKey", this.cognitiveServiceSubscriptionKey);
         jsonWriter.writeStringField("cognitiveServiceRegion", this.cognitiveServiceRegion);
         jsonWriter.writeStringField("defaultLocale", this.defaultLocale);
-        jsonWriter.writeStringField("premiumSKU", this.premiumSKU);
+        jsonWriter.writeStringField("premiumSKU", this.premiumSku);
         jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
         return jsonWriter.writeEndObject();
     }
@@ -246,7 +246,7 @@ public final class TelephonyChannelProperties implements JsonSerializable<Teleph
                 } else if ("defaultLocale".equals(fieldName)) {
                     deserializedTelephonyChannelProperties.defaultLocale = reader.getString();
                 } else if ("premiumSKU".equals(fieldName)) {
-                    deserializedTelephonyChannelProperties.premiumSKU = reader.getString();
+                    deserializedTelephonyChannelProperties.premiumSku = reader.getString();
                 } else if ("isEnabled".equals(fieldName)) {
                     deserializedTelephonyChannelProperties.isEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else {

@@ -19,7 +19,7 @@ public final class KikChannelProperties implements JsonSerializable<KikChannelPr
     /*
      * The Kik user name
      */
-    private String userName;
+    private String username;
 
     /*
      * Kik API key. Value only returned through POST to the action Channel List API, otherwise empty.
@@ -43,22 +43,22 @@ public final class KikChannelProperties implements JsonSerializable<KikChannelPr
     }
 
     /**
-     * Get the userName property: The Kik user name.
+     * Get the username property: The Kik user name.
      * 
-     * @return the userName value.
+     * @return the username value.
      */
-    public String userName() {
-        return this.userName;
+    public String username() {
+        return this.username;
     }
 
     /**
-     * Set the userName property: The Kik user name.
+     * Set the username property: The Kik user name.
      * 
-     * @param userName the userName value to set.
+     * @param username the username value to set.
      * @return the KikChannelProperties object itself.
      */
-    public KikChannelProperties withUserName(String userName) {
-        this.userName = userName;
+    public KikChannelProperties withUsername(String username) {
+        this.username = username;
         return this;
     }
 
@@ -130,7 +130,7 @@ public final class KikChannelProperties implements JsonSerializable<KikChannelPr
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("userName", this.userName);
+        jsonWriter.writeStringField("userName", this.username);
         jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
         jsonWriter.writeStringField("apiKey", this.apiKey);
         jsonWriter.writeBooleanField("isValidated", this.isValidated);
@@ -154,7 +154,7 @@ public final class KikChannelProperties implements JsonSerializable<KikChannelPr
                 reader.nextToken();
 
                 if ("userName".equals(fieldName)) {
-                    deserializedKikChannelProperties.userName = reader.getString();
+                    deserializedKikChannelProperties.username = reader.getString();
                 } else if ("isEnabled".equals(fieldName)) {
                     deserializedKikChannelProperties.isEnabled = reader.getBoolean();
                 } else if ("apiKey".equals(fieldName)) {

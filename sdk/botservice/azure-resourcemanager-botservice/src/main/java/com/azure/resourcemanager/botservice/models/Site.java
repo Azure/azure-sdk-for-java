@@ -75,7 +75,7 @@ public class Site implements JsonSerializable<Site> {
     /*
      * Entity Tag
      */
-    private String eTag;
+    private String etag;
 
     /*
      * DirectLine application id
@@ -343,22 +343,22 @@ public class Site implements JsonSerializable<Site> {
     }
 
     /**
-     * Get the eTag property: Entity Tag.
+     * Get the etag property: Entity Tag.
      * 
-     * @return the eTag value.
+     * @return the etag value.
      */
-    public String eTag() {
-        return this.eTag;
+    public String etag() {
+        return this.etag;
     }
 
     /**
-     * Set the eTag property: Entity Tag.
+     * Set the etag property: Entity Tag.
      * 
-     * @param eTag the eTag value to set.
+     * @param etag the etag value to set.
      * @return the Site object itself.
      */
-    public Site withETag(String eTag) {
-        this.eTag = eTag;
+    public Site withEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 
@@ -517,7 +517,7 @@ public class Site implements JsonSerializable<Site> {
         jsonWriter.writeBooleanField("isDetailedLoggingEnabled", this.isDetailedLoggingEnabled);
         jsonWriter.writeBooleanField("isBlockUserUploadEnabled", this.isBlockUserUploadEnabled);
         jsonWriter.writeBooleanField("isNoStorageEnabled", this.isNoStorageEnabled);
-        jsonWriter.writeStringField("eTag", this.eTag);
+        jsonWriter.writeStringField("eTag", this.etag);
         jsonWriter.writeStringField("appId", this.appId);
         jsonWriter.writeBooleanField("isV1Enabled", this.isV1Enabled);
         jsonWriter.writeBooleanField("isV3Enabled", this.isV3Enabled);
@@ -568,7 +568,7 @@ public class Site implements JsonSerializable<Site> {
                 } else if ("isNoStorageEnabled".equals(fieldName)) {
                     deserializedSite.isNoStorageEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("eTag".equals(fieldName)) {
-                    deserializedSite.eTag = reader.getString();
+                    deserializedSite.etag = reader.getString();
                 } else if ("appId".equals(fieldName)) {
                     deserializedSite.appId = reader.getString();
                 } else if ("isV1Enabled".equals(fieldName)) {

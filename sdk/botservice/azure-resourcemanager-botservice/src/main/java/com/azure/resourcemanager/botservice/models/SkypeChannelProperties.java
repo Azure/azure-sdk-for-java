@@ -54,7 +54,7 @@ public final class SkypeChannelProperties implements JsonSerializable<SkypeChann
     /*
      * Calling web hook for Skype channel
      */
-    private String callingWebHook;
+    private String callingWebhook;
 
     /*
      * Incoming call route for Skype channel
@@ -213,22 +213,22 @@ public final class SkypeChannelProperties implements JsonSerializable<SkypeChann
     }
 
     /**
-     * Get the callingWebHook property: Calling web hook for Skype channel.
+     * Get the callingWebhook property: Calling web hook for Skype channel.
      * 
-     * @return the callingWebHook value.
+     * @return the callingWebhook value.
      */
-    public String callingWebHook() {
-        return this.callingWebHook;
+    public String callingWebhook() {
+        return this.callingWebhook;
     }
 
     /**
-     * Set the callingWebHook property: Calling web hook for Skype channel.
+     * Set the callingWebhook property: Calling web hook for Skype channel.
      * 
-     * @param callingWebHook the callingWebHook value to set.
+     * @param callingWebhook the callingWebhook value to set.
      * @return the SkypeChannelProperties object itself.
      */
-    public SkypeChannelProperties withCallingWebHook(String callingWebHook) {
-        this.callingWebHook = callingWebHook;
+    public SkypeChannelProperties withCallingWebhook(String callingWebhook) {
+        this.callingWebhook = callingWebhook;
         return this;
     }
 
@@ -286,7 +286,7 @@ public final class SkypeChannelProperties implements JsonSerializable<SkypeChann
         jsonWriter.writeBooleanField("enableScreenSharing", this.enableScreenSharing);
         jsonWriter.writeBooleanField("enableGroups", this.enableGroups);
         jsonWriter.writeStringField("groupsMode", this.groupsMode);
-        jsonWriter.writeStringField("callingWebHook", this.callingWebHook);
+        jsonWriter.writeStringField("callingWebHook", this.callingWebhook);
         jsonWriter.writeStringField("incomingCallRoute", this.incomingCallRoute);
         return jsonWriter.writeEndObject();
     }
@@ -324,7 +324,7 @@ public final class SkypeChannelProperties implements JsonSerializable<SkypeChann
                 } else if ("groupsMode".equals(fieldName)) {
                     deserializedSkypeChannelProperties.groupsMode = reader.getString();
                 } else if ("callingWebHook".equals(fieldName)) {
-                    deserializedSkypeChannelProperties.callingWebHook = reader.getString();
+                    deserializedSkypeChannelProperties.callingWebhook = reader.getString();
                 } else if ("incomingCallRoute".equals(fieldName)) {
                     deserializedSkypeChannelProperties.incomingCallRoute = reader.getString();
                 } else {

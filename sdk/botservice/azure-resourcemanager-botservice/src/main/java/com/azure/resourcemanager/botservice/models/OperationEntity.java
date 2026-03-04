@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.botservice.models;
 
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.botservice.fluent.models.OperationEntityInner;
 
 /**
@@ -37,7 +36,7 @@ public interface OperationEntity {
      * 
      * @return the properties value.
      */
-    BinaryData properties();
+    Object properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.botservice.fluent.models.OperationEntityInner object.

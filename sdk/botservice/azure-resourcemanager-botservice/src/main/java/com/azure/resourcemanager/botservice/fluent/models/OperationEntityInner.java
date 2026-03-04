@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -36,7 +35,7 @@ public final class OperationEntityInner implements JsonSerializable<OperationEnt
     /*
      * Additional properties.
      */
-    private BinaryData properties;
+    private Object properties;
 
     /**
      * Creates an instance of OperationEntityInner class.
@@ -76,7 +75,7 @@ public final class OperationEntityInner implements JsonSerializable<OperationEnt
      * 
      * @return the properties value.
      */
-    public BinaryData properties() {
+    public Object properties() {
         return this.properties;
     }
 
@@ -90,8 +89,7 @@ public final class OperationEntityInner implements JsonSerializable<OperationEnt
         jsonWriter.writeJsonField("display", this.display);
         jsonWriter.writeStringField("origin", this.origin);
         if (this.properties != null) {
-            jsonWriter.writeFieldName("properties");
-            this.properties.writeTo(jsonWriter);
+            jsonWriter.writeUntypedField("properties", this.properties);
         }
         return jsonWriter.writeEndObject();
     }
@@ -118,8 +116,7 @@ public final class OperationEntityInner implements JsonSerializable<OperationEnt
                 } else if ("origin".equals(fieldName)) {
                     deserializedOperationEntityInner.origin = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedOperationEntityInner.properties
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedOperationEntityInner.properties = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

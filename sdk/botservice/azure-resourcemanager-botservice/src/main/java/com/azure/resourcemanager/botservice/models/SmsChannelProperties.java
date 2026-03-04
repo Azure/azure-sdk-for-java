@@ -24,7 +24,7 @@ public final class SmsChannelProperties implements JsonSerializable<SmsChannelPr
     /*
      * The Sms account SID. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    private String accountSID;
+    private String accountSid;
 
     /*
      * The Sms auth token. Value only returned through POST to the action Channel List API, otherwise empty.
@@ -68,24 +68,24 @@ public final class SmsChannelProperties implements JsonSerializable<SmsChannelPr
     }
 
     /**
-     * Get the accountSID property: The Sms account SID. Value only returned through POST to the action Channel List
+     * Get the accountSid property: The Sms account SID. Value only returned through POST to the action Channel List
      * API, otherwise empty.
      * 
-     * @return the accountSID value.
+     * @return the accountSid value.
      */
-    public String accountSID() {
-        return this.accountSID;
+    public String accountSid() {
+        return this.accountSid;
     }
 
     /**
-     * Set the accountSID property: The Sms account SID. Value only returned through POST to the action Channel List
+     * Set the accountSid property: The Sms account SID. Value only returned through POST to the action Channel List
      * API, otherwise empty.
      * 
-     * @param accountSID the accountSID value to set.
+     * @param accountSid the accountSid value to set.
      * @return the SmsChannelProperties object itself.
      */
-    public SmsChannelProperties withAccountSID(String accountSID) {
-        this.accountSID = accountSID;
+    public SmsChannelProperties withAccountSid(String accountSid) {
+        this.accountSid = accountSid;
         return this;
     }
 
@@ -158,7 +158,7 @@ public final class SmsChannelProperties implements JsonSerializable<SmsChannelPr
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("phone", this.phone);
-        jsonWriter.writeStringField("accountSID", this.accountSID);
+        jsonWriter.writeStringField("accountSID", this.accountSid);
         jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
         jsonWriter.writeStringField("authToken", this.authToken);
         jsonWriter.writeBooleanField("isValidated", this.isValidated);
@@ -184,7 +184,7 @@ public final class SmsChannelProperties implements JsonSerializable<SmsChannelPr
                 if ("phone".equals(fieldName)) {
                     deserializedSmsChannelProperties.phone = reader.getString();
                 } else if ("accountSID".equals(fieldName)) {
-                    deserializedSmsChannelProperties.accountSID = reader.getString();
+                    deserializedSmsChannelProperties.accountSid = reader.getString();
                 } else if ("isEnabled".equals(fieldName)) {
                     deserializedSmsChannelProperties.isEnabled = reader.getBoolean();
                 } else if ("authToken".equals(fieldName)) {
