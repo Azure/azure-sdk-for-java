@@ -1,6 +1,20 @@
 # Code snippets and samples
 
 
+## DiscountOperation
+
+- [GetByResourceGroup](#discountoperation_getbyresourcegroup)
+- [Update](#discountoperation_update)
+
+## Discounts
+
+- [Cancel](#discounts_cancel)
+- [Create](#discounts_create)
+- [Delete](#discounts_delete)
+- [List](#discounts_list)
+- [ListByResourceGroup](#discounts_listbyresourcegroup)
+- [ScopeList](#discounts_scopelist)
+
 ## Operations
 
 - [List](#operations_list)
@@ -9,10 +23,6 @@
 
 - [Create](#reservationorderalias_create)
 - [Get](#reservationorderalias_get)
-
-## ResourceProvider
-
-- [ValidatePurchase](#resourceprovider_validatepurchase)
 
 ## SavingsPlan
 
@@ -32,6 +42,429 @@
 
 - [Create](#savingsplanorderalias_create)
 - [Get](#savingsplanorderalias_get)
+### DiscountOperation_GetByResourceGroup
+
+```java
+/**
+ * Samples for DiscountOperation GetByResourceGroup.
+ */
+public final class DiscountOperationGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-11-01-preview/DiscountGet.json
+     */
+    /**
+     * Sample code: DiscountGet.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void discountGet(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discountOperations()
+            .getByResourceGroupWithResponse("testrg", "testprimarydiscount", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DiscountOperation_Update
+
+```java
+import com.azure.resourcemanager.billingbenefits.models.DiscountPatchRequest;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DiscountOperation Update.
+ */
+public final class DiscountOperationUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-11-01-preview/DiscountsUpdate.json
+     */
+    /**
+     * Sample code: DiscountGet.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void discountGet(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discountOperations()
+            .update("testrg", "testprimarydiscount",
+                new DiscountPatchRequest()
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+                    .withDisplayName("Virtual Machines D Series"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### Discounts_Cancel
+
+```java
+/**
+ * Samples for Discounts Cancel.
+ */
+public final class DiscountsCancelSamples {
+    /*
+     * x-ms-original-file: 2024-11-01-preview/DiscountCancel.json
+     */
+    /**
+     * Sample code: DiscountCancel.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void discountCancel(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discounts().cancel("testrg", "testdiscount", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Discounts_Create
+
+```java
+import com.azure.resourcemanager.billingbenefits.models.ApplyDiscountOn;
+import com.azure.resourcemanager.billingbenefits.models.CatalogClaimsItem;
+import com.azure.resourcemanager.billingbenefits.models.ConditionsItem;
+import com.azure.resourcemanager.billingbenefits.models.CustomPriceProperties;
+import com.azure.resourcemanager.billingbenefits.models.DiscountAppliedScopeType;
+import com.azure.resourcemanager.billingbenefits.models.DiscountCombinationRule;
+import com.azure.resourcemanager.billingbenefits.models.DiscountRuleType;
+import com.azure.resourcemanager.billingbenefits.models.DiscountTypeCustomPrice;
+import com.azure.resourcemanager.billingbenefits.models.DiscountTypeCustomPriceMultiCurrency;
+import com.azure.resourcemanager.billingbenefits.models.DiscountTypeProductFamily;
+import com.azure.resourcemanager.billingbenefits.models.DiscountTypeProductSku;
+import com.azure.resourcemanager.billingbenefits.models.EntityTypeAffiliateDiscount;
+import com.azure.resourcemanager.billingbenefits.models.EntityTypePrimaryDiscount;
+import com.azure.resourcemanager.billingbenefits.models.MarketSetPricesItems;
+import com.azure.resourcemanager.billingbenefits.models.PriceGuaranteeProperties;
+import com.azure.resourcemanager.billingbenefits.models.PricingPolicy;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Discounts Create.
+ */
+public final class DiscountsCreateSamples {
+    /*
+     * x-ms-original-file: 2024-11-01-preview/DiscountsCreatePrimaryBackfill.json
+     */
+    /**
+     * Sample code: DiscountsCreatePrimaryBackfill.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void
+        discountsCreatePrimaryBackfill(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discounts()
+            .define("testprimarydiscount")
+            .withRegion("global")
+            .withExistingResourceGroup("testrg")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withProperties(new EntityTypePrimaryDiscount().withProductCode("fakeTokenPlaceholder")
+                .withStartAt(OffsetDateTime.parse("2023-07-01T00:00:00Z"))
+                .withSystemId("13810867107109237")
+                .withDisplayName("Virtual Machines D Series")
+                .withAppliedScopeType(DiscountAppliedScopeType.BILLING_ACCOUNT)
+                .withDiscountTypeProperties(
+                    new DiscountTypeProductFamily().withApplyDiscountOn(ApplyDiscountOn.PURCHASE)
+                        .withDiscountPercentage(14.0D)
+                        .withDiscountCombinationRule(DiscountCombinationRule.BEST_OF)
+                        .withConditions(Arrays.asList(new ConditionsItem().withConditionName("Cloud")
+                            .withValue(Arrays.asList("US-Sec"))
+                            .withType("equalAny")))
+                        .withProductFamilyName("Azure"))
+                .withEndAt(OffsetDateTime.parse("2024-07-01T23:59:59Z")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01-preview/DiscountsCreatePrimaryWithCustomPrice.json
+     */
+    /**
+     * Sample code: DiscountsCreatePrimaryWithCustomPrice.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void discountsCreatePrimaryWithCustomPrice(
+        com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discounts()
+            .define("testprimarydiscount")
+            .withRegion("global")
+            .withExistingResourceGroup("testrg")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withProperties(new EntityTypePrimaryDiscount().withProductCode("fakeTokenPlaceholder")
+                .withStartAt(OffsetDateTime.parse("2023-07-01T00:00:00Z"))
+                .withDisplayName("Virtual Machines D Series")
+                .withAppliedScopeType(DiscountAppliedScopeType.BILLING_ACCOUNT)
+                .withDiscountTypeProperties(new DiscountTypeCustomPrice().withApplyDiscountOn(ApplyDiscountOn.PURCHASE)
+                    .withDiscountPercentage(14.0D)
+                    .withDiscountCombinationRule(DiscountCombinationRule.BEST_OF)
+                    .withConditions(Arrays.asList(new ConditionsItem().withConditionName("Cloud")
+                        .withValue(Arrays.asList("US-Sec"))
+                        .withType("equalAny")))
+                    .withProductFamilyName("Azure")
+                    .withProductId("DZH318Z0BQ35")
+                    .withSkuId("0001")
+                    .withCustomPriceProperties(new CustomPriceProperties()
+                        .withRuleType(DiscountRuleType.FIXED_PRICE_LOCK)
+                        .withCatalogId("4")
+                        .withCatalogClaims(Arrays.asList(
+                            new CatalogClaimsItem().withCatalogClaimsItemType("NationalCloud").withValue("USSec")))
+                        .withTermUnits("ASI1251A")
+                        .withMarketSetPrices(Arrays.asList(new MarketSetPricesItems().withMarkets(Arrays.asList("US"))
+                            .withValue(125.16)
+                            .withCurrency("USD")))))
+                .withEndAt(OffsetDateTime.parse("2024-07-01T23:59:59Z")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01-preview/DiscountsCreatePrimaryWithPriceGuarantee.json
+     */
+    /**
+     * Sample code: DiscountsCreatePrimaryWithPriceGuarantee.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void discountsCreatePrimaryWithPriceGuarantee(
+        com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discounts()
+            .define("testprimarydiscount")
+            .withRegion("global")
+            .withExistingResourceGroup("testrg")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withProperties(new EntityTypePrimaryDiscount().withProductCode("fakeTokenPlaceholder")
+                .withStartAt(OffsetDateTime.parse("2023-07-01T00:00:00Z"))
+                .withDisplayName("Virtual Machines D Series")
+                .withAppliedScopeType(DiscountAppliedScopeType.BILLING_ACCOUNT)
+                .withDiscountTypeProperties(new DiscountTypeProductSku().withApplyDiscountOn(ApplyDiscountOn.PURCHASE)
+                    .withDiscountCombinationRule(DiscountCombinationRule.BEST_OF)
+                    .withPriceGuaranteeProperties(
+                        new PriceGuaranteeProperties().withPricingPolicy(PricingPolicy.PROTECTED)
+                            .withPriceGuaranteeDate(OffsetDateTime.parse("2024-11-01T00:00:00")))
+                    .withConditions(Arrays.asList(new ConditionsItem().withConditionName("Cloud")
+                        .withValue(Arrays.asList("US-Sec"))
+                        .withType("equalAny")))
+                    .withProductFamilyName("Azure")
+                    .withProductId("DZH318Z0BQ35")
+                    .withSkuId("0001"))
+                .withEndAt(OffsetDateTime.parse("2024-07-01T23:59:59Z")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01-preview/DiscountsCreateAffiliate.json
+     */
+    /**
+     * Sample code: DiscountsCreateAffiliate.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void
+        discountsCreateAffiliate(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discounts()
+            .define("testaffiliatediscount")
+            .withRegion("global")
+            .withExistingResourceGroup("testrg")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withProperties(new EntityTypeAffiliateDiscount().withProductCode("fakeTokenPlaceholder")
+                .withStartAt(OffsetDateTime.parse("2023-07-01T00:00:00Z"))
+                .withSystemId("13810867107109237")
+                .withDisplayName("Virtual Machines D Series"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01-preview/DiscountsCreatePrimary.json
+     */
+    /**
+     * Sample code: DiscountsCreatePrimary.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void
+        discountsCreatePrimary(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discounts()
+            .define("testprimarydiscount")
+            .withRegion("global")
+            .withExistingResourceGroup("testrg")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withProperties(new EntityTypePrimaryDiscount().withProductCode("fakeTokenPlaceholder")
+                .withStartAt(OffsetDateTime.parse("2023-07-01T00:00:00Z"))
+                .withDisplayName("Virtual Machines D Series")
+                .withAppliedScopeType(DiscountAppliedScopeType.BILLING_ACCOUNT)
+                .withDiscountTypeProperties(new DiscountTypeProductSku().withApplyDiscountOn(ApplyDiscountOn.PURCHASE)
+                    .withDiscountPercentage(14.0D)
+                    .withDiscountCombinationRule(DiscountCombinationRule.BEST_OF)
+                    .withConditions(Arrays.asList(new ConditionsItem().withConditionName("Cloud")
+                        .withValue(Arrays.asList("US-Sec"))
+                        .withType("equalAny")))
+                    .withProductFamilyName("Azure")
+                    .withProductId("DZH318Z0BQ35")
+                    .withSkuId("0001"))
+                .withEndAt(OffsetDateTime.parse("2024-07-01T23:59:59Z")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01-preview/DiscountsCreatePrimaryWithCustomPriceMultiCurrency.json
+     */
+    /**
+     * Sample code: DiscountsCreatePrimaryWithCustomPriceMultiCurrency.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void discountsCreatePrimaryWithCustomPriceMultiCurrency(
+        com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discounts()
+            .define("testprimarydiscount")
+            .withRegion("global")
+            .withExistingResourceGroup("testrg")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withProperties(
+                new EntityTypePrimaryDiscount().withProductCode("fakeTokenPlaceholder")
+                    .withStartAt(OffsetDateTime.parse("2023-07-01T00:00:00Z"))
+                    .withDisplayName("Virtual Machines D Series")
+                    .withAppliedScopeType(DiscountAppliedScopeType.BILLING_ACCOUNT)
+                    .withDiscountTypeProperties(new DiscountTypeCustomPriceMultiCurrency()
+                        .withApplyDiscountOn(ApplyDiscountOn.PURCHASE)
+                        .withDiscountPercentage(14.0D)
+                        .withDiscountCombinationRule(DiscountCombinationRule.BEST_OF)
+                        .withConditions(Arrays.asList(new ConditionsItem().withConditionName("Cloud")
+                            .withValue(Arrays.asList("US-Sec"))
+                            .withType("equalAny")))
+                        .withProductFamilyName("Azure")
+                        .withProductId("DZH318Z0BQ35")
+                        .withSkuId("0001")
+                        .withCustomPriceProperties(new CustomPriceProperties()
+                            .withRuleType(DiscountRuleType.FIXED_PRICE_LOCK)
+                            .withCatalogId("4")
+                            .withCatalogClaims(Arrays.asList(
+                                new CatalogClaimsItem().withCatalogClaimsItemType("NationalCloud").withValue("USSec")))
+                            .withTermUnits("ASI1251A")
+                            .withMarketSetPrices(Arrays.asList(
+                                new MarketSetPricesItems().withMarkets(Arrays.asList("US"))
+                                    .withValue(125.16)
+                                    .withCurrency("USD"),
+                                new MarketSetPricesItems().withMarkets(Arrays.asList("FR"))
+                                    .withValue(110.16)
+                                    .withCurrency("EUR")))))
+                    .withEndAt(OffsetDateTime.parse("2024-07-01T23:59:59Z")))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### Discounts_Delete
+
+```java
+/**
+ * Samples for Discounts Delete.
+ */
+public final class DiscountsDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-11-01-preview/DiscountsDelete.json
+     */
+    /**
+     * Sample code: ReservationOrderAliasCreate.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void
+        reservationOrderAliasCreate(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discounts().delete("testrg", "testdiscount", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Discounts_List
+
+```java
+/**
+ * Samples for Discounts List.
+ */
+public final class DiscountsListSamples {
+    /*
+     * x-ms-original-file: 2024-11-01-preview/DiscountList.json
+     */
+    /**
+     * Sample code: DiscountSubscriptionList.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void
+        discountSubscriptionList(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discounts().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Discounts_ListByResourceGroup
+
+```java
+/**
+ * Samples for Discounts ListByResourceGroup.
+ */
+public final class DiscountsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-11-01-preview/DiscountListResourceGroup.json
+     */
+    /**
+     * Sample code: DiscountsResourceGroupList.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void
+        discountsResourceGroupList(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discounts().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Discounts_ScopeList
+
+```java
+/**
+ * Samples for Discounts ScopeList.
+ */
+public final class DiscountsScopeListSamples {
+    /*
+     * x-ms-original-file: 2024-11-01-preview/ApplicableDiscountsList.json
+     */
+    /**
+     * Sample code: DiscountScopeList.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void discountScopeList(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.discounts()
+            .scopeList("providers/Microsoft.Billing/billingAccounts/{acctId}", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Operations_List
 
 ```java
@@ -40,9 +473,7 @@
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/OperationsGet
-     * .json
+     * x-ms-original-file: 2024-11-01-preview/OperationsGet.json
      */
     /**
      * Sample code: OperationsGet.
@@ -65,7 +496,7 @@ import com.azure.resourcemanager.billingbenefits.models.InstanceFlexibility;
 import com.azure.resourcemanager.billingbenefits.models.ReservationOrderAliasRequest;
 import com.azure.resourcemanager.billingbenefits.models.ReservationOrderAliasRequestPropertiesReservedResourceProperties;
 import com.azure.resourcemanager.billingbenefits.models.ReservedResourceType;
-import com.azure.resourcemanager.billingbenefits.models.Sku;
+import com.azure.resourcemanager.billingbenefits.models.ResourceSku;
 import com.azure.resourcemanager.billingbenefits.models.Term;
 
 /**
@@ -73,9 +504,7 @@ import com.azure.resourcemanager.billingbenefits.models.Term;
  */
 public final class ReservationOrderAliasCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * ReservationOrderAliasCreate.json
+     * x-ms-original-file: 2024-11-01-preview/ReservationOrderAliasCreate.json
      */
     /**
      * Sample code: ReservationOrderAliasCreate.
@@ -86,7 +515,7 @@ public final class ReservationOrderAliasCreateSamples {
         reservationOrderAliasCreate(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
         manager.reservationOrderAlias()
             .create("reservationOrderAlias123", new ReservationOrderAliasRequest()
-                .withSku(new Sku().withName("Standard_M64s_v2"))
+                .withSku(new ResourceSku().withName("Standard_M64s_v2"))
                 .withLocation("eastus")
                 .withDisplayName("ReservationOrder_2022-06-02")
                 .withBillingScopeId("/subscriptions/10000000-0000-0000-0000-000000000000")
@@ -113,9 +542,7 @@ public final class ReservationOrderAliasCreateSamples {
  */
 public final class ReservationOrderAliasGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * ReservationOrderAliasGet.json
+     * x-ms-original-file: 2024-11-01-preview/ReservationOrderAliasGet.json
      */
     /**
      * Sample code: ReservationOrderAliasGet.
@@ -129,62 +556,6 @@ public final class ReservationOrderAliasGetSamples {
 }
 ```
 
-### ResourceProvider_ValidatePurchase
-
-```java
-import com.azure.resourcemanager.billingbenefits.fluent.models.SavingsPlanOrderAliasModelInner;
-import com.azure.resourcemanager.billingbenefits.models.AppliedScopeProperties;
-import com.azure.resourcemanager.billingbenefits.models.AppliedScopeType;
-import com.azure.resourcemanager.billingbenefits.models.Commitment;
-import com.azure.resourcemanager.billingbenefits.models.CommitmentGrain;
-import com.azure.resourcemanager.billingbenefits.models.SavingsPlanPurchaseValidateRequest;
-import com.azure.resourcemanager.billingbenefits.models.Sku;
-import com.azure.resourcemanager.billingbenefits.models.Term;
-import java.util.Arrays;
-
-/**
- * Samples for ResourceProvider ValidatePurchase.
- */
-public final class ResourceProviderValidatePurchaseSamples {
-    /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlanValidatePurchase.json
-     */
-    /**
-     * Sample code: SavingsPlanValidatePurchase.
-     * 
-     * @param manager Entry point to BillingBenefitsManager.
-     */
-    public static void
-        savingsPlanValidatePurchase(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
-        manager.resourceProviders()
-            .validatePurchaseWithResponse(new SavingsPlanPurchaseValidateRequest().withBenefits(Arrays.asList(
-                new SavingsPlanOrderAliasModelInner().withSku(new Sku().withName("Compute_Savings_Plan"))
-                    .withDisplayName("ComputeSavingsPlan_2021-07-01")
-                    .withBillingScopeId("/subscriptions/10000000-0000-0000-0000-000000000000")
-                    .withTerm(Term.P1Y)
-                    .withAppliedScopeType(AppliedScopeType.SINGLE)
-                    .withAppliedScopeProperties(new AppliedScopeProperties().withResourceGroupId(
-                        "/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/testrg"))
-                    .withCommitment(new Commitment().withCurrencyCode("fakeTokenPlaceholder")
-                        .withAmount(15.23D)
-                        .withGrain(CommitmentGrain.HOURLY)),
-                new SavingsPlanOrderAliasModelInner().withSku(new Sku().withName("Compute_Savings_Plan"))
-                    .withDisplayName("ComputeSavingsPlan_2021-07-01")
-                    .withBillingScopeId("/subscriptions/10000000-0000-0000-0000-000000000000")
-                    .withTerm(Term.P1Y)
-                    .withAppliedScopeType(AppliedScopeType.SINGLE)
-                    .withAppliedScopeProperties(new AppliedScopeProperties()
-                        .withResourceGroupId("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/RG"))
-                    .withCommitment(new Commitment().withCurrencyCode("fakeTokenPlaceholder")
-                        .withAmount(20.0D)
-                        .withGrain(CommitmentGrain.HOURLY)))),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### SavingsPlan_Get
 
 ```java
@@ -193,25 +564,7 @@ public final class ResourceProviderValidatePurchaseSamples {
  */
 public final class SavingsPlanGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlanItemGet.json
-     */
-    /**
-     * Sample code: SavingsPlanItemGet.
-     * 
-     * @param manager Entry point to BillingBenefitsManager.
-     */
-    public static void savingsPlanItemGet(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
-        manager.savingsPlans()
-            .getWithResponse("20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000", null,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlanItemExpandedGet.json
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlanItemExpandedGet.json
      */
     /**
      * Sample code: SavingsPlanItemWithExpandedRenewPropertiesGet.
@@ -222,7 +575,21 @@ public final class SavingsPlanGetSamples {
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
         manager.savingsPlans()
             .getWithResponse("20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000",
-                "renewProperties", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlanItemGet.json
+     */
+    /**
+     * Sample code: SavingsPlanItemGet.
+     * 
+     * @param manager Entry point to BillingBenefitsManager.
+     */
+    public static void savingsPlanItemGet(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.savingsPlans()
+            .getWithResponse("20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -235,9 +602,7 @@ public final class SavingsPlanGetSamples {
  */
 public final class SavingsPlanListSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlansInOrderList.json
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlansInOrderList.json
      */
     /**
      * Sample code: SavingsPlansInOrderList.
@@ -259,9 +624,7 @@ public final class SavingsPlanListSamples {
  */
 public final class SavingsPlanListAllSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlansList.json
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlansList.json
      */
     /**
      * Sample code: SavingsPlansList.
@@ -270,7 +633,7 @@ public final class SavingsPlanListAllSamples {
      */
     public static void savingsPlansList(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
         manager.savingsPlans()
-            .listAll("(properties/archived eq false)", "properties/displayName asc", "true", 50.0F, null, 1.0F,
+            .listAll("(properties/archived eq false)", "properties/displayName asc", "true", 50.0D, null, 1.0D,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -286,9 +649,9 @@ import com.azure.resourcemanager.billingbenefits.models.Commitment;
 import com.azure.resourcemanager.billingbenefits.models.CommitmentGrain;
 import com.azure.resourcemanager.billingbenefits.models.PurchaseRequest;
 import com.azure.resourcemanager.billingbenefits.models.RenewProperties;
+import com.azure.resourcemanager.billingbenefits.models.ResourceSku;
 import com.azure.resourcemanager.billingbenefits.models.SavingsPlanUpdateRequest;
 import com.azure.resourcemanager.billingbenefits.models.SavingsPlanUpdateRequestProperties;
-import com.azure.resourcemanager.billingbenefits.models.Sku;
 import com.azure.resourcemanager.billingbenefits.models.Term;
 
 /**
@@ -296,9 +659,7 @@ import com.azure.resourcemanager.billingbenefits.models.Term;
  */
 public final class SavingsPlanUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlanUpdate.json
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlanUpdate.json
      */
     /**
      * Sample code: SavingsPlanUpdate.
@@ -307,7 +668,7 @@ public final class SavingsPlanUpdateSamples {
      */
     public static void savingsPlanUpdate(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
         manager.savingsPlans()
-            .updateWithResponse("20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000",
+            .update("20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000",
                 new SavingsPlanUpdateRequest()
                     .withProperties(
                         new SavingsPlanUpdateRequestProperties().withDisplayName("TestDisplayName")
@@ -316,7 +677,7 @@ public final class SavingsPlanUpdateSamples {
                                 "/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/testrg"))
                             .withRenew(true)
                             .withRenewProperties(new RenewProperties().withPurchaseProperties(new PurchaseRequest()
-                                .withSku(new Sku().withName("Compute_Savings_Plan"))
+                                .withSku(new ResourceSku().withName("Compute_Savings_Plan"))
                                 .withDisplayName("TestDisplayName_renewed")
                                 .withBillingScopeId("/subscriptions/10000000-0000-0000-0000-000000000000")
                                 .withTerm(Term.P1Y)
@@ -347,9 +708,7 @@ import java.util.Arrays;
  */
 public final class SavingsPlanValidateUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlanValidateUpdate.json
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlanValidateUpdate.json
      */
     /**
      * Sample code: SavingsPlanValidateUpdate.
@@ -383,9 +742,7 @@ public final class SavingsPlanValidateUpdateSamples {
  */
 public final class SavingsPlanOrderElevateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlanOrderElevate.json
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlanOrderElevate.json
      */
     /**
      * Sample code: SavingsPlanOrderElevate.
@@ -408,9 +765,7 @@ public final class SavingsPlanOrderElevateSamples {
  */
 public final class SavingsPlanOrderGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlanOrderGet.json
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlanOrderGet.json
      */
     /**
      * Sample code: SavingsPlanOrderGet.
@@ -419,13 +774,11 @@ public final class SavingsPlanOrderGetSamples {
      */
     public static void savingsPlanOrderGet(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
         manager.savingsPlanOrders()
-            .getWithResponse("20000000-0000-0000-0000-000000000000", null, com.azure.core.util.Context.NONE);
+            .getWithResponse("20000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlanOrderExpandedGet.json
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlanOrderExpandedGet.json
      */
     /**
      * Sample code: SavingsPlanOrderWithExpandedPaymentsGet.
@@ -435,7 +788,7 @@ public final class SavingsPlanOrderGetSamples {
     public static void savingsPlanOrderWithExpandedPaymentsGet(
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
         manager.savingsPlanOrders()
-            .getWithResponse("20000000-0000-0000-0000-000000000000", "schedule", com.azure.core.util.Context.NONE);
+            .getWithResponse("20000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -448,9 +801,7 @@ public final class SavingsPlanOrderGetSamples {
  */
 public final class SavingsPlanOrderListSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlanOrderList.json
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlanOrderList.json
      */
     /**
      * Sample code: SavingsPlanOrderList.
@@ -472,7 +823,7 @@ import com.azure.resourcemanager.billingbenefits.models.AppliedScopeType;
 import com.azure.resourcemanager.billingbenefits.models.BillingPlan;
 import com.azure.resourcemanager.billingbenefits.models.Commitment;
 import com.azure.resourcemanager.billingbenefits.models.CommitmentGrain;
-import com.azure.resourcemanager.billingbenefits.models.Sku;
+import com.azure.resourcemanager.billingbenefits.models.ResourceSku;
 import com.azure.resourcemanager.billingbenefits.models.Term;
 
 /**
@@ -480,9 +831,7 @@ import com.azure.resourcemanager.billingbenefits.models.Term;
  */
 public final class SavingsPlanOrderAliasCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlanOrderAliasCreate.json
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlanOrderAliasCreate.json
      */
     /**
      * Sample code: SavingsPlanOrderAliasCreate.
@@ -493,7 +842,7 @@ public final class SavingsPlanOrderAliasCreateSamples {
         savingsPlanOrderAliasCreate(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
         manager.savingsPlanOrderAlias()
             .create("spAlias123",
-                new SavingsPlanOrderAliasModelInner().withSku(new Sku().withName("Compute_Savings_Plan"))
+                new SavingsPlanOrderAliasModelInner().withSku(new ResourceSku().withName("Compute_Savings_Plan"))
                     .withDisplayName("Compute_SavingsPlan_10-28-2022_16-38")
                     .withBillingScopeId("/subscriptions/30000000-0000-0000-0000-000000000000")
                     .withTerm(Term.P3Y)
@@ -506,9 +855,7 @@ public final class SavingsPlanOrderAliasCreateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlanOrderAliasCreateSingleScope.json
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlanOrderAliasCreateSingleScope.json
      */
     /**
      * Sample code: SavingsPlanOrderAliasCreateSingleScope.
@@ -519,7 +866,7 @@ public final class SavingsPlanOrderAliasCreateSamples {
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
         manager.savingsPlanOrderAlias()
             .create("spAlias123", new SavingsPlanOrderAliasModelInner()
-                .withSku(new Sku().withName("Compute_Savings_Plan"))
+                .withSku(new ResourceSku().withName("Compute_Savings_Plan"))
                 .withDisplayName("Compute_SavingsPlan_10-28-2022_16-38")
                 .withBillingScopeId(
                     "/providers/Microsoft.Billing/billingAccounts/1234567/billingSubscriptions/30000000-0000-0000-0000-000000000000")
@@ -544,9 +891,7 @@ public final class SavingsPlanOrderAliasCreateSamples {
  */
 public final class SavingsPlanOrderAliasGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
-     * SavingsPlanOrderAliasGet.json
+     * x-ms-original-file: 2024-11-01-preview/SavingsPlanOrderAliasGet.json
      */
     /**
      * Sample code: SavingsPlanOrderAliasGet.
