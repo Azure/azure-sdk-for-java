@@ -509,7 +509,8 @@ public class CosmosQueryRequestOptions {
     /**
      * Gets queryAdviceEnabled, which is used to obtain query advice to understand aspects of the query
      * that can be optimized. The results will be displayed in FeedResponse.getQueryAdvice().
-     * Please note that this option will incur overhead, so it should be enabled when debugging queries.
+     * Please note that this option will incur additional latency overhead, so it should be enabled
+     * when debugging queries.
      *
      * @return queryAdviceEnabled (default: false)
      */
@@ -520,8 +521,8 @@ public class CosmosQueryRequestOptions {
     /**
      * Sets queryAdviceEnabled, which is used to obtain query advice to understand aspects of the query
      * that can be optimized. The results will be displayed in FeedResponse.getQueryAdvice().
-     * Please note that this option will incur overhead, so it should be enabled when debugging queries.
-     * By default, query advice is disabled.
+     * Please note that this option will incur additional latency overhead, so it should be enabled
+     * when debugging queries. By default, query advice is disabled.
      *
      * @param queryAdviceEnabled a boolean used to obtain the query advice
      * @return the CosmosQueryRequestOptions instance
