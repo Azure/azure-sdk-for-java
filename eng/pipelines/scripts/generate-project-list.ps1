@@ -4,6 +4,22 @@ $additionalModulesList = @()
 
 . "${PSScriptRoot}/../../common/scripts/common.ps1"
 
+# If ProjectListOverride is set (e.g., from matrix variables), use it directly
+# to avoid building unnecessary modules in jobs that only test a subset.
+if ($env:PROJECTLISTOVERRIDE -and $env:PROJECTLISTOVERRIDE -notlike '*ProjectListOverride*') {
+  $projects = $env:PROJECTLISTOVERRIDE
+  Write-Host "Using ProjectListOverride = $projects"
+  Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
+  Write-Host "##vso[task.setvariable variable=ArtifactsList;]$projects"
+  Write-Host "##vso[task.setvariable variable=AdditionalModulesList;]"
+
+  $sha256 = new-object -TypeName System.Security.Cryptography.SHA256Managed
+  $utf8 = new-object -TypeName System.Text.UTF8Encoding
+  $projectListSha256 = [Convert]::ToBase64String($sha256.ComputeHash($utf8.GetBytes($projects)))
+  Write-Host "##vso[task.setvariable variable=ProjectListSha256;]$projectListSha256"
+  return
+}
+
 if ($env:ARTIFACTSJSON -and $env:ARTIFACTSJSON -notlike '*ArtifactsJson*') {
   $artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json
   foreach ($artifact in $artifacts) {
