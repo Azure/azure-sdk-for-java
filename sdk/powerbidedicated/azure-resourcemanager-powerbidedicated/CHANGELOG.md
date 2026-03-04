@@ -27,22 +27,15 @@
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
-* `validate()` was removed
 * `withDescription(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.SkuDetailsForExistingResource` was modified
 
 * `SkuDetailsForExistingResource()` was changed to private access
-* `validate()` was removed
 * `withResourceType(java.lang.String)` was removed
+* `validate()` was removed
 * `withSku(models.CapacitySku)` was removed
-
-#### `models.Capacities` was modified
-
-* `void resume(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.ResumeFinalResult resume(java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `void suspend(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.SuspendFinalResult suspend(java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `void resume(java.lang.String,java.lang.String)` -> `models.ResumeFinalResult resume(java.lang.String,java.lang.String)`
-* `void suspend(java.lang.String,java.lang.String)` -> `models.SuspendFinalResult suspend(java.lang.String,java.lang.String)`
 
 #### `models.DedicatedCapacityAdministrators` was modified
 
@@ -51,15 +44,8 @@
 #### `models.MetricSpecificationDimensionsItem` was modified
 
 * `MetricSpecificationDimensionsItem()` was changed to private access
-* `validate()` was removed
 * `withDisplayName(java.lang.String)` was removed
-
-#### `models.DedicatedCapacity` was modified
-
-* `void suspend(com.azure.core.util.Context)` -> `models.SuspendFinalResult suspend(com.azure.core.util.Context)`
-* `void resume()` -> `models.ResumeFinalResult resume()`
-* `void resume(com.azure.core.util.Context)` -> `models.ResumeFinalResult resume(com.azure.core.util.Context)`
-* `void suspend()` -> `models.SuspendFinalResult suspend()`
+* `validate()` was removed
 
 #### `models.AutoScaleVCoreUpdateParameters` was modified
 
@@ -68,15 +54,15 @@
 #### `models.ServiceSpecification` was modified
 
 * `ServiceSpecification()` was changed to private access
-* `validate()` was removed
-* `withMetricSpecifications(java.util.List)` was removed
 * `withLogSpecifications(java.util.List)` was removed
+* `withMetricSpecifications(java.util.List)` was removed
+* `validate()` was removed
 
 #### `models.LogSpecification` was modified
 
 * `LogSpecification()` was changed to private access
-* `withDisplayName(java.lang.String)` was removed
 * `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
 
 #### `models.CapacitySku` was modified
 
@@ -93,9 +79,9 @@
 #### `models.MetricSpecification` was modified
 
 * `MetricSpecification()` was changed to private access
-* `withDimensions(java.util.List)` was removed
 * `withDisplayName(java.lang.String)` was removed
 * `validate()` was removed
+* `withDimensions(java.util.List)` was removed
 * `withDisplayDescription(java.lang.String)` was removed
 
 #### `models.AutoScaleVCore$Definition` was modified
@@ -105,14 +91,8 @@
 #### `models.OperationProperties` was modified
 
 * `OperationProperties()` was changed to private access
-* `withServiceSpecification(models.ServiceSpecification)` was removed
 * `validate()` was removed
-
-### Features Added
-
-* `models.SuspendFinalResult` was added
-
-* `models.ResumeFinalResult` was added
+* `withServiceSpecification(models.ServiceSpecification)` was removed
 
 ## 1.0.0 (2024-12-25)
 

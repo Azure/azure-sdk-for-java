@@ -42,8 +42,6 @@ import com.azure.resourcemanager.powerbidedicated.fluent.models.SkuEnumerationFo
 import com.azure.resourcemanager.powerbidedicated.implementation.models.DedicatedCapacities;
 import com.azure.resourcemanager.powerbidedicated.models.CheckCapacityNameAvailabilityParameters;
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacityUpdateParameters;
-import com.azure.resourcemanager.powerbidedicated.models.ResumeFinalResult;
-import com.azure.resourcemanager.powerbidedicated.models.SuspendFinalResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1200,11 +1198,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SuspendFinalResult>, SuspendFinalResult> beginSuspendAsync(String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginSuspendAsync(String resourceGroupName,
         String dedicatedCapacityName) {
         Mono<Response<Flux<ByteBuffer>>> mono = suspendWithResponseAsync(resourceGroupName, dedicatedCapacityName);
-        return this.client.<SuspendFinalResult, SuspendFinalResult>getLroResult(mono, this.client.getHttpPipeline(),
-            SuspendFinalResult.class, SuspendFinalResult.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1219,11 +1217,9 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SuspendFinalResult>, SuspendFinalResult> beginSuspend(String resourceGroupName,
-        String dedicatedCapacityName) {
+    public SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String dedicatedCapacityName) {
         Response<BinaryData> response = suspendWithResponse(resourceGroupName, dedicatedCapacityName);
-        return this.client.<SuspendFinalResult, SuspendFinalResult>getLroResult(response, SuspendFinalResult.class,
-            SuspendFinalResult.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1239,11 +1235,10 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SuspendFinalResult>, SuspendFinalResult> beginSuspend(String resourceGroupName,
-        String dedicatedCapacityName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String dedicatedCapacityName,
+        Context context) {
         Response<BinaryData> response = suspendWithResponse(resourceGroupName, dedicatedCapacityName, context);
-        return this.client.<SuspendFinalResult, SuspendFinalResult>getLroResult(response, SuspendFinalResult.class,
-            SuspendFinalResult.class, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1255,10 +1250,10 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SuspendFinalResult> suspendAsync(String resourceGroupName, String dedicatedCapacityName) {
+    private Mono<Void> suspendAsync(String resourceGroupName, String dedicatedCapacityName) {
         return beginSuspendAsync(resourceGroupName, dedicatedCapacityName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1272,11 +1267,10 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName) {
-        return beginSuspend(resourceGroupName, dedicatedCapacityName).getFinalResult();
+    public void suspend(String resourceGroupName, String dedicatedCapacityName) {
+        beginSuspend(resourceGroupName, dedicatedCapacityName).getFinalResult();
     }
 
     /**
@@ -1289,11 +1283,10 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName, Context context) {
-        return beginSuspend(resourceGroupName, dedicatedCapacityName, context).getFinalResult();
+    public void suspend(String resourceGroupName, String dedicatedCapacityName, Context context) {
+        beginSuspend(resourceGroupName, dedicatedCapacityName, context).getFinalResult();
     }
 
     /**
@@ -1364,11 +1357,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ResumeFinalResult>, ResumeFinalResult> beginResumeAsync(String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginResumeAsync(String resourceGroupName,
         String dedicatedCapacityName) {
         Mono<Response<Flux<ByteBuffer>>> mono = resumeWithResponseAsync(resourceGroupName, dedicatedCapacityName);
-        return this.client.<ResumeFinalResult, ResumeFinalResult>getLroResult(mono, this.client.getHttpPipeline(),
-            ResumeFinalResult.class, ResumeFinalResult.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1383,11 +1376,9 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ResumeFinalResult>, ResumeFinalResult> beginResume(String resourceGroupName,
-        String dedicatedCapacityName) {
+    public SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String dedicatedCapacityName) {
         Response<BinaryData> response = resumeWithResponse(resourceGroupName, dedicatedCapacityName);
-        return this.client.<ResumeFinalResult, ResumeFinalResult>getLroResult(response, ResumeFinalResult.class,
-            ResumeFinalResult.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1403,11 +1394,10 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ResumeFinalResult>, ResumeFinalResult> beginResume(String resourceGroupName,
-        String dedicatedCapacityName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String dedicatedCapacityName,
+        Context context) {
         Response<BinaryData> response = resumeWithResponse(resourceGroupName, dedicatedCapacityName, context);
-        return this.client.<ResumeFinalResult, ResumeFinalResult>getLroResult(response, ResumeFinalResult.class,
-            ResumeFinalResult.class, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1419,10 +1409,10 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResumeFinalResult> resumeAsync(String resourceGroupName, String dedicatedCapacityName) {
+    private Mono<Void> resumeAsync(String resourceGroupName, String dedicatedCapacityName) {
         return beginResumeAsync(resourceGroupName, dedicatedCapacityName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1436,11 +1426,10 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName) {
-        return beginResume(resourceGroupName, dedicatedCapacityName).getFinalResult();
+    public void resume(String resourceGroupName, String dedicatedCapacityName) {
+        beginResume(resourceGroupName, dedicatedCapacityName).getFinalResult();
     }
 
     /**
@@ -1453,11 +1442,10 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName, Context context) {
-        return beginResume(resourceGroupName, dedicatedCapacityName, context).getFinalResult();
+    public void resume(String resourceGroupName, String dedicatedCapacityName, Context context) {
+        beginResume(resourceGroupName, dedicatedCapacityName, context).getFinalResult();
     }
 
     /**

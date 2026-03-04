@@ -376,9 +376,8 @@ public interface DedicatedCapacity {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    SuspendFinalResult suspend();
+    void suspend();
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
@@ -387,18 +386,16 @@ public interface DedicatedCapacity {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    SuspendFinalResult suspend(Context context);
+    void suspend(Context context);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    ResumeFinalResult resume();
+    void resume();
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -407,7 +404,6 @@ public interface DedicatedCapacity {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    ResumeFinalResult resume(Context context);
+    void resume(Context context);
 }

@@ -18,10 +18,8 @@ import com.azure.resourcemanager.powerbidedicated.models.Capacities;
 import com.azure.resourcemanager.powerbidedicated.models.CheckCapacityNameAvailabilityParameters;
 import com.azure.resourcemanager.powerbidedicated.models.CheckCapacityNameAvailabilityResult;
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacity;
-import com.azure.resourcemanager.powerbidedicated.models.ResumeFinalResult;
 import com.azure.resourcemanager.powerbidedicated.models.SkuEnumerationForExistingResourceResult;
 import com.azure.resourcemanager.powerbidedicated.models.SkuEnumerationForNewResourceResult;
-import com.azure.resourcemanager.powerbidedicated.models.SuspendFinalResult;
 
 public final class CapacitiesImpl implements Capacities {
     private static final ClientLogger LOGGER = new ClientLogger(CapacitiesImpl.class);
@@ -87,20 +85,20 @@ public final class CapacitiesImpl implements Capacities {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCapacityImpl(inner1, this.manager()));
     }
 
-    public SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName) {
-        return this.serviceClient().suspend(resourceGroupName, dedicatedCapacityName);
+    public void suspend(String resourceGroupName, String dedicatedCapacityName) {
+        this.serviceClient().suspend(resourceGroupName, dedicatedCapacityName);
     }
 
-    public SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName, Context context) {
-        return this.serviceClient().suspend(resourceGroupName, dedicatedCapacityName, context);
+    public void suspend(String resourceGroupName, String dedicatedCapacityName, Context context) {
+        this.serviceClient().suspend(resourceGroupName, dedicatedCapacityName, context);
     }
 
-    public ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName) {
-        return this.serviceClient().resume(resourceGroupName, dedicatedCapacityName);
+    public void resume(String resourceGroupName, String dedicatedCapacityName) {
+        this.serviceClient().resume(resourceGroupName, dedicatedCapacityName);
     }
 
-    public ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName, Context context) {
-        return this.serviceClient().resume(resourceGroupName, dedicatedCapacityName, context);
+    public void resume(String resourceGroupName, String dedicatedCapacityName, Context context) {
+        this.serviceClient().resume(resourceGroupName, dedicatedCapacityName, context);
     }
 
     public Response<SkuEnumerationForExistingResourceResult> listSkusForCapacityWithResponse(String resourceGroupName,

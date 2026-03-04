@@ -17,8 +17,6 @@ import com.azure.resourcemanager.powerbidedicated.fluent.models.SkuEnumerationFo
 import com.azure.resourcemanager.powerbidedicated.fluent.models.SkuEnumerationForNewResourceResultInner;
 import com.azure.resourcemanager.powerbidedicated.models.CheckCapacityNameAvailabilityParameters;
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacityUpdateParameters;
-import com.azure.resourcemanager.powerbidedicated.models.ResumeFinalResult;
-import com.azure.resourcemanager.powerbidedicated.models.SuspendFinalResult;
 
 /**
  * An instance of this class provides access to all the operations defined in CapacitiesClient.
@@ -304,8 +302,7 @@ public interface CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SuspendFinalResult>, SuspendFinalResult> beginSuspend(String resourceGroupName,
-        String dedicatedCapacityName);
+    SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
@@ -320,8 +317,8 @@ public interface CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SuspendFinalResult>, SuspendFinalResult> beginSuspend(String resourceGroupName,
-        String dedicatedCapacityName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String dedicatedCapacityName,
+        Context context);
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
@@ -332,10 +329,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName);
+    void suspend(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
@@ -347,10 +343,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName, Context context);
+    void suspend(String resourceGroupName, String dedicatedCapacityName, Context context);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -364,8 +359,7 @@ public interface CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ResumeFinalResult>, ResumeFinalResult> beginResume(String resourceGroupName,
-        String dedicatedCapacityName);
+    SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -380,8 +374,8 @@ public interface CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ResumeFinalResult>, ResumeFinalResult> beginResume(String resourceGroupName,
-        String dedicatedCapacityName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String dedicatedCapacityName,
+        Context context);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -392,10 +386,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName);
+    void resume(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -407,10 +400,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName, Context context);
+    void resume(String resourceGroupName, String dedicatedCapacityName, Context context);
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.

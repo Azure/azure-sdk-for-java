@@ -119,9 +119,8 @@ public interface Capacities {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName);
+    void suspend(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
@@ -133,9 +132,8 @@ public interface Capacities {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName, Context context);
+    void suspend(String resourceGroupName, String dedicatedCapacityName, Context context);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -146,9 +144,8 @@ public interface Capacities {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName);
+    void resume(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -160,9 +157,8 @@ public interface Capacities {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName, Context context);
+    void resume(String resourceGroupName, String dedicatedCapacityName, Context context);
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.
