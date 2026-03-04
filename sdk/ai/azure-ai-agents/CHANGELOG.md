@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
+## 2.0.0-beta.2 (2026-03-04)
 
 ### Features Added
 
@@ -33,8 +33,6 @@
 ### Bugs Fixed
 
 - Fixed request parameter name from `"agent"` to `"agent_reference"` in `ResponsesClient` and `ResponsesAsyncClient` methods `createWithAgent` and `createWithAgentConversation`
-
-### Other Changes
 
 ## 2.0.0-beta.1 (2026-02-25)
 
