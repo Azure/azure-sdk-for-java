@@ -12,7 +12,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.cosmos.benchmark.BenchmarkConfig;
+import com.azure.cosmos.benchmark.Benchmark;
 import com.azure.cosmos.benchmark.BenchmarkHelper;
 import com.azure.cosmos.benchmark.Operation;
 import com.azure.cosmos.benchmark.TenantWorkloadConfig;
@@ -38,17 +38,9 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
-import com.codahale.metrics.ConsoleReporter;
-import com.codahale.metrics.CsvReporter;
-import com.codahale.metrics.ConsoleReporter;
-import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.ScheduledReporter;
 import com.codahale.metrics.Timer;
-import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
-import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
-import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.reactivestreams.Subscription;
@@ -72,9 +64,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-public abstract class AsyncEncryptionBenchmark<T> {
-    private final MetricRegistry metricsRegistry = new MetricRegistry();
-    private ScheduledReporter reporter;
+public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
+    private final MetricRegistry metricsRegistry;
 
     private volatile Meter successMeter;
     private volatile Meter failureMeter;
@@ -89,7 +80,6 @@ public abstract class AsyncEncryptionBenchmark<T> {
     final CosmosAsyncClient cosmosClient;
 
     final String partitionKey;
-    final BenchmarkConfig benchConfig;
     final TenantWorkloadConfig workloadConfig;
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
@@ -110,7 +100,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
     private AtomicBoolean warmupMode = new AtomicBoolean(false);
 
-    AsyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg, BenchmarkConfig benchCfg) throws IOException {
+    AsyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws IOException {
 
         workloadConfig = workloadCfg;
 
@@ -137,7 +127,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
         cosmosEncryptionAsyncClient = createEncryptionClientInstance(cosmosClient);
-        benchConfig = benchCfg;
+        metricsRegistry = sharedRegistry;
         logger = LoggerFactory.getLogger(this.getClass());
         createEncryptionDatabaseAndContainer();
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
@@ -211,24 +201,6 @@ public abstract class AsyncEncryptionBenchmark<T> {
         logger.info("Finished pre-populating {} documents", workloadCfg.getNumberOfPreCreatedDocuments());
 
         init();
-
-        if (benchConfig.isEnableJvmStats()) {
-            metricsRegistry.register("gc", new GarbageCollectorMetricSet());
-            metricsRegistry.register("threads", new CachedThreadStatesGaugeSet(10, TimeUnit.SECONDS));
-            metricsRegistry.register("memory", new MemoryUsageGaugeSet());
-        }
-
-        if (benchConfig.getReportingDirectory() != null) {
-            reporter = CsvReporter.forRegistry(metricsRegistry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .build(new java.io.File(benchConfig.getReportingDirectory()));
-        } else {
-            reporter = ConsoleReporter.forRegistry(metricsRegistry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .build();
-        }
     }
 
     protected void init() {
@@ -258,7 +230,6 @@ public abstract class AsyncEncryptionBenchmark<T> {
                             logger.info("Warmup phase finished. Starting capturing perf numbers ....");
                             resetMeters();
                             initializeMeter();
-                            reporter.start(benchConfig.getPrintingInterval(), TimeUnit.SECONDS);
                             warmupMode.set(false);
                         }
                     }
@@ -313,8 +284,6 @@ public abstract class AsyncEncryptionBenchmark<T> {
             logger.info("Starting warm up phase. Executing {} operations to warm up ...",
                 workloadConfig.getSkipWarmUpOperations());
             warmupMode.set(true);
-        } else {
-            reporter.start(benchConfig.getPrintingInterval(), TimeUnit.SECONDS);
         }
 
         long startTime = System.currentTimeMillis();
@@ -382,9 +351,6 @@ public abstract class AsyncEncryptionBenchmark<T> {
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",
             workloadConfig.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));
-
-        reporter.report();
-        reporter.close();
     }
 
     protected Mono sparsityMono(long i) {

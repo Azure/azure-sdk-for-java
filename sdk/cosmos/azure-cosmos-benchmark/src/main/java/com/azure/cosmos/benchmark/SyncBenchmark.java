@@ -19,17 +19,10 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.codahale.metrics.ConsoleReporter;
-import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.ScheduledReporter;
 import com.codahale.metrics.Timer;
-import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
-import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
-import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,15 +40,12 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-abstract class SyncBenchmark<T> {
+abstract class SyncBenchmark<T> implements Benchmark {
 
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
-    private final MetricRegistry metricsRegistry = new MetricRegistry();
-    private final ScheduledReporter reporter;
-
-    private final ScheduledReporter resultReporter;
+    private final MetricRegistry metricsRegistry;
     private final ExecutorService executorService;
 
     private Meter successMeter;
@@ -65,13 +55,11 @@ abstract class SyncBenchmark<T> {
 
     final Logger logger;
     final CosmosClient benchmarkWorkloadClient;
-    final CosmosClient resultUploaderClient;
     CosmosContainer cosmosContainer;
     CosmosDatabase cosmosDatabase;
 
     final String partitionKey;
     final TenantWorkloadConfig workloadConfig;
-    final BenchmarkConfig benchConfig;
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
     Timer latency;
@@ -108,10 +96,10 @@ abstract class SyncBenchmark<T> {
         }
     }
 
-    SyncBenchmark(TenantWorkloadConfig workloadCfg, BenchmarkConfig benchCfg) throws Exception {
+    SyncBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws Exception {
         executorService = Executors.newFixedThreadPool(workloadCfg.getConcurrency());
         workloadConfig = workloadCfg;
-        benchConfig = benchCfg;
+        metricsRegistry = sharedRegistry;
         logger = LoggerFactory.getLogger(this.getClass());
 
         boolean isManagedIdentityRequired = workloadCfg.isManagedIdentityRequired();
@@ -125,8 +113,6 @@ abstract class SyncBenchmark<T> {
                         .credential(credential) :
                 new CosmosClientBuilder()
                         .key(workloadCfg.getMasterKey());
-
-        CosmosClientBuilder resultUploadClientBuilder = new CosmosClientBuilder();
 
         benchmarkSpecificClientBuilder.preferredRegions(workloadCfg.getPreferredRegionsList())
                 .endpoint(workloadCfg.getServiceEndpoint())
@@ -157,10 +143,6 @@ abstract class SyncBenchmark<T> {
         }
 
         benchmarkWorkloadClient = benchmarkSpecificClientBuilder.buildClient();
-        this.resultUploaderClient = resultUploadClientBuilder
-                .endpoint(StringUtils.isNotEmpty(benchConfig.getResultUploadEndpoint()) ? benchConfig.getResultUploadEndpoint() : workloadCfg.getServiceEndpoint())
-                .key(StringUtils.isNotEmpty(benchConfig.getResultUploadKey()) ? benchConfig.getResultUploadKey() : workloadCfg.getMasterKey())
-                .buildClient();
 
             try {
                 cosmosDatabase = benchmarkWorkloadClient.getDatabase(workloadCfg.getDatabaseId());
@@ -249,48 +231,15 @@ abstract class SyncBenchmark<T> {
 
             docsToRead = createDocumentFutureList.stream().map(future -> getOrThrow(future)).collect(Collectors.toList());
             init();
-
-            if (benchConfig.isEnableJvmStats()) {
-                metricsRegistry.register("gc", new GarbageCollectorMetricSet());
-                metricsRegistry.register("threads", new CachedThreadStatesGaugeSet(10, TimeUnit.SECONDS));
-                metricsRegistry.register("memory", new MemoryUsageGaugeSet());
-            }
-
-            if (benchConfig.getReportingDirectory() != null) {
-                reporter = CsvReporter.forRegistry(metricsRegistry).convertRatesTo(TimeUnit.SECONDS)
-                            .convertDurationsTo(TimeUnit.MILLISECONDS).build(new java.io.File(benchConfig.getReportingDirectory()));
-            } else {
-                reporter = ConsoleReporter.forRegistry(metricsRegistry).convertRatesTo(TimeUnit.SECONDS)
-                            .convertDurationsTo(TimeUnit.MILLISECONDS).build();
-            }
-
-            if (benchConfig.getResultUploadDatabase() != null && benchConfig.getResultUploadContainer() != null) {
-                String op = workloadConfig.isSync()
-                    ? "SYNC_" + workloadCfg.getOperationType().name()
-                    : workloadCfg.getOperationType().name();
-                resultReporter = CosmosTotalResultReporter
-                        .forRegistry(
-                                metricsRegistry,
-                                this.resultUploaderClient.getDatabase(benchConfig.getResultUploadDatabase()).getContainer(benchConfig.getResultUploadContainer()),
-                                op,
-                                benchConfig.getTestVariationName(),
-                                benchConfig.getBranchName(),
-                                benchConfig.getCommitId(),
-                                workloadCfg.getConcurrency())
-                        .convertRatesTo(TimeUnit.SECONDS)
-                        .convertDurationsTo(TimeUnit.MILLISECONDS).build();
-            } else {
-                resultReporter = null;
-            }
-
     }
 
     protected void init() {
     }
 
-    void shutdown() {
-
-        if (this.databaseCreated) {
+    public void shutdown() {
+        if (workloadConfig.isSuppressCleanup()) {
+            logger.info("Skipping cleanup of database/container (suppressCleanup=true)");
+        } else if (this.databaseCreated) {
             cosmosDatabase.delete();
             logger.info("Deleted temporary database {} created for this test", workloadConfig.getDatabaseId());
         } else if (this.collectionCreated) {
@@ -298,7 +247,6 @@ abstract class SyncBenchmark<T> {
             logger.info("Deleted temporary collection {} created for this test", workloadConfig.getContainerId());
         }
 
-        resultUploaderClient.close();
         benchmarkWorkloadClient.close();
         executorService.shutdown();
     }
@@ -311,7 +259,7 @@ abstract class SyncBenchmark<T> {
 
     protected abstract T performWorkload(long i) throws Exception;
 
-    void run() throws Exception {
+    public void run() throws Exception {
 
         successMeter = metricsRegistry.meter(TenantWorkloadConfig.SUCCESS_COUNTER_METER_NAME);
         failureMeter = metricsRegistry.meter(TenantWorkloadConfig.FAILURE_COUNTER_METER_NAME);
@@ -336,10 +284,6 @@ abstract class SyncBenchmark<T> {
                 break;
         }
 
-        reporter.start(benchConfig.getPrintingInterval(), TimeUnit.SECONDS);
-        if (resultReporter != null) {
-            resultReporter.start(benchConfig.getPrintingInterval(), TimeUnit.SECONDS);
-        }
         long startTime = System.currentTimeMillis();
 
         AtomicLong count = new AtomicLong(0);
@@ -427,14 +371,6 @@ abstract class SyncBenchmark<T> {
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",
             workloadConfig.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));
-
-        reporter.report();
-        reporter.close();
-
-        if (resultReporter != null) {
-            resultReporter.report();
-            resultReporter.close();
-        }
     }
 
     RuntimeException propagate(Exception e) {

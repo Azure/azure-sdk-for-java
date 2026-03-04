@@ -12,11 +12,10 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.cosmos.benchmark.BenchmarkConfig;
+import com.azure.cosmos.benchmark.Benchmark;
 import com.azure.cosmos.benchmark.BenchmarkHelper;
 import com.azure.cosmos.benchmark.BenchmarkRequestSubscriber;
 import com.azure.cosmos.benchmark.PojoizedJson;
-import com.azure.cosmos.benchmark.ScheduledReporterFactory;
 import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
@@ -27,11 +26,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.ScheduledReporter;
 import com.codahale.metrics.Timer;
-import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
-import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
-import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.slf4j.Logger;
@@ -48,20 +43,18 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 
-public class AsyncCtlWorkload {
+public class AsyncCtlWorkload implements Benchmark {
     private final String PERCENT_PARSING_ERROR = "Unable to parse user provided readWriteQueryReadManyPct ";
     private final String prefixUuidForCreate;
     private final String dataFieldValue;
     private final String partitionKey;
-    private final MetricRegistry metricsRegistry = new MetricRegistry();
+    private final MetricRegistry metricsRegistry;
     private final Logger logger;
     private final CosmosAsyncClient cosmosClient;
     private final TenantWorkloadConfig workloadConfig;
-    private final BenchmarkConfig benchConfig;
     private final Map<String, List<PojoizedJson>> docsToRead = new HashMap<>();
     private final Map<String, List<CosmosItemIdentity>> itemIdentityMap = new HashMap<>();
     private final Semaphore concurrencyControlSemaphore;
@@ -71,7 +64,6 @@ public class AsyncCtlWorkload {
     private Timer writeLatency;
     private Timer queryLatency;
     private Timer readManyLatency;
-    private ScheduledReporter reporter;
 
     private Meter readSuccessMeter;
     private Meter readFailureMeter;
@@ -91,7 +83,7 @@ public class AsyncCtlWorkload {
     private int queryPct;
     private int readManyPct;
 
-    public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg, BenchmarkConfig benchCfg) {
+    public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) {
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
             : null;
@@ -115,7 +107,7 @@ public class AsyncCtlWorkload {
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
         workloadConfig = workloadCfg;
-        benchConfig = benchCfg;
+        metricsRegistry = sharedRegistry;
         logger = LoggerFactory.getLogger(this.getClass());
 
         parsedReadWriteQueryReadManyPct(workloadConfig.getReadWriteQueryReadManyPct());
@@ -132,20 +124,14 @@ public class AsyncCtlWorkload {
         createPrePopulatedDocs(workloadConfig.getNumberOfPreCreatedDocuments());
         createItemIdentityMap(docsToRead);
 
-        if (benchConfig.isEnableJvmStats()) {
-            metricsRegistry.register("gc", new GarbageCollectorMetricSet());
-            metricsRegistry.register("threads", new CachedThreadStatesGaugeSet(10, TimeUnit.SECONDS));
-            metricsRegistry.register("memory", new MemoryUsageGaugeSet());
-        }
-
-        reporter = ScheduledReporterFactory.create(benchCfg, metricsRegistry);
-
         prefixUuidForCreate = UUID.randomUUID().toString();
         random = new Random();
     }
 
     public void shutdown() {
-        if (this.databaseCreated) {
+        if (workloadConfig.isSuppressCleanup()) {
+            logger.info("Skipping cleanup of database/container (suppressCleanup=true)");
+        } else if (this.databaseCreated) {
             cosmosAsyncDatabase.delete().block();
             logger.info("Deleted temporary database {} created for this test", this.workloadConfig.getDatabaseId());
         } else if (containerToClearAfterTest.size() > 0) {
@@ -204,7 +190,6 @@ public class AsyncCtlWorkload {
         queryLatency = metricsRegistry.register("Query Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
         readManyLatency = metricsRegistry.register("Read Many Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
 
-        reporter.start(benchConfig.getPrintingInterval(), TimeUnit.SECONDS);
         long startTime = System.currentTimeMillis();
 
         AtomicLong count = new AtomicLong(0);
@@ -258,9 +243,6 @@ public class AsyncCtlWorkload {
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",
             workloadConfig.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));
-
-        reporter.report();
-        reporter.close();
     }
 
     private void parsedReadWriteQueryReadManyPct(String readWriteQueryReadManyPct) {
