@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.confidentialledger.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFRestoreResponseInner;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfBackupResponseInner;
 
-public final class ManagedCCFRestoreResponseInnerTests {
+public final class ManagedCcfBackupResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedCCFRestoreResponseInner model
-            = BinaryData.fromString("{\"message\":\"maajrmvdjwzrlo\"}").toObject(ManagedCCFRestoreResponseInner.class);
+        ManagedCcfBackupResponseInner model
+            = BinaryData.fromString("{\"message\":\"ummajtjaod\"}").toObject(ManagedCcfBackupResponseInner.class);
     }
 }

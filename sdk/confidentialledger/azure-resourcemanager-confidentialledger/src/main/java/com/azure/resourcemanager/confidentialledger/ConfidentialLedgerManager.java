@@ -27,11 +27,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confidentialledger.fluent.ConfidentialLedgerManagementClient;
 import com.azure.resourcemanager.confidentialledger.implementation.ConfidentialLedgerManagementClientBuilder;
 import com.azure.resourcemanager.confidentialledger.implementation.LedgersImpl;
-import com.azure.resourcemanager.confidentialledger.implementation.ManagedCCFsImpl;
+import com.azure.resourcemanager.confidentialledger.implementation.ManagedCcfsImpl;
 import com.azure.resourcemanager.confidentialledger.implementation.OperationsImpl;
 import com.azure.resourcemanager.confidentialledger.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.confidentialledger.models.Ledgers;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFs;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfs;
 import com.azure.resourcemanager.confidentialledger.models.Operations;
 import com.azure.resourcemanager.confidentialledger.models.ResourceProviders;
 import java.time.Duration;
@@ -53,7 +53,7 @@ public final class ConfidentialLedgerManager {
 
     private Ledgers ledgers;
 
-    private ManagedCCFs managedCCFs;
+    private ManagedCcfs managedCcfs;
 
     private final ConfidentialLedgerManagementClient clientObject;
 
@@ -307,15 +307,15 @@ public final class ConfidentialLedgerManager {
     }
 
     /**
-     * Gets the resource collection API of ManagedCCFs. It manages ManagedCCF.
+     * Gets the resource collection API of ManagedCcfs. It manages ManagedCcf.
      * 
-     * @return Resource collection API of ManagedCCFs.
+     * @return Resource collection API of ManagedCcfs.
      */
-    public ManagedCCFs managedCCFs() {
-        if (this.managedCCFs == null) {
-            this.managedCCFs = new ManagedCCFsImpl(clientObject.getManagedCCFs(), this);
+    public ManagedCcfs managedCcfs() {
+        if (this.managedCcfs == null) {
+            this.managedCcfs = new ManagedCcfsImpl(clientObject.getManagedCcfs(), this);
         }
-        return managedCCFs;
+        return managedCcfs;
     }
 
     /**

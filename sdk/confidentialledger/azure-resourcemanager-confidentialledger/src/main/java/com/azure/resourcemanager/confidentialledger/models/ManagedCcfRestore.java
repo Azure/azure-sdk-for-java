@@ -15,7 +15,7 @@ import java.io.IOException;
  * Object representing Restore properties of Managed CCF Resource.
  */
 @Fluent
-public final class ManagedCCFRestore implements JsonSerializable<ManagedCCFRestore> {
+public final class ManagedCcfRestore implements JsonSerializable<ManagedCcfRestore> {
     /*
      * Fileshare where the managed CCF resource backup is stored.
      */
@@ -32,9 +32,9 @@ public final class ManagedCCFRestore implements JsonSerializable<ManagedCCFResto
     private String uri;
 
     /**
-     * Creates an instance of ManagedCCFRestore class.
+     * Creates an instance of ManagedCcfRestore class.
      */
-    public ManagedCCFRestore() {
+    public ManagedCcfRestore() {
     }
 
     /**
@@ -50,9 +50,9 @@ public final class ManagedCCFRestore implements JsonSerializable<ManagedCCFResto
      * Set the fileShareName property: Fileshare where the managed CCF resource backup is stored.
      * 
      * @param fileShareName the fileShareName value to set.
-     * @return the ManagedCCFRestore object itself.
+     * @return the ManagedCcfRestore object itself.
      */
-    public ManagedCCFRestore withFileShareName(String fileShareName) {
+    public ManagedCcfRestore withFileShareName(String fileShareName) {
         this.fileShareName = fileShareName;
         return this;
     }
@@ -70,9 +70,9 @@ public final class ManagedCCFRestore implements JsonSerializable<ManagedCCFResto
      * Set the restoreRegion property: The region the managed CCF resource is being restored to.
      * 
      * @param restoreRegion the restoreRegion value to set.
-     * @return the ManagedCCFRestore object itself.
+     * @return the ManagedCcfRestore object itself.
      */
-    public ManagedCCFRestore withRestoreRegion(String restoreRegion) {
+    public ManagedCcfRestore withRestoreRegion(String restoreRegion) {
         this.restoreRegion = restoreRegion;
         return this;
     }
@@ -90,9 +90,9 @@ public final class ManagedCCFRestore implements JsonSerializable<ManagedCCFResto
      * Set the uri property: SAS URI used to access the backup Fileshare.
      * 
      * @param uri the uri value to set.
-     * @return the ManagedCCFRestore object itself.
+     * @return the ManagedCcfRestore object itself.
      */
-    public ManagedCCFRestore withUri(String uri) {
+    public ManagedCcfRestore withUri(String uri) {
         this.uri = uri;
         return this;
     }
@@ -110,33 +110,33 @@ public final class ManagedCCFRestore implements JsonSerializable<ManagedCCFResto
     }
 
     /**
-     * Reads an instance of ManagedCCFRestore from the JsonReader.
+     * Reads an instance of ManagedCcfRestore from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ManagedCCFRestore if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ManagedCcfRestore if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ManagedCCFRestore.
+     * @throws IOException If an error occurs while reading the ManagedCcfRestore.
      */
-    public static ManagedCCFRestore fromJson(JsonReader jsonReader) throws IOException {
+    public static ManagedCcfRestore fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ManagedCCFRestore deserializedManagedCCFRestore = new ManagedCCFRestore();
+            ManagedCcfRestore deserializedManagedCcfRestore = new ManagedCcfRestore();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("fileShareName".equals(fieldName)) {
-                    deserializedManagedCCFRestore.fileShareName = reader.getString();
+                    deserializedManagedCcfRestore.fileShareName = reader.getString();
                 } else if ("restoreRegion".equals(fieldName)) {
-                    deserializedManagedCCFRestore.restoreRegion = reader.getString();
+                    deserializedManagedCcfRestore.restoreRegion = reader.getString();
                 } else if ("uri".equals(fieldName)) {
-                    deserializedManagedCCFRestore.uri = reader.getString();
+                    deserializedManagedCcfRestore.uri = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedManagedCCFRestore;
+            return deserializedManagedCcfRestore;
         });
     }
 }

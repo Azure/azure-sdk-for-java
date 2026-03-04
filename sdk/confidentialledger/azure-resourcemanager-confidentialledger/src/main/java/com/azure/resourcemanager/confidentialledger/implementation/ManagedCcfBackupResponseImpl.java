@@ -4,15 +4,15 @@
 
 package com.azure.resourcemanager.confidentialledger.implementation;
 
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFBackupResponseInner;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFBackupResponse;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfBackupResponseInner;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfBackupResponse;
 
-public final class ManagedCCFBackupResponseImpl implements ManagedCCFBackupResponse {
-    private ManagedCCFBackupResponseInner innerObject;
+public final class ManagedCcfBackupResponseImpl implements ManagedCcfBackupResponse {
+    private ManagedCcfBackupResponseInner innerObject;
 
     private final com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager;
 
-    ManagedCCFBackupResponseImpl(ManagedCCFBackupResponseInner innerObject,
+    ManagedCcfBackupResponseImpl(ManagedCcfBackupResponseInner innerObject,
         com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -22,7 +22,7 @@ public final class ManagedCCFBackupResponseImpl implements ManagedCCFBackupRespo
         return this.innerModel().message();
     }
 
-    public ManagedCCFBackupResponseInner innerModel() {
+    public ManagedCcfBackupResponseInner innerModel() {
         return this.innerObject;
     }
 

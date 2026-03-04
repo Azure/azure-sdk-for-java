@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFProperties;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfProperties;
 import java.io.IOException;
 import java.util.Map;
 
@@ -18,11 +18,11 @@ import java.util.Map;
  * Managed CCF. Contains the properties of Managed CCF Resource.
  */
 @Fluent
-public final class ManagedCCFInner extends Resource {
+public final class ManagedCcfInner extends Resource {
     /*
      * Properties of Managed CCF Resource.
      */
-    private ManagedCCFProperties properties;
+    private ManagedCcfProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -45,9 +45,9 @@ public final class ManagedCCFInner extends Resource {
     private String id;
 
     /**
-     * Creates an instance of ManagedCCFInner class.
+     * Creates an instance of ManagedCcfInner class.
      */
-    public ManagedCCFInner() {
+    public ManagedCcfInner() {
     }
 
     /**
@@ -55,7 +55,7 @@ public final class ManagedCCFInner extends Resource {
      * 
      * @return the properties value.
      */
-    public ManagedCCFProperties properties() {
+    public ManagedCcfProperties properties() {
         return this.properties;
     }
 
@@ -63,9 +63,9 @@ public final class ManagedCCFInner extends Resource {
      * Set the properties property: Properties of Managed CCF Resource.
      * 
      * @param properties the properties value to set.
-     * @return the ManagedCCFInner object itself.
+     * @return the ManagedCcfInner object itself.
      */
-    public ManagedCCFInner withProperties(ManagedCCFProperties properties) {
+    public ManagedCcfInner withProperties(ManagedCcfProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -113,7 +113,7 @@ public final class ManagedCCFInner extends Resource {
      * {@inheritDoc}
      */
     @Override
-    public ManagedCCFInner withLocation(String location) {
+    public ManagedCcfInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
@@ -122,7 +122,7 @@ public final class ManagedCCFInner extends Resource {
      * {@inheritDoc}
      */
     @Override
-    public ManagedCCFInner withTags(Map<String, String> tags) {
+    public ManagedCcfInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
@@ -140,42 +140,42 @@ public final class ManagedCCFInner extends Resource {
     }
 
     /**
-     * Reads an instance of ManagedCCFInner from the JsonReader.
+     * Reads an instance of ManagedCcfInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ManagedCCFInner if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ManagedCcfInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ManagedCCFInner.
+     * @throws IOException If an error occurs while reading the ManagedCcfInner.
      */
-    public static ManagedCCFInner fromJson(JsonReader jsonReader) throws IOException {
+    public static ManagedCcfInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ManagedCCFInner deserializedManagedCCFInner = new ManagedCCFInner();
+            ManagedCcfInner deserializedManagedCcfInner = new ManagedCcfInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedManagedCCFInner.id = reader.getString();
+                    deserializedManagedCcfInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedManagedCCFInner.name = reader.getString();
+                    deserializedManagedCcfInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedManagedCCFInner.type = reader.getString();
+                    deserializedManagedCcfInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
-                    deserializedManagedCCFInner.withLocation(reader.getString());
+                    deserializedManagedCcfInner.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedManagedCCFInner.withTags(tags);
+                    deserializedManagedCcfInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedManagedCCFInner.properties = ManagedCCFProperties.fromJson(reader);
+                    deserializedManagedCcfInner.properties = ManagedCcfProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedManagedCCFInner.systemData = SystemData.fromJson(reader);
+                    deserializedManagedCcfInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedManagedCCFInner;
+            return deserializedManagedCcfInner;
         });
     }
 }

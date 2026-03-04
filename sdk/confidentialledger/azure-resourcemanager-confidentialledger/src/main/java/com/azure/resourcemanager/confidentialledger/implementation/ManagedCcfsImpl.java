@@ -9,46 +9,46 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.confidentialledger.fluent.ManagedCCFsClient;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFBackupResponseInner;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFInner;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFRestoreResponseInner;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCF;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFBackup;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFBackupResponse;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFRestore;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFRestoreResponse;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFs;
+import com.azure.resourcemanager.confidentialledger.fluent.ManagedCcfsClient;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfBackupResponseInner;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfInner;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfRestoreResponseInner;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcf;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfBackup;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfBackupResponse;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfRestore;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfRestoreResponse;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfs;
 
-public final class ManagedCCFsImpl implements ManagedCCFs {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedCCFsImpl.class);
+public final class ManagedCcfsImpl implements ManagedCcfs {
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedCcfsImpl.class);
 
-    private final ManagedCCFsClient innerClient;
+    private final ManagedCcfsClient innerClient;
 
     private final com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager;
 
-    public ManagedCCFsImpl(ManagedCCFsClient innerClient,
+    public ManagedCcfsImpl(ManagedCcfsClient innerClient,
         com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ManagedCCF> getByResourceGroupWithResponse(String resourceGroupName, String appName,
+    public Response<ManagedCcf> getByResourceGroupWithResponse(String resourceGroupName, String appName,
         Context context) {
-        Response<ManagedCCFInner> inner
+        Response<ManagedCcfInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, appName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ManagedCCFImpl(inner.getValue(), this.manager()));
+                new ManagedCcfImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ManagedCCF getByResourceGroup(String resourceGroupName, String appName) {
-        ManagedCCFInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, appName);
+    public ManagedCcf getByResourceGroup(String resourceGroupName, String appName) {
+        ManagedCcfInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, appName);
         if (inner != null) {
-            return new ManagedCCFImpl(inner, this.manager());
+            return new ManagedCcfImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -62,68 +62,68 @@ public final class ManagedCCFsImpl implements ManagedCCFs {
         this.serviceClient().delete(resourceGroupName, appName, context);
     }
 
-    public PagedIterable<ManagedCCF> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ManagedCCFInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedCCFImpl(inner1, this.manager()));
+    public PagedIterable<ManagedCcf> listByResourceGroup(String resourceGroupName) {
+        PagedIterable<ManagedCcfInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedCcfImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ManagedCCF> listByResourceGroup(String resourceGroupName, String filter, Context context) {
-        PagedIterable<ManagedCCFInner> inner
+    public PagedIterable<ManagedCcf> listByResourceGroup(String resourceGroupName, String filter, Context context) {
+        PagedIterable<ManagedCcfInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, filter, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedCCFImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedCcfImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ManagedCCF> list() {
-        PagedIterable<ManagedCCFInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedCCFImpl(inner1, this.manager()));
+    public PagedIterable<ManagedCcf> list() {
+        PagedIterable<ManagedCcfInner> inner = this.serviceClient().list();
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedCcfImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ManagedCCF> list(String filter, Context context) {
-        PagedIterable<ManagedCCFInner> inner = this.serviceClient().list(filter, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedCCFImpl(inner1, this.manager()));
+    public PagedIterable<ManagedCcf> list(String filter, Context context) {
+        PagedIterable<ManagedCcfInner> inner = this.serviceClient().list(filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedCcfImpl(inner1, this.manager()));
     }
 
-    public ManagedCCFBackupResponse backup(String resourceGroupName, String appName, ManagedCCFBackup managedCCF) {
-        ManagedCCFBackupResponseInner inner = this.serviceClient().backup(resourceGroupName, appName, managedCCF);
+    public ManagedCcfBackupResponse backup(String resourceGroupName, String appName, ManagedCcfBackup managedCCF) {
+        ManagedCcfBackupResponseInner inner = this.serviceClient().backup(resourceGroupName, appName, managedCCF);
         if (inner != null) {
-            return new ManagedCCFBackupResponseImpl(inner, this.manager());
+            return new ManagedCcfBackupResponseImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public ManagedCCFBackupResponse backup(String resourceGroupName, String appName, ManagedCCFBackup managedCCF,
+    public ManagedCcfBackupResponse backup(String resourceGroupName, String appName, ManagedCcfBackup managedCCF,
         Context context) {
-        ManagedCCFBackupResponseInner inner
+        ManagedCcfBackupResponseInner inner
             = this.serviceClient().backup(resourceGroupName, appName, managedCCF, context);
         if (inner != null) {
-            return new ManagedCCFBackupResponseImpl(inner, this.manager());
+            return new ManagedCcfBackupResponseImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public ManagedCCFRestoreResponse restore(String resourceGroupName, String appName, ManagedCCFRestore managedCCF) {
-        ManagedCCFRestoreResponseInner inner = this.serviceClient().restore(resourceGroupName, appName, managedCCF);
+    public ManagedCcfRestoreResponse restore(String resourceGroupName, String appName, ManagedCcfRestore managedCCF) {
+        ManagedCcfRestoreResponseInner inner = this.serviceClient().restore(resourceGroupName, appName, managedCCF);
         if (inner != null) {
-            return new ManagedCCFRestoreResponseImpl(inner, this.manager());
+            return new ManagedCcfRestoreResponseImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public ManagedCCFRestoreResponse restore(String resourceGroupName, String appName, ManagedCCFRestore managedCCF,
+    public ManagedCcfRestoreResponse restore(String resourceGroupName, String appName, ManagedCcfRestore managedCCF,
         Context context) {
-        ManagedCCFRestoreResponseInner inner
+        ManagedCcfRestoreResponseInner inner
             = this.serviceClient().restore(resourceGroupName, appName, managedCCF, context);
         if (inner != null) {
-            return new ManagedCCFRestoreResponseImpl(inner, this.manager());
+            return new ManagedCcfRestoreResponseImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public ManagedCCF getById(String id) {
+    public ManagedCcf getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -137,7 +137,7 @@ public final class ManagedCCFsImpl implements ManagedCCFs {
         return this.getByResourceGroupWithResponse(resourceGroupName, appName, Context.NONE).getValue();
     }
 
-    public Response<ManagedCCF> getByIdWithResponse(String id, Context context) {
+    public Response<ManagedCcf> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -179,7 +179,7 @@ public final class ManagedCCFsImpl implements ManagedCCFs {
         this.delete(resourceGroupName, appName, context);
     }
 
-    private ManagedCCFsClient serviceClient() {
+    private ManagedCcfsClient serviceClient() {
         return this.innerClient;
     }
 
@@ -187,7 +187,7 @@ public final class ManagedCCFsImpl implements ManagedCCFs {
         return this.serviceManager;
     }
 
-    public ManagedCCFImpl define(String name) {
-        return new ManagedCCFImpl(name, this.manager());
+    public ManagedCcfImpl define(String name) {
+        return new ManagedCcfImpl(name, this.manager());
     }
 }

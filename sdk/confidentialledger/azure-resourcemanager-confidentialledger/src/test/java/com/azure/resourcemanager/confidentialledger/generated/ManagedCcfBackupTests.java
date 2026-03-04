@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.confidentialledger.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFBackup;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfBackup;
 import org.junit.jupiter.api.Assertions;
 
-public final class ManagedCCFBackupTests {
+public final class ManagedCcfBackupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedCCFBackup model = BinaryData.fromString("{\"restoreRegion\":\"epgzgqexz\",\"uri\":\"ocxscpaierhhbcs\"}")
-            .toObject(ManagedCCFBackup.class);
+        ManagedCcfBackup model = BinaryData.fromString("{\"restoreRegion\":\"epgzgqexz\",\"uri\":\"ocxscpaierhhbcs\"}")
+            .toObject(ManagedCcfBackup.class);
         Assertions.assertEquals("epgzgqexz", model.restoreRegion());
         Assertions.assertEquals("ocxscpaierhhbcs", model.uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedCCFBackup model = new ManagedCCFBackup().withRestoreRegion("epgzgqexz").withUri("ocxscpaierhhbcs");
-        model = BinaryData.fromObject(model).toObject(ManagedCCFBackup.class);
+        ManagedCcfBackup model = new ManagedCcfBackup().withRestoreRegion("epgzgqexz").withUri("ocxscpaierhhbcs");
+        model = BinaryData.fromObject(model).toObject(ManagedCcfBackup.class);
         Assertions.assertEquals("epgzgqexz", model.restoreRegion());
         Assertions.assertEquals("ocxscpaierhhbcs", model.uri());
     }

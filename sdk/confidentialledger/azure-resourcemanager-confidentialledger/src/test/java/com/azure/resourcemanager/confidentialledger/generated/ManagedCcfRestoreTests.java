@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.confidentialledger.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFRestore;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfRestore;
 import org.junit.jupiter.api.Assertions;
 
-public final class ManagedCCFRestoreTests {
+public final class ManagedCcfRestoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedCCFRestore model = BinaryData
+        ManagedCcfRestore model = BinaryData
             .fromString("{\"fileShareName\":\"obnbdxkqpxokaj\",\"restoreRegion\":\"onpimexgstxg\",\"uri\":\"po\"}")
-            .toObject(ManagedCCFRestore.class);
+            .toObject(ManagedCcfRestore.class);
         Assertions.assertEquals("obnbdxkqpxokaj", model.fileShareName());
         Assertions.assertEquals("onpimexgstxg", model.restoreRegion());
         Assertions.assertEquals("po", model.uri());
@@ -21,10 +21,10 @@ public final class ManagedCCFRestoreTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedCCFRestore model = new ManagedCCFRestore().withFileShareName("obnbdxkqpxokaj")
+        ManagedCcfRestore model = new ManagedCcfRestore().withFileShareName("obnbdxkqpxokaj")
             .withRestoreRegion("onpimexgstxg")
             .withUri("po");
-        model = BinaryData.fromObject(model).toObject(ManagedCCFRestore.class);
+        model = BinaryData.fromObject(model).toObject(ManagedCcfRestore.class);
         Assertions.assertEquals("obnbdxkqpxokaj", model.fileShareName());
         Assertions.assertEquals("onpimexgstxg", model.restoreRegion());
         Assertions.assertEquals("po", model.uri());

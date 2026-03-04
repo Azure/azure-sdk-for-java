@@ -7,13 +7,13 @@ package com.azure.resourcemanager.confidentialledger.models;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFInner;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfInner;
 import java.util.Map;
 
 /**
- * An immutable client-side representation of ManagedCCF.
+ * An immutable client-side representation of ManagedCcf.
  */
-public interface ManagedCCF {
+public interface ManagedCcf {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
      * 
@@ -54,7 +54,7 @@ public interface ManagedCCF {
      * 
      * @return the properties value.
      */
-    ManagedCCFProperties properties();
+    ManagedCcfProperties properties();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -85,31 +85,31 @@ public interface ManagedCCF {
     String resourceGroupName();
 
     /**
-     * Gets the inner com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFInner object.
+     * Gets the inner com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfInner object.
      * 
      * @return the inner object.
      */
-    ManagedCCFInner innerModel();
+    ManagedCcfInner innerModel();
 
     /**
-     * The entirety of the ManagedCCF definition.
+     * The entirety of the ManagedCcf definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
         DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /**
-     * The ManagedCCF definition stages.
+     * The ManagedCcf definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of the ManagedCCF definition.
+         * The first stage of the ManagedCcf definition.
          */
         interface Blank extends WithLocation {
         }
 
         /**
-         * The stage of the ManagedCCF definition allowing to specify location.
+         * The stage of the ManagedCcf definition allowing to specify location.
          */
         interface WithLocation {
             /**
@@ -130,7 +130,7 @@ public interface ManagedCCF {
         }
 
         /**
-         * The stage of the ManagedCCF definition allowing to specify parent resource.
+         * The stage of the ManagedCcf definition allowing to specify parent resource.
          */
         interface WithResourceGroup {
             /**
@@ -143,7 +143,7 @@ public interface ManagedCCF {
         }
 
         /**
-         * The stage of the ManagedCCF definition which contains all the minimum required properties for the resource to
+         * The stage of the ManagedCcf definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
@@ -152,7 +152,7 @@ public interface ManagedCCF {
              * 
              * @return the created resource.
              */
-            ManagedCCF create();
+            ManagedCcf create();
 
             /**
              * Executes the create request.
@@ -160,11 +160,11 @@ public interface ManagedCCF {
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
-            ManagedCCF create(Context context);
+            ManagedCcf create(Context context);
         }
 
         /**
-         * The stage of the ManagedCCF definition allowing to specify tags.
+         * The stage of the ManagedCcf definition allowing to specify tags.
          */
         interface WithTags {
             /**
@@ -177,7 +177,7 @@ public interface ManagedCCF {
         }
 
         /**
-         * The stage of the ManagedCCF definition allowing to specify properties.
+         * The stage of the ManagedCcf definition allowing to specify properties.
          */
         interface WithProperties {
             /**
@@ -186,19 +186,19 @@ public interface ManagedCCF {
              * @param properties Properties of Managed CCF Resource.
              * @return the next definition stage.
              */
-            WithCreate withProperties(ManagedCCFProperties properties);
+            WithCreate withProperties(ManagedCcfProperties properties);
         }
     }
 
     /**
-     * Begins update for the ManagedCCF resource.
+     * Begins update for the ManagedCcf resource.
      * 
      * @return the stage of resource update.
      */
-    ManagedCCF.Update update();
+    ManagedCcf.Update update();
 
     /**
-     * The template for ManagedCCF update.
+     * The template for ManagedCcf update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
         /**
@@ -206,7 +206,7 @@ public interface ManagedCCF {
          * 
          * @return the updated resource.
          */
-        ManagedCCF apply();
+        ManagedCcf apply();
 
         /**
          * Executes the update request.
@@ -214,15 +214,15 @@ public interface ManagedCCF {
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
-        ManagedCCF apply(Context context);
+        ManagedCcf apply(Context context);
     }
 
     /**
-     * The ManagedCCF update stages.
+     * The ManagedCcf update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of the ManagedCCF update allowing to specify tags.
+         * The stage of the ManagedCcf update allowing to specify tags.
          */
         interface WithTags {
             /**
@@ -235,7 +235,7 @@ public interface ManagedCCF {
         }
 
         /**
-         * The stage of the ManagedCCF update allowing to specify properties.
+         * The stage of the ManagedCcf update allowing to specify properties.
          */
         interface WithProperties {
             /**
@@ -244,7 +244,7 @@ public interface ManagedCCF {
              * @param properties Properties of Managed CCF Resource.
              * @return the next definition stage.
              */
-            Update withProperties(ManagedCCFProperties properties);
+            Update withProperties(ManagedCcfProperties properties);
         }
     }
 
@@ -253,7 +253,7 @@ public interface ManagedCCF {
      * 
      * @return the refreshed resource.
      */
-    ManagedCCF refresh();
+    ManagedCcf refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
@@ -261,7 +261,7 @@ public interface ManagedCCF {
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
-    ManagedCCF refresh(Context context);
+    ManagedCcf refresh(Context context);
 
     /**
      * Backs up a Managed CCF Resource.
@@ -272,7 +272,7 @@ public interface ManagedCCF {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ManagedCCFBackupResponse backup(ManagedCCFBackup managedCCF);
+    ManagedCcfBackupResponse backup(ManagedCcfBackup managedCCF);
 
     /**
      * Backs up a Managed CCF Resource.
@@ -284,7 +284,7 @@ public interface ManagedCCF {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ManagedCCFBackupResponse backup(ManagedCCFBackup managedCCF, Context context);
+    ManagedCcfBackupResponse backup(ManagedCcfBackup managedCCF, Context context);
 
     /**
      * Restores a Managed CCF Resource.
@@ -295,7 +295,7 @@ public interface ManagedCCF {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ManagedCCFRestoreResponse restore(ManagedCCFRestore managedCCF);
+    ManagedCcfRestoreResponse restore(ManagedCcfRestore managedCCF);
 
     /**
      * Restores a Managed CCF Resource.
@@ -307,5 +307,5 @@ public interface ManagedCCF {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ManagedCCFRestoreResponse restore(ManagedCCFRestore managedCCF, Context context);
+    ManagedCcfRestoreResponse restore(ManagedCcfRestore managedCCF, Context context);
 }

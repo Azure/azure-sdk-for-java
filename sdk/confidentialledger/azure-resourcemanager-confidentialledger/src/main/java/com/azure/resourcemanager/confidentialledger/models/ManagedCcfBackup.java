@@ -15,7 +15,7 @@ import java.io.IOException;
  * Object representing Backup properties of a Managed CCF Resource.
  */
 @Fluent
-public final class ManagedCCFBackup implements JsonSerializable<ManagedCCFBackup> {
+public final class ManagedCcfBackup implements JsonSerializable<ManagedCcfBackup> {
     /*
      * The region where the backup of the managed CCF resource will eventually be restored to.
      */
@@ -27,9 +27,9 @@ public final class ManagedCCFBackup implements JsonSerializable<ManagedCCFBackup
     private String uri;
 
     /**
-     * Creates an instance of ManagedCCFBackup class.
+     * Creates an instance of ManagedCcfBackup class.
      */
-    public ManagedCCFBackup() {
+    public ManagedCcfBackup() {
     }
 
     /**
@@ -47,9 +47,9 @@ public final class ManagedCCFBackup implements JsonSerializable<ManagedCCFBackup
      * restored to.
      * 
      * @param restoreRegion the restoreRegion value to set.
-     * @return the ManagedCCFBackup object itself.
+     * @return the ManagedCcfBackup object itself.
      */
-    public ManagedCCFBackup withRestoreRegion(String restoreRegion) {
+    public ManagedCcfBackup withRestoreRegion(String restoreRegion) {
         this.restoreRegion = restoreRegion;
         return this;
     }
@@ -67,9 +67,9 @@ public final class ManagedCCFBackup implements JsonSerializable<ManagedCCFBackup
      * Set the uri property: SAS URI used to access the backup Fileshare.
      * 
      * @param uri the uri value to set.
-     * @return the ManagedCCFBackup object itself.
+     * @return the ManagedCcfBackup object itself.
      */
-    public ManagedCCFBackup withUri(String uri) {
+    public ManagedCcfBackup withUri(String uri) {
         this.uri = uri;
         return this;
     }
@@ -86,31 +86,31 @@ public final class ManagedCCFBackup implements JsonSerializable<ManagedCCFBackup
     }
 
     /**
-     * Reads an instance of ManagedCCFBackup from the JsonReader.
+     * Reads an instance of ManagedCcfBackup from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ManagedCCFBackup if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ManagedCcfBackup if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ManagedCCFBackup.
+     * @throws IOException If an error occurs while reading the ManagedCcfBackup.
      */
-    public static ManagedCCFBackup fromJson(JsonReader jsonReader) throws IOException {
+    public static ManagedCcfBackup fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ManagedCCFBackup deserializedManagedCCFBackup = new ManagedCCFBackup();
+            ManagedCcfBackup deserializedManagedCcfBackup = new ManagedCcfBackup();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("uri".equals(fieldName)) {
-                    deserializedManagedCCFBackup.uri = reader.getString();
+                    deserializedManagedCcfBackup.uri = reader.getString();
                 } else if ("restoreRegion".equals(fieldName)) {
-                    deserializedManagedCCFBackup.restoreRegion = reader.getString();
+                    deserializedManagedCcfBackup.restoreRegion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedManagedCCFBackup;
+            return deserializedManagedCcfBackup;
         });
     }
 }

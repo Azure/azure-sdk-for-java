@@ -11,16 +11,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFBackupResponseInner;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFInner;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFRestoreResponseInner;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFBackup;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFRestore;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfBackupResponseInner;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfInner;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfRestoreResponseInner;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfBackup;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfRestore;
 
 /**
- * An instance of this class provides access to all the operations defined in ManagedCCFsClient.
+ * An instance of this class provides access to all the operations defined in ManagedCcfsClient.
  */
-public interface ManagedCCFsClient {
+public interface ManagedCcfsClient {
     /**
      * Retrieves the properties of a Managed CCF app.
      * 
@@ -33,7 +33,7 @@ public interface ManagedCCFsClient {
      * @return managed CCF along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedCCFInner> getByResourceGroupWithResponse(String resourceGroupName, String appName, Context context);
+    Response<ManagedCcfInner> getByResourceGroupWithResponse(String resourceGroupName, String appName, Context context);
 
     /**
      * Retrieves the properties of a Managed CCF app.
@@ -46,7 +46,7 @@ public interface ManagedCCFsClient {
      * @return managed CCF.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedCCFInner getByResourceGroup(String resourceGroupName, String appName);
+    ManagedCcfInner getByResourceGroup(String resourceGroupName, String appName);
 
     /**
      * Creates a Managed CCF with the specified Managed CCF parameters.
@@ -60,8 +60,8 @@ public interface ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of managed CCF.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedCCFInner>, ManagedCCFInner> beginCreate(String resourceGroupName, String appName,
-        ManagedCCFInner managedCCF);
+    SyncPoller<PollResult<ManagedCcfInner>, ManagedCcfInner> beginCreate(String resourceGroupName, String appName,
+        ManagedCcfInner managedCCF);
 
     /**
      * Creates a Managed CCF with the specified Managed CCF parameters.
@@ -76,8 +76,8 @@ public interface ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of managed CCF.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedCCFInner>, ManagedCCFInner> beginCreate(String resourceGroupName, String appName,
-        ManagedCCFInner managedCCF, Context context);
+    SyncPoller<PollResult<ManagedCcfInner>, ManagedCcfInner> beginCreate(String resourceGroupName, String appName,
+        ManagedCcfInner managedCCF, Context context);
 
     /**
      * Creates a Managed CCF with the specified Managed CCF parameters.
@@ -91,7 +91,7 @@ public interface ManagedCCFsClient {
      * @return managed CCF.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedCCFInner create(String resourceGroupName, String appName, ManagedCCFInner managedCCF);
+    ManagedCcfInner create(String resourceGroupName, String appName, ManagedCcfInner managedCCF);
 
     /**
      * Creates a Managed CCF with the specified Managed CCF parameters.
@@ -106,7 +106,7 @@ public interface ManagedCCFsClient {
      * @return managed CCF.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedCCFInner create(String resourceGroupName, String appName, ManagedCCFInner managedCCF, Context context);
+    ManagedCcfInner create(String resourceGroupName, String appName, ManagedCcfInner managedCCF, Context context);
 
     /**
      * Updates properties of Managed CCF.
@@ -120,8 +120,8 @@ public interface ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of managed CCF.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedCCFInner>, ManagedCCFInner> beginUpdate(String resourceGroupName, String appName,
-        ManagedCCFInner managedCCF);
+    SyncPoller<PollResult<ManagedCcfInner>, ManagedCcfInner> beginUpdate(String resourceGroupName, String appName,
+        ManagedCcfInner managedCCF);
 
     /**
      * Updates properties of Managed CCF.
@@ -136,8 +136,8 @@ public interface ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of managed CCF.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedCCFInner>, ManagedCCFInner> beginUpdate(String resourceGroupName, String appName,
-        ManagedCCFInner managedCCF, Context context);
+    SyncPoller<PollResult<ManagedCcfInner>, ManagedCcfInner> beginUpdate(String resourceGroupName, String appName,
+        ManagedCcfInner managedCCF, Context context);
 
     /**
      * Updates properties of Managed CCF.
@@ -151,7 +151,7 @@ public interface ManagedCCFsClient {
      * @return managed CCF.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedCCFInner update(String resourceGroupName, String appName, ManagedCCFInner managedCCF);
+    ManagedCcfInner update(String resourceGroupName, String appName, ManagedCcfInner managedCCF);
 
     /**
      * Updates properties of Managed CCF.
@@ -166,7 +166,7 @@ public interface ManagedCCFsClient {
      * @return managed CCF.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedCCFInner update(String resourceGroupName, String appName, ManagedCCFInner managedCCF, Context context);
+    ManagedCcfInner update(String resourceGroupName, String appName, ManagedCcfInner managedCCF, Context context);
 
     /**
      * Deletes an existing Managed CCF.
@@ -231,7 +231,7 @@ public interface ManagedCCFsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedCCFInner> listByResourceGroup(String resourceGroupName);
+    PagedIterable<ManagedCcfInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Retrieves the properties of all Managed CCF apps.
@@ -246,7 +246,7 @@ public interface ManagedCCFsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedCCFInner> listByResourceGroup(String resourceGroupName, String filter, Context context);
+    PagedIterable<ManagedCcfInner> listByResourceGroup(String resourceGroupName, String filter, Context context);
 
     /**
      * Retrieves the properties of all Managed CCF.
@@ -257,7 +257,7 @@ public interface ManagedCCFsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedCCFInner> list();
+    PagedIterable<ManagedCcfInner> list();
 
     /**
      * Retrieves the properties of all Managed CCF.
@@ -271,7 +271,7 @@ public interface ManagedCCFsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedCCFInner> list(String filter, Context context);
+    PagedIterable<ManagedCcfInner> list(String filter, Context context);
 
     /**
      * Backs up a Managed CCF Resource.
@@ -285,8 +285,8 @@ public interface ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedCCFBackupResponseInner>, ManagedCCFBackupResponseInner>
-        beginBackup(String resourceGroupName, String appName, ManagedCCFBackup managedCCF);
+    SyncPoller<PollResult<ManagedCcfBackupResponseInner>, ManagedCcfBackupResponseInner>
+        beginBackup(String resourceGroupName, String appName, ManagedCcfBackup managedCCF);
 
     /**
      * Backs up a Managed CCF Resource.
@@ -301,8 +301,8 @@ public interface ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedCCFBackupResponseInner>, ManagedCCFBackupResponseInner>
-        beginBackup(String resourceGroupName, String appName, ManagedCCFBackup managedCCF, Context context);
+    SyncPoller<PollResult<ManagedCcfBackupResponseInner>, ManagedCcfBackupResponseInner>
+        beginBackup(String resourceGroupName, String appName, ManagedCcfBackup managedCCF, Context context);
 
     /**
      * Backs up a Managed CCF Resource.
@@ -316,7 +316,7 @@ public interface ManagedCCFsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedCCFBackupResponseInner backup(String resourceGroupName, String appName, ManagedCCFBackup managedCCF);
+    ManagedCcfBackupResponseInner backup(String resourceGroupName, String appName, ManagedCcfBackup managedCCF);
 
     /**
      * Backs up a Managed CCF Resource.
@@ -331,7 +331,7 @@ public interface ManagedCCFsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedCCFBackupResponseInner backup(String resourceGroupName, String appName, ManagedCCFBackup managedCCF,
+    ManagedCcfBackupResponseInner backup(String resourceGroupName, String appName, ManagedCcfBackup managedCCF,
         Context context);
 
     /**
@@ -346,8 +346,8 @@ public interface ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedCCFRestoreResponseInner>, ManagedCCFRestoreResponseInner>
-        beginRestore(String resourceGroupName, String appName, ManagedCCFRestore managedCCF);
+    SyncPoller<PollResult<ManagedCcfRestoreResponseInner>, ManagedCcfRestoreResponseInner>
+        beginRestore(String resourceGroupName, String appName, ManagedCcfRestore managedCCF);
 
     /**
      * Restores a Managed CCF Resource.
@@ -362,8 +362,8 @@ public interface ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedCCFRestoreResponseInner>, ManagedCCFRestoreResponseInner>
-        beginRestore(String resourceGroupName, String appName, ManagedCCFRestore managedCCF, Context context);
+    SyncPoller<PollResult<ManagedCcfRestoreResponseInner>, ManagedCcfRestoreResponseInner>
+        beginRestore(String resourceGroupName, String appName, ManagedCcfRestore managedCCF, Context context);
 
     /**
      * Restores a Managed CCF Resource.
@@ -377,7 +377,7 @@ public interface ManagedCCFsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedCCFRestoreResponseInner restore(String resourceGroupName, String appName, ManagedCCFRestore managedCCF);
+    ManagedCcfRestoreResponseInner restore(String resourceGroupName, String appName, ManagedCcfRestore managedCCF);
 
     /**
      * Restores a Managed CCF Resource.
@@ -392,6 +392,6 @@ public interface ManagedCCFsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedCCFRestoreResponseInner restore(String resourceGroupName, String appName, ManagedCCFRestore managedCCF,
+    ManagedCcfRestoreResponseInner restore(String resourceGroupName, String appName, ManagedCcfRestore managedCCF,
         Context context);
 }

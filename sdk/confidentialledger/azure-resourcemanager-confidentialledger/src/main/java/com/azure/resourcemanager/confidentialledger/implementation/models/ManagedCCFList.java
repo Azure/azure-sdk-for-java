@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFInner;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public final class ManagedCCFList implements JsonSerializable<ManagedCCFList> {
     /*
      * The ManagedCCF items on this page
      */
-    private List<ManagedCCFInner> value;
+    private List<ManagedCcfInner> value;
 
     /*
      * The link to the next page of items
@@ -39,7 +39,7 @@ public final class ManagedCCFList implements JsonSerializable<ManagedCCFList> {
      * 
      * @return the value value.
      */
-    public List<ManagedCCFInner> value() {
+    public List<ManagedCcfInner> value() {
         return this.value;
     }
 
@@ -80,7 +80,7 @@ public final class ManagedCCFList implements JsonSerializable<ManagedCCFList> {
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<ManagedCCFInner> value = reader.readArray(reader1 -> ManagedCCFInner.fromJson(reader1));
+                    List<ManagedCcfInner> value = reader.readArray(reader1 -> ManagedCcfInner.fromJson(reader1));
                     deserializedManagedCCFList.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedManagedCCFList.nextLink = reader.getString();

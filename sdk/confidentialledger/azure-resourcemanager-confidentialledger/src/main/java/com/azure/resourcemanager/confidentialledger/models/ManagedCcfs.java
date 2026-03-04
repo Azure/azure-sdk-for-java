@@ -9,9 +9,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
- * Resource collection API of ManagedCCFs.
+ * Resource collection API of ManagedCcfs.
  */
-public interface ManagedCCFs {
+public interface ManagedCcfs {
     /**
      * Retrieves the properties of a Managed CCF app.
      * 
@@ -23,7 +23,7 @@ public interface ManagedCCFs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed CCF along with {@link Response}.
      */
-    Response<ManagedCCF> getByResourceGroupWithResponse(String resourceGroupName, String appName, Context context);
+    Response<ManagedCcf> getByResourceGroupWithResponse(String resourceGroupName, String appName, Context context);
 
     /**
      * Retrieves the properties of a Managed CCF app.
@@ -35,7 +35,7 @@ public interface ManagedCCFs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed CCF.
      */
-    ManagedCCF getByResourceGroup(String resourceGroupName, String appName);
+    ManagedCcf getByResourceGroup(String resourceGroupName, String appName);
 
     /**
      * Deletes an existing Managed CCF.
@@ -70,7 +70,7 @@ public interface ManagedCCFs {
      * @return object that includes an array of Managed CCF and a possible link for next set as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<ManagedCCF> listByResourceGroup(String resourceGroupName);
+    PagedIterable<ManagedCcf> listByResourceGroup(String resourceGroupName);
 
     /**
      * Retrieves the properties of all Managed CCF apps.
@@ -84,7 +84,7 @@ public interface ManagedCCFs {
      * @return object that includes an array of Managed CCF and a possible link for next set as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<ManagedCCF> listByResourceGroup(String resourceGroupName, String filter, Context context);
+    PagedIterable<ManagedCcf> listByResourceGroup(String resourceGroupName, String filter, Context context);
 
     /**
      * Retrieves the properties of all Managed CCF.
@@ -94,7 +94,7 @@ public interface ManagedCCFs {
      * @return object that includes an array of Managed CCF and a possible link for next set as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<ManagedCCF> list();
+    PagedIterable<ManagedCcf> list();
 
     /**
      * Retrieves the properties of all Managed CCF.
@@ -107,7 +107,7 @@ public interface ManagedCCFs {
      * @return object that includes an array of Managed CCF and a possible link for next set as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<ManagedCCF> list(String filter, Context context);
+    PagedIterable<ManagedCcf> list(String filter, Context context);
 
     /**
      * Backs up a Managed CCF Resource.
@@ -120,7 +120,7 @@ public interface ManagedCCFs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ManagedCCFBackupResponse backup(String resourceGroupName, String appName, ManagedCCFBackup managedCCF);
+    ManagedCcfBackupResponse backup(String resourceGroupName, String appName, ManagedCcfBackup managedCCF);
 
     /**
      * Backs up a Managed CCF Resource.
@@ -134,7 +134,7 @@ public interface ManagedCCFs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ManagedCCFBackupResponse backup(String resourceGroupName, String appName, ManagedCCFBackup managedCCF,
+    ManagedCcfBackupResponse backup(String resourceGroupName, String appName, ManagedCcfBackup managedCCF,
         Context context);
 
     /**
@@ -148,7 +148,7 @@ public interface ManagedCCFs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ManagedCCFRestoreResponse restore(String resourceGroupName, String appName, ManagedCCFRestore managedCCF);
+    ManagedCcfRestoreResponse restore(String resourceGroupName, String appName, ManagedCcfRestore managedCCF);
 
     /**
      * Restores a Managed CCF Resource.
@@ -162,7 +162,7 @@ public interface ManagedCCFs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ManagedCCFRestoreResponse restore(String resourceGroupName, String appName, ManagedCCFRestore managedCCF,
+    ManagedCcfRestoreResponse restore(String resourceGroupName, String appName, ManagedCcfRestore managedCCF,
         Context context);
 
     /**
@@ -174,7 +174,7 @@ public interface ManagedCCFs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed CCF along with {@link Response}.
      */
-    ManagedCCF getById(String id);
+    ManagedCcf getById(String id);
 
     /**
      * Retrieves the properties of a Managed CCF app.
@@ -186,7 +186,7 @@ public interface ManagedCCFs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed CCF along with {@link Response}.
      */
-    Response<ManagedCCF> getByIdWithResponse(String id, Context context);
+    Response<ManagedCcf> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes an existing Managed CCF.
@@ -210,10 +210,10 @@ public interface ManagedCCFs {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new ManagedCCF resource.
+     * Begins definition for a new ManagedCcf resource.
      * 
      * @param name resource name.
-     * @return the first stage of the new ManagedCCF definition.
+     * @return the first stage of the new ManagedCcf definition.
      */
-    ManagedCCF.DefinitionStages.Blank define(String name);
+    ManagedCcf.DefinitionStages.Blank define(String name);
 }

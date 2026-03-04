@@ -34,25 +34,25 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.confidentialledger.fluent.ManagedCCFsClient;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFBackupResponseInner;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFInner;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFRestoreResponseInner;
+import com.azure.resourcemanager.confidentialledger.fluent.ManagedCcfsClient;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfBackupResponseInner;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfInner;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfRestoreResponseInner;
 import com.azure.resourcemanager.confidentialledger.implementation.models.ManagedCCFList;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFBackup;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFRestore;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfBackup;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfRestore;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in ManagedCCFsClient.
+ * An instance of this class provides access to all the operations defined in ManagedCcfsClient.
  */
-public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
+public final class ManagedCcfsClientImpl implements ManagedCcfsClient {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final ManagedCCFsService service;
+    private final ManagedCcfsService service;
 
     /**
      * The service client containing this operation class.
@@ -60,28 +60,28 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
     private final ConfidentialLedgerManagementClientImpl client;
 
     /**
-     * Initializes an instance of ManagedCCFsClientImpl.
+     * Initializes an instance of ManagedCcfsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ManagedCCFsClientImpl(ConfidentialLedgerManagementClientImpl client) {
+    ManagedCcfsClientImpl(ConfidentialLedgerManagementClientImpl client) {
         this.service
-            = RestProxy.create(ManagedCCFsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            = RestProxy.create(ManagedCcfsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ConfidentialLedgerManagementClientManagedCCFs to be used by the proxy
+     * The interface defining all the services for ConfidentialLedgerManagementClientManagedCcfs to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ConfidentialLedgerManagementClientManagedCCFs")
-    public interface ManagedCCFsService {
+    @ServiceInterface(name = "ConfidentialLedgerManagementClientManagedCcfs")
+    public interface ManagedCcfsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedCCFInner>> getByResourceGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<ManagedCcfInner>> getByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
             @HeaderParam("Accept") String accept, Context context);
@@ -90,7 +90,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ManagedCCFInner> getByResourceGroupSync(@HostParam("endpoint") String endpoint,
+        Response<ManagedCcfInner> getByResourceGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
             @HeaderParam("Accept") String accept, Context context);
@@ -102,7 +102,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") ManagedCCFInner managedCCF, Context context);
+            @BodyParam("application/json") ManagedCcfInner managedCCF, Context context);
 
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}")
         @ExpectedResponses({ 200, 201 })
@@ -111,7 +111,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") ManagedCCFInner managedCCF, Context context);
+            @BodyParam("application/json") ManagedCcfInner managedCCF, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}")
         @ExpectedResponses({ 200, 202 })
@@ -120,7 +120,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") ManagedCCFInner managedCCF, Context context);
+            @BodyParam("application/json") ManagedCcfInner managedCCF, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}")
         @ExpectedResponses({ 200, 202 })
@@ -129,7 +129,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") ManagedCCFInner managedCCF, Context context);
+            @BodyParam("application/json") ManagedCcfInner managedCCF, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}")
@@ -190,7 +190,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") ManagedCCFBackup managedCCF, Context context);
+            @BodyParam("application/json") ManagedCcfBackup managedCCF, Context context);
 
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}/backup")
         @ExpectedResponses({ 200, 202 })
@@ -199,7 +199,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") ManagedCCFBackup managedCCF, Context context);
+            @BodyParam("application/json") ManagedCcfBackup managedCCF, Context context);
 
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}/restore")
         @ExpectedResponses({ 200, 202 })
@@ -208,7 +208,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") ManagedCCFRestore managedCCF, Context context);
+            @BodyParam("application/json") ManagedCcfRestore managedCCF, Context context);
 
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}/restore")
         @ExpectedResponses({ 200, 202 })
@@ -217,7 +217,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") ManagedCCFRestore managedCCF, Context context);
+            @BodyParam("application/json") ManagedCcfRestore managedCCF, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -263,7 +263,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return managed CCF along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedCCFInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+    private Mono<Response<ManagedCcfInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String appName) {
         final String accept = "application/json";
         return FluxUtil
@@ -283,7 +283,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return managed CCF on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedCCFInner> getByResourceGroupAsync(String resourceGroupName, String appName) {
+    private Mono<ManagedCcfInner> getByResourceGroupAsync(String resourceGroupName, String appName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, appName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -300,7 +300,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return managed CCF along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedCCFInner> getByResourceGroupWithResponse(String resourceGroupName, String appName,
+    public Response<ManagedCcfInner> getByResourceGroupWithResponse(String resourceGroupName, String appName,
         Context context) {
         final String accept = "application/json";
         return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -318,7 +318,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return managed CCF.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedCCFInner getByResourceGroup(String resourceGroupName, String appName) {
+    public ManagedCcfInner getByResourceGroup(String resourceGroupName, String appName) {
         return getByResourceGroupWithResponse(resourceGroupName, appName, Context.NONE).getValue();
     }
 
@@ -335,7 +335,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String appName,
-        ManagedCCFInner managedCCF) {
+        ManagedCcfInner managedCCF) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -357,7 +357,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String appName,
-        ManagedCCFInner managedCCF) {
+        ManagedCcfInner managedCCF) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -378,7 +378,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String appName,
-        ManagedCCFInner managedCCF, Context context) {
+        ManagedCcfInner managedCCF, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -397,11 +397,11 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the {@link PollerFlux} for polling of managed CCF.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedCCFInner>, ManagedCCFInner> beginCreateAsync(String resourceGroupName,
-        String appName, ManagedCCFInner managedCCF) {
+    private PollerFlux<PollResult<ManagedCcfInner>, ManagedCcfInner> beginCreateAsync(String resourceGroupName,
+        String appName, ManagedCcfInner managedCCF) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, appName, managedCCF);
-        return this.client.<ManagedCCFInner, ManagedCCFInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedCCFInner.class, ManagedCCFInner.class, this.client.getContext());
+        return this.client.<ManagedCcfInner, ManagedCcfInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ManagedCcfInner.class, ManagedCcfInner.class, this.client.getContext());
     }
 
     /**
@@ -416,11 +416,11 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of managed CCF.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedCCFInner>, ManagedCCFInner> beginCreate(String resourceGroupName,
-        String appName, ManagedCCFInner managedCCF) {
+    public SyncPoller<PollResult<ManagedCcfInner>, ManagedCcfInner> beginCreate(String resourceGroupName,
+        String appName, ManagedCcfInner managedCCF) {
         Response<BinaryData> response = createWithResponse(resourceGroupName, appName, managedCCF);
-        return this.client.<ManagedCCFInner, ManagedCCFInner>getLroResult(response, ManagedCCFInner.class,
-            ManagedCCFInner.class, Context.NONE);
+        return this.client.<ManagedCcfInner, ManagedCcfInner>getLroResult(response, ManagedCcfInner.class,
+            ManagedCcfInner.class, Context.NONE);
     }
 
     /**
@@ -436,11 +436,11 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of managed CCF.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedCCFInner>, ManagedCCFInner> beginCreate(String resourceGroupName,
-        String appName, ManagedCCFInner managedCCF, Context context) {
+    public SyncPoller<PollResult<ManagedCcfInner>, ManagedCcfInner> beginCreate(String resourceGroupName,
+        String appName, ManagedCcfInner managedCCF, Context context) {
         Response<BinaryData> response = createWithResponse(resourceGroupName, appName, managedCCF, context);
-        return this.client.<ManagedCCFInner, ManagedCCFInner>getLroResult(response, ManagedCCFInner.class,
-            ManagedCCFInner.class, context);
+        return this.client.<ManagedCcfInner, ManagedCcfInner>getLroResult(response, ManagedCcfInner.class,
+            ManagedCcfInner.class, context);
     }
 
     /**
@@ -455,7 +455,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return managed CCF on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedCCFInner> createAsync(String resourceGroupName, String appName, ManagedCCFInner managedCCF) {
+    private Mono<ManagedCcfInner> createAsync(String resourceGroupName, String appName, ManagedCcfInner managedCCF) {
         return beginCreateAsync(resourceGroupName, appName, managedCCF).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -472,7 +472,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return managed CCF.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedCCFInner create(String resourceGroupName, String appName, ManagedCCFInner managedCCF) {
+    public ManagedCcfInner create(String resourceGroupName, String appName, ManagedCcfInner managedCCF) {
         return beginCreate(resourceGroupName, appName, managedCCF).getFinalResult();
     }
 
@@ -489,7 +489,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return managed CCF.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedCCFInner create(String resourceGroupName, String appName, ManagedCCFInner managedCCF,
+    public ManagedCcfInner create(String resourceGroupName, String appName, ManagedCcfInner managedCCF,
         Context context) {
         return beginCreate(resourceGroupName, appName, managedCCF, context).getFinalResult();
     }
@@ -507,7 +507,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String appName,
-        ManagedCCFInner managedCCF) {
+        ManagedCcfInner managedCCF) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -529,7 +529,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String appName,
-        ManagedCCFInner managedCCF) {
+        ManagedCcfInner managedCCF) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -550,7 +550,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String appName,
-        ManagedCCFInner managedCCF, Context context) {
+        ManagedCcfInner managedCCF, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -569,11 +569,11 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the {@link PollerFlux} for polling of managed CCF.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedCCFInner>, ManagedCCFInner> beginUpdateAsync(String resourceGroupName,
-        String appName, ManagedCCFInner managedCCF) {
+    private PollerFlux<PollResult<ManagedCcfInner>, ManagedCcfInner> beginUpdateAsync(String resourceGroupName,
+        String appName, ManagedCcfInner managedCCF) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, appName, managedCCF);
-        return this.client.<ManagedCCFInner, ManagedCCFInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedCCFInner.class, ManagedCCFInner.class, this.client.getContext());
+        return this.client.<ManagedCcfInner, ManagedCcfInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ManagedCcfInner.class, ManagedCcfInner.class, this.client.getContext());
     }
 
     /**
@@ -588,11 +588,11 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of managed CCF.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedCCFInner>, ManagedCCFInner> beginUpdate(String resourceGroupName,
-        String appName, ManagedCCFInner managedCCF) {
+    public SyncPoller<PollResult<ManagedCcfInner>, ManagedCcfInner> beginUpdate(String resourceGroupName,
+        String appName, ManagedCcfInner managedCCF) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, appName, managedCCF);
-        return this.client.<ManagedCCFInner, ManagedCCFInner>getLroResult(response, ManagedCCFInner.class,
-            ManagedCCFInner.class, Context.NONE);
+        return this.client.<ManagedCcfInner, ManagedCcfInner>getLroResult(response, ManagedCcfInner.class,
+            ManagedCcfInner.class, Context.NONE);
     }
 
     /**
@@ -608,11 +608,11 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of managed CCF.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedCCFInner>, ManagedCCFInner> beginUpdate(String resourceGroupName,
-        String appName, ManagedCCFInner managedCCF, Context context) {
+    public SyncPoller<PollResult<ManagedCcfInner>, ManagedCcfInner> beginUpdate(String resourceGroupName,
+        String appName, ManagedCcfInner managedCCF, Context context) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, appName, managedCCF, context);
-        return this.client.<ManagedCCFInner, ManagedCCFInner>getLroResult(response, ManagedCCFInner.class,
-            ManagedCCFInner.class, context);
+        return this.client.<ManagedCcfInner, ManagedCcfInner>getLroResult(response, ManagedCcfInner.class,
+            ManagedCcfInner.class, context);
     }
 
     /**
@@ -627,7 +627,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return managed CCF on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedCCFInner> updateAsync(String resourceGroupName, String appName, ManagedCCFInner managedCCF) {
+    private Mono<ManagedCcfInner> updateAsync(String resourceGroupName, String appName, ManagedCcfInner managedCCF) {
         return beginUpdateAsync(resourceGroupName, appName, managedCCF).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -644,7 +644,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return managed CCF.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedCCFInner update(String resourceGroupName, String appName, ManagedCCFInner managedCCF) {
+    public ManagedCcfInner update(String resourceGroupName, String appName, ManagedCcfInner managedCCF) {
         return beginUpdate(resourceGroupName, appName, managedCCF).getFinalResult();
     }
 
@@ -661,7 +661,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return managed CCF.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedCCFInner update(String resourceGroupName, String appName, ManagedCCFInner managedCCF,
+    public ManagedCcfInner update(String resourceGroupName, String appName, ManagedCcfInner managedCCF,
         Context context) {
         return beginUpdate(resourceGroupName, appName, managedCCF, context).getFinalResult();
     }
@@ -823,13 +823,13 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedCCFInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+    private Mono<PagedResponse<ManagedCcfInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
         String filter) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, filter, accept, context))
-            .<PagedResponse<ManagedCCFInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+            .<PagedResponse<ManagedCcfInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -846,7 +846,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedCCFInner> listByResourceGroupAsync(String resourceGroupName, String filter) {
+    private PagedFlux<ManagedCcfInner> listByResourceGroupAsync(String resourceGroupName, String filter) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
@@ -862,7 +862,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedCCFInner> listByResourceGroupAsync(String resourceGroupName) {
+    private PagedFlux<ManagedCcfInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
@@ -880,7 +880,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ManagedCCFInner> listByResourceGroupSinglePage(String resourceGroupName, String filter) {
+    private PagedResponse<ManagedCcfInner> listByResourceGroupSinglePage(String resourceGroupName, String filter) {
         final String accept = "application/json";
         Response<ManagedCCFList> res
             = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -902,7 +902,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ManagedCCFInner> listByResourceGroupSinglePage(String resourceGroupName, String filter,
+    private PagedResponse<ManagedCcfInner> listByResourceGroupSinglePage(String resourceGroupName, String filter,
         Context context) {
         final String accept = "application/json";
         Response<ManagedCCFList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
@@ -922,7 +922,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedCCFInner> listByResourceGroup(String resourceGroupName) {
+    public PagedIterable<ManagedCcfInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter),
             nextLink -> listByResourceGroupNextSinglePage(nextLink));
@@ -941,7 +941,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedCCFInner> listByResourceGroup(String resourceGroupName, String filter,
+    public PagedIterable<ManagedCcfInner> listByResourceGroup(String resourceGroupName, String filter,
         Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter, context),
             nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
@@ -958,12 +958,12 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedCCFInner>> listSinglePageAsync(String filter) {
+    private Mono<PagedResponse<ManagedCcfInner>> listSinglePageAsync(String filter) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), filter, accept, context))
-            .<PagedResponse<ManagedCCFInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+            .<PagedResponse<ManagedCcfInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -979,7 +979,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedCCFInner> listAsync(String filter) {
+    private PagedFlux<ManagedCcfInner> listAsync(String filter) {
         return new PagedFlux<>(() -> listSinglePageAsync(filter),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
@@ -993,7 +993,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedCCFInner> listAsync() {
+    private PagedFlux<ManagedCcfInner> listAsync() {
         final String filter = null;
         return new PagedFlux<>(() -> listSinglePageAsync(filter),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
@@ -1010,7 +1010,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ManagedCCFInner> listSinglePage(String filter) {
+    private PagedResponse<ManagedCcfInner> listSinglePage(String filter) {
         final String accept = "application/json";
         Response<ManagedCCFList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), filter, accept, Context.NONE);
@@ -1030,7 +1030,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ManagedCCFInner> listSinglePage(String filter, Context context) {
+    private PagedResponse<ManagedCcfInner> listSinglePage(String filter, Context context) {
         final String accept = "application/json";
         Response<ManagedCCFList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), filter, accept, context);
@@ -1047,7 +1047,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedCCFInner> list() {
+    public PagedIterable<ManagedCcfInner> list() {
         final String filter = null;
         return new PagedIterable<>(() -> listSinglePage(filter),
             nextLink -> listBySubscriptionNextSinglePage(nextLink));
@@ -1065,7 +1065,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedCCFInner> list(String filter, Context context) {
+    public PagedIterable<ManagedCcfInner> list(String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, context),
             nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
@@ -1083,7 +1083,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> backupWithResponseAsync(String resourceGroupName, String appName,
-        ManagedCCFBackup managedCCF) {
+        ManagedCcfBackup managedCCF) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1105,7 +1105,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> backupWithResponse(String resourceGroupName, String appName,
-        ManagedCCFBackup managedCCF) {
+        ManagedCcfBackup managedCCF) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.backupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1126,7 +1126,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> backupWithResponse(String resourceGroupName, String appName,
-        ManagedCCFBackup managedCCF, Context context) {
+        ManagedCcfBackup managedCCF, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.backupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1145,11 +1145,11 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedCCFBackupResponseInner>, ManagedCCFBackupResponseInner>
-        beginBackupAsync(String resourceGroupName, String appName, ManagedCCFBackup managedCCF) {
+    private PollerFlux<PollResult<ManagedCcfBackupResponseInner>, ManagedCcfBackupResponseInner>
+        beginBackupAsync(String resourceGroupName, String appName, ManagedCcfBackup managedCCF) {
         Mono<Response<Flux<ByteBuffer>>> mono = backupWithResponseAsync(resourceGroupName, appName, managedCCF);
-        return this.client.<ManagedCCFBackupResponseInner, ManagedCCFBackupResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ManagedCCFBackupResponseInner.class, ManagedCCFBackupResponseInner.class,
+        return this.client.<ManagedCcfBackupResponseInner, ManagedCcfBackupResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ManagedCcfBackupResponseInner.class, ManagedCcfBackupResponseInner.class,
             this.client.getContext());
     }
 
@@ -1165,11 +1165,11 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedCCFBackupResponseInner>, ManagedCCFBackupResponseInner>
-        beginBackup(String resourceGroupName, String appName, ManagedCCFBackup managedCCF) {
+    public SyncPoller<PollResult<ManagedCcfBackupResponseInner>, ManagedCcfBackupResponseInner>
+        beginBackup(String resourceGroupName, String appName, ManagedCcfBackup managedCCF) {
         Response<BinaryData> response = backupWithResponse(resourceGroupName, appName, managedCCF);
-        return this.client.<ManagedCCFBackupResponseInner, ManagedCCFBackupResponseInner>getLroResult(response,
-            ManagedCCFBackupResponseInner.class, ManagedCCFBackupResponseInner.class, Context.NONE);
+        return this.client.<ManagedCcfBackupResponseInner, ManagedCcfBackupResponseInner>getLroResult(response,
+            ManagedCcfBackupResponseInner.class, ManagedCcfBackupResponseInner.class, Context.NONE);
     }
 
     /**
@@ -1185,11 +1185,11 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedCCFBackupResponseInner>, ManagedCCFBackupResponseInner>
-        beginBackup(String resourceGroupName, String appName, ManagedCCFBackup managedCCF, Context context) {
+    public SyncPoller<PollResult<ManagedCcfBackupResponseInner>, ManagedCcfBackupResponseInner>
+        beginBackup(String resourceGroupName, String appName, ManagedCcfBackup managedCCF, Context context) {
         Response<BinaryData> response = backupWithResponse(resourceGroupName, appName, managedCCF, context);
-        return this.client.<ManagedCCFBackupResponseInner, ManagedCCFBackupResponseInner>getLroResult(response,
-            ManagedCCFBackupResponseInner.class, ManagedCCFBackupResponseInner.class, context);
+        return this.client.<ManagedCcfBackupResponseInner, ManagedCcfBackupResponseInner>getLroResult(response,
+            ManagedCcfBackupResponseInner.class, ManagedCcfBackupResponseInner.class, context);
     }
 
     /**
@@ -1204,8 +1204,8 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedCCFBackupResponseInner> backupAsync(String resourceGroupName, String appName,
-        ManagedCCFBackup managedCCF) {
+    private Mono<ManagedCcfBackupResponseInner> backupAsync(String resourceGroupName, String appName,
+        ManagedCcfBackup managedCCF) {
         return beginBackupAsync(resourceGroupName, appName, managedCCF).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1222,7 +1222,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedCCFBackupResponseInner backup(String resourceGroupName, String appName, ManagedCCFBackup managedCCF) {
+    public ManagedCcfBackupResponseInner backup(String resourceGroupName, String appName, ManagedCcfBackup managedCCF) {
         return beginBackup(resourceGroupName, appName, managedCCF).getFinalResult();
     }
 
@@ -1239,7 +1239,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedCCFBackupResponseInner backup(String resourceGroupName, String appName, ManagedCCFBackup managedCCF,
+    public ManagedCcfBackupResponseInner backup(String resourceGroupName, String appName, ManagedCcfBackup managedCCF,
         Context context) {
         return beginBackup(resourceGroupName, appName, managedCCF, context).getFinalResult();
     }
@@ -1257,7 +1257,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restoreWithResponseAsync(String resourceGroupName, String appName,
-        ManagedCCFRestore managedCCF) {
+        ManagedCcfRestore managedCCF) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1279,7 +1279,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreWithResponse(String resourceGroupName, String appName,
-        ManagedCCFRestore managedCCF) {
+        ManagedCcfRestore managedCCF) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.restoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1300,7 +1300,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreWithResponse(String resourceGroupName, String appName,
-        ManagedCCFRestore managedCCF, Context context) {
+        ManagedCcfRestore managedCCF, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.restoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1319,11 +1319,11 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedCCFRestoreResponseInner>, ManagedCCFRestoreResponseInner>
-        beginRestoreAsync(String resourceGroupName, String appName, ManagedCCFRestore managedCCF) {
+    private PollerFlux<PollResult<ManagedCcfRestoreResponseInner>, ManagedCcfRestoreResponseInner>
+        beginRestoreAsync(String resourceGroupName, String appName, ManagedCcfRestore managedCCF) {
         Mono<Response<Flux<ByteBuffer>>> mono = restoreWithResponseAsync(resourceGroupName, appName, managedCCF);
-        return this.client.<ManagedCCFRestoreResponseInner, ManagedCCFRestoreResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ManagedCCFRestoreResponseInner.class, ManagedCCFRestoreResponseInner.class,
+        return this.client.<ManagedCcfRestoreResponseInner, ManagedCcfRestoreResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ManagedCcfRestoreResponseInner.class, ManagedCcfRestoreResponseInner.class,
             this.client.getContext());
     }
 
@@ -1339,11 +1339,11 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedCCFRestoreResponseInner>, ManagedCCFRestoreResponseInner>
-        beginRestore(String resourceGroupName, String appName, ManagedCCFRestore managedCCF) {
+    public SyncPoller<PollResult<ManagedCcfRestoreResponseInner>, ManagedCcfRestoreResponseInner>
+        beginRestore(String resourceGroupName, String appName, ManagedCcfRestore managedCCF) {
         Response<BinaryData> response = restoreWithResponse(resourceGroupName, appName, managedCCF);
-        return this.client.<ManagedCCFRestoreResponseInner, ManagedCCFRestoreResponseInner>getLroResult(response,
-            ManagedCCFRestoreResponseInner.class, ManagedCCFRestoreResponseInner.class, Context.NONE);
+        return this.client.<ManagedCcfRestoreResponseInner, ManagedCcfRestoreResponseInner>getLroResult(response,
+            ManagedCcfRestoreResponseInner.class, ManagedCcfRestoreResponseInner.class, Context.NONE);
     }
 
     /**
@@ -1359,11 +1359,11 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedCCFRestoreResponseInner>, ManagedCCFRestoreResponseInner>
-        beginRestore(String resourceGroupName, String appName, ManagedCCFRestore managedCCF, Context context) {
+    public SyncPoller<PollResult<ManagedCcfRestoreResponseInner>, ManagedCcfRestoreResponseInner>
+        beginRestore(String resourceGroupName, String appName, ManagedCcfRestore managedCCF, Context context) {
         Response<BinaryData> response = restoreWithResponse(resourceGroupName, appName, managedCCF, context);
-        return this.client.<ManagedCCFRestoreResponseInner, ManagedCCFRestoreResponseInner>getLroResult(response,
-            ManagedCCFRestoreResponseInner.class, ManagedCCFRestoreResponseInner.class, context);
+        return this.client.<ManagedCcfRestoreResponseInner, ManagedCcfRestoreResponseInner>getLroResult(response,
+            ManagedCcfRestoreResponseInner.class, ManagedCcfRestoreResponseInner.class, context);
     }
 
     /**
@@ -1378,8 +1378,8 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedCCFRestoreResponseInner> restoreAsync(String resourceGroupName, String appName,
-        ManagedCCFRestore managedCCF) {
+    private Mono<ManagedCcfRestoreResponseInner> restoreAsync(String resourceGroupName, String appName,
+        ManagedCcfRestore managedCCF) {
         return beginRestoreAsync(resourceGroupName, appName, managedCCF).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1396,8 +1396,8 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedCCFRestoreResponseInner restore(String resourceGroupName, String appName,
-        ManagedCCFRestore managedCCF) {
+    public ManagedCcfRestoreResponseInner restore(String resourceGroupName, String appName,
+        ManagedCcfRestore managedCCF) {
         return beginRestore(resourceGroupName, appName, managedCCF).getFinalResult();
     }
 
@@ -1414,8 +1414,8 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedCCFRestoreResponseInner restore(String resourceGroupName, String appName,
-        ManagedCCFRestore managedCCF, Context context) {
+    public ManagedCcfRestoreResponseInner restore(String resourceGroupName, String appName,
+        ManagedCcfRestore managedCCF, Context context) {
         return beginRestore(resourceGroupName, appName, managedCCF, context).getFinalResult();
     }
 
@@ -1430,12 +1430,12 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedCCFInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ManagedCcfInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagedCCFInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+            .<PagedResponse<ManagedCcfInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1451,7 +1451,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ManagedCCFInner> listByResourceGroupNextSinglePage(String nextLink) {
+    private PagedResponse<ManagedCcfInner> listByResourceGroupNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<ManagedCCFList> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1471,7 +1471,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ManagedCCFInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
+    private PagedResponse<ManagedCcfInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         Response<ManagedCCFList> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -1490,12 +1490,12 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedCCFInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ManagedCcfInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagedCCFInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+            .<PagedResponse<ManagedCcfInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1511,7 +1511,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ManagedCCFInner> listBySubscriptionNextSinglePage(String nextLink) {
+    private PagedResponse<ManagedCcfInner> listBySubscriptionNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<ManagedCCFList> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1531,7 +1531,7 @@ public final class ManagedCCFsClientImpl implements ManagedCCFsClient {
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ManagedCCFInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
+    private PagedResponse<ManagedCcfInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         Response<ManagedCCFList> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);

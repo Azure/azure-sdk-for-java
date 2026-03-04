@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.confidentialledger.models;
 
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFRestoreResponseInner;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfRestoreResponseInner;
 
 /**
- * An immutable client-side representation of ManagedCCFRestoreResponse.
+ * An immutable client-side representation of ManagedCcfRestoreResponse.
  */
-public interface ManagedCCFRestoreResponse {
+public interface ManagedCcfRestoreResponse {
     /**
      * Gets the message property: Response body stating if the managed CCF resource is being restored.
      * 
@@ -18,9 +18,9 @@ public interface ManagedCCFRestoreResponse {
     String message();
 
     /**
-     * Gets the inner com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFRestoreResponseInner object.
+     * Gets the inner com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfRestoreResponseInner object.
      * 
      * @return the inner object.
      */
-    ManagedCCFRestoreResponseInner innerModel();
+    ManagedCcfRestoreResponseInner innerModel();
 }

@@ -7,18 +7,18 @@ package com.azure.resourcemanager.confidentialledger.implementation;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCCFInner;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCF;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFBackup;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFBackupResponse;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFProperties;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFRestore;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCCFRestoreResponse;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfInner;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcf;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfBackup;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfBackupResponse;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfProperties;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfRestore;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfRestoreResponse;
 import java.util.Collections;
 import java.util.Map;
 
-public final class ManagedCCFImpl implements ManagedCCF, ManagedCCF.Definition, ManagedCCF.Update {
-    private ManagedCCFInner innerObject;
+public final class ManagedCcfImpl implements ManagedCcf, ManagedCcf.Definition, ManagedCcf.Update {
+    private ManagedCcfInner innerObject;
 
     private final com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager;
 
@@ -47,7 +47,7 @@ public final class ManagedCCFImpl implements ManagedCCF, ManagedCCF.Definition, 
         }
     }
 
-    public ManagedCCFProperties properties() {
+    public ManagedCcfProperties properties() {
         return this.innerModel().properties();
     }
 
@@ -67,7 +67,7 @@ public final class ManagedCCFImpl implements ManagedCCF, ManagedCCF.Definition, 
         return resourceGroupName;
     }
 
-    public ManagedCCFInner innerModel() {
+    public ManagedCcfInner innerModel() {
         return this.innerObject;
     }
 
@@ -79,50 +79,50 @@ public final class ManagedCCFImpl implements ManagedCCF, ManagedCCF.Definition, 
 
     private String appName;
 
-    public ManagedCCFImpl withExistingResourceGroup(String resourceGroupName) {
+    public ManagedCcfImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
 
-    public ManagedCCF create() {
+    public ManagedCcf create() {
         this.innerObject = serviceManager.serviceClient()
-            .getManagedCCFs()
+            .getManagedCcfs()
             .create(resourceGroupName, appName, this.innerModel(), Context.NONE);
         return this;
     }
 
-    public ManagedCCF create(Context context) {
+    public ManagedCcf create(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getManagedCCFs()
+            .getManagedCcfs()
             .create(resourceGroupName, appName, this.innerModel(), context);
         return this;
     }
 
-    ManagedCCFImpl(String name, com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager) {
-        this.innerObject = new ManagedCCFInner();
+    ManagedCcfImpl(String name, com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager) {
+        this.innerObject = new ManagedCcfInner();
         this.serviceManager = serviceManager;
         this.appName = name;
     }
 
-    public ManagedCCFImpl update() {
+    public ManagedCcfImpl update() {
         return this;
     }
 
-    public ManagedCCF apply() {
+    public ManagedCcf apply() {
         this.innerObject = serviceManager.serviceClient()
-            .getManagedCCFs()
+            .getManagedCcfs()
             .update(resourceGroupName, appName, this.innerModel(), Context.NONE);
         return this;
     }
 
-    public ManagedCCF apply(Context context) {
+    public ManagedCcf apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getManagedCCFs()
+            .getManagedCcfs()
             .update(resourceGroupName, appName, this.innerModel(), context);
         return this;
     }
 
-    ManagedCCFImpl(ManagedCCFInner innerObject,
+    ManagedCcfImpl(ManagedCcfInner innerObject,
         com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -130,54 +130,54 @@ public final class ManagedCCFImpl implements ManagedCCF, ManagedCCF.Definition, 
         this.appName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedCCFs");
     }
 
-    public ManagedCCF refresh() {
+    public ManagedCcf refresh() {
         this.innerObject = serviceManager.serviceClient()
-            .getManagedCCFs()
+            .getManagedCcfs()
             .getByResourceGroupWithResponse(resourceGroupName, appName, Context.NONE)
             .getValue();
         return this;
     }
 
-    public ManagedCCF refresh(Context context) {
+    public ManagedCcf refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getManagedCCFs()
+            .getManagedCcfs()
             .getByResourceGroupWithResponse(resourceGroupName, appName, context)
             .getValue();
         return this;
     }
 
-    public ManagedCCFBackupResponse backup(ManagedCCFBackup managedCCF) {
-        return serviceManager.managedCCFs().backup(resourceGroupName, appName, managedCCF);
+    public ManagedCcfBackupResponse backup(ManagedCcfBackup managedCCF) {
+        return serviceManager.managedCcfs().backup(resourceGroupName, appName, managedCCF);
     }
 
-    public ManagedCCFBackupResponse backup(ManagedCCFBackup managedCCF, Context context) {
-        return serviceManager.managedCCFs().backup(resourceGroupName, appName, managedCCF, context);
+    public ManagedCcfBackupResponse backup(ManagedCcfBackup managedCCF, Context context) {
+        return serviceManager.managedCcfs().backup(resourceGroupName, appName, managedCCF, context);
     }
 
-    public ManagedCCFRestoreResponse restore(ManagedCCFRestore managedCCF) {
-        return serviceManager.managedCCFs().restore(resourceGroupName, appName, managedCCF);
+    public ManagedCcfRestoreResponse restore(ManagedCcfRestore managedCCF) {
+        return serviceManager.managedCcfs().restore(resourceGroupName, appName, managedCCF);
     }
 
-    public ManagedCCFRestoreResponse restore(ManagedCCFRestore managedCCF, Context context) {
-        return serviceManager.managedCCFs().restore(resourceGroupName, appName, managedCCF, context);
+    public ManagedCcfRestoreResponse restore(ManagedCcfRestore managedCCF, Context context) {
+        return serviceManager.managedCcfs().restore(resourceGroupName, appName, managedCCF, context);
     }
 
-    public ManagedCCFImpl withRegion(Region location) {
+    public ManagedCcfImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
     }
 
-    public ManagedCCFImpl withRegion(String location) {
+    public ManagedCcfImpl withRegion(String location) {
         this.innerModel().withLocation(location);
         return this;
     }
 
-    public ManagedCCFImpl withTags(Map<String, String> tags) {
+    public ManagedCcfImpl withTags(Map<String, String> tags) {
         this.innerModel().withTags(tags);
         return this;
     }
 
-    public ManagedCCFImpl withProperties(ManagedCCFProperties properties) {
+    public ManagedCcfImpl withProperties(ManagedCcfProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
     }

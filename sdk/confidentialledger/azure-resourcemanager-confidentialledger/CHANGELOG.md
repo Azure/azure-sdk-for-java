@@ -6,33 +6,11 @@
 
 ### Breaking Changes
 
-#### `models.ManagedCcfRestore` was removed
-
-#### `models.ManagedCcf$Update` was removed
-
-#### `models.ManagedCcfBackup` was removed
-
-#### `models.ManagedCcf$UpdateStages` was removed
-
-#### `models.ManagedCcf$Definition` was removed
-
-#### `models.ManagedCcf$DefinitionStages` was removed
-
-#### `models.ManagedCcfs` was removed
-
-#### `models.ManagedCcfRestoreResponse` was removed
-
-#### `models.ManagedCcfProperties` was removed
-
 #### `models.ConfidentialLedgerList` was removed
 
 #### `models.ManagedCcfList` was removed
 
 #### `models.ResourceProviderOperationList` was removed
-
-#### `models.ManagedCcf` was removed
-
-#### `models.ManagedCcfBackupResponse` was removed
 
 #### `models.MemberIdentityCertificate` was modified
 
@@ -41,6 +19,14 @@
 * `withTags(java.lang.Object)` was removed
 
 #### `models.AadBasedSecurityPrincipal` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedCcfRestore` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedCcfBackup` was modified
 
 * `validate()` was removed
 
@@ -58,12 +44,13 @@
 
 #### `models.LedgerProperties` was modified
 
+* `validate()` was removed
+* `withEnclavePlatform(models.EnclavePlatform)` was removed
+
+#### `models.ManagedCcfProperties` was modified
+
 * `withEnclavePlatform(models.EnclavePlatform)` was removed
 * `validate()` was removed
-
-#### `ConfidentialLedgerManager` was modified
-
-* `managedCcfs()` was removed
 
 #### `models.ConfidentialLedgerRestore` was modified
 
@@ -72,11 +59,11 @@
 #### `models.ResourceProviderOperationDisplay` was modified
 
 * `ResourceProviderOperationDisplay()` was changed to private access
-* `withDescription(java.lang.String)` was removed
-* `validate()` was removed
-* `withResource(java.lang.String)` was removed
 * `withProvider(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
 * `withOperation(java.lang.String)` was removed
+* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
 
 #### `models.DeploymentType` was modified
 
@@ -84,40 +71,14 @@
 
 ### Features Added
 
-* `models.ManagedCCF$Definition` was added
-
-* `models.ManagedCCF$DefinitionStages` was added
-
-* `models.ManagedCCFBackup` was added
-
-* `models.ManagedCCFs` was added
-
-* `models.ManagedCCFRestoreResponse` was added
-
-* `models.ManagedCCF$UpdateStages` was added
-
-* `models.ManagedCCFBackupResponse` was added
-
-* `models.ManagedCCFRestore` was added
-
-* `models.ManagedCCF` was added
-
-* `models.ManagedCCF$Update` was added
-
-* `models.ManagedCCFProperties` was added
-
 #### `models.MemberIdentityCertificate` was modified
 
 * `withTags(com.azure.core.util.BinaryData)` was added
 
 #### `models.LedgerProperties` was modified
 
-* `withScittConfiguration(java.lang.String)` was added
 * `scittConfiguration()` was added
-
-#### `ConfidentialLedgerManager` was modified
-
-* `managedCCFs()` was added
+* `withScittConfiguration(java.lang.String)` was added
 
 ## 1.1.0-beta.1 (2025-05-15)
 

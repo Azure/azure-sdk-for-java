@@ -12,23 +12,23 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Object representing the restore response of a Managed CCF Resource.
+ * Object representing the backup response of a Managed CCF Resource.
  */
 @Immutable
-public final class ManagedCCFRestoreResponseInner implements JsonSerializable<ManagedCCFRestoreResponseInner> {
+public final class ManagedCcfBackupResponseInner implements JsonSerializable<ManagedCcfBackupResponseInner> {
     /*
-     * Response body stating if the managed CCF resource is being restored.
+     * Response body stating if the managed CCF resource is being backed up.
      */
     private String message;
 
     /**
-     * Creates an instance of ManagedCCFRestoreResponseInner class.
+     * Creates an instance of ManagedCcfBackupResponseInner class.
      */
-    private ManagedCCFRestoreResponseInner() {
+    private ManagedCcfBackupResponseInner() {
     }
 
     /**
-     * Get the message property: Response body stating if the managed CCF resource is being restored.
+     * Get the message property: Response body stating if the managed CCF resource is being backed up.
      * 
      * @return the message value.
      */
@@ -46,29 +46,29 @@ public final class ManagedCCFRestoreResponseInner implements JsonSerializable<Ma
     }
 
     /**
-     * Reads an instance of ManagedCCFRestoreResponseInner from the JsonReader.
+     * Reads an instance of ManagedCcfBackupResponseInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ManagedCCFRestoreResponseInner if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ManagedCCFRestoreResponseInner.
+     * @return An instance of ManagedCcfBackupResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedCcfBackupResponseInner.
      */
-    public static ManagedCCFRestoreResponseInner fromJson(JsonReader jsonReader) throws IOException {
+    public static ManagedCcfBackupResponseInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ManagedCCFRestoreResponseInner deserializedManagedCCFRestoreResponseInner
-                = new ManagedCCFRestoreResponseInner();
+            ManagedCcfBackupResponseInner deserializedManagedCcfBackupResponseInner
+                = new ManagedCcfBackupResponseInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("message".equals(fieldName)) {
-                    deserializedManagedCCFRestoreResponseInner.message = reader.getString();
+                    deserializedManagedCcfBackupResponseInner.message = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedManagedCCFRestoreResponseInner;
+            return deserializedManagedCcfBackupResponseInner;
         });
     }
 }

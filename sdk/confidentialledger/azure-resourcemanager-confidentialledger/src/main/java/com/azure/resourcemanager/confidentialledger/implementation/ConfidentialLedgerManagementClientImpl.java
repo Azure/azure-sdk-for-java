@@ -28,7 +28,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.confidentialledger.fluent.ConfidentialLedgerManagementClient;
 import com.azure.resourcemanager.confidentialledger.fluent.LedgersClient;
-import com.azure.resourcemanager.confidentialledger.fluent.ManagedCCFsClient;
+import com.azure.resourcemanager.confidentialledger.fluent.ManagedCcfsClient;
 import com.azure.resourcemanager.confidentialledger.fluent.OperationsClient;
 import com.azure.resourcemanager.confidentialledger.fluent.ResourceProvidersClient;
 import java.io.IOException;
@@ -172,17 +172,17 @@ public final class ConfidentialLedgerManagementClientImpl implements Confidentia
     }
 
     /**
-     * The ManagedCCFsClient object to access its operations.
+     * The ManagedCcfsClient object to access its operations.
      */
-    private final ManagedCCFsClient managedCCFs;
+    private final ManagedCcfsClient managedCcfs;
 
     /**
-     * Gets the ManagedCCFsClient object to access its operations.
+     * Gets the ManagedCcfsClient object to access its operations.
      * 
-     * @return the ManagedCCFsClient object.
+     * @return the ManagedCcfsClient object.
      */
-    public ManagedCCFsClient getManagedCCFs() {
-        return this.managedCCFs;
+    public ManagedCcfsClient getManagedCcfs() {
+        return this.managedCcfs;
     }
 
     /**
@@ -206,7 +206,7 @@ public final class ConfidentialLedgerManagementClientImpl implements Confidentia
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.ledgers = new LedgersClientImpl(this);
-        this.managedCCFs = new ManagedCCFsClientImpl(this);
+        this.managedCcfs = new ManagedCcfsClientImpl(this);
     }
 
     /**

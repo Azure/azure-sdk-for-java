@@ -68,9 +68,9 @@ public interface ConfidentialLedgerManagementClient {
     LedgersClient getLedgers();
 
     /**
-     * Gets the ManagedCCFsClient object to access its operations.
+     * Gets the ManagedCcfsClient object to access its operations.
      * 
-     * @return the ManagedCCFsClient object.
+     * @return the ManagedCcfsClient object.
      */
-    ManagedCCFsClient getManagedCCFs();
+    ManagedCcfsClient getManagedCcfs();
 }
