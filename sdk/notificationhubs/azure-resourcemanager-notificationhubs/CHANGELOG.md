@@ -1,14 +1,382 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2026-03-04)
 
-### Features Added
+- Azure Resource Manager NotificationHubs client library for Java. This package contains Microsoft Azure SDK for NotificationHubs Management SDK. Microsoft Notification Hubs Resource Provider REST API. Package api-version 2023-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SharedAccessAuthorizationRuleListResult` was removed
 
-### Other Changes
+#### `models.NamespaceCreateOrUpdateParameters` was removed
+
+#### `models.NotificationHubListResult` was removed
+
+#### `models.PolicykeyResource` was removed
+
+#### `models.NamespaceListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.SharedAccessAuthorizationRuleCreateOrUpdateParameters` was removed
+
+#### `models.NotificationHubCreateOrUpdateParameters` was removed
+
+#### `models.NamespaceResource$DefinitionStages` was modified
+
+* Required stage 3 was added
+* `withLocation(java.lang.String)` was removed in stage 1
+* `withLocation(com.azure.core.management.Region)` was removed in stage 1
+
+#### `models.SharedAccessAuthorizationRuleResource$Definition` was modified
+
+* `withProperties(fluent.models.SharedAccessAuthorizationRuleProperties)` was removed
+
+#### `models.BaiduCredential` was modified
+
+* `validate()` was removed
+
+#### `models.GcmCredential` was modified
+
+* `validate()` was removed
+
+#### `models.NotificationHubResource` was modified
+
+* `debugSendWithResponse(java.lang.Object,com.azure.core.util.Context)` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.MpnsCredential` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.DebugSendResponse` was modified
+
+* `java.lang.Float failure()` -> `java.lang.Long failure()`
+* `java.lang.Object results()` -> `java.util.List results()`
+* `java.lang.Float success()` -> `java.lang.Long success()`
+* `sku()` was removed
+
+#### `models.NamespacePatchParameters` was modified
+
+* `validate()` was removed
+
+#### `models.PnsCredentialsResource` was modified
+
+* `sku()` was removed
+
+#### `models.NotificationHubResource$Update` was modified
+
+* `withNamePropertiesName(java.lang.String)` was removed
+* `withAuthorizationRules(java.util.List)` was removed
+
+#### `models.ApnsCredential` was modified
+
+* `validate()` was removed
+
+#### `models.SharedAccessAuthorizationRuleResource$Update` was modified
+
+* `withProperties(fluent.models.SharedAccessAuthorizationRuleProperties)` was removed
+
+#### `models.Namespaces` was modified
+
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `regenerateKeysWithResponse(java.lang.String,java.lang.String,java.lang.String,models.PolicykeyResource,com.azure.core.util.Context)` was removed
+* `regenerateKeys(java.lang.String,java.lang.String,java.lang.String,models.PolicykeyResource)` was removed
+* `list(com.azure.core.util.Context)` was removed
+
+#### `models.AccessRights` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `models.AccessRights[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
+#### `models.NotificationHubPatchParameters` was modified
+
+* `withLocation(java.lang.String)` was removed
+* `namePropertiesName()` was removed
+* `withTags(java.util.Map)` was removed
+* `id()` was removed
+* `validate()` was removed
+* `withAuthorizationRules(java.util.List)` was removed
+* `withNamePropertiesName(java.lang.String)` was removed
+* `type()` was removed
+
+#### `models.WnsCredential` was modified
+
+* `validate()` was removed
+
+#### `models.NotificationHubResource$Definition` was modified
+
+* `withAuthorizationRules(java.util.List)` was removed
+
+#### `models.NotificationHubs` was modified
+
+* `debugSendWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.Object,com.azure.core.util.Context)` was removed
+* `regenerateKeysWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PolicykeyResource,com.azure.core.util.Context)` was removed
+* `createOrUpdateAuthorizationRuleWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.SharedAccessAuthorizationRuleCreateOrUpdateParameters,com.azure.core.util.Context)` was removed
+* `createOrUpdateAuthorizationRule(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.SharedAccessAuthorizationRuleCreateOrUpdateParameters)` was removed
+* `regenerateKeys(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PolicykeyResource)` was removed
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.CheckAvailabilityParameters` was modified
+
+* `validate()` was removed
+
+#### `models.AdmCredential` was modified
+
+* `validate()` was removed
+
+#### `models.NamespaceType` was modified
+
+* `models.NamespaceType[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+
+#### `models.SharedAccessAuthorizationRuleResource` was modified
+
+* `sku()` was removed
+* `regenerateKeysWithResponse(models.PolicykeyResource,com.azure.core.util.Context)` was removed
+* `java.lang.String modifiedTime()` -> `java.time.OffsetDateTime modifiedTime()`
+* `java.lang.String createdTime()` -> `java.time.OffsetDateTime createdTime()`
+* `regenerateKeys(models.PolicykeyResource)` was removed
+
+#### `models.NamespaceResource$Definition` was modified
+
+* `withNamePropertiesName(java.lang.String)` was removed
+* `withSubscriptionId(java.lang.String)` was removed
+* `withRegion(java.lang.String)` was removed
+* `withCreatedAt(java.time.OffsetDateTime)` was removed
+* `withCritical(java.lang.Boolean)` was removed
+* `withLocation(com.azure.core.management.Region)` was removed
+* `withUpdatedAt(java.time.OffsetDateTime)` was removed
+* `withLocation(java.lang.String)` was removed
+* `withProvisioningState(java.lang.String)` was removed
+* `withStatus(java.lang.String)` was removed
+* `withEnabled(java.lang.Boolean)` was removed
+* `withServiceBusEndpoint(java.lang.String)` was removed
+
+#### `models.NamespaceResource` was modified
+
+* `java.lang.String provisioningState()` -> `models.OperationProvisioningState provisioningState()`
+* `java.lang.String status()` -> `models.NamespaceStatus status()`
+
+### Features Added
+
+* `models.OperationProperties` was added
+
+* `models.PrivateLinkConnectionStatus` was added
+
+* `models.PolicyKeyResource` was added
+
+* `models.ReplicationRegion` was added
+
+* `models.Availability` was added
+
+* `models.RemotePrivateEndpointConnection` was added
+
+* `models.NamespaceStatus` was added
+
+* `models.OperationProvisioningState` was added
+
+* `models.PrivateEndpointConnections` was added
+
+* `models.NetworkAcls` was added
+
+* `models.RegistrationResult` was added
+
+* `models.BrowserCredential` was added
+
+* `models.PrivateEndpointConnectionProperties` was added
+
+* `models.FcmV1Credential` was added
+
+* `models.PrivateEndpointConnectionResource` was added
+
+* `models.LogSpecification` was added
+
+* `models.ZoneRedundancyPreference` was added
+
+* `models.IpRule` was added
+
+* `models.PrivateLinkResourceProperties` was added
+
+* `models.ServiceSpecification` was added
+
+* `models.RemotePrivateLinkServiceConnectionState` was added
+
+* `models.XiaomiCredential` was added
+
+* `models.PublicNetworkAccess` was added
+
+* `models.PrivateLinkResource` was added
+
+* `models.MetricSpecification` was added
+
+* `models.PublicInternetAuthorizationRule` was added
+
+* `models.PolicyKeyType` was added
+
+* `models.PrivateEndpointConnectionProvisioningState` was added
+
+#### `models.SharedAccessAuthorizationRuleResource$Definition` was modified
+
+* `withRegion(java.lang.String)` was added
+* `withTags(java.util.Map)` was added
+* `withRights(java.util.List)` was added
+* `withRegion(com.azure.core.management.Region)` was added
+* `withPrimaryKey(java.lang.String)` was added
+* `withSecondaryKey(java.lang.String)` was added
+
+#### `models.NotificationHubResource` was modified
+
+* `dailyMaxActiveDevices()` was added
+* `browserCredential()` was added
+* `debugSendWithResponse(com.azure.core.util.Context)` was added
+* `xiaomiCredential()` was added
+* `fcmV1Credential()` was added
+* `systemData()` was added
+
+#### `models.OperationDisplay` was modified
+
+* `description()` was added
+
+#### `models.NamespaceResource$Update` was modified
+
+* `withProperties(fluent.models.NamespaceProperties)` was added
+
+#### `models.DebugSendResponse` was modified
+
+* `systemData()` was added
+
+#### `models.NamespacePatchParameters` was modified
+
+* `properties()` was added
+* `withProperties(fluent.models.NamespaceProperties)` was added
+
+#### `models.PnsCredentialsResource` was modified
+
+* `systemData()` was added
+* `browserCredential()` was added
+* `xiaomiCredential()` was added
+* `fcmV1Credential()` was added
+
+#### `models.NotificationHubResource$Update` was modified
+
+* `withXiaomiCredential(models.XiaomiCredential)` was added
+* `withBrowserCredential(models.BrowserCredential)` was added
+* `withFcmV1Credential(models.FcmV1Credential)` was added
+
+#### `models.SharedAccessAuthorizationRuleResource$Update` was modified
+
+* `withRights(java.util.List)` was added
+* `withPrimaryKey(java.lang.String)` was added
+* `withSecondaryKey(java.lang.String)` was added
+* `withTags(java.util.Map)` was added
+
+#### `models.Namespaces` was modified
+
+* `listByResourceGroup(java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `regenerateKeysWithResponse(java.lang.String,java.lang.String,java.lang.String,models.PolicyKeyResource,com.azure.core.util.Context)` was added
+* `list(java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
+* `getPnsCredentialsWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getPnsCredentials(java.lang.String,java.lang.String)` was added
+* `regenerateKeys(java.lang.String,java.lang.String,java.lang.String,models.PolicyKeyResource)` was added
+
+#### `models.AccessRights` was modified
+
+* `AccessRights()` was added
+
+#### `models.NotificationHubPatchParameters` was modified
+
+* `withFcmV1Credential(models.FcmV1Credential)` was added
+* `fcmV1Credential()` was added
+* `xiaomiCredential()` was added
+* `withXiaomiCredential(models.XiaomiCredential)` was added
+* `browserCredential()` was added
+* `withBrowserCredential(models.BrowserCredential)` was added
+* `tags()` was added
+* `withName(java.lang.String)` was added
+* `dailyMaxActiveDevices()` was added
+
+#### `models.WnsCredential` was modified
+
+* `wnsCertificate()` was added
+* `withWnsCertificate(java.lang.String)` was added
+* `certificateKey()` was added
+* `withCertificateKey(java.lang.String)` was added
+
+#### `models.NotificationHubResource$Definition` was modified
+
+* `withXiaomiCredential(models.XiaomiCredential)` was added
+* `withFcmV1Credential(models.FcmV1Credential)` was added
+* `withBrowserCredential(models.BrowserCredential)` was added
+
+#### `models.Operation` was modified
+
+* `isDataAction()` was added
+* `properties()` was added
+
+#### `NotificationHubsManager` was modified
+
+* `privateEndpointConnections()` was added
+
+#### `models.NotificationHubs` was modified
+
+* `regenerateKeys(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PolicyKeyResource)` was added
+* `createOrUpdateAuthorizationRuleWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.SharedAccessAuthorizationRuleResourceInner,com.azure.core.util.Context)` was added
+* `debugSendWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `createOrUpdateAuthorizationRule(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.SharedAccessAuthorizationRuleResourceInner)` was added
+* `regenerateKeysWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PolicyKeyResource,com.azure.core.util.Context)` was added
+* `list(java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
+
+#### `models.CheckAvailabilityResult` was modified
+
+* `systemData()` was added
+
+#### `models.NamespaceType` was modified
+
+* `NamespaceType()` was added
+
+#### `models.SharedAccessAuthorizationRuleResource` was modified
+
+* `regenerateKeysWithResponse(models.PolicyKeyResource,com.azure.core.util.Context)` was added
+* `systemData()` was added
+* `regenerateKeys(models.PolicyKeyResource)` was added
+
+#### `models.NamespaceResource$Definition` was modified
+
+* `withRegion(java.lang.String)` was added
+* `withProvisioningState(models.OperationProvisioningState)` was added
+* `withNetworkAcls(models.NetworkAcls)` was added
+* `withStatus(models.NamespaceStatus)` was added
+* `withZoneRedundancy(models.ZoneRedundancyPreference)` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withPnsCredentials(fluent.models.PnsCredentials)` was added
+* `withRegion(com.azure.core.management.Region)` was added
+* `withReplicationRegion(models.ReplicationRegion)` was added
+
+#### `models.NamespaceResource` was modified
+
+* `zoneRedundancy()` was added
+* `networkAcls()` was added
+* `publicNetworkAccess()` was added
+* `replicationRegion()` was added
+* `getPnsCredentials()` was added
+* `getPnsCredentialsWithResponse(com.azure.core.util.Context)` was added
+* `systemData()` was added
+* `pnsCredentials()` was added
+* `privateEndpointConnections()` was added
 
 ## 1.0.0 (2024-12-26)
 
