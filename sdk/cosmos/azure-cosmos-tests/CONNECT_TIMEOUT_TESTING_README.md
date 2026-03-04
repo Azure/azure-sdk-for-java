@@ -3,10 +3,10 @@
 ## What This Tests
 
 `Http2ConnectTimeoutBifurcationTests` validates that the TCP connect timeout (`CONNECT_TIMEOUT_MILLIS`) is
-correctly bifurcated between Gateway V1 metadata (45s) and Gateway V2 thin client data plane (1s).
+correctly bifurcated between Gateway V1 metadata (45s) and Gateway V2 thin client data plane (5s default).
 Uses Linux `iptables` to DROP SYN packets and `tc netem` with `iptables mangle` for per-port delay.
 
-**Key invariant proven:** Thin client data plane requests fail fast (1s connect timeout) while
+**Key invariant proven:** Thin client data plane requests fail fast (5s connect timeout) while
 metadata requests on port 443 remain unaffected (45s timeout).
 
 ## Why Not SDK Fault Injection?

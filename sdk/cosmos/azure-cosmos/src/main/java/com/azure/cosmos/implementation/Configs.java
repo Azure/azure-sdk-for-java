@@ -590,7 +590,7 @@ public class Configs {
      *
      * Configurable via system property COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS
      * or environment variable COSMOS_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS.
-     * Default: 1 second.
+     * Default: 5 seconds.
      */
     public static int getThinClientConnectionTimeoutInSeconds() {
         String valueFromSystemProperty = System.getProperty(THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS);

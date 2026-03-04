@@ -470,7 +470,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
      * different outcomes because of different CONNECT_TIMEOUT_MILLIS values:
      *
      * - Port 443 (metadata):    5s SYN delay → 5s < 45s CONNECT_TIMEOUT → connect SUCCEEDS
-     * - Port 10250 (data plane): 5s SYN delay → 5s > 1s CONNECT_TIMEOUT → connect FAILS
+     * - Port 10250 (data plane): 5s SYN delay → 5s > CONNECT_TIMEOUT (default 5s) → connect FAILS
      *
      * SAME delay + different outcomes = the ONLY variable is the timeout configuration.
      * This eliminates "different delays cause different outcomes" as an alternative explanation.
@@ -484,7 +484,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
      * Flow:
      * 1. Apply 5s SYN-only delay on BOTH ports
      * 2. Create a new client → metadata on port 443 succeeds (5s < 45s timeout)
-     * 3. Attempt a document read → data plane on port 10250 fails (5s > 1s timeout)
+     * 3. Attempt a document read → data plane on port 10250 fails (5s ≥ 5s timeout)
      * 4. Remove delays, verify full recovery
      */
     @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
