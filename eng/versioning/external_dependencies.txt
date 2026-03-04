@@ -382,8 +382,8 @@ springboot4_org.springframework:spring-test;7.0.5
 springboot4_org.springframework:spring-tx;7.0.5
 springboot4_org.springframework:spring-web;7.0.5
 springboot4_org.springframework:spring-webmvc;7.0.5
-springboot4_org.testcontainers:junit-jupiter;1.21.3
-springboot4_org.testcontainers:azure;1.21.3
+springboot4_org.testcontainers:testcontainers-junit-jupiter;2.0.3
+springboot4_org.testcontainers:testcontainers-azure;2.0.3
 springboot4_jakarta.annotation:jakarta.annotation-api;3.0.0
 springboot4_ch.qos.logback:logback-classic;1.5.32
 springboot4_org.awaitility:awaitility;4.3.0
