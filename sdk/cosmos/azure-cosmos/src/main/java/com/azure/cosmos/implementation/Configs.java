@@ -529,6 +529,14 @@ public class Configs {
         return DEFAULT_THINCLIENT_ENABLED;
     }
 
+    public static boolean isNettyHttpClientMetricsEnabled() {
+        return Boolean.parseBoolean(
+            System.getProperty(NETTY_HTTP_CLIENT_METRICS_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED))));
+    }
+
     public static boolean isClientLeakDetectionEnabled() {
         String valueFromSystemProperty = System.getProperty(CLIENT_LEAK_DETECTION_ENABLED);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
