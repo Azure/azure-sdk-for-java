@@ -1,8 +1,8 @@
-# Azure Resource Manager HybridKubernetes client library for Java
+# Azure Resource Manager Hybridkubernetes client library for Java
 
-Azure Resource Manager HybridKubernetes client library for Java.
+Azure Resource Manager Hybridkubernetes client library for Java.
 
-This package contains Microsoft Azure SDK for HybridKubernetes Management SDK. Hybrid Kubernetes Client. Package tag package-2024-12-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Hybridkubernetes Management SDK.  Package api-version 2025-12-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-hybridkubernetes</artifactId>
-    <version>1.1.0-beta.1</version>
+    <version>1.1.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -56,7 +56,7 @@ AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-HybridKubernetesManager manager = HybridKubernetesManager
+HybridkubernetesManager manager = HybridkubernetesManager
     .authenticate(credential, profile);
 ```
 

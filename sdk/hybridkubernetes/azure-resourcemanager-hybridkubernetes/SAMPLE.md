@@ -9,7 +9,7 @@
 - [List](#connectedcluster_list)
 - [ListByResourceGroup](#connectedcluster_listbyresourcegroup)
 - [ListClusterUserCredential](#connectedcluster_listclusterusercredential)
-- [Update](#connectedcluster_update)
+- [UpdateAsync](#connectedcluster_updateasync)
 
 ## Operations
 
@@ -37,17 +37,15 @@ import java.util.Map;
  */
 public final class ConnectedClusterCreateOrReplaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * UpdateClusterByPutExample.json
+     * x-ms-original-file: 2025-12-01-preview/UpdateClusterByPutExample.json
      */
     /**
      * Sample code: UpdateClusterByPutExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void
-        updateClusterByPutExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        updateClusterByPutExample(com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters()
             .define("testCluster")
             .withRegion("East US")
@@ -59,24 +57,20 @@ public final class ConnectedClusterCreateOrReplaceSamples {
             .withDistribution("AKS")
             .withDistributionVersion("1.0")
             .withAzureHybridBenefit(AzureHybridBenefit.NOT_APPLICABLE)
-            .withGateway(new Gateway().withEnabled(true)
-                .withResourceId(
-                    "/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.HybridCompute/gateways/gateway1"))
+            .withGateway(new Gateway().withEnabled(true))
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * CreateCluster_KindExample.json
+     * x-ms-original-file: 2025-12-01-preview/CreateCluster_KindExample.json
      */
     /**
      * Sample code: CreateCluster_KindExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void
-        createClusterKindExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        createClusterKindExample(com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters()
             .define("testCluster")
             .withRegion("East US")
@@ -88,9 +82,9 @@ public final class ConnectedClusterCreateOrReplaceSamples {
             .withDistribution("AKS")
             .withDistributionVersion("1.0")
             .withAzureHybridBenefit(AzureHybridBenefit.NOT_APPLICABLE)
-            .withAadProfile(new AadProfile().withEnableAzureRbac(true)
+            .withAadProfile(new AadProfile().withEnableAzureRBAC(true)
                 .withAdminGroupObjectIDs(Arrays.asList("56f988bf-86f1-41af-91ab-2d7cd011db47"))
-                .withTenantId("82f988bf-86f1-41af-91ab-2d7cd011db47"))
+                .withTenantID("82f988bf-86f1-41af-91ab-2d7cd011db47"))
             .withArcAgentProfile(new ArcAgentProfile().withDesiredAgentVersion("0.1.0")
                 .withAgentAutoUpgrade(AutoUpgradeOptions.ENABLED)
                 .withSystemComponents(Arrays.asList(
@@ -100,17 +94,15 @@ public final class ConnectedClusterCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * CreateClusterExample.json
+     * x-ms-original-file: 2025-12-01-preview/CreateClusterExample.json
      */
     /**
      * Sample code: CreateClusterExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void
-        createClusterExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        createClusterExample(com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters()
             .define("testCluster")
             .withRegion("East US")
@@ -126,17 +118,15 @@ public final class ConnectedClusterCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * CreateClusterPrivateLinkExample.json
+     * x-ms-original-file: 2025-12-01-preview/CreateClusterPrivateLinkExample.json
      */
     /**
      * Sample code: CreateClusterPrivateLinkExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void
-        createClusterPrivateLinkExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        createClusterPrivateLinkExample(com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters()
             .define("testCluster")
             .withRegion("East US")
@@ -155,17 +145,15 @@ public final class ConnectedClusterCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * CreateClusterAgentless_KindAWSExample.json
+     * x-ms-original-file: 2025-12-01-preview/CreateClusterAgentless_KindAWSExample.json
      */
     /**
      * Sample code: CreateClusterAgentless_KindAWSExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void createClusterAgentlessKindAWSExample(
-        com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters()
             .define("testCluster")
             .withRegion("East US")
@@ -176,6 +164,29 @@ public final class ConnectedClusterCreateOrReplaceSamples {
             .withKind(ConnectedClusterKind.AWS)
             .withDistribution("eks")
             .withInfrastructure("aws")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-12-01-preview/CreateClusterAgentless_KindGCPExample.json
+     */
+    /**
+     * Sample code: CreateClusterAgentless_KindGCPExample.
+     * 
+     * @param manager Entry point to HybridkubernetesManager.
+     */
+    public static void createClusterAgentlessKindGCPExample(
+        com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
+        manager.connectedClusters()
+            .define("testCluster")
+            .withRegion("East US")
+            .withExistingResourceGroup("k8sc-rg")
+            .withIdentity(new ConnectedClusterIdentity().withType(ResourceIdentityType.NONE))
+            .withAgentPublicKeyCertificate("")
+            .withTags(mapOf())
+            .withKind(ConnectedClusterKind.GCP)
+            .withDistribution("gke")
+            .withInfrastructure("GCP")
             .create();
     }
 
@@ -201,17 +212,15 @@ public final class ConnectedClusterCreateOrReplaceSamples {
  */
 public final class ConnectedClusterDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * DeleteClusterExample.json
+     * x-ms-original-file: 2025-12-01-preview/DeleteClusterExample.json
      */
     /**
      * Sample code: DeleteClusterExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void
-        deleteClusterExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        deleteClusterExample(com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters().delete("k8sc-rg", "testCluster", com.azure.core.util.Context.NONE);
     }
 }
@@ -225,32 +234,28 @@ public final class ConnectedClusterDeleteSamples {
  */
 public final class ConnectedClusterGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * GetProvisionedClusterExample.json
+     * x-ms-original-file: 2025-12-01-preview/GetProvisionedClusterExample.json
      */
     /**
      * Sample code: GetProvisionedClusterExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void
-        getProvisionedClusterExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        getProvisionedClusterExample(com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters()
             .getByResourceGroupWithResponse("k8sc-rg", "testCluster", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * GetClusterExample.json
+     * x-ms-original-file: 2025-12-01-preview/GetClusterExample.json
      */
     /**
      * Sample code: GetClusterExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
-    public static void getClusterExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+    public static void getClusterExample(com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters()
             .getByResourceGroupWithResponse("k8sc-rg", "testCluster", com.azure.core.util.Context.NONE);
     }
@@ -265,17 +270,15 @@ public final class ConnectedClusterGetByResourceGroupSamples {
  */
 public final class ConnectedClusterListSamples {
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * GetClustersBySubscriptionExample.json
+     * x-ms-original-file: 2025-12-01-preview/GetClustersBySubscriptionExample.json
      */
     /**
      * Sample code: GetClustersBySubscriptionExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void
-        getClustersBySubscriptionExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        getClustersBySubscriptionExample(com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -289,16 +292,14 @@ public final class ConnectedClusterListSamples {
  */
 public final class ConnectedClusterListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * GetClustersByResourceGroupExample.json
+     * x-ms-original-file: 2025-12-01-preview/GetClustersByResourceGroupExample.json
      */
     /**
      * Sample code: GetClustersExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
-    public static void getClustersExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+    public static void getClustersExample(com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters().listByResourceGroup("k8sc-rg", com.azure.core.util.Context.NONE);
     }
 }
@@ -315,17 +316,15 @@ import com.azure.resourcemanager.hybridkubernetes.models.ListClusterUserCredenti
  */
 public final class ConnectedClusterListClusterUserCredentialSamples {
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * ConnectedClustersListClusterCredentialResultCSPAAD.json
+     * x-ms-original-file: 2025-12-01-preview/ConnectedClustersListClusterCredentialResultCSPAAD.json
      */
     /**
      * Sample code: ListClusterUserCredentialExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void
-        listClusterUserCredentialExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        listClusterUserCredentialExample(com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters()
             .listClusterUserCredentialWithResponse("k8sc-rg", "testCluster",
                 new ListClusterUserCredentialProperties().withAuthenticationMethod(AuthenticationMethod.AAD)
@@ -334,17 +333,15 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * ConnectedClustersListClusterCredentialResultHPAAD.json
+     * x-ms-original-file: 2025-12-01-preview/ConnectedClustersListClusterCredentialResultHPAAD.json
      */
     /**
      * Sample code: ListClusterUserCredentialCSPExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void listClusterUserCredentialCSPExample(
-        com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters()
             .listClusterUserCredentialWithResponse("k8sc-rg", "testCluster",
                 new ListClusterUserCredentialProperties().withAuthenticationMethod(AuthenticationMethod.AAD)
@@ -353,17 +350,15 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * ConnectedClustersListClusterCredentialResultCSPToken.json
+     * x-ms-original-file: 2025-12-01-preview/ConnectedClustersListClusterCredentialResultCSPToken.json
      */
     /**
      * Sample code: ListClusterUserCredentialNonAadExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void listClusterUserCredentialNonAadExample(
-        com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters()
             .listClusterUserCredentialWithResponse("k8sc-rg", "testCluster",
                 new ListClusterUserCredentialProperties().withAuthenticationMethod(AuthenticationMethod.TOKEN)
@@ -372,17 +367,15 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * ConnectedClustersListClusterCredentialResultHPToken.json
+     * x-ms-original-file: 2025-12-01-preview/ConnectedClustersListClusterCredentialResultHPToken.json
      */
     /**
      * Sample code: ListClusterUserCredentialNonAadCSPExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void listClusterUserCredentialNonAadCSPExample(
-        com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.connectedClusters()
             .listClusterUserCredentialWithResponse("k8sc-rg", "testCluster",
                 new ListClusterUserCredentialProperties().withAuthenticationMethod(AuthenticationMethod.TOKEN)
@@ -392,30 +385,29 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
 }
 ```
 
-### ConnectedCluster_Update
+### ConnectedCluster_UpdateAsync
 
 ```java
 import com.azure.resourcemanager.hybridkubernetes.models.AzureHybridBenefit;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedCluster;
+import com.azure.resourcemanager.hybridkubernetes.models.Gateway;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for ConnectedCluster Update.
+ * Samples for ConnectedCluster UpdateAsync.
  */
-public final class ConnectedClusterUpdateSamples {
+public final class ConnectedClusterUpdateAsyncSamples {
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * UpdateClusterByPatchExample.json
+     * x-ms-original-file: 2025-12-01-preview/UpdateClusterByPatchExample.json
      */
     /**
      * Sample code: UpdateClusterExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void
-        updateClusterExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        updateClusterExample(com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         ConnectedCluster resource = manager.connectedClusters()
             .getByResourceGroupWithResponse("k8sc-rg", "testCluster", com.azure.core.util.Context.NONE)
             .getValue();
@@ -424,6 +416,7 @@ public final class ConnectedClusterUpdateSamples {
             .withDistribution("AKS")
             .withDistributionVersion("1.0")
             .withAzureHybridBenefit(AzureHybridBenefit.NOT_APPLICABLE)
+            .withGateway(new Gateway().withEnabled(true))
             .apply();
     }
 
@@ -449,17 +442,15 @@ public final class ConnectedClusterUpdateSamples {
  */
 public final class OperationsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
-     * ListConnectedClusterOperationsExample.json
+     * x-ms-original-file: 2025-12-01-preview/ListConnectedClusterOperationsExample.json
      */
     /**
      * Sample code: ListConnectedClusterOperationsExample.
      * 
-     * @param manager Entry point to HybridKubernetesManager.
+     * @param manager Entry point to HybridkubernetesManager.
      */
     public static void listConnectedClusterOperationsExample(
-        com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
+        com.azure.resourcemanager.hybridkubernetes.HybridkubernetesManager manager) {
         manager.operations().get(com.azure.core.util.Context.NONE);
     }
 }

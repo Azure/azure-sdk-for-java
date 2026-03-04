@@ -1,14 +1,123 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2026-03-04)
 
-### Features Added
+- Azure Resource Manager Hybridkubernetes client library for Java. This package contains Microsoft Azure SDK for Hybridkubernetes Management SDK.  Package api-version 2025-12-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ConnectedClusterList` was removed
 
-### Other Changes
+#### `HybridKubernetesManager$Configurable` was removed
+
+#### `models.OperationList` was removed
+
+#### `HybridKubernetesManager` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `validate()` was removed
+* `withProvider(java.lang.String)` was removed
+
+#### `models.ArcAgentryConfigurations` was modified
+
+* `validate()` was removed
+
+#### `models.ArcAgentProfile` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectedClusterPatch` was modified
+
+* `validate()` was removed
+
+#### `models.SecurityProfile` was modified
+
+* `validate()` was removed
+
+#### `models.AgentError` was modified
+
+* `validate()` was removed
+
+#### `models.ListClusterUserCredentialProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SystemComponent` was modified
+
+* `validate()` was removed
+
+#### `models.HybridConnectionConfig` was modified
+
+* `HybridConnectionConfig()` was changed to private access
+* `validate()` was removed
+
+#### `models.CredentialResult` was modified
+
+* `CredentialResult()` was changed to private access
+* `validate()` was removed
+
+#### `models.SecurityProfileWorkloadIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectedClusterIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.OidcIssuerProfile` was modified
+
+* `validate()` was removed
+
+#### `models.Gateway` was modified
+
+* `resourceId()` was removed
+* `validate()` was removed
+* `withResourceId(java.lang.String)` was removed
+
+#### `models.AadProfile` was modified
+
+* `validate()` was removed
+* `enableAzureRbac()` was removed
+* `withEnableAzureRbac(java.lang.Boolean)` was removed
+* `tenantId()` was removed
+* `withTenantId(java.lang.String)` was removed
+
+### Features Added
+
+* `models.ActionType` was added
+
+* `HybridkubernetesManager` was added
+
+* `HybridkubernetesManager$Configurable` was added
+
+* `models.Origin` was added
+
+#### `models.ConnectedClusterPatch` was modified
+
+* `gateway()` was added
+* `withGateway(models.Gateway)` was added
+
+#### `models.Operation` was modified
+
+* `isDataAction()` was added
+* `actionType()` was added
+* `origin()` was added
+
+#### `models.ConnectedCluster$Update` was modified
+
+* `withGateway(models.Gateway)` was added
+
+#### `models.AadProfile` was modified
+
+* `enableAzureRBAC()` was added
+* `tenantID()` was added
+* `withTenantID(java.lang.String)` was added
+* `withEnableAzureRBAC(java.lang.Boolean)` was added
 
 ## 1.1.0-beta.1 (2025-03-25)
 
