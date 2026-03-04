@@ -4,6 +4,8 @@ package com.azure.cosmos.implementation.query.queryadvisor;
 
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -15,6 +17,7 @@ import java.util.List;
  */
 public final class QueryAdvice {
 
+    private static final Logger logger = LoggerFactory.getLogger(QueryAdvice.class);
     private final List<QueryAdviceEntry> entries;
 
     /**
@@ -76,7 +79,8 @@ public final class QueryAdvice {
      * response header value.
      *
      * <p>The header value is URL-encoded JSON that represents an array of query advice entries.
-     * On any parse failure this method silently returns {@code null} to avoid disrupting callers.
+     * On any parse failure this method logs a warning and returns {@code null} to avoid
+     * disrupting callers.
      *
      * @param responseHeader the raw (URL-encoded) response header value
      * @return a {@link QueryAdvice} if parsing succeeds; {@code null} otherwise
@@ -95,7 +99,7 @@ public final class QueryAdvice {
             }
             return new QueryAdvice(entries);
         } catch (Exception e) {
-            // Silently swallow – callers should treat failed parses as "no advice"
+            logger.warn("Failed to parse query advice response header", e);
             return null;
         }
     }
