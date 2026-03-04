@@ -15,7 +15,7 @@ import java.io.IOException;
  * Set the server/instance-level settings for SQL Server.
  */
 @Fluent
-public final class SQLInstanceSettings implements JsonSerializable<SQLInstanceSettings> {
+public final class SqlInstanceSettings implements JsonSerializable<SqlInstanceSettings> {
     /*
      * SQL Server Collation.
      */
@@ -52,9 +52,9 @@ public final class SQLInstanceSettings implements JsonSerializable<SQLInstanceSe
     private Boolean isIfiEnabled;
 
     /**
-     * Creates an instance of SQLInstanceSettings class.
+     * Creates an instance of SqlInstanceSettings class.
      */
-    public SQLInstanceSettings() {
+    public SqlInstanceSettings() {
     }
 
     /**
@@ -70,9 +70,9 @@ public final class SQLInstanceSettings implements JsonSerializable<SQLInstanceSe
      * Set the collation property: SQL Server Collation.
      * 
      * @param collation the collation value to set.
-     * @return the SQLInstanceSettings object itself.
+     * @return the SqlInstanceSettings object itself.
      */
-    public SQLInstanceSettings withCollation(String collation) {
+    public SqlInstanceSettings withCollation(String collation) {
         this.collation = collation;
         return this;
     }
@@ -90,9 +90,9 @@ public final class SQLInstanceSettings implements JsonSerializable<SQLInstanceSe
      * Set the maxDop property: SQL Server MAXDOP.
      * 
      * @param maxDop the maxDop value to set.
-     * @return the SQLInstanceSettings object itself.
+     * @return the SqlInstanceSettings object itself.
      */
-    public SQLInstanceSettings withMaxDop(Integer maxDop) {
+    public SqlInstanceSettings withMaxDop(Integer maxDop) {
         this.maxDop = maxDop;
         return this;
     }
@@ -110,9 +110,9 @@ public final class SQLInstanceSettings implements JsonSerializable<SQLInstanceSe
      * Set the isOptimizeForAdHocWorkloadsEnabled property: SQL Server Optimize for Adhoc workloads.
      * 
      * @param isOptimizeForAdHocWorkloadsEnabled the isOptimizeForAdHocWorkloadsEnabled value to set.
-     * @return the SQLInstanceSettings object itself.
+     * @return the SqlInstanceSettings object itself.
      */
-    public SQLInstanceSettings withIsOptimizeForAdHocWorkloadsEnabled(Boolean isOptimizeForAdHocWorkloadsEnabled) {
+    public SqlInstanceSettings withIsOptimizeForAdHocWorkloadsEnabled(Boolean isOptimizeForAdHocWorkloadsEnabled) {
         this.isOptimizeForAdHocWorkloadsEnabled = isOptimizeForAdHocWorkloadsEnabled;
         return this;
     }
@@ -130,9 +130,9 @@ public final class SQLInstanceSettings implements JsonSerializable<SQLInstanceSe
      * Set the minServerMemoryMB property: SQL Server minimum memory.
      * 
      * @param minServerMemoryMB the minServerMemoryMB value to set.
-     * @return the SQLInstanceSettings object itself.
+     * @return the SqlInstanceSettings object itself.
      */
-    public SQLInstanceSettings withMinServerMemoryMB(Integer minServerMemoryMB) {
+    public SqlInstanceSettings withMinServerMemoryMB(Integer minServerMemoryMB) {
         this.minServerMemoryMB = minServerMemoryMB;
         return this;
     }
@@ -150,9 +150,9 @@ public final class SQLInstanceSettings implements JsonSerializable<SQLInstanceSe
      * Set the maxServerMemoryMB property: SQL Server maximum memory.
      * 
      * @param maxServerMemoryMB the maxServerMemoryMB value to set.
-     * @return the SQLInstanceSettings object itself.
+     * @return the SqlInstanceSettings object itself.
      */
-    public SQLInstanceSettings withMaxServerMemoryMB(Integer maxServerMemoryMB) {
+    public SqlInstanceSettings withMaxServerMemoryMB(Integer maxServerMemoryMB) {
         this.maxServerMemoryMB = maxServerMemoryMB;
         return this;
     }
@@ -170,9 +170,9 @@ public final class SQLInstanceSettings implements JsonSerializable<SQLInstanceSe
      * Set the isLpimEnabled property: SQL Server LPIM.
      * 
      * @param isLpimEnabled the isLpimEnabled value to set.
-     * @return the SQLInstanceSettings object itself.
+     * @return the SqlInstanceSettings object itself.
      */
-    public SQLInstanceSettings withIsLpimEnabled(Boolean isLpimEnabled) {
+    public SqlInstanceSettings withIsLpimEnabled(Boolean isLpimEnabled) {
         this.isLpimEnabled = isLpimEnabled;
         return this;
     }
@@ -190,9 +190,9 @@ public final class SQLInstanceSettings implements JsonSerializable<SQLInstanceSe
      * Set the isIfiEnabled property: SQL Server IFI.
      * 
      * @param isIfiEnabled the isIfiEnabled value to set.
-     * @return the SQLInstanceSettings object itself.
+     * @return the SqlInstanceSettings object itself.
      */
-    public SQLInstanceSettings withIsIfiEnabled(Boolean isIfiEnabled) {
+    public SqlInstanceSettings withIsIfiEnabled(Boolean isIfiEnabled) {
         this.isIfiEnabled = isIfiEnabled;
         return this;
     }
@@ -214,41 +214,41 @@ public final class SQLInstanceSettings implements JsonSerializable<SQLInstanceSe
     }
 
     /**
-     * Reads an instance of SQLInstanceSettings from the JsonReader.
+     * Reads an instance of SqlInstanceSettings from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SQLInstanceSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of SqlInstanceSettings if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SQLInstanceSettings.
+     * @throws IOException If an error occurs while reading the SqlInstanceSettings.
      */
-    public static SQLInstanceSettings fromJson(JsonReader jsonReader) throws IOException {
+    public static SqlInstanceSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SQLInstanceSettings deserializedSQLInstanceSettings = new SQLInstanceSettings();
+            SqlInstanceSettings deserializedSqlInstanceSettings = new SqlInstanceSettings();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("collation".equals(fieldName)) {
-                    deserializedSQLInstanceSettings.collation = reader.getString();
+                    deserializedSqlInstanceSettings.collation = reader.getString();
                 } else if ("maxDop".equals(fieldName)) {
-                    deserializedSQLInstanceSettings.maxDop = reader.getNullable(JsonReader::getInt);
+                    deserializedSqlInstanceSettings.maxDop = reader.getNullable(JsonReader::getInt);
                 } else if ("isOptimizeForAdHocWorkloadsEnabled".equals(fieldName)) {
-                    deserializedSQLInstanceSettings.isOptimizeForAdHocWorkloadsEnabled
+                    deserializedSqlInstanceSettings.isOptimizeForAdHocWorkloadsEnabled
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("minServerMemoryMB".equals(fieldName)) {
-                    deserializedSQLInstanceSettings.minServerMemoryMB = reader.getNullable(JsonReader::getInt);
+                    deserializedSqlInstanceSettings.minServerMemoryMB = reader.getNullable(JsonReader::getInt);
                 } else if ("maxServerMemoryMB".equals(fieldName)) {
-                    deserializedSQLInstanceSettings.maxServerMemoryMB = reader.getNullable(JsonReader::getInt);
+                    deserializedSqlInstanceSettings.maxServerMemoryMB = reader.getNullable(JsonReader::getInt);
                 } else if ("isLpimEnabled".equals(fieldName)) {
-                    deserializedSQLInstanceSettings.isLpimEnabled = reader.getNullable(JsonReader::getBoolean);
+                    deserializedSqlInstanceSettings.isLpimEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("isIfiEnabled".equals(fieldName)) {
-                    deserializedSQLInstanceSettings.isIfiEnabled = reader.getNullable(JsonReader::getBoolean);
+                    deserializedSqlInstanceSettings.isIfiEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSQLInstanceSettings;
+            return deserializedSqlInstanceSettings;
         });
     }
 }

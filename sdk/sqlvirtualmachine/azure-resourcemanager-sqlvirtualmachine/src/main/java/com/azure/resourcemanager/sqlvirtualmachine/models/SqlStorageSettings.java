@@ -16,7 +16,7 @@ import java.util.List;
  * Set disk storage settings for SQL Server.
  */
 @Fluent
-public final class SQLStorageSettings implements JsonSerializable<SQLStorageSettings> {
+public final class SqlStorageSettings implements JsonSerializable<SqlStorageSettings> {
     /*
      * Logical Unit Numbers for the disks.
      */
@@ -33,9 +33,9 @@ public final class SQLStorageSettings implements JsonSerializable<SQLStorageSett
     private Boolean useStoragePool;
 
     /**
-     * Creates an instance of SQLStorageSettings class.
+     * Creates an instance of SqlStorageSettings class.
      */
-    public SQLStorageSettings() {
+    public SqlStorageSettings() {
     }
 
     /**
@@ -51,9 +51,9 @@ public final class SQLStorageSettings implements JsonSerializable<SQLStorageSett
      * Set the luns property: Logical Unit Numbers for the disks.
      * 
      * @param luns the luns value to set.
-     * @return the SQLStorageSettings object itself.
+     * @return the SqlStorageSettings object itself.
      */
-    public SQLStorageSettings withLuns(List<Integer> luns) {
+    public SqlStorageSettings withLuns(List<Integer> luns) {
         this.luns = luns;
         return this;
     }
@@ -71,9 +71,9 @@ public final class SQLStorageSettings implements JsonSerializable<SQLStorageSett
      * Set the defaultFilePath property: SQL Server default file path.
      * 
      * @param defaultFilePath the defaultFilePath value to set.
-     * @return the SQLStorageSettings object itself.
+     * @return the SqlStorageSettings object itself.
      */
-    public SQLStorageSettings withDefaultFilePath(String defaultFilePath) {
+    public SqlStorageSettings withDefaultFilePath(String defaultFilePath) {
         this.defaultFilePath = defaultFilePath;
         return this;
     }
@@ -91,9 +91,9 @@ public final class SQLStorageSettings implements JsonSerializable<SQLStorageSett
      * Set the useStoragePool property: Use storage pool to build a drive if true or not provided.
      * 
      * @param useStoragePool the useStoragePool value to set.
-     * @return the SQLStorageSettings object itself.
+     * @return the SqlStorageSettings object itself.
      */
-    public SQLStorageSettings withUseStoragePool(Boolean useStoragePool) {
+    public SqlStorageSettings withUseStoragePool(Boolean useStoragePool) {
         this.useStoragePool = useStoragePool;
         return this;
     }
@@ -111,33 +111,33 @@ public final class SQLStorageSettings implements JsonSerializable<SQLStorageSett
     }
 
     /**
-     * Reads an instance of SQLStorageSettings from the JsonReader.
+     * Reads an instance of SqlStorageSettings from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SQLStorageSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of SqlStorageSettings if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SQLStorageSettings.
+     * @throws IOException If an error occurs while reading the SqlStorageSettings.
      */
-    public static SQLStorageSettings fromJson(JsonReader jsonReader) throws IOException {
+    public static SqlStorageSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SQLStorageSettings deserializedSQLStorageSettings = new SQLStorageSettings();
+            SqlStorageSettings deserializedSqlStorageSettings = new SqlStorageSettings();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("luns".equals(fieldName)) {
                     List<Integer> luns = reader.readArray(reader1 -> reader1.getInt());
-                    deserializedSQLStorageSettings.luns = luns;
+                    deserializedSqlStorageSettings.luns = luns;
                 } else if ("defaultFilePath".equals(fieldName)) {
-                    deserializedSQLStorageSettings.defaultFilePath = reader.getString();
+                    deserializedSqlStorageSettings.defaultFilePath = reader.getString();
                 } else if ("useStoragePool".equals(fieldName)) {
-                    deserializedSQLStorageSettings.useStoragePool = reader.getNullable(JsonReader::getBoolean);
+                    deserializedSqlStorageSettings.useStoragePool = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSQLStorageSettings;
+            return deserializedSqlStorageSettings;
         });
     }
 }

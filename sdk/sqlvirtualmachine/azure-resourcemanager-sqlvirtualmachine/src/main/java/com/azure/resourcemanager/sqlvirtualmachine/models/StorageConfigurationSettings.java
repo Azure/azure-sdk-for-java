@@ -19,17 +19,17 @@ public final class StorageConfigurationSettings implements JsonSerializable<Stor
     /*
      * SQL Server Data Storage Settings.
      */
-    private SQLStorageSettings sqlDataSettings;
+    private SqlStorageSettings sqlDataSettings;
 
     /*
      * SQL Server Log Storage Settings.
      */
-    private SQLStorageSettings sqlLogSettings;
+    private SqlStorageSettings sqlLogSettings;
 
     /*
      * SQL Server TempDb Storage Settings.
      */
-    private SQLTempDbSettings sqlTempDbSettings;
+    private SqlTempDbSettings sqlTempDbSettings;
 
     /*
      * SQL Server SystemDb Storage on DataPool if true.
@@ -62,7 +62,7 @@ public final class StorageConfigurationSettings implements JsonSerializable<Stor
      * 
      * @return the sqlDataSettings value.
      */
-    public SQLStorageSettings sqlDataSettings() {
+    public SqlStorageSettings sqlDataSettings() {
         return this.sqlDataSettings;
     }
 
@@ -72,7 +72,7 @@ public final class StorageConfigurationSettings implements JsonSerializable<Stor
      * @param sqlDataSettings the sqlDataSettings value to set.
      * @return the StorageConfigurationSettings object itself.
      */
-    public StorageConfigurationSettings withSqlDataSettings(SQLStorageSettings sqlDataSettings) {
+    public StorageConfigurationSettings withSqlDataSettings(SqlStorageSettings sqlDataSettings) {
         this.sqlDataSettings = sqlDataSettings;
         return this;
     }
@@ -82,7 +82,7 @@ public final class StorageConfigurationSettings implements JsonSerializable<Stor
      * 
      * @return the sqlLogSettings value.
      */
-    public SQLStorageSettings sqlLogSettings() {
+    public SqlStorageSettings sqlLogSettings() {
         return this.sqlLogSettings;
     }
 
@@ -92,7 +92,7 @@ public final class StorageConfigurationSettings implements JsonSerializable<Stor
      * @param sqlLogSettings the sqlLogSettings value to set.
      * @return the StorageConfigurationSettings object itself.
      */
-    public StorageConfigurationSettings withSqlLogSettings(SQLStorageSettings sqlLogSettings) {
+    public StorageConfigurationSettings withSqlLogSettings(SqlStorageSettings sqlLogSettings) {
         this.sqlLogSettings = sqlLogSettings;
         return this;
     }
@@ -102,7 +102,7 @@ public final class StorageConfigurationSettings implements JsonSerializable<Stor
      * 
      * @return the sqlTempDbSettings value.
      */
-    public SQLTempDbSettings sqlTempDbSettings() {
+    public SqlTempDbSettings sqlTempDbSettings() {
         return this.sqlTempDbSettings;
     }
 
@@ -112,7 +112,7 @@ public final class StorageConfigurationSettings implements JsonSerializable<Stor
      * @param sqlTempDbSettings the sqlTempDbSettings value to set.
      * @return the StorageConfigurationSettings object itself.
      */
-    public StorageConfigurationSettings withSqlTempDbSettings(SQLTempDbSettings sqlTempDbSettings) {
+    public StorageConfigurationSettings withSqlTempDbSettings(SqlTempDbSettings sqlTempDbSettings) {
         this.sqlTempDbSettings = sqlTempDbSettings;
         return this;
     }
@@ -231,11 +231,11 @@ public final class StorageConfigurationSettings implements JsonSerializable<Stor
                 reader.nextToken();
 
                 if ("sqlDataSettings".equals(fieldName)) {
-                    deserializedStorageConfigurationSettings.sqlDataSettings = SQLStorageSettings.fromJson(reader);
+                    deserializedStorageConfigurationSettings.sqlDataSettings = SqlStorageSettings.fromJson(reader);
                 } else if ("sqlLogSettings".equals(fieldName)) {
-                    deserializedStorageConfigurationSettings.sqlLogSettings = SQLStorageSettings.fromJson(reader);
+                    deserializedStorageConfigurationSettings.sqlLogSettings = SqlStorageSettings.fromJson(reader);
                 } else if ("sqlTempDbSettings".equals(fieldName)) {
-                    deserializedStorageConfigurationSettings.sqlTempDbSettings = SQLTempDbSettings.fromJson(reader);
+                    deserializedStorageConfigurationSettings.sqlTempDbSettings = SqlTempDbSettings.fromJson(reader);
                 } else if ("sqlSystemDbOnDataDisk".equals(fieldName)) {
                     deserializedStorageConfigurationSettings.sqlSystemDbOnDataDisk
                         = reader.getNullable(JsonReader::getBoolean);

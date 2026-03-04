@@ -17,7 +17,7 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.Commit;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Failover;
 import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.MultiSubnetIpConfiguration;
-import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIPAddress;
+import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ReadableSecondary;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Role;
 import java.nio.charset.StandardCharsets;
@@ -47,7 +47,7 @@ public final class AvailabilityGroupListenersCreateOrUpdateMockTests {
                 .withAvailabilityGroupName("mdyvxqtayriw")
                 .withLoadBalancerConfigurations(Arrays.asList(new LoadBalancerConfiguration()
                     .withPrivateIpAddress(
-                        new PrivateIPAddress().withIpAddress("bexrmcq").withSubnetResourceId("ycnojvknmefqsg"))
+                        new PrivateIpAddress().withIpAddress("bexrmcq").withSubnetResourceId("ycnojvknmefqsg"))
                     .withPublicIpAddressResourceId("ah")
                     .withLoadBalancerResourceId("jyzhpvgq")
                     .withProbePort(141640204)
@@ -55,20 +55,20 @@ public final class AvailabilityGroupListenersCreateOrUpdateMockTests {
                 .withMultiSubnetIpConfigurations(
                     Arrays.asList(
                         new MultiSubnetIpConfiguration()
-                            .withPrivateIpAddress(new PrivateIPAddress().withIpAddress("ilpjzuaejxdult")
+                            .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("ilpjzuaejxdult")
                                 .withSubnetResourceId("zbbtdzumveek"))
                             .withSqlVirtualMachineInstance("pwo"),
                         new MultiSubnetIpConfiguration()
                             .withPrivateIpAddress(
-                                new PrivateIPAddress().withIpAddress("hkfpbs").withSubnetResourceId("ofd"))
+                                new PrivateIpAddress().withIpAddress("hkfpbs").withSubnetResourceId("ofd"))
                             .withSqlVirtualMachineInstance("luu"),
                         new MultiSubnetIpConfiguration()
                             .withPrivateIpAddress(
-                                new PrivateIPAddress().withIpAddress("ttouwaboekqvkel").withSubnetResourceId("mvb"))
+                                new PrivateIpAddress().withIpAddress("ttouwaboekqvkel").withSubnetResourceId("mvb"))
                             .withSqlVirtualMachineInstance("wyjsflhhcaalnjix"),
                         new MultiSubnetIpConfiguration()
                             .withPrivateIpAddress(
-                                new PrivateIPAddress().withIpAddress("xyawj").withSubnetResourceId("aq"))
+                                new PrivateIpAddress().withIpAddress("xyawj").withSubnetResourceId("aq"))
                             .withSqlVirtualMachineInstance("slyjpkiid")))
                 .withCreateDefaultAvailabilityGroupIfNotExist(true)
                 .withPort(1841035114)

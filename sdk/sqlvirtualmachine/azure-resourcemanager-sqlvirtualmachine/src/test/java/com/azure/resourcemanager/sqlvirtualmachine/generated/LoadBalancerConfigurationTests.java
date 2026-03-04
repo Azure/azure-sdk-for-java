@@ -6,7 +6,7 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfiguration;
-import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIPAddress;
+import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -27,7 +27,7 @@ public final class LoadBalancerConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LoadBalancerConfiguration model = new LoadBalancerConfiguration()
-            .withPrivateIpAddress(new PrivateIPAddress().withIpAddress("i").withSubnetResourceId("fidfvzw"))
+            .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("i").withSubnetResourceId("fidfvzw"))
             .withPublicIpAddressResourceId("uht")
             .withLoadBalancerResourceId("wisdkft")
             .withProbePort(404172620)

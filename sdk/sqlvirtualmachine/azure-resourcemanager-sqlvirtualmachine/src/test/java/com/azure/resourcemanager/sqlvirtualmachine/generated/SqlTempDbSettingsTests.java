@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.sqlvirtualmachine.models.SQLTempDbSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.SqlTempDbSettings;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
-public final class SQLTempDbSettingsTests {
+public final class SqlTempDbSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SQLTempDbSettings model = BinaryData.fromString(
+        SqlTempDbSettings model = BinaryData.fromString(
             "{\"dataFileSize\":2088786530,\"dataGrowth\":102463289,\"logFileSize\":1958511129,\"logGrowth\":1411125802,\"dataFileCount\":2105680522,\"persistFolder\":false,\"persistFolderPath\":\"xodpuozmyzydagfu\",\"luns\":[1613770943],\"defaultFilePath\":\"yiuokktwh\",\"useStoragePool\":false}")
-            .toObject(SQLTempDbSettings.class);
+            .toObject(SqlTempDbSettings.class);
         Assertions.assertEquals(2088786530, model.dataFileSize());
         Assertions.assertEquals(102463289, model.dataGrowth());
         Assertions.assertEquals(1958511129, model.logFileSize());
@@ -29,7 +29,7 @@ public final class SQLTempDbSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SQLTempDbSettings model = new SQLTempDbSettings().withDataFileSize(2088786530)
+        SqlTempDbSettings model = new SqlTempDbSettings().withDataFileSize(2088786530)
             .withDataGrowth(102463289)
             .withLogFileSize(1958511129)
             .withLogGrowth(1411125802)
@@ -39,7 +39,7 @@ public final class SQLTempDbSettingsTests {
             .withLuns(Arrays.asList(1613770943))
             .withDefaultFilePath("yiuokktwh")
             .withUseStoragePool(false);
-        model = BinaryData.fromObject(model).toObject(SQLTempDbSettings.class);
+        model = BinaryData.fromObject(model).toObject(SqlTempDbSettings.class);
         Assertions.assertEquals(2088786530, model.dataFileSize());
         Assertions.assertEquals(102463289, model.dataGrowth());
         Assertions.assertEquals(1958511129, model.logFileSize());

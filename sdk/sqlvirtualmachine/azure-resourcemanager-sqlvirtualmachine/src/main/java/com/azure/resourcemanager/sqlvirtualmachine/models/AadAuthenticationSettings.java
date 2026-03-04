@@ -15,7 +15,7 @@ import java.io.IOException;
  * Enable AAD authentication for SQL VM.
  */
 @Fluent
-public final class AADAuthenticationSettings implements JsonSerializable<AADAuthenticationSettings> {
+public final class AadAuthenticationSettings implements JsonSerializable<AadAuthenticationSettings> {
     /*
      * The client Id of the Managed Identity to query Microsoft Graph API. An empty string must be used for the system
      * assigned Managed Identity
@@ -23,9 +23,9 @@ public final class AADAuthenticationSettings implements JsonSerializable<AADAuth
     private String clientId;
 
     /**
-     * Creates an instance of AADAuthenticationSettings class.
+     * Creates an instance of AadAuthenticationSettings class.
      */
-    public AADAuthenticationSettings() {
+    public AadAuthenticationSettings() {
     }
 
     /**
@@ -43,9 +43,9 @@ public final class AADAuthenticationSettings implements JsonSerializable<AADAuth
      * must be used for the system assigned Managed Identity.
      * 
      * @param clientId the clientId value to set.
-     * @return the AADAuthenticationSettings object itself.
+     * @return the AadAuthenticationSettings object itself.
      */
-    public AADAuthenticationSettings withClientId(String clientId) {
+    public AadAuthenticationSettings withClientId(String clientId) {
         this.clientId = clientId;
         return this;
     }
@@ -61,28 +61,28 @@ public final class AADAuthenticationSettings implements JsonSerializable<AADAuth
     }
 
     /**
-     * Reads an instance of AADAuthenticationSettings from the JsonReader.
+     * Reads an instance of AadAuthenticationSettings from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AADAuthenticationSettings if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of AadAuthenticationSettings if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AADAuthenticationSettings.
+     * @throws IOException If an error occurs while reading the AadAuthenticationSettings.
      */
-    public static AADAuthenticationSettings fromJson(JsonReader jsonReader) throws IOException {
+    public static AadAuthenticationSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AADAuthenticationSettings deserializedAADAuthenticationSettings = new AADAuthenticationSettings();
+            AadAuthenticationSettings deserializedAadAuthenticationSettings = new AadAuthenticationSettings();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("clientId".equals(fieldName)) {
-                    deserializedAADAuthenticationSettings.clientId = reader.getString();
+                    deserializedAadAuthenticationSettings.clientId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAADAuthenticationSettings;
+            return deserializedAadAuthenticationSettings;
         });
     }
 }

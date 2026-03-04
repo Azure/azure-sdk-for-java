@@ -42,7 +42,7 @@
 ```java
 import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.MultiSubnetIpConfiguration;
-import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIPAddress;
+import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
 import java.util.Arrays;
 
 /**
@@ -66,7 +66,7 @@ public final class AvailabilityGroupListenersCreateOrUpdateSamples {
             .withExistingSqlVirtualMachineGroup("testrg", "testvmgroup")
             .withAvailabilityGroupName("ag-test")
             .withLoadBalancerConfigurations(Arrays.asList(new LoadBalancerConfiguration()
-                .withPrivateIpAddress(new PrivateIPAddress().withIpAddress("10.1.0.112")
+                .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("10.1.0.112")
                     .withSubnetResourceId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"))
                 .withLoadBalancerResourceId(
@@ -94,12 +94,12 @@ public final class AvailabilityGroupListenersCreateOrUpdateSamples {
             .withExistingSqlVirtualMachineGroup("testrg", "testvmgroup")
             .withAvailabilityGroupName("ag-test")
             .withMultiSubnetIpConfigurations(Arrays.asList(new MultiSubnetIpConfiguration()
-                .withPrivateIpAddress(new PrivateIPAddress().withIpAddress("10.0.0.112")
+                .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("10.0.0.112")
                     .withSubnetResourceId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"))
                 .withSqlVirtualMachineInstance(
                     "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm2"),
-                new MultiSubnetIpConfiguration().withPrivateIpAddress(new PrivateIPAddress().withIpAddress("10.0.1.112")
+                new MultiSubnetIpConfiguration().withPrivateIpAddress(new PrivateIpAddress().withIpAddress("10.0.1.112")
                     .withSubnetResourceId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/alternate"))
                     .withSqlVirtualMachineInstance(
@@ -424,7 +424,7 @@ public final class SqlVirtualMachineTroubleshootTroubleshootSamples {
 ### SqlVirtualMachines_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.sqlvirtualmachine.models.AADAuthenticationSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.AadAuthenticationSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AdditionalFeaturesServerConfigurations;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentDayOfWeek;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentSettings;
@@ -438,15 +438,15 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.DiskConfigurationType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.FullBackupFrequencyType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.KeyVaultCredentialSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.LeastPrivilegeMode;
-import com.azure.resourcemanager.sqlvirtualmachine.models.SQLInstanceSettings;
-import com.azure.resourcemanager.sqlvirtualmachine.models.SQLStorageSettings;
-import com.azure.resourcemanager.sqlvirtualmachine.models.SQLTempDbSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Schedule;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ServerConfigurationsManagementSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlConnectivityUpdateSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlImageSku;
+import com.azure.resourcemanager.sqlvirtualmachine.models.SqlInstanceSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlServerLicenseType;
+import com.azure.resourcemanager.sqlvirtualmachine.models.SqlStorageSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlStorageUpdateSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.SqlTempDbSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlWorkloadType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlWorkloadTypeUpdateSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.StorageConfigurationSettings;
@@ -479,7 +479,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
             .withVirtualMachineResourceId(
                 "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Compute/virtualMachines/testvm")
             .withStorageConfigurationSettings(new StorageConfigurationSettings()
-                .withSqlDataSettings(new SQLStorageSettings().withLuns(Arrays.asList(2)))
+                .withSqlDataSettings(new SqlStorageSettings().withLuns(Arrays.asList(2)))
                 .withDiskConfigurationType(DiskConfigurationType.EXTEND))
             .create();
     }
@@ -551,7 +551,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                 .withSqlConnectivityUpdateSettings(
                     new SqlConnectivityUpdateSettings().withConnectivityType(ConnectivityType.PRIVATE)
                         .withPort(1433)
-                        .withSqlAuthUpdateUserName("sqllogin")
+                        .withSqlAuthUpdateUsername("sqllogin")
                         .withSqlAuthUpdatePassword("fakeTokenPlaceholder"))
                 .withSqlWorkloadTypeUpdateSettings(
                     new SqlWorkloadTypeUpdateSettings().withSqlWorkloadType(SqlWorkloadType.OLTP))
@@ -583,10 +583,10 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                 "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Compute/virtualMachines/testvm")
             .withStorageConfigurationSettings(new StorageConfigurationSettings()
                 .withSqlDataSettings(
-                    new SQLStorageSettings().withLuns(Arrays.asList(0)).withDefaultFilePath("F:\\folderpath\\"))
+                    new SqlStorageSettings().withLuns(Arrays.asList(0)).withDefaultFilePath("F:\\folderpath\\"))
                 .withSqlLogSettings(
-                    new SQLStorageSettings().withLuns(Arrays.asList(1)).withDefaultFilePath("G:\\folderpath\\"))
-                .withSqlTempDbSettings(new SQLTempDbSettings().withDataFileSize(256)
+                    new SqlStorageSettings().withLuns(Arrays.asList(1)).withDefaultFilePath("G:\\folderpath\\"))
+                .withSqlTempDbSettings(new SqlTempDbSettings().withDataFileSize(256)
                     .withDataGrowth(512)
                     .withLogFileSize(256)
                     .withLogGrowth(512)
@@ -661,7 +661,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                 .withSqlConnectivityUpdateSettings(
                     new SqlConnectivityUpdateSettings().withConnectivityType(ConnectivityType.PRIVATE)
                         .withPort(1433)
-                        .withSqlAuthUpdateUserName("sqllogin")
+                        .withSqlAuthUpdateUsername("sqllogin")
                         .withSqlAuthUpdatePassword("fakeTokenPlaceholder"))
                 .withSqlWorkloadTypeUpdateSettings(
                     new SqlWorkloadTypeUpdateSettings().withSqlWorkloadType(SqlWorkloadType.OLTP))
@@ -670,7 +670,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                     .withDiskConfigurationType(DiskConfigurationType.NEW))
                 .withAdditionalFeaturesServerConfigurations(
                     new AdditionalFeaturesServerConfigurations().withIsRServicesEnabled(false))
-                .withSqlInstanceSettings(new SQLInstanceSettings().withCollation("SQL_Latin1_General_CP1_CI_AS")
+                .withSqlInstanceSettings(new SqlInstanceSettings().withCollation("SQL_Latin1_General_CP1_CI_AS")
                     .withMaxDop(8)
                     .withIsOptimizeForAdHocWorkloadsEnabled(true)
                     .withMinServerMemoryMB(0)
@@ -678,15 +678,15 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                     .withIsLpimEnabled(true)
                     .withIsIfiEnabled(true))
                 .withAzureAdAuthenticationSettings(
-                    new AADAuthenticationSettings().withClientId("11111111-2222-3333-4444-555555555555")))
+                    new AadAuthenticationSettings().withClientId("11111111-2222-3333-4444-555555555555")))
             .withStorageConfigurationSettings(new StorageConfigurationSettings()
-                .withSqlDataSettings(new SQLStorageSettings().withLuns(Arrays.asList(0))
+                .withSqlDataSettings(new SqlStorageSettings().withLuns(Arrays.asList(0))
                     .withDefaultFilePath("F:\\folderpath\\")
                     .withUseStoragePool(false))
-                .withSqlLogSettings(new SQLStorageSettings().withLuns(Arrays.asList(1))
+                .withSqlLogSettings(new SqlStorageSettings().withLuns(Arrays.asList(1))
                     .withDefaultFilePath("G:\\folderpath\\")
                     .withUseStoragePool(false))
-                .withSqlTempDbSettings(new SQLTempDbSettings().withDataFileSize(256)
+                .withSqlTempDbSettings(new SqlTempDbSettings().withDataFileSize(256)
                     .withDataGrowth(512)
                     .withLogFileSize(256)
                     .withLogGrowth(512)

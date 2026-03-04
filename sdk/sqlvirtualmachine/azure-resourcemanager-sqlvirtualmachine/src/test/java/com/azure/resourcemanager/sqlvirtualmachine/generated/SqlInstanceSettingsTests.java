@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.sqlvirtualmachine.models.SQLInstanceSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.SqlInstanceSettings;
 import org.junit.jupiter.api.Assertions;
 
-public final class SQLInstanceSettingsTests {
+public final class SqlInstanceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SQLInstanceSettings model = BinaryData.fromString(
+        SqlInstanceSettings model = BinaryData.fromString(
             "{\"collation\":\"tynnaamdectehfi\",\"maxDop\":494775669,\"isOptimizeForAdHocWorkloadsEnabled\":true,\"minServerMemoryMB\":1266013577,\"maxServerMemoryMB\":1797610507,\"isLpimEnabled\":true,\"isIfiEnabled\":true}")
-            .toObject(SQLInstanceSettings.class);
+            .toObject(SqlInstanceSettings.class);
         Assertions.assertEquals("tynnaamdectehfi", model.collation());
         Assertions.assertEquals(494775669, model.maxDop());
         Assertions.assertTrue(model.isOptimizeForAdHocWorkloadsEnabled());
@@ -25,14 +25,14 @@ public final class SQLInstanceSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SQLInstanceSettings model = new SQLInstanceSettings().withCollation("tynnaamdectehfi")
+        SqlInstanceSettings model = new SqlInstanceSettings().withCollation("tynnaamdectehfi")
             .withMaxDop(494775669)
             .withIsOptimizeForAdHocWorkloadsEnabled(true)
             .withMinServerMemoryMB(1266013577)
             .withMaxServerMemoryMB(1797610507)
             .withIsLpimEnabled(true)
             .withIsIfiEnabled(true);
-        model = BinaryData.fromObject(model).toObject(SQLInstanceSettings.class);
+        model = BinaryData.fromObject(model).toObject(SqlInstanceSettings.class);
         Assertions.assertEquals("tynnaamdectehfi", model.collation());
         Assertions.assertEquals(494775669, model.maxDop());
         Assertions.assertTrue(model.isOptimizeForAdHocWorkloadsEnabled());

@@ -10,17 +10,7 @@
 
 #### `models.SqlVirtualMachineListResult` was removed
 
-#### `models.PrivateIpAddress` was removed
-
-#### `models.SqlStorageSettings` was removed
-
-#### `models.SqlTempDbSettings` was removed
-
 #### `models.OperationListResult` was removed
-
-#### `models.AadAuthenticationSettings` was removed
-
-#### `models.SqlInstanceSettings` was removed
 
 #### `models.AvailabilityGroupListenerListResult` was removed
 
@@ -30,22 +20,26 @@
 
 #### `models.StorageConfigurationSettings` was modified
 
-* `withSqlTempDbSettings(models.SqlTempDbSettings)` was removed
-* `models.SqlTempDbSettings sqlTempDbSettings()` -> `models.SQLTempDbSettings sqlTempDbSettings()`
-* `models.SqlStorageSettings sqlDataSettings()` -> `models.SQLStorageSettings sqlDataSettings()`
-* `withSqlLogSettings(models.SqlStorageSettings)` was removed
-* `models.SqlStorageSettings sqlLogSettings()` -> `models.SQLStorageSettings sqlLogSettings()`
-* `withSqlDataSettings(models.SqlStorageSettings)` was removed
 * `validate()` was removed
 
 #### `models.Schedule` was modified
 
 * `validate()` was removed
 
+#### `models.PrivateIpAddress` was modified
+
+* `validate()` was removed
+
+#### `models.SqlStorageSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SqlTempDbSettings` was modified
+
+* `validate()` was removed
+
 #### `models.SqlConnectivityUpdateSettings` was modified
 
-* `sqlAuthUpdateUsername()` was removed
-* `withSqlAuthUpdateUsername(java.lang.String)` was removed
 * `validate()` was removed
 
 #### `models.KeyVaultCredentialSettings` was modified
@@ -54,8 +48,6 @@
 
 #### `models.MultiSubnetIpConfiguration` was modified
 
-* `models.PrivateIpAddress privateIpAddress()` -> `models.PrivateIPAddress privateIpAddress()`
-* `withPrivateIpAddress(models.PrivateIpAddress)` was removed
 * `validate()` was removed
 
 #### `models.AssessmentSettings` was modified
@@ -81,10 +73,6 @@
 
 #### `models.ServerConfigurationsManagementSettings` was modified
 
-* `models.AadAuthenticationSettings azureAdAuthenticationSettings()` -> `models.AADAuthenticationSettings azureAdAuthenticationSettings()`
-* `withAzureAdAuthenticationSettings(models.AadAuthenticationSettings)` was removed
-* `models.SqlInstanceSettings sqlInstanceSettings()` -> `models.SQLInstanceSettings sqlInstanceSettings()`
-* `withSqlInstanceSettings(models.SqlInstanceSettings)` was removed
 * `validate()` was removed
 
 #### `models.UnhealthyReplicaInfo` was modified
@@ -99,6 +87,14 @@
 
 * `validate()` was removed
 
+#### `models.AadAuthenticationSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SqlInstanceSettings` was modified
+
+* `validate()` was removed
+
 #### `models.TroubleshootingAdditionalProperties` was modified
 
 * `validate()` was removed
@@ -109,9 +105,9 @@
 
 #### `models.ResourceIdentity` was modified
 
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `validate()` was removed
 * `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 
 #### `models.AgReplica` was modified
 
@@ -123,8 +119,6 @@
 
 #### `models.LoadBalancerConfiguration` was modified
 
-* `models.PrivateIpAddress privateIpAddress()` -> `models.PrivateIPAddress privateIpAddress()`
-* `withPrivateIpAddress(models.PrivateIpAddress)` was removed
 * `validate()` was removed
 
 #### `models.SqlVirtualMachineUpdate` was modified
@@ -142,19 +136,11 @@
 
 ### Features Added
 
-* `models.AADAuthenticationSettings` was added
-
 * `models.VirtualMachineIdentity` was added
-
-* `models.SQLInstanceSettings` was added
-
-* `models.PrivateIPAddress` was added
 
 * `models.DiskConfigAssessmentRequest` was added
 
 * `models.OperationProperty` was added
-
-* `models.SQLTempDbSettings` was added
 
 * `models.OsType` was added
 
@@ -162,16 +148,11 @@
 
 * `models.AdditionalVmPatch` was added
 
-* `models.SQLStorageSettings` was added
-
 * `models.AdditionalOsPatch` was added
 
 #### `models.StorageConfigurationSettings` was modified
 
-* `withSqlTempDbSettings(models.SQLTempDbSettings)` was added
 * `enableStorageConfigBlade()` was added
-* `withSqlLogSettings(models.SQLStorageSettings)` was added
-* `withSqlDataSettings(models.SQLStorageSettings)` was added
 * `withEnableStorageConfigBlade(java.lang.Boolean)` was added
 
 #### `models.SqlVirtualMachines` was modified
@@ -183,41 +164,33 @@
 
 * `withVirtualMachineIdentitySettings(models.VirtualMachineIdentity)` was added
 
-#### `models.SqlConnectivityUpdateSettings` was modified
+#### `models.SqlStorageSettings` was modified
 
-* `withSqlAuthUpdateUserName(java.lang.String)` was added
-* `sqlAuthUpdateUserName()` was added
+* `withUseStoragePool(java.lang.Boolean)` was added
+* `useStoragePool()` was added
 
-#### `models.MultiSubnetIpConfiguration` was modified
+#### `models.SqlTempDbSettings` was modified
 
-* `withPrivateIpAddress(models.PrivateIPAddress)` was added
+* `useStoragePool()` was added
+* `withUseStoragePool(java.lang.Boolean)` was added
 
 #### `models.AutoPatchingSettings` was modified
 
 * `additionalVmPatch()` was added
 * `withAdditionalVmPatch(models.AdditionalVmPatch)` was added
 
-#### `models.ServerConfigurationsManagementSettings` was modified
-
-* `withSqlInstanceSettings(models.SQLInstanceSettings)` was added
-* `withAzureAdAuthenticationSettings(models.AADAuthenticationSettings)` was added
-
 #### `models.WsfcDomainProfile` was modified
 
-* `isSqlServiceAccountGmsa()` was added
 * `withIsSqlServiceAccountGmsa(java.lang.Boolean)` was added
-
-#### `models.LoadBalancerConfiguration` was modified
-
-* `withPrivateIpAddress(models.PrivateIPAddress)` was added
+* `isSqlServiceAccountGmsa()` was added
 
 #### `models.SqlVirtualMachine` was modified
 
-* `osType()` was added
 * `fetchDCAssessment(models.DiskConfigAssessmentRequest)` was added
 * `virtualMachineIdentitySettings()` was added
 * `fetchDCAssessment(models.DiskConfigAssessmentRequest,com.azure.core.util.Context)` was added
 * `additionalVmPatch()` was added
+* `osType()` was added
 
 ## 1.0.0-beta.5 (2024-10-31)
 

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.DiskConfigurationType;
-import com.azure.resourcemanager.sqlvirtualmachine.models.SQLStorageSettings;
-import com.azure.resourcemanager.sqlvirtualmachine.models.SQLTempDbSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.SqlStorageSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.SqlTempDbSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.StorageConfigurationSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.StorageWorkloadType;
 import java.util.Arrays;
@@ -45,13 +45,13 @@ public final class StorageConfigurationSettingsTests {
     public void testSerialize() throws Exception {
         StorageConfigurationSettings model = new StorageConfigurationSettings()
             .withSqlDataSettings(
-                new SQLStorageSettings().withLuns(Arrays.asList(1874212634, 1843167961, 130298647, 2125253056))
+                new SqlStorageSettings().withLuns(Arrays.asList(1874212634, 1843167961, 130298647, 2125253056))
                     .withDefaultFilePath("mkqsleyyv")
                     .withUseStoragePool(true))
-            .withSqlLogSettings(new SQLStorageSettings().withLuns(Arrays.asList(1744021341))
+            .withSqlLogSettings(new SqlStorageSettings().withLuns(Arrays.asList(1744021341))
                 .withDefaultFilePath("t")
                 .withUseStoragePool(false))
-            .withSqlTempDbSettings(new SQLTempDbSettings().withDataFileSize(452676867)
+            .withSqlTempDbSettings(new SqlTempDbSettings().withDataFileSize(452676867)
                 .withDataGrowth(1123309807)
                 .withLogFileSize(1512877841)
                 .withLogGrowth(2061132929)

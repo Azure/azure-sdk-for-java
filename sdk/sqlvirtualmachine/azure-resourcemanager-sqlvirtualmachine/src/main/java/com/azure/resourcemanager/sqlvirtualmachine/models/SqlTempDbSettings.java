@@ -16,7 +16,7 @@ import java.util.List;
  * Set tempDb storage settings for SQL Server.
  */
 @Fluent
-public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettings> {
+public final class SqlTempDbSettings implements JsonSerializable<SqlTempDbSettings> {
     /*
      * SQL Server tempdb data file size
      */
@@ -68,9 +68,9 @@ public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettin
     private Boolean useStoragePool;
 
     /**
-     * Creates an instance of SQLTempDbSettings class.
+     * Creates an instance of SqlTempDbSettings class.
      */
-    public SQLTempDbSettings() {
+    public SqlTempDbSettings() {
     }
 
     /**
@@ -86,9 +86,9 @@ public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettin
      * Set the dataFileSize property: SQL Server tempdb data file size.
      * 
      * @param dataFileSize the dataFileSize value to set.
-     * @return the SQLTempDbSettings object itself.
+     * @return the SqlTempDbSettings object itself.
      */
-    public SQLTempDbSettings withDataFileSize(Integer dataFileSize) {
+    public SqlTempDbSettings withDataFileSize(Integer dataFileSize) {
         this.dataFileSize = dataFileSize;
         return this;
     }
@@ -106,9 +106,9 @@ public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettin
      * Set the dataGrowth property: SQL Server tempdb data file autoGrowth size.
      * 
      * @param dataGrowth the dataGrowth value to set.
-     * @return the SQLTempDbSettings object itself.
+     * @return the SqlTempDbSettings object itself.
      */
-    public SQLTempDbSettings withDataGrowth(Integer dataGrowth) {
+    public SqlTempDbSettings withDataGrowth(Integer dataGrowth) {
         this.dataGrowth = dataGrowth;
         return this;
     }
@@ -126,9 +126,9 @@ public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettin
      * Set the logFileSize property: SQL Server tempdb log file size.
      * 
      * @param logFileSize the logFileSize value to set.
-     * @return the SQLTempDbSettings object itself.
+     * @return the SqlTempDbSettings object itself.
      */
-    public SQLTempDbSettings withLogFileSize(Integer logFileSize) {
+    public SqlTempDbSettings withLogFileSize(Integer logFileSize) {
         this.logFileSize = logFileSize;
         return this;
     }
@@ -146,9 +146,9 @@ public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettin
      * Set the logGrowth property: SQL Server tempdb log file autoGrowth size.
      * 
      * @param logGrowth the logGrowth value to set.
-     * @return the SQLTempDbSettings object itself.
+     * @return the SqlTempDbSettings object itself.
      */
-    public SQLTempDbSettings withLogGrowth(Integer logGrowth) {
+    public SqlTempDbSettings withLogGrowth(Integer logGrowth) {
         this.logGrowth = logGrowth;
         return this;
     }
@@ -166,9 +166,9 @@ public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettin
      * Set the dataFileCount property: SQL Server tempdb data file count.
      * 
      * @param dataFileCount the dataFileCount value to set.
-     * @return the SQLTempDbSettings object itself.
+     * @return the SqlTempDbSettings object itself.
      */
-    public SQLTempDbSettings withDataFileCount(Integer dataFileCount) {
+    public SqlTempDbSettings withDataFileCount(Integer dataFileCount) {
         this.dataFileCount = dataFileCount;
         return this;
     }
@@ -186,9 +186,9 @@ public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettin
      * Set the persistFolder property: SQL Server tempdb persist folder choice.
      * 
      * @param persistFolder the persistFolder value to set.
-     * @return the SQLTempDbSettings object itself.
+     * @return the SqlTempDbSettings object itself.
      */
-    public SQLTempDbSettings withPersistFolder(Boolean persistFolder) {
+    public SqlTempDbSettings withPersistFolder(Boolean persistFolder) {
         this.persistFolder = persistFolder;
         return this;
     }
@@ -206,9 +206,9 @@ public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettin
      * Set the persistFolderPath property: SQL Server tempdb persist folder location.
      * 
      * @param persistFolderPath the persistFolderPath value to set.
-     * @return the SQLTempDbSettings object itself.
+     * @return the SqlTempDbSettings object itself.
      */
-    public SQLTempDbSettings withPersistFolderPath(String persistFolderPath) {
+    public SqlTempDbSettings withPersistFolderPath(String persistFolderPath) {
         this.persistFolderPath = persistFolderPath;
         return this;
     }
@@ -226,9 +226,9 @@ public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettin
      * Set the luns property: Logical Unit Numbers for the disks.
      * 
      * @param luns the luns value to set.
-     * @return the SQLTempDbSettings object itself.
+     * @return the SqlTempDbSettings object itself.
      */
-    public SQLTempDbSettings withLuns(List<Integer> luns) {
+    public SqlTempDbSettings withLuns(List<Integer> luns) {
         this.luns = luns;
         return this;
     }
@@ -246,9 +246,9 @@ public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettin
      * Set the defaultFilePath property: SQL Server default file path.
      * 
      * @param defaultFilePath the defaultFilePath value to set.
-     * @return the SQLTempDbSettings object itself.
+     * @return the SqlTempDbSettings object itself.
      */
-    public SQLTempDbSettings withDefaultFilePath(String defaultFilePath) {
+    public SqlTempDbSettings withDefaultFilePath(String defaultFilePath) {
         this.defaultFilePath = defaultFilePath;
         return this;
     }
@@ -266,9 +266,9 @@ public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettin
      * Set the useStoragePool property: Use storage pool to build a drive if true or not provided.
      * 
      * @param useStoragePool the useStoragePool value to set.
-     * @return the SQLTempDbSettings object itself.
+     * @return the SqlTempDbSettings object itself.
      */
-    public SQLTempDbSettings withUseStoragePool(Boolean useStoragePool) {
+    public SqlTempDbSettings withUseStoragePool(Boolean useStoragePool) {
         this.useStoragePool = useStoragePool;
         return this;
     }
@@ -293,47 +293,47 @@ public final class SQLTempDbSettings implements JsonSerializable<SQLTempDbSettin
     }
 
     /**
-     * Reads an instance of SQLTempDbSettings from the JsonReader.
+     * Reads an instance of SqlTempDbSettings from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SQLTempDbSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of SqlTempDbSettings if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SQLTempDbSettings.
+     * @throws IOException If an error occurs while reading the SqlTempDbSettings.
      */
-    public static SQLTempDbSettings fromJson(JsonReader jsonReader) throws IOException {
+    public static SqlTempDbSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SQLTempDbSettings deserializedSQLTempDbSettings = new SQLTempDbSettings();
+            SqlTempDbSettings deserializedSqlTempDbSettings = new SqlTempDbSettings();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("dataFileSize".equals(fieldName)) {
-                    deserializedSQLTempDbSettings.dataFileSize = reader.getNullable(JsonReader::getInt);
+                    deserializedSqlTempDbSettings.dataFileSize = reader.getNullable(JsonReader::getInt);
                 } else if ("dataGrowth".equals(fieldName)) {
-                    deserializedSQLTempDbSettings.dataGrowth = reader.getNullable(JsonReader::getInt);
+                    deserializedSqlTempDbSettings.dataGrowth = reader.getNullable(JsonReader::getInt);
                 } else if ("logFileSize".equals(fieldName)) {
-                    deserializedSQLTempDbSettings.logFileSize = reader.getNullable(JsonReader::getInt);
+                    deserializedSqlTempDbSettings.logFileSize = reader.getNullable(JsonReader::getInt);
                 } else if ("logGrowth".equals(fieldName)) {
-                    deserializedSQLTempDbSettings.logGrowth = reader.getNullable(JsonReader::getInt);
+                    deserializedSqlTempDbSettings.logGrowth = reader.getNullable(JsonReader::getInt);
                 } else if ("dataFileCount".equals(fieldName)) {
-                    deserializedSQLTempDbSettings.dataFileCount = reader.getNullable(JsonReader::getInt);
+                    deserializedSqlTempDbSettings.dataFileCount = reader.getNullable(JsonReader::getInt);
                 } else if ("persistFolder".equals(fieldName)) {
-                    deserializedSQLTempDbSettings.persistFolder = reader.getNullable(JsonReader::getBoolean);
+                    deserializedSqlTempDbSettings.persistFolder = reader.getNullable(JsonReader::getBoolean);
                 } else if ("persistFolderPath".equals(fieldName)) {
-                    deserializedSQLTempDbSettings.persistFolderPath = reader.getString();
+                    deserializedSqlTempDbSettings.persistFolderPath = reader.getString();
                 } else if ("luns".equals(fieldName)) {
                     List<Integer> luns = reader.readArray(reader1 -> reader1.getInt());
-                    deserializedSQLTempDbSettings.luns = luns;
+                    deserializedSqlTempDbSettings.luns = luns;
                 } else if ("defaultFilePath".equals(fieldName)) {
-                    deserializedSQLTempDbSettings.defaultFilePath = reader.getString();
+                    deserializedSqlTempDbSettings.defaultFilePath = reader.getString();
                 } else if ("useStoragePool".equals(fieldName)) {
-                    deserializedSQLTempDbSettings.useStoragePool = reader.getNullable(JsonReader::getBoolean);
+                    deserializedSqlTempDbSettings.useStoragePool = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSQLTempDbSettings;
+            return deserializedSqlTempDbSettings;
         });
     }
 }

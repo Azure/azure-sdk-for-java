@@ -29,7 +29,7 @@ public final class SqlConnectivityUpdateSettings implements JsonSerializable<Sql
     /*
      * SQL Server sysadmin login to create.
      */
-    private String sqlAuthUpdateUserName;
+    private String sqlAuthUpdateUsername;
 
     /*
      * SQL Server sysadmin login password.
@@ -83,22 +83,22 @@ public final class SqlConnectivityUpdateSettings implements JsonSerializable<Sql
     }
 
     /**
-     * Get the sqlAuthUpdateUserName property: SQL Server sysadmin login to create.
+     * Get the sqlAuthUpdateUsername property: SQL Server sysadmin login to create.
      * 
-     * @return the sqlAuthUpdateUserName value.
+     * @return the sqlAuthUpdateUsername value.
      */
-    public String sqlAuthUpdateUserName() {
-        return this.sqlAuthUpdateUserName;
+    public String sqlAuthUpdateUsername() {
+        return this.sqlAuthUpdateUsername;
     }
 
     /**
-     * Set the sqlAuthUpdateUserName property: SQL Server sysadmin login to create.
+     * Set the sqlAuthUpdateUsername property: SQL Server sysadmin login to create.
      * 
-     * @param sqlAuthUpdateUserName the sqlAuthUpdateUserName value to set.
+     * @param sqlAuthUpdateUsername the sqlAuthUpdateUsername value to set.
      * @return the SqlConnectivityUpdateSettings object itself.
      */
-    public SqlConnectivityUpdateSettings withSqlAuthUpdateUserName(String sqlAuthUpdateUserName) {
-        this.sqlAuthUpdateUserName = sqlAuthUpdateUserName;
+    public SqlConnectivityUpdateSettings withSqlAuthUpdateUsername(String sqlAuthUpdateUsername) {
+        this.sqlAuthUpdateUsername = sqlAuthUpdateUsername;
         return this;
     }
 
@@ -131,7 +131,7 @@ public final class SqlConnectivityUpdateSettings implements JsonSerializable<Sql
         jsonWriter.writeStringField("connectivityType",
             this.connectivityType == null ? null : this.connectivityType.toString());
         jsonWriter.writeNumberField("port", this.port);
-        jsonWriter.writeStringField("sqlAuthUpdateUserName", this.sqlAuthUpdateUserName);
+        jsonWriter.writeStringField("sqlAuthUpdateUserName", this.sqlAuthUpdateUsername);
         jsonWriter.writeStringField("sqlAuthUpdatePassword", this.sqlAuthUpdatePassword);
         return jsonWriter.writeEndObject();
     }
@@ -158,7 +158,7 @@ public final class SqlConnectivityUpdateSettings implements JsonSerializable<Sql
                 } else if ("port".equals(fieldName)) {
                     deserializedSqlConnectivityUpdateSettings.port = reader.getNullable(JsonReader::getInt);
                 } else if ("sqlAuthUpdateUserName".equals(fieldName)) {
-                    deserializedSqlConnectivityUpdateSettings.sqlAuthUpdateUserName = reader.getString();
+                    deserializedSqlConnectivityUpdateSettings.sqlAuthUpdateUsername = reader.getString();
                 } else if ("sqlAuthUpdatePassword".equals(fieldName)) {
                     deserializedSqlConnectivityUpdateSettings.sqlAuthUpdatePassword = reader.getString();
                 } else {

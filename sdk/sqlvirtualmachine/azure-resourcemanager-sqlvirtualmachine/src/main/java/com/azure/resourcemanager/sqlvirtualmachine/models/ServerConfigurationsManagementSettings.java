@@ -40,12 +40,12 @@ public final class ServerConfigurationsManagementSettings
     /*
      * SQL Instance settings.
      */
-    private SQLInstanceSettings sqlInstanceSettings;
+    private SqlInstanceSettings sqlInstanceSettings;
 
     /*
      * Azure AD authentication Settings.
      */
-    private AADAuthenticationSettings azureAdAuthenticationSettings;
+    private AadAuthenticationSettings azureAdAuthenticationSettings;
 
     /**
      * Creates an instance of ServerConfigurationsManagementSettings class.
@@ -142,7 +142,7 @@ public final class ServerConfigurationsManagementSettings
      * 
      * @return the sqlInstanceSettings value.
      */
-    public SQLInstanceSettings sqlInstanceSettings() {
+    public SqlInstanceSettings sqlInstanceSettings() {
         return this.sqlInstanceSettings;
     }
 
@@ -152,7 +152,7 @@ public final class ServerConfigurationsManagementSettings
      * @param sqlInstanceSettings the sqlInstanceSettings value to set.
      * @return the ServerConfigurationsManagementSettings object itself.
      */
-    public ServerConfigurationsManagementSettings withSqlInstanceSettings(SQLInstanceSettings sqlInstanceSettings) {
+    public ServerConfigurationsManagementSettings withSqlInstanceSettings(SqlInstanceSettings sqlInstanceSettings) {
         this.sqlInstanceSettings = sqlInstanceSettings;
         return this;
     }
@@ -162,7 +162,7 @@ public final class ServerConfigurationsManagementSettings
      * 
      * @return the azureAdAuthenticationSettings value.
      */
-    public AADAuthenticationSettings azureAdAuthenticationSettings() {
+    public AadAuthenticationSettings azureAdAuthenticationSettings() {
         return this.azureAdAuthenticationSettings;
     }
 
@@ -173,7 +173,7 @@ public final class ServerConfigurationsManagementSettings
      * @return the ServerConfigurationsManagementSettings object itself.
      */
     public ServerConfigurationsManagementSettings
-        withAzureAdAuthenticationSettings(AADAuthenticationSettings azureAdAuthenticationSettings) {
+        withAzureAdAuthenticationSettings(AadAuthenticationSettings azureAdAuthenticationSettings) {
         this.azureAdAuthenticationSettings = azureAdAuthenticationSettings;
         return this;
     }
@@ -224,10 +224,10 @@ public final class ServerConfigurationsManagementSettings
                         = AdditionalFeaturesServerConfigurations.fromJson(reader);
                 } else if ("sqlInstanceSettings".equals(fieldName)) {
                     deserializedServerConfigurationsManagementSettings.sqlInstanceSettings
-                        = SQLInstanceSettings.fromJson(reader);
+                        = SqlInstanceSettings.fromJson(reader);
                 } else if ("azureAdAuthenticationSettings".equals(fieldName)) {
                     deserializedServerConfigurationsManagementSettings.azureAdAuthenticationSettings
-                        = AADAuthenticationSettings.fromJson(reader);
+                        = AadAuthenticationSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

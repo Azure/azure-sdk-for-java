@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.sqlvirtualmachine.models.SQLStorageSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.SqlStorageSettings;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
-public final class SQLStorageSettingsTests {
+public final class SqlStorageSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SQLStorageSettings model = BinaryData.fromString(
+        SqlStorageSettings model = BinaryData.fromString(
             "{\"luns\":[1243645059,1593902435,584946048,1490971149],\"defaultFilePath\":\"tuo\",\"useStoragePool\":true}")
-            .toObject(SQLStorageSettings.class);
+            .toObject(SqlStorageSettings.class);
         Assertions.assertEquals(1243645059, model.luns().get(0));
         Assertions.assertEquals("tuo", model.defaultFilePath());
         Assertions.assertTrue(model.useStoragePool());
@@ -22,11 +22,11 @@ public final class SQLStorageSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SQLStorageSettings model
-            = new SQLStorageSettings().withLuns(Arrays.asList(1243645059, 1593902435, 584946048, 1490971149))
+        SqlStorageSettings model
+            = new SqlStorageSettings().withLuns(Arrays.asList(1243645059, 1593902435, 584946048, 1490971149))
                 .withDefaultFilePath("tuo")
                 .withUseStoragePool(true);
-        model = BinaryData.fromObject(model).toObject(SQLStorageSettings.class);
+        model = BinaryData.fromObject(model).toObject(SqlStorageSettings.class);
         Assertions.assertEquals(1243645059, model.luns().get(0));
         Assertions.assertEquals("tuo", model.defaultFilePath());
         Assertions.assertTrue(model.useStoragePool());

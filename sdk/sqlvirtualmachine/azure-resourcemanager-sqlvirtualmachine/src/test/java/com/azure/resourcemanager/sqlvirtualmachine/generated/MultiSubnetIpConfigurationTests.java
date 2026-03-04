@@ -6,7 +6,7 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.MultiSubnetIpConfiguration;
-import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIPAddress;
+import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
 import org.junit.jupiter.api.Assertions;
 
 public final class MultiSubnetIpConfigurationTests {
@@ -24,7 +24,7 @@ public final class MultiSubnetIpConfigurationTests {
     public void testSerialize() throws Exception {
         MultiSubnetIpConfiguration model = new MultiSubnetIpConfiguration()
             .withPrivateIpAddress(
-                new PrivateIPAddress().withIpAddress("zcxtbzsgfyccsn").withSubnetResourceId("mdwzjeiachboo"))
+                new PrivateIpAddress().withIpAddress("zcxtbzsgfyccsn").withSubnetResourceId("mdwzjeiachboo"))
             .withSqlVirtualMachineInstance("flnrosfqpteehzz");
         model = BinaryData.fromObject(model).toObject(MultiSubnetIpConfiguration.class);
         Assertions.assertEquals("zcxtbzsgfyccsn", model.privateIpAddress().ipAddress());

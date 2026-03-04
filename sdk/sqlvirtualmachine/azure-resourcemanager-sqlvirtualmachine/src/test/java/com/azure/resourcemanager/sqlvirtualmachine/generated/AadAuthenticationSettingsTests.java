@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.sqlvirtualmachine.models.AADAuthenticationSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.AadAuthenticationSettings;
 import org.junit.jupiter.api.Assertions;
 
-public final class AADAuthenticationSettingsTests {
+public final class AadAuthenticationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AADAuthenticationSettings model
-            = BinaryData.fromString("{\"clientId\":\"q\"}").toObject(AADAuthenticationSettings.class);
+        AadAuthenticationSettings model
+            = BinaryData.fromString("{\"clientId\":\"q\"}").toObject(AadAuthenticationSettings.class);
         Assertions.assertEquals("q", model.clientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AADAuthenticationSettings model = new AADAuthenticationSettings().withClientId("q");
-        model = BinaryData.fromObject(model).toObject(AADAuthenticationSettings.class);
+        AadAuthenticationSettings model = new AadAuthenticationSettings().withClientId("q");
+        model = BinaryData.fromObject(model).toObject(AadAuthenticationSettings.class);
         Assertions.assertEquals("q", model.clientId());
     }
 }

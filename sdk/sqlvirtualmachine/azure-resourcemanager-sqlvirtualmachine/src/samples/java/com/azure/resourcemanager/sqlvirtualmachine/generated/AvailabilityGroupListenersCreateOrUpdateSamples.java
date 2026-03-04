@@ -6,7 +6,7 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.MultiSubnetIpConfiguration;
-import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIPAddress;
+import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
 import java.util.Arrays;
 
 /**
@@ -30,7 +30,7 @@ public final class AvailabilityGroupListenersCreateOrUpdateSamples {
             .withExistingSqlVirtualMachineGroup("testrg", "testvmgroup")
             .withAvailabilityGroupName("ag-test")
             .withLoadBalancerConfigurations(Arrays.asList(new LoadBalancerConfiguration()
-                .withPrivateIpAddress(new PrivateIPAddress().withIpAddress("10.1.0.112")
+                .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("10.1.0.112")
                     .withSubnetResourceId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"))
                 .withLoadBalancerResourceId(
@@ -58,12 +58,12 @@ public final class AvailabilityGroupListenersCreateOrUpdateSamples {
             .withExistingSqlVirtualMachineGroup("testrg", "testvmgroup")
             .withAvailabilityGroupName("ag-test")
             .withMultiSubnetIpConfigurations(Arrays.asList(new MultiSubnetIpConfiguration()
-                .withPrivateIpAddress(new PrivateIPAddress().withIpAddress("10.0.0.112")
+                .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("10.0.0.112")
                     .withSubnetResourceId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"))
                 .withSqlVirtualMachineInstance(
                     "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm2"),
-                new MultiSubnetIpConfiguration().withPrivateIpAddress(new PrivateIPAddress().withIpAddress("10.0.1.112")
+                new MultiSubnetIpConfiguration().withPrivateIpAddress(new PrivateIpAddress().withIpAddress("10.0.1.112")
                     .withSubnetResourceId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/alternate"))
                     .withSqlVirtualMachineInstance(

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.Commit;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Failover;
 import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.MultiSubnetIpConfiguration;
-import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIPAddress;
+import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ReadableSecondary;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Role;
 import java.util.Arrays;
@@ -56,28 +56,28 @@ public final class AvailabilityGroupListenerPropertiesTests {
                 .withLoadBalancerConfigurations(Arrays.asList(
                     new LoadBalancerConfiguration()
                         .withPrivateIpAddress(
-                            new PrivateIPAddress().withIpAddress("ksqrglssai").withSubnetResourceId("p"))
+                            new PrivateIpAddress().withIpAddress("ksqrglssai").withSubnetResourceId("p"))
                         .withPublicIpAddressResourceId("nzl")
                         .withLoadBalancerResourceId("fmppe")
                         .withProbePort(1862600222)
                         .withSqlVirtualMachineInstances(Arrays.asList("xsabkyqdu", "jitcjczdzevn")),
                     new LoadBalancerConfiguration()
                         .withPrivateIpAddress(
-                            new PrivateIPAddress().withIpAddress("rwpdappdsbdkvwrw").withSubnetResourceId("eusnhutj"))
+                            new PrivateIpAddress().withIpAddress("rwpdappdsbdkvwrw").withSubnetResourceId("eusnhutj"))
                         .withPublicIpAddressResourceId("tmrldhugjzzdatq")
                         .withLoadBalancerResourceId("oc")
                         .withProbePort(1079016341)
                         .withSqlVirtualMachineInstances(Arrays.asList("lgphu", "icndvkaozwyifty", "xhurok")),
                     new LoadBalancerConfiguration()
                         .withPrivateIpAddress(
-                            new PrivateIPAddress().withIpAddress("xolniwpwcukjfk").withSubnetResourceId("awxklr"))
+                            new PrivateIpAddress().withIpAddress("xolniwpwcukjfk").withSubnetResourceId("awxklr"))
                         .withPublicIpAddressResourceId("lwckbasyypnddhs")
                         .withLoadBalancerResourceId("bacphejko")
                         .withProbePort(626170193)
                         .withSqlVirtualMachineInstances(Arrays.asList("oulzndlikwyq")),
                     new LoadBalancerConfiguration()
                         .withPrivateIpAddress(
-                            new PrivateIPAddress().withIpAddress("gibma").withSubnetResourceId("akeqs"))
+                            new PrivateIpAddress().withIpAddress("gibma").withSubnetResourceId("akeqs"))
                         .withPublicIpAddressResourceId("yb")
                         .withLoadBalancerResourceId("qedqytbciqfoufl")
                         .withProbePort(1004345628)
@@ -85,19 +85,19 @@ public final class AvailabilityGroupListenerPropertiesTests {
                 .withMultiSubnetIpConfigurations(Arrays.asList(
                     new MultiSubnetIpConfiguration()
                         .withPrivateIpAddress(
-                            new PrivateIPAddress().withIpAddress("tmut").withSubnetResourceId("qktapspwgcuert"))
+                            new PrivateIpAddress().withIpAddress("tmut").withSubnetResourceId("qktapspwgcuert"))
                         .withSqlVirtualMachineInstance("mkdo"),
                     new MultiSubnetIpConfiguration()
                         .withPrivateIpAddress(
-                            new PrivateIPAddress().withIpAddress("qw").withSubnetResourceId("mdgbbjfdd"))
+                            new PrivateIpAddress().withIpAddress("qw").withSubnetResourceId("mdgbbjfdd"))
                         .withSqlVirtualMachineInstance("mbmbexppbh"),
                     new MultiSubnetIpConfiguration()
                         .withPrivateIpAddress(
-                            new PrivateIPAddress().withIpAddress("qrolfpf").withSubnetResourceId("algbquxigjyjg"))
+                            new PrivateIpAddress().withIpAddress("qrolfpf").withSubnetResourceId("algbquxigjyjg"))
                         .withSqlVirtualMachineInstance("jaoyfhrtx"),
                     new MultiSubnetIpConfiguration()
                         .withPrivateIpAddress(
-                            new PrivateIPAddress().withIpAddress("n").withSubnetResourceId("kujysvlejuvfq"))
+                            new PrivateIpAddress().withIpAddress("n").withSubnetResourceId("kujysvlejuvfq"))
                         .withSqlVirtualMachineInstance("wrlyxwjkcprb")))
                 .withCreateDefaultAvailabilityGroupIfNotExist(false)
                 .withPort(1500151010)

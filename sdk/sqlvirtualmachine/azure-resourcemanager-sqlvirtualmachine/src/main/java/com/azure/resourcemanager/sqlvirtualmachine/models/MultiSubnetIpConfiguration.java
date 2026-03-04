@@ -19,7 +19,7 @@ public final class MultiSubnetIpConfiguration implements JsonSerializable<MultiS
     /*
      * Private IP address.
      */
-    private PrivateIPAddress privateIpAddress;
+    private PrivateIpAddress privateIpAddress;
 
     /*
      * SQL virtual machine instance resource id that are enrolled into the availability group listener.
@@ -37,7 +37,7 @@ public final class MultiSubnetIpConfiguration implements JsonSerializable<MultiS
      * 
      * @return the privateIpAddress value.
      */
-    public PrivateIPAddress privateIpAddress() {
+    public PrivateIpAddress privateIpAddress() {
         return this.privateIpAddress;
     }
 
@@ -47,7 +47,7 @@ public final class MultiSubnetIpConfiguration implements JsonSerializable<MultiS
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the MultiSubnetIpConfiguration object itself.
      */
-    public MultiSubnetIpConfiguration withPrivateIpAddress(PrivateIPAddress privateIpAddress) {
+    public MultiSubnetIpConfiguration withPrivateIpAddress(PrivateIpAddress privateIpAddress) {
         this.privateIpAddress = privateIpAddress;
         return this;
     }
@@ -102,7 +102,7 @@ public final class MultiSubnetIpConfiguration implements JsonSerializable<MultiS
                 reader.nextToken();
 
                 if ("privateIpAddress".equals(fieldName)) {
-                    deserializedMultiSubnetIpConfiguration.privateIpAddress = PrivateIPAddress.fromJson(reader);
+                    deserializedMultiSubnetIpConfiguration.privateIpAddress = PrivateIpAddress.fromJson(reader);
                 } else if ("sqlVirtualMachineInstance".equals(fieldName)) {
                     deserializedMultiSubnetIpConfiguration.sqlVirtualMachineInstance = reader.getString();
                 } else {

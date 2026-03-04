@@ -20,7 +20,7 @@ public final class LoadBalancerConfiguration implements JsonSerializable<LoadBal
     /*
      * Private IP address.
      */
-    private PrivateIPAddress privateIpAddress;
+    private PrivateIpAddress privateIpAddress;
 
     /*
      * Resource id of the public IP.
@@ -53,7 +53,7 @@ public final class LoadBalancerConfiguration implements JsonSerializable<LoadBal
      * 
      * @return the privateIpAddress value.
      */
-    public PrivateIPAddress privateIpAddress() {
+    public PrivateIpAddress privateIpAddress() {
         return this.privateIpAddress;
     }
 
@@ -63,7 +63,7 @@ public final class LoadBalancerConfiguration implements JsonSerializable<LoadBal
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the LoadBalancerConfiguration object itself.
      */
-    public LoadBalancerConfiguration withPrivateIpAddress(PrivateIPAddress privateIpAddress) {
+    public LoadBalancerConfiguration withPrivateIpAddress(PrivateIpAddress privateIpAddress) {
         this.privateIpAddress = privateIpAddress;
         return this;
     }
@@ -181,7 +181,7 @@ public final class LoadBalancerConfiguration implements JsonSerializable<LoadBal
                 reader.nextToken();
 
                 if ("privateIpAddress".equals(fieldName)) {
-                    deserializedLoadBalancerConfiguration.privateIpAddress = PrivateIPAddress.fromJson(reader);
+                    deserializedLoadBalancerConfiguration.privateIpAddress = PrivateIpAddress.fromJson(reader);
                 } else if ("publicIpAddressResourceId".equals(fieldName)) {
                     deserializedLoadBalancerConfiguration.publicIpAddressResourceId = reader.getString();
                 } else if ("loadBalancerResourceId".equals(fieldName)) {

@@ -15,7 +15,7 @@ import java.io.IOException;
  * A private IP address bound to the availability group listener.
  */
 @Fluent
-public final class PrivateIPAddress implements JsonSerializable<PrivateIPAddress> {
+public final class PrivateIpAddress implements JsonSerializable<PrivateIpAddress> {
     /*
      * Private IP address bound to the availability group listener.
      */
@@ -27,9 +27,9 @@ public final class PrivateIPAddress implements JsonSerializable<PrivateIPAddress
     private String subnetResourceId;
 
     /**
-     * Creates an instance of PrivateIPAddress class.
+     * Creates an instance of PrivateIpAddress class.
      */
-    public PrivateIPAddress() {
+    public PrivateIpAddress() {
     }
 
     /**
@@ -45,9 +45,9 @@ public final class PrivateIPAddress implements JsonSerializable<PrivateIPAddress
      * Set the ipAddress property: Private IP address bound to the availability group listener.
      * 
      * @param ipAddress the ipAddress value to set.
-     * @return the PrivateIPAddress object itself.
+     * @return the PrivateIpAddress object itself.
      */
-    public PrivateIPAddress withIpAddress(String ipAddress) {
+    public PrivateIpAddress withIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
         return this;
     }
@@ -65,9 +65,9 @@ public final class PrivateIPAddress implements JsonSerializable<PrivateIPAddress
      * Set the subnetResourceId property: Subnet used to include private IP.
      * 
      * @param subnetResourceId the subnetResourceId value to set.
-     * @return the PrivateIPAddress object itself.
+     * @return the PrivateIpAddress object itself.
      */
-    public PrivateIPAddress withSubnetResourceId(String subnetResourceId) {
+    public PrivateIpAddress withSubnetResourceId(String subnetResourceId) {
         this.subnetResourceId = subnetResourceId;
         return this;
     }
@@ -84,30 +84,30 @@ public final class PrivateIPAddress implements JsonSerializable<PrivateIPAddress
     }
 
     /**
-     * Reads an instance of PrivateIPAddress from the JsonReader.
+     * Reads an instance of PrivateIpAddress from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PrivateIPAddress if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of PrivateIpAddress if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PrivateIPAddress.
+     * @throws IOException If an error occurs while reading the PrivateIpAddress.
      */
-    public static PrivateIPAddress fromJson(JsonReader jsonReader) throws IOException {
+    public static PrivateIpAddress fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PrivateIPAddress deserializedPrivateIPAddress = new PrivateIPAddress();
+            PrivateIpAddress deserializedPrivateIpAddress = new PrivateIpAddress();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("ipAddress".equals(fieldName)) {
-                    deserializedPrivateIPAddress.ipAddress = reader.getString();
+                    deserializedPrivateIpAddress.ipAddress = reader.getString();
                 } else if ("subnetResourceId".equals(fieldName)) {
-                    deserializedPrivateIPAddress.subnetResourceId = reader.getString();
+                    deserializedPrivateIpAddress.subnetResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedPrivateIPAddress;
+            return deserializedPrivateIpAddress;
         });
     }
 }

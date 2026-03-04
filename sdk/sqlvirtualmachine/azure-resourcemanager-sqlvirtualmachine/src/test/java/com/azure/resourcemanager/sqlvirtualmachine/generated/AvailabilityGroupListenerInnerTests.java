@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.Commit;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Failover;
 import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.MultiSubnetIpConfiguration;
-import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIPAddress;
+import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ReadableSecondary;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Role;
 import java.util.Arrays;
@@ -58,7 +58,7 @@ public final class AvailabilityGroupListenerInnerTests {
                     Arrays
                         .asList(
                             new LoadBalancerConfiguration()
-                                .withPrivateIpAddress(new PrivateIPAddress().withIpAddress("kryhtnapczwlokj")
+                                .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("kryhtnapczwlokj")
                                     .withSubnetResourceId("mkkvnip"))
                                 .withPublicIpAddressResourceId("xzjnchgejs")
                                 .withLoadBalancerResourceId("dmailzydehojw")
@@ -66,7 +66,7 @@ public final class AvailabilityGroupListenerInnerTests {
                                 .withSqlVirtualMachineInstances(Arrays.asList("inpm", "njaqwixjspro", "vcputegj")),
                             new LoadBalancerConfiguration()
                                 .withPrivateIpAddress(
-                                    new PrivateIPAddress().withIpAddress("fdatsc").withSubnetResourceId("vpjhulsuuv"))
+                                    new PrivateIpAddress().withIpAddress("fdatsc").withSubnetResourceId("vpjhulsuuv"))
                                 .withPublicIpAddressResourceId("jozkrwfndiod")
                                 .withLoadBalancerResourceId("slwejdpvw")
                                 .withProbePort(1450432721)
@@ -76,16 +76,16 @@ public final class AvailabilityGroupListenerInnerTests {
                     Arrays
                         .asList(
                             new MultiSubnetIpConfiguration()
-                                .withPrivateIpAddress(new PrivateIPAddress().withIpAddress("zevdphlx")
+                                .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("zevdphlx")
                                     .withSubnetResourceId("lthqtrgqjbp"))
                                 .withSqlVirtualMachineInstance("zfsinzgvf"),
                             new MultiSubnetIpConfiguration()
-                                .withPrivateIpAddress(new PrivateIPAddress().withIpAddress("rwzoxxjtfelluwf")
+                                .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("rwzoxxjtfelluwf")
                                     .withSubnetResourceId("tonpe"))
                                 .withSqlVirtualMachineInstance("fpjkjlxofp"),
                             new MultiSubnetIpConfiguration()
                                 .withPrivateIpAddress(
-                                    new PrivateIPAddress().withIpAddress("hpf").withSubnetResourceId("ypininm"))
+                                    new PrivateIpAddress().withIpAddress("hpf").withSubnetResourceId("ypininm"))
                                 .withSqlVirtualMachineInstance("yhuybbkpod")))
                 .withCreateDefaultAvailabilityGroupIfNotExist(true)
                 .withPort(92863061)
