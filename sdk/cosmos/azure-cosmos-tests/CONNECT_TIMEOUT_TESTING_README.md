@@ -20,7 +20,7 @@ Only `iptables DROP SYN` prevents the TCP handshake, triggering the real netty `
 - Docker Desktop with Linux containers
 - Docker memory: **8 GB+**
 - A Cosmos DB account with thin client enabled
-- System properties: `COSMOS.THINCLIENT_ENABLED=true`, `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS=1`
+- System properties: `COSMOS.THINCLIENT_ENABLED=true`, `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS=5` (default; override to 1 for fast-fail local tests)
 - Credentials in `sdk/cosmos/cosmos-v4.properties`
 
 ## Build & Run

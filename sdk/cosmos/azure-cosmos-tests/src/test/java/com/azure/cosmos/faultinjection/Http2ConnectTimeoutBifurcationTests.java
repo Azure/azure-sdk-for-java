@@ -41,7 +41,7 @@ import static org.testng.AssertJUnit.fail;
  * CONNECT_TIMEOUT_MILLIS to fire at the netty ChannelOption level.
  *
  * The bifurcation under test:
- * - Data plane requests → GW V2 endpoint (port 10250) → CONNECT_TIMEOUT_MILLIS = 1s
+ * - Data plane requests → GW V2 endpoint (port 10250) → CONNECT_TIMEOUT_MILLIS = 5s (default, configurable)
  * - Metadata requests → GW V1 endpoint (port 443) → CONNECT_TIMEOUT_MILLIS = 45s (unchanged)
  *
  * HOW TO RUN:
