@@ -5,40 +5,45 @@
 package com.azure.resourcemanager.commerce.models;
 
 /**
- * Defines values for AggregationGranularity.
+ * Name of the offer term.
  */
-public enum AggregationGranularity {
+public enum OfferTermInfoName {
     /**
-     * Daily.
+     * Recurring Charge.
      */
-    DAILY("Daily"),
+    RECURRING_CHARGE("Recurring Charge"),
 
     /**
-     * Hourly.
+     * Monetary Commitment.
      */
-    HOURLY("Hourly");
+    MONETARY_COMMITMENT("Monetary Commitment"),
 
     /**
-     * The actual serialized value for a AggregationGranularity instance.
+     * Monetary Credit.
+     */
+    MONETARY_CREDIT("Monetary Credit");
+
+    /**
+     * The actual serialized value for a OfferTermInfoName instance.
      */
     private final String value;
 
-    AggregationGranularity(String value) {
+    OfferTermInfoName(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a AggregationGranularity instance.
+     * Parses a serialized value to a OfferTermInfoName instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed AggregationGranularity object, or null if unable to parse.
+     * @return the parsed OfferTermInfoName object, or null if unable to parse.
      */
-    public static AggregationGranularity fromString(String value) {
+    public static OfferTermInfoName fromString(String value) {
         if (value == null) {
             return null;
         }
-        AggregationGranularity[] items = AggregationGranularity.values();
-        for (AggregationGranularity item : items) {
+        OfferTermInfoName[] items = OfferTermInfoName.values();
+        for (OfferTermInfoName item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
