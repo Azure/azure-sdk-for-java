@@ -4,8 +4,8 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentField;
@@ -210,7 +210,7 @@ public class Sample16_CreateAnalyzerWithLabelsAsync extends ContentUnderstanding
 
             ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
                 .setDescription("Receipt analyzer with labeled training data")
-                .setConfig(new ContentAnalyzerConfig().setEnableLayout(true).setEnableOcr(true))
+                .setConfig(new ContentAnalyzerConfig().setLayoutEnabled(true).setOcrEnabled(true))
                 .setFieldSchema(fieldSchema)
                 .setModels(models);
 
@@ -275,14 +275,14 @@ public class Sample16_CreateAnalyzerWithLabelsAsync extends ContentUnderstanding
                 String testDocUrl
                     = "https://github.com/Azure-Samples/cognitive-services-REST-api-samples/raw/master/curl/form-recognizer/sample-invoice.pdf";
 
-                AnalyzeInput input = new AnalyzeInput();
+                AnalysisInput input = new AnalysisInput();
                 input.setUrl(testDocUrl);
 
-                PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> analyzePoller
+                PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzePoller
                     = contentUnderstandingAsyncClient.beginAnalyze(analyzerId, Arrays.asList(input));
 
                 // Use reactive pattern for analyze operation
-                AnalyzeResult analyzeResult = analyzePoller.last().flatMap(pollResponse -> {
+                AnalysisResult AnalysisResult = analyzePoller.last().flatMap(pollResponse -> {
                     if (pollResponse.getStatus().isComplete()) {
                         return pollResponse.getFinalResult();
                     } else {
@@ -292,12 +292,12 @@ public class Sample16_CreateAnalyzerWithLabelsAsync extends ContentUnderstanding
                 }).block(); // block() is used here for testing; in production, use subscribe()
 
                 System.out.println("Analysis completed!");
-                assertNotNull(analyzeResult);
-                assertNotNull(analyzeResult.getContents());
-                assertTrue(analyzeResult.getContents().size() > 0);
+                assertNotNull(AnalysisResult);
+                assertNotNull(AnalysisResult.getContents());
+                assertTrue(AnalysisResult.getContents().size() > 0);
 
-                if (analyzeResult.getContents().get(0) instanceof DocumentContent) {
-                    DocumentContent docContent = (DocumentContent) analyzeResult.getContents().get(0);
+                if (AnalysisResult.getContents().get(0) instanceof DocumentContent) {
+                    DocumentContent docContent = (DocumentContent) AnalysisResult.getContents().get(0);
                     System.out.println("Extracted fields: " + docContent.getFields().size());
 
                     // Display extracted values

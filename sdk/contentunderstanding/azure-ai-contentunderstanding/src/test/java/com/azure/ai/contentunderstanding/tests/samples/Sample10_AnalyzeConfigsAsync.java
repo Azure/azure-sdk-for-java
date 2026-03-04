@@ -4,7 +4,7 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentAnnotation;
 import com.azure.ai.contentunderstanding.models.DocumentChartFigure;
@@ -50,12 +50,12 @@ public class Sample10_AnalyzeConfigsAsync extends ContentUnderstandingClientTest
 
         // Analyze with prebuilt-documentSearch which has formulas, layout, and OCR enabled
         // These configs enable extraction of charts, annotations, hyperlinks, and formulas
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
         // Use reactive pattern: chain operations using flatMap
         // In a real application, you would use subscribe() instead of block()
-        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+        AnalysisResult result = operation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
             } else {

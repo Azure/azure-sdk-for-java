@@ -152,9 +152,9 @@ public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTe
 
             // Verify source config
             assertNotNull(sourceConfig, "Source config should not be null");
-            assertEquals(false, sourceConfig.isFormulaEnabled(), "EnableFormula should be false");
-            assertEquals(true, sourceConfig.isLayoutEnabled(), "EnableLayout should be true");
-            assertEquals(true, sourceConfig.isOcrEnabled(), "EnableOcr should be true");
+            assertEquals(false, sourceConfig.isFormulaEnabled(), "FormulaEnabled should be false");
+            assertEquals(true, sourceConfig.isLayoutEnabled(), "LayoutEnabled should be true");
+            assertEquals(true, sourceConfig.isOcrEnabled(), "OcrEnabled should be true");
             assertEquals(true, sourceConfig.isEstimateFieldSourceAndConfidence(),
                 "EstimateFieldSourceAndConfidence should be true");
             assertEquals(true, sourceConfig.isReturnDetails(), "ReturnDetails should be true");
@@ -203,9 +203,9 @@ public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTe
 
             // Verify config in result
             assertNotNull(sourceResult.getConfig(), "Config should not be null in result");
-            assertEquals(false, sourceResult.getConfig().isFormulaEnabled(), "EnableFormula should be preserved");
-            assertEquals(true, sourceResult.getConfig().isLayoutEnabled(), "EnableLayout should be preserved");
-            assertEquals(true, sourceResult.getConfig().isOcrEnabled(), "EnableOcr should be preserved");
+            assertEquals(false, sourceResult.getConfig().isFormulaEnabled(), "FormulaEnabled should be preserved");
+            assertEquals(true, sourceResult.getConfig().isLayoutEnabled(), "LayoutEnabled should be preserved");
+            assertEquals(true, sourceResult.getConfig().isOcrEnabled(), "OcrEnabled should be preserved");
             System.out.println("  ✓ Config preserved in result");
 
             // Verify field schema in result
@@ -317,19 +317,19 @@ public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTe
             // Verify config was copied
             assertNotNull(copiedAnalyzer.getConfig(), "Copied analyzer should have config");
             assertEquals(sourceResult.getConfig().isFormulaEnabled(), copiedAnalyzer.getConfig().isFormulaEnabled(),
-                "EnableFormula should match");
+                "FormulaEnabled should match");
             assertEquals(sourceResult.getConfig().isLayoutEnabled(), copiedAnalyzer.getConfig().isLayoutEnabled(),
-                "EnableLayout should match");
+                "LayoutEnabled should match");
             assertEquals(sourceResult.getConfig().isOcrEnabled(), copiedAnalyzer.getConfig().isOcrEnabled(),
-                "EnableOcr should match");
+                "OcrEnabled should match");
             assertEquals(sourceResult.getConfig().isEstimateFieldSourceAndConfidence(),
                 copiedAnalyzer.getConfig().isEstimateFieldSourceAndConfidence(),
                 "EstimateFieldSourceAndConfidence should match");
             assertEquals(sourceResult.getConfig().isReturnDetails(), copiedAnalyzer.getConfig().isReturnDetails(),
                 "ReturnDetails should match");
             System.out.println("  ✓ Config preserved");
-            System.out.println("    EnableLayout: " + copiedAnalyzer.getConfig().isLayoutEnabled());
-            System.out.println("    EnableOcr: " + copiedAnalyzer.getConfig().isOcrEnabled());
+            System.out.println("    LayoutEnabled: " + copiedAnalyzer.getConfig().isLayoutEnabled());
+            System.out.println("    OcrEnabled: " + copiedAnalyzer.getConfig().isOcrEnabled());
 
             // Verify models were copied
             assertNotNull(copiedAnalyzer.getModels(), "Copied analyzer should have models");

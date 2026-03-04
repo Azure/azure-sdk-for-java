@@ -4,15 +4,15 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.DocumentTableCell;
-import com.azure.ai.contentunderstanding.models.MediaContent;
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
@@ -43,15 +43,15 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(uriSource);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
 
         // Use reactive pattern: chain operations using flatMap, doOnNext, doOnError
         // In a real application, you would use subscribe() instead of block()
-        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+        AnalysisResult result = operation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
             } else {
@@ -72,7 +72,7 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         // END:Assertion_ContentUnderstandingAnalyzeUrlAsyncAsync
 
         // A PDF file has only one content element even if it contains multiple pages
-        MediaContent content = null;
+        AnalysisContent content = null;
         if (result.getContents() == null || result.getContents().isEmpty()) {
             System.out.println("(No content returned from analysis)");
         } else {
@@ -88,7 +88,7 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         assertTrue(result.getContents().size() > 0, "Result should have at least one content");
         assertEquals(1, result.getContents().size(), "PDF file should have exactly one content element");
         assertNotNull(content, "Content should not be null");
-        assertTrue(content instanceof MediaContent, "Content should be of type MediaContent");
+        assertTrue(content instanceof AnalysisContent, "Content should be of type AnalysisContent");
 
         if (content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
             assertFalse(content.getMarkdown().trim().isEmpty(), "Markdown content should not be just whitespace");
@@ -127,9 +127,10 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
                 }
             }
         } else {
-            // Content is not DocumentContent - verify it's MediaContent
-            assertTrue(content instanceof MediaContent, "Content should be MediaContent when not DocumentContent");
-            System.out.println("Content is MediaContent (not document-specific), skipping document properties");
+            // Content is not DocumentContent - verify it's AnalysisContent
+            assertTrue(content instanceof AnalysisContent,
+                "Content should be AnalysisContent when not DocumentContent");
+            System.out.println("Content is AnalysisContent (not document-specific), skipping document properties");
         }
 
         assertNotNull(content, "Content should not be null for document properties validation");
@@ -228,11 +229,12 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
             System.out.println("All document properties validated successfully");
         } else {
             // Content is not DocumentContent - validate alternative types
-            assertTrue(content instanceof MediaContent,
-                "Content should be MediaContent when not DocumentContent, but got "
+            assertTrue(content instanceof AnalysisContent,
+                "Content should be AnalysisContent when not DocumentContent, but got "
                     + (content != null ? content.getClass().getSimpleName() : "null"));
             System.out.println("⚠️ Content is not DocumentContent type, skipping document-specific validations");
-            System.out.println("⚠️ Content type: " + content.getClass().getSimpleName() + " (MediaContent validated)");
+            System.out
+                .println("⚠️ Content type: " + content.getClass().getSimpleName() + " (AnalysisContent validated)");
         }
     }
 
@@ -242,15 +244,15 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(uriSource);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         // Use reactive pattern: chain operations using flatMap
         // In a real application, you would use subscribe() instead of block()
-        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+        AnalysisResult result = operation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
             } else {
@@ -261,9 +263,9 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
 
         // prebuilt-videoSearch can detect video segments, so we should iterate through all segments
         int segmentIndex = 1;
-        for (MediaContent media : result.getContents()) {
-            // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
-            // AudioVisualContent derives from MediaContent and provides additional properties
+        for (AnalysisContent media : result.getContents()) {
+            // Cast AnalysisContent to AudioVisualContent to access audio/visual-specific properties
+            // AudioVisualContent derives from AnalysisContent and provides additional properties
             // to access full information about audio/video, including timing, transcript phrases, and many others
             AudioVisualContent videoContent = (AudioVisualContent) media;
             System.out.println("--- Segment " + segmentIndex + " ---");
@@ -277,8 +279,8 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
                 : "";
             System.out.println("Summary: " + summary);
 
-            System.out.println(
-                "Start: " + videoContent.getStartTimeMs() + " ms, End: " + videoContent.getEndTimeMs() + " ms");
+            System.out.println("Start: " + videoContent.getStartTime().toMillis() + " ms, End: "
+                + videoContent.getEndTime().toMillis() + " ms");
             System.out.println("Frame size: " + videoContent.getWidth() + " x " + videoContent.getHeight());
 
             System.out.println("---------------------");
@@ -293,7 +295,7 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         assertTrue(result.getContents().size() > 0, "Result should have at least one content");
 
         // Verify all contents are AudioVisualContent
-        for (MediaContent content : result.getContents()) {
+        for (AnalysisContent content : result.getContents()) {
             assertTrue(content instanceof AudioVisualContent, "Video analysis should return audio/visual content.");
             AudioVisualContent avContent = (AudioVisualContent) content;
             assertNotNull(avContent.getFields(), "AudioVisualContent should have fields");
@@ -312,15 +314,15 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(uriSource);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input));
 
         // Use reactive pattern: chain operations using flatMap
         // In a real application, you would use subscribe() instead of block()
-        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+        AnalysisResult result = operation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
             } else {
@@ -329,8 +331,8 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
             }
         }).block(); // block() is used here for testing; in production, use subscribe()
 
-        // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
-        // AudioVisualContent derives from MediaContent and provides additional properties
+        // Cast AnalysisContent to AudioVisualContent to access audio/visual-specific properties
+        // AudioVisualContent derives from AnalysisContent and provides additional properties
         // to access full information about audio/video, including timing, transcript phrases, and many others
         AudioVisualContent audioContent = (AudioVisualContent) result.getContents().get(0);
         System.out.println("Markdown:");
@@ -352,8 +354,8 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
                 if (count >= 2) {
                     break;
                 }
-                System.out
-                    .println("  [" + phrase.getSpeaker() + "] " + phrase.getStartTimeMs() + " ms: " + phrase.getText());
+                System.out.println(
+                    "  [" + phrase.getSpeaker() + "] " + phrase.getStartTime().toMillis() + " ms: " + phrase.getText());
                 count++;
             }
         }
@@ -369,7 +371,7 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         assertTrue(audioContent instanceof AudioVisualContent, "Audio analysis should return audio/visual content.");
 
         // Verify all contents have Summary field
-        for (MediaContent content : result.getContents()) {
+        for (AnalysisContent content : result.getContents()) {
             assertTrue(content instanceof AudioVisualContent, "Audio analysis should return audio/visual content.");
             AudioVisualContent avContent = (AudioVisualContent) content;
             assertNotNull(avContent.getFields(), "AudioVisualContent should have fields");
@@ -388,15 +390,15 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(uriSource);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-imageSearch", Arrays.asList(input));
 
         // Use reactive pattern: chain operations using flatMap
         // In a real application, you would use subscribe() instead of block()
-        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+        AnalysisResult result = operation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
             } else {
@@ -405,7 +407,7 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
             }
         }).block(); // block() is used here for testing; in production, use subscribe()
 
-        MediaContent content = result.getContents().get(0);
+        AnalysisContent content = result.getContents().get(0);
         System.out.println("Markdown:");
         System.out.println(content.getMarkdown());
 
@@ -424,11 +426,11 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         assertTrue(result.getContents().size() > 0, "Result should have at least one content");
 
         // Verify content has Summary field
-        for (MediaContent mediaContent : result.getContents()) {
-            assertNotNull(mediaContent.getFields(), "Content should have fields");
-            assertTrue(mediaContent.getFields().containsKey("Summary"), "Image content should have Summary field");
-            assertNotNull(mediaContent.getFields().get("Summary").getValue(), "Summary value should not be null");
-            String summaryStr = mediaContent.getFields().get("Summary").getValue().toString();
+        for (AnalysisContent AnalysisContent : result.getContents()) {
+            assertNotNull(AnalysisContent.getFields(), "Content should have fields");
+            assertTrue(AnalysisContent.getFields().containsKey("Summary"), "Image content should have Summary field");
+            assertNotNull(AnalysisContent.getFields().get("Summary").getValue(), "Summary value should not be null");
+            String summaryStr = AnalysisContent.getFields().get("Summary").getValue().toString();
             assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Image analysis validation completed successfully");

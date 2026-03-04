@@ -4,8 +4,8 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.core.util.BinaryData;
@@ -16,8 +16,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,22 +44,22 @@ public class Sample12_GetResultFile extends ContentUnderstandingClientTestBase {
             = "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4";
 
         // Step 1: Start the video analysis operation
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(videoUrl);
 
-        SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
+        SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
             = contentUnderstandingClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         System.out.println("Started analysis operation");
 
         // Wait for completion
-        AnalyzeResult result = poller.getFinalResult();
+        AnalysisResult result = poller.getFinalResult();
         System.out.println("Analysis completed successfully!");
 
-        // Get the operation ID from the polling result using the getOperationId() convenience method
+        // Get the operation ID from the polling result using the getId() convenience method
         // The operation ID is extracted from the Operation-Location header and can be used with
         // getResultFile() and deleteResult() APIs
-        String operationId = poller.poll().getValue().getOperationId();
+        String operationId = poller.poll().getValue().getId();
         System.out.println("Operation ID: " + operationId);
 
         // END: com.azure.ai.contentunderstanding.getResultFile
@@ -90,9 +92,10 @@ public class Sample12_GetResultFile extends ContentUnderstandingClientTestBase {
         }
 
         if (videoContent != null
-            && videoContent.getKeyFrameTimesMs() != null
-            && !videoContent.getKeyFrameTimesMs().isEmpty()) {
-            List<Long> keyFrameTimes = videoContent.getKeyFrameTimesMs();
+            && videoContent.getKeyFrameTimes() != null
+            && !videoContent.getKeyFrameTimes().isEmpty()) {
+            List<Long> keyFrameTimes
+                = videoContent.getKeyFrameTimes().stream().map(Duration::toMillis).collect(Collectors.toList());
             System.out.println("Total keyframes: " + keyFrameTimes.size());
 
             // Get the first keyframe

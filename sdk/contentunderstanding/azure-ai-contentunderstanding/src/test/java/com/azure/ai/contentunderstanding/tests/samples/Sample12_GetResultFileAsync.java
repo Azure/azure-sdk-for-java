@@ -4,8 +4,8 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
@@ -18,8 +18,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,10 +47,10 @@ public class Sample12_GetResultFileAsync extends ContentUnderstandingClientTestB
             = "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4";
 
         // Step 1: Start the video analysis operation
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(videoUrl);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         System.out.println("Started analysis operation");
@@ -57,10 +59,10 @@ public class Sample12_GetResultFileAsync extends ContentUnderstandingClientTestB
         // In a real application, you would use subscribe() instead of block()
         // Use AtomicReference to capture the operation ID from the polling response
         AtomicReference<String> operationIdRef = new AtomicReference<>();
-        AnalyzeResult result = poller.last().flatMap(pollResponse -> {
+        AnalysisResult result = poller.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 // Capture the operation ID for later use with getResultFile()
-                operationIdRef.set(pollResponse.getValue().getOperationId());
+                operationIdRef.set(pollResponse.getValue().getId());
                 return pollResponse.getFinalResult();
             } else {
                 return Mono.error(
@@ -102,9 +104,10 @@ public class Sample12_GetResultFileAsync extends ContentUnderstandingClientTestB
         }
 
         if (videoContent != null
-            && videoContent.getKeyFrameTimesMs() != null
-            && !videoContent.getKeyFrameTimesMs().isEmpty()) {
-            List<Long> keyFrameTimes = videoContent.getKeyFrameTimesMs();
+            && videoContent.getKeyFrameTimes() != null
+            && !videoContent.getKeyFrameTimes().isEmpty()) {
+            List<Long> keyFrameTimes
+                = videoContent.getKeyFrameTimes().stream().map(Duration::toMillis).collect(Collectors.toList());
             System.out.println("Total keyframes: " + keyFrameTimes.size());
 
             // Get the first keyframe

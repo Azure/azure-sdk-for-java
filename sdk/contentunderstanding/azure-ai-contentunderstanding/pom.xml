@@ -68,6 +68,12 @@
       <artifactId>azure-identity</artifactId>
       <version>1.18.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.33.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>

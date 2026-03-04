@@ -4,8 +4,8 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.core.util.polling.SyncPoller;
@@ -33,22 +33,22 @@ public class Sample13_DeleteResult extends ContentUnderstandingClientTestBase {
         String documentUrl
             = "https://github.com/Azure-Samples/cognitive-services-REST-api-samples/raw/master/curl/form-recognizer/sample-invoice.pdf";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(documentUrl);
 
-        SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
+        SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
             = contentUnderstandingClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
         // Wait for operation to complete to get a result ID
         System.out.println("Started analysis operation");
 
         // Wait for completion
-        AnalyzeResult result = poller.getFinalResult();
+        AnalysisResult result = poller.getFinalResult();
         System.out.println("Analysis completed successfully!");
 
-        // Get the operation ID using the getOperationId() convenience method
+        // Get the operation ID using the getId() convenience method
         // This ID is extracted from the Operation-Location header and is needed for deleteResult()
-        String operationId = poller.poll().getValue().getOperationId();
+        String operationId = poller.poll().getValue().getId();
         System.out.println("Operation ID: " + operationId);
 
         // Display some sample results using getValue() convenience method

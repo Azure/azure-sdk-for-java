@@ -74,7 +74,7 @@ public class Sample05_CreateClassifier extends ContentUnderstandingClientTestBas
 
         // Create analyzer configuration with content categories
         ContentAnalyzerConfig config = new ContentAnalyzerConfig().setReturnDetails(true)
-            .setEnableSegment(true) // Enable automatic segmentation by category
+            .setSegmentEnabled(true) // Enable automatic segmentation by category
             .setContentCategories(categories);
 
         // Create the classifier analyzer
@@ -153,10 +153,10 @@ public class Sample05_CreateClassifier extends ContentUnderstandingClientTestBas
             "Bank_Statement description should mention account activity");
         System.out.println("  ✓ Bank_Statement category verified");
 
-        // Verify enableSegment is set
-        assertNotNull(result.getConfig().isEnableSegment(), "EnableSegment should not be null");
-        assertTrue(result.getConfig().isEnableSegment(), "EnableSegment should be true");
-        System.out.println("✓ EnableSegment verified: " + result.getConfig().isEnableSegment());
+        // Verify SegmentEnabled is set
+        assertNotNull(result.getConfig().isSegmentEnabled(), "SegmentEnabled should not be null");
+        assertTrue(result.getConfig().isSegmentEnabled(), "SegmentEnabled should be true");
+        System.out.println("✓ SegmentEnabled verified: " + result.getConfig().isSegmentEnabled());
 
         // Verify returnDetails is set
         assertNotNull(result.getConfig().isReturnDetails(), "ReturnDetails should not be null");
@@ -174,7 +174,7 @@ public class Sample05_CreateClassifier extends ContentUnderstandingClientTestBas
         System.out.println("  Analyzer ID: " + analyzerId);
         System.out.println("  Base Analyzer: " + result.getBaseAnalyzerId());
         System.out.println("  Categories: " + result.getConfig().getContentCategories().size());
-        System.out.println("  Segmentation: " + result.getConfig().isEnableSegment());
+        System.out.println("  Segmentation: " + result.getConfig().isSegmentEnabled());
         System.out.println("════════════════════════════════════════════════════════════");
         // END:Assertion_ContentUnderstandingCreateClassifier
     }

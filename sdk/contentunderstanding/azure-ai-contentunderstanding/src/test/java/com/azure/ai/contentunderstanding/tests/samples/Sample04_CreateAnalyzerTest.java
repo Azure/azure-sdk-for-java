@@ -321,14 +321,14 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
             SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzeOperation
                 = contentUnderstandingClient.beginAnalyze(analyzerId, Arrays.asList(input));
 
-            AnalysisResult analyzeResult = analyzeOperation.getFinalResult();
+            AnalysisResult AnalysisResult = analyzeOperation.getFinalResult();
 
             // Extract custom fields from the result
             // Since EstimateFieldSourceAndConfidence is enabled, we can access confidence scores and source information
-            if (analyzeResult.getContents() != null
-                && !analyzeResult.getContents().isEmpty()
-                && analyzeResult.getContents().get(0) instanceof DocumentContent) {
-                DocumentContent content = (DocumentContent) analyzeResult.getContents().get(0);
+            if (AnalysisResult.getContents() != null
+                && !AnalysisResult.getContents().isEmpty()
+                && AnalysisResult.getContents().get(0) instanceof DocumentContent) {
+                DocumentContent content = (DocumentContent) AnalysisResult.getContents().get(0);
 
                 // Extract field (literal text extraction)
                 ContentField companyNameField
@@ -413,14 +413,14 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
             assertTrue(analyzeOperation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
             System.out.println("Analyze operation properties verified");
 
-            assertNotNull(analyzeResult, "Analyze result should not be null");
-            assertNotNull(analyzeResult.getContents(), "Result should contain contents");
-            assertTrue(analyzeResult.getContents().size() > 0, "Result should have at least one content");
-            assertEquals(1, analyzeResult.getContents().size(), "Result should have exactly one content element");
-            System.out.println("Analysis result contains " + analyzeResult.getContents().size() + " content(s)");
+            assertNotNull(AnalysisResult, "Analyze result should not be null");
+            assertNotNull(AnalysisResult.getContents(), "Result should contain contents");
+            assertTrue(AnalysisResult.getContents().size() > 0, "Result should have at least one content");
+            assertEquals(1, AnalysisResult.getContents().size(), "Result should have exactly one content element");
+            System.out.println("Analysis result contains " + AnalysisResult.getContents().size() + " content(s)");
 
-            DocumentContent documentContent = analyzeResult.getContents().get(0) instanceof DocumentContent
-                ? (DocumentContent) analyzeResult.getContents().get(0)
+            DocumentContent documentContent = AnalysisResult.getContents().get(0) instanceof DocumentContent
+                ? (DocumentContent) AnalysisResult.getContents().get(0)
                 : null;
             assertNotNull(documentContent, "Content should be DocumentContent");
             assertNotNull(documentContent.getFields(), "Document content should have fields");

@@ -4,14 +4,15 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
-import com.azure.ai.contentunderstanding.models.MediaContent;
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ObjectField;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
@@ -40,13 +41,13 @@ public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase 
         String invoiceUrl
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(invoiceUrl);
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
-        AnalyzeResult result = operation.getFinalResult();
+        AnalysisResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeInvoice
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeInvoice
@@ -64,7 +65,7 @@ public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase 
 
         // BEGIN:ContentUnderstandingExtractInvoiceFields
         // Get the document content (invoices are documents)
-        MediaContent firstContent = result.getContents().get(0);
+        AnalysisContent firstContent = result.getContents().get(0);
         if (firstContent instanceof DocumentContent) {
             DocumentContent documentContent = (DocumentContent) firstContent;
 
@@ -95,8 +96,9 @@ public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase 
                 System.out.println("  Confidence: " + (customerNameField.getConfidence() != null
                     ? String.format("%.2f", customerNameField.getConfidence())
                     : "N/A"));
-                System.out.println(
-                    "  Source: " + (customerNameField.getSource() != null ? customerNameField.getSource() : "N/A"));
+                System.out.println("  Source: " + (customerNameField.getSources() != null
+                    ? ContentSource.toRawString(customerNameField.getSources())
+                    : "N/A"));
                 List<ContentSpan> spans = customerNameField.getSpans();
                 if (spans != null && !spans.isEmpty()) {
                     ContentSpan span = spans.get(0);
@@ -110,8 +112,9 @@ public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase 
                 System.out.println("  Confidence: " + (invoiceDateField.getConfidence() != null
                     ? String.format("%.2f", invoiceDateField.getConfidence())
                     : "N/A"));
-                System.out.println(
-                    "  Source: " + (invoiceDateField.getSource() != null ? invoiceDateField.getSource() : "N/A"));
+                System.out.println("  Source: " + (invoiceDateField.getSources() != null
+                    ? ContentSource.toRawString(invoiceDateField.getSources())
+                    : "N/A"));
                 List<ContentSpan> spans = invoiceDateField.getSpans();
                 if (spans != null && !spans.isEmpty()) {
                     ContentSpan span = spans.get(0);
@@ -140,8 +143,8 @@ public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase 
                 if (totalAmountObj.getConfidence() != null) {
                     System.out.println("  Confidence: " + String.format("%.2f", totalAmountObj.getConfidence()));
                 }
-                if (totalAmountObj.getSource() != null && !totalAmountObj.getSource().isEmpty()) {
-                    System.out.println("  Source: " + totalAmountObj.getSource());
+                if (totalAmountObj.getSources() != null && !totalAmountObj.getSources().isEmpty()) {
+                    System.out.println("  Source: " + ContentSource.toRawString(totalAmountObj.getSources()));
                 }
             }
 
@@ -177,7 +180,7 @@ public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase 
         // END:ContentUnderstandingExtractInvoiceFields
 
         // BEGIN:Assertion_ContentUnderstandingExtractInvoiceFields
-        MediaContent content = result.getContents().get(0);
+        AnalysisContent content = result.getContents().get(0);
         assertNotNull(content, "Content should not be null");
         assertTrue(content instanceof DocumentContent, "Content should be of type DocumentContent");
 

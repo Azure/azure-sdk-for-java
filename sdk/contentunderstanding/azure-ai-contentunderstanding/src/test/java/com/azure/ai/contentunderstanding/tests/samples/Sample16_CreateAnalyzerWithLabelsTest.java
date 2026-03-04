@@ -224,16 +224,16 @@ public class Sample16_CreateAnalyzerWithLabelsTest extends ContentUnderstandingC
                 AnalysisInput input = new AnalysisInput();
                 input.setUrl(testDocUrl);
 
-                AnalysisResult analyzeResult
+                AnalysisResult AnalysisResult
                     = contentUnderstandingClient.beginAnalyze(analyzerId, Arrays.asList(input)).getFinalResult();
 
                 System.out.println("Analysis completed!");
-                assertNotNull(analyzeResult);
-                assertNotNull(analyzeResult.getContents());
-                assertTrue(analyzeResult.getContents().size() > 0);
+                assertNotNull(AnalysisResult);
+                assertNotNull(AnalysisResult.getContents());
+                assertTrue(AnalysisResult.getContents().size() > 0);
 
-                if (analyzeResult.getContents().get(0) instanceof DocumentContent) {
-                    DocumentContent docContent = (DocumentContent) analyzeResult.getContents().get(0);
+                if (AnalysisResult.getContents().get(0) instanceof DocumentContent) {
+                    DocumentContent docContent = (DocumentContent) AnalysisResult.getContents().get(0);
                     System.out.println("Extracted fields: " + docContent.getFields().size());
 
                     // Display extracted values

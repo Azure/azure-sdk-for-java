@@ -210,8 +210,8 @@ public class Sample16_CreateAnalyzerWithLabelsAsync {
                 .setBaseAnalyzerId("prebuilt-document")
                 .setDescription("Receipt analyzer with labeled training data")
                 .setConfig(new ContentAnalyzerConfig()
-                    .setEnableLayout(true)
-                    .setEnableOcr(true))
+                    .setLayoutEnabled(true)
+                    .setOcrEnabled(true))
                 .setFieldSchema(fieldSchema)
                 .setModels(models);
 

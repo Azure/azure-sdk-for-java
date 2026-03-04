@@ -4,13 +4,13 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.DocumentTableCell;
-import com.azure.ai.contentunderstanding.models.MediaContent;
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
@@ -52,10 +52,10 @@ public class Sample01_AnalyzeBinary extends ContentUnderstandingClientTestBase {
         // BEGIN:ContentUnderstandingAnalyzeBinary
         // Use the simplified beginAnalyzeBinary overload - contentType defaults to "application/octet-stream"
         // For PDFs, you can also explicitly specify "application/pdf" using the full method signature
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
-        AnalyzeResult result = operation.getFinalResult();
+        AnalysisResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeBinary
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeBinary
@@ -76,7 +76,7 @@ public class Sample01_AnalyzeBinary extends ContentUnderstandingClientTestBase {
 
         // BEGIN:ContentUnderstandingExtractMarkdown
         // A PDF file has only one content element even if it contains multiple pages
-        MediaContent content = null;
+        AnalysisContent content = null;
         if (result.getContents() == null || result.getContents().isEmpty()) {
             System.out.println("(No content returned from analysis)");
         } else {
@@ -94,7 +94,7 @@ public class Sample01_AnalyzeBinary extends ContentUnderstandingClientTestBase {
         assertTrue(result.getContents().size() > 0, "Result should have at least one content");
         assertEquals(1, result.getContents().size(), "PDF file should have exactly one content element");
         assertNotNull(content, "Content should not be null");
-        assertTrue(content instanceof MediaContent, "Content should be of type MediaContent");
+        assertTrue(content instanceof AnalysisContent, "Content should be of type AnalysisContent");
 
         // Only validate markdown content if we have a real file
         if (hasRealFile && content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
@@ -139,9 +139,10 @@ public class Sample01_AnalyzeBinary extends ContentUnderstandingClientTestBase {
                 }
             }
         } else {
-            // Content is not DocumentContent - verify it's MediaContent
-            assertTrue(content instanceof MediaContent, "Content should be MediaContent when not DocumentContent");
-            System.out.println("Content is MediaContent (not document-specific), skipping document properties");
+            // Content is not DocumentContent - verify it's AnalysisContent
+            assertTrue(content instanceof AnalysisContent,
+                "Content should be AnalysisContent when not DocumentContent");
+            System.out.println("Content is AnalysisContent (not document-specific), skipping document properties");
         }
         // END:ContentUnderstandingAccessDocumentProperties
 
@@ -246,11 +247,12 @@ public class Sample01_AnalyzeBinary extends ContentUnderstandingClientTestBase {
             System.out.println("All document properties validated successfully");
         } else {
             // Content is not DocumentContent - validate alternative types
-            assertTrue(content instanceof MediaContent,
-                "Content should be MediaContent when not DocumentContent, but got "
+            assertTrue(content instanceof AnalysisContent,
+                "Content should be AnalysisContent when not DocumentContent, but got "
                     + (content != null ? content.getClass().getSimpleName() : "null"));
             System.out.println("Content is not DocumentContent type, skipping document-specific validations");
-            System.out.println("⚠️ Content type: " + content.getClass().getSimpleName() + " (MediaContent validated)");
+            System.out
+                .println("⚠️ Content type: " + content.getClass().getSimpleName() + " (AnalysisContent validated)");
         }
         // END:Assertion_ContentUnderstandingAccessDocumentProperties
     }

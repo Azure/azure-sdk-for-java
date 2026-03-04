@@ -4,14 +4,15 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalyzeInput;
-import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
-import com.azure.ai.contentunderstanding.models.MediaContent;
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ObjectField;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
@@ -41,15 +42,15 @@ public class Sample03_AnalyzeInvoiceAsync extends ContentUnderstandingClientTest
         String invoiceUrl
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
 
-        AnalyzeInput input = new AnalyzeInput();
+        AnalysisInput input = new AnalysisInput();
         input.setUrl(invoiceUrl);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
         // Use reactive pattern: chain operations using flatMap
         // In a real application, you would use subscribe() instead of block()
-        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+        AnalysisResult result = operation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
             } else {
@@ -72,7 +73,7 @@ public class Sample03_AnalyzeInvoiceAsync extends ContentUnderstandingClientTest
 
         // BEGIN:ContentUnderstandingExtractInvoiceFieldsAsync
         // Get the document content (invoices are documents)
-        MediaContent firstContent = result.getContents().get(0);
+        AnalysisContent firstContent = result.getContents().get(0);
         if (firstContent instanceof DocumentContent) {
             DocumentContent documentContent = (DocumentContent) firstContent;
 
@@ -103,8 +104,9 @@ public class Sample03_AnalyzeInvoiceAsync extends ContentUnderstandingClientTest
                 System.out.println("  Confidence: " + (customerNameField.getConfidence() != null
                     ? String.format("%.2f", customerNameField.getConfidence())
                     : "N/A"));
-                System.out.println(
-                    "  Source: " + (customerNameField.getSource() != null ? customerNameField.getSource() : "N/A"));
+                System.out.println("  Source: " + (customerNameField.getSources() != null
+                    ? ContentSource.toRawString(customerNameField.getSources())
+                    : "N/A"));
                 List<ContentSpan> spans = customerNameField.getSpans();
                 if (spans != null && !spans.isEmpty()) {
                     ContentSpan span = spans.get(0);
@@ -118,8 +120,9 @@ public class Sample03_AnalyzeInvoiceAsync extends ContentUnderstandingClientTest
                 System.out.println("  Confidence: " + (invoiceDateField.getConfidence() != null
                     ? String.format("%.2f", invoiceDateField.getConfidence())
                     : "N/A"));
-                System.out.println(
-                    "  Source: " + (invoiceDateField.getSource() != null ? invoiceDateField.getSource() : "N/A"));
+                System.out.println("  Source: " + (invoiceDateField.getSources() != null
+                    ? ContentSource.toRawString(invoiceDateField.getSources())
+                    : "N/A"));
                 List<ContentSpan> spans = invoiceDateField.getSpans();
                 if (spans != null && !spans.isEmpty()) {
                     ContentSpan span = spans.get(0);
@@ -148,8 +151,8 @@ public class Sample03_AnalyzeInvoiceAsync extends ContentUnderstandingClientTest
                 if (totalAmountObj.getConfidence() != null) {
                     System.out.println("  Confidence: " + String.format("%.2f", totalAmountObj.getConfidence()));
                 }
-                if (totalAmountObj.getSource() != null && !totalAmountObj.getSource().isEmpty()) {
-                    System.out.println("  Source: " + totalAmountObj.getSource());
+                if (totalAmountObj.getSources() != null && !totalAmountObj.getSources().isEmpty()) {
+                    System.out.println("  Source: " + ContentSource.toRawString(totalAmountObj.getSources()));
                 }
             }
 
@@ -185,7 +188,7 @@ public class Sample03_AnalyzeInvoiceAsync extends ContentUnderstandingClientTest
         // END:ContentUnderstandingExtractInvoiceFieldsAsync
 
         // BEGIN:Assertion_ContentUnderstandingExtractInvoiceFieldsAsync
-        MediaContent content = result.getContents().get(0);
+        AnalysisContent content = result.getContents().get(0);
         assertNotNull(content, "Content should not be null");
         assertTrue(content instanceof DocumentContent, "Content should be of type DocumentContent");
 

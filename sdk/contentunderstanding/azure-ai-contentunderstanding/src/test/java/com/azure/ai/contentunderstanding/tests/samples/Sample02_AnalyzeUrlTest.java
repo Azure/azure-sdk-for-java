@@ -397,11 +397,11 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertTrue(result.getContents().size() > 0, "Result should have at least one content");
 
         // Verify content has Summary field
-        for (AnalysisContent mediaContent : result.getContents()) {
-            assertNotNull(mediaContent.getFields(), "Content should have fields");
-            assertTrue(mediaContent.getFields().containsKey("Summary"), "Image content should have Summary field");
-            assertNotNull(mediaContent.getFields().get("Summary").getValue(), "Summary value should not be null");
-            String summaryStr = mediaContent.getFields().get("Summary").getValue().toString();
+        for (AnalysisContent AnalysisContent : result.getContents()) {
+            assertNotNull(AnalysisContent.getFields(), "Content should have fields");
+            assertTrue(AnalysisContent.getFields().containsKey("Summary"), "Image content should have Summary field");
+            assertNotNull(AnalysisContent.getFields().get("Summary").getValue(), "Summary value should not be null");
+            String summaryStr = AnalysisContent.getFields().get("Summary").getValue().toString();
             assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Image analysis validation completed successfully");
