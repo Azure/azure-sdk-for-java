@@ -114,14 +114,12 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .attach()
             .apply();
 
-        Map<String, CdnEndpoint> cdnEndpointMap = cdnProfile.endpoints();
-        CdnEndpoint cdnEndpoint = cdnEndpointMap.get(cdnEndpointName);
+        Map<String, AfdEndpoint> cdnEndpointMap = cdnProfile.afdEndpoints();
+        AfdEndpoint cdnEndpoint = cdnEndpointMap.get(cdnEndpointName);
 
         Assertions.assertNotNull(cdnEndpoint);
-        Assertions.assertTrue(cdnEndpoint.isHttpAllowed());
-        Assertions.assertTrue(cdnEndpoint.isHttpsAllowed());
-        Assertions.assertFalse(cdnEndpoint.isCompressionEnabled());
-        Assertions.assertEquals("www.someDomain.net", cdnEndpoint.originHostName());
+        Assertions.assertEquals(EnabledState.ENABLED, cdnEndpoint.enabledState());
+        Assertions.assertEquals(EnforceMtlsEnabledState.ENABLED, cdnEndpoint.enforceMtls());
     }
 
     @Test
