@@ -18,7 +18,7 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * This sample demonstrates how to create an agent with the SharePoint Grounding tool
@@ -47,7 +47,7 @@ public class SharePointGroundingSample {
         // Create SharePoint grounding tool with connection configuration
         SharepointPreviewTool sharepointTool = new SharepointPreviewTool(
             new SharepointGroundingToolParameters()
-                .setProjectConnections(List.of(
+                .setProjectConnections(Arrays.asList(
                     new ToolProjectConnection(sharepointConnectionId)
                 ))
         );

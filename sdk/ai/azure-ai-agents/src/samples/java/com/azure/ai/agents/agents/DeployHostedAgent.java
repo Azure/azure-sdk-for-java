@@ -5,14 +5,18 @@ package com.azure.ai.agents.agents;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
 import com.azure.ai.agents.models.AgentProtocol;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.HostedAgentDefinition;
 import com.azure.ai.agents.models.ProtocolVersionRecord;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -25,6 +29,9 @@ import java.util.Map;
  * </ul>
  */
 public class DeployHostedAgent {
+
+    private static final String HOSTED_AGENTS_FEATURE = "HostedAgents=V1Preview";
+
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
 
@@ -42,21 +49,37 @@ public class DeployHostedAgent {
                 "1",
                 "2Gi")
             .setImage("your-registry.azurecr.io/your-image:tag")
-            .setEnvironmentVariables(Map.of(
+            .setEnvironmentVariables(envVars(
                 "AZURE_AI_PROJECT_ENDPOINT", endpoint,
                 "MODEL_NAME", "gpt-4.1"));
 
-        AgentVersionDetails agentVersion =
-            agentsClient.createAgentVersion("my-hosted-agent", agentDefinition);
+        // Hosted agents is a preview feature — opt in via the Foundry-Features header
+        RequestOptions requestOptions = new RequestOptions()
+            .setHeader("Foundry-Features", HOSTED_AGENTS_FEATURE);
+
+        BinaryData requestBody = BinaryData.fromObject(new CreateAgentVersionRequest(agentDefinition));
+        AgentVersionDetails agentVersion = agentsClient
+            .createAgentVersionWithResponse("my-hosted-agent", requestBody, requestOptions)
+            .getValue()
+            .toObject(AgentVersionDetails.class);
 
         System.out.printf("Agent created: %s, version: %s%n",
             agentVersion.getName(),
             agentVersion.getVersion());
 
-        // Clean up
-        agentsClient.deleteAgentVersion(
+        // Clean up — also needs the preview header
+        agentsClient.deleteAgentVersionWithResponse(
             agentVersion.getName(),
-            agentVersion.getVersion());
+            agentVersion.getVersion(),
+            requestOptions);
         System.out.println("Agent version deleted.");
+    }
+
+    private static Map<String, String> envVars(String... keyValues) {
+        Map<String, String> map = new HashMap<>();
+        for (int i = 0; i < keyValues.length; i += 2) {
+            map.put(keyValues[i], keyValues[i + 1]);
+        }
+        return map;
     }
 }

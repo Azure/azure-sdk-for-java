@@ -18,8 +18,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * This sample demonstrates how to create an agent with the Azure AI Search tool
@@ -49,7 +49,7 @@ public class AzureAISearchSample {
 
         // Create Azure AI Search tool with index configuration
         AzureAISearchTool aiSearchTool = new AzureAISearchTool(
-            new AzureAISearchToolResource(List.of(
+            new AzureAISearchToolResource(Arrays.asList(
                 new AISearchIndexResource()
                     .setProjectConnectionId(connectionId)
                     .setIndexName(indexName)

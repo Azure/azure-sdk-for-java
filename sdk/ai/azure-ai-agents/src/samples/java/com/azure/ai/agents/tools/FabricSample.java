@@ -18,7 +18,7 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * This sample demonstrates how to create an agent with the Microsoft Fabric tool
@@ -47,7 +47,7 @@ public class FabricSample {
         // Create Microsoft Fabric tool with connection configuration
         MicrosoftFabricPreviewTool fabricTool = new MicrosoftFabricPreviewTool(
             new FabricDataAgentToolParameters()
-                .setProjectConnections(List.of(
+                .setProjectConnections(Arrays.asList(
                     new ToolProjectConnection(fabricConnectionId)
                 ))
         );

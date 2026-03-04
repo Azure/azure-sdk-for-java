@@ -18,7 +18,7 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * This sample demonstrates how to create an agent with the Bing Grounding tool
@@ -46,7 +46,7 @@ public class BingGroundingSample {
 
         // Create Bing grounding tool with connection configuration
         BingGroundingTool bingTool = new BingGroundingTool(
-            new BingGroundingSearchToolParameters(List.of(
+            new BingGroundingSearchToolParameters(Arrays.asList(
                 new BingGroundingSearchConfiguration(bingConnectionId)
             ))
         );
