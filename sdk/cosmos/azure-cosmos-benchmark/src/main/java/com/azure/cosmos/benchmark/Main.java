@@ -23,7 +23,10 @@ public class Main {
                 return;
             }
 
-            // Build BenchmarkConfig (requires workload config file)
+            // Configuration holds only CLI lifecycle params (cycles, settleTimeMs, etc.).
+            // BenchmarkConfig consumes them and loads all workload config from the JSON file.
+            // BenchmarkOrchestrator handles dispatch for all benchmark types (async, sync,
+            // CTL, encryption, LinkedIn) based on operationType and flags in TenantWorkloadConfig.
             BenchmarkConfig benchConfig = BenchmarkConfig.fromConfiguration(cfg);
             TenantWorkloadConfig firstTenant = benchConfig.getTenantWorkloads().get(0);
 

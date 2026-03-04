@@ -91,8 +91,9 @@ public class BenchmarkConfig {
         }
 
         logger.info("Loading workload configs from {}.", workloadConfigPath);
-        config.tenantWorkloads = TenantWorkloadConfig.parseWorkloadConfig(new File(workloadConfigPath));
-        config.loadGlobalSystemPropertiesFromWorkloadConfig(new File(workloadConfigPath));
+        File workloadFile = new File(workloadConfigPath);
+        config.tenantWorkloads = TenantWorkloadConfig.parseWorkloadConfig(workloadFile);
+        config.loadWorkloadConfigSections(workloadFile);
 
         return config;
     }
@@ -136,14 +137,24 @@ public class BenchmarkConfig {
     }
 
     /**
-     * Reads JVM-global system properties from the tenantDefaults section of the workload config file.
-     * These properties are JVM-wide and cannot vary per tenant.
+     * Loads all non-tenant sections from the workload config file:
+     * JVM system properties, metrics config, result upload, and run metadata.
      */
-    private void loadGlobalSystemPropertiesFromWorkloadConfig(File workloadConfigFile) throws IOException {
+    private void loadWorkloadConfigSections(File workloadConfigFile) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(workloadConfigFile);
 
-        // JVM-global system properties from tenantDefaults
+        loadJvmSystemProperties(root);
+        loadMetricsConfig(root);
+        loadResultUploadConfig(root);
+        loadRunMetadata(root);
+    }
+
+    /**
+     * JVM-global system properties from the tenantDefaults section.
+     * These are JVM-wide and cannot vary per tenant.
+     */
+    private void loadJvmSystemProperties(JsonNode root) {
         JsonNode defaults = root.get("tenantDefaults");
         if (defaults != null && defaults.isObject()) {
             if (defaults.has("isPartitionLevelCircuitBreakerEnabled")) {
@@ -159,8 +170,12 @@ public class BenchmarkConfig {
                     Integer.parseInt(defaults.get("minConnectionPoolSizePerEndpoint").asText());
             }
         }
+    }
 
-        // Metrics, reporting, and result upload from top-level "metrics" section
+    /**
+     * Metrics and reporting settings from the top-level "metrics" section.
+     */
+    private void loadMetricsConfig(JsonNode root) {
         JsonNode metrics = root.get("metrics");
         if (metrics != null && metrics.isObject()) {
             if (metrics.has("enableJvmStats")) {
@@ -175,36 +190,52 @@ public class BenchmarkConfig {
             if (metrics.has("reportingDirectory")) {
                 reportingDirectory = metrics.get("reportingDirectory").asText();
             }
+        }
+    }
 
-            // Result upload sub-section
-            JsonNode resultUpload = metrics.get("resultUpload");
-            if (resultUpload != null && resultUpload.isObject()) {
-                if (resultUpload.has("serviceEndpoint")) {
-                    resultUploadEndpoint = resultUpload.get("serviceEndpoint").asText();
-                }
-                if (resultUpload.has("masterKey")) {
-                    resultUploadKey = resultUpload.get("masterKey").asText();
-                }
-                if (resultUpload.has("database")) {
-                    resultUploadDatabase = resultUpload.get("database").asText();
-                }
-                if (resultUpload.has("container")) {
-                    resultUploadContainer = resultUpload.get("container").asText();
-                }
+    /**
+     * Result upload configuration from "metrics.resultUpload".
+     */
+    private void loadResultUploadConfig(JsonNode root) {
+        JsonNode metrics = root.get("metrics");
+        if (metrics == null || !metrics.isObject()) {
+            return;
+        }
+        JsonNode resultUpload = metrics.get("resultUpload");
+        if (resultUpload != null && resultUpload.isObject()) {
+            if (resultUpload.has("serviceEndpoint")) {
+                resultUploadEndpoint = resultUpload.get("serviceEndpoint").asText();
             }
+            if (resultUpload.has("masterKey")) {
+                resultUploadKey = resultUpload.get("masterKey").asText();
+            }
+            if (resultUpload.has("database")) {
+                resultUploadDatabase = resultUpload.get("database").asText();
+            }
+            if (resultUpload.has("container")) {
+                resultUploadContainer = resultUpload.get("container").asText();
+            }
+        }
+    }
 
-            // Run metadata sub-section
-            JsonNode runMetadata = metrics.get("runMetadata");
-            if (runMetadata != null && runMetadata.isObject()) {
-                if (runMetadata.has("testVariationName")) {
-                    testVariationName = runMetadata.get("testVariationName").asText();
-                }
-                if (runMetadata.has("branchName")) {
-                    branchName = runMetadata.get("branchName").asText();
-                }
-                if (runMetadata.has("commitId")) {
-                    commitId = runMetadata.get("commitId").asText();
-                }
+    /**
+     * Run metadata from "metrics.runMetadata" (tagged on uploaded results).
+     */
+    private void loadRunMetadata(JsonNode root) {
+        JsonNode metrics = root.get("metrics");
+        if (metrics == null || !metrics.isObject()) {
+            return;
+        }
+        JsonNode runMetadata = metrics.get("runMetadata");
+        if (runMetadata != null && runMetadata.isObject()) {
+            if (runMetadata.has("testVariationName")) {
+                testVariationName = runMetadata.get("testVariationName").asText();
+            }
+            if (runMetadata.has("branchName")) {
+                branchName = runMetadata.get("branchName").asText();
+            }
+            if (runMetadata.has("commitId")) {
+                commitId = runMetadata.get("commitId").asText();
             }
         }
     }
