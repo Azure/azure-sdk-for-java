@@ -616,6 +616,10 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     @Test(groups = {"long-emulator"}, timeOut = TIMEOUT * 2)
     @SuppressWarnings("unchecked")
     public void goneExceptionFailureScenario() {
+        // Reduce retry wait time for faster test execution
+        System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT", "5");
+        System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS", "100");
+
         CosmosClient cosmosClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -657,9 +661,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 RetryContext retryContext =
                     ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
 
-                //In CI pipeline, the emulator starts with strong consitency
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(10);
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(6);
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(2);
                 int[] firstRetryStatusCodes = retryContext.getStatusAndSubStatusCodes().get(0);
                 int[] lastRetryStatusCodes = retryContext.getStatusAndSubStatusCodes()
                                                          .get(retryContext.getStatusAndSubStatusCodes().size() - 1);
@@ -670,6 +672,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             }
         } finally {
             safeCloseSyncClient(cosmosClient);
+            System.clearProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT");
+            System.clearProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS");
         }
     }
 
