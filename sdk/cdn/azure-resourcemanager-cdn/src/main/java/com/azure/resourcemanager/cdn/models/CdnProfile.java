@@ -207,7 +207,9 @@ public interface CdnProfile
              *
              * @return the next stage of the definition.
              */
-            WithGroup withGlobal();
+            default WithGroup withGlobal() {
+                throw new UnsupportedOperationException("[withGlobal] is not supported in " + getClass());
+            }
         }
 
         /**
