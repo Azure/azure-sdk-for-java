@@ -1,14 +1,118 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2026-03-04)
 
-### Features Added
+- Azure Resource Manager PowerBIDedicated client library for Java. This package contains Microsoft Azure SDK for PowerBIDedicated Management SDK. PowerBI Dedicated Web API provides a RESTful set of web services that enables users to create, retrieve, update, and delete Power BI dedicated capacities. Package api-version 2021-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OperationListResult` was removed
 
-### Other Changes
+#### `models.AutoScaleVCoreListResult` was removed
+
+#### `models.DedicatedCapacities` was removed
+
+#### `models.OperationProperties` was removed
+
+#### `PowerBIDedicatedManager` was modified
+
+* `fluent.PowerBIDedicated serviceClient()` -> `fluent.PowerBIDedicatedManagementClient serviceClient()`
+
+#### `models.Operation` was modified
+
+* `models.OperationProperties properties()` -> `models.OperationProperties1 properties()`
+
+#### `models.AutoScaleVCoreSku` was modified
+
+* `validate()` was removed
+
+#### `models.CheckCapacityNameAvailabilityParameters` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
+
+#### `models.SkuDetailsForExistingResource` was modified
+
+* `SkuDetailsForExistingResource()` was changed to private access
+* `validate()` was removed
+* `withSku(models.CapacitySku)` was removed
+* `withResourceType(java.lang.String)` was removed
+
+#### `models.Capacities` was modified
+
+* `void suspend(java.lang.String,java.lang.String)` -> `models.OkResponse suspend(java.lang.String,java.lang.String)`
+* `void resume(java.lang.String,java.lang.String)` -> `models.OkResponse resume(java.lang.String,java.lang.String)`
+* `void resume(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OkResponse resume(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void suspend(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OkResponse suspend(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.DedicatedCapacityAdministrators` was modified
+
+* `validate()` was removed
+
+#### `models.MetricSpecificationDimensionsItem` was modified
+
+* `MetricSpecificationDimensionsItem()` was changed to private access
+* `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.DedicatedCapacity` was modified
+
+* `void resume()` -> `models.OkResponse resume()`
+* `void suspend(com.azure.core.util.Context)` -> `models.OkResponse suspend(com.azure.core.util.Context)`
+* `void suspend()` -> `models.OkResponse suspend()`
+* `void resume(com.azure.core.util.Context)` -> `models.OkResponse resume(com.azure.core.util.Context)`
+
+#### `models.AutoScaleVCoreUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceSpecification` was modified
+
+* `ServiceSpecification()` was changed to private access
+* `validate()` was removed
+* `withLogSpecifications(java.util.List)` was removed
+* `withMetricSpecifications(java.util.List)` was removed
+
+#### `models.LogSpecification` was modified
+
+* `LogSpecification()` was changed to private access
+* `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.CapacitySku` was modified
+
+* `validate()` was removed
+
+#### `models.DedicatedCapacity$Definition` was modified
+
+* `withSystemData(com.azure.core.management.SystemData)` was removed
+
+#### `models.DedicatedCapacityUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.MetricSpecification` was modified
+
+* `MetricSpecification()` was changed to private access
+* `withDimensions(java.util.List)` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.AutoScaleVCore$Definition` was modified
+
+* `withSystemData(com.azure.core.management.SystemData)` was removed
+
+### Features Added
+
+* `models.OkResponse` was added
+
+* `models.OperationProperties1` was added
 
 ## 1.0.0 (2024-12-25)
 
