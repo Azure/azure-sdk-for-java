@@ -110,13 +110,12 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         if (content.refCnt() == 0) {
             // ByteBuf was already released (e.g., stream RST due to responseTimeout on HTTP/2).
             // Treat as empty response to avoid IllegalReferenceCountException during decoding.
-            logger.warn("Content ByteBuf already released (refCnt=0) in unwrapToStoreResponse, treating as empty");
+            logger.debug("Content ByteBuf already released (refCnt=0) in unwrapToStoreResponse, treating as empty");
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
 
         if (content.readableBytes() == 0) {
-
-            ReferenceCountUtil.safeRelease(content);
+            safeSilentRelease(content);
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
 
@@ -146,13 +145,13 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                         );
 
                         if (payloadBuf == Unpooled.EMPTY_BUFFER && content.refCnt() > 0) {
-                            ReferenceCountUtil.safeRelease(content);
+                            safeSilentRelease(content);
                         }
 
                         return storeResponse;
-                    } catch (Throwable t){
+                    } catch (Throwable t) {
                         if (payloadBuf == Unpooled.EMPTY_BUFFER && content.refCnt() > 0) {
-                            ReferenceCountUtil.safeRelease(content);
+                            safeSilentRelease(content);
                         }
 
                         throw t;
@@ -160,19 +159,19 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 }
 
                 if (content.refCnt() > 0) {
-                    ReferenceCountUtil.safeRelease(content);
+                    safeSilentRelease(content);
                 }
                 return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
             }
 
             if (content.refCnt() > 0) {
-                ReferenceCountUtil.safeRelease(content);
+                safeSilentRelease(content);
             }
             throw new IllegalStateException("Invalid rntbd response");
         } catch (Throwable t) {
             // Ensure container is not leaked on any unexpected path
             if (content.refCnt() > 0) {
-                ReferenceCountUtil.safeRelease(content);
+                safeSilentRelease(content);
             }
             throw t;
         }
@@ -235,16 +234,24 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 requestUri,
                 requestUri.getPort(),
                 headers,
-                Flux.just(contentAsByteArray))
-                .withThinClientRequest(true);
+                Flux.just(contentAsByteArray));
         } finally {
-            ReferenceCountUtil.safeRelease(byteBuf);
+            safeSilentRelease(byteBuf);
         }
     }
 
     @Override
     public Map<String, String> getDefaultHeaders() {
         return this.defaultHeaders;
+    }
+
+    private static void safeSilentRelease(Object msg) {
+        try {
+            ReferenceCountUtil.release(msg);
+        } catch (Throwable t) {
+            // ReferenceCountUtil.safeRelease would always log a WARN on double-release.
+            // In this class we only need this for a rare race condition — swallow silently.
+        }
     }
 
     private HttpHeaders getHttpHeaders() {
