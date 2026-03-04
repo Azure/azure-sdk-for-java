@@ -1124,7 +1124,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add a participant to the call.
+     * Move a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
      * @param moveParticipantRequest The move participants request.
@@ -1142,7 +1142,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add a participant to the call.
+     * Move a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
      * @param moveParticipantRequest The move participants request.
@@ -1163,7 +1163,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add a participant to the call.
+     * Move a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
      * @param moveParticipantRequest The move participants request.
@@ -1180,7 +1180,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add a participant to the call.
+     * Move a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
      * @param moveParticipantRequest The move participants request.
@@ -1198,7 +1198,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add a participant to the call.
+     * Move a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
      * @param moveParticipantRequest The move participants request.
@@ -1215,7 +1215,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add a participant to the call.
+     * Move a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
      * @param moveParticipantRequest The move participants request.
