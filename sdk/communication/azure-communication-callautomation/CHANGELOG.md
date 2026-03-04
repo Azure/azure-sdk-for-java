@@ -7,6 +7,14 @@
 - Added support for moving a participant from one call to another, enabling seamless participant transfer between active calls.
 - Added support for retrieving Teams phone call details, including the ability to specify a custom calling context for enhanced integration scenarios.
 
+## 1.6.1 (2026-03-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.4.4` to version `1.4.5`.
+
 ## 1.6.0 (2026-01-27)
 
 ### Features Added

@@ -3,8 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultJcaProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundleProperties;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Isolated;
@@ -19,6 +21,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.util.ClassUtils;
 
 import java.security.KeyStore;
+import java.security.Security;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,6 +35,11 @@ import static org.mockito.Mockito.times;
 @Isolated("Run this by itself as it captures System.out")
 @ExtendWith({OutputCaptureExtension.class})
 class AzureKeyVaultSslBundleRegistrarTests {
+
+    @AfterEach
+    void cleanupProvider() {
+        Security.removeProvider(KeyVaultJcaProvider.PROVIDER_NAME);
+    }
 
     @Test
     void noJcaProviderOnClassPath(CapturedOutput capturedOutput) {
@@ -198,6 +206,44 @@ class AzureKeyVaultSslBundleRegistrarTests {
                 String log = "Registered Azure Key Vault SSL bundle '" + bundleName + "'.";
                 assertTrue(allOutput.contains(log));
             });
+        }
+    }
+
+    @Test
+    void keyVaultProviderNotInsertedAtHighestPriority() {
+        AzureKeyVaultJcaProperties jcaProperties = new AzureKeyVaultJcaProperties();
+        AzureKeyVaultSslBundleProperties sslBundleProperties = new AzureKeyVaultSslBundleProperties();
+        AzureKeyVaultSslBundleRegistrar registrar = new AzureKeyVaultSslBundleRegistrar(jcaProperties, sslBundleProperties);
+        registrar.setResourceLoader(new DefaultResourceLoader());
+        SslBundleRegistry registry = Mockito.mock(SslBundleRegistry.class);
+
+        try (MockedStatic<KeyStore> keyStoreMockedStatic = mockStatic(KeyStore.class)) {
+            KeyStore keyStore = Mockito.mock(KeyStore.class);
+            keyStoreMockedStatic.when(() -> KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME)).thenReturn(keyStore);
+
+            String keyvaultName = "keyvault1";
+            AzureKeyVaultJcaProperties.JcaVaultProperties jcaVaultProperties = new AzureKeyVaultJcaProperties.JcaVaultProperties();
+            jcaVaultProperties.setEndpoint("https://test.vault.azure.net/");
+            jcaProperties.getVaults().put(keyvaultName, jcaVaultProperties);
+            AzureKeyVaultSslBundleProperties.KeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties.KeyVaultSslBundleProperties();
+            bundleProperties.getTruststore().setKeyvaultRef(keyvaultName);
+            sslBundleProperties.getKeyvault().put("testBundle", bundleProperties);
+
+            registrar.registerBundles(registry);
+
+            // Verify the KeyVault JCA provider is NOT inserted at position 1 (highest priority),
+            // to avoid interfering with standard SSL/TLS operations and breaking mTLS.
+            java.security.Provider[] providers = Security.getProviders();
+            int providerPosition = -1;
+            for (int i = 0; i < providers.length; i++) {
+                if (KeyVaultJcaProvider.PROVIDER_NAME.equals(providers[i].getName())) {
+                    providerPosition = i + 1; // 1-indexed position
+                    break;
+                }
+            }
+            assertTrue(providerPosition > 1, "KeyVaultJcaProvider must not be inserted at position 1 "
+                + "to avoid overriding standard JCA services like KeyManagerFactory.SunX509 and Signature algorithms, "
+                + "which would break mTLS with standard keystores.");
         }
     }
 }
