@@ -27,7 +27,6 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
@@ -35,7 +34,6 @@ import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
@@ -43,7 +41,6 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.User;
@@ -776,7 +773,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 return Mono.just(response);
             });
     }
-    
+
     private <T> Flux<CosmosItemResponse<T>> insertUsingPointOperations(CosmosAsyncContainer cosmosContainer,
                                                                        List<T> documentDefinitionList) {
         CosmosItemRequestOptions options = new CosmosItemRequestOptions()

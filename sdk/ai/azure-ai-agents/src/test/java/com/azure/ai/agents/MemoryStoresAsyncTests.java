@@ -12,21 +12,20 @@ import com.azure.ai.agents.models.MemoryStoreDefinition;
 import com.azure.ai.agents.models.MemoryStoreDetails;
 import com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;
 import com.azure.ai.agents.models.MemoryStoreUpdateResponse;
-import com.azure.ai.agents.models.MemoryStoreUpdateStatus;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.ResponseInputItem;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -35,11 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Disabled("Awaiting service versioning consolidation.")
+@Timeout(30)
 public class MemoryStoresAsyncTests extends ClientTestBase {
-
-    private static final LongRunningOperationStatus COMPLETED_OPERATION_STATUS
-        = LongRunningOperationStatus.fromString(MemoryStoreUpdateStatus.COMPLETED.toString(), true);
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
@@ -282,15 +278,9 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
     private static Mono<MemoryStoreUpdateCompletedResult>
         waitForUpdateCompletion(PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> pollerFlux) {
         Objects.requireNonNull(pollerFlux, "pollerFlux cannot be null");
-        return pollerFlux.takeUntil(response -> COMPLETED_OPERATION_STATUS.equals(response.getStatus()))
+        return pollerFlux.takeUntil(response -> response.getStatus().isComplete())
+            .timeout(Duration.ofSeconds(30))
             .last()
-            .map(AsyncPollResponse::getValue)
-            .map(response -> {
-                MemoryStoreUpdateCompletedResult result = response == null ? null : response.getResult();
-                if (result == null) {
-                    throw new IllegalStateException("Memory store update did not complete successfully.");
-                }
-                return result;
-            });
+            .flatMap(AsyncPollResponse::getFinalResult);
     }
 }

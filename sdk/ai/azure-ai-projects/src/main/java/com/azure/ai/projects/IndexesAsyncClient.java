@@ -5,7 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.IndexesImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.models.Index;
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -91,7 +91,7 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Index> listVersions(String name) {
+    public PagedFlux<AIProjectIndex> listVersions(String name) {
         // Generated convenience method for listVersions
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listVersions(name, requestOptions);
@@ -99,11 +99,11 @@ public final class IndexesAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Index>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, AIProjectIndex>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Index.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(AIProjectIndex.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
@@ -207,7 +207,7 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Index> listLatest() {
+    public PagedFlux<AIProjectIndex> listLatest() {
         // Generated convenience method for listLatest
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listLatest(requestOptions);
@@ -215,11 +215,11 @@ public final class IndexesAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Index>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, AIProjectIndex>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Index.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(AIProjectIndex.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
@@ -240,11 +240,11 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Index> getVersion(String name, String version) {
+    public Mono<AIProjectIndex> getVersion(String name, String version) {
         // Generated convenience method for getVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Index.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(AIProjectIndex.class));
     }
 
     /**
@@ -338,16 +338,16 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Index> createOrUpdateVersion(String name, String version, Index index) {
+    public Mono<AIProjectIndex> createOrUpdateVersion(String name, String version, AIProjectIndex index) {
         // Generated convenience method for createOrUpdateVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, true);
+        JsonMergePatchHelper.getAIProjectIndexAccessor().prepareModelForJsonMergePatch(index, true);
         BinaryData indexInBinaryData = BinaryData.fromObject(index);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         indexInBinaryData.getLength();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, false);
+        JsonMergePatchHelper.getAIProjectIndexAccessor().prepareModelForJsonMergePatch(index, false);
         return createOrUpdateVersionWithResponse(name, version, indexInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Index.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(AIProjectIndex.class));
     }
 }
