@@ -12,6 +12,7 @@
 * Fixed Remote Code Execution (RCE) vulnerability (CWE-502) by replacing Java deserialization with JSON-based serialization in `CosmosClientMetadataCachesSnapshot`, `AsyncCache`, and `DocumentCollection`. The metadata cache snapshot now uses Jackson for serialization/deserialization, eliminating the entire class of Java deserialization attacks. - [PR 47971](https://github.com/Azure/azure-sdk-for-java/pull/47971)
 
 #### Other Changes
+* Added aggressive HTTP timeout policies for document operations routed to Gateway V2. - [PR 47879](https://github.com/Azure/azure-sdk-for-java/pull/47879)
 
 ### 4.78.0 (2026-02-10)
 
@@ -23,7 +24,7 @@
 * Fixed an issue where operation failed with `400` when configured with pre-trigger or post-trigger with non-ascii character. Only impact for gateway mode. See [PR 47881](https://github.com/Azure/azure-sdk-for-java/pull/47881)
 
 #### Other Changes
-* Added `x-ms-hub-region-processing-only` header to allow hub-region stickiness when 404 `READ SESSION NOT AVAILABLE` is hit for Single-Writer accounts. - [PR 47631](https://github.com/Azure/azure-sdk-for-java/pull/47631)
+* Added `x-ms-hub-region-processing-only` header to allow hub-region stickiness when 404 `READ SESSION NOT AVAIALBLE` is hit for Single-Writer accounts. - [PR 47631](https://github.com/Azure/azure-sdk-for-java/pull/47631)
 
 ### 4.77.0 (2026-01-26)
 
