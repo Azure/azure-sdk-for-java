@@ -583,6 +583,37 @@ public class SasAsyncClientTests extends BlobTestBase {
         StepVerifier.create(client.setTags(tags)).verifyError(BlobStorageException.class);
     }
 
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    public void createPermissionUpload() {
+        BlobServiceAsyncClient oauthService = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient oauthContainer = oauthService.getBlobContainerAsyncClient(cc.getBlobContainerName());
+
+        String oauthBlobName = generateBlobName();
+        OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
+
+        Mono<Void> response = oauthService.getUserDelegationKey(null, expiryTime).flatMap(key -> {
+            key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+            String saoid = testResourceNamer.randomUuid();
+
+            BlobSasPermission permissions = new BlobSasPermission().setCreatePermission(true);
+            BlobServiceSasSignatureValues sasValues
+                = new BlobServiceSasSignatureValues(expiryTime, permissions).setPreauthorizedAgentObjectId(saoid);
+
+            String sasWithPermissions = oauthContainer.generateUserDelegationSas(sasValues, key);
+
+            BlockBlobAsyncClient blockClient
+                = instrument(new SpecializedBlobClientBuilder().endpoint(oauthContainer.getBlobContainerUrl())
+                    .blobName(oauthBlobName)
+                    .sasToken(sasWithPermissions)).buildBlockBlobAsyncClient();
+
+            return blockClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).then();
+        });
+
+        StepVerifier.create(response).verifyComplete();
+
+    }
+
     // RBAC replication lag
     @Test
     public void blobUserDelegationSaoid() {
@@ -1484,4 +1515,5 @@ public class SasAsyncClientTests extends BlobTestBase {
                     e -> assertExceptionStatusCodeAndMessage(e, 403, BlobErrorCode.AUTHENTICATION_FAILED));
         });
     }
+
 }

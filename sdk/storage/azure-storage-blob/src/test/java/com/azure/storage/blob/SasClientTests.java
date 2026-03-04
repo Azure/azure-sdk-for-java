@@ -17,6 +17,7 @@ import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.AppendBlobClient;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
@@ -1294,6 +1295,33 @@ public class SasClientTests extends BlobTestBase {
         assertEquals(queryParams.getSignature(),
             ENVIRONMENT.getPrimaryAccount().getCredential().computeHmac256(expectedStringToSign));
         assertEquals(expectedResource, queryParams.getResource());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    public void createPermissionUpload() {
+        BlobServiceClient oauthService = getOAuthServiceClient();
+        String oauthContainerName = cc.getBlobContainerName();
+        BlobContainerClient oauthContainer = oauthService.getBlobContainerClient(oauthContainerName);
+
+        String oauthBlobName = generateBlobName();
+        OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
+
+        UserDelegationKey key = oauthService.getUserDelegationKey(null, expiryTime);
+        key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+        String saoid = testResourceNamer.randomUuid();
+
+        BlobSasPermission permissions = new BlobSasPermission().setCreatePermission(true);
+        BlobServiceSasSignatureValues sasValues
+            = new BlobServiceSasSignatureValues(expiryTime, permissions).setPreauthorizedAgentObjectId(saoid);
+
+        String sasWithPermissions = oauthContainer.generateUserDelegationSas(sasValues, key);
+        BlockBlobClient blockClient
+            = instrument(new SpecializedBlobClientBuilder().endpoint(oauthContainer.getBlobContainerUrl())
+                .blobName(oauthBlobName)
+                .sasToken(sasWithPermissions)).buildBlockBlobClient();
+
+        assertDoesNotThrow(() -> blockClient.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()));
     }
 
     private static Stream<Arguments> blobSasImplUtilCanonicalizedResourceSupplier() {
