@@ -135,7 +135,7 @@ String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION"
 String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
 String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "");
 
-Index index = indexesClient.createOrUpdateVersion(
+AIProjectIndex index = indexesClient.createOrUpdateVersion(
     indexName,
     indexVersion,
     new AzureAISearchIndex()
