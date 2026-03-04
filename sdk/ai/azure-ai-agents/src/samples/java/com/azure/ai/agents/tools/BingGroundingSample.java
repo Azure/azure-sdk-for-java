@@ -59,18 +59,20 @@ public class BingGroundingSample {
         AgentVersionDetails agent = agentsClient.createAgentVersion("bing-grounding-agent", agentDefinition);
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-        // Create a response
-        AgentReference agentReference = new AgentReference(agent.getName())
-            .setVersion(agent.getVersion());
+        try {
+            // Create a response
+            AgentReference agentReference = new AgentReference(agent.getName())
+                .setVersion(agent.getVersion());
 
-        Response response = responsesClient.createWithAgent(
-            agentReference,
-            ResponseCreateParams.builder()
-                .input("What are the latest developments in AI?"));
+            Response response = responsesClient.createWithAgent(
+                agentReference,
+                ResponseCreateParams.builder()
+                    .input("What are the latest developments in AI?"));
 
-        System.out.println("Response: " + response.output());
-
-        // Clean up
-        agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            System.out.println("Response: " + response.output());
+        } finally {
+            // Clean up
+            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+        }
     }
 }

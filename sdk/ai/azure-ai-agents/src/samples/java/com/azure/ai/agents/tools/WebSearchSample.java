@@ -39,7 +39,7 @@ public class WebSearchSample {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
-        // Create web search tool with user location
+        // Create web search tool
         WebSearchPreviewTool webSearchTool = new WebSearchPreviewTool();
 
         // Create agent with web search tool
@@ -50,18 +50,20 @@ public class WebSearchSample {
         AgentVersionDetails agent = agentsClient.createAgentVersion("web-search-agent", agentDefinition);
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-        // Create a response
-        AgentReference agentReference = new AgentReference(agent.getName())
-            .setVersion(agent.getVersion());
+        try {
+            // Create a response
+            AgentReference agentReference = new AgentReference(agent.getName())
+                .setVersion(agent.getVersion());
 
-        Response response = responsesClient.createWithAgent(
-            agentReference,
-            ResponseCreateParams.builder()
-                .input("What are the latest trends in renewable energy?"));
+            Response response = responsesClient.createWithAgent(
+                agentReference,
+                ResponseCreateParams.builder()
+                    .input("What are the latest trends in renewable energy?"));
 
-        System.out.println("Response: " + response.output());
-
-        // Clean up
-        agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            System.out.println("Response: " + response.output());
+        } finally {
+            // Clean up
+            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+        }
     }
 }

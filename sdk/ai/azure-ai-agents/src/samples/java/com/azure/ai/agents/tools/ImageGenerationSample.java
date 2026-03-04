@@ -58,21 +58,24 @@ public class ImageGenerationSample {
         AgentVersionDetails agent = agentsClient.createAgentVersion("image-gen-agent", agentDefinition);
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-        // Create a response
-        AgentReference agentReference = new AgentReference(agent.getName())
-            .setVersion(agent.getVersion());
+        try {
+            // Create a response
+            AgentReference agentReference = new AgentReference(agent.getName())
+                .setVersion(agent.getVersion());
 
-        Response response = responsesClient.createWithAgent(
-            agentReference,
-            ResponseCreateParams.builder()
-                .input("Generate an image of a sunset over a mountain range"));
+            Response response = responsesClient.createWithAgent(
+                agentReference,
+                ResponseCreateParams.builder()
+                    .input("Generate an image of a sunset over a mountain range"));
 
-        // The response output includes image_generation_call items with base64-encoded image data.
-        // Extract and save the image using the response output items.
-        System.out.println("Response status: " + response.status().map(Object::toString).orElse("unknown"));
-        System.out.println("Output items: " + response.output().size());
-
-        // Clean up
-        agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            // The response output may include image_generation_call items with base64-encoded image data.
+            // This sample prints the response status and the number of output items; image extraction
+            // and saving would require additional parsing logic that is not shown here.
+            System.out.println("Response status: " + response.status().map(Object::toString).orElse("unknown"));
+            System.out.println("Output items: " + response.output().size());
+        } finally {
+            // Clean up
+            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+        }
     }
 }

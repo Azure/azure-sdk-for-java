@@ -66,18 +66,20 @@ public class AzureAISearchSample {
         AgentVersionDetails agent = agentsClient.createAgentVersion("ai-search-agent", agentDefinition);
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-        // Create a response
-        AgentReference agentReference = new AgentReference(agent.getName())
-            .setVersion(agent.getVersion());
+        try {
+            // Create a response
+            AgentReference agentReference = new AgentReference(agent.getName())
+                .setVersion(agent.getVersion());
 
-        Response response = responsesClient.createWithAgent(
-            agentReference,
-            ResponseCreateParams.builder()
-                .input("Search for information about Azure AI services"));
+            Response response = responsesClient.createWithAgent(
+                agentReference,
+                ResponseCreateParams.builder()
+                    .input("Search for information about Azure AI services"));
 
-        System.out.println("Response: " + response.output());
-
-        // Clean up
-        agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            System.out.println("Response: " + response.output());
+        } finally {
+            // Clean up
+            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+        }
     }
 }

@@ -60,18 +60,20 @@ public class FabricSample {
         AgentVersionDetails agent = agentsClient.createAgentVersion("fabric-agent", agentDefinition);
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-        // Create a response
-        AgentReference agentReference = new AgentReference(agent.getName())
-            .setVersion(agent.getVersion());
+        try {
+            // Create a response
+            AgentReference agentReference = new AgentReference(agent.getName())
+                .setVersion(agent.getVersion());
 
-        Response response = responsesClient.createWithAgent(
-            agentReference,
-            ResponseCreateParams.builder()
-                .input("Query the latest sales data from Microsoft Fabric"));
+            Response response = responsesClient.createWithAgent(
+                agentReference,
+                ResponseCreateParams.builder()
+                    .input("Query the latest sales data from Microsoft Fabric"));
 
-        System.out.println("Response: " + response.output());
-
-        // Clean up
-        agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            System.out.println("Response: " + response.output());
+        } finally {
+            // Clean up
+            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+        }
     }
 }

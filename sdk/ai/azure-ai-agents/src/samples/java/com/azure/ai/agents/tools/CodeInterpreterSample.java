@@ -51,23 +51,25 @@ public class CodeInterpreterSample {
         AgentVersionDetails agent = agentsClient.createAgentVersion("chart-agent", agentDefinition);
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-        // Request a bar chart with inline data
-        AgentReference agentReference = new AgentReference(agent.getName())
-            .setVersion(agent.getVersion());
+        try {
+            // Request a bar chart with inline data
+            AgentReference agentReference = new AgentReference(agent.getName())
+                .setVersion(agent.getVersion());
 
-        Response response = responsesClient.createWithAgent(
-            agentReference,
-            ResponseCreateParams.builder()
-                .input("Create a bar chart showing quarterly revenue for 2025: "
-                    + "Q1=$2.1M, Q2=$2.8M, Q3=$3.2M, Q4=$2.9M. "
-                    + "Use a blue color scheme, add data labels on each bar, "
-                    + "and title the chart 'Quarterly Revenue 2025'. "
-                    + "Save the chart as a PNG file."));
+            Response response = responsesClient.createWithAgent(
+                agentReference,
+                ResponseCreateParams.builder()
+                    .input("Create a bar chart showing quarterly revenue for 2025: "
+                        + "Q1=$2.1M, Q2=$2.8M, Q3=$3.2M, Q4=$2.9M. "
+                        + "Use a blue color scheme, add data labels on each bar, "
+                        + "and title the chart 'Quarterly Revenue 2025'. "
+                        + "Save the chart as a PNG file."));
 
-        System.out.println("Response: " + response.output());
-
-        // Clean up
-        agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-        System.out.println("Agent deleted");
+            System.out.println("Response: " + response.output());
+        } finally {
+            // Clean up
+            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            System.out.println("Agent deleted");
+        }
     }
 }

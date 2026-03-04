@@ -49,7 +49,7 @@ public class CustomCodeInterpreterSample {
         McpTool customCodeInterpreter = new McpTool("custom-code-interpreter")
             .setServerUrl(mcpServerUrl)
             .setProjectConnectionId(connectionId)
-            .setRequireApproval(BinaryData.fromString("\"never\""));
+            .setRequireApproval(BinaryData.fromObject("never"));
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("You are a helpful assistant that can run Python code to analyze data and solve problems.")
@@ -59,19 +59,21 @@ public class CustomCodeInterpreterSample {
             "CustomCodeInterpreterAgent", agentDefinition);
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-        // Create a response
-        AgentReference agentReference = new AgentReference(agent.getName())
-            .setVersion(agent.getVersion());
+        try {
+            // Create a response
+            AgentReference agentReference = new AgentReference(agent.getName())
+                .setVersion(agent.getVersion());
 
-        Response response = responsesClient.createWithAgent(
-            agentReference,
-            ResponseCreateParams.builder()
-                .input("Calculate the factorial of 10 using Python."));
+            Response response = responsesClient.createWithAgent(
+                agentReference,
+                ResponseCreateParams.builder()
+                    .input("Calculate the factorial of 10 using Python."));
 
-        System.out.println("Response: " + response.output());
-
-        // Clean up
-        agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-        System.out.println("Agent deleted");
+            System.out.println("Response: " + response.output());
+        } finally {
+            // Clean up
+            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            System.out.println("Agent deleted");
+        }
     }
 }

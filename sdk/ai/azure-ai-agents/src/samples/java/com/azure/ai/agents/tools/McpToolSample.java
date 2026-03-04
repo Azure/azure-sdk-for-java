@@ -46,7 +46,7 @@ public class McpToolSample {
         McpTool mcpTool = new McpTool("api-specs")
             .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
             .setProjectConnectionId(mcpConnectionId)
-            .setRequireApproval(BinaryData.fromString("\"always\""));
+            .setRequireApproval(BinaryData.fromObject("always"));
 
         // Create agent with MCP tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
@@ -56,18 +56,20 @@ public class McpToolSample {
         AgentVersionDetails agent = agentsClient.createAgentVersion("mcp-agent", agentDefinition);
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-        // Create a response
-        AgentReference agentReference = new AgentReference(agent.getName())
-            .setVersion(agent.getVersion());
+        try {
+            // Create a response
+            AgentReference agentReference = new AgentReference(agent.getName())
+                .setVersion(agent.getVersion());
 
-        Response response = responsesClient.createWithAgent(
-            agentReference,
-            ResponseCreateParams.builder()
-                .input("Summarize the Azure REST API specifications"));
+            Response response = responsesClient.createWithAgent(
+                agentReference,
+                ResponseCreateParams.builder()
+                    .input("Summarize the Azure REST API specifications"));
 
-        System.out.println("Response: " + response.output());
-
-        // Clean up
-        agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            System.out.println("Response: " + response.output());
+        } finally {
+            // Clean up
+            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+        }
     }
 }
