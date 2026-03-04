@@ -1,6 +1,8 @@
 # Release History
 
-## 1.0.0-beta.6 (2026-03-04)
+## 1.0.0 (2026-03-04)
+
+## 1.0.0-beta.6 (2026-02-25)
 
 ### Features Added
 
@@ -17,13 +19,12 @@
 
 - Added Properties:
   - Added `ipv6Address` to `BatchNode`
-  - Added `Ipv6RemoteLoginIpAddress` and `Ipv6RemoteLoginPort` to `BatchNodeRemoteLoginSettings`
-  - Added `IpFamilies` and `IpTags` to `BatchPublicAddressConfiguration`
+  - Added `ipv6RemoteLoginIpAddress` and `ipv6RemoteLoginPort` to `BatchNodeRemoteLoginSettings`
+  - Added `ipFamilies` and `ipTags` to `BatchPublicAddressConfiguration`
   - Added `JobDefaultOder` to `BatchTaskSchedulingPolicy`
   - Added `ManagedDisk` to `DataDisk`
   - Added `CustomerManagedKey` to `DiskEncryptionConfiguration`
   - Added `DiskEncryptionSet` to `ManagedDisk`
-  - Added `DiskWithVMGuestStateValue` to `SecurityEncryptionTypes`
   - Added `ProxyAgentSetting` to `SecurityProfile`
 
 ### Breaking Changes
