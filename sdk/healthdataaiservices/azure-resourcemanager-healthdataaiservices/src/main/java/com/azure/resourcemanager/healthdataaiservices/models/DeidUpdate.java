@@ -28,6 +28,11 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
     private ManagedServiceIdentityUpdate identity;
 
     /*
+     * The resource-specific properties for this resource.
+     */
+    private Sku sku;
+
+    /*
      * RP-specific properties
      */
     private DeidPropertiesUpdate properties;
@@ -79,6 +84,26 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
     }
 
     /**
+     * Get the sku property: The resource-specific properties for this resource.
+     * 
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The resource-specific properties for this resource.
+     * 
+     * @param sku the sku value to set.
+     * @return the DeidUpdate object itself.
+     */
+    public DeidUpdate withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
      * Get the properties property: RP-specific properties.
      * 
      * @return the properties value.
@@ -106,6 +131,7 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
@@ -130,6 +156,8 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
                     deserializedDeidUpdate.tags = tags;
                 } else if ("identity".equals(fieldName)) {
                     deserializedDeidUpdate.identity = ManagedServiceIdentityUpdate.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDeidUpdate.sku = Sku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedDeidUpdate.properties = DeidPropertiesUpdate.fromJson(reader);
                 } else {

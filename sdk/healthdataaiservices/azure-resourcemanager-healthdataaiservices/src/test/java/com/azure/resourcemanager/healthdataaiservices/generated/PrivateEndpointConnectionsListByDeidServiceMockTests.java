@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListByDeidServiceMockTests {
     @Test
     public void testListByDeidService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"lbpodxunk\",\"ebxmubyynt\",\"lrb\"],\"privateEndpoint\":{\"id\":\"oievseotgqrlltm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"uwz\",\"actionsRequired\":\"xbmp\"},\"provisioningState\":\"Failed\"},\"id\":\"fuzmuvpbtt\",\"name\":\"um\",\"type\":\"rp\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"zmnvdfznudaod\",\"xzb\",\"cblylpstdbhhxsr\"],\"privateEndpoint\":{\"id\":\"ucerscdntnevfi\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"gtdsslswt\",\"actionsRequired\":\"eriofzpyqs\"},\"provisioningState\":\"Succeeded\"},\"id\":\"bnetshh\",\"name\":\"zhedplvwiw\",\"type\":\"bmwmbesldnkw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class PrivateEndpointConnectionsListByDeidServiceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnectionResource> response = manager.privateEndpointConnections()
-            .listByDeidService("bqdxbx", "akbogqxndlkzgxh", com.azure.core.util.Context.NONE);
+            .listByDeidService("dnbbglzps", "iydmcwyhzdxs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("uwz",
+        Assertions.assertEquals("gtdsslswt",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("xbmp",
+        Assertions.assertEquals("eriofzpyqs",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

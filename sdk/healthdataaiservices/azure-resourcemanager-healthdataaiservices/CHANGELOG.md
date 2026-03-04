@@ -1,8 +1,13 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2026-03-04)
+
+- Azure Resource Manager Health Data AI Services client library for Java. This package contains Microsoft Azure SDK for Health Data AI Services Management SDK.  Package api-version 2024-09-20. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
+
+- Added SKU support to `DeidService` resource model using ARM common-types
+- Added optional `sku` property to `DeidUpdate` patch model
 
 ### Breaking Changes
 

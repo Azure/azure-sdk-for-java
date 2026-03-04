@@ -10,6 +10,8 @@ import com.azure.resourcemanager.healthdataaiservices.models.DeidUpdate;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityUpdate;
 import com.azure.resourcemanager.healthdataaiservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthdataaiservices.models.Sku;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuTier;
 import com.azure.resourcemanager.healthdataaiservices.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,25 +21,40 @@ public final class DeidUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeidUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"jtjaodxobnbdxkq\":\"erhhbcsglumm\",\"ajionpimexgstxg\":\"xo\",\"gmaajrm\":\"po\",\"clwhijcoejctbz\":\"djwzrlov\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"axcfjpgddtocjjx\":{\"principalId\":\"bkbfkgukdkex\",\"clientId\":\"pofm\"}}},\"properties\":{\"publicNetworkAccess\":\"Disabled\"}}")
+            "{\"tags\":{\"qkwpyeicxmqc\":\"hrhcffcyddglmjth\",\"pbobjo\":\"wqvhkhixuigdt\",\"w\":\"hm\",\"a\":\"a\"},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"xlefgugnxkrx\":{\"principalId\":\"vtpgvdfgiotkf\",\"clientId\":\"tqxln\"},\"vqdra\":{\"principalId\":\"mi\",\"clientId\":\"thz\"},\"kanyktzlcuiywg\":{\"principalId\":\"jybige\",\"clientId\":\"qfbow\"}}},\"sku\":{\"name\":\"wgndrvynhzgpp\",\"tier\":\"Standard\",\"size\":\"yncocpecfvmmcoo\",\"family\":\"xlzevgbmqjqabcy\",\"capacity\":1896643633},\"properties\":{\"publicNetworkAccess\":\"Enabled\"}}")
             .toObject(DeidUpdate.class);
-        Assertions.assertEquals("erhhbcsglumm", model.tags().get("jtjaodxobnbdxkq"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("hrhcffcyddglmjth", model.tags().get("qkwpyeicxmqc"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("wgndrvynhzgpp", model.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals("yncocpecfvmmcoo", model.sku().size());
+        Assertions.assertEquals("xlzevgbmqjqabcy", model.sku().family());
+        Assertions.assertEquals(1896643633, model.sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeidUpdate model = new DeidUpdate()
-            .withTags(mapOf("jtjaodxobnbdxkq", "erhhbcsglumm", "ajionpimexgstxg", "xo", "gmaajrm", "po",
-                "clwhijcoejctbz", "djwzrlov"))
-            .withIdentity(new ManagedServiceIdentityUpdate().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("axcfjpgddtocjjx", new UserAssignedIdentity())))
-            .withProperties(new DeidPropertiesUpdate().withPublicNetworkAccess(PublicNetworkAccess.DISABLED));
+            .withTags(mapOf("qkwpyeicxmqc", "hrhcffcyddglmjth", "pbobjo", "wqvhkhixuigdt", "w", "hm", "a", "a"))
+            .withIdentity(new ManagedServiceIdentityUpdate().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("xlefgugnxkrx", new UserAssignedIdentity(), "vqdra",
+                    new UserAssignedIdentity(), "kanyktzlcuiywg", new UserAssignedIdentity())))
+            .withSku(new Sku().withName("wgndrvynhzgpp")
+                .withTier(SkuTier.STANDARD)
+                .withSize("yncocpecfvmmcoo")
+                .withFamily("xlzevgbmqjqabcy")
+                .withCapacity(1896643633))
+            .withProperties(new DeidPropertiesUpdate().withPublicNetworkAccess(PublicNetworkAccess.ENABLED));
         model = BinaryData.fromObject(model).toObject(DeidUpdate.class);
-        Assertions.assertEquals("erhhbcsglumm", model.tags().get("jtjaodxobnbdxkq"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("hrhcffcyddglmjth", model.tags().get("qkwpyeicxmqc"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("wgndrvynhzgpp", model.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals("yncocpecfvmmcoo", model.sku().size());
+        Assertions.assertEquals("xlzevgbmqjqabcy", model.sku().family());
+        Assertions.assertEquals(1896643633, model.sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
     }
 
     // Use "Map.of" if available
