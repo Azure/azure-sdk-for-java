@@ -323,6 +323,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 .getEffectiveHttpTransportSerializer(this)
                 .wrapInHttpRequest(request, requestUri);
 
+            // Capture the request record early so it's available on both success and error paths.
+            // Each retry creates a new HttpRequest with a new record, so this is per-attempt.
+            request.requestContext.reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
 
             if (this.gatewayServerErrorInjector != null) {
@@ -661,6 +665,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
 
                     request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
+
+                    // Always set the request URI so endpoint is captured in diagnostics on cancellation.
+                    // The endpoint is known at request-send time and should not be lost on cancellation.
+                    ImplementationBridgeHelpers
+                        .CosmosExceptionHelper
+                        .getCosmosExceptionAccessor()
+                        .setRequestUri(oce, Uri.create(httpRequest.uri().toString()));
 
                     if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
 
