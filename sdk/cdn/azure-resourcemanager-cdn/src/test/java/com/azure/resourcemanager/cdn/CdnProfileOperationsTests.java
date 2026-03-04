@@ -9,6 +9,8 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.cdn.models.AfdEndpoint;
+import com.azure.resourcemanager.cdn.models.AfdOrigin;
+import com.azure.resourcemanager.cdn.models.AfdOriginGroup;
 import com.azure.resourcemanager.cdn.models.CacheBehavior;
 import com.azure.resourcemanager.cdn.models.CacheExpirationActionParameters;
 import com.azure.resourcemanager.cdn.models.CacheType;
@@ -24,6 +26,7 @@ import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.EnforceMtlsEnabledState;
 import com.azure.resourcemanager.cdn.models.HttpVersionMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.HttpVersionOperator;
+import com.azure.resourcemanager.cdn.models.LoadBalancingSettingsParameters;
 import com.azure.resourcemanager.cdn.models.RedirectType;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParametersMatchValuesItem;
@@ -112,6 +115,16 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .withEnabledState(EnabledState.ENABLED)
             .withEnforceMtls(EnforceMtlsEnabledState.ENABLED)
             .attach()
+            .defineAfdOriginGroup("originGroup1")
+            .withLoadBalancingSettings(
+                new LoadBalancingSettingsParameters().withSampleSize(5).withSuccessfulSamplesRequired(3))
+            .withSessionAffinityState(EnabledState.ENABLED)
+            .defineAfdOrigin("origin1")
+            .withHostname("www.somedomain.net")
+            .withEnabledState(EnabledState.ENABLED)
+            .withHttpPort(80)
+            .attach()
+            .attach()
             .apply();
 
         Map<String, AfdEndpoint> cdnEndpointMap = cdnProfile.afdEndpoints();
@@ -120,6 +133,17 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertNotNull(cdnEndpoint);
         Assertions.assertEquals(EnabledState.ENABLED, cdnEndpoint.enabledState());
         Assertions.assertEquals(EnforceMtlsEnabledState.ENABLED, cdnEndpoint.enforceMtls());
+
+        AfdOriginGroup originGroup = cdnProfile.afdOriginGroups().get("originGroup1");
+        Assertions.assertNotNull(originGroup);
+        Assertions.assertEquals(EnabledState.ENABLED, originGroup.sessionAffinityState());
+        Assertions.assertEquals(3, originGroup.loadBalancingSettings().successfulSamplesRequired());
+
+        AfdOrigin origin = originGroup.origins().get("origin1");
+        Assertions.assertNotNull(origin);
+        Assertions.assertEquals("www.somedomain.net", origin.hostname());
+        Assertions.assertEquals(EnabledState.ENABLED, origin.enabledState());
+        Assertions.assertEquals(80, origin.httpPort());
     }
 
     @Test

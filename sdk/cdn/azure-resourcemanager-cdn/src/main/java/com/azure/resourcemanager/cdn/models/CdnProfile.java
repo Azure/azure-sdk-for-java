@@ -56,6 +56,15 @@ public interface CdnProfile
     }
 
     /**
+     * Gets latest Azure Front Door origin groups by sending http request.
+     *
+     * @return AFD origin groups in the CDN manager profile, indexed by name
+     */
+    default Map<String, AfdOriginGroup> afdOriginGroups() {
+        throw new UnsupportedOperationException("[afdOriginGroups] is not supported in " + getClass());
+    }
+
+    /**
      * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal used for advanced management tasks.
      *
      * @return URI used to login to the third party web portal
@@ -323,6 +332,16 @@ public interface CdnProfile
             default AfdEndpoint.DefinitionStages.Blank<WithStandardCreate> defineNewAfdEndpoint(String name) {
                 throw new UnsupportedOperationException("[defineNewAfdEndpoint] is not supported in " + getClass());
             }
+
+            /**
+             * Starts the definition of a new Azure Front Door origin group to be attached to the CDN profile.
+             *
+             * @param name a new origin group name
+             * @return the first stage of a new AFD origin group definition
+             */
+            default AfdOriginGroup.DefinitionStages.Blank<WithStandardCreate> defineAfdOriginGroup(String name) {
+                throw new UnsupportedOperationException("[defineAfdOriginGroup] is not supported in " + getClass());
+            }
         }
 
         /**
@@ -429,6 +448,16 @@ public interface CdnProfile
             }
 
             /**
+             * Starts the definition of a new Azure Front Door origin group to be attached to the CDN profile.
+             *
+             * @param name the name for the origin group
+             * @return the first stage of an origin group definition
+             */
+            default AfdOriginGroup.UpdateDefinitionStages.Blank<Update> defineAfdOriginGroup(String name) {
+                throw new UnsupportedOperationException("[defineAfdOriginGroup] is not supported in " + getClass());
+            }
+
+            /**
              * Adds new endpoint to current Premium Verizon CDN profile.
              *
              * @param endpointOriginHostname the endpoint origin hostname
@@ -482,6 +511,16 @@ public interface CdnProfile
             }
 
             /**
+             * Begins the description of an update of an existing Azure Front Door origin group in current profile.
+             *
+             * @param name the name of an existing origin group
+             * @return the first stage of the update of the origin group
+             */
+            default AfdOriginGroup.Update updateAfdOriginGroup(String name) {
+                throw new UnsupportedOperationException("[updateAfdOriginGroup] is not supported in " + getClass());
+            }
+
+            /**
              * Begins the description of an update of an existing endpoint in current Premium Verizon profile.
              *
              * @param name the name of the endpoint
@@ -505,6 +544,16 @@ public interface CdnProfile
              */
             default Update withoutAfdEndpoint(String name) {
                 throw new UnsupportedOperationException("[withoutAfdEndpoint] is not supported in " + getClass());
+            }
+
+            /**
+             * Removes an Azure Front Door origin group from the profile.
+             *
+             * @param name the name of an existing origin group
+             * @return the next stage of the CDN profile update
+             */
+            default Update withoutAfdOriginGroup(String name) {
+                throw new UnsupportedOperationException("[withoutAfdOriginGroup] is not supported in " + getClass());
             }
         }
     }
