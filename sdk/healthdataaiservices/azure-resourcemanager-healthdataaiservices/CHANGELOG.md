@@ -9,11 +9,6 @@
 - Added SKU support to `DeidService` resource model using ARM common-types
 - Added optional `sku` property to `DeidUpdate` patch model
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.0.0 (2024-11-21)
 
