@@ -9,7 +9,7 @@
 - Added `action` property to `ImageGenTool` with new `ImageGenActionEnum` (values: `GENERATE`, `EDIT`, `AUTO`).
 - Added `GPT_IMAGE_1_5` to `ImageGenToolModel`.
 - Added container skill types: `ContainerSkill`, `ContainerSkillType`, `ContainerAutoParam`, `ContainerNetworkPolicyParam`, and related network policy types (`ContainerNetworkPolicyAllowlistParam`, `ContainerNetworkPolicyDisabledParam`, `ContainerNetworkPolicyDomainSecretParam`, `ContainerNetworkPolicyParamType`).
-- Added environment configuration for `FunctionShellToolParam` and `InputItemFunctionShellCallItemParam` via new `FunctionShellToolParamEnvironment`, `FunctionShellCallItemParamEnvironment`, and related container/local environment parameter types. `InputItemFunctionShellCallItemParam`, `FunctionShellCallItemParamEnvironment`, and related types moved to `implementation/models` (internal).
+- Added environment configuration for `FunctionShellToolParameter` and `InputItemFunctionShellCallItemParam` via new `FunctionShellToolParamEnvironment`, `FunctionShellCallItemParamEnvironment`, and related container/local environment parameter types. `InputItemFunctionShellCallItemParam`, `FunctionShellCallItemParamEnvironment`, and related types moved to `implementation/models` (internal).
 - Added `MessageContent` and `MessageContentType` model types; subsequently moved to `implementation/models` (internal).
 - Added skill parameter types: `InlineSkillParam`, `InlineSkillSourceParam`, `LocalSkillParam`, `SkillReferenceParam`.
 
@@ -33,6 +33,12 @@
   - `AgentObjectVersions` renamed to `AgentDetailsVersions`
   - `OpenAIError` renamed to `ApiError`
   - `AzureFunctionDefinitionFunction` renamed to `AzureFunctionDefinitionDetails`
+- Renamed tool classes from `*Param` suffix to `*Parameter`:
+  - `ApplyPatchToolParam` renamed to `ApplyPatchToolParameter`
+  - `CustomGrammarFormatParam` renamed to `CustomGrammarFormatParameter`
+  - `CustomToolParam` renamed to `CustomToolParameter`
+  - `FunctionShellToolParam` renamed to `FunctionShellToolParameter`
+  - `LocalShellToolParam` renamed to `LocalShellToolParameter`
 - `OpenApiFunctionDefinition`: `getDefaultParams()` and `setDefaultParams()` renamed to `getDefaultParameters()` and `setDefaultParameters()`
 
 ### Bugs Fixed
