@@ -367,7 +367,7 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, readConsistencyStrategy: null,  mm: false, prgns: [null])");
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("null");
-        assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false, rv: false)");
+        assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false, rv: true)");
         assertThat(objectNode.get("sessionRetryCfg").asText()).isEqualTo(expectedSessionRetryOptionsAsString);
     }
 
