@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.powerbidedicated.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.powerbidedicated.models.OperationProperties1;
+import com.azure.resourcemanager.powerbidedicated.models.OperationProperties;
 import org.junit.jupiter.api.Assertions;
 
-public final class OperationProperties1Tests {
+public final class OperationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationProperties1 model = BinaryData.fromString(
+        OperationProperties model = BinaryData.fromString(
             "{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"uxinpmqnjaq\",\"displayName\":\"xj\",\"displayDescription\":\"r\",\"unit\":\"vcputegj\",\"aggregationType\":\"mfdatscmdvpj\",\"metricFilterPattern\":\"lsuuvmkjozkrwfnd\",\"dimensions\":[{\"name\":\"pslwejdpvw\",\"displayName\":\"oqpsoa\"},{\"name\":\"tazak\",\"displayName\":\"lahbcryff\"}]},{\"name\":\"dosyg\",\"displayName\":\"paojakhmsbzjh\",\"displayDescription\":\"zevdphlx\",\"unit\":\"lthqtrgqjbp\",\"aggregationType\":\"fsinzgvfcjrwzoxx\",\"metricFilterPattern\":\"felluwfzitonpe\",\"dimensions\":[{\"name\":\"kjlxofpdvhpf\",\"displayName\":\"ypininm\"},{\"name\":\"huyb\",\"displayName\":\"podepoo\"},{\"name\":\"nuvamiheogna\",\"displayName\":\"zxtheotusivyevcc\"}]}],\"logSpecifications\":[{\"name\":\"nhungbw\",\"displayName\":\"rnfygxgispem\",\"blobDuration\":\"zfkufubljofx\"},{\"name\":\"ofjaeqjhqjb\",\"displayName\":\"v\",\"blobDuration\":\"mjqulngsn\"}]}}")
-            .toObject(OperationProperties1.class);
+            .toObject(OperationProperties.class);
         Assertions.assertEquals("xj", model.serviceSpecification().metricSpecifications().get(0).displayName());
         Assertions.assertEquals("r", model.serviceSpecification().metricSpecifications().get(0).displayDescription());
         Assertions.assertEquals("oqpsoa",

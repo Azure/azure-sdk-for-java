@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.powerbidedicated.models.OperationDisplay;
-import com.azure.resourcemanager.powerbidedicated.models.OperationProperties1;
+import com.azure.resourcemanager.powerbidedicated.models.OperationProperties;
 import java.io.IOException;
 
 /**
@@ -36,7 +36,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     /*
      * Additional properties to expose performance metrics to shoebox.
      */
-    private OperationProperties1 properties;
+    private OperationProperties properties;
 
     /**
      * Creates an instance of OperationInner class.
@@ -76,7 +76,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
      * 
      * @return the properties value.
      */
-    public OperationProperties1 properties() {
+    public OperationProperties properties() {
         return this.properties;
     }
 
@@ -113,7 +113,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
                 } else if ("origin".equals(fieldName)) {
                     deserializedOperationInner.origin = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedOperationInner.properties = OperationProperties1.fromJson(reader);
+                    deserializedOperationInner.properties = OperationProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

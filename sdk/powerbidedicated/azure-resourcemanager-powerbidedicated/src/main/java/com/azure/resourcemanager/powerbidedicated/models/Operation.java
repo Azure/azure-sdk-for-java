@@ -36,7 +36,7 @@ public interface Operation {
      * 
      * @return the properties value.
      */
-    OperationProperties1 properties();
+    OperationProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.powerbidedicated.fluent.models.OperationInner object.

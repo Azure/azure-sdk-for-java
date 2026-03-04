@@ -7,7 +7,7 @@ package com.azure.resourcemanager.powerbidedicated.implementation;
 import com.azure.resourcemanager.powerbidedicated.fluent.models.OperationInner;
 import com.azure.resourcemanager.powerbidedicated.models.Operation;
 import com.azure.resourcemanager.powerbidedicated.models.OperationDisplay;
-import com.azure.resourcemanager.powerbidedicated.models.OperationProperties1;
+import com.azure.resourcemanager.powerbidedicated.models.OperationProperties;
 
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
@@ -32,7 +32,7 @@ public final class OperationImpl implements Operation {
         return this.innerModel().origin();
     }
 
-    public OperationProperties1 properties() {
+    public OperationProperties properties() {
         return this.innerModel().properties();
     }
 

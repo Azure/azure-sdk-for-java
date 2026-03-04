@@ -12,15 +12,9 @@
 
 #### `models.DedicatedCapacities` was removed
 
-#### `models.OperationProperties` was removed
-
 #### `PowerBIDedicatedManager` was modified
 
 * `fluent.PowerBIDedicated serviceClient()` -> `fluent.PowerBIDedicatedManagementClient serviceClient()`
-
-#### `models.Operation` was modified
-
-* `models.OperationProperties properties()` -> `models.OperationProperties1 properties()`
 
 #### `models.AutoScaleVCoreSku` was modified
 
@@ -64,8 +58,8 @@
 
 * `void suspend(com.azure.core.util.Context)` -> `models.SuspendFinalResult suspend(com.azure.core.util.Context)`
 * `void resume()` -> `models.ResumeFinalResult resume()`
-* `void suspend()` -> `models.SuspendFinalResult suspend()`
 * `void resume(com.azure.core.util.Context)` -> `models.ResumeFinalResult resume(com.azure.core.util.Context)`
+* `void suspend()` -> `models.SuspendFinalResult suspend()`
 
 #### `models.AutoScaleVCoreUpdateParameters` was modified
 
@@ -74,15 +68,15 @@
 #### `models.ServiceSpecification` was modified
 
 * `ServiceSpecification()` was changed to private access
-* `withLogSpecifications(java.util.List)` was removed
 * `validate()` was removed
 * `withMetricSpecifications(java.util.List)` was removed
+* `withLogSpecifications(java.util.List)` was removed
 
 #### `models.LogSpecification` was modified
 
 * `LogSpecification()` was changed to private access
-* `validate()` was removed
 * `withDisplayName(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.CapacitySku` was modified
 
@@ -99,22 +93,26 @@
 #### `models.MetricSpecification` was modified
 
 * `MetricSpecification()` was changed to private access
-* `withDisplayName(java.lang.String)` was removed
 * `withDimensions(java.util.List)` was removed
-* `withDisplayDescription(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
 * `validate()` was removed
+* `withDisplayDescription(java.lang.String)` was removed
 
 #### `models.AutoScaleVCore$Definition` was modified
 
 * `withSystemData(com.azure.core.management.SystemData)` was removed
+
+#### `models.OperationProperties` was modified
+
+* `OperationProperties()` was changed to private access
+* `withServiceSpecification(models.ServiceSpecification)` was removed
+* `validate()` was removed
 
 ### Features Added
 
 * `models.SuspendFinalResult` was added
 
 * `models.ResumeFinalResult` was added
-
-* `models.OperationProperties1` was added
 
 ## 1.0.0 (2024-12-25)
 

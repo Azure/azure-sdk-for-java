@@ -12,19 +12,19 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The OperationProperties1 model.
+ * Additional properties to expose performance metrics to shoebox.
  */
 @Immutable
-public final class OperationProperties1 implements JsonSerializable<OperationProperties1> {
+public final class OperationProperties implements JsonSerializable<OperationProperties> {
     /*
      * Service specification for exposing performance metrics to shoebox.
      */
     private ServiceSpecification serviceSpecification;
 
     /**
-     * Creates an instance of OperationProperties1 class.
+     * Creates an instance of OperationProperties class.
      */
-    private OperationProperties1() {
+    private OperationProperties() {
     }
 
     /**
@@ -47,28 +47,28 @@ public final class OperationProperties1 implements JsonSerializable<OperationPro
     }
 
     /**
-     * Reads an instance of OperationProperties1 from the JsonReader.
+     * Reads an instance of OperationProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OperationProperties1 if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the OperationProperties1.
+     * @return An instance of OperationProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationProperties.
      */
-    public static OperationProperties1 fromJson(JsonReader jsonReader) throws IOException {
+    public static OperationProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OperationProperties1 deserializedOperationProperties1 = new OperationProperties1();
+            OperationProperties deserializedOperationProperties = new OperationProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("serviceSpecification".equals(fieldName)) {
-                    deserializedOperationProperties1.serviceSpecification = ServiceSpecification.fromJson(reader);
+                    deserializedOperationProperties.serviceSpecification = ServiceSpecification.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedOperationProperties1;
+            return deserializedOperationProperties;
         });
     }
 }
