@@ -121,7 +121,7 @@ public interface Capacities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    OkResponse suspend(String resourceGroupName, String dedicatedCapacityName);
+    SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
@@ -135,7 +135,7 @@ public interface Capacities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    OkResponse suspend(String resourceGroupName, String dedicatedCapacityName, Context context);
+    SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName, Context context);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -148,7 +148,7 @@ public interface Capacities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    OkResponse resume(String resourceGroupName, String dedicatedCapacityName);
+    ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -162,7 +162,7 @@ public interface Capacities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    OkResponse resume(String resourceGroupName, String dedicatedCapacityName, Context context);
+    ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName, Context context);
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.

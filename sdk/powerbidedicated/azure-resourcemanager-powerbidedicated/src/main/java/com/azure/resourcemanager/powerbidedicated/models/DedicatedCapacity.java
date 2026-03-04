@@ -378,7 +378,7 @@ public interface DedicatedCapacity {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    OkResponse suspend();
+    SuspendFinalResult suspend();
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
@@ -389,7 +389,7 @@ public interface DedicatedCapacity {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    OkResponse suspend(Context context);
+    SuspendFinalResult suspend(Context context);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -398,7 +398,7 @@ public interface DedicatedCapacity {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    OkResponse resume();
+    ResumeFinalResult resume();
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -409,5 +409,5 @@ public interface DedicatedCapacity {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    OkResponse resume(Context context);
+    ResumeFinalResult resume(Context context);
 }

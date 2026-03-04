@@ -12,14 +12,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The request has succeeded.
+ * The SuspendFinalResult model.
  */
 @Immutable
-public final class OkResponse implements JsonSerializable<OkResponse> {
+public final class SuspendFinalResult implements JsonSerializable<SuspendFinalResult> {
     /**
-     * Creates an instance of OkResponse class.
+     * Creates an instance of SuspendFinalResult class.
      */
-    private OkResponse() {
+    private SuspendFinalResult() {
     }
 
     /**
@@ -32,16 +32,16 @@ public final class OkResponse implements JsonSerializable<OkResponse> {
     }
 
     /**
-     * Reads an instance of OkResponse from the JsonReader.
+     * Reads an instance of SuspendFinalResult from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OkResponse if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IOException If an error occurs while reading the OkResponse.
+     * @return An instance of SuspendFinalResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SuspendFinalResult.
      */
-    public static OkResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static SuspendFinalResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OkResponse deserializedOkResponse = new OkResponse();
+            SuspendFinalResult deserializedSuspendFinalResult = new SuspendFinalResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -49,7 +49,7 @@ public final class OkResponse implements JsonSerializable<OkResponse> {
                 reader.skipChildren();
             }
 
-            return deserializedOkResponse;
+            return deserializedSuspendFinalResult;
         });
     }
 }

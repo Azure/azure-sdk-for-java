@@ -1,4 +1,4 @@
 directory: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/PowerBIDedicated
-commit: 3620f66c6ff43adf878bef1087277a129a0b8e2b
+commit: 3f8c637879d278b789e56c6905c56c2d20144e5c
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

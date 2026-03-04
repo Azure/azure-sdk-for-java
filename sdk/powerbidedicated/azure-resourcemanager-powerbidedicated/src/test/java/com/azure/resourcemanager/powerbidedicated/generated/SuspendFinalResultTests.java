@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.powerbidedicated.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.powerbidedicated.models.OkResponse;
+import com.azure.resourcemanager.powerbidedicated.models.SuspendFinalResult;
 
-public final class OkResponseTests {
+public final class SuspendFinalResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OkResponse model = BinaryData.fromString("{}").toObject(OkResponse.class);
+        SuspendFinalResult model = BinaryData.fromString("{}").toObject(SuspendFinalResult.class);
     }
 }

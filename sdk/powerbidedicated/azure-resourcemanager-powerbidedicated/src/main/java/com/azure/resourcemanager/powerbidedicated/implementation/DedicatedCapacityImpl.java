@@ -14,8 +14,9 @@ import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacity;
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacityAdministrators;
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacityUpdateParameters;
 import com.azure.resourcemanager.powerbidedicated.models.Mode;
-import com.azure.resourcemanager.powerbidedicated.models.OkResponse;
+import com.azure.resourcemanager.powerbidedicated.models.ResumeFinalResult;
 import com.azure.resourcemanager.powerbidedicated.models.State;
+import com.azure.resourcemanager.powerbidedicated.models.SuspendFinalResult;
 import java.util.Collections;
 import java.util.Map;
 
@@ -177,19 +178,19 @@ public final class DedicatedCapacityImpl
         return this;
     }
 
-    public OkResponse suspend() {
+    public SuspendFinalResult suspend() {
         return serviceManager.capacities().suspend(resourceGroupName, dedicatedCapacityName);
     }
 
-    public OkResponse suspend(Context context) {
+    public SuspendFinalResult suspend(Context context) {
         return serviceManager.capacities().suspend(resourceGroupName, dedicatedCapacityName, context);
     }
 
-    public OkResponse resume() {
+    public ResumeFinalResult resume() {
         return serviceManager.capacities().resume(resourceGroupName, dedicatedCapacityName);
     }
 
-    public OkResponse resume(Context context) {
+    public ResumeFinalResult resume(Context context) {
         return serviceManager.capacities().resume(resourceGroupName, dedicatedCapacityName, context);
     }
 

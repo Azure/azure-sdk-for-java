@@ -10,7 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager;
-import com.azure.resourcemanager.powerbidedicated.models.OkResponse;
+import com.azure.resourcemanager.powerbidedicated.models.ResumeFinalResult;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ public final class CapacitiesResumeMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        OkResponse response = manager.capacities().resume("l", "nayqi", com.azure.core.util.Context.NONE);
+        ResumeFinalResult response = manager.capacities().resume("l", "nayqi", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -42,7 +42,8 @@ import com.azure.resourcemanager.powerbidedicated.fluent.models.SkuEnumerationFo
 import com.azure.resourcemanager.powerbidedicated.implementation.models.DedicatedCapacities;
 import com.azure.resourcemanager.powerbidedicated.models.CheckCapacityNameAvailabilityParameters;
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacityUpdateParameters;
-import com.azure.resourcemanager.powerbidedicated.models.OkResponse;
+import com.azure.resourcemanager.powerbidedicated.models.ResumeFinalResult;
+import com.azure.resourcemanager.powerbidedicated.models.SuspendFinalResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1199,11 +1200,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OkResponse>, OkResponse> beginSuspendAsync(String resourceGroupName,
+    private PollerFlux<PollResult<SuspendFinalResult>, SuspendFinalResult> beginSuspendAsync(String resourceGroupName,
         String dedicatedCapacityName) {
         Mono<Response<Flux<ByteBuffer>>> mono = suspendWithResponseAsync(resourceGroupName, dedicatedCapacityName);
-        return this.client.<OkResponse, OkResponse>getLroResult(mono, this.client.getHttpPipeline(), OkResponse.class,
-            OkResponse.class, this.client.getContext());
+        return this.client.<SuspendFinalResult, SuspendFinalResult>getLroResult(mono, this.client.getHttpPipeline(),
+            SuspendFinalResult.class, SuspendFinalResult.class, this.client.getContext());
     }
 
     /**
@@ -1218,11 +1219,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OkResponse>, OkResponse> beginSuspend(String resourceGroupName,
+    public SyncPoller<PollResult<SuspendFinalResult>, SuspendFinalResult> beginSuspend(String resourceGroupName,
         String dedicatedCapacityName) {
         Response<BinaryData> response = suspendWithResponse(resourceGroupName, dedicatedCapacityName);
-        return this.client.<OkResponse, OkResponse>getLroResult(response, OkResponse.class, OkResponse.class,
-            Context.NONE);
+        return this.client.<SuspendFinalResult, SuspendFinalResult>getLroResult(response, SuspendFinalResult.class,
+            SuspendFinalResult.class, Context.NONE);
     }
 
     /**
@@ -1238,10 +1239,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OkResponse>, OkResponse> beginSuspend(String resourceGroupName,
+    public SyncPoller<PollResult<SuspendFinalResult>, SuspendFinalResult> beginSuspend(String resourceGroupName,
         String dedicatedCapacityName, Context context) {
         Response<BinaryData> response = suspendWithResponse(resourceGroupName, dedicatedCapacityName, context);
-        return this.client.<OkResponse, OkResponse>getLroResult(response, OkResponse.class, OkResponse.class, context);
+        return this.client.<SuspendFinalResult, SuspendFinalResult>getLroResult(response, SuspendFinalResult.class,
+            SuspendFinalResult.class, context);
     }
 
     /**
@@ -1256,7 +1258,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OkResponse> suspendAsync(String resourceGroupName, String dedicatedCapacityName) {
+    private Mono<SuspendFinalResult> suspendAsync(String resourceGroupName, String dedicatedCapacityName) {
         return beginSuspendAsync(resourceGroupName, dedicatedCapacityName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1273,7 +1275,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OkResponse suspend(String resourceGroupName, String dedicatedCapacityName) {
+    public SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName) {
         return beginSuspend(resourceGroupName, dedicatedCapacityName).getFinalResult();
     }
 
@@ -1290,7 +1292,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OkResponse suspend(String resourceGroupName, String dedicatedCapacityName, Context context) {
+    public SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName, Context context) {
         return beginSuspend(resourceGroupName, dedicatedCapacityName, context).getFinalResult();
     }
 
@@ -1362,11 +1364,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OkResponse>, OkResponse> beginResumeAsync(String resourceGroupName,
+    private PollerFlux<PollResult<ResumeFinalResult>, ResumeFinalResult> beginResumeAsync(String resourceGroupName,
         String dedicatedCapacityName) {
         Mono<Response<Flux<ByteBuffer>>> mono = resumeWithResponseAsync(resourceGroupName, dedicatedCapacityName);
-        return this.client.<OkResponse, OkResponse>getLroResult(mono, this.client.getHttpPipeline(), OkResponse.class,
-            OkResponse.class, this.client.getContext());
+        return this.client.<ResumeFinalResult, ResumeFinalResult>getLroResult(mono, this.client.getHttpPipeline(),
+            ResumeFinalResult.class, ResumeFinalResult.class, this.client.getContext());
     }
 
     /**
@@ -1381,11 +1383,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OkResponse>, OkResponse> beginResume(String resourceGroupName,
+    public SyncPoller<PollResult<ResumeFinalResult>, ResumeFinalResult> beginResume(String resourceGroupName,
         String dedicatedCapacityName) {
         Response<BinaryData> response = resumeWithResponse(resourceGroupName, dedicatedCapacityName);
-        return this.client.<OkResponse, OkResponse>getLroResult(response, OkResponse.class, OkResponse.class,
-            Context.NONE);
+        return this.client.<ResumeFinalResult, ResumeFinalResult>getLroResult(response, ResumeFinalResult.class,
+            ResumeFinalResult.class, Context.NONE);
     }
 
     /**
@@ -1401,10 +1403,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OkResponse>, OkResponse> beginResume(String resourceGroupName,
+    public SyncPoller<PollResult<ResumeFinalResult>, ResumeFinalResult> beginResume(String resourceGroupName,
         String dedicatedCapacityName, Context context) {
         Response<BinaryData> response = resumeWithResponse(resourceGroupName, dedicatedCapacityName, context);
-        return this.client.<OkResponse, OkResponse>getLroResult(response, OkResponse.class, OkResponse.class, context);
+        return this.client.<ResumeFinalResult, ResumeFinalResult>getLroResult(response, ResumeFinalResult.class,
+            ResumeFinalResult.class, context);
     }
 
     /**
@@ -1419,7 +1422,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OkResponse> resumeAsync(String resourceGroupName, String dedicatedCapacityName) {
+    private Mono<ResumeFinalResult> resumeAsync(String resourceGroupName, String dedicatedCapacityName) {
         return beginResumeAsync(resourceGroupName, dedicatedCapacityName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1436,7 +1439,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OkResponse resume(String resourceGroupName, String dedicatedCapacityName) {
+    public ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName) {
         return beginResume(resourceGroupName, dedicatedCapacityName).getFinalResult();
     }
 
@@ -1453,7 +1456,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OkResponse resume(String resourceGroupName, String dedicatedCapacityName, Context context) {
+    public ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName, Context context) {
         return beginResume(resourceGroupName, dedicatedCapacityName, context).getFinalResult();
     }
 

@@ -40,15 +40,15 @@
 
 * `SkuDetailsForExistingResource()` was changed to private access
 * `validate()` was removed
-* `withSku(models.CapacitySku)` was removed
 * `withResourceType(java.lang.String)` was removed
+* `withSku(models.CapacitySku)` was removed
 
 #### `models.Capacities` was modified
 
-* `void suspend(java.lang.String,java.lang.String)` -> `models.OkResponse suspend(java.lang.String,java.lang.String)`
-* `void resume(java.lang.String,java.lang.String)` -> `models.OkResponse resume(java.lang.String,java.lang.String)`
-* `void resume(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OkResponse resume(java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `void suspend(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OkResponse suspend(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void resume(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.ResumeFinalResult resume(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void suspend(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.SuspendFinalResult suspend(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void resume(java.lang.String,java.lang.String)` -> `models.ResumeFinalResult resume(java.lang.String,java.lang.String)`
+* `void suspend(java.lang.String,java.lang.String)` -> `models.SuspendFinalResult suspend(java.lang.String,java.lang.String)`
 
 #### `models.DedicatedCapacityAdministrators` was modified
 
@@ -62,10 +62,10 @@
 
 #### `models.DedicatedCapacity` was modified
 
-* `void resume()` -> `models.OkResponse resume()`
-* `void suspend(com.azure.core.util.Context)` -> `models.OkResponse suspend(com.azure.core.util.Context)`
-* `void suspend()` -> `models.OkResponse suspend()`
-* `void resume(com.azure.core.util.Context)` -> `models.OkResponse resume(com.azure.core.util.Context)`
+* `void suspend(com.azure.core.util.Context)` -> `models.SuspendFinalResult suspend(com.azure.core.util.Context)`
+* `void resume()` -> `models.ResumeFinalResult resume()`
+* `void suspend()` -> `models.SuspendFinalResult suspend()`
+* `void resume(com.azure.core.util.Context)` -> `models.ResumeFinalResult resume(com.azure.core.util.Context)`
 
 #### `models.AutoScaleVCoreUpdateParameters` was modified
 
@@ -74,8 +74,8 @@
 #### `models.ServiceSpecification` was modified
 
 * `ServiceSpecification()` was changed to private access
-* `validate()` was removed
 * `withLogSpecifications(java.util.List)` was removed
+* `validate()` was removed
 * `withMetricSpecifications(java.util.List)` was removed
 
 #### `models.LogSpecification` was modified
@@ -99,9 +99,9 @@
 #### `models.MetricSpecification` was modified
 
 * `MetricSpecification()` was changed to private access
+* `withDisplayName(java.lang.String)` was removed
 * `withDimensions(java.util.List)` was removed
 * `withDisplayDescription(java.lang.String)` was removed
-* `withDisplayName(java.lang.String)` was removed
 * `validate()` was removed
 
 #### `models.AutoScaleVCore$Definition` was modified
@@ -110,7 +110,9 @@
 
 ### Features Added
 
-* `models.OkResponse` was added
+* `models.SuspendFinalResult` was added
+
+* `models.ResumeFinalResult` was added
 
 * `models.OperationProperties1` was added
 

@@ -17,7 +17,8 @@ import com.azure.resourcemanager.powerbidedicated.fluent.models.SkuEnumerationFo
 import com.azure.resourcemanager.powerbidedicated.fluent.models.SkuEnumerationForNewResourceResultInner;
 import com.azure.resourcemanager.powerbidedicated.models.CheckCapacityNameAvailabilityParameters;
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacityUpdateParameters;
-import com.azure.resourcemanager.powerbidedicated.models.OkResponse;
+import com.azure.resourcemanager.powerbidedicated.models.ResumeFinalResult;
+import com.azure.resourcemanager.powerbidedicated.models.SuspendFinalResult;
 
 /**
  * An instance of this class provides access to all the operations defined in CapacitiesClient.
@@ -303,7 +304,8 @@ public interface CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OkResponse>, OkResponse> beginSuspend(String resourceGroupName, String dedicatedCapacityName);
+    SyncPoller<PollResult<SuspendFinalResult>, SuspendFinalResult> beginSuspend(String resourceGroupName,
+        String dedicatedCapacityName);
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
@@ -318,8 +320,8 @@ public interface CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OkResponse>, OkResponse> beginSuspend(String resourceGroupName, String dedicatedCapacityName,
-        Context context);
+    SyncPoller<PollResult<SuspendFinalResult>, SuspendFinalResult> beginSuspend(String resourceGroupName,
+        String dedicatedCapacityName, Context context);
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
@@ -333,7 +335,7 @@ public interface CapacitiesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OkResponse suspend(String resourceGroupName, String dedicatedCapacityName);
+    SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
@@ -348,7 +350,7 @@ public interface CapacitiesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OkResponse suspend(String resourceGroupName, String dedicatedCapacityName, Context context);
+    SuspendFinalResult suspend(String resourceGroupName, String dedicatedCapacityName, Context context);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -362,7 +364,8 @@ public interface CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OkResponse>, OkResponse> beginResume(String resourceGroupName, String dedicatedCapacityName);
+    SyncPoller<PollResult<ResumeFinalResult>, ResumeFinalResult> beginResume(String resourceGroupName,
+        String dedicatedCapacityName);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -377,8 +380,8 @@ public interface CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OkResponse>, OkResponse> beginResume(String resourceGroupName, String dedicatedCapacityName,
-        Context context);
+    SyncPoller<PollResult<ResumeFinalResult>, ResumeFinalResult> beginResume(String resourceGroupName,
+        String dedicatedCapacityName, Context context);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -392,7 +395,7 @@ public interface CapacitiesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OkResponse resume(String resourceGroupName, String dedicatedCapacityName);
+    ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
@@ -407,7 +410,7 @@ public interface CapacitiesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OkResponse resume(String resourceGroupName, String dedicatedCapacityName, Context context);
+    ResumeFinalResult resume(String resourceGroupName, String dedicatedCapacityName, Context context);
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.
