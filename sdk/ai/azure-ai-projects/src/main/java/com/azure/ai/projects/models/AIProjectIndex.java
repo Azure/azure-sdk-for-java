@@ -19,13 +19,13 @@ import java.util.Set;
  * Index resource Definition.
  */
 @Fluent
-public class Index implements JsonSerializable<Index> {
+public class AIProjectIndex implements JsonSerializable<AIProjectIndex> {
 
     /*
      * Type of index
      */
     @Generated
-    private IndexType type = IndexType.fromString("Index");
+    private IndexType type = IndexType.fromString("AIProjectIndex");
 
     /*
      * Asset ID, a unique identifier for the asset
@@ -72,51 +72,51 @@ public class Index implements JsonSerializable<Index> {
     }
 
     static {
-        JsonMergePatchHelper.setIndexAccessor(new JsonMergePatchHelper.IndexAccessor() {
+        JsonMergePatchHelper.setAIProjectIndexAccessor(new JsonMergePatchHelper.AIProjectIndexAccessor() {
 
             @Override
-            public Index prepareModelForJsonMergePatch(Index model, boolean jsonMergePatchEnabled) {
+            public AIProjectIndex prepareModelForJsonMergePatch(AIProjectIndex model, boolean jsonMergePatchEnabled) {
                 model.serializeAsJsonMergePatch(jsonMergePatchEnabled);
                 return model;
             }
 
             @Override
-            public boolean isJsonMergePatch(Index model) {
+            public boolean isJsonMergePatch(AIProjectIndex model) {
                 return model.jsonMergePatch;
             }
 
             @Override
-            public void setId(Index model, String id) {
+            public void setId(AIProjectIndex model, String id) {
                 model.id = id;
             }
 
             @Override
-            public void setName(Index model, String name) {
+            public void setName(AIProjectIndex model, String name) {
                 model.name = name;
             }
 
             @Override
-            public void setVersion(Index model, String version) {
+            public void setVersion(AIProjectIndex model, String version) {
                 model.version = version;
             }
 
             @Override
-            public void setDescription(Index model, String description) {
+            public void setDescription(AIProjectIndex model, String description) {
                 model.description = description;
             }
 
             @Override
-            public void setTags(Index model, Map<String, String> tags) {
+            public void setTags(AIProjectIndex model, Map<String, String> tags) {
                 model.tags = tags;
             }
         });
     }
 
     /**
-     * Creates an instance of Index class.
+     * Creates an instance of AIProjectIndex class.
      */
     @Generated
-    public Index() {
+    public AIProjectIndex() {
     }
 
     /**
@@ -173,10 +173,10 @@ public class Index implements JsonSerializable<Index> {
      * Set the description property: The asset description text.
      *
      * @param description the description value to set.
-     * @return the Index object itself.
+     * @return the AIProjectIndex object itself.
      */
     @Generated
-    public Index setDescription(String description) {
+    public AIProjectIndex setDescription(String description) {
         this.description = description;
         this.updatedProperties.add("description");
         return this;
@@ -196,10 +196,10 @@ public class Index implements JsonSerializable<Index> {
      * Set the tags property: Tag dictionary. Tags can be added, removed, and updated.
      *
      * @param tags the tags value to set.
-     * @return the Index object itself.
+     * @return the AIProjectIndex object itself.
      */
     @Generated
-    public Index setTags(Map<String, String> tags) {
+    public AIProjectIndex setTags(Map<String, String> tags) {
         this.tags = tags;
         this.updatedProperties.add("tags");
         return this;
@@ -250,16 +250,16 @@ public class Index implements JsonSerializable<Index> {
     }
 
     /**
-     * Reads an instance of Index from the JsonReader.
+     * Reads an instance of AIProjectIndex from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Index if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
+     * @return An instance of AIProjectIndex if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Index.
+     * @throws IOException If an error occurs while reading the AIProjectIndex.
      */
     @Generated
-    public static Index fromJson(JsonReader jsonReader) throws IOException {
+    public static AIProjectIndex fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -290,30 +290,30 @@ public class Index implements JsonSerializable<Index> {
     }
 
     @Generated
-    static Index fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static AIProjectIndex fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Index deserializedIndex = new Index();
+            AIProjectIndex deserializedAIProjectIndex = new AIProjectIndex();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
-                    deserializedIndex.name = reader.getString();
+                    deserializedAIProjectIndex.name = reader.getString();
                 } else if ("version".equals(fieldName)) {
-                    deserializedIndex.version = reader.getString();
+                    deserializedAIProjectIndex.version = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedIndex.type = IndexType.fromString(reader.getString());
+                    deserializedAIProjectIndex.type = IndexType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
-                    deserializedIndex.id = reader.getString();
+                    deserializedAIProjectIndex.id = reader.getString();
                 } else if ("description".equals(fieldName)) {
-                    deserializedIndex.description = reader.getString();
+                    deserializedAIProjectIndex.description = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedIndex.tags = tags;
+                    deserializedAIProjectIndex.tags = tags;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedIndex;
+            return deserializedAIProjectIndex;
         });
     }
 }

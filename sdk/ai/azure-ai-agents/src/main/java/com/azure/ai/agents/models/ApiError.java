@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The OpenAIError model.
+ * The ApiError model.
  */
 @Immutable
-public final class OpenAIError implements JsonSerializable<OpenAIError> {
+public final class ApiError implements JsonSerializable<ApiError> {
 
     /*
      * The code property.
@@ -48,7 +48,7 @@ public final class OpenAIError implements JsonSerializable<OpenAIError> {
      * The details property.
      */
     @Generated
-    private List<OpenAIError> details;
+    private List<ApiError> details;
 
     /*
      * The additionalInfo property.
@@ -63,13 +63,13 @@ public final class OpenAIError implements JsonSerializable<OpenAIError> {
     private Map<String, BinaryData> debugInfo;
 
     /**
-     * Creates an instance of OpenAIError class.
+     * Creates an instance of ApiError class.
      *
      * @param code the code value to set.
      * @param message the message value to set.
      */
     @Generated
-    private OpenAIError(String code, String message) {
+    private ApiError(String code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -120,7 +120,7 @@ public final class OpenAIError implements JsonSerializable<OpenAIError> {
      * @return the details value.
      */
     @Generated
-    public List<OpenAIError> getDetails() {
+    public List<ApiError> getDetails() {
         return this.details;
     }
 
@@ -174,22 +174,22 @@ public final class OpenAIError implements JsonSerializable<OpenAIError> {
     }
 
     /**
-     * Reads an instance of OpenAIError from the JsonReader.
+     * Reads an instance of ApiError from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OpenAIError if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of ApiError if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OpenAIError.
+     * @throws IOException If an error occurs while reading the ApiError.
      */
     @Generated
-    public static OpenAIError fromJson(JsonReader jsonReader) throws IOException {
+    public static ApiError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String code = null;
             String message = null;
             String param = null;
             String type = null;
-            List<OpenAIError> details = null;
+            List<ApiError> details = null;
             Map<String, BinaryData> additionalInfo = null;
             Map<String, BinaryData> debugInfo = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -204,7 +204,7 @@ public final class OpenAIError implements JsonSerializable<OpenAIError> {
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
                 } else if ("details".equals(fieldName)) {
-                    details = reader.readArray(reader1 -> OpenAIError.fromJson(reader1));
+                    details = reader.readArray(reader1 -> ApiError.fromJson(reader1));
                 } else if ("additionalInfo".equals(fieldName)) {
                     additionalInfo = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
@@ -215,13 +215,13 @@ public final class OpenAIError implements JsonSerializable<OpenAIError> {
                     reader.skipChildren();
                 }
             }
-            OpenAIError deserializedOpenAIError = new OpenAIError(code, message);
-            deserializedOpenAIError.param = param;
-            deserializedOpenAIError.type = type;
-            deserializedOpenAIError.details = details;
-            deserializedOpenAIError.additionalInfo = additionalInfo;
-            deserializedOpenAIError.debugInfo = debugInfo;
-            return deserializedOpenAIError;
+            ApiError deserializedApiError = new ApiError(code, message);
+            deserializedApiError.param = param;
+            deserializedApiError.type = type;
+            deserializedApiError.details = details;
+            deserializedApiError.additionalInfo = additionalInfo;
+            deserializedApiError.debugInfo = debugInfo;
+            return deserializedApiError;
         });
     }
 }
