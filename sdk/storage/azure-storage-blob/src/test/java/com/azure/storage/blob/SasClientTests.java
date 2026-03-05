@@ -42,10 +42,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -1322,6 +1325,45 @@ public class SasClientTests extends BlobTestBase {
                 .sasToken(sasWithPermissions)).buildBlockBlobClient();
 
         assertDoesNotThrow(() -> blockClient.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()));
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    public void transferBlobWithCreatePermission() {
+        BlobServiceClient oauthService = getOAuthServiceClient();
+        String containerName = cc.getBlobContainerName();
+        BlobContainerClient oauthContainer = oauthService.getBlobContainerClient(containerName);
+
+        String sourceBlobName = generateBlobName();
+        String destinationBlobName = generateBlobName();
+        OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
+
+        // Upload source blob via OAuth client
+        BlockBlobClient sourceBlob = oauthContainer.getBlobClient(sourceBlobName).getBlockBlobClient();
+        sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        UserDelegationKey key = oauthService.getUserDelegationKey(null, expiryTime);
+        key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+        String saoid = testResourceNamer.randomUuid();
+
+        // Create-only permission for destination blob
+        BlobSasPermission destinationPermissions = new BlobSasPermission().setCreatePermission(true);
+        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiryTime, destinationPermissions)
+            .setPreauthorizedAgentObjectId(saoid);
+        String createPermissionsOnly = oauthContainer.generateUserDelegationSas(sasValues, key);
+        BlockBlobClient destinationClient
+            = instrument(new SpecializedBlobClientBuilder().endpoint(oauthContainer.getBlobContainerUrl())
+                .blobName(destinationBlobName)
+                .sasToken(createPermissionsOnly)).buildBlockBlobClient();
+
+        // Read permission for source blob
+        BlobSasPermission readPermission = new BlobSasPermission().setReadPermission(true);
+        BlobServiceSasSignatureValues readValues
+            = new BlobServiceSasSignatureValues(expiryTime, readPermission).setPreauthorizedAgentObjectId(saoid);
+        String readSas = oauthContainer.generateUserDelegationSas(readValues, key);
+        String sourceUrl = sourceBlob.getBlobUrl() + "?" + readSas;
+
+        assertDoesNotThrow(() -> destinationClient.copyFromUrl(sourceUrl));
     }
 
     private static Stream<Arguments> blobSasImplUtilCanonicalizedResourceSupplier() {
