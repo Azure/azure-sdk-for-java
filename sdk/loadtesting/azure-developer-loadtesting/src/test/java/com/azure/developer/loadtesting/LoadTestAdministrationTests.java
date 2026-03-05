@@ -5,10 +5,12 @@ package com.azure.developer.loadtesting;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.developer.loadtesting.models.DailyRecurrence;
 import com.azure.developer.loadtesting.models.FileValidationStatus;
 import com.azure.developer.loadtesting.models.FunctionFlexConsumptionResourceConfiguration;
 import com.azure.developer.loadtesting.models.FunctionFlexConsumptionTargetResourceConfigurations;
@@ -39,6 +41,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,9 +54,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public final class LoadTestAdministrationTests extends LoadTestingClientTestBase {
-
-    private static final String TRIGGER_ID = "sample-trigger-id";
-    private static final String NOTIFICATION_RULE_ID = "sample-notification-rule-id";
 
     // Helpers
     private BinaryData getFileBodyFromResource(String fileName) {
@@ -196,6 +196,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         assertTrue(uploadFilesFound);
     }
 
+    @LiveOnly
     @Test
     @Order(13)
     public void listTests() {
@@ -213,24 +214,27 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Test
     @Order(14)
     public void createOrUpdateTrigger() {
-        ScheduleTestsTrigger trigger
-            = new ScheduleTestsTrigger().setDisplayName("sample-trigger").setDescription("Sample trigger for testing");
+        ScheduleTestsTrigger trigger = new ScheduleTestsTrigger().setDisplayName("sample-trigger")
+            .setDescription("Sample trigger for testing")
+            .setTestIds(Arrays.asList(newTestId))
+            .setStartDateTime(OffsetDateTime.now().plusDays(2))
+            .setRecurrence(new DailyRecurrence().setInterval(1));
 
-        Trigger response = getLoadTestAdministrationClient().createOrUpdateTrigger(TRIGGER_ID, trigger);
+        Trigger response = getLoadTestAdministrationClient().createOrUpdateTrigger(triggerId, trigger);
 
         assertNotNull(response);
         assertNotNull(response.getTriggerId());
-        assertEquals(TRIGGER_ID, response.getTriggerId());
+        assertEquals(triggerId, response.getTriggerId());
         assertEquals("sample-trigger", response.getDisplayName());
     }
 
     @Test
     @Order(15)
     public void getTrigger() {
-        Trigger response = getLoadTestAdministrationClient().getTrigger(TRIGGER_ID);
+        Trigger response = getLoadTestAdministrationClient().getTrigger(triggerId);
 
         assertNotNull(response);
-        assertEquals(TRIGGER_ID, response.getTriggerId());
+        assertEquals(triggerId, response.getTriggerId());
         assertEquals("sample-trigger", response.getDisplayName());
     }
 
@@ -239,7 +243,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void listTriggers() {
         PagedIterable<Trigger> response = getLoadTestAdministrationClient().listTriggers(null, null, null, null);
 
-        boolean found = response.stream().anyMatch(trigger -> TRIGGER_ID.equals(trigger.getTriggerId()));
+        boolean found = response.stream().anyMatch(trigger -> triggerId.equals(trigger.getTriggerId()));
         assertTrue(found);
     }
 
@@ -247,7 +251,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Order(17)
     public void deleteTrigger() {
         assertDoesNotThrow(() -> {
-            getLoadTestAdministrationClient().deleteTrigger(TRIGGER_ID);
+            getLoadTestAdministrationClient().deleteTrigger(triggerId);
         });
     }
 
@@ -272,26 +276,25 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         // Build the notification rule using the strongly-typed TestsNotificationRule subclass.
         TestsNotificationRule rule = new TestsNotificationRule().setDisplayName("Test Notification Rule")
             .setTestIds(Arrays.asList(newTestId))
-            .setActionGroupIds(Arrays.asList(
-                "/subscriptions/7c71b563-0dc0-4bc0-bcf6-06f8f0516c7a/resourcegroups/nikita-canary-rg/providers/microsoft.insights/actiongroups/nikita-canary"))
+            .setActionGroupIds(Arrays.asList(actionGroupId))
             .setEventFilters(eventFilters);
 
         NotificationRule response
-            = getLoadTestAdministrationClient().createOrUpdateNotificationRule(NOTIFICATION_RULE_ID, rule);
+            = getLoadTestAdministrationClient().createOrUpdateNotificationRule(notificationRuleId, rule);
 
         assertNotNull(response);
         assertNotNull(response.getNotificationRuleId());
-        assertEquals(NOTIFICATION_RULE_ID, response.getNotificationRuleId());
+        assertEquals(notificationRuleId, response.getNotificationRuleId());
         assertEquals("Test Notification Rule", response.getDisplayName());
     }
 
     @Test
     @Order(19)
     public void getNotificationRule() {
-        NotificationRule response = getLoadTestAdministrationClient().getNotificationRule(NOTIFICATION_RULE_ID);
+        NotificationRule response = getLoadTestAdministrationClient().getNotificationRule(notificationRuleId);
 
         assertNotNull(response);
-        assertEquals(NOTIFICATION_RULE_ID, response.getNotificationRuleId());
+        assertEquals(notificationRuleId, response.getNotificationRuleId());
         assertEquals("Test Notification Rule", response.getDisplayName());
     }
 
@@ -301,7 +304,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         PagedIterable<NotificationRule> response
             = getLoadTestAdministrationClient().listNotificationRules(null, null, null, null);
 
-        boolean found = response.stream().anyMatch(rule -> NOTIFICATION_RULE_ID.equals(rule.getNotificationRuleId()));
+        boolean found = response.stream().anyMatch(rule -> notificationRuleId.equals(rule.getNotificationRuleId()));
         assertTrue(found);
     }
 
@@ -309,27 +312,60 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Order(21)
     public void deleteNotificationRule() {
         assertDoesNotThrow(() -> {
-            getLoadTestAdministrationClient().deleteNotificationRule(NOTIFICATION_RULE_ID);
+            getLoadTestAdministrationClient().deleteNotificationRule(notificationRuleId);
         });
     }
 
     @Test
     @Order(22)
     public void beginGenerateTestPlanRecommendations() {
-        SyncPoller<OperationStatus, LoadTest> poller
-            = getLoadTestAdministrationClient().beginGenerateTestPlanRecommendations(recordingTestId);
+        RequestOptions requestOptions = new RequestOptions();
+        SyncPoller<BinaryData, BinaryData> poller
+            = getLoadTestAdministrationClient().beginGenerateTestPlanRecommendations(recordingTestId, requestOptions);
         poller = setPlaybackSyncPollerPollInterval(poller);
 
-        PollResponse<OperationStatus> response = poller.waitForCompletion();
+        PollResponse<BinaryData> response = poller.waitForCompletion();
 
         assertNotNull(response);
         assertTrue(response.getStatus().isComplete());
     }
 
+    @Test
+    @Order(23)
+    public void beginCloneTest() {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData cloneRequest = BinaryData.fromString(String.format("{\"newTestId\":\"%s\"}", cloneTestId));
+        SyncPoller<BinaryData, BinaryData> poller
+            = getLoadTestAdministrationClient().beginCloneTest(newTestId, cloneRequest, requestOptions);
+        poller = setPlaybackSyncPollerPollInterval(poller);
+
+        PollResponse<BinaryData> response = poller.waitForCompletion();
+
+        assertNotNull(response);
+        assertTrue(response.getStatus().isComplete());
+    }
+
+    @Test
+    @Order(24)
+    public void getClonedTest() {
+        LoadTest response = getLoadTestAdministrationClient().getTest(cloneTestId);
+
+        assertNotNull(response);
+        assertEquals(cloneTestId, response.getTestId());
+    }
+
+    @Test
+    @Order(25)
+    public void deleteClonedTest() {
+        assertDoesNotThrow(() -> {
+            getLoadTestAdministrationClient().deleteTestWithResponse(cloneTestId, null);
+        });
+    }
+
     // Deletes
 
     @Test
-    @Order(23)
+    @Order(26)
     public void deleteTestFile() {
         assertDoesNotThrow(() -> {
             getLoadTestAdministrationClient().deleteTestFileWithResponse(newTestId, uploadCsvFileName, null);
@@ -340,7 +376,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     }
 
     @Test
-    @Order(24)
+    @Order(27)
     public void deleteTest() {
         assertDoesNotThrow(() -> {
             getLoadTestAdministrationClient().deleteTestWithResponse(newTestId, null);

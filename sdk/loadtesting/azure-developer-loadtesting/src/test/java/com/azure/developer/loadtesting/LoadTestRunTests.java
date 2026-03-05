@@ -3,6 +3,7 @@
 
 package com.azure.developer.loadtesting;
 
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollResponse;
@@ -13,10 +14,9 @@ import com.azure.developer.loadtesting.models.MetricDefinition;
 import com.azure.developer.loadtesting.models.MetricDefinitions;
 import com.azure.developer.loadtesting.models.MetricNamespace;
 import com.azure.developer.loadtesting.models.MetricNamespaces;
-import com.azure.developer.loadtesting.models.TestProfileRun;
-import com.azure.developer.loadtesting.models.TestProfileRunStatus;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
 import com.azure.developer.loadtesting.models.TestRunFileInfo;
+import com.azure.developer.loadtesting.models.TestRunInsights;
 import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
 import com.azure.developer.loadtesting.models.TestRunStatus;
 import com.azure.json.JsonProviders;
@@ -90,10 +90,10 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Order(4)
     public void getTestRunFile() {
 
-        TestRunFileInfo fileInfo = getLoadTestRunClient().getTestRunFile(newTestRunId, uploadJmxFileName);
+        TestRunFileInfo fileInfo = getLoadTestRunClient().getTestRunFile(newTestRunId, existingJmxFileName);
 
         assertNotNull(fileInfo);
-        assertEquals(uploadJmxFileName, fileInfo.getFileName());
+        assertEquals(existingJmxFileName, fileInfo.getFileName());
         assertEquals(LoadTestingFileType.JMX_FILE.toString(), fileInfo.getFileType().toString());
     }
 
@@ -215,10 +215,35 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
         assertTrue(found);
     }
 
-    // Deletes
+    // Test Run Insights
 
     @Test
     @Order(12)
+    public void beginGenerateTestRunInsights() {
+        RequestOptions requestOptions = new RequestOptions();
+        SyncPoller<BinaryData, BinaryData> poller
+            = getLoadTestRunClient().beginGenerateTestRunInsights(completedTestRunId, requestOptions);
+        poller = setPlaybackSyncPollerPollInterval(poller);
+
+        PollResponse<BinaryData> response = poller.waitForCompletion();
+
+        assertNotNull(response);
+        assertTrue(response.getStatus().isComplete());
+    }
+
+    @Test
+    @Order(13)
+    public void getLatestTestRunInsights() {
+        TestRunInsights insights = getLoadTestRunClient().getLatestTestRunInsights(completedTestRunId);
+
+        assertNotNull(insights);
+        assertNotNull(insights.getStatus());
+    }
+
+    // Deletes
+
+    @Test
+    @Order(14)
     public void deleteTestRun() {
         assertDoesNotThrow(() -> {
             getLoadTestRunClient().deleteTestRunWithResponse(newTestRunId, null);

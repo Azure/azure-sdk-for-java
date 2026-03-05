@@ -3,6 +3,7 @@
 
 package com.azure.developer.loadtesting;
 
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
@@ -88,11 +89,11 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     @Order(4)
     public void getTestRunFile() {
         Mono<TestRunFileInfo> monoResponse
-            = getLoadTestRunAsyncClient().getTestRunFile(newTestRunIdAsync, uploadJmxFileName);
+            = getLoadTestRunAsyncClient().getTestRunFile(newTestRunIdAsync, existingJmxFileName);
 
         StepVerifier.create(monoResponse).assertNext(fileInfo -> {
             assertNotNull(fileInfo);
-            assertEquals(uploadJmxFileName, fileInfo.getFileName());
+            assertEquals(existingJmxFileName, fileInfo.getFileName());
             assertEquals(LoadTestingFileType.JMX_FILE.toString(), fileInfo.getFileType().toString());
         }).verifyComplete();
     }
@@ -222,10 +223,35 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
             .verifyComplete();
     }
 
+    @Test
+    @Order(12)
+    public void beginGenerateTestRunInsights() {
+        RequestOptions requestOptions = new RequestOptions();
+        PollerFlux<BinaryData, BinaryData> poller
+            = getLoadTestRunAsyncClient().beginGenerateTestRunInsights(completedTestRunId, requestOptions);
+        poller = setPlaybackPollerFluxPollInterval(poller);
+
+        StepVerifier.create(poller.last()).assertNext(pollResponse -> {
+            assertNotNull(pollResponse);
+            assertTrue(pollResponse.getStatus().isComplete());
+        }).verifyComplete();
+    }
+
+    @Test
+    @Order(13)
+    public void getLatestTestRunInsights() {
+        Mono<TestRunInsights> monoResponse = getLoadTestRunAsyncClient().getLatestTestRunInsights(completedTestRunId);
+
+        StepVerifier.create(monoResponse).assertNext(insights -> {
+            assertNotNull(insights);
+            assertNotNull(insights.getStatus());
+        }).verifyComplete();
+    }
+
     // Deletes
 
     @Test
-    @Order(12)
+    @Order(14)
     public void deleteTestRun() {
         Mono<Void> monoVoid = getLoadTestRunAsyncClient().deleteTestRun(newTestRunIdAsync);
         StepVerifier.create(monoVoid).verifyComplete();
