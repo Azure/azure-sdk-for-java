@@ -28,7 +28,8 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,17 +42,23 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 /**
  * Live tests for VoiceLive tool/function call features.
  */
 public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
 
+    static Stream<Arguments> toolCallParams() {
+        return crossProduct(new String[] { "gpt-4o-realtime", "gpt-4o" },
+            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o-realtime", "gpt-4o" })
+    @MethodSource("toolCallParams")
     @LiveOnly
-    public void testRealtimeServiceToolCall(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    public void testRealtimeServiceToolCall(String model, String apiVersion) throws InterruptedException, IOException {
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("ask_weather.wav");
 
@@ -129,11 +136,17 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
         }
     }
 
+    static Stream<Arguments> toolChoiceParams() {
+        return crossProduct(new String[] { "gpt-4o", "gpt-5-chat" },
+            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o", "gpt-5-chat" })
+    @MethodSource("toolChoiceParams")
     @LiveOnly
-    public void testRealtimeServiceToolChoice(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    public void testRealtimeServiceToolChoice(String model, String apiVersion)
+        throws InterruptedException, IOException {
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("ask_weather.wav");
 
@@ -210,11 +223,17 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
         }
     }
 
+    static Stream<Arguments> sessionUpdateWithToolsParams() {
+        return crossProduct(new String[] { "gpt-4o", "gpt-4o-realtime" },
+            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o", "gpt-4o-realtime" })
+    @MethodSource("sessionUpdateWithToolsParams")
     @LiveOnly
-    public void testLiveSessionUpdateWithTools(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    public void testLiveSessionUpdateWithTools(String model, String apiVersion)
+        throws InterruptedException, IOException {
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("ask_weather.wav");
 
@@ -314,11 +333,17 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
         }
     }
 
+    static Stream<Arguments> toolCallParameterParams() {
+        return crossProduct(new String[] { "gpt-4.1", "gpt-5", "gpt-5.1", "gpt-5.2", "phi4-mm-realtime" },
+            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = { "gpt-4.1", "gpt-5", "phi4-mm-realtime" })
+    @MethodSource("toolCallParameterParams")
     @LiveOnly
-    public void testRealtimeServiceToolCallParameter(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    public void testRealtimeServiceToolCallParameter(String model, String apiVersion)
+        throws InterruptedException, IOException {
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("ask_weather.wav");
 

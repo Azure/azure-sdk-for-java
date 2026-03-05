@@ -5,37 +5,51 @@ package com.azure.ai.voicelive.livetests;
 
 import com.azure.ai.voicelive.VoiceLiveAsyncClient;
 import com.azure.ai.voicelive.VoiceLiveSessionAsyncClient;
+import com.azure.ai.voicelive.models.ClientEventConversationItemRetrieve;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
+import com.azure.ai.voicelive.models.ItemType;
 import com.azure.ai.voicelive.models.OpenAIVoice;
 import com.azure.ai.voicelive.models.OpenAIVoiceName;
 import com.azure.ai.voicelive.models.ServerEventType;
+import com.azure.ai.voicelive.models.SessionResponseItem;
+import com.azure.ai.voicelive.models.SessionResponseMessageItem;
+import com.azure.ai.voicelive.models.SessionUpdateConversationItemRetrieved;
+import com.azure.ai.voicelive.models.SessionUpdateConversationItemTruncated;
+import com.azure.ai.voicelive.models.SessionUpdateResponseOutputItemDone;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 /**
  * Live tests for VoiceLive conversation item operations (retrieve, truncate).
  */
 public class VoiceLiveConversationTests extends VoiceLiveTestBase {
 
+    static Stream<Arguments> retrieveItemParams() {
+        return crossProduct(new String[] { "gpt-4o-realtime" }, new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o-realtime" })
+    @MethodSource("retrieveItemParams")
     @LiveOnly
-    public void testRealtimeServiceRetrieveItem(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    public void testRealtimeServiceRetrieveItem(String model, String apiVersion)
+        throws InterruptedException, IOException {
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("largest_lake.wav");
 
-        AtomicBoolean outputItemReceived = new AtomicBoolean(false);
-        AtomicBoolean itemRetrieved = new AtomicBoolean(false);
+        AtomicReference<String> outputItemId = new AtomicReference<>();
+        AtomicReference<SessionResponseItem> retrievedItem = new AtomicReference<>();
         CountDownLatch outputItemLatch = new CountDownLatch(1);
         CountDownLatch retrieveLatch = new CountDownLatch(1);
 
@@ -52,10 +66,19 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.RESPONSE_OUTPUT_ITEM_DONE) {
-                    outputItemReceived.set(true);
-                    outputItemLatch.countDown();
+                    if (event instanceof SessionUpdateResponseOutputItemDone) {
+                        SessionUpdateResponseOutputItemDone outputDone = (SessionUpdateResponseOutputItemDone) event;
+                        if (outputDone.getItem() != null && outputDone.getItem().getType() == ItemType.MESSAGE) {
+                            outputItemId.set(outputDone.getItem().getId());
+                            outputItemLatch.countDown();
+                        }
+                    }
                 } else if (eventType == ServerEventType.CONVERSATION_ITEM_RETRIEVED) {
-                    itemRetrieved.set(true);
+                    if (event instanceof SessionUpdateConversationItemRetrieved) {
+                        SessionUpdateConversationItemRetrieved retrieved
+                            = (SessionUpdateConversationItemRetrieved) event;
+                        retrievedItem.set(retrieved.getItem());
+                    }
                     retrieveLatch.countDown();
                 } else if (eventType == ServerEventType.ERROR) {
                     handleError(event);
@@ -79,7 +102,24 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
             session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
 
             boolean outputReceived = outputItemLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-            Assertions.assertTrue(outputReceived, "Should receive output item");
+            Assertions.assertTrue(outputReceived, "Should receive output item done event");
+            Assertions.assertNotNull(outputItemId.get(), "Output item ID should not be null");
+
+            // Retrieve the conversation item
+            session.sendEvent(new ClientEventConversationItemRetrieve(outputItemId.get())).block(SEND_TIMEOUT);
+
+            boolean retrieved = retrieveLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            Assertions.assertTrue(retrieved, "Should receive conversation item retrieved event");
+            Assertions.assertNotNull(retrievedItem.get(), "Retrieved item should not be null");
+            Assertions.assertTrue(retrievedItem.get() instanceof SessionResponseMessageItem,
+                "Retrieved item should be a message item");
+
+            SessionResponseMessageItem messageItem = (SessionResponseMessageItem) retrievedItem.get();
+            Assertions.assertNotNull(messageItem.getRole(), "Message item should have a role");
+            Assertions.assertEquals("assistant", messageItem.getRole().toString(),
+                "Message role should be 'assistant'");
+            Assertions.assertNotNull(messageItem.getContent(), "Message item should have content");
+            Assertions.assertFalse(messageItem.getContent().isEmpty(), "Message content should not be empty");
 
             session.close();
         } catch (Exception e) {
@@ -87,16 +127,21 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
         }
     }
 
+    static Stream<Arguments> truncateItemParams() {
+        return crossProduct(new String[] { "gpt-4o-realtime" }, new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o-realtime" })
+    @MethodSource("truncateItemParams")
     @LiveOnly
-    public void testRealtimeServiceTruncateItem(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    public void testRealtimeServiceTruncateItem(String model, String apiVersion)
+        throws InterruptedException, IOException {
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("largest_lake.wav");
 
-        AtomicBoolean outputItemReceived = new AtomicBoolean(false);
-        AtomicBoolean itemTruncated = new AtomicBoolean(false);
+        AtomicReference<String> outputItemId = new AtomicReference<>();
+        AtomicReference<SessionUpdateConversationItemTruncated> truncatedEvent = new AtomicReference<>();
         CountDownLatch outputItemLatch = new CountDownLatch(1);
         CountDownLatch truncateLatch = new CountDownLatch(1);
 
@@ -112,10 +157,17 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.RESPONSE_OUTPUT_ITEM_DONE) {
-                    outputItemReceived.set(true);
-                    outputItemLatch.countDown();
+                    if (event instanceof SessionUpdateResponseOutputItemDone) {
+                        SessionUpdateResponseOutputItemDone outputDone = (SessionUpdateResponseOutputItemDone) event;
+                        if (outputDone.getItem() != null && outputDone.getItem().getType() == ItemType.MESSAGE) {
+                            outputItemId.set(outputDone.getItem().getId());
+                            outputItemLatch.countDown();
+                        }
+                    }
                 } else if (eventType == ServerEventType.CONVERSATION_ITEM_TRUNCATED) {
-                    itemTruncated.set(true);
+                    if (event instanceof SessionUpdateConversationItemTruncated) {
+                        truncatedEvent.set((SessionUpdateConversationItemTruncated) event);
+                    }
                     truncateLatch.countDown();
                 } else if (eventType == ServerEventType.ERROR) {
                     handleError(event);
@@ -136,9 +188,20 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
             waitForSetup();
 
             session.sendInputAudio(audioData).block(SEND_TIMEOUT);
+            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
 
             boolean outputReceived = outputItemLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-            Assertions.assertTrue(outputReceived, "Should receive output item");
+            Assertions.assertTrue(outputReceived, "Should receive output item done event");
+            Assertions.assertNotNull(outputItemId.get(), "Output item ID should not be null");
+
+            // Truncate the conversation item at 1000ms
+            session.truncateConversation(outputItemId.get(), 0, 1000).block(SEND_TIMEOUT);
+
+            boolean truncated = truncateLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            Assertions.assertTrue(truncated, "Should receive conversation item truncated event");
+            Assertions.assertNotNull(truncatedEvent.get(), "Truncated event should not be null");
+            Assertions.assertEquals(outputItemId.get(), truncatedEvent.get().getItemId(),
+                "Truncated item ID should match the output item ID");
 
             session.close();
         } catch (Exception e) {
