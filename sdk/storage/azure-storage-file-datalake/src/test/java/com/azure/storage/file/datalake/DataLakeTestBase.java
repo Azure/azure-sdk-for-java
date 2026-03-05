@@ -51,6 +51,7 @@ import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -148,7 +149,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
         interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
             .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
                 "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since",
-                "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256"))
+                "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256",
+                "x-ms-blob-if-modified-since", "x-ms-blob-if-unmodified-since"))
             .setQueryOrderingIgnored(true)
             .setIgnoredQueryParameters(Arrays.asList("sv"))));
 
@@ -762,6 +764,12 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
             sleepIfLiveTesting(delayMillis);
         }
+    }
+
+    protected Map<String, String> getTags() {
+        Map<String, String> tags = new HashMap<>();
+        tags.put("foo", "bar");
+        return tags;
     }
 
     protected void liveTestScenarioWithRetry(Runnable runnable) {
