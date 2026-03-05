@@ -4,12 +4,13 @@
 package com.azure.cosmos.benchmark.encryption;
 
 import com.azure.cosmos.benchmark.BenchmarkHelper;
-import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.Operation;
 import com.azure.cosmos.benchmark.PojoizedJson;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.reactivestreams.Subscription;
@@ -56,10 +57,10 @@ public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<Cosm
         }
     }
 
-    public AsyncEncryptionWriteBenchmark(Configuration cfg) throws IOException {
-        super(cfg);
+    public AsyncEncryptionWriteBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws IOException {
+        super(workloadCfg, sharedRegistry);
         uuid = UUID.randomUUID().toString();
-        dataFieldValue = RandomStringUtils.randomAlphabetic(configuration.getDocumentDataFieldSize());
+        dataFieldValue = RandomStringUtils.randomAlphabetic(workloadConfig.getDocumentDataFieldSize());
     }
 
     @Override
@@ -69,17 +70,17 @@ public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<Cosm
         PojoizedJson newDoc = BenchmarkHelper.generateDocument(id,
             dataFieldValue,
             partitionKey,
-            configuration.getDocumentDataFieldCount());
-        for (int j = 1; j <= configuration.getEncryptedStringFieldCount(); j++) {
+            workloadConfig.getDocumentDataFieldCount());
+        for (int j = 1; j <= workloadConfig.getEncryptedStringFieldCount(); j++) {
             newDoc.setProperty(ENCRYPTED_STRING_FIELD + j, uuid);
         }
-        for (int j = 1; j <= configuration.getEncryptedLongFieldCount(); j++) {
+        for (int j = 1; j <= workloadConfig.getEncryptedLongFieldCount(); j++) {
             newDoc.setProperty(ENCRYPTED_LONG_FIELD + j, 1234l);
         }
-        for (int j = 1; j <= configuration.getEncryptedDoubleFieldCount(); j++) {
+        for (int j = 1; j <= workloadConfig.getEncryptedDoubleFieldCount(); j++) {
             newDoc.setProperty(ENCRYPTED_DOUBLE_FIELD + j, 1234.01d);
         }
-        if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
+        if (workloadConfig.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
             obs = cosmosEncryptionAsyncContainer.createItem(newDoc, new PartitionKey(id),
                 new CosmosItemRequestOptions());
@@ -92,7 +93,7 @@ public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<Cosm
 
         concurrencyControlSemaphore.acquire();
 
-        if (configuration.getOperationType() == Operation.WriteThroughput) {
+        if (workloadConfig.getOperationType() == Operation.WriteThroughput) {
             obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
         } else {
             LatencySubscriber<CosmosItemResponse> latencySubscriber = new LatencySubscriber<>(baseSubscriber);

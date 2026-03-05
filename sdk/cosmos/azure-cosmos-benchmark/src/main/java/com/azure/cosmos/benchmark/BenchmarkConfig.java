@@ -18,7 +18,7 @@ import java.util.List;
  * Contains lifecycle params, reporting config, and fully-resolved tenant workloads.
  *
  * <p>Each {@link TenantWorkloadConfig} carries its complete effective config
- * (account info + workload params), so no separate globalDefaults map is needed.</p>
+ * (account info + workload params), so no separate tenantDefaults map is needed.</p>
  *
  * <p>When {@code cycles > 1}, sensible defaults are applied automatically
  * unless explicitly overridden (settleTimeMs=90s, suppressCleanup=true).</p>
@@ -81,43 +81,19 @@ public class BenchmarkConfig {
         }
 
         config.gcBetweenCycles = cfg.isGcBetweenCycles();
-        config.enableJvmStats = cfg.isEnableJvmStats();
-        config.enableNettyHttpMetrics = cfg.isEnableNettyHttpMetrics();
 
-        // Reporting
-        config.reportingDirectory = cfg.getReportingDirectory() != null
-            ? cfg.getReportingDirectory().getPath() : null;
-        config.printingInterval = cfg.getPrintingInterval();
-        config.resultUploadEndpoint = cfg.getServiceEndpointForRunResultsUploadAccount();
-        config.resultUploadKey = cfg.getMasterKeyForRunResultsUploadAccount();
-        config.resultUploadDatabase = cfg.getResultUploadDatabase();
-        config.resultUploadContainer = cfg.getResultUploadContainer();
-
-        // Run metadata
-        config.testVariationName = cfg.getTestVariationName();
-        config.branchName = cfg.getBranchName();
-        config.commitId = cfg.getCommitId();
-
-        // Tenants
-        String tenantsFile = cfg.getTenantsFile();
-        if (tenantsFile != null && new File(tenantsFile).exists()) {
-            // tenants.json takes priority over CLI workload args (operation, concurrency, etc.)
-            logger.info("Loading tenant configs from {}. " +
-                "Workload parameters from tenants.json will take priority over CLI args.", tenantsFile);
-            config.tenantWorkloads = TenantWorkloadConfig.parseTenantsFile(new File(tenantsFile));
-
-            // Extract JVM-global system properties from globalDefaults
-            config.loadGlobalSystemPropertiesFromTenantsFile(new File(tenantsFile));
-        } else {
-            // Single tenant from CLI args - use fromConfiguration() to copy ALL fields
-            config.tenantWorkloads = Collections.singletonList(
-                TenantWorkloadConfig.fromConfiguration(cfg));
-
-            // JVM-global system properties from CLI
-            config.isPartitionLevelCircuitBreakerEnabled = cfg.isPartitionLevelCircuitBreakerEnabled();
-            config.isPerPartitionAutomaticFailoverRequired = cfg.isPerPartitionAutomaticFailoverRequired();
-            config.minConnectionPoolSizePerEndpoint = cfg.getMinConnectionPoolSizePerEndpoint();
+        // Workload config - ALWAYS from config file
+        String workloadConfigPath = cfg.getWorkloadConfig();
+        if (workloadConfigPath == null || !new File(workloadConfigPath).exists()) {
+            throw new IllegalArgumentException(
+                "A workload configuration file is required. Use -workloadConfig to specify the path."
+                + (workloadConfigPath != null ? " File not found: " + workloadConfigPath : ""));
         }
+
+        logger.info("Loading workload configs from {}.", workloadConfigPath);
+        File workloadFile = new File(workloadConfigPath);
+        config.tenantWorkloads = TenantWorkloadConfig.parseWorkloadConfig(workloadFile);
+        config.loadWorkloadConfigSections(workloadFile);
 
         return config;
     }
@@ -161,28 +137,106 @@ public class BenchmarkConfig {
     }
 
     /**
-     * Reads JVM-global system properties from the globalDefaults section of a tenants.json file.
-     * These properties are JVM-wide and cannot vary per tenant.
+     * Loads all non-tenant sections from the workload config file:
+     * JVM system properties, metrics config, result upload, and run metadata.
      */
-    private void loadGlobalSystemPropertiesFromTenantsFile(File tenantsFile) throws IOException {
+    private void loadWorkloadConfigSections(File workloadConfigFile) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(tenantsFile);
-        JsonNode defaults = root.get("globalDefaults");
-        if (defaults == null || !defaults.isObject()) {
+        JsonNode root = mapper.readTree(workloadConfigFile);
+
+        loadJvmSystemProperties(root);
+        loadMetricsConfig(root);
+        loadResultUploadConfig(root);
+        loadRunMetadata(root);
+    }
+
+    /**
+     * JVM-global system properties from the tenantDefaults section.
+     * These are JVM-wide and cannot vary per tenant.
+     */
+    private void loadJvmSystemProperties(JsonNode root) {
+        JsonNode defaults = root.get("tenantDefaults");
+        if (defaults != null && defaults.isObject()) {
+            if (defaults.has("isPartitionLevelCircuitBreakerEnabled")) {
+                isPartitionLevelCircuitBreakerEnabled =
+                    Boolean.parseBoolean(defaults.get("isPartitionLevelCircuitBreakerEnabled").asText());
+            }
+            if (defaults.has("isPerPartitionAutomaticFailoverRequired")) {
+                isPerPartitionAutomaticFailoverRequired =
+                    Boolean.parseBoolean(defaults.get("isPerPartitionAutomaticFailoverRequired").asText());
+            }
+            if (defaults.has("minConnectionPoolSizePerEndpoint")) {
+                minConnectionPoolSizePerEndpoint =
+                    Integer.parseInt(defaults.get("minConnectionPoolSizePerEndpoint").asText());
+            }
+        }
+    }
+
+    /**
+     * Metrics and reporting settings from the top-level "metrics" section.
+     */
+    private void loadMetricsConfig(JsonNode root) {
+        JsonNode metrics = root.get("metrics");
+        if (metrics != null && metrics.isObject()) {
+            if (metrics.has("enableJvmStats")) {
+                enableJvmStats = Boolean.parseBoolean(metrics.get("enableJvmStats").asText());
+            }
+            if (metrics.has("enableNettyHttpMetrics")) {
+                enableNettyHttpMetrics = Boolean.parseBoolean(metrics.get("enableNettyHttpMetrics").asText());
+            }
+            if (metrics.has("printingInterval")) {
+                printingInterval = Integer.parseInt(metrics.get("printingInterval").asText());
+            }
+            if (metrics.has("reportingDirectory")) {
+                reportingDirectory = metrics.get("reportingDirectory").asText();
+            }
+        }
+    }
+
+    /**
+     * Result upload configuration from "metrics.resultUpload".
+     */
+    private void loadResultUploadConfig(JsonNode root) {
+        JsonNode metrics = root.get("metrics");
+        if (metrics == null || !metrics.isObject()) {
             return;
         }
+        JsonNode resultUpload = metrics.get("resultUpload");
+        if (resultUpload != null && resultUpload.isObject()) {
+            if (resultUpload.has("serviceEndpoint")) {
+                resultUploadEndpoint = resultUpload.get("serviceEndpoint").asText();
+            }
+            if (resultUpload.has("masterKey")) {
+                resultUploadKey = resultUpload.get("masterKey").asText();
+            }
+            if (resultUpload.has("database")) {
+                resultUploadDatabase = resultUpload.get("database").asText();
+            }
+            if (resultUpload.has("container")) {
+                resultUploadContainer = resultUpload.get("container").asText();
+            }
+        }
+    }
 
-        if (defaults.has("isPartitionLevelCircuitBreakerEnabled")) {
-            isPartitionLevelCircuitBreakerEnabled =
-                Boolean.parseBoolean(defaults.get("isPartitionLevelCircuitBreakerEnabled").asText());
+    /**
+     * Run metadata from "metrics.runMetadata" (tagged on uploaded results).
+     */
+    private void loadRunMetadata(JsonNode root) {
+        JsonNode metrics = root.get("metrics");
+        if (metrics == null || !metrics.isObject()) {
+            return;
         }
-        if (defaults.has("isPerPartitionAutomaticFailoverRequired")) {
-            isPerPartitionAutomaticFailoverRequired =
-                Boolean.parseBoolean(defaults.get("isPerPartitionAutomaticFailoverRequired").asText());
-        }
-        if (defaults.has("minConnectionPoolSizePerEndpoint")) {
-            minConnectionPoolSizePerEndpoint =
-                Integer.parseInt(defaults.get("minConnectionPoolSizePerEndpoint").asText());
+        JsonNode runMetadata = metrics.get("runMetadata");
+        if (runMetadata != null && runMetadata.isObject()) {
+            if (runMetadata.has("testVariationName")) {
+                testVariationName = runMetadata.get("testVariationName").asText();
+            }
+            if (runMetadata.has("branchName")) {
+                branchName = runMetadata.get("branchName").asText();
+            }
+            if (runMetadata.has("commitId")) {
+                commitId = runMetadata.get("commitId").asText();
+            }
         }
     }
 }

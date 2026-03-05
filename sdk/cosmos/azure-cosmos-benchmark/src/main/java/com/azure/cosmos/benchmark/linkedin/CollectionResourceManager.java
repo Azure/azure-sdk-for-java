@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.benchmark.linkedin.data.CollectionAttributes;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.impl.Constants;
@@ -34,11 +34,11 @@ public class CollectionResourceManager implements ResourceManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(CollectionResourceManager.class);
     private static final Duration RESOURCE_CRUD_WAIT_TIME = Duration.ofSeconds(30);
 
-    private final Configuration _configuration;
+    private final TenantWorkloadConfig _configuration;
     private final EntityConfiguration _entityConfiguration;
     private final CosmosAsyncClient _client;
 
-    public CollectionResourceManager(final Configuration configuration,
+    public CollectionResourceManager(final TenantWorkloadConfig configuration,
         final EntityConfiguration entityConfiguration,
         final CosmosAsyncClient client) {
         Preconditions.checkNotNull(configuration,
@@ -54,7 +54,7 @@ public class CollectionResourceManager implements ResourceManager {
 
     @Override
     public void createResources() throws CosmosException {
-        final String containerName = _configuration.getCollectionId();
+        final String containerName = _configuration.getContainerId();
         final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
         final CollectionAttributes collectionAttributes = _entityConfiguration.collectionAttributes();
         try {
@@ -76,7 +76,7 @@ public class CollectionResourceManager implements ResourceManager {
 
     @Override
     public void deleteResources() {
-        LOGGER.info("The Collection {} will not be deleted.", _configuration.getCollectionId());
+        LOGGER.info("The Collection {} will not be deleted.", _configuration.getContainerId());
     }
 
     private Optional<CosmosContainerResponse> getContainerProperties(CosmosAsyncContainer container) {
