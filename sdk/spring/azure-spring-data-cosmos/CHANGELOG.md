@@ -1,6 +1,6 @@
 ## Release History
 
-### 5.25.0 (2026-03-04)
+### 5.25.0 (2026-03-05)
 
 #### Other Changes
 * regular release
