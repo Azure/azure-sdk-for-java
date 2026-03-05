@@ -225,9 +225,6 @@ public class AppConfigurationRefreshUtilTest {
         when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);
         when(clientFactoryMock.getConnections()).thenReturn(Map.of(endpoint, connectionManagerMock));
 
-        // Config Store doesn't return a watch key change.
-
-        // Monitor is disabled
         RefreshEventData eventData = refreshUtil.refreshStoresCheck(clientFactoryMock,
             Duration.ofMinutes(10),
             (long) 60, replicaLookUpMock);
@@ -268,7 +265,7 @@ public class AppConfigurationRefreshUtilTest {
     }
 
     @Test
-    public void refreshStoresCheckSettingsTestFailedRequest(TestInfo testInfo) {
+    public void refreshStoresCheckSettingsTestNoChangeDetected(TestInfo testInfo) {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         setupFeatureFlagLoad();
 
@@ -366,7 +363,7 @@ public class AppConfigurationRefreshUtilTest {
         AccessToken p2 = new AccessToken();
         p2.setName("fake name");
         p2.setSecret("value");
-        pushNotificaiton.setPrimaryToken(p2);
+        pushNotificaiton.setSecondaryToken(p2);
         monitoring.setPushNotification(pushNotificaiton);
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
 
@@ -434,7 +431,6 @@ public class AppConfigurationRefreshUtilTest {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         setupFeatureFlagLoadBasic();
 
-        // Monitor is disabled
         RefreshEventData eventData = refreshUtil.refreshStoresCheck(clientFactoryMock,
             Duration.ofMinutes(10),
             (long) 60, replicaLookUpMock);
@@ -448,7 +444,6 @@ public class AppConfigurationRefreshUtilTest {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         setupFeatureFlagLoadBasic();
 
-        // Monitor is disabled
         RefreshEventData eventData = refreshUtil.refreshStoresCheck(clientFactoryMock,
             Duration.ofMinutes(10),
             (long) 60, replicaLookUpMock);
@@ -466,7 +461,6 @@ public class AppConfigurationRefreshUtilTest {
 
         setupFeatureFlagLoadBasic();
 
-        // Monitor is disabled
         RefreshEventData eventData = refreshUtil.refreshStoresCheck(clientFactoryMock,
             Duration.ofMinutes(10), (long) 60, replicaLookUpMock);
         assertFalse(eventData.getDoRefresh());
@@ -647,6 +641,8 @@ public class AppConfigurationRefreshUtilTest {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
 
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
+        FeatureFlagStore disabledFeatureStore = new FeatureFlagStore();
+        disabledFeatureStore.setEnabled(false);
         when(clientFactoryMock.getConnections()).thenReturn(Map.of(endpoint, connectionManagerMock));
         when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint), Mockito.booleanThat(value -> true)))
             .thenReturn(clientOriginMock);
