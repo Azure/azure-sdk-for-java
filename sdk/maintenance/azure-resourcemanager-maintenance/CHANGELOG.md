@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.1.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,70 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.3 (2026-03-04)
+
+- Azure Resource Manager Maintenance client library for Java. This package contains Microsoft Azure SDK for Maintenance Management SDK. Azure Maintenance Management Client. Package api-version 2023-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.OperationInfo` was removed
+
+#### `models.ListMaintenanceConfigurationsResult` was removed
+
+#### `models.ListApplyUpdate` was removed
+
+#### `models.OperationsListResult` was removed
+
+#### `models.ListConfigurationAssignmentsResult` was removed
+
+#### `models.ListUpdatesResult` was removed
+
+#### `models.InputPatchConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.TagSettingsProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Operation` was modified
+
+* `properties()` was removed
+* `java.lang.String origin()` -> `models.Origin origin()`
+* `models.OperationInfo display()` -> `models.OperationDisplay display()`
+
+#### `models.ConfigurationAssignmentFilterProperties` was modified
+
+* `validate()` was removed
+
+#### `models.InputLinuxParameters` was modified
+
+* `validate()` was removed
+
+#### `models.InputWindowsParameters` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.ApplyUpdatesCreateOrUpdateParentHeaders` was added
+
+* `models.ApplyUpdatesCreateOrUpdateResponse` was added
+
+* `models.ApplyUpdatesCreateOrUpdateParentResponse` was added
+
+* `models.OperationDisplay` was added
+
+* `models.ApplyUpdatesCreateOrUpdateHeaders` was added
+
+* `models.Origin` was added
+
+* `models.ActionType` was added
+
+#### `models.Operation` was modified
+
+* `actionType()` was added
 
 ## 1.1.0-beta.2 (2024-12-04)
 

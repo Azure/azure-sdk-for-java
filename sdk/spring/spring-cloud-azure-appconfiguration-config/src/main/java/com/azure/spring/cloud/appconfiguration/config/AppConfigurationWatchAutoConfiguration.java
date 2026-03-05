@@ -38,10 +38,16 @@ public class AppConfigurationWatchAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties, BootstrapContext context) {
-        AppConfigurationReplicaClientFactory clientFactory = context
-            .get(AppConfigurationReplicaClientFactory.class);
+        AppConfigurationReplicaClientFactory clientFactory = context.getOrElse(AppConfigurationReplicaClientFactory.class, null);
+        ReplicaLookUp replicaLookUp = context.getOrElse(ReplicaLookUp.class, null);
+
+        context.get(AppConfigurationReplicaClientFactory.class);
         ReplicaLookUp replicaLookUp = context.get(ReplicaLookUp.class);
         StateHolder stateHolder = context.get(StateHolder.class);
+
+        if (clientFactory == null || replicaLookUp == null) {
+            return null;
+        }
 
         return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(), replicaLookUp,
             stateHolder, new AppConfigurationRefreshUtil(stateHolder));

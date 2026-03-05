@@ -45,7 +45,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-abstract class AsyncBenchmark<T> {
+abstract class AsyncBenchmark<T> implements Benchmark {
 
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
@@ -343,7 +343,7 @@ abstract class AsyncBenchmark<T> {
     protected void init() {
     }
 
-    void shutdown() {
+    public void shutdown() {
         if (workloadConfig.isSuppressCleanup()) {
             logger.info("Skipping cleanup of database/container (suppressCleanup=true)");
         } else if (this.databaseCreated) {
@@ -420,7 +420,7 @@ abstract class AsyncBenchmark<T> {
         }
     }
 
-    void run() throws Exception {
+    public void run() throws Exception {
         initializeMeter();
         if (workloadConfig.getSkipWarmUpOperations() > 0) {
             logger.info("Starting warm up phase. Executing {} operations to warm up ...", workloadConfig.getSkipWarmUpOperations());
