@@ -501,7 +501,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     }
 
     @Override
-    void shutdown() {
+    public void shutdown() {
         if (this.client != null) {
             this.client.close();
         }
