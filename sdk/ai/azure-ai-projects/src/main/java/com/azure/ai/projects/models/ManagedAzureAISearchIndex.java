@@ -18,7 +18,7 @@ import java.util.Set;
  * Managed Azure AI Search Index Definition.
  */
 @Fluent
-public final class ManagedAzureAISearchIndex extends Index {
+public final class ManagedAzureAISearchIndex extends AIProjectIndex {
 
     /*
      * Type of index
@@ -108,7 +108,7 @@ public final class ManagedAzureAISearchIndex extends Index {
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        if (JsonMergePatchHelper.getIndexAccessor().isJsonMergePatch(this)) {
+        if (JsonMergePatchHelper.getAIProjectIndexAccessor().isJsonMergePatch(this)) {
             return toJsonMergePatch(jsonWriter);
         } else {
             jsonWriter.writeStartObject();
@@ -171,20 +171,21 @@ public final class ManagedAzureAISearchIndex extends Index {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
-                    JsonMergePatchHelper.getIndexAccessor()
+                    JsonMergePatchHelper.getAIProjectIndexAccessor()
                         .setName(deserializedManagedAzureAISearchIndex, reader.getString());
                 } else if ("version".equals(fieldName)) {
-                    JsonMergePatchHelper.getIndexAccessor()
+                    JsonMergePatchHelper.getAIProjectIndexAccessor()
                         .setVersion(deserializedManagedAzureAISearchIndex, reader.getString());
                 } else if ("id".equals(fieldName)) {
-                    JsonMergePatchHelper.getIndexAccessor()
+                    JsonMergePatchHelper.getAIProjectIndexAccessor()
                         .setId(deserializedManagedAzureAISearchIndex, reader.getString());
                 } else if ("description".equals(fieldName)) {
-                    JsonMergePatchHelper.getIndexAccessor()
+                    JsonMergePatchHelper.getAIProjectIndexAccessor()
                         .setDescription(deserializedManagedAzureAISearchIndex, reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    JsonMergePatchHelper.getIndexAccessor().setTags(deserializedManagedAzureAISearchIndex, tags);
+                    JsonMergePatchHelper.getAIProjectIndexAccessor()
+                        .setTags(deserializedManagedAzureAISearchIndex, tags);
                 } else if ("type".equals(fieldName)) {
                     deserializedManagedAzureAISearchIndex.type = IndexType.fromString(reader.getString());
                 } else if ("vectorStoreId".equals(fieldName)) {
