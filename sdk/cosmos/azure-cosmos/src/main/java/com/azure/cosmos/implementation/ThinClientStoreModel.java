@@ -18,7 +18,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ResourceLeakDetector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,7 +114,9 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         }
 
         if (content.readableBytes() == 0) {
-            safeSilentRelease(content);
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
 
@@ -234,24 +235,18 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 requestUri,
                 requestUri.getPort(),
                 headers,
-                Flux.just(contentAsByteArray));
+                Flux.just(contentAsByteArray))
+                .withThinClientRequest(true);
         } finally {
-            safeSilentRelease(byteBuf);
+            if (byteBuf.refCnt() > 0) {
+                safeSilentRelease(byteBuf);
+            }
         }
     }
 
     @Override
     public Map<String, String> getDefaultHeaders() {
         return this.defaultHeaders;
-    }
-
-    private static void safeSilentRelease(Object msg) {
-        try {
-            ReferenceCountUtil.release(msg);
-        } catch (Throwable t) {
-            // ReferenceCountUtil.safeRelease would always log a WARN on double-release.
-            // In this class we only need this for a rare race condition — swallow silently.
-        }
     }
 
     private HttpHeaders getHttpHeaders() {
