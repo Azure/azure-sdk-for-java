@@ -223,9 +223,11 @@ public class MessageEncoderTests {
     public void contentAlreadyEncoded() {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(4, 2, StructuredMessageFlags.NONE);
         FluxUtil.collectBytesInByteBufferStream(encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3, 4 }))).block();
-        assertThrows(IllegalArgumentException.class,
-            () -> FluxUtil.collectBytesInByteBufferStream(encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })))
-                .block());
+        // After encoding is complete, further encode calls return empty (no error) to support retries and extra buffers.
+        byte[] result
+            = FluxUtil.collectBytesInByteBufferStream(encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 }))).block();
+        assertNotNull(result);
+        assertEquals(0, result.length);
     }
 
     @Test

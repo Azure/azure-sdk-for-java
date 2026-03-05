@@ -2408,8 +2408,22 @@ public class StorageCrc64Calculator {
      * @return the computed CRC64 checksum.
      */
     public static long compute(byte[] src, long uCrc) {
-        int pData = 0;
-        long uSize = src.length;
+        return compute(src, 0, src.length, uCrc);
+    }
+
+    /**
+     * Computes the CRC64 checksum for a region of a byte array. Avoids copying when the caller has
+     * a view (e.g. ByteBuffer.array() with arrayOffset + position).
+     *
+     * @param src the byte array.
+     * @param offset start index (inclusive).
+     * @param length number of bytes to process.
+     * @param uCrc the initial CRC value.
+     * @return the computed CRC64 checksum.
+     */
+    public static long compute(byte[] src, int offset, int length, long uCrc) {
+        int pData = offset;
+        long uSize = length;
         long uBytes, uStop;
 
         uCrc = ~uCrc; // Flip all bits of uCrc

@@ -97,7 +97,7 @@ public class UploadUtils {
                     return Flux.just(buffer);
                 }
                 int numSplits = (int) Math.ceil(buffer.remaining() / (double) chunkSize);
-                return Flux.range(0, numSplits).map(i -> {
+                return Flux.range(0, numSplits).limitRate(1).map(i -> {
                     ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
                     duplicate.position(i * chunkSize);
                     duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));

@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -41,6 +42,7 @@ import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationBehaviorUtil;
 import com.azure.storage.common.implementation.contentvalidation.StorageChecksumAlgorithm;
 
 import reactor.core.publisher.Flux;
@@ -63,6 +65,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CONTENT_VALIDATION_BEHAVIOR_KEY;
+import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_STRUCTURED_MESSAGE_CONTEXT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -743,6 +747,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     .setLegalHold(legalHold))
             .flatMap(options -> {
                 Mono<Response<BlockBlobItem>> responseMono = blockBlobAsyncClient.uploadWithResponse(options);
+                String contentValidationBehavior
+                    = ContentValidationBehaviorUtil.getBehaviorForSinglePartUpload(requestChecksumAlgorithm, length);
+                if (contentValidationBehavior != null) {
+                    responseMono = responseMono.contextWrite(FluxUtil
+                        .toReactorContext(new Context(CONTENT_VALIDATION_BEHAVIOR_KEY, contentValidationBehavior)));
+                }
                 if (parallelTransferOptions.getProgressListener() != null) {
                     ProgressReporter progressReporter
                         = ProgressReporter.withProgressListener(parallelTransferOptions.getProgressListener());
@@ -781,12 +791,17 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .concatWith(Flux.defer(stagingArea::flush))
             .flatMapSequential(bufferAggregator -> {
                 Flux<ByteBuffer> chunkData = bufferAggregator.asFlux();
-
+                long blockLength = bufferAggregator.length();
                 String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString().getBytes(UTF_8));
                 return UploadUtils.computeMd5(chunkData, computeMd5, LOGGER).flatMap(fluxMd5Wrapper -> {
-                    Mono<Response<Void>> responseMono
-                        = blockBlobAsyncClient.stageBlockWithResponse(blockId, fluxMd5Wrapper.getData(),
-                            bufferAggregator.length(), fluxMd5Wrapper.getMd5(), requestConditions.getLeaseId());
+                    Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(blockId,
+                        fluxMd5Wrapper.getData(), blockLength, fluxMd5Wrapper.getMd5(), requestConditions.getLeaseId());
+                    String contentValidationBehavior
+                        = ContentValidationBehaviorUtil.getBehaviorForChunkedUpload(requestChecksumAlgorithm);
+                    if (contentValidationBehavior != null) {
+                        responseMono = responseMono.contextWrite(FluxUtil
+                            .toReactorContext(new Context(CONTENT_VALIDATION_BEHAVIOR_KEY, contentValidationBehavior)));
+                    }
                     if (progressReporter != null) {
                         responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(Contexts.empty()
                             .setHttpRequestProgressReporter(progressReporter.createChild())
