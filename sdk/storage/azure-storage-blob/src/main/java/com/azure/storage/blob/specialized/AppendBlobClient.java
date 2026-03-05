@@ -433,9 +433,8 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Commits a new block of data to the end of the existing append blob.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
+     * <p>Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.</p>
      *
      * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
      * size is 4 MB. For more information, see the
@@ -464,9 +463,8 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Commits a new block of data to the end of the existing append blob.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
+     * <p>Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.</p>
      *
      * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
      * size is 4 MB. For more information, see the

@@ -88,7 +88,7 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION
-        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2026-02-06");
+        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2026-04-06");
 
     public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
 
@@ -220,7 +220,7 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2026-02-06";
+        public static final String TARGET_STORAGE_VERSION = "2026-04-06";
 
         /**
          * Error code returned from the service.
@@ -365,6 +365,16 @@ public final class Constants {
         public static final String SAS_ENCRYPTION_SCOPE = "ses";
 
         /**
+         * The SAS request headers parameter.
+         */
+        public static final String SAS_REQUEST_HEADERS = "srh";
+
+        /**
+         * The SAS request query parameters parameter.
+         */
+        public static final String SAS_REQUEST_QUERY_PARAMETERS = "srq";
+
+        /**
          * The SAS cache control parameter.
          */
         public static final String SAS_CACHE_CONTROL = "rscc";
@@ -418,6 +428,11 @@ public final class Constants {
          * The SAS signed version parameter for user delegation SAS.
          */
         public static final String SAS_SIGNED_KEY_VERSION = "skv";
+
+        /**
+         * The SAS signed delegated user tenant id parameter for user delegation SAS.
+         */
+        public static final String SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID = "skdutid";
 
         /**
          * The SAS preauthorized agent object id parameter for user delegation SAS.
