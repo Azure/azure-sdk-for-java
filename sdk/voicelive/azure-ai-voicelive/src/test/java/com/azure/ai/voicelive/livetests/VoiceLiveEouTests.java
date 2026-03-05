@@ -11,7 +11,6 @@ import com.azure.ai.voicelive.models.AzureSemanticEouDetectionMultilingual;
 import com.azure.ai.voicelive.models.AzureSemanticVadTurnDetection;
 import com.azure.ai.voicelive.models.AzureSemanticVadTurnDetectionMultilingual;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
-import com.azure.ai.voicelive.models.EouDetection;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
