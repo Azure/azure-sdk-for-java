@@ -101,6 +101,9 @@ public class AppConfigurationProperties {
         Assert.notEmpty(this.stores, "At least one config store has to be configured.");
 
         this.stores.forEach(store -> {
+            if (!store.isEnabled()) {
+                return;
+            }
             Assert.isTrue(
                 StringUtils.hasText(store.getEndpoint()) || StringUtils.hasText(store.getConnectionString())
                     || store.getEndpoints().size() > 0 || store.getConnectionStrings().size() > 0,
@@ -111,7 +114,9 @@ public class AppConfigurationProperties {
         Map<String, Boolean> existingEndpoints = new HashMap<>();
 
         for (ConfigStore store : this.stores) {
-
+            if (!store.isEnabled()) {
+                continue;
+            }
             if (store.getEndpoints().size() > 0) {
                 for (String endpoint : store.getEndpoints()) {
                     if (existingEndpoints.containsKey(endpoint)) {
