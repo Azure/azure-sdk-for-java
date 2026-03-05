@@ -4,4 +4,4 @@
 /**
  * Package containing classes for structured message encoding and decoding.
  */
-package com.azure.storage.common.implementation.structuredmessage;
+package com.azure.storage.common.implementation.contentvalidation;
