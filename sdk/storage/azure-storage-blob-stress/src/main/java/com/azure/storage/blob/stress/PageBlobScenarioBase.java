@@ -6,6 +6,7 @@ package com.azure.storage.blob.stress;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.perf.test.core.PerfStressTest;
@@ -20,12 +21,13 @@ import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
     private static final String CONTAINER_NAME = "stress-" + UUID.randomUUID();
+    private static final ClientLogger LOGGER = new ClientLogger(PageBlobScenarioBase.class);
     protected final TelemetryHelper telemetryHelper = new TelemetryHelper(this.getClass());
     private final BlobServiceClient noFaultServiceClient;
     private final BlobContainerClient syncContainerClient;
@@ -72,8 +74,57 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
     @Override
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
+        return cleanupContainerWithRetry()
+            .then(super.globalCleanupAsync())
+            .onErrorResume(error -> {
+                // Log cleanup failure but don't fail the overall test
+                LOGGER.atWarning()
+                    .addKeyValue("error", error.getMessage())
+                    .log("Container cleanup failed");
+                return super.globalCleanupAsync();
+            });
+    }
+
+    /**
+     * Enhanced cleanup with timeout and retry logic to ensure containers are properly destroyed.
+     */
+    private Mono<Void> cleanupContainerWithRetry() {
         return asyncNoFaultContainerClient.deleteIfExists()
-            .then(super.globalCleanupAsync());
+            .then()  // Convert Mono<Boolean> to Mono<Void>
+            .timeout(Duration.ofSeconds(30))
+            .retry(3)
+            .onErrorResume(error -> {
+                // If container deletion fails, try to delete all blobs first then retry container deletion
+                return deleteAllBlobsInContainer()
+                    .then(asyncNoFaultContainerClient.deleteIfExists())
+                    .then()  // Convert Mono<Boolean> to Mono<Void>
+                    .timeout(Duration.ofSeconds(30))
+                    .onErrorResume(finalError -> {
+                        // Log the error but don't fail the test
+                        LOGGER.atWarning()
+                            .addKeyValue("error", finalError.getMessage())
+                            .log("Final container cleanup failed after retries");
+                        return Mono.empty();
+                    });
+            });
+    }
+
+    /**
+     * Delete all blobs in the container to help with cleanup.
+     */
+    private Mono<Void> deleteAllBlobsInContainer() {
+        return asyncNoFaultContainerClient.listBlobs()
+            .flatMap(blobItem ->
+                asyncNoFaultContainerClient.getBlobAsyncClient(blobItem.getName()).delete())
+            .then()
+            .timeout(Duration.ofSeconds(60))
+            .onErrorResume(error -> {
+                // Log but continue - some blobs might have been deleted
+                LOGGER.atWarning()
+                    .addKeyValue("error", error.getMessage())
+                    .log("Blob cleanup partially failed");
+                return Mono.empty();
+            });
     }
 
     @SuppressWarnings("try")
@@ -86,7 +137,8 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
     @Override
     public Mono<Void> runAsync() {
         return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
-            .retry(3)  // Retry failed operations up to 3 times to handle transient faults
+            .retryWhen(reactor.util.retry.Retry.max(3)
+                .filter(e -> !(reactor.core.Exceptions.unwrap(e) instanceof com.azure.storage.stress.ContentMismatchException)))
             .onErrorMap(e -> {
                 // Log the error for debugging but let legitimate failures propagate
                 System.err.println("Test operation failed after retries: " + e.getMessage());

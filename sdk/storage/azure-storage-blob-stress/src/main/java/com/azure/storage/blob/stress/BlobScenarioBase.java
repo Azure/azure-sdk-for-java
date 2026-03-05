@@ -138,7 +138,8 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     @Override
     public Mono<Void> runAsync() {
         return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
-            .retry(3)  // Retry failed operations up to 3 times to handle transient faults
+            .retryWhen(reactor.util.retry.Retry.max(3)
+                .filter(e -> !(reactor.core.Exceptions.unwrap(e) instanceof com.azure.storage.stress.ContentMismatchException)))
             .onErrorMap(e -> {
                 // Log the error for debugging but let legitimate failures propagate
                 LOGGER.atError()

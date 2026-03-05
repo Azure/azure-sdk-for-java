@@ -62,8 +62,9 @@ public class AppendBlock extends BlobScenarioBase<StorageStressOptions> {
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return asyncNoFaultClient.getAppendBlobAsyncClient().delete()
-            .then(tempSetupBlobClient.delete())
+        return asyncNoFaultClient.getAppendBlobAsyncClient().deleteIfExists()
+            .onErrorResume(e -> Mono.empty())
+            .then(tempSetupBlobClient.deleteIfExists())
             .then(super.cleanupAsync());
     }
 }
