@@ -34,7 +34,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import com.codahale.metrics.MetricRegistry;
+
 
 /**
  * This workflow is intended for session and above consistency levels.
@@ -53,8 +53,8 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     private ConcurrentHashMap<Integer, Document> cache;
     private int cacheSize;
 
-    ReadMyWriteWorkflow(TenantWorkloadConfig cfg, MetricRegistry sharedRegistry) {
-        super(cfg, sharedRegistry);
+    ReadMyWriteWorkflow(TenantWorkloadConfig cfg) {
+        super(cfg);
     }
 
     @Override

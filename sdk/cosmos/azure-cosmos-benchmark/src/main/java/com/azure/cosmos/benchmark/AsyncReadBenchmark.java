@@ -5,8 +5,7 @@ package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
+
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
@@ -45,8 +44,8 @@ class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
         }
     }
 
-    AsyncReadBenchmark(TenantWorkloadConfig cfg, MetricRegistry sharedRegistry) {
-        super(cfg, sharedRegistry);
+    AsyncReadBenchmark(TenantWorkloadConfig cfg) {
+        super(cfg);
     }
 
     @Override

@@ -9,8 +9,7 @@ import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
+
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
@@ -54,8 +53,8 @@ public class AsyncEncryptionQueryBenchmark extends AsyncEncryptionBenchmark<Feed
         }
     }
 
-    public AsyncEncryptionQueryBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws IOException {
-        super(workloadCfg, sharedRegistry);
+    public AsyncEncryptionQueryBenchmark(TenantWorkloadConfig workloadCfg) throws IOException {
+        super(workloadCfg);
     }
 
     @Override

@@ -8,8 +8,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
+
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
@@ -54,8 +53,8 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
         }
     }
 
-    AsyncQueryBenchmark(TenantWorkloadConfig cfg, MetricRegistry sharedRegistry) {
-        super(cfg, sharedRegistry);
+    AsyncQueryBenchmark(TenantWorkloadConfig cfg) {
+        super(cfg);
     }
 
     @Override

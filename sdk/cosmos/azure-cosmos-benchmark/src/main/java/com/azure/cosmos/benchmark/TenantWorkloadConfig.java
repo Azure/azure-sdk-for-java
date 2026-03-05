@@ -50,9 +50,7 @@ public class TenantWorkloadConfig {
 
     // ======== Meter name constants (used by AsyncBenchmark + CosmosTotalResultReporter) ========
 
-    public static final String SUCCESS_COUNTER_METER_NAME = "#Successful Operations";
-    public static final String FAILURE_COUNTER_METER_NAME = "#Unsuccessful Operations";
-    public static final String LATENCY_METER_NAME = "Latency";
+
     public static final String DEFAULT_PARTITION_KEY_PATH = "/pk";
 
     // ======== Account connection ========

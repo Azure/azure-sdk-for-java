@@ -38,11 +38,7 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
-import com.codahale.metrics.Meter;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,15 +56,10 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
-    private final MetricRegistry metricsRegistry;
 
-    private volatile Meter successMeter;
-    private volatile Meter failureMeter;
     private boolean databaseCreated;
     private boolean collectionCreated;
 
@@ -83,11 +74,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     final TenantWorkloadConfig workloadConfig;
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
-    Timer latency;
 
-    private static final String SUCCESS_COUNTER_METER_NAME = "#Successful Operations";
-    private static final String FAILURE_COUNTER_METER_NAME = "#Unsuccessful Operations";
-    private static final String LATENCY_METER_NAME = "latency";
     private static final String dataEncryptionKeyId = "theDataEncryptionKey";
     static final String ENCRYPTED_STRING_FIELD = "encryptedStringField";
     static final String ENCRYPTED_LONG_FIELD = "encryptedLongField";
@@ -97,10 +84,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
     CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
 
-
-    private AtomicBoolean warmupMode = new AtomicBoolean(false);
-
-    AsyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws IOException {
+    AsyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg) throws IOException {
 
         workloadConfig = workloadCfg;
 
@@ -127,7 +111,6 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
         cosmosEncryptionAsyncClient = createEncryptionClientInstance(cosmosClient);
-        metricsRegistry = sharedRegistry;
         logger = LoggerFactory.getLogger(this.getClass());
         createEncryptionDatabaseAndContainer();
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
@@ -221,70 +204,12 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     protected void onSuccess() {
     }
 
-    protected void initializeMetersIfSkippedEnoughOperations(AtomicLong count) {
-        if (workloadConfig.getSkipWarmUpOperations() > 0) {
-            if (count.get() >= workloadConfig.getSkipWarmUpOperations()) {
-                if (warmupMode.get()) {
-                    synchronized (this) {
-                        if (warmupMode.get()) {
-                            logger.info("Warmup phase finished. Starting capturing perf numbers ....");
-                            resetMeters();
-                            initializeMeter();
-                            warmupMode.set(false);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     protected void onError(Throwable throwable) {
     }
 
     protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i) throws Exception;
 
-    private void resetMeters() {
-        metricsRegistry.remove(SUCCESS_COUNTER_METER_NAME);
-        metricsRegistry.remove(FAILURE_COUNTER_METER_NAME);
-        if (latencyAwareOperations(workloadConfig.getOperationType())) {
-            metricsRegistry.remove(LATENCY_METER_NAME);
-        }
-    }
-
-    private void initializeMeter() {
-        successMeter = metricsRegistry.meter(SUCCESS_COUNTER_METER_NAME);
-        failureMeter = metricsRegistry.meter(FAILURE_COUNTER_METER_NAME);
-        if (latencyAwareOperations(workloadConfig.getOperationType())) {
-            latency = metricsRegistry.register(LATENCY_METER_NAME,
-                new Timer(new HdrHistogramResetOnSnapshotReservoir()));
-        }
-    }
-
-    private boolean latencyAwareOperations(Operation operation) {
-        switch (workloadConfig.getOperationType()) {
-            case ReadLatency:
-            case WriteLatency:
-            case QueryInClauseParallel:
-            case QueryCross:
-            case QuerySingle:
-            case QuerySingleMany:
-            case QueryParallel:
-            case QueryOrderby:
-            case QueryTopOrderby:
-            case Mixed:
-                return true;
-            default:
-                return false;
-        }
-    }
-
     public void run() throws Exception {
-        initializeMeter();
-        if (workloadConfig.getSkipWarmUpOperations() > 0) {
-            logger.info("Starting warm up phase. Executing {} operations to warm up ...",
-                workloadConfig.getSkipWarmUpOperations());
-            warmupMode.set(true);
-        }
 
         long startTime = System.currentTimeMillis();
 
@@ -311,8 +236,6 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
 
                 @Override
                 protected void hookOnComplete() {
-                    initializeMetersIfSkippedEnoughOperations(count);
-                    successMeter.mark();
                     concurrencyControlSemaphore.release();
                     AsyncEncryptionBenchmark.this.onSuccess();
 
@@ -324,9 +247,6 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
 
                 @Override
                 protected void hookOnError(Throwable throwable) {
-                    initializeMetersIfSkippedEnoughOperations(count);
-                    failureMeter.mark();
-
                     logger.error("Encountered failure {} on thread {}",
                         throwable.getMessage(), Thread.currentThread().getName(), throwable);
                     concurrencyControlSemaphore.release();

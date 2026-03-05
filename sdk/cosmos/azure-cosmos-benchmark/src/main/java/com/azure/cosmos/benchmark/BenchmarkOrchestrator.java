@@ -3,9 +3,6 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.codahale.metrics.ConsoleReporter;
-import com.codahale.metrics.CsvReporter;
-import com.codahale.metrics.ScheduledReporter;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.benchmark.ctl.AsyncCtlWorkload;
@@ -14,12 +11,12 @@ import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQuerySinglePartition
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionReadBenchmark;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionWriteBenchmark;
 import com.azure.cosmos.benchmark.linkedin.LICtlWorkload;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
-import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
-import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.apache.commons.lang3.StringUtils;
@@ -65,37 +62,36 @@ public class BenchmarkOrchestrator {
 
         setGlobalSystemProperties(config);
 
-        // Set up shared metric registry
-        MetricRegistry registry = new MetricRegistry();
+        // Set up shared Micrometer registry (composite: SimpleMeterRegistry + optional AzureMonitor)
+        CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
+        SimpleMeterRegistry simpleRegistry = new SimpleMeterRegistry();
+        compositeRegistry.add(simpleRegistry);
+
+        MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
+        if (cosmosMicrometerRegistry != null) {
+            compositeRegistry.add(cosmosMicrometerRegistry);
+            logger.info("AzureMonitor registry added to composite registry");
+        }
+
         if (config.isEnableJvmStats()) {
-            registry.register("gc", new GarbageCollectorMetricSet());
-            registry.register("threads", new CachedThreadStatesGaugeSet(10, TimeUnit.SECONDS));
-            registry.register("memory", new MemoryUsageGaugeSet());
-            registry.register("threadPrefix", new ThreadPrefixGaugeSet());
-            logger.info("JVM stats enabled (gc, threads, memory, threadPrefix)");
+            new JvmGcMetrics().bindTo(compositeRegistry);
+            new JvmMemoryMetrics().bindTo(compositeRegistry);
+            new JvmThreadMetrics().bindTo(compositeRegistry);
+            new ThreadPrefixGaugeSet().bindTo(compositeRegistry);
+            logger.info("JVM stats enabled (gc, memory, threads, threadPrefix)");
         }
 
         // Prepare all tenants (inject shared state, set defaults)
-        prepareTenants(config);
+        prepareTenants(config, compositeRegistry);
 
-        // Reporter selection: CSV > Console
-        ScheduledReporter reporter;
+        // Benchmark metrics reporter (reads SDK-emitted meters from the shared registry)
+        Path metricsDir = null;
         if (config.getReportingDirectory() != null) {
-            Path metricsDir = Paths.get(config.getReportingDirectory(), "metrics");
-            Files.createDirectories(metricsDir);
-            reporter = CsvReporter.forRegistry(registry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .build(metricsDir.toFile());
-            logger.info("CSV metrics reporter started -> {}", metricsDir);
-        } else {
-            reporter = ConsoleReporter.forRegistry(registry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .build();
-            logger.info("Console reporter started");
+            metricsDir = Paths.get(config.getReportingDirectory(), "metrics");
         }
+        BenchmarkMetricsReporter reporter = new BenchmarkMetricsReporter(compositeRegistry, metricsDir);
         reporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+        logger.info("BenchmarkMetricsReporter started (interval={}s)", config.getPrintingInterval());
 
         // Optional: Result uploader
         CosmosClient resultUploaderClient = null;
@@ -115,7 +111,7 @@ public class BenchmarkOrchestrator {
             }
             String operationSummary = String.join("+", ops);
             resultReporter = CosmosTotalResultReporter
-                .forRegistry(registry,
+                .forRegistry(compositeRegistry,
                     resultUploaderClient
                         .getDatabase(config.getResultUploadDatabase())
                         .getContainer(config.getResultUploadContainer()),
@@ -124,8 +120,6 @@ public class BenchmarkOrchestrator {
                     config.getBranchName(),
                     config.getCommitId(),
                     totalConcurrency)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .build();
             resultReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
             logger.info("Result reporter started -> {}/{}",
@@ -152,7 +146,7 @@ public class BenchmarkOrchestrator {
 
         // ======== Lifecycle loop ========
         try {
-            runLifecycleLoop(config, registry, reporter);
+            runLifecycleLoop(config, reporter);
         } finally {
             // Cleanup reporters
             reporter.report();
@@ -176,8 +170,8 @@ public class BenchmarkOrchestrator {
 
     // ======== Lifecycle loop (create -> run -> close -> settle x N) ========
 
-    private void runLifecycleLoop(BenchmarkConfig config, MetricRegistry registry,
-                                  ScheduledReporter reporter) throws Exception {
+    private void runLifecycleLoop(BenchmarkConfig config,
+                                  BenchmarkMetricsReporter reporter) throws Exception {
         int totalCycles = config.getCycles();
         List<TenantWorkloadConfig> tenants = config.getTenantWorkloads();
 
@@ -197,7 +191,7 @@ public class BenchmarkOrchestrator {
                 logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
 
                 // 1. Create clients
-                List<Benchmark> benchmarks = createBenchmarks(config, registry);
+                List<Benchmark> benchmarks = createBenchmarks(config);
                 reporter.report();
                 logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
                     cycle, benchmarks.size(), Instant.now());
@@ -250,10 +244,10 @@ public class BenchmarkOrchestrator {
             totalCycles, durationSec, Instant.now());
     }
 
-    private List<Benchmark> createBenchmarks(BenchmarkConfig config, MetricRegistry registry) throws Exception {
+    private List<Benchmark> createBenchmarks(BenchmarkConfig config) throws Exception {
         List<Benchmark> benchmarks = new ArrayList<>();
         for (TenantWorkloadConfig tenant : config.getTenantWorkloads()) {
-            benchmarks.add(createBenchmarkForOperation(tenant, registry));
+            benchmarks.add(createBenchmarkForOperation(tenant));
         }
         return benchmarks;
     }
@@ -291,15 +285,10 @@ public class BenchmarkOrchestrator {
      * Centralizes all tenant mutation: suppressCleanup, applicationName suffix,
      * micrometer registry injection.
      */
-    private void prepareTenants(BenchmarkConfig config) {
-        MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
-        if (cosmosMicrometerRegistry != null) {
-            logger.info("Cosmos micrometer registry: {}", cosmosMicrometerRegistry.getClass().getSimpleName());
-        }
-
+    private void prepareTenants(BenchmarkConfig config, MeterRegistry sharedRegistry) {
         for (TenantWorkloadConfig tenant : config.getTenantWorkloads()) {
-            // Inject shared micrometer registry
-            tenant.setCosmosMicrometerRegistry(cosmosMicrometerRegistry);
+            // Inject shared micrometer registry for SDK telemetry
+            tenant.setCosmosMicrometerRegistry(sharedRegistry);
 
             // Propagate suppressCleanup from orchestrator config
             if (config.isSuppressCleanup()) {
@@ -317,16 +306,16 @@ public class BenchmarkOrchestrator {
 
     // ======== Benchmark factory ========
 
-    private Benchmark createBenchmarkForOperation(TenantWorkloadConfig cfg, MetricRegistry registry) throws Exception {
+    private Benchmark createBenchmarkForOperation(TenantWorkloadConfig cfg) throws Exception {
         // Sync benchmarks
         if (cfg.isSync()) {
             switch (cfg.getOperationType()) {
                 case ReadThroughput:
                 case ReadLatency:
-                    return new SyncReadBenchmark(cfg, registry);
+                    return new SyncReadBenchmark(cfg);
                 case WriteThroughput:
                 case WriteLatency:
-                    return new SyncWriteBenchmark(cfg, registry);
+                    return new SyncWriteBenchmark(cfg);
                 default:
                     throw new IllegalArgumentException(
                         "Sync mode is not supported for operation: " + cfg.getOperationType());
@@ -335,10 +324,10 @@ public class BenchmarkOrchestrator {
 
         // CTL workloads
         if (cfg.getOperationType() == Operation.CtlWorkload) {
-            return new AsyncCtlWorkload(cfg, registry);
+            return new AsyncCtlWorkload(cfg);
         }
         if (cfg.getOperationType() == Operation.LinkedInCtlWorkload) {
-            return new LICtlWorkload(cfg, registry);
+            return new LICtlWorkload(cfg);
         }
 
         // Encryption benchmarks
@@ -346,19 +335,19 @@ public class BenchmarkOrchestrator {
             switch (cfg.getOperationType()) {
                 case WriteThroughput:
                 case WriteLatency:
-                    return new AsyncEncryptionWriteBenchmark(cfg, registry);
+                    return new AsyncEncryptionWriteBenchmark(cfg);
                 case ReadThroughput:
                 case ReadLatency:
-                    return new AsyncEncryptionReadBenchmark(cfg, registry);
+                    return new AsyncEncryptionReadBenchmark(cfg);
                 case QueryCross:
                 case QuerySingle:
                 case QueryParallel:
                 case QueryOrderby:
                 case QueryTopOrderby:
                 case QueryInClauseParallel:
-                    return new AsyncEncryptionQueryBenchmark(cfg, registry);
+                    return new AsyncEncryptionQueryBenchmark(cfg);
                 case QuerySingleMany:
-                    return new AsyncEncryptionQuerySinglePartitionMultiple(cfg, registry);
+                    return new AsyncEncryptionQuerySinglePartitionMultiple(cfg);
                 default:
                     throw new IllegalArgumentException(
                         "Encryption is not supported for operation: " + cfg.getOperationType());
@@ -369,10 +358,10 @@ public class BenchmarkOrchestrator {
         switch (cfg.getOperationType()) {
             case ReadThroughput:
             case ReadLatency:
-                return new AsyncReadBenchmark(cfg, registry);
+                return new AsyncReadBenchmark(cfg);
             case WriteThroughput:
             case WriteLatency:
-                return new AsyncWriteBenchmark(cfg, registry);
+                return new AsyncWriteBenchmark(cfg);
             case QueryCross:
             case QuerySingle:
             case QueryParallel:
@@ -382,16 +371,16 @@ public class BenchmarkOrchestrator {
             case QueryAggregateTopOrderby:
             case QueryInClauseParallel:
             case ReadAllItemsOfLogicalPartition:
-                return new AsyncQueryBenchmark(cfg, registry);
+                return new AsyncQueryBenchmark(cfg);
             case ReadManyLatency:
             case ReadManyThroughput:
-                return new AsyncReadManyBenchmark(cfg, registry);
+                return new AsyncReadManyBenchmark(cfg);
             case Mixed:
-                return new AsyncMixedBenchmark(cfg, registry);
+                return new AsyncMixedBenchmark(cfg);
             case QuerySingleMany:
-                return new AsyncQuerySinglePartitionMultiple(cfg, registry);
+                return new AsyncQuerySinglePartitionMultiple(cfg);
             case ReadMyWrites:
-                return new ReadMyWriteWorkflow(cfg, registry);
+                return new ReadMyWriteWorkflow(cfg);
             default:
                 throw new IllegalArgumentException("Unsupported operation: " + cfg.getOperationType());
         }

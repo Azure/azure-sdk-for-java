@@ -5,18 +5,13 @@ package com.azure.cosmos.benchmark;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.implementation.cpu.CpuMemoryReader;
 import com.azure.cosmos.models.PartitionKey;
-import com.codahale.metrics.Counter;
-import com.codahale.metrics.Gauge;
-import com.codahale.metrics.Histogram;
-import com.codahale.metrics.Meter;
-import com.codahale.metrics.MetricAttribute;
-import com.codahale.metrics.MetricFilter;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.ScheduledReporter;
-import com.codahale.metrics.Snapshot;
-import com.codahale.metrics.Timer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.distribution.HistogramSnapshot;
+import io.micrometer.core.instrument.distribution.ValueAtPercentile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,100 +22,162 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import java.util.SortedMap;
-import java.util.Collections;
-
-public class CosmosTotalResultReporter extends ScheduledReporter {
-    private final static Logger LOGGER = LoggerFactory.getLogger(CosmosTotalResultReporter.class);
+/**
+ * Periodically reads SDK-emitted Micrometer metrics from the shared {@link MeterRegistry}
+ * and uploads aggregated benchmark results to a Cosmos DB container.
+ *
+ * <p>Tracks rolling success/failure rates (computed from counter deltas between report intervals)
+ * and latency percentiles from the SDK's operation timer.</p>
+ */
+public class CosmosTotalResultReporter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTotalResultReporter.class);
     static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private final MetricRegistry resultRegistry = new MetricRegistry();
-    private final Histogram successRate = resultRegistry.histogram("successRate");
-    private final Histogram failureRate = resultRegistry.histogram("failureRate");
-    private final Histogram medianLatency = resultRegistry.histogram("medianLatency");
-    private final Histogram p99Latency = resultRegistry.histogram("p99Latency");
 
-    private final Histogram cpuUsage = resultRegistry.histogram("cpuUsage");
+    // SDK metric names
+    private static final String OP_CALLS_METRIC = "cosmos.client.op.calls";
+    private static final String OP_LATENCY_METRIC = "cosmos.client.op.latency";
 
-    private final CpuMemoryReader cpuReader;
-
+    private final MeterRegistry registry;
     private final CosmosContainer results;
-
     private final String operation;
-
     private final String testVariationName;
-
     private final String branchName;
-
     private final String commitId;
-
     private final int concurrency;
+    private final CpuMemoryReader cpuReader;
+    private final ScheduledExecutorService scheduler;
+
+    // Internal histograms for rolling aggregation (simple arrays of samples)
+    private final java.util.List<Double> successRateSamples = new java.util.ArrayList<>();
+    private final java.util.List<Double> failureRateSamples = new java.util.ArrayList<>();
+    private final java.util.List<Double> medianLatencySamples = new java.util.ArrayList<>();
+    private final java.util.List<Double> p99LatencySamples = new java.util.ArrayList<>();
+    private final java.util.List<Double> cpuUsageSamples = new java.util.ArrayList<>();
 
     private Instant lastRecorded;
-    private long lastRecordedSuccessCount;
-    private long lastRecordedFailureCount;
+    private double lastRecordedSuccessCount;
+    private double lastRecordedFailureCount;
 
-    public CosmosTotalResultReporter(
-        MetricRegistry registry,
-        TimeUnit rateUnit,
-        TimeUnit durationUnit,
-        MetricFilter filter,
-        ScheduledExecutorService executor,
-        boolean shutdownExecutorOnStop,
-        Set<MetricAttribute> disabledMetricAttributes,
+    private CosmosTotalResultReporter(
+        MeterRegistry registry,
         CosmosContainer results,
         String operation,
         String testVariationName,
         String branchName,
         String commitId,
         int concurrency) {
-        super(registry, "cosmos-reporter", filter, rateUnit, durationUnit, executor, shutdownExecutorOnStop, disabledMetricAttributes);
 
-        this.lastRecorded = Instant.now();
-        this.cpuReader = new CpuMemoryReader();
+        this.registry = registry;
         this.results = results;
         this.operation = operation;
         this.testVariationName = testVariationName != null ? testVariationName : "";
         this.branchName = branchName != null ? branchName : "";
         this.commitId = commitId != null ? commitId : "";
         this.concurrency = concurrency;
+        this.cpuReader = new CpuMemoryReader();
+        this.lastRecorded = Instant.now();
+        this.scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread t = new Thread(r, "cosmos-result-reporter");
+            t.setDaemon(true);
+            return t;
+        });
     }
 
-    @Override
-    public void stop() {
-        super.stop();
+    /**
+     * Start periodic reporting.
+     */
+    public void start(long interval, TimeUnit unit) {
+        scheduler.scheduleAtFixedRate(this::report, interval, interval, unit);
+    }
 
+    /**
+     * Collect one sample of metrics for rolling aggregation.
+     */
+    public void report() {
+        // Compute success/failure rates from counter deltas
+        double successCount = sumCountersByName(OP_CALLS_METRIC, true);
+        double failureCount = sumCountersByName(OP_CALLS_METRIC, false);
+
+        Instant now = Instant.now();
+        double intervalInSeconds = Duration.between(lastRecorded, now).toMillis() / 1000.0;
+
+        if (intervalInSeconds > 0) {
+            cpuUsageSamples.add(cpuReader.getSystemWideCpuUsage());
+
+            if (successCount == 0 && failureCount == 0) {
+                lastRecorded = now;
+                return;
+            }
+
+            double successRate = (successCount - lastRecordedSuccessCount) / intervalInSeconds;
+            double failureRate = (failureCount - lastRecordedFailureCount) / intervalInSeconds;
+            successRateSamples.add(successRate);
+            failureRateSamples.add(failureRate);
+
+            lastRecordedSuccessCount = successCount;
+            lastRecordedFailureCount = failureCount;
+            lastRecorded = now;
+
+            // Read latency percentiles from SDK timer
+            Timer latencyTimer = findTimerByName(OP_LATENCY_METRIC);
+            if (latencyTimer != null) {
+                HistogramSnapshot snapshot = latencyTimer.takeSnapshot();
+                double median = 0, p99 = 0;
+                for (ValueAtPercentile vp : snapshot.percentileValues()) {
+                    if (vp.percentile() == 0.5) median = vp.value(TimeUnit.MILLISECONDS);
+                    else if (vp.percentile() == 0.99) p99 = vp.value(TimeUnit.MILLISECONDS);
+                }
+
+                if (median > 0) {
+                    medianLatencySamples.add(median);
+                    p99LatencySamples.add(p99);
+                }
+            }
+        }
+    }
+
+    /**
+     * Stop reporting and upload final aggregated results.
+     */
+    public void stop() {
+        scheduler.shutdown();
+        try {
+            scheduler.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        report();
+        uploadFinalResults();
+    }
+
+    private void uploadFinalResults() {
         DateTimeFormatter formatter = DateTimeFormatter
             .ofPattern("yyyy-MM-dd HH:mm:ss.nnnnnnn")
             .withZone(ZoneId.from(ZoneOffset.UTC));
 
-        Instant nowSnapshot = Instant.now();
-        Snapshot successSnapshot = this.successRate.getSnapshot();
-        Snapshot failureSnapshot = this.failureRate.getSnapshot();
-        Snapshot medianLatencySnapshot = this.medianLatency.getSnapshot();
-        Snapshot p99LatencySnapshot = this.p99Latency.getSnapshot();
-        Snapshot cpuUsageSnapshot = this.cpuUsage.getSnapshot();
-
         ObjectNode doc = OBJECT_MAPPER.createObjectNode();
         String id = UUID.randomUUID().toString();
         doc.put("id", id);
-        doc.put("TIMESTAMP", formatter.format(nowSnapshot).substring(0, 27));
+        doc.put("TIMESTAMP", formatter.format(Instant.now()).substring(0, 27));
         doc.put("Operation", this.operation);
         doc.put("TestVariationName", this.testVariationName);
         doc.put("BranchName", this.branchName);
         doc.put("CommitId", this.commitId);
         doc.put("Concurrency", this.concurrency);
-        doc.put("CpuUsage", (cpuUsageSnapshot.get75thPercentile())/1000d);
-        doc.put("SuccessRate", ((long)successSnapshot.get75thPercentile())/100d);
-        doc.put("FailureRate", ((long)failureSnapshot.get75thPercentile())/100d);
-        double p99 = new BigDecimal(Double.toString(p99LatencySnapshot.get75thPercentile()/100000000d))
+        doc.put("CpuUsage", percentile75(cpuUsageSamples));
+        doc.put("SuccessRate", percentile75(successRateSamples));
+        doc.put("FailureRate", percentile75(failureRateSamples));
+
+        double p99 = new BigDecimal(Double.toString(percentile75(p99LatencySamples)))
             .setScale(2, RoundingMode.HALF_UP)
             .doubleValue();
-        double median = new BigDecimal(Double.toString(medianLatencySnapshot.get75thPercentile()/100000000d))
+        double median = new BigDecimal(Double.toString(percentile75(medianLatencySamples)))
             .setScale(2, RoundingMode.HALF_UP)
             .doubleValue();
 
@@ -128,66 +185,42 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
         doc.put("MedianLatencyInMs", median);
 
         results.createItem(doc, new PartitionKey(id), null);
-
         LOGGER.info("Final results uploaded to {} - {}", results.getId(), doc.toPrettyString());
     }
 
-    @Override
-    public void report(
-        SortedMap<String, Gauge> gauges,
-        SortedMap<String, Counter> counters,
-        SortedMap<String, Histogram> histograms,
-        SortedMap<String, Meter> meters,
-        SortedMap<String, Timer> timers) {
-        // We are only interested in success / failure rate and median and P99 latency for now
-
-        Meter successMeter = meters.get(TenantWorkloadConfig.SUCCESS_COUNTER_METER_NAME);
-        Meter failureMeter = meters.get(TenantWorkloadConfig.FAILURE_COUNTER_METER_NAME);
-        Timer latencyTimer = timers.get(TenantWorkloadConfig.LATENCY_METER_NAME);
-
-        Instant nowSnapshot = Instant.now();
-
-        double intervalInSeconds = Duration.between(lastRecorded, nowSnapshot).toMillis() / 1000;
-        if (intervalInSeconds > 0) {
-            this.cpuUsage.update((long)(100000d * cpuReader.getSystemWideCpuUsage()));
-
-            long successSnapshot = successMeter.getCount();
-            long failureSnapshot = failureMeter.getCount();
-            lastRecorded = nowSnapshot;
-
-            if (successSnapshot == 0 && failureSnapshot == 0) {
-                return;
+    private double sumCountersByName(String metricName, boolean successOnly) {
+        double total = 0;
+        for (Counter counter : registry.find(metricName).counters()) {
+            String statusCode = counter.getId().getTag("OperationStatusCode");
+            if (statusCode == null) {
+                continue;
             }
-
-            this.successRate.update((long)(100d * (successSnapshot - lastRecordedSuccessCount) / intervalInSeconds));
-            this.failureRate.update((long)(100d * (failureSnapshot - lastRecordedFailureCount) / intervalInSeconds));
-            lastRecordedSuccessCount = successSnapshot;
-            lastRecordedFailureCount = failureSnapshot;
-
-            Snapshot latencySnapshot = latencyTimer.getSnapshot();
-            long medianSnapshot = (long) (100d * latencySnapshot.getMedian());
-            if (medianSnapshot == 0L) {
-                return;
+            boolean isSuccess = statusCode.startsWith("2");
+            if (successOnly == isSuccess) {
+                total += counter.count();
             }
-
-            this.medianLatency.update(medianSnapshot);
-            this.p99Latency.update((long) (100d * latencySnapshot.get99thPercentile()));
         }
+        return total;
+    }
+
+    private Timer findTimerByName(String metricName) {
+        return registry.find(metricName).timer();
+    }
+
+    private static double percentile75(java.util.List<Double> samples) {
+        if (samples.isEmpty()) {
+            return 0;
+        }
+        java.util.List<Double> sorted = new java.util.ArrayList<>(samples);
+        java.util.Collections.sort(sorted);
+        int index = (int) Math.ceil(0.75 * sorted.size()) - 1;
+        return sorted.get(Math.max(0, index));
     }
 
     /**
      * Returns a new {@link Builder} for {@link CosmosTotalResultReporter}.
-     *
-     * @param registry the registry to report
-     * @param resultsContainer the Cosmos DB container to write the results into
-     * @param operation the operation name for result reporting
-     * @param testVariationName test variation identifier
-     * @param branchName source branch name
-     * @param commitId source commit identifier
-     * @param concurrency degree of concurrency
-     * @return a {@link Builder} instance for a {@link CosmosTotalResultReporter}
      */
-    public static Builder forRegistry(MetricRegistry registry, CosmosContainer resultsContainer,
+    public static Builder forRegistry(MeterRegistry registry, CosmosContainer resultsContainer,
                                       String operation, String testVariationName,
                                       String branchName, String commitId, int concurrency) {
         return new Builder(registry, resultsContainer, operation, testVariationName,
@@ -195,35 +228,21 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
     }
 
     /**
-     * A builder for {@link CosmosTotalResultReporter} instances. Defaults to using the default locale and
-     * time zone, writing to {@code System.out}, converting rates to events/second, converting
-     * durations to milliseconds, and not filtering metrics.
+     * A builder for {@link CosmosTotalResultReporter} instances.
      */
     public static class Builder {
-        private final MetricRegistry registry;
+        private final MeterRegistry registry;
         private final CosmosContainer resultsContainer;
         private final String operation;
         private final String testVariationName;
         private final String branchName;
         private final String commitId;
         private final int concurrency;
-        private TimeUnit rateUnit;
-        private TimeUnit durationUnit;
-        private MetricFilter filter;
-        private ScheduledExecutorService executor;
-        private boolean shutdownExecutorOnStop;
-        private Set<MetricAttribute> disabledMetricAttributes;
 
-        private Builder(MetricRegistry registry, CosmosContainer resultsContainer,
+        private Builder(MeterRegistry registry, CosmosContainer resultsContainer,
                         String operation, String testVariationName,
                         String branchName, String commitId, int concurrency) {
             this.registry = registry;
-            this.rateUnit = TimeUnit.SECONDS;
-            this.durationUnit = TimeUnit.MILLISECONDS;
-            this.filter = MetricFilter.ALL;
-            this.executor = null;
-            this.shutdownExecutorOnStop = true;
-            this.disabledMetricAttributes = Collections.emptySet();
             this.resultsContainer = resultsContainer;
             this.operation = operation;
             this.testVariationName = testVariationName;
@@ -233,95 +252,12 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
         }
 
         /**
-         * Specifies whether the executor (used for reporting) will be stopped with same time with reporter.
-         * Default value is true.
-         * Setting this parameter to false, has the sense in combining with providing external managed executor via {@link #scheduleOn(ScheduledExecutorService)}.
-         *
-         * @param shutdownExecutorOnStop if true, then executor will be stopped in same time with this reporter
-         * @return {@code this}
-         */
-        public Builder shutdownExecutorOnStop(boolean shutdownExecutorOnStop) {
-            this.shutdownExecutorOnStop = shutdownExecutorOnStop;
-            return this;
-        }
-
-        /**
-         * Specifies the executor to use while scheduling reporting of metrics.
-         * Default value is null.
-         * Null value leads to executor will be auto created on start.
-         *
-         * @param executor the executor to use while scheduling reporting of metrics.
-         * @return {@code this}
-         */
-        public Builder scheduleOn(ScheduledExecutorService executor) {
-            this.executor = executor;
-            return this;
-        }
-
-        /**
-         * Convert rates to the given time unit.
-         *
-         * @param rateUnit a unit of time
-         * @return {@code this}
-         */
-        public Builder convertRatesTo(TimeUnit rateUnit) {
-            this.rateUnit = rateUnit;
-            return this;
-        }
-
-        /**
-         * Convert durations to the given time unit.
-         *
-         * @param durationUnit a unit of time
-         * @return {@code this}
-         */
-        public Builder convertDurationsTo(TimeUnit durationUnit) {
-            this.durationUnit = durationUnit;
-            return this;
-        }
-
-        /**
-         * Only report metrics which match the given filter.
-         *
-         * @param filter a {@link MetricFilter}
-         * @return {@code this}
-         */
-        public Builder filter(MetricFilter filter) {
-            this.filter = filter;
-            return this;
-        }
-
-        /**
-         * Don't report the passed metric attributes for all metrics (e.g. "p999", "stddev" or "m15").
-         * See {@link MetricAttribute}.
-         *
-         * @param disabledMetricAttributes a {@link MetricFilter}
-         * @return {@code this}
-         */
-        public Builder disabledMetricAttributes(Set<MetricAttribute> disabledMetricAttributes) {
-            this.disabledMetricAttributes = disabledMetricAttributes;
-            return this;
-        }
-
-        /**
          * Builds a {@link CosmosTotalResultReporter} with the given properties.
-         *
-         * @return a {@link CosmosTotalResultReporter}
          */
         public CosmosTotalResultReporter build() {
-            return new CosmosTotalResultReporter(registry,
-                rateUnit,
-                durationUnit,
-                filter,
-                executor,
-                shutdownExecutorOnStop,
-                disabledMetricAttributes,
-                resultsContainer,
-                operation,
-                testVariationName,
-                branchName,
-                commitId,
-                concurrency);
+            return new CosmosTotalResultReporter(
+                registry, resultsContainer, operation, testVariationName,
+                branchName, commitId, concurrency);
         }
     }
 }

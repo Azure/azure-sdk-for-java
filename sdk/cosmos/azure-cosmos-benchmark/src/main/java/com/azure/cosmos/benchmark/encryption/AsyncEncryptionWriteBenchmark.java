@@ -10,8 +10,7 @@ import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
@@ -57,8 +56,8 @@ public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<Cosm
         }
     }
 
-    public AsyncEncryptionWriteBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws IOException {
-        super(workloadCfg, sharedRegistry);
+    public AsyncEncryptionWriteBenchmark(TenantWorkloadConfig workloadCfg) throws IOException {
+        super(workloadCfg);
         uuid = UUID.randomUUID().toString();
         dataFieldValue = RandomStringUtils.randomAlphabetic(workloadConfig.getDocumentDataFieldSize());
     }

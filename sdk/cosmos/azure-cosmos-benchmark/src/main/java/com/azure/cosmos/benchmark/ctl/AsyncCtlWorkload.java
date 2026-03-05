@@ -24,11 +24,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.codahale.metrics.Meter;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.BaseSubscriber;
@@ -51,7 +47,6 @@ public class AsyncCtlWorkload implements Benchmark {
     private final String prefixUuidForCreate;
     private final String dataFieldValue;
     private final String partitionKey;
-    private final MetricRegistry metricsRegistry;
     private final Logger logger;
     private final CosmosAsyncClient cosmosClient;
     private final TenantWorkloadConfig workloadConfig;
@@ -59,20 +54,6 @@ public class AsyncCtlWorkload implements Benchmark {
     private final Map<String, List<CosmosItemIdentity>> itemIdentityMap = new HashMap<>();
     private final Semaphore concurrencyControlSemaphore;
     private final Random random;
-
-    private Timer readLatency;
-    private Timer writeLatency;
-    private Timer queryLatency;
-    private Timer readManyLatency;
-
-    private Meter readSuccessMeter;
-    private Meter readFailureMeter;
-    private Meter writeSuccessMeter;
-    private Meter writeFailureMeter;
-    private Meter querySuccessMeter;
-    private Meter queryFailureMeter;
-    private Meter readManySuccessMeter;
-    private Meter readManyFailureMeter;
 
     private CosmosAsyncDatabase cosmosAsyncDatabase;
     private List<CosmosAsyncContainer> containers = new ArrayList<>();
@@ -83,7 +64,7 @@ public class AsyncCtlWorkload implements Benchmark {
     private int queryPct;
     private int readManyPct;
 
-    public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) {
+    public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg) {
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
             : null;
@@ -107,7 +88,6 @@ public class AsyncCtlWorkload implements Benchmark {
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
         workloadConfig = workloadCfg;
-        metricsRegistry = sharedRegistry;
         logger = LoggerFactory.getLogger(this.getClass());
 
         parsedReadWriteQueryReadManyPct(workloadConfig.getReadWriteQueryReadManyPct());
@@ -177,18 +157,6 @@ public class AsyncCtlWorkload implements Benchmark {
     }
 
     public void run() throws Exception {
-        readSuccessMeter = metricsRegistry.meter("#Read Successful Operations");
-        readFailureMeter = metricsRegistry.meter("#Read Unsuccessful Operations");
-        writeSuccessMeter = metricsRegistry.meter("#Write Successful Operations");
-        writeFailureMeter = metricsRegistry.meter("#Write Unsuccessful Operations");
-        querySuccessMeter = metricsRegistry.meter("#Query Successful Operations");
-        queryFailureMeter = metricsRegistry.meter("#Query Unsuccessful Operations");
-        readManySuccessMeter = metricsRegistry.meter("#Read Many Successful Operations");
-        readManyFailureMeter = metricsRegistry.meter("#Read Many Unsuccessful Operations");
-        readLatency = metricsRegistry.register("Read Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
-        writeLatency = metricsRegistry.register("Write Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
-        queryLatency = metricsRegistry.register("Query Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
-        readManyLatency = metricsRegistry.register("Read Many Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
 
         long startTime = System.currentTimeMillis();
 
@@ -199,37 +167,29 @@ public class AsyncCtlWorkload implements Benchmark {
         for (i = 0; BenchmarkHelper.shouldContinue(startTime, i, workloadConfig); i++) {
             int index = (int) i % 100;
             if (index < readPct) {
-                BenchmarkRequestSubscriber<Object> readSubscriber = new BenchmarkRequestSubscriber<>(readSuccessMeter,
-                    readFailureMeter,
+                BenchmarkRequestSubscriber<Object> readSubscriber = new BenchmarkRequestSubscriber<>(
                     concurrencyControlSemaphore,
                     count,
                     workloadConfig.getDiagnosticsThresholdDuration());
-                readSubscriber.context = readLatency.time();
                 performWorkload(readSubscriber, OperationType.Read, i, false);
             } else if (index < writeRange) {
-                BenchmarkRequestSubscriber<Object> writeSubscriber = new BenchmarkRequestSubscriber<>(writeSuccessMeter,
-                    writeFailureMeter,
+                BenchmarkRequestSubscriber<Object> writeSubscriber = new BenchmarkRequestSubscriber<>(
                     concurrencyControlSemaphore,
                     count,
                     workloadConfig.getDiagnosticsThresholdDuration());
-                writeSubscriber.context = writeLatency.time();
                 performWorkload(writeSubscriber, OperationType.Create, i, false);
 
             } else if (index < queryRange){
-                BenchmarkRequestSubscriber<Object> querySubscriber = new BenchmarkRequestSubscriber<>(querySuccessMeter,
-                    queryFailureMeter,
+                BenchmarkRequestSubscriber<Object> querySubscriber = new BenchmarkRequestSubscriber<>(
                     concurrencyControlSemaphore,
                     count,
                     workloadConfig.getDiagnosticsThresholdDuration());
-                querySubscriber.context = queryLatency.time();
                 performWorkload(querySubscriber, OperationType.Query, i, false);
             } else {
-                BenchmarkRequestSubscriber<Object> readManySubscriber = new BenchmarkRequestSubscriber<>(readManySuccessMeter,
-                    readManyFailureMeter,
+                BenchmarkRequestSubscriber<Object> readManySubscriber = new BenchmarkRequestSubscriber<>(
                     concurrencyControlSemaphore,
                     count,
                     workloadConfig.getDiagnosticsThresholdDuration());
-                readManySubscriber.context = readManyLatency.time();
                 performWorkload(readManySubscriber, OperationType.Query, i, true);
             }
         }
