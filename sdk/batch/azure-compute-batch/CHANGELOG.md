@@ -17,7 +17,10 @@
 
 This is the first generally available release of the `azure-compute-batch` library. It includes all features and breaking changes introduced in `1.0.0-beta.6`.
 
+### Other Changes
+
 This is the first generally available release of the `azure-compute-batch` library. It includes all features and breaking changes introduced in `1.0.0-beta.6`.
+
 ## 1.0.0-beta.6 (2026-02-25)
 
 ### Features Added
