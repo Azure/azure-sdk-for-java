@@ -240,7 +240,7 @@ public class Sample16_CreateAnalyzerWithLabelsAsync {
                     System.out.println("  Description: " + result.getDescription());
                     System.out.println("  Base analyzer: " + result.getBaseAnalyzerId());
                     System.out.println("  Fields: " + result.getFieldSchema().getFields().size());
-                    System.out.println("  Knowledge srcs: " + (result.getKnowledgeSources() != null ? result.getKnowledgeSources().size() : 0));
+                    System.out.println("  Knowledge sources: " + (result.getKnowledgeSources() != null ? result.getKnowledgeSources().size() : 0));
                     // END: com.azure.ai.contentunderstanding.createAnalyzerWithLabelsAsync
 
                     // Verify analyzer creation
