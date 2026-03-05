@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthdataaiservices.models.DeidServiceProperties;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.healthdataaiservices.models.Sku;
 import java.io.IOException;
 import java.util.Map;
 
@@ -29,6 +30,11 @@ public final class DeidServiceInner extends Resource {
      * The managed service identities assigned to this resource.
      */
     private ManagedServiceIdentity identity;
+
+    /*
+     * The SKU (Stock Keeping Unit) assigned to this resource.
+     */
+    private Sku sku;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -93,6 +99,26 @@ public final class DeidServiceInner extends Resource {
      */
     public DeidServiceInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the sku property: The SKU (Stock Keeping Unit) assigned to this resource.
+     * 
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The SKU (Stock Keeping Unit) assigned to this resource.
+     * 
+     * @param sku the sku value to set.
+     * @return the DeidServiceInner object itself.
+     */
+    public DeidServiceInner withSku(Sku sku) {
+        this.sku = sku;
         return this;
     }
 
@@ -163,6 +189,7 @@ public final class DeidServiceInner extends Resource {
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("sku", this.sku);
         return jsonWriter.writeEndObject();
     }
 
@@ -197,6 +224,8 @@ public final class DeidServiceInner extends Resource {
                     deserializedDeidServiceInner.properties = DeidServiceProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedDeidServiceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDeidServiceInner.sku = Sku.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedDeidServiceInner.systemData = SystemData.fromJson(reader);
                 } else {

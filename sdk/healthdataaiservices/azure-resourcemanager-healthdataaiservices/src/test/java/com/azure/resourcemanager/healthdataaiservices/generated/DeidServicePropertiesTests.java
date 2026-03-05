@@ -13,15 +13,15 @@ public final class DeidServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeidServiceProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"serviceUrl\":\"fygxgispemvtzfk\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"ofx\",\"eofjaeqjh\"],\"privateEndpoint\":{\"id\":\"asvm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ulngsntn\",\"actionsRequired\":\"bkzgcwrwclx\"},\"provisioningState\":\"Deleting\"},\"id\":\"jdous\",\"name\":\"cqvkocrcjdkwtn\",\"type\":\"xbnjbiksq\"},{\"properties\":{\"groupIds\":[\"sainqpjwnzl\",\"jfm\",\"pee\",\"vmgxsab\"],\"privateEndpoint\":{\"id\":\"duuji\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"zdzevndh\",\"actionsRequired\":\"wpdappdsbdkv\"},\"provisioningState\":\"Failed\"},\"id\":\"feusnhut\",\"name\":\"eltmrldhugjzzdat\",\"type\":\"xhocdgeablgphuti\"},{\"properties\":{\"groupIds\":[\"kao\",\"wyiftyhxhur\",\"k\",\"tyxolniwpwc\"],\"privateEndpoint\":{\"id\":\"fkgiawxk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"lwckbasyypnddhs\",\"actionsRequired\":\"bacphejko\"},\"provisioningState\":\"Deleting\"},\"id\":\"gou\",\"name\":\"zndlikwy\",\"type\":\"kgfg\"}],\"publicNetworkAccess\":\"Disabled\"}")
+            "{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"lngsntnbybkzgcwr\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"rljdouskcqv\",\"ocrcjdk\",\"tnhxbn\"],\"privateEndpoint\":{\"id\":\"ksqrglssai\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"wnzlljfmppeeb\",\"actionsRequired\":\"gxsabkyq\"},\"provisioningState\":\"Creating\"},\"id\":\"itcjczdz\",\"name\":\"vndhkrwpdapp\",\"type\":\"sbdkvwr\"},{\"properties\":{\"groupIds\":[\"usnhutje\",\"tmrldhugjzzdatq\"],\"privateEndpoint\":{\"id\":\"cdgea\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"huticndvkao\",\"actionsRequired\":\"yiftyhxhuro\"},\"provisioningState\":\"Deleting\"},\"id\":\"xolniwpwcukjfk\",\"name\":\"iawxklry\",\"type\":\"lwckbasyypnddhs\"},{\"properties\":{\"groupIds\":[\"cph\",\"jkot\",\"nqgoulzndli\"],\"privateEndpoint\":{\"id\":\"qkgfgibma\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"eqsrxybzqqedqyt\",\"actionsRequired\":\"iqfouflmmnkz\"},\"provisioningState\":\"Creating\"},\"id\":\"mglougpbkw\",\"name\":\"mutduqktaps\",\"type\":\"wgcu\"},{\"properties\":{\"groupIds\":[\"mkdo\",\"vqwhbmdgbbjfd\",\"gmbmbexppbh\",\"q\"],\"privateEndpoint\":{\"id\":\"lfp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"lgbquxig\",\"actionsRequired\":\"jgzjaoyfhrtx\"},\"provisioningState\":\"Succeeded\"},\"id\":\"rkujy\",\"name\":\"vlejuvfqa\",\"type\":\"rlyxwjkcprbnw\"}],\"publicNetworkAccess\":\"Enabled\"}")
             .toObject(DeidServiceProperties.class);
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeidServiceProperties model = new DeidServiceProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        DeidServiceProperties model = new DeidServiceProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(DeidServiceProperties.class);
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 }

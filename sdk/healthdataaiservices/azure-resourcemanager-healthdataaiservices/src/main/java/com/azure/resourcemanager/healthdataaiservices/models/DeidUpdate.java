@@ -32,6 +32,11 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
      */
     private DeidPropertiesUpdate properties;
 
+    /*
+     * The SKU (Stock Keeping Unit) assigned to this resource.
+     */
+    private Sku sku;
+
     /**
      * Creates an instance of DeidUpdate class.
      */
@@ -99,6 +104,26 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
     }
 
     /**
+     * Get the sku property: The SKU (Stock Keeping Unit) assigned to this resource.
+     * 
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The SKU (Stock Keeping Unit) assigned to this resource.
+     * 
+     * @param sku the sku value to set.
+     * @return the DeidUpdate object itself.
+     */
+    public DeidUpdate withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -107,6 +132,7 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("sku", this.sku);
         return jsonWriter.writeEndObject();
     }
 
@@ -132,6 +158,8 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
                     deserializedDeidUpdate.identity = ManagedServiceIdentityUpdate.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedDeidUpdate.properties = DeidPropertiesUpdate.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDeidUpdate.sku = Sku.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

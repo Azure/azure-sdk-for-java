@@ -31,6 +31,9 @@ import com.azure.resourcemanager.healthdataaiservices.models.DeidServiceProperti
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.healthdataaiservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthdataaiservices.models.Sku;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuName;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuTier;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +59,7 @@ public final class DeidServicesCreateSamples {
             .withProperties(new DeidServiceProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf()))
+            .withSku(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD))
             .create();
     }
 
@@ -170,6 +174,9 @@ import com.azure.resourcemanager.healthdataaiservices.models.DeidService;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityUpdate;
 import com.azure.resourcemanager.healthdataaiservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthdataaiservices.models.Sku;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuName;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuTier;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -195,6 +202,7 @@ public final class DeidServicesUpdateSamples {
             .withIdentity(new ManagedServiceIdentityUpdate().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf()))
             .withProperties(new DeidPropertiesUpdate().withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
+            .withSku(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD))
             .apply();
     }
 
