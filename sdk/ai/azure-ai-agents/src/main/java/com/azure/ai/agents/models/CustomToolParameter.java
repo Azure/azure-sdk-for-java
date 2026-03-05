@@ -17,7 +17,7 @@ import java.io.IOException;
  * tools](/docs/guides/function-calling#custom-tools).
  */
 @Fluent
-public final class CustomToolParam extends Tool {
+public final class CustomToolParameter extends Tool {
 
     /*
      * The type property.
@@ -44,12 +44,12 @@ public final class CustomToolParam extends Tool {
     private CustomToolParamFormat format;
 
     /**
-     * Creates an instance of CustomToolParam class.
+     * Creates an instance of CustomToolParameter class.
      *
      * @param name the name value to set.
      */
     @Generated
-    public CustomToolParam(String name) {
+    public CustomToolParameter(String name) {
         this.name = name;
     }
 
@@ -88,10 +88,10 @@ public final class CustomToolParam extends Tool {
      * Set the description property: Optional description of the custom tool, used to provide more context.
      *
      * @param description the description value to set.
-     * @return the CustomToolParam object itself.
+     * @return the CustomToolParameter object itself.
      */
     @Generated
-    public CustomToolParam setDescription(String description) {
+    public CustomToolParameter setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -110,10 +110,10 @@ public final class CustomToolParam extends Tool {
      * Set the format property: The input format for the custom tool. Default is unconstrained text.
      *
      * @param format the format value to set.
-     * @return the CustomToolParam object itself.
+     * @return the CustomToolParameter object itself.
      */
     @Generated
-    public CustomToolParam setFormat(CustomToolParamFormat format) {
+    public CustomToolParameter setFormat(CustomToolParamFormat format) {
         this.format = format;
         return this;
     }
@@ -133,16 +133,16 @@ public final class CustomToolParam extends Tool {
     }
 
     /**
-     * Reads an instance of CustomToolParam from the JsonReader.
+     * Reads an instance of CustomToolParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CustomToolParam if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of CustomToolParameter if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CustomToolParam.
+     * @throws IOException If an error occurs while reading the CustomToolParameter.
      */
     @Generated
-    public static CustomToolParam fromJson(JsonReader jsonReader) throws IOException {
+    public static CustomToolParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             ToolType type = ToolType.CUSTOM;
@@ -163,11 +163,11 @@ public final class CustomToolParam extends Tool {
                     reader.skipChildren();
                 }
             }
-            CustomToolParam deserializedCustomToolParam = new CustomToolParam(name);
-            deserializedCustomToolParam.type = type;
-            deserializedCustomToolParam.description = description;
-            deserializedCustomToolParam.format = format;
-            return deserializedCustomToolParam;
+            CustomToolParameter deserializedCustomToolParameter = new CustomToolParameter(name);
+            deserializedCustomToolParameter.type = type;
+            deserializedCustomToolParameter.description = description;
+            deserializedCustomToolParameter.format = format;
+            return deserializedCustomToolParameter;
         });
     }
 }

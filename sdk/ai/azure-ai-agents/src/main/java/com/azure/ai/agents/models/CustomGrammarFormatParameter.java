@@ -16,7 +16,7 @@ import java.io.IOException;
  * A grammar defined by the user.
  */
 @Immutable
-public final class CustomGrammarFormatParam extends CustomToolParamFormat {
+public final class CustomGrammarFormatParameter extends CustomToolParamFormat {
 
     /*
      * The type property.
@@ -35,6 +35,18 @@ public final class CustomGrammarFormatParam extends CustomToolParamFormat {
      */
     @Generated
     private final String definition;
+
+    /**
+     * Creates an instance of CustomGrammarFormatParameter class.
+     *
+     * @param syntax the syntax value to set.
+     * @param definition the definition value to set.
+     */
+    @Generated
+    public CustomGrammarFormatParameter(GrammarSyntax syntax, String definition) {
+        this.syntax = syntax;
+        this.definition = definition;
+    }
 
     /**
      * Get the type property: The type property.
@@ -81,16 +93,16 @@ public final class CustomGrammarFormatParam extends CustomToolParamFormat {
     }
 
     /**
-     * Reads an instance of CustomGrammarFormatParam from the JsonReader.
+     * Reads an instance of CustomGrammarFormatParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CustomGrammarFormatParam if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of CustomGrammarFormatParameter if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CustomGrammarFormatParam.
+     * @throws IOException If an error occurs while reading the CustomGrammarFormatParameter.
      */
     @Generated
-    public static CustomGrammarFormatParam fromJson(JsonReader jsonReader) throws IOException {
+    public static CustomGrammarFormatParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GrammarSyntax syntax = null;
             String definition = null;
@@ -108,22 +120,10 @@ public final class CustomGrammarFormatParam extends CustomToolParamFormat {
                     reader.skipChildren();
                 }
             }
-            CustomGrammarFormatParam deserializedCustomGrammarFormatParam
-                = new CustomGrammarFormatParam(syntax, definition);
-            deserializedCustomGrammarFormatParam.type = type;
-            return deserializedCustomGrammarFormatParam;
+            CustomGrammarFormatParameter deserializedCustomGrammarFormatParameter
+                = new CustomGrammarFormatParameter(syntax, definition);
+            deserializedCustomGrammarFormatParameter.type = type;
+            return deserializedCustomGrammarFormatParameter;
         });
-    }
-
-    /**
-     * Creates an instance of CustomGrammarFormatParam class.
-     *
-     * @param syntax the syntax value to set.
-     * @param definition the definition value to set.
-     */
-    @Generated
-    public CustomGrammarFormatParam(GrammarSyntax syntax, String definition) {
-        this.syntax = syntax;
-        this.definition = definition;
     }
 }

@@ -1,6 +1,16 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
+## 2.0.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.0.0-beta.2 (2026-03-04)
 
 ### Features Added
 
@@ -9,7 +19,7 @@
 - Added `action` property to `ImageGenTool` with new `ImageGenActionEnum` (values: `GENERATE`, `EDIT`, `AUTO`).
 - Added `GPT_IMAGE_1_5` to `ImageGenToolModel`.
 - Added container skill types: `ContainerSkill`, `ContainerSkillType`, `ContainerAutoParam`, `ContainerNetworkPolicyParam`, and related network policy types (`ContainerNetworkPolicyAllowlistParam`, `ContainerNetworkPolicyDisabledParam`, `ContainerNetworkPolicyDomainSecretParam`, `ContainerNetworkPolicyParamType`).
-- Added environment configuration for `FunctionShellToolParam` and `InputItemFunctionShellCallItemParam` via new `FunctionShellToolParamEnvironment`, `FunctionShellCallItemParamEnvironment`, and related container/local environment parameter types. `InputItemFunctionShellCallItemParam`, `FunctionShellCallItemParamEnvironment`, and related types moved to `implementation/models` (internal).
+- Added environment configuration for `FunctionShellToolParameter` and `InputItemFunctionShellCallItemParam` via new `FunctionShellToolParamEnvironment`, `FunctionShellCallItemParamEnvironment`, and related container/local environment parameter types. `InputItemFunctionShellCallItemParam`, `FunctionShellCallItemParamEnvironment`, and related types moved to `implementation/models` (internal).
 - Added `MessageContent` and `MessageContentType` model types; subsequently moved to `implementation/models` (internal).
 - Added skill parameter types: `InlineSkillParam`, `InlineSkillSourceParam`, `LocalSkillParam`, `SkillReferenceParam`.
 
@@ -29,6 +39,17 @@
 - `Summary` renamed to `SummaryTextContent` and moved to `implementation/models` (internal).
 - Moved ~100 model classes from `com.azure.ai.agents.models` to `com.azure.ai.agents.implementation.models`, removing them from the public API surface. This includes `InputItem` and all subtypes, `Annotation`, output content types, and related types.
 - Removed public methods from `MemoryStoresClient`/`MemoryStoresAsyncClient`: `searchMemoriesWithResponse` and `beginUpdateMemories` (protocol methods accepting `BinaryData`), `searchMemories(name, scope)` (minimal convenience overload), and `searchMemories`/`beginUpdateMemories` overloads accepting `List<ResponseInputItem>`.
+- Renamed model classes for naming consistency:
+  - `AgentObjectVersions` renamed to `AgentDetailsVersions`
+  - `OpenAIError` renamed to `ApiError`
+  - `AzureFunctionDefinitionFunction` renamed to `AzureFunctionDefinitionDetails`
+- Renamed tool classes from `*Param` suffix to `*Parameter`:
+  - `ApplyPatchToolParam` renamed to `ApplyPatchToolParameter`
+  - `CustomGrammarFormatParam` renamed to `CustomGrammarFormatParameter`
+  - `CustomToolParam` renamed to `CustomToolParameter`
+  - `FunctionShellToolParam` renamed to `FunctionShellToolParameter`
+  - `LocalShellToolParam` renamed to `LocalShellToolParameter`
+- `OpenApiFunctionDefinition`: `getDefaultParams()` and `setDefaultParams()` renamed to `getDefaultParameters()` and `setDefaultParameters()`
 
 ### Bugs Fixed
 

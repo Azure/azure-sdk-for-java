@@ -5,7 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.IndexesImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.models.Index;
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -85,11 +85,11 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Index> listVersions(String name) {
+    public PagedIterable<AIProjectIndex> listVersions(String name) {
         // Generated convenience method for listVersions
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listVersions(name, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AIProjectIndex.class));
     }
 
     /**
@@ -189,10 +189,11 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Index> listLatest() {
+    public PagedIterable<AIProjectIndex> listLatest() {
         // Generated convenience method for listLatest
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listLatest(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
+        return serviceClient.listLatest(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AIProjectIndex.class));
     }
 
     /**
@@ -210,10 +211,10 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index getVersion(String name, String version) {
+    public AIProjectIndex getVersion(String name, String version) {
         // Generated convenience method for getVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getVersionWithResponse(name, version, requestOptions).getValue().toObject(Index.class);
+        return getVersionWithResponse(name, version, requestOptions).getValue().toObject(AIProjectIndex.class);
     }
 
     /**
@@ -306,15 +307,15 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index createOrUpdateVersion(String name, String version, Index index) {
+    public AIProjectIndex createOrUpdateVersion(String name, String version, AIProjectIndex index) {
         // Generated convenience method for createOrUpdateVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, true);
+        JsonMergePatchHelper.getAIProjectIndexAccessor().prepareModelForJsonMergePatch(index, true);
         BinaryData indexInBinaryData = BinaryData.fromObject(index);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         indexInBinaryData.getLength();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, false);
+        JsonMergePatchHelper.getAIProjectIndexAccessor().prepareModelForJsonMergePatch(index, false);
         return createOrUpdateVersionWithResponse(name, version, indexInBinaryData, requestOptions).getValue()
-            .toObject(Index.class);
+            .toObject(AIProjectIndex.class);
     }
 }

@@ -16,7 +16,7 @@ import java.io.IOException;
  * Allows the assistant to create, delete, or update files using unified diffs.
  */
 @Immutable
-public final class ApplyPatchToolParam extends Tool {
+public final class ApplyPatchToolParameter extends Tool {
 
     /*
      * The type property.
@@ -25,10 +25,10 @@ public final class ApplyPatchToolParam extends Tool {
     private ToolType type = ToolType.APPLY_PATCH;
 
     /**
-     * Creates an instance of ApplyPatchToolParam class.
+     * Creates an instance of ApplyPatchToolParameter class.
      */
     @Generated
-    public ApplyPatchToolParam() {
+    public ApplyPatchToolParameter() {
     }
 
     /**
@@ -54,27 +54,27 @@ public final class ApplyPatchToolParam extends Tool {
     }
 
     /**
-     * Reads an instance of ApplyPatchToolParam from the JsonReader.
+     * Reads an instance of ApplyPatchToolParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ApplyPatchToolParam if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ApplyPatchToolParam.
+     * @return An instance of ApplyPatchToolParameter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplyPatchToolParameter.
      */
     @Generated
-    public static ApplyPatchToolParam fromJson(JsonReader jsonReader) throws IOException {
+    public static ApplyPatchToolParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ApplyPatchToolParam deserializedApplyPatchToolParam = new ApplyPatchToolParam();
+            ApplyPatchToolParameter deserializedApplyPatchToolParameter = new ApplyPatchToolParameter();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedApplyPatchToolParam.type = ToolType.fromString(reader.getString());
+                    deserializedApplyPatchToolParameter.type = ToolType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedApplyPatchToolParam;
+            return deserializedApplyPatchToolParameter;
         });
     }
 }
