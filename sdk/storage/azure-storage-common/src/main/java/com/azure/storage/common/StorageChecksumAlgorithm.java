@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.implementation.contentvalidation;
+package com.azure.storage.common;
 
 /**
  * Algorithm for content validation on upload and download operations. When enabled, the SDK computes checksums and

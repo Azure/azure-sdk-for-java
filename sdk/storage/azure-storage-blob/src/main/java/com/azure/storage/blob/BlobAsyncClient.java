@@ -38,12 +38,12 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.common.implementation.contentvalidation.ContentValidationBehaviorUtil;
-import com.azure.storage.common.implementation.contentvalidation.StorageChecksumAlgorithm;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

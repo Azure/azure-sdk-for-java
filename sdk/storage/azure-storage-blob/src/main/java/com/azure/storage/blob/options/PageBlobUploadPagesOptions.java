@@ -7,8 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.contentvalidation.StorageChecksumAlgorithm;
 
 import reactor.core.publisher.Flux;
 

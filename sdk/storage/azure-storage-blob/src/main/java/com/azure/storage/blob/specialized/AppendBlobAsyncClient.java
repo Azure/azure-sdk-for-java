@@ -38,8 +38,8 @@ import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.contentvalidation.StorageChecksumAlgorithm;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

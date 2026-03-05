@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
-import com.azure.storage.common.implementation.contentvalidation.StorageChecksumAlgorithm;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 
 /**
  * Extended options that may be passed when downloading a blob range to an output stream.

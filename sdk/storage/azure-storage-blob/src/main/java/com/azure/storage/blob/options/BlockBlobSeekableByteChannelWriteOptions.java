@@ -6,7 +6,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.common.implementation.contentvalidation.StorageChecksumAlgorithm;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 
 import java.util.Collection;
 import java.util.Map;

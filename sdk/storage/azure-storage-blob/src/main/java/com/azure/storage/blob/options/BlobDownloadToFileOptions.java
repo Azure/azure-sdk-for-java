@@ -8,8 +8,8 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.contentvalidation.StorageChecksumAlgorithm;
 
 import java.nio.file.OpenOption;
 import java.util.Set;

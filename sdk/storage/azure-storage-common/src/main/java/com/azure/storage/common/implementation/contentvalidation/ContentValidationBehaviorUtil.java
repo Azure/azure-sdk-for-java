@@ -7,6 +7,8 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_STRUCTURED_MESSAGE_CONTEXT;
 
+import com.azure.storage.common.StorageChecksumAlgorithm;
+
 /**
  * Determines the content validation behavior string to pass in the pipeline context for upload operations.
  * Callers put the returned value under {@link StructuredMessageConstants#CONTENT_VALIDATION_BEHAVIOR_KEY}.
