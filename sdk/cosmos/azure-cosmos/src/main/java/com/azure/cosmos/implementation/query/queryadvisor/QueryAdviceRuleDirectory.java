@@ -88,7 +88,7 @@ final class QueryAdviceRuleDirectory {
         }
         RuleData ruleData = this.rules.get(ruleId);
         if (ruleData == null) {
-            LOGGER.warn("Unknown query advice rule ID '{}'; entry will be omitted.", ruleId);
+            LOGGER.debug("Unknown query advice rule ID '{}'; entry will be omitted.", ruleId);
         }
         return ruleData != null ? ruleData.message : null;
     }
