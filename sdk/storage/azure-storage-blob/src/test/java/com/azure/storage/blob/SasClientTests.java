@@ -1366,6 +1366,38 @@ public class SasClientTests extends BlobTestBase {
         assertDoesNotThrow(() -> destinationClient.copyFromUrl(sourceUrl));
     }
 
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    public void commitBlockListWithCreatePermission() {
+        BlobServiceClient oauthService = getOAuthServiceClient();
+        String containerName = cc.getBlobContainerName();
+        BlobContainerClient oauthContainer = oauthService.getBlobContainerClient(containerName);
+        String blockId = Base64.getEncoder().encodeToString("blockid".getBytes(StandardCharsets.UTF_8));
+        List<String> blockIds = new ArrayList<String>();
+        blockIds.add(blockId);
+
+        String destinationBlobName = generateBlobName();
+        OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
+
+        UserDelegationKey key = oauthService.getUserDelegationKey(null, expiryTime);
+        key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+        String saoid = testResourceNamer.randomUuid();
+
+        // Create-only permission for destination blob
+        BlobSasPermission destinationPermissions = new BlobSasPermission().setCreatePermission(true);
+        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiryTime, destinationPermissions)
+            .setPreauthorizedAgentObjectId(saoid);
+        String createPermissionsOnly = oauthContainer.generateUserDelegationSas(sasValues, key);
+        BlockBlobClient destinationClient
+            = instrument(new SpecializedBlobClientBuilder().endpoint(oauthContainer.getBlobContainerUrl())
+                .blobName(destinationBlobName)
+                .sasToken(createPermissionsOnly)).buildBlockBlobClient();
+
+        destinationClient.stageBlock(blockId, DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        assertDoesNotThrow(() -> destinationClient.commitBlockList(blockIds, false));
+    }
+
     private static Stream<Arguments> blobSasImplUtilCanonicalizedResourceSupplier() {
         return Stream.of(
             Arguments.of("c", "b", "id", OffsetDateTime.now(), "bs",
