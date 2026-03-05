@@ -4,7 +4,6 @@
 package com.azure.storage.common.implementation.contentvalidation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 
