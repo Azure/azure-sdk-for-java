@@ -9,6 +9,8 @@ import com.azure.resourcemanager.healthdataaiservices.models.DeidService;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityUpdate;
 import com.azure.resourcemanager.healthdataaiservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthdataaiservices.models.Sku;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuTier;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +36,7 @@ public final class DeidServicesUpdateSamples {
             .withIdentity(new ManagedServiceIdentityUpdate().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf()))
             .withProperties(new DeidPropertiesUpdate().withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
+            .withSku(new Sku().withName("Standard").withTier(SkuTier.STANDARD))
             .apply();
     }
 
