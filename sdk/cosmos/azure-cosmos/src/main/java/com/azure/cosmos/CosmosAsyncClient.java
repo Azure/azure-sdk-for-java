@@ -105,6 +105,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final ConsistencyLevel desiredConsistencyLevel;
     private final ReadConsistencyStrategy readConsistencyStrategy;
     private final AzureKeyCredential credential;
+    TokenCredential tokenCredential;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final DiagnosticsProvider diagnosticsProvider;
     private final Tag clientCorrelationTag;
@@ -128,7 +129,7 @@ public final class CosmosAsyncClient implements Closeable {
         List<CosmosPermissionProperties> permissions = builder.getPermissions();
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver = builder.getAuthorizationTokenResolver();
         this.credential = builder.getCredential();
-        TokenCredential tokenCredential = builder.getTokenCredential();
+        tokenCredential = builder.getTokenCredential();
         boolean sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
@@ -287,6 +288,15 @@ public final class CosmosAsyncClient implements Closeable {
      */
     AzureKeyCredential credential() {
         return credential;
+    }
+
+    /**
+     * Gets the token credential.
+     *
+     * @return token credential.
+     */
+    TokenCredential tokenCredential() {
+        return this.tokenCredential;
     }
 
     /***

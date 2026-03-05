@@ -25,6 +25,8 @@ import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SemanticRerankRequestOptions;
+import com.azure.cosmos.models.SemanticRerankResult;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -301,6 +303,19 @@ public class CosmosContainer {
     private CosmosItemResponse<Object> blockDeleteItemResponse(Mono<CosmosItemResponse<Object>> deleteItemMono) {
         try {
             return deleteItemMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    private SemanticRerankResult blockSemanticRerankResponse(Mono<SemanticRerankResult> semanticRerankResultMono) {
+        try {
+            return semanticRerankResultMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -934,6 +949,13 @@ public class CosmosContainer {
         CosmosBulkExecutionOptions bulkOptions) {
 
         return this.blockBulkResponse(asyncContainer.executeBulkOperations(Flux.fromIterable(operations), bulkOptions));
+    }
+
+    public SemanticRerankResult semanticRerank(
+        String rerankContext,
+        List<String> documents,
+        SemanticRerankRequestOptions options) {
+        return blockSemanticRerankResponse(this.asyncContainer.semanticRerank(rerankContext, documents, options));
     }
 
     /**
