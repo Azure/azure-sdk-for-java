@@ -211,15 +211,6 @@ class ConnectionManager {
     }
 
     /**
-     * Sets the current active replica client endpoint.
-     * 
-     * @param endpoint the endpoint URL of the currently active client
-     */
-    void setCurrentClient(String endpoint) {
-        this.lastActiveClient = endpoint;
-    }
-
-    /**
      * Applies exponential backoff to a failed client endpoint.
      * 
      * @param endpoint the endpoint URL of the failed client; must not be null or empty
