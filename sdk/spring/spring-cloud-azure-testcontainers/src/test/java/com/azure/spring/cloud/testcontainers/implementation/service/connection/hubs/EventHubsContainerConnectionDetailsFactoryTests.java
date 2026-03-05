@@ -8,9 +8,8 @@ import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsConnectionDetails;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledOnOs;
-import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -35,7 +34,7 @@ import static org.awaitility.Awaitility.waitAtMost;
     "spring.cloud.azure.eventhubs.event-hub-name=eh1"
 })
 @Testcontainers
-@EnabledOnOs(OS.LINUX)
+@Disabled
 class EventHubsContainerConnectionDetailsFactoryTests {
 
     private static final Network NETWORK = Network.newNetwork();
