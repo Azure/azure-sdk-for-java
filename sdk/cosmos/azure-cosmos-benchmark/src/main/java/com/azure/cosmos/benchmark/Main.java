@@ -28,9 +28,15 @@ public class Main {
             // BenchmarkOrchestrator handles dispatch for all benchmark types (async, sync,
             // CTL, encryption, LinkedIn) based on operationType and flags in TenantWorkloadConfig.
             BenchmarkConfig benchConfig = BenchmarkConfig.fromConfiguration(cfg);
-            TenantWorkloadConfig firstTenant = benchConfig.getTenantWorkloads().get(0);
 
-            validateConfiguration(firstTenant);
+            if (benchConfig.getTenantWorkloads().isEmpty()) {
+                throw new IllegalArgumentException(
+                    "No tenants defined in workload config. The 'tenants' array must contain at least one entry.");
+            }
+
+            for (TenantWorkloadConfig tenant : benchConfig.getTenantWorkloads()) {
+                validateConfiguration(tenant);
+            }
 
             new BenchmarkOrchestrator().run(benchConfig);
         } catch (ParameterException e) {

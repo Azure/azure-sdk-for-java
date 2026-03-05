@@ -37,6 +37,14 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TenantWorkloadConfig {
 
+    /**
+     * Benchmark execution environment.
+     */
+    public enum Environment {
+        Daily,   // CTL environment where we run the workload for a fixed number of hours
+        Staging  // CTL environment where the workload runs as a long running job
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(TenantWorkloadConfig.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -314,9 +322,9 @@ public class TenantWorkloadConfig {
     public boolean isEncryptionEnabled() { return encryptionEnabled != null && encryptionEnabled; }
     public int getBulkloadBatchSize() { return bulkloadBatchSize != null ? bulkloadBatchSize : 200000; }
     public String getTestScenario() { return testScenario != null ? testScenario : "GET"; }
-    public Configuration.Environment getEnvironment() {
-        if (environment == null) return Configuration.Environment.Daily;
-        return Configuration.Environment.valueOf(environment);
+    public Environment getEnvironment() {
+        if (environment == null) return Environment.Daily;
+        return Environment.valueOf(environment);
     }
     public boolean isSync() { return useSync != null && useSync; }
 

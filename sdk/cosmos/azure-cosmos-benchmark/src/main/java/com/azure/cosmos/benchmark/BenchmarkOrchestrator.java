@@ -451,7 +451,7 @@ public class BenchmarkOrchestrator {
         }
 
         String roleInstance = System.getenv("APPLICATIONINSIGHTS_ROLE_INSTANCE");
-        if (roleName != null) {
+        if (roleInstance != null) {
             globalTags.add(io.micrometer.core.instrument.Tag.of("cloud_RoleInstance", roleInstance));
         }
 

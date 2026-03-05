@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -29,22 +28,6 @@ public class Configuration {
 
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
-
-    public enum Environment {
-        Daily,   // This is the CTL environment where we run the workload for a fixed number of hours
-        Staging; // This is the CTL environment where the worload runs as a long running job
-
-        static class EnvironmentConverter implements IStringConverter<Environment> {
-            @Override
-            public Environment convert(String value) {
-                if (value == null) {
-                    return Environment.Daily;
-                }
-
-                return Environment.valueOf(value);
-            }
-        }
-    }
 
     public boolean isHelp() {
         return help;
