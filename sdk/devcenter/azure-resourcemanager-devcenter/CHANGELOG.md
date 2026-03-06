@@ -1,14 +1,628 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2026-03-06)
 
-### Features Added
+- Azure Resource Manager DevCenter client library for Java. This package contains Microsoft Azure SDK for DevCenter Management SDK. DevCenter Management API. Package api-version 2026-01-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.GalleryListResult` was removed
 
-### Other Changes
+#### `models.NetworkConnectionListResult` was removed
+
+#### `models.OutboundEnvironmentEndpointCollection` was removed
+
+#### `models.EnvironmentDefinitionListResult` was removed
+
+#### `models.SkuListResult` was removed
+
+#### `models.ProjectEnvironmentTypeListResult` was removed
+
+#### `models.AllowedEnvironmentTypeListResult` was removed
+
+#### `models.HealthCheckStatusDetailsListResult` was removed
+
+#### `models.CatalogListResult` was removed
+
+#### `models.ListUsagesResult` was removed
+
+#### `models.DevCenterListResult` was removed
+
+#### `models.DevBoxDefinitionListResult` was removed
+
+#### `models.EnvironmentTypeListResult` was removed
+
+#### `models.AttachedNetworkListResult` was removed
+
+#### `models.ImageVersionListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.TrackedResourceUpdate` was removed
+
+#### `models.ProjectListResult` was removed
+
+#### `models.ImageListResult` was removed
+
+#### `models.PoolListResult` was removed
+
+#### `models.ScheduleListResult` was removed
+
+#### `models.RecommendedMachineConfiguration` was modified
+
+* `RecommendedMachineConfiguration()` was changed to private access
+* `validate()` was removed
+
+#### `models.CatalogConflictError` was modified
+
+* `CatalogConflictError()` was changed to private access
+* `validate()` was removed
+
+#### `models.DevCenterUpdate` was modified
+
+* `withLocation(java.lang.String)` was removed
+* `validate()` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.CatalogErrorDetails` was modified
+
+* `CatalogErrorDetails()` was changed to private access
+* `validate()` was removed
+* `withCode(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+
+#### `models.CheckScopedNameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.HealthCheck` was modified
+
+* `HealthCheck()` was changed to private access
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ProjectCatalogSettings` was modified
+
+* `validate()` was removed
+
+#### `models.EnvironmentRole` was modified
+
+* `validate()` was removed
+
+#### `models.GitCatalog` was modified
+
+* `validate()` was removed
+
+#### `models.Capability` was modified
+
+* `Capability()` was changed to private access
+* `validate()` was removed
+
+#### `models.CustomerManagedKeyEncryptionKeyIdentity` was modified
+
+* `withDelegatedIdentityClientId(java.util.UUID)` was removed
+* `java.util.UUID delegatedIdentityClientId()` -> `java.lang.String delegatedIdentityClientId()`
+* `validate()` was removed
+
+#### `models.HealthStatusDetail` was modified
+
+* `HealthStatusDetail()` was changed to private access
+* `validate()` was removed
+
+#### `models.ScheduleUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.EndpointDetail` was modified
+
+* `EndpointDetail()` was changed to private access
+* `validate()` was removed
+
+#### `models.CustomerManagedKeyEncryption` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.Encryption` was modified
+
+* `validate()` was removed
+
+#### `models.PoolUpdate` was modified
+
+* `withLocation(java.lang.String)` was removed
+* `validate()` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.OperationStatusesGetHeaders` was modified
+
+* `withLocation(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.SyncStats` was modified
+
+* `SyncStats()` was changed to private access
+* `withSyncedCatalogItemTypes(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.CatalogSyncError` was modified
+
+* `CatalogSyncError()` was changed to private access
+* `validate()` was removed
+
+#### `models.EndpointDependency` was modified
+
+* `EndpointDependency()` was changed to private access
+* `validate()` was removed
+
+#### `models.ProjectEnvironmentTypeUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkConnectionUpdate` was modified
+
+* `withTags(java.util.Map)` was removed
+* `validate()` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.ImageReference` was modified
+
+* `validate()` was removed
+
+#### `models.DevBoxDefinitionUpdate` was modified
+
+* `validate()` was removed
+* `withLocation(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.ImageValidationErrorDetails` was modified
+
+* `ImageValidationErrorDetails()` was changed to private access
+* `validate()` was removed
+* `withCode(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+
+#### `models.Schedules` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
+* `getByIdWithResponse(java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
+
+#### `models.UserRoleAssignmentValue` was modified
+
+* `validate()` was removed
+
+#### `models.EnvironmentDefinitionParameter` was modified
+
+* `EnvironmentDefinitionParameter()` was changed to private access
+* `validate()` was removed
+
+#### `models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceRange` was modified
+
+* `ResourceRange()` was changed to private access
+* `validate()` was removed
+
+#### `models.EnvironmentTypeUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.OperationStatusResult` was modified
+
+* `withPercentComplete(java.lang.Float)` was removed
+* `java.lang.Float percentComplete()` -> `java.lang.Double percentComplete()`
+* `models.OperationStatusResult withOperations(java.util.List)` -> `models.OperationStatusResult withOperations(java.util.List)`
+* `models.OperationStatusResult withStartTime(java.time.OffsetDateTime)` -> `models.OperationStatusResult withStartTime(java.time.OffsetDateTime)`
+* `models.OperationStatusResult withEndTime(java.time.OffsetDateTime)` -> `models.OperationStatusResult withEndTime(java.time.OffsetDateTime)`
+* `resourceId()` was removed
+* `models.OperationStatusResult withId(java.lang.String)` -> `models.OperationStatusResult withId(java.lang.String)`
+* `validate()` was removed
+* `models.OperationStatusResult withName(java.lang.String)` -> `models.OperationStatusResult withName(java.lang.String)`
+* `models.OperationStatusResult withError(com.azure.core.management.exception.ManagementError)` -> `models.OperationStatusResult withError(com.azure.core.management.exception.ManagementError)`
+* `models.OperationStatusResult withStatus(java.lang.String)` -> `models.OperationStatusResult withStatus(java.lang.String)`
+
+#### `models.CatalogUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.OperationStatus` was modified
+
+* `java.lang.Float percentComplete()` -> `java.lang.Double percentComplete()`
+* `resourceId()` was removed
+
+#### `models.ProjectUpdate` was modified
+
+* `withLocation(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+* `validate()` was removed
+
+#### `models.StopOnDisconnectConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.DevCenterProjectCatalogSettings` was modified
+
+* `validate()` was removed
+
+#### `models.UsageName` was modified
+
+* `UsageName()` was changed to private access
+* `validate()` was removed
+* `withValue(java.lang.String)` was removed
+* `withLocalizedValue(java.lang.String)` was removed
+
+### Features Added
+
+* `models.StopOnNoConnectEnableStatus` was added
+
+* `models.DefaultValue` was added
+
+* `models.PoolDevBoxDefinition` was added
+
+* `models.ProjectCatalogImageDefinitions` was added
+
+* `models.CatalogAutoImageBuildEnableStatus` was added
+
+* `models.CustomizationTaskInstance` was added
+
+* `models.DevBoxTunnelEnableStatus` was added
+
+* `models.ImageDefinition` was added
+
+* `models.KeepAwakeEnableStatus` was added
+
+* `models.DevCenterNetworkSettings` was added
+
+* `models.PoolDevBoxDefinitionType` was added
+
+* `models.CustomizationTaskInputType` was added
+
+* `models.ProjectCatalogImageDefinitionBuildsOperations` was added
+
+* `models.FeatureStatus` was added
+
+* `models.AutoImageBuildStatus` was added
+
+* `models.ProjectPolicyUpdate` was added
+
+* `models.ProjectPolicy$DefinitionStages` was added
+
+* `models.DevCenterCatalogImageDefinitionBuilds` was added
+
+* `models.InheritedProjectCatalogSettings` was added
+
+* `models.ImageDefinitionBuildTask` was added
+
+* `models.UserCustomizationsEnableStatus` was added
+
+* `models.CmkIdentityType` was added
+
+* `models.StopOnNoConnectConfiguration` was added
+
+* `models.AssignedGroup` was added
+
+* `models.FeatureStateModifiable` was added
+
+* `models.DevCenterEncryptionSet$DefinitionStages` was added
+
+* `models.DevboxDisksEncryptionEnableStatus` was added
+
+* `models.ImageDefinitionReference` was added
+
+* `models.ImageDefinitionBuild` was added
+
+* `models.DevBoxScheduleDeleteSettings` was added
+
+* `models.DevBoxProvisioningSettings` was added
+
+* `models.ProjectPolicy$UpdateStages` was added
+
+* `models.AssignedGroupScope` was added
+
+* `models.DevCenterEncryptionSet$Definition` was added
+
+* `models.ProjectPolicy$Update` was added
+
+* `models.ActiveHoursConfiguration` was added
+
+* `models.ProjectNetworkSettings` was added
+
+* `models.CancelOnConnectEnableStatus` was added
+
+* `models.WorkspaceStorageSettings` was added
+
+* `models.InheritedSettingsForProject` was added
+
+* `models.ImageDefinitionBuildTaskParametersItem` was added
+
+* `models.DevCenterCatalogImageDefinitions` was added
+
+* `models.EncryptionSetUpdate` was added
+
+* `models.ServerlessGpuSessionsSettings` was added
+
+* `models.CustomizationTasks` was added
+
+* `models.ProjectPolicy` was added
+
+* `models.LatestImageBuild` was added
+
+* `models.AzureAiServicesSettings` was added
+
+* `models.DevCenterEncryptionSet$UpdateStages` was added
+
+* `models.MicrosoftHostedNetworkEnableStatus` was added
+
+* `models.PolicyAction` was added
+
+* `models.ImageDefinitionBuildStatus` was added
+
+* `models.DefinitionParametersItem` was added
+
+* `models.ImageDefinitionBuildTaskGroup` was added
+
+* `models.DevCenterCatalogImageDefinitionBuildsOperations` was added
+
+* `models.ServerlessGpuSessionsMode` was added
+
+* `models.DevCenterResourceType` was added
+
+* `models.ResourcePolicy` was added
+
+* `models.ProjectPolicy$Definition` was added
+
+* `models.DevBoxDeleteMode` was added
+
+* `models.FeatureState` was added
+
+* `models.DayOfWeek` was added
+
+* `models.WorkspaceStorageMode` was added
+
+* `models.ProjectCustomizationIdentityType` was added
+
+* `models.CustomizationTask` was added
+
+* `models.ProjectCustomizationManagedIdentity` was added
+
+* `models.ProjectCustomizationSettings` was added
+
+* `models.KeyEncryptionKeyIdentity` was added
+
+* `models.AzureAiServicesMode` was added
+
+* `models.EncryptionSets` was added
+
+* `models.ProjectCatalogImageDefinitionBuilds` was added
+
+* `models.AutoStartEnableStatus` was added
+
+* `models.DevCenterEncryptionSet` was added
+
+* `models.ImageCreationErrorDetails` was added
+
+* `models.ConfigurationPolicies` was added
+
+* `models.CustomizationTaskInput` was added
+
+* `models.InstallAzureMonitorAgentEnableStatus` was added
+
+* `models.ProjectPolicies` was added
+
+* `models.DevCenterEncryptionSet$Update` was added
+
+* `models.ArchitectureType` was added
+
+* `models.ImageDefinitionBuildDetails` was added
+
+#### `models.DevCenter$Update` was modified
+
+* `withNetworkSettings(models.DevCenterNetworkSettings)` was added
+* `withDevBoxProvisioningSettings(models.DevBoxProvisioningSettings)` was added
+
+#### `models.DevCenter` was modified
+
+* `networkSettings()` was added
+* `devBoxProvisioningSettings()` was added
+
+#### `models.DevCenterUpdate` was modified
+
+* `withDevBoxProvisioningSettings(models.DevBoxProvisioningSettings)` was added
+* `withNetworkSettings(models.DevCenterNetworkSettings)` was added
+* `devBoxProvisioningSettings()` was added
+* `networkSettings()` was added
+* `tags()` was added
+* `location()` was added
+
+#### `models.Catalog$Update` was modified
+
+* `withAutoImageBuildEnableStatus(models.CatalogAutoImageBuildEnableStatus)` was added
+
+#### `models.Catalog` was modified
+
+* `autoImageBuildEnableStatus()` was added
+
+#### `models.DevCenter$Definition` was modified
+
+* `withNetworkSettings(models.DevCenterNetworkSettings)` was added
+* `withDevBoxProvisioningSettings(models.DevBoxProvisioningSettings)` was added
+
+#### `models.CustomerManagedKeyEncryptionKeyIdentity` was modified
+
+* `withDelegatedIdentityClientId(java.lang.String)` was added
+
+#### `models.Images` was modified
+
+* `getByProjectWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listByProject(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getByProject(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listByProject(java.lang.String,java.lang.String)` was added
+
+#### `models.Project$Update` was modified
+
+* `withDevBoxScheduleDeleteSettings(models.DevBoxScheduleDeleteSettings)` was added
+* `withCustomizationSettings(models.ProjectCustomizationSettings)` was added
+* `withServerlessGpuSessionsSettings(models.ServerlessGpuSessionsSettings)` was added
+* `withAssignedGroups(java.util.List)` was added
+* `withWorkspaceStorageSettings(models.WorkspaceStorageSettings)` was added
+* `withAzureAiServicesSettings(models.AzureAiServicesSettings)` was added
+
+#### `models.Project` was modified
+
+* `getInheritedSettings()` was added
+* `assignedGroups()` was added
+* `azureAiServicesSettings()` was added
+* `getInheritedSettingsWithResponse(com.azure.core.util.Context)` was added
+* `workspaceStorageSettings()` was added
+* `customizationSettings()` was added
+* `serverlessGpuSessionsSettings()` was added
+* `devBoxScheduleDeleteSettings()` was added
+
+#### `models.Projects` was modified
+
+* `getInheritedSettings(java.lang.String,java.lang.String)` was added
+* `getInheritedSettingsWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Pool$Update` was modified
+
+* `withDevBoxDefinition(models.PoolDevBoxDefinition)` was added
+* `withActiveHoursConfiguration(models.ActiveHoursConfiguration)` was added
+* `withDevBoxDefinitionType(models.PoolDevBoxDefinitionType)` was added
+* `withDevBoxTunnelEnableStatus(models.DevBoxTunnelEnableStatus)` was added
+* `withStopOnNoConnect(models.StopOnNoConnectConfiguration)` was added
+
+#### `models.Pool` was modified
+
+* `devBoxDefinition()` was added
+* `activeHoursConfiguration()` was added
+* `stopOnNoConnect()` was added
+* `devBoxDefinitionType()` was added
+* `devBoxTunnelEnableStatus()` was added
+
+#### `DevCenterManager` was modified
+
+* `projectCatalogImageDefinitions()` was added
+* `devCenterCatalogImageDefinitions()` was added
+* `devCenterCatalogImageDefinitionBuildsOperations()` was added
+* `projectPolicies()` was added
+* `projectCatalogImageDefinitionBuilds()` was added
+* `customizationTasks()` was added
+* `encryptionSets()` was added
+* `devCenterCatalogImageDefinitionBuilds()` was added
+* `projectCatalogImageDefinitionBuildsOperations()` was added
+
+#### `models.PoolUpdate` was modified
+
+* `devBoxDefinitionType()` was added
+* `withStopOnNoConnect(models.StopOnNoConnectConfiguration)` was added
+* `stopOnNoConnect()` was added
+* `activeHoursConfiguration()` was added
+* `withDevBoxDefinition(models.PoolDevBoxDefinition)` was added
+* `devBoxTunnelEnableStatus()` was added
+* `location()` was added
+* `withDevBoxDefinitionType(models.PoolDevBoxDefinitionType)` was added
+* `tags()` was added
+* `devBoxDefinition()` was added
+* `withActiveHoursConfiguration(models.ActiveHoursConfiguration)` was added
+* `withDevBoxTunnelEnableStatus(models.DevBoxTunnelEnableStatus)` was added
+
+#### `models.Pool$Definition` was modified
+
+* `withDevBoxDefinitionType(models.PoolDevBoxDefinitionType)` was added
+* `withActiveHoursConfiguration(models.ActiveHoursConfiguration)` was added
+* `withStopOnNoConnect(models.StopOnNoConnectConfiguration)` was added
+* `withDevBoxDefinition(models.PoolDevBoxDefinition)` was added
+* `withDevBoxTunnelEnableStatus(models.DevBoxTunnelEnableStatus)` was added
+
+#### `models.Project$Definition` was modified
+
+* `withWorkspaceStorageSettings(models.WorkspaceStorageSettings)` was added
+* `withAzureAiServicesSettings(models.AzureAiServicesSettings)` was added
+* `withAssignedGroups(java.util.List)` was added
+* `withDevBoxScheduleDeleteSettings(models.DevBoxScheduleDeleteSettings)` was added
+* `withCustomizationSettings(models.ProjectCustomizationSettings)` was added
+* `withServerlessGpuSessionsSettings(models.ServerlessGpuSessionsSettings)` was added
+
+#### `models.NetworkConnectionUpdate` was modified
+
+* `location()` was added
+* `tags()` was added
+
+#### `models.DevBoxDefinitionUpdate` was modified
+
+* `location()` was added
+* `tags()` was added
+
+#### `models.Image` was modified
+
+* `architecture()` was added
+
+#### `models.Schedules` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.CatalogUpdate` was modified
+
+* `withAutoImageBuildEnableStatus(models.CatalogAutoImageBuildEnableStatus)` was added
+* `autoImageBuildEnableStatus()` was added
+
+#### `models.Catalog$Definition` was modified
+
+* `withAutoImageBuildEnableStatus(models.CatalogAutoImageBuildEnableStatus)` was added
+
+#### `models.ProjectUpdate` was modified
+
+* `withDevBoxScheduleDeleteSettings(models.DevBoxScheduleDeleteSettings)` was added
+* `serverlessGpuSessionsSettings()` was added
+* `withServerlessGpuSessionsSettings(models.ServerlessGpuSessionsSettings)` was added
+* `azureAiServicesSettings()` was added
+* `devBoxScheduleDeleteSettings()` was added
+* `customizationSettings()` was added
+* `workspaceStorageSettings()` was added
+* `withWorkspaceStorageSettings(models.WorkspaceStorageSettings)` was added
+* `location()` was added
+* `assignedGroups()` was added
+* `withAssignedGroups(java.util.List)` was added
+* `withAzureAiServicesSettings(models.AzureAiServicesSettings)` was added
+* `withCustomizationSettings(models.ProjectCustomizationSettings)` was added
+* `tags()` was added
+
+#### `models.ImageVersions` was modified
+
+* `getByProject(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listByProject(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listByProject(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getByProjectWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Skus` was modified
+
+* `listByProject(java.lang.String,java.lang.String)` was added
+* `listByProject(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.0.0 (2024-12-25)
 
