@@ -14,10 +14,10 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * The AzureFunctionDefinitionFunction model.
+ * The AzureFunctionDefinitionDetails model.
  */
 @Fluent
-public final class AzureFunctionDefinitionFunction implements JsonSerializable<AzureFunctionDefinitionFunction> {
+public final class AzureFunctionDefinitionDetails implements JsonSerializable<AzureFunctionDefinitionDetails> {
 
     /*
      * The name of the function to be called.
@@ -36,6 +36,18 @@ public final class AzureFunctionDefinitionFunction implements JsonSerializable<A
      */
     @Generated
     private final Map<String, BinaryData> parameters;
+
+    /**
+     * Creates an instance of AzureFunctionDefinitionDetails class.
+     *
+     * @param name the name value to set.
+     * @param parameters the parameters value to set.
+     */
+    @Generated
+    public AzureFunctionDefinitionDetails(String name, Map<String, BinaryData> parameters) {
+        this.name = name;
+        this.parameters = parameters;
+    }
 
     /**
      * Get the name property: The name of the function to be called.
@@ -63,10 +75,10 @@ public final class AzureFunctionDefinitionFunction implements JsonSerializable<A
      * to call the function.
      *
      * @param description the description value to set.
-     * @return the AzureFunctionDefinitionFunction object itself.
+     * @return the AzureFunctionDefinitionDetails object itself.
      */
     @Generated
-    public AzureFunctionDefinitionFunction setDescription(String description) {
+    public AzureFunctionDefinitionDetails setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -101,16 +113,16 @@ public final class AzureFunctionDefinitionFunction implements JsonSerializable<A
     }
 
     /**
-     * Reads an instance of AzureFunctionDefinitionFunction from the JsonReader.
+     * Reads an instance of AzureFunctionDefinitionDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureFunctionDefinitionFunction if the JsonReader was pointing to an instance of it, or
+     * @return An instance of AzureFunctionDefinitionDetails if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AzureFunctionDefinitionFunction.
+     * @throws IOException If an error occurs while reading the AzureFunctionDefinitionDetails.
      */
     @Generated
-    public static AzureFunctionDefinitionFunction fromJson(JsonReader jsonReader) throws IOException {
+    public static AzureFunctionDefinitionDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             Map<String, BinaryData> parameters = null;
@@ -129,22 +141,10 @@ public final class AzureFunctionDefinitionFunction implements JsonSerializable<A
                     reader.skipChildren();
                 }
             }
-            AzureFunctionDefinitionFunction deserializedAzureFunctionDefinitionFunction
-                = new AzureFunctionDefinitionFunction(name, parameters);
-            deserializedAzureFunctionDefinitionFunction.description = description;
-            return deserializedAzureFunctionDefinitionFunction;
+            AzureFunctionDefinitionDetails deserializedAzureFunctionDefinitionDetails
+                = new AzureFunctionDefinitionDetails(name, parameters);
+            deserializedAzureFunctionDefinitionDetails.description = description;
+            return deserializedAzureFunctionDefinitionDetails;
         });
-    }
-
-    /**
-     * Creates an instance of AzureFunctionDefinitionFunction class.
-     *
-     * @param name the name value to set.
-     * @param parameters the parameters value to set.
-     */
-    @Generated
-    public AzureFunctionDefinitionFunction(String name, Map<String, BinaryData> parameters) {
-        this.name = name;
-        this.parameters = parameters;
     }
 }

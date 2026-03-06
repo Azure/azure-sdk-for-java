@@ -12,16 +12,26 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The AgentObjectVersions model.
+ * The AgentDetailsVersions model.
  */
 @Immutable
-public final class AgentObjectVersions implements JsonSerializable<AgentObjectVersions> {
+public final class AgentDetailsVersions implements JsonSerializable<AgentDetailsVersions> {
 
     /*
      * The latest property.
      */
     @Generated
     private final AgentVersionDetails latest;
+
+    /**
+     * Creates an instance of AgentDetailsVersions class.
+     *
+     * @param latest the latest value to set.
+     */
+    @Generated
+    private AgentDetailsVersions(AgentVersionDetails latest) {
+        this.latest = latest;
+    }
 
     /**
      * Get the latest property: The latest property.
@@ -45,16 +55,16 @@ public final class AgentObjectVersions implements JsonSerializable<AgentObjectVe
     }
 
     /**
-     * Reads an instance of AgentObjectVersions from the JsonReader.
+     * Reads an instance of AgentDetailsVersions from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AgentObjectVersions if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of AgentDetailsVersions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AgentObjectVersions.
+     * @throws IOException If an error occurs while reading the AgentDetailsVersions.
      */
     @Generated
-    public static AgentObjectVersions fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentDetailsVersions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AgentVersionDetails latest = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -66,17 +76,7 @@ public final class AgentObjectVersions implements JsonSerializable<AgentObjectVe
                     reader.skipChildren();
                 }
             }
-            return new AgentObjectVersions(latest);
+            return new AgentDetailsVersions(latest);
         });
-    }
-
-    /**
-     * Creates an instance of AgentObjectVersions class.
-     *
-     * @param latest the latest value to set.
-     */
-    @Generated
-    private AgentObjectVersions(AgentVersionDetails latest) {
-        this.latest = latest;
     }
 }
