@@ -170,11 +170,11 @@ public class ConfigsTests {
 
     @Test(groups = { "emulator" })
     public void thinClientEnabledTest() {
-        assertThat(isThinClientEnabled()).isFalse();
+        assertThat(isThinClientEnabled()).isTrue();
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "false");
         try {
-            assertThat(isThinClientEnabled()).isTrue();
+            assertThat(isThinClientEnabled()).isFalse();
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
