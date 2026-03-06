@@ -98,11 +98,11 @@ mvn checkstyle:check spotbugs:check
 ### Testing
 
 ```bash
-# Run unit tests
-mvn test
+# Run unit tests for a specific module (playback by default)
+mvn -f sdk/{service}/pom.xml test
 
-# Run live tests (requires Azure resources and environment variables)
-mvn -Dmaven.wagon.http.pool=false --batch-mode --fail-at-end test
+# Run live tests for a specific module (requires Azure resources and environment variables)
+AZURE_TEST_MODE=LIVE mvn -f sdk/{service}/pom.xml -Dmaven.wagon.http.pool=false --batch-mode --fail-at-end test
 
 # See eng/common/TestResources/New-TestResources.ps1 for setting up test resources
 ```
