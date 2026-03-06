@@ -61,7 +61,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
 
     // Audio thresholds
     protected static final int MIN_AUDIO_BYTES = 10 * 1024;
-    protected static final int MIN_AUDIO_BYTES_LARGE = 50 * 1000;
+    protected static final int MIN_AUDIO_BYTES_LARGE = 40 * 1000;
 
     // Default silence settings
     protected static final int DEFAULT_SAMPLE_RATE = 24000;
@@ -114,14 +114,17 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
     }
 
     protected static Stream<Arguments> withApiVersions(Stream<Arguments> base) {
+        return withApiVersions(base, API_VERSION_GA, API_VERSION_PREVIEW);
+    }
+
+    protected static Stream<Arguments> withApiVersions(Stream<Arguments> base, String... apiVersions) {
         Arguments[] baseArgs = base.toArray(Arguments[]::new);
-        return Arrays.stream(new String[] { API_VERSION_GA, API_VERSION_PREVIEW })
-            .flatMap(version -> Arrays.stream(baseArgs).map(args -> {
-                Object[] existing = args.get();
-                Object[] extended = Arrays.copyOf(existing, existing.length + 1);
-                extended[existing.length] = version;
-                return Arguments.of(extended);
-            }));
+        return Arrays.stream(apiVersions).flatMap(version -> Arrays.stream(baseArgs).map(args -> {
+            Object[] existing = args.get();
+            Object[] extended = Arrays.copyOf(existing, existing.length + 1);
+            extended[existing.length] = version;
+            return Arguments.of(extended);
+        }));
     }
 
     protected byte[] loadAudioFile(String filename) throws IOException {

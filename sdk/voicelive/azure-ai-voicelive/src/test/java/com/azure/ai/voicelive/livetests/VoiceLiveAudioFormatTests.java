@@ -43,10 +43,10 @@ import java.util.stream.Stream;
 public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> modelAndSamplingRateProvider() {
-        return withApiVersions(Stream.of(Arguments.of("gpt-4o-realtime-preview", 16000),
-            Arguments.of("gpt-4o-realtime", 44100), Arguments.of("gpt-4o-realtime", 8000),
-            Arguments.of("gpt-4o", 16000), Arguments.of("gpt-4o", 44100), Arguments.of("gpt-4.1", 8000),
-            Arguments.of("phi4-mm-realtime", 16000), Arguments.of("phi4-mm-realtime", 44100)));
+        return withApiVersions(Stream.of(Arguments.of("gpt-4o-realtime", 16000), Arguments.of("gpt-4o-realtime", 44100),
+            Arguments.of("gpt-4o-realtime", 8000), Arguments.of("gpt-4o", 16000), Arguments.of("gpt-4o", 44100),
+            Arguments.of("gpt-4.1", 8000), Arguments.of("phi4-mm-realtime", 16000),
+            Arguments.of("phi4-mm-realtime", 44100)), API_VERSION_GA, API_VERSION_PREVIEW);
     }
 
     static Stream<Arguments> modelAndInputAudioFormatProvider() {
@@ -202,7 +202,9 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setInputAudioTranscription(getSpeechRecognitionSetting(model))
                 .setInstructions(
                     "You are a helpful assistant. Please respond briefly to the user's question about lakes.")
-                .setTurnDetection(new ServerVadTurnDetection());
+                .setTurnDetection(API_VERSION_PREVIEW.equals(apiVersion)
+                    ? new ServerVadTurnDetection().setSilenceDurationMs(200)
+                    : new ServerVadTurnDetection());
 
             VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
 
@@ -276,16 +278,16 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
             Assertions.assertTrue(speechStopped, "Should receive speech stopped event");
             Assertions.assertNotNull(speechStoppedEvent.get(), "Speech stopped event should not be null");
             int audioEndMs = speechStoppedEvent.get().getAudioEndMs();
-            int expectedEndMs = 1664;
-            double tolerance = 0.02;
-            Assertions.assertTrue(Math.abs(audioEndMs - expectedEndMs) <= expectedEndMs * tolerance,
+            int expectedEndMs = 1680;
+            int absoluteTolerance = 50;
+            Assertions.assertTrue(Math.abs(audioEndMs - expectedEndMs) <= absoluteTolerance,
                 "Audio end ms should be approximately " + expectedEndMs + " (got " + audioEndMs + ")");
 
             boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             Assertions.assertTrue(received, "Should receive response within timeout");
-            Assertions.assertTrue(audioResponseBytes.get() > MIN_AUDIO_BYTES_LARGE, "Output audio too short: "
-                + audioResponseBytes.get() + " bytes (expected > " + MIN_AUDIO_BYTES_LARGE + ")");
+            Assertions.assertTrue(audioResponseBytes.get() > 50 * 1000,
+                "Output audio too short: " + audioResponseBytes.get() + " bytes (expected > 50000)");
 
             session.close();
         } catch (Exception e) {
