@@ -43,7 +43,7 @@ public class AsyncCtlWorkload implements Benchmark {
 
     // Dedicated scheduler for CTL benchmark workload dispatch.
     // Owned and disposed by the orchestrator (or test harness) that creates the benchmark.
-    private final Scheduler BENCHMARK_SCHEDULER;
+    private final Scheduler benchmarkScheduler;
 
     private final String PERCENT_PARSING_ERROR = "Unable to parse user provided readWriteQueryReadManyPct ";
     private final String prefixUuidForCreate;
@@ -66,7 +66,7 @@ public class AsyncCtlWorkload implements Benchmark {
     private int readManyPct;
 
     public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg, Scheduler scheduler) {
-        this.BENCHMARK_SCHEDULER = scheduler;
+        this.benchmarkScheduler = scheduler;
 
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
@@ -206,7 +206,7 @@ public class AsyncCtlWorkload implements Benchmark {
         source
             .flatMap(
                 i -> selectAndPerformWorkload(i)
-                    .subscribeOn(BENCHMARK_SCHEDULER)
+                    .subscribeOn(benchmarkScheduler)
                     .doOnSuccess(v -> completedCount.incrementAndGet())
                     .doOnError(e -> {
                         completedCount.incrementAndGet();

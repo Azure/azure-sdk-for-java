@@ -59,7 +59,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
 
     // Dedicated scheduler for encryption benchmark workload dispatch.
     // Owned and disposed by the orchestrator (or test harness) that creates the benchmark.
-    final Scheduler BENCHMARK_SCHEDULER;
+    final Scheduler benchmarkScheduler;
 
     private boolean databaseCreated;
     private boolean collectionCreated;
@@ -87,7 +87,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     AsyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg, Scheduler scheduler) throws IOException {
 
         workloadConfig = workloadCfg;
-        this.BENCHMARK_SCHEDULER = scheduler;
+        this.benchmarkScheduler = scheduler;
 
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
@@ -255,7 +255,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
                     workload = delayed.then(workload);
                 }
                 return workload
-                    .subscribeOn(BENCHMARK_SCHEDULER)
+                    .subscribeOn(benchmarkScheduler)
                     .doOnSuccess(v -> {
                         completedCount.incrementAndGet();
                         AsyncEncryptionBenchmark.this.onSuccess();

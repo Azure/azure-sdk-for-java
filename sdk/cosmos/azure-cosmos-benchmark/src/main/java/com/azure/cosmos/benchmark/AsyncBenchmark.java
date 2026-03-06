@@ -44,7 +44,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
 
     // Dedicated scheduler for benchmark workload dispatch — avoids contention with global Schedulers.parallel().
     // Owned and disposed by the orchestrator (or test harness) that creates the benchmark.
-    final Scheduler BENCHMARK_SCHEDULER;
+    final Scheduler benchmarkScheduler;
 
     private boolean databaseCreated;
     private boolean collectionCreated;
@@ -61,7 +61,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
 
         logger = LoggerFactory.getLogger(this.getClass());
         workloadConfig = cfg;
-        this.BENCHMARK_SCHEDULER = scheduler;
+        this.benchmarkScheduler = scheduler;
 
         final TokenCredential credential = cfg.isManagedIdentityRequired()
             ? cfg.buildTokenCredential()
@@ -398,7 +398,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
                     workload = delayed.then(workload);
                 }
                 return workload
-                    .subscribeOn(BENCHMARK_SCHEDULER)
+                    .subscribeOn(benchmarkScheduler)
                     .doOnSuccess(v -> {
                         completedCount.incrementAndGet();
                         AsyncBenchmark.this.onSuccess();
