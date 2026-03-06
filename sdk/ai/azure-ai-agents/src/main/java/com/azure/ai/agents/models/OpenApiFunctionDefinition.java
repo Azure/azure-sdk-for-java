@@ -12,6 +12,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -209,9 +210,10 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
      * @throws IOException if the file cannot be read or parsed.
      */
     public static Map<String, BinaryData> readSpecFromFile(Path path) throws IOException {
-        BinaryData fileData = BinaryData.fromFile(path);
-        JsonReader reader = JsonProviders.createReader(fileData.toBytes());
-        return reader.readMap(r -> r.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+        try (JsonReader reader = JsonProviders.createReader(Files.readAllBytes(path))) {
+            return reader
+                .readMap(r -> r.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+        }
     }
 
     /*
