@@ -10,18 +10,25 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * This sample demonstrates how to create an agent with a Model Context Protocol (MCP) tool
- * to connect to external MCP servers.
+ * to connect to an external MCP server and handle approval requests.
+ *
+ * <p>Uses <a href="https://gitmcp.io">gitmcp.io</a> to expose a GitHub repository as an
+ * MCP-compatible server (no authentication required).</p>
  *
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
@@ -45,14 +52,15 @@ public class McpSync {
 
         try {
             // Create an MCP tool that connects to a remote MCP server
-            McpTool tool = new McpTool("my-mcp-server")
-                .setServerUrl("https://example.mcp.server/mcp")
-                .setServerDescription("An MCP server that provides additional tools");
+            // Uses gitmcp.io to expose a GitHub repository as an MCP-compatible server
+            McpTool tool = new McpTool("api-specs")
+                .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
+                .setRequireApproval(BinaryData.fromObject("always"));
 
             // Create the agent definition with MCP tool enabled
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
-                .setInstructions("You are a helpful assistant that can use MCP tools to access external services. "
-                    + "When asked to perform tasks, use the available MCP tools to help the user.")
+                .setInstructions("You are a helpful agent that can use MCP tools to assist users. "
+                    + "Use the available MCP tools to answer questions and perform tasks.")
                 .setTools(Collections.singletonList(tool));
 
             agent = agentsClient.createAgentVersion("mcp-agent", agentDefinition);
@@ -63,9 +71,34 @@ public class McpSync {
 
             Response response = responsesClient.createWithAgent(agentReference,
                 ResponseCreateParams.builder()
-                    .input("What tools are available from the MCP server?"));
+                    .input("Please summarize the Azure REST API specifications Readme"));
 
-            // Process and display the response
+            // Process MCP approval requests — the server requires approval before executing tools
+            List<ResponseInputItem> approvals = new ArrayList<ResponseInputItem>();
+            for (ResponseOutputItem item : response.output()) {
+                if (item.isMcpApprovalRequest()) {
+                    ResponseOutputItem.McpApprovalRequest request = item.asMcpApprovalRequest();
+                    System.out.printf("MCP approval requested: server=%s, id=%s%n",
+                        request.serverLabel(), request.id());
+
+                    approvals.add(ResponseInputItem.ofMcpApprovalResponse(
+                        ResponseInputItem.McpApprovalResponse.builder()
+                            .approvalRequestId(request.id())
+                            .approve(true)
+                            .build()));
+                }
+            }
+
+            // If approvals were needed, send them back and get the final response
+            if (!approvals.isEmpty()) {
+                System.out.println("Sending " + approvals.size() + " approval(s)...");
+                response = responsesClient.createWithAgent(agentReference,
+                    ResponseCreateParams.builder()
+                        .inputOfResponse(approvals)
+                        .previousResponseId(response.id()));
+            }
+
+            // Process and display the final response
             for (ResponseOutputItem outputItem : response.output()) {
                 if (outputItem.message().isPresent()) {
                     ResponseOutputMessage message = outputItem.message().get();
