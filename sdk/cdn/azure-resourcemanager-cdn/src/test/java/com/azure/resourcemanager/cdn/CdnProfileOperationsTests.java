@@ -12,20 +12,19 @@ import com.azure.resourcemanager.cdn.models.AfdEndpoint;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.Origin;
 import com.azure.resourcemanager.cdn.models.OriginGroup;
-import com.azure.resourcemanager.cdn.models.CacheBehavior;
-import com.azure.resourcemanager.cdn.models.CacheExpirationActionParameters;
-import com.azure.resourcemanager.cdn.models.CacheType;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.cdn.models.DeliveryRule;
-import com.azure.resourcemanager.cdn.models.DeliveryRuleCacheExpirationAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleHttpVersionCondition;
+import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestHeaderAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestSchemeCondition;
 import com.azure.resourcemanager.cdn.models.DestinationProtocol;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.EnforceMtlsEnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
+import com.azure.resourcemanager.cdn.models.HeaderAction;
+import com.azure.resourcemanager.cdn.models.HeaderActionParameters;
 import com.azure.resourcemanager.cdn.models.HttpVersionMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.HttpVersionOperator;
 import com.azure.resourcemanager.cdn.models.HttpsRedirect;
@@ -119,7 +118,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertEquals(0, cdnProfile.endpoints().size());
 
         cdnProfile.update()
-            .defineNewAfdEndpoint(cdnEndpointName)
+            .defineAfdEndpoint(cdnEndpointName)
             .withEnabledState(EnabledState.ENABLED)
             .withEnforceMtls(EnforceMtlsEnabledState.ENABLED)
             .attach()
@@ -176,7 +175,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .withGlobal()
             .withExistingResourceGroup(resourceGroup)
             .withSku(SkuName.STANDARD_AZURE_FRONT_DOOR)
-            .defineNewAfdEndpoint(cdnEndpointName)
+            .defineAfdEndpoint(cdnEndpointName)
             .withEnabledState(EnabledState.ENABLED)
             .withEnforceMtls(EnforceMtlsEnabledState.ENABLED)
             .attach()
@@ -316,7 +315,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .withGlobal()
             .withExistingResourceGroup(resourceGroup)
             .withSku(SkuName.STANDARD_AZURE_FRONT_DOOR)
-            .defineNewAfdEndpoint(cdnEndpointName)
+            .defineAfdEndpoint(cdnEndpointName)
             .withEnabledState(EnabledState.ENABLED)
             .attach()
             .defineOriginGroup("originGroup1")
@@ -331,10 +330,10 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .defineRuleSet("ruleSet1")
             .defineRule("rule1")
             .withOrder(1)
-            .withActions(Arrays.asList(new DeliveryRuleCacheExpirationAction()
-                .withParameters(new CacheExpirationActionParameters().withCacheBehavior(CacheBehavior.SET_IF_MISSING)
-                    .withCacheDuration("00:05:00")
-                    .withCacheType(CacheType.ALL))))
+            .withActions(Arrays.asList(new DeliveryRuleRequestHeaderAction()
+                .withParameters(new HeaderActionParameters().withHeaderAction(HeaderAction.OVERWRITE)
+                    .withHeaderName("X-CDN")
+                    .withValue("true"))))
             .withConditions(Arrays.asList(
                 new DeliveryRuleRequestSchemeCondition().withParameters(new RequestSchemeMatchConditionParameters()
                     .withMatchValues(Arrays.asList(RequestSchemeMatchConditionParametersMatchValuesItem.HTTPS)))))
@@ -381,7 +380,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertNotNull(rule1);
         Assertions.assertEquals(1, rule1.order());
         Assertions.assertEquals(1, rule1.actions().size());
-        Assertions.assertTrue(rule1.actions().get(0) instanceof DeliveryRuleCacheExpirationAction);
+        Assertions.assertTrue(rule1.actions().get(0) instanceof DeliveryRuleRequestHeaderAction);
         Assertions.assertEquals(1, rule1.conditions().size());
         Assertions.assertTrue(rule1.conditions().get(0) instanceof DeliveryRuleRequestSchemeCondition);
         Assertions.assertEquals(MatchProcessingBehavior.CONTINUE, rule1.matchProcessingBehavior());

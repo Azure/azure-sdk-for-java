@@ -338,8 +338,8 @@ public interface CdnProfile
              * @param name a new endpoint name
              * @return the first stage of a new AFD endpoint definition
              */
-            default AfdEndpoint.DefinitionStages.Blank<WithStandardCreate> defineNewAfdEndpoint(String name) {
-                throw new UnsupportedOperationException("[defineNewAfdEndpoint] is not supported in " + getClass());
+            default AfdEndpoint.DefinitionStages.Blank<WithStandardCreate> defineAfdEndpoint(String name) {
+                throw new UnsupportedOperationException("[defineAfdEndpoint] is not supported in " + getClass());
             }
 
             /**
@@ -462,8 +462,8 @@ public interface CdnProfile
              * @param name the name for the endpoint
              * @return the first stage of an endpoint definition
              */
-            default AfdEndpoint.UpdateDefinitionStages.Blank<Update> defineNewAfdEndpoint(String name) {
-                throw new UnsupportedOperationException("[defineNewAfdEndpoint] is not supported in " + getClass());
+            default AfdEndpoint.UpdateDefinitionStages.Blank<Update> defineAfdEndpoint(String name) {
+                throw new UnsupportedOperationException("[defineAfdEndpoint] is not supported in " + getClass());
             }
 
             /**

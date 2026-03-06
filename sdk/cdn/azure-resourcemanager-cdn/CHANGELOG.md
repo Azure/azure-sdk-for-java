@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported `defineNewAfdEndpoint`, `defineOriginGroup`, `defineRuleSet` method in `CdnProfile` for Azure Front Door Standard/Premium Sku.
+- Supported `defineAfdEndpoint`, `defineOriginGroup`, `defineRuleSet` method in `CdnProfile` for Azure Front Door Standard/Premium Sku.
 
 ### Breaking Changes
 

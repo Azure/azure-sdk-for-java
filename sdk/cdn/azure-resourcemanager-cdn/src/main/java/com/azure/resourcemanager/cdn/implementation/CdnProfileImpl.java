@@ -304,7 +304,7 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
     }
 
     @Override
-    public AfdEndpointImpl defineNewAfdEndpoint(String name) {
+    public AfdEndpointImpl defineAfdEndpoint(String name) {
         return this.afdEndpoints.defineNewEndpoint(name);
     }
 
