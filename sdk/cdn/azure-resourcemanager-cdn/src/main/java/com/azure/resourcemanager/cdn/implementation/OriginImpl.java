@@ -25,10 +25,9 @@ class OriginImpl extends ExternalChildResourceImpl<Origin, AfdOriginInner, Origi
     Origin.DefinitionStages.Blank<OriginGroup.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
     Origin.DefinitionStages.WithHostname<OriginGroup.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
     Origin.DefinitionStages.WithAttach<OriginGroup.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
-    Origin.UpdateDefinitionStages.Blank<OriginGroup.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
-    Origin.UpdateDefinitionStages.WithHostname<OriginGroup.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
-    Origin.UpdateDefinitionStages.WithAttach<OriginGroup.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
-    Origin.Update {
+    Origin.UpdateDefinitionStages.Blank<OriginGroup.Update>,
+    Origin.UpdateDefinitionStages.WithHostname<OriginGroup.Update>,
+    Origin.UpdateDefinitionStages.WithAttach<OriginGroup.Update>, Origin.Update {
 
     OriginImpl(String name, OriginGroupImpl parent, AfdOriginInner inner) {
         super(name, parent, inner);

@@ -26,10 +26,9 @@ class RuleImpl extends ExternalChildResourceImpl<Rule, RuleInner, RuleSetImpl, R
     Rule.DefinitionStages.WithOrder<RuleSet.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
     Rule.DefinitionStages.WithActions<RuleSet.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
     Rule.DefinitionStages.WithAttach<RuleSet.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
-    Rule.UpdateDefinitionStages.Blank<RuleSet.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
-    Rule.UpdateDefinitionStages.WithOrder<RuleSet.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
-    Rule.UpdateDefinitionStages.WithActions<RuleSet.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
-    Rule.UpdateDefinitionStages.WithAttach<RuleSet.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>, Rule.Update {
+    Rule.UpdateDefinitionStages.Blank<RuleSet.Update>, Rule.UpdateDefinitionStages.WithOrder<RuleSet.Update>,
+    Rule.UpdateDefinitionStages.WithActions<RuleSet.Update>, Rule.UpdateDefinitionStages.WithAttach<RuleSet.Update>,
+    Rule.Update {
 
     RuleImpl(String name, RuleSetImpl parent, RuleInner inner) {
         super(name, parent, inner);

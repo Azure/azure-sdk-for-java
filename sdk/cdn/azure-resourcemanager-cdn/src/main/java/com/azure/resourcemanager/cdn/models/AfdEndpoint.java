@@ -230,13 +230,6 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
          * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends Attachable<ParentT> {
-            /**
-             * Starts the definition of a new route to be attached to this endpoint.
-             *
-             * @param name a new route name
-             * @return the first stage of a new route definition
-             */
-            Route.UpdateDefinitionStages.Blank<WithAttach<ParentT>> defineRoute(String name);
         }
 
         /**
@@ -273,6 +266,14 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
          * @return the next stage of the update
          */
         Update withEnforceMtls(EnforceMtlsEnabledState enforceMtls);
+
+        /**
+         * Starts the definition of a new route to be attached to this endpoint.
+         *
+         * @param name a new route name
+         * @return the first stage of a new route definition
+         */
+        Route.UpdateDefinitionStages.Blank<Update> defineRoute(String name);
 
         /**
          * Begins the description of an update of an existing route in this endpoint.

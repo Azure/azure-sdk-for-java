@@ -220,14 +220,6 @@ public interface OriginGroup
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withSessionAffinityState(EnabledState sessionAffinityState);
-
-            /**
-             * Starts the definition of a new origin to be attached to this origin group.
-             *
-             * @param name a new origin name
-             * @return the first stage of a new origin definition
-             */
-            Origin.UpdateDefinitionStages.Blank<WithAttach<ParentT>> defineOrigin(String name);
         }
 
         /**
@@ -280,6 +272,14 @@ public interface OriginGroup
          * @return the next stage of the update
          */
         Update withSessionAffinityState(EnabledState sessionAffinityState);
+
+        /**
+         * Starts the definition of a new origin to be attached to this origin group.
+         *
+         * @param name a new origin name
+         * @return the first stage of a new origin definition
+         */
+        Origin.UpdateDefinitionStages.Blank<Update> defineOrigin(String name);
 
         /**
          * Begins the update of an existing origin in this origin group.

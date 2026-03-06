@@ -114,13 +114,6 @@ public interface RuleSet extends ExternalChildResource<RuleSet, CdnProfile>, Has
          * @param <ParentT> the stage of the parent CDN profile update to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends Attachable<ParentT> {
-            /**
-             * Starts the definition of a new rule to be attached to this rule set.
-             *
-             * @param name a new rule name
-             * @return the first stage of a new rule definition
-             */
-            Rule.UpdateDefinitionStages.Blank<WithAttach<ParentT>> defineRule(String name);
         }
 
         /**
@@ -142,6 +135,14 @@ public interface RuleSet extends ExternalChildResource<RuleSet, CdnProfile>, Has
      * The entirety of a rule set update inside a {@link CdnProfile#update()} flow.
      */
     interface Update extends Settable<CdnProfile.Update> {
+        /**
+         * Starts the definition of a new rule to be attached to this rule set.
+         *
+         * @param name a new rule name
+         * @return the first stage of a new rule definition
+         */
+        Rule.UpdateDefinitionStages.Blank<Update> defineRule(String name);
+
         /**
          * Begins the update of an existing rule in this rule set.
          *

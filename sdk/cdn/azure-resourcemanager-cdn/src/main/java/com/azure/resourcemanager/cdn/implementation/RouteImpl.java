@@ -32,10 +32,9 @@ class RouteImpl extends ExternalChildResourceImpl<Route, RouteInner, AfdEndpoint
     Route.DefinitionStages.Blank<AfdEndpoint.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
     Route.DefinitionStages.WithOriginGroup<AfdEndpoint.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
     Route.DefinitionStages.WithAttach<AfdEndpoint.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
-    Route.UpdateDefinitionStages.Blank<AfdEndpoint.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
-    Route.UpdateDefinitionStages.WithOriginGroup<AfdEndpoint.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
-    Route.UpdateDefinitionStages.WithAttach<AfdEndpoint.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
-    Route.Update {
+    Route.UpdateDefinitionStages.Blank<AfdEndpoint.Update>,
+    Route.UpdateDefinitionStages.WithOriginGroup<AfdEndpoint.Update>,
+    Route.UpdateDefinitionStages.WithAttach<AfdEndpoint.Update>, Route.Update {
 
     RouteImpl(String name, AfdEndpointImpl parent, RouteInner inner) {
         super(name, parent, inner);
