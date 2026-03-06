@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (2026-02-27)
+## 1.0.0-beta.2 (2026-03-06)
 
 - Azure Resource Manager ManagedOps client library for Java. This package contains Microsoft Azure SDK for ManagedOps Management SDK. Managed Operations API. Package api-version 2025-07-28-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -20,17 +20,17 @@
 
 #### `models.DesiredConfigurationUpdate` was modified
 
-* `withDefenderCspm(models.DesiredConfigurationDefenderForServers)` was removed
 * `models.DesiredConfigurationDefenderForServers defenderForServers()` -> `models.DesiredEnablementState defenderForServers()`
-* `models.DesiredConfigurationDefenderForServers defenderCspm()` -> `models.DesiredEnablementState defenderCspm()`
+* `withDefenderCspm(models.DesiredConfigurationDefenderForServers)` was removed
 * `withDefenderForServers(models.DesiredConfigurationDefenderForServers)` was removed
+* `models.DesiredConfigurationDefenderForServers defenderCspm()` -> `models.DesiredEnablementState defenderCspm()`
 
 #### `models.DesiredConfiguration` was modified
 
-* `models.DesiredConfigurationDefenderForServers defenderCspm()` -> `models.DesiredEnablementState defenderCspm()`
 * `withDefenderCspm(models.DesiredConfigurationDefenderForServers)` was removed
-* `withDefenderForServers(models.DesiredConfigurationDefenderForServers)` was removed
 * `models.DesiredConfigurationDefenderForServers defenderForServers()` -> `models.DesiredEnablementState defenderForServers()`
+* `withDefenderForServers(models.DesiredConfigurationDefenderForServers)` was removed
+* `models.DesiredConfigurationDefenderForServers defenderCspm()` -> `models.DesiredEnablementState defenderCspm()`
 
 #### `models.DefenderCspmInformation` was modified
 
@@ -56,8 +56,8 @@
 
 #### `models.DesiredConfigurationUpdate` was modified
 
-* `withDefenderForServers(models.DesiredEnablementState)` was added
 * `withDefenderCspm(models.DesiredEnablementState)` was added
+* `withDefenderForServers(models.DesiredEnablementState)` was added
 
 #### `models.DesiredConfiguration` was modified
 
