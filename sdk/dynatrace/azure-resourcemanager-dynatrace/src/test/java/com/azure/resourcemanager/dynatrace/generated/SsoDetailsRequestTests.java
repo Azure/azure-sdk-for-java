@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.dynatrace.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.dynatrace.models.SSODetailsRequest;
+import com.azure.resourcemanager.dynatrace.models.SsoDetailsRequest;
 import org.junit.jupiter.api.Assertions;
 
-public final class SSODetailsRequestTests {
+public final class SsoDetailsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SSODetailsRequest model
-            = BinaryData.fromString("{\"userPrincipal\":\"gvtqagnbuynh\"}").toObject(SSODetailsRequest.class);
+        SsoDetailsRequest model
+            = BinaryData.fromString("{\"userPrincipal\":\"gvtqagnbuynh\"}").toObject(SsoDetailsRequest.class);
         Assertions.assertEquals("gvtqagnbuynh", model.userPrincipal());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SSODetailsRequest model = new SSODetailsRequest().withUserPrincipal("gvtqagnbuynh");
-        model = BinaryData.fromObject(model).toObject(SSODetailsRequest.class);
+        SsoDetailsRequest model = new SsoDetailsRequest().withUserPrincipal("gvtqagnbuynh");
+        model = BinaryData.fromObject(model).toObject(SsoDetailsRequest.class);
         Assertions.assertEquals("gvtqagnbuynh", model.userPrincipal());
     }
 }

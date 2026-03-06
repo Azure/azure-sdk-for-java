@@ -47,6 +47,6 @@ public final class MonitorsListHostsMockTests {
         Assertions.assertEquals(AvailabilityState.LOST, response.iterator().next().availabilityState());
         Assertions.assertEquals(LogModule.ENABLED, response.iterator().next().logModule());
         Assertions.assertEquals("xgwim", response.iterator().next().hostGroup());
-        Assertions.assertEquals("jhfjxwm", response.iterator().next().hostName());
+        Assertions.assertEquals("jhfjxwm", response.iterator().next().hostname());
     }
 }

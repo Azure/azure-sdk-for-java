@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.dynatrace.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.dynatrace.fluent.models.SSODetailsResponseInner;
-import com.azure.resourcemanager.dynatrace.models.SSOStatus;
+import com.azure.resourcemanager.dynatrace.fluent.models.SsoDetailsResponseInner;
+import com.azure.resourcemanager.dynatrace.models.SsoStatus;
 import org.junit.jupiter.api.Assertions;
 
-public final class SSODetailsResponseInnerTests {
+public final class SsoDetailsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SSODetailsResponseInner model = BinaryData.fromString(
+        SsoDetailsResponseInner model = BinaryData.fromString(
             "{\"isSsoEnabled\":\"Enabled\",\"metadataUrl\":\"mebf\",\"singleSignOnUrl\":\"arbu\",\"aadDomains\":[\"vpnazzm\",\"jrunmpxtt\",\"bh\",\"bnlankxmyskpb\"],\"adminUsers\":[\"btkcxywnytnrsyn\",\"qidybyx\",\"zfcl\",\"aaxdbabphlwrq\"]}")
-            .toObject(SSODetailsResponseInner.class);
-        Assertions.assertEquals(SSOStatus.ENABLED, model.isSsoEnabled());
+            .toObject(SsoDetailsResponseInner.class);
+        Assertions.assertEquals(SsoStatus.ENABLED, model.isSsoEnabled());
         Assertions.assertEquals("mebf", model.metadataUrl());
         Assertions.assertEquals("arbu", model.singleSignOnUrl());
         Assertions.assertEquals("vpnazzm", model.aadDomains().get(0));

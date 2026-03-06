@@ -27,7 +27,7 @@ public final class VMHostsListResponseTests {
         Assertions.assertEquals(AvailabilityState.UNEXPECTED_SHUTDOWN, model.value().get(0).availabilityState());
         Assertions.assertEquals(LogModule.ENABLED, model.value().get(0).logModule());
         Assertions.assertEquals("cwif", model.value().get(0).hostGroup());
-        Assertions.assertEquals("ttgzfbis", model.value().get(0).hostName());
+        Assertions.assertEquals("ttgzfbis", model.value().get(0).hostname());
         Assertions.assertEquals("bkh", model.nextLink());
     }
 }

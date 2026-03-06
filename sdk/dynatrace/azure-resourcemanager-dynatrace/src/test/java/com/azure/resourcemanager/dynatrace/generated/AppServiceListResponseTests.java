@@ -27,7 +27,7 @@ public final class AppServiceListResponseTests {
         Assertions.assertEquals(AvailabilityState.UNMONITORED, model.value().get(0).availabilityState());
         Assertions.assertEquals(LogModule.DISABLED, model.value().get(0).logModule());
         Assertions.assertEquals("jektcxsenh", model.value().get(0).hostGroup());
-        Assertions.assertEquals("rsffrzpwvlqdqgbi", model.value().get(0).hostName());
+        Assertions.assertEquals("rsffrzpwvlqdqgbi", model.value().get(0).hostname());
         Assertions.assertEquals("kjeszz", model.nextLink());
     }
 }

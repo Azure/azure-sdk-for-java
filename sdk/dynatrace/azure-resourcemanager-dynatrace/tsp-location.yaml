@@ -1,4 +1,4 @@
 directory: specification/dynatrace/Dynatrace.Management
-commit: dfa1870bd97ea3c210673b9e8040ad5589f48f55
+commit: 37ca02d72f240b4640c42007889690a75d203de3
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

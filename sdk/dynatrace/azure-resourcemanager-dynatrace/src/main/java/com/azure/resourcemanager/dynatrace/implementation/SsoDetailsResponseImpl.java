@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.dynatrace.implementation;
 
-import com.azure.resourcemanager.dynatrace.fluent.models.SSODetailsResponseInner;
-import com.azure.resourcemanager.dynatrace.models.SSODetailsResponse;
-import com.azure.resourcemanager.dynatrace.models.SSOStatus;
+import com.azure.resourcemanager.dynatrace.fluent.models.SsoDetailsResponseInner;
+import com.azure.resourcemanager.dynatrace.models.SsoDetailsResponse;
+import com.azure.resourcemanager.dynatrace.models.SsoStatus;
 import java.util.Collections;
 import java.util.List;
 
-public final class SSODetailsResponseImpl implements SSODetailsResponse {
-    private SSODetailsResponseInner innerObject;
+public final class SsoDetailsResponseImpl implements SsoDetailsResponse {
+    private SsoDetailsResponseInner innerObject;
 
     private final com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager;
 
-    SSODetailsResponseImpl(SSODetailsResponseInner innerObject,
+    SsoDetailsResponseImpl(SsoDetailsResponseInner innerObject,
         com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
-    public SSOStatus isSsoEnabled() {
+    public SsoStatus isSsoEnabled() {
         return this.innerModel().isSsoEnabled();
     }
 
@@ -51,7 +51,7 @@ public final class SSODetailsResponseImpl implements SSODetailsResponse {
         }
     }
 
-    public SSODetailsResponseInner innerModel() {
+    public SsoDetailsResponseInner innerModel() {
         return this.innerObject;
     }
 

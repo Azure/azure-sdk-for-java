@@ -585,7 +585,7 @@ public interface MonitorResource {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SSO configuration details from the partner along with {@link Response}.
      */
-    Response<SSODetailsResponse> getSSODetailsWithResponse(SSODetailsRequest request, Context context);
+    Response<SsoDetailsResponse> getSsoDetailsWithResponse(SsoDetailsRequest request, Context context);
 
     /**
      * Gets the SSO configuration details from the partner.
@@ -594,7 +594,7 @@ public interface MonitorResource {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SSO configuration details from the partner.
      */
-    SSODetailsResponse getSSODetails();
+    SsoDetailsResponse getSsoDetails();
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.

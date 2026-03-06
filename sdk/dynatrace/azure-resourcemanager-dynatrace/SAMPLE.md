@@ -22,7 +22,7 @@
 - [GetByResourceGroup](#monitors_getbyresourcegroup)
 - [GetMarketplaceSaaSResourceDetails](#monitors_getmarketplacesaasresourcedetails)
 - [GetMetricStatus](#monitors_getmetricstatus)
-- [GetSSODetails](#monitors_getssodetails)
+- [GetSsoDetails](#monitors_getssodetails)
 - [GetVMHostPayload](#monitors_getvmhostpayload)
 - [List](#monitors_list)
 - [ListAppServices](#monitors_listappservices)
@@ -486,15 +486,15 @@ public final class MonitorsGetMetricStatusSamples {
 }
 ```
 
-### Monitors_GetSSODetails
+### Monitors_GetSsoDetails
 
 ```java
-import com.azure.resourcemanager.dynatrace.models.SSODetailsRequest;
+import com.azure.resourcemanager.dynatrace.models.SsoDetailsRequest;
 
 /**
- * Samples for Monitors GetSSODetails.
+ * Samples for Monitors GetSsoDetails.
  */
-public final class MonitorsGetSSODetailsSamples {
+public final class MonitorsGetSsoDetailsSamples {
     /*
      * x-ms-original-file: 2024-04-24/Monitors_GetSSODetails_MaximumSet_Gen.json
      */
@@ -506,8 +506,8 @@ public final class MonitorsGetSSODetailsSamples {
     public static void
         monitorsGetSSODetailsMaximumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
         manager.monitors()
-            .getSSODetailsWithResponse("myResourceGroup", "myMonitor",
-                new SSODetailsRequest().withUserPrincipal("alice@microsoft.com"), com.azure.core.util.Context.NONE);
+            .getSsoDetailsWithResponse("myResourceGroup", "myMonitor",
+                new SsoDetailsRequest().withUserPrincipal("alice@microsoft.com"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -521,8 +521,8 @@ public final class MonitorsGetSSODetailsSamples {
     public static void
         monitorsGetSSODetailsMinimumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
         manager.monitors()
-            .getSSODetailsWithResponse("myResourceGroup", "myMonitor",
-                new SSODetailsRequest().withUserPrincipal("alice@microsoft.com"), com.azure.core.util.Context.NONE);
+            .getSsoDetailsWithResponse("myResourceGroup", "myMonitor",
+                new SsoDetailsRequest().withUserPrincipal("alice@microsoft.com"), com.azure.core.util.Context.NONE);
     }
 }
 ```

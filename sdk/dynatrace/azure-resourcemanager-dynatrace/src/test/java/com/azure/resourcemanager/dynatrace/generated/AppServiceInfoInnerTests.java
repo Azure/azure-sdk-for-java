@@ -27,6 +27,6 @@ public final class AppServiceInfoInnerTests {
         Assertions.assertEquals(AvailabilityState.UNKNOWN, model.availabilityState());
         Assertions.assertEquals(LogModule.ENABLED, model.logModule());
         Assertions.assertEquals("godebfqkkrbmpu", model.hostGroup());
-        Assertions.assertEquals("riwflzlfb", model.hostName());
+        Assertions.assertEquals("riwflzlfb", model.hostname());
     }
 }

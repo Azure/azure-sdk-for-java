@@ -17,7 +17,7 @@ import com.azure.resourcemanager.dynatrace.fluent.models.MarketplaceSaaSResource
 import com.azure.resourcemanager.dynatrace.fluent.models.MetricsStatusResponseInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitorResourceInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitoredResourceInner;
-import com.azure.resourcemanager.dynatrace.fluent.models.SSODetailsResponseInner;
+import com.azure.resourcemanager.dynatrace.fluent.models.SsoDetailsResponseInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.VMExtensionPayloadInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.VMInfoInner;
 import com.azure.resourcemanager.dynatrace.models.AppServiceInfo;
@@ -34,8 +34,8 @@ import com.azure.resourcemanager.dynatrace.models.MetricsStatusResponse;
 import com.azure.resourcemanager.dynatrace.models.MonitorResource;
 import com.azure.resourcemanager.dynatrace.models.MonitoredResource;
 import com.azure.resourcemanager.dynatrace.models.Monitors;
-import com.azure.resourcemanager.dynatrace.models.SSODetailsRequest;
-import com.azure.resourcemanager.dynatrace.models.SSODetailsResponse;
+import com.azure.resourcemanager.dynatrace.models.SsoDetailsRequest;
+import com.azure.resourcemanager.dynatrace.models.SsoDetailsResponse;
 import com.azure.resourcemanager.dynatrace.models.UpgradePlanRequest;
 import com.azure.resourcemanager.dynatrace.models.VMExtensionPayload;
 import com.azure.resourcemanager.dynatrace.models.VMInfo;
@@ -199,22 +199,22 @@ public final class MonitorsImpl implements Monitors {
         this.serviceClient().upgradePlan(resourceGroupName, monitorName, request, context);
     }
 
-    public Response<SSODetailsResponse> getSSODetailsWithResponse(String resourceGroupName, String monitorName,
-        SSODetailsRequest request, Context context) {
-        Response<SSODetailsResponseInner> inner
-            = this.serviceClient().getSSODetailsWithResponse(resourceGroupName, monitorName, request, context);
+    public Response<SsoDetailsResponse> getSsoDetailsWithResponse(String resourceGroupName, String monitorName,
+        SsoDetailsRequest request, Context context) {
+        Response<SsoDetailsResponseInner> inner
+            = this.serviceClient().getSsoDetailsWithResponse(resourceGroupName, monitorName, request, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SSODetailsResponseImpl(inner.getValue(), this.manager()));
+                new SsoDetailsResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SSODetailsResponse getSSODetails(String resourceGroupName, String monitorName) {
-        SSODetailsResponseInner inner = this.serviceClient().getSSODetails(resourceGroupName, monitorName);
+    public SsoDetailsResponse getSsoDetails(String resourceGroupName, String monitorName) {
+        SsoDetailsResponseInner inner = this.serviceClient().getSsoDetails(resourceGroupName, monitorName);
         if (inner != null) {
-            return new SSODetailsResponseImpl(inner, this.manager());
+            return new SsoDetailsResponseImpl(inner, this.manager());
         } else {
             return null;
         }

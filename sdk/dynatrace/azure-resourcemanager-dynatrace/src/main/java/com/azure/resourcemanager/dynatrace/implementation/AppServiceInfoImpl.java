@@ -55,8 +55,8 @@ public final class AppServiceInfoImpl implements AppServiceInfo {
         return this.innerModel().hostGroup();
     }
 
-    public String hostName() {
-        return this.innerModel().hostName();
+    public String hostname() {
+        return this.innerModel().hostname();
     }
 
     public AppServiceInfoInner innerModel() {

@@ -54,8 +54,8 @@ public final class VMInfoImpl implements VMInfo {
         return this.innerModel().hostGroup();
     }
 
-    public String hostName() {
-        return this.innerModel().hostName();
+    public String hostname() {
+        return this.innerModel().hostname();
     }
 
     public VMInfoInner innerModel() {

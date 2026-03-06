@@ -27,6 +27,6 @@ public final class VMInfoInnerTests {
         Assertions.assertEquals(AvailabilityState.UNEXPECTED_SHUTDOWN, model.availabilityState());
         Assertions.assertEquals(LogModule.ENABLED, model.logModule());
         Assertions.assertEquals("jeputtmrywn", model.hostGroup());
-        Assertions.assertEquals("oqftiyqzrnkcq", model.hostName());
+        Assertions.assertEquals("oqftiyqzrnkcq", model.hostname());
     }
 }

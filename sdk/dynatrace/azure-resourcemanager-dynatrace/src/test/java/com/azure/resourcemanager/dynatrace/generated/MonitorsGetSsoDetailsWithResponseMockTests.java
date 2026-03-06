@@ -10,18 +10,18 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dynatrace.DynatraceManager;
-import com.azure.resourcemanager.dynatrace.models.SSODetailsRequest;
-import com.azure.resourcemanager.dynatrace.models.SSODetailsResponse;
-import com.azure.resourcemanager.dynatrace.models.SSOStatus;
+import com.azure.resourcemanager.dynatrace.models.SsoDetailsRequest;
+import com.azure.resourcemanager.dynatrace.models.SsoDetailsResponse;
+import com.azure.resourcemanager.dynatrace.models.SsoStatus;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class MonitorsGetSSODetailsWithResponseMockTests {
+public final class MonitorsGetSsoDetailsWithResponseMockTests {
     @Test
-    public void testGetSSODetailsWithResponse() throws Exception {
+    public void testGetSsoDetailsWithResponse() throws Exception {
         String responseStr
             = "{\"isSsoEnabled\":\"Disabled\",\"metadataUrl\":\"ygaeqidbqfatpxl\",\"singleSignOnUrl\":\"xcyjmoadsuvarmy\",\"aadDomains\":[\"jsjqbjhhyx\",\"rw\"],\"adminUsers\":[\"oduhp\"]}";
 
@@ -32,12 +32,12 @@ public final class MonitorsGetSSODetailsWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SSODetailsResponse response = manager.monitors()
-            .getSSODetailsWithResponse("zikhl", "fjhdg", new SSODetailsRequest().withUserPrincipal("gge"),
+        SsoDetailsResponse response = manager.monitors()
+            .getSsoDetailsWithResponse("zikhl", "fjhdg", new SsoDetailsRequest().withUserPrincipal("gge"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(SSOStatus.DISABLED, response.isSsoEnabled());
+        Assertions.assertEquals(SsoStatus.DISABLED, response.isSsoEnabled());
         Assertions.assertEquals("ygaeqidbqfatpxl", response.metadataUrl());
         Assertions.assertEquals("xcyjmoadsuvarmy", response.singleSignOnUrl());
         Assertions.assertEquals("jsjqbjhhyx", response.aadDomains().get(0));

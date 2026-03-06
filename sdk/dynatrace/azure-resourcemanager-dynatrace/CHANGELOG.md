@@ -12,11 +12,7 @@
 
 #### `models.TagRuleListResult` was removed
 
-#### `models.SsoDetailsRequest` was removed
-
 #### `models.MonitorResourceListResult` was removed
-
-#### `models.SsoStatus` was removed
 
 #### `models.VMHostsListResponse` was removed
 
@@ -24,26 +20,18 @@
 
 #### `models.DynatraceSingleSignOnResourceListResult` was removed
 
-#### `models.SsoDetailsResponse` was removed
-
 #### `models.MonitoredResourceListResponse` was removed
 
 #### `models.UserAssignedIdentity` was modified
 
 * `validate()` was removed
-* `withClientId(java.lang.String)` was removed
 * `withPrincipalId(java.lang.String)` was removed
-
-#### `models.AppServiceInfo` was modified
-
-* `hostname()` was removed
+* `withClientId(java.lang.String)` was removed
 
 #### `models.Monitors` was modified
 
-* `getSsoDetailsWithResponse(java.lang.String,java.lang.String,models.SsoDetailsRequest,com.azure.core.util.Context)` was removed
-* `getMetricStatusWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `listMonitoredResources(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `getSsoDetails(java.lang.String,java.lang.String)` was removed
+* `getMetricStatusWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 
 #### `models.FilteringTag` was modified
 
@@ -60,6 +48,10 @@
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.SsoDetailsRequest` was modified
+
 * `validate()` was removed
 
 #### `models.LogRules` was modified
@@ -88,8 +80,6 @@
 
 #### `models.MonitorResource` was modified
 
-* `getSsoDetailsWithResponse(models.SsoDetailsRequest,com.azure.core.util.Context)` was removed
-* `getSsoDetails()` was removed
 * `listMonitoredResources(com.azure.core.util.Context)` was removed
 * `getMetricStatusWithResponse(com.azure.core.util.Context)` was removed
 
@@ -105,17 +95,11 @@
 
 * `validate()` was removed
 
-#### `models.VMInfo` was modified
-
-* `hostname()` was removed
-
 #### `models.MetricRules` was modified
 
 * `validate()` was removed
 
 ### Features Added
-
-* `models.SSOStatus` was added
 
 * `models.Status` was added
 
@@ -130,8 +114,6 @@
 * `models.ManageAgentInstallationRequest` was added
 
 * `models.SubscriptionList` was added
-
-* `models.SSODetailsResponse` was added
 
 * `models.MarketplaceSaasAutoRenew` was added
 
@@ -151,8 +133,6 @@
 
 * `models.MonitoredSubscriptions` was added
 
-* `models.SSODetailsRequest` was added
-
 * `models.MonitoredSubscriptionProperties` was added
 
 * `models.ConnectedResourcesCountResponse` was added
@@ -167,22 +147,16 @@
 
 * `marketplaceSaaSResourceName()` was added
 
-#### `models.AppServiceInfo` was modified
-
-* `hostName()` was added
-
 #### `models.Monitors` was modified
 
+* `upgradePlan(java.lang.String,java.lang.String,models.UpgradePlanRequest,com.azure.core.util.Context)` was added
+* `listMonitoredResources(java.lang.String,java.lang.String,models.LogStatusRequest,com.azure.core.util.Context)` was added
+* `getAllConnectedResourcesCount(models.MarketplaceSubscriptionIdRequest)` was added
+* `getAllConnectedResourcesCountWithResponse(models.MarketplaceSubscriptionIdRequest,com.azure.core.util.Context)` was added
+* `manageAgentInstallationWithResponse(java.lang.String,java.lang.String,models.ManageAgentInstallationRequest,com.azure.core.util.Context)` was added
 * `getMetricStatusWithResponse(java.lang.String,java.lang.String,models.MetricStatusRequest,com.azure.core.util.Context)` was added
 * `manageAgentInstallation(java.lang.String,java.lang.String,models.ManageAgentInstallationRequest)` was added
-* `getAllConnectedResourcesCountWithResponse(models.MarketplaceSubscriptionIdRequest,com.azure.core.util.Context)` was added
-* `getSSODetailsWithResponse(java.lang.String,java.lang.String,models.SSODetailsRequest,com.azure.core.util.Context)` was added
-* `getSSODetails(java.lang.String,java.lang.String)` was added
-* `upgradePlan(java.lang.String,java.lang.String,models.UpgradePlanRequest,com.azure.core.util.Context)` was added
 * `upgradePlan(java.lang.String,java.lang.String,models.UpgradePlanRequest)` was added
-* `manageAgentInstallationWithResponse(java.lang.String,java.lang.String,models.ManageAgentInstallationRequest,com.azure.core.util.Context)` was added
-* `getAllConnectedResourcesCount(models.MarketplaceSubscriptionIdRequest)` was added
-* `listMonitoredResources(java.lang.String,java.lang.String,models.LogStatusRequest,com.azure.core.util.Context)` was added
 
 #### `models.MonitorResource$Definition` was modified
 
@@ -190,41 +164,35 @@
 
 #### `models.MonitorResourceUpdate` was modified
 
-* `identity()` was added
+* `properties()` was added
 * `withProperties(models.MonitorUpdateProperties)` was added
 * `withIdentity(models.ManagedServiceIdentity)` was added
-* `properties()` was added
+* `identity()` was added
 
 #### `DynatraceManager` was modified
 
-* `creationSupporteds()` was added
 * `monitoredSubscriptions()` was added
+* `creationSupporteds()` was added
 
 #### `models.MonitorResource` was modified
 
-* `upgradePlan(models.UpgradePlanRequest)` was added
-* `manageAgentInstallation(models.ManageAgentInstallationRequest)` was added
-* `manageAgentInstallationWithResponse(models.ManageAgentInstallationRequest,com.azure.core.util.Context)` was added
 * `listMonitoredResources(models.LogStatusRequest,com.azure.core.util.Context)` was added
-* `getMetricStatusWithResponse(models.MetricStatusRequest,com.azure.core.util.Context)` was added
-* `upgradePlan(models.UpgradePlanRequest,com.azure.core.util.Context)` was added
+* `manageAgentInstallation(models.ManageAgentInstallationRequest)` was added
 * `marketplaceSaasAutoRenew()` was added
-* `getSSODetailsWithResponse(models.SSODetailsRequest,com.azure.core.util.Context)` was added
-* `getSSODetails()` was added
+* `upgradePlan(models.UpgradePlanRequest,com.azure.core.util.Context)` was added
+* `upgradePlan(models.UpgradePlanRequest)` was added
+* `getMetricStatusWithResponse(models.MetricStatusRequest,com.azure.core.util.Context)` was added
+* `manageAgentInstallationWithResponse(models.ManageAgentInstallationRequest,com.azure.core.util.Context)` was added
 
 #### `models.AccountInfo` was modified
 
-* `companyName()` was added
 * `withCompanyName(java.lang.String)` was added
+* `companyName()` was added
 
 #### `models.MonitorResource$Update` was modified
 
-* `withProperties(models.MonitorUpdateProperties)` was added
 * `withIdentity(models.ManagedServiceIdentity)` was added
-
-#### `models.VMInfo` was modified
-
-* `hostName()` was added
+* `withProperties(models.MonitorUpdateProperties)` was added
 
 ## 1.0.0 (2024-12-26)
 

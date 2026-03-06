@@ -64,7 +64,7 @@ public final class VMInfoInner implements JsonSerializable<VMInfoInner> {
     /*
      * The name of the host
      */
-    private String hostName;
+    private String hostname;
 
     /**
      * Creates an instance of VMInfoInner class.
@@ -145,12 +145,12 @@ public final class VMInfoInner implements JsonSerializable<VMInfoInner> {
     }
 
     /**
-     * Get the hostName property: The name of the host.
+     * Get the hostname property: The name of the host.
      * 
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    public String hostName() {
-        return this.hostName;
+    public String hostname() {
+        return this.hostname;
     }
 
     /**
@@ -170,7 +170,7 @@ public final class VMInfoInner implements JsonSerializable<VMInfoInner> {
             this.availabilityState == null ? null : this.availabilityState.toString());
         jsonWriter.writeStringField("logModule", this.logModule == null ? null : this.logModule.toString());
         jsonWriter.writeStringField("hostGroup", this.hostGroup);
-        jsonWriter.writeStringField("hostName", this.hostName);
+        jsonWriter.writeStringField("hostName", this.hostname);
         return jsonWriter.writeEndObject();
     }
 
@@ -206,7 +206,7 @@ public final class VMInfoInner implements JsonSerializable<VMInfoInner> {
                 } else if ("hostGroup".equals(fieldName)) {
                     deserializedVMInfoInner.hostGroup = reader.getString();
                 } else if ("hostName".equals(fieldName)) {
-                    deserializedVMInfoInner.hostName = reader.getString();
+                    deserializedVMInfoInner.hostname = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -67,11 +67,11 @@ public interface VMInfo {
     String hostGroup();
 
     /**
-     * Gets the hostName property: The name of the host.
+     * Gets the hostname property: The name of the host.
      * 
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    String hostName();
+    String hostname();
 
     /**
      * Gets the inner com.azure.resourcemanager.dynatrace.fluent.models.VMInfoInner object.

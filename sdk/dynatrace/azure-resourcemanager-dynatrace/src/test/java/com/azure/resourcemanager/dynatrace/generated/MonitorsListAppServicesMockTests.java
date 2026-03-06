@@ -47,6 +47,6 @@ public final class MonitorsListAppServicesMockTests {
         Assertions.assertEquals(AvailabilityState.UNMONITORED, response.iterator().next().availabilityState());
         Assertions.assertEquals(LogModule.ENABLED, response.iterator().next().logModule());
         Assertions.assertEquals("itc", response.iterator().next().hostGroup());
-        Assertions.assertEquals("fcktqumiekke", response.iterator().next().hostName());
+        Assertions.assertEquals("fcktqumiekke", response.iterator().next().hostname());
     }
 }

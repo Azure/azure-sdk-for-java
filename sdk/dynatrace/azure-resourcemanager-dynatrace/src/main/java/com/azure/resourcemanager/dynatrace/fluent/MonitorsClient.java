@@ -18,7 +18,7 @@ import com.azure.resourcemanager.dynatrace.fluent.models.MarketplaceSaaSResource
 import com.azure.resourcemanager.dynatrace.fluent.models.MetricsStatusResponseInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitorResourceInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitoredResourceInner;
-import com.azure.resourcemanager.dynatrace.fluent.models.SSODetailsResponseInner;
+import com.azure.resourcemanager.dynatrace.fluent.models.SsoDetailsResponseInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.VMExtensionPayloadInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.VMInfoInner;
 import com.azure.resourcemanager.dynatrace.models.LinkableEnvironmentRequest;
@@ -28,7 +28,7 @@ import com.azure.resourcemanager.dynatrace.models.MarketplaceSaaSResourceDetails
 import com.azure.resourcemanager.dynatrace.models.MarketplaceSubscriptionIdRequest;
 import com.azure.resourcemanager.dynatrace.models.MetricStatusRequest;
 import com.azure.resourcemanager.dynatrace.models.MonitorResourceUpdate;
-import com.azure.resourcemanager.dynatrace.models.SSODetailsRequest;
+import com.azure.resourcemanager.dynatrace.models.SsoDetailsRequest;
 import com.azure.resourcemanager.dynatrace.models.UpgradePlanRequest;
 
 /**
@@ -499,8 +499,8 @@ public interface MonitorsClient {
      * @return the SSO configuration details from the partner along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SSODetailsResponseInner> getSSODetailsWithResponse(String resourceGroupName, String monitorName,
-        SSODetailsRequest request, Context context);
+    Response<SsoDetailsResponseInner> getSsoDetailsWithResponse(String resourceGroupName, String monitorName,
+        SsoDetailsRequest request, Context context);
 
     /**
      * Gets the SSO configuration details from the partner.
@@ -513,7 +513,7 @@ public interface MonitorsClient {
      * @return the SSO configuration details from the partner.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SSODetailsResponseInner getSSODetails(String resourceGroupName, String monitorName);
+    SsoDetailsResponseInner getSsoDetails(String resourceGroupName, String monitorName);
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.

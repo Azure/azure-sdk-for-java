@@ -64,7 +64,7 @@ public final class AppServiceInfoInner implements JsonSerializable<AppServiceInf
     /*
      * The name of the host
      */
-    private String hostName;
+    private String hostname;
 
     /**
      * Creates an instance of AppServiceInfoInner class.
@@ -145,12 +145,12 @@ public final class AppServiceInfoInner implements JsonSerializable<AppServiceInf
     }
 
     /**
-     * Get the hostName property: The name of the host.
+     * Get the hostname property: The name of the host.
      * 
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    public String hostName() {
-        return this.hostName;
+    public String hostname() {
+        return this.hostname;
     }
 
     /**
@@ -170,7 +170,7 @@ public final class AppServiceInfoInner implements JsonSerializable<AppServiceInf
             this.availabilityState == null ? null : this.availabilityState.toString());
         jsonWriter.writeStringField("logModule", this.logModule == null ? null : this.logModule.toString());
         jsonWriter.writeStringField("hostGroup", this.hostGroup);
-        jsonWriter.writeStringField("hostName", this.hostName);
+        jsonWriter.writeStringField("hostName", this.hostname);
         return jsonWriter.writeEndObject();
     }
 
@@ -208,7 +208,7 @@ public final class AppServiceInfoInner implements JsonSerializable<AppServiceInf
                 } else if ("hostGroup".equals(fieldName)) {
                     deserializedAppServiceInfoInner.hostGroup = reader.getString();
                 } else if ("hostName".equals(fieldName)) {
-                    deserializedAppServiceInfoInner.hostName = reader.getString();
+                    deserializedAppServiceInfoInner.hostname = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

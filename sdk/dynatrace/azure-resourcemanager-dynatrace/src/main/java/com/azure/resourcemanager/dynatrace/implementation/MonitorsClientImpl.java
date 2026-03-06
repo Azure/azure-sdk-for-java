@@ -42,7 +42,7 @@ import com.azure.resourcemanager.dynatrace.fluent.models.MarketplaceSaaSResource
 import com.azure.resourcemanager.dynatrace.fluent.models.MetricsStatusResponseInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitorResourceInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitoredResourceInner;
-import com.azure.resourcemanager.dynatrace.fluent.models.SSODetailsResponseInner;
+import com.azure.resourcemanager.dynatrace.fluent.models.SsoDetailsResponseInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.VMExtensionPayloadInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.VMInfoInner;
 import com.azure.resourcemanager.dynatrace.implementation.models.AppServiceListResponse;
@@ -57,7 +57,7 @@ import com.azure.resourcemanager.dynatrace.models.MarketplaceSaaSResourceDetails
 import com.azure.resourcemanager.dynatrace.models.MarketplaceSubscriptionIdRequest;
 import com.azure.resourcemanager.dynatrace.models.MetricStatusRequest;
 import com.azure.resourcemanager.dynatrace.models.MonitorResourceUpdate;
-import com.azure.resourcemanager.dynatrace.models.SSODetailsRequest;
+import com.azure.resourcemanager.dynatrace.models.SsoDetailsRequest;
 import com.azure.resourcemanager.dynatrace.models.UpgradePlanRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -338,20 +338,20 @@ public final class MonitorsClientImpl implements MonitorsClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/getSSODetails")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SSODetailsResponseInner>> getSSODetails(@HostParam("endpoint") String endpoint,
+        Mono<Response<SsoDetailsResponseInner>> getSsoDetails(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") SSODetailsRequest request,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SsoDetailsRequest request,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/getSSODetails")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<SSODetailsResponseInner> getSSODetailsSync(@HostParam("endpoint") String endpoint,
+        Response<SsoDetailsResponseInner> getSsoDetailsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") SSODetailsRequest request,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SsoDetailsRequest request,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -1952,11 +1952,11 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SSODetailsResponseInner>> getSSODetailsWithResponseAsync(String resourceGroupName,
-        String monitorName, SSODetailsRequest request) {
+    private Mono<Response<SsoDetailsResponseInner>> getSsoDetailsWithResponseAsync(String resourceGroupName,
+        String monitorName, SsoDetailsRequest request) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getSSODetails(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.getSsoDetails(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, request, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1972,9 +1972,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the SSO configuration details from the partner on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SSODetailsResponseInner> getSSODetailsAsync(String resourceGroupName, String monitorName) {
-        final SSODetailsRequest request = null;
-        return getSSODetailsWithResponseAsync(resourceGroupName, monitorName, request)
+    private Mono<SsoDetailsResponseInner> getSsoDetailsAsync(String resourceGroupName, String monitorName) {
+        final SsoDetailsRequest request = null;
+        return getSsoDetailsWithResponseAsync(resourceGroupName, monitorName, request)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1991,10 +1991,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the SSO configuration details from the partner along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SSODetailsResponseInner> getSSODetailsWithResponse(String resourceGroupName, String monitorName,
-        SSODetailsRequest request, Context context) {
+    public Response<SsoDetailsResponseInner> getSsoDetailsWithResponse(String resourceGroupName, String monitorName,
+        SsoDetailsRequest request, Context context) {
         final String accept = "application/json";
-        return service.getSSODetailsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.getSsoDetailsSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, request, context);
     }
 
@@ -2009,9 +2009,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the SSO configuration details from the partner.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SSODetailsResponseInner getSSODetails(String resourceGroupName, String monitorName) {
-        final SSODetailsRequest request = null;
-        return getSSODetailsWithResponse(resourceGroupName, monitorName, request, Context.NONE).getValue();
+    public SsoDetailsResponseInner getSsoDetails(String resourceGroupName, String monitorName) {
+        final SsoDetailsRequest request = null;
+        return getSsoDetailsWithResponse(resourceGroupName, monitorName, request, Context.NONE).getValue();
     }
 
     /**

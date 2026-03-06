@@ -15,16 +15,16 @@ import java.io.IOException;
  * Request for getting sso details for a user.
  */
 @Fluent
-public final class SSODetailsRequest implements JsonSerializable<SSODetailsRequest> {
+public final class SsoDetailsRequest implements JsonSerializable<SsoDetailsRequest> {
     /*
      * user principal id of the user
      */
     private String userPrincipal;
 
     /**
-     * Creates an instance of SSODetailsRequest class.
+     * Creates an instance of SsoDetailsRequest class.
      */
-    public SSODetailsRequest() {
+    public SsoDetailsRequest() {
     }
 
     /**
@@ -40,9 +40,9 @@ public final class SSODetailsRequest implements JsonSerializable<SSODetailsReque
      * Set the userPrincipal property: user principal id of the user.
      * 
      * @param userPrincipal the userPrincipal value to set.
-     * @return the SSODetailsRequest object itself.
+     * @return the SsoDetailsRequest object itself.
      */
-    public SSODetailsRequest withUserPrincipal(String userPrincipal) {
+    public SsoDetailsRequest withUserPrincipal(String userPrincipal) {
         this.userPrincipal = userPrincipal;
         return this;
     }
@@ -58,29 +58,29 @@ public final class SSODetailsRequest implements JsonSerializable<SSODetailsReque
     }
 
     /**
-     * Reads an instance of SSODetailsRequest from the JsonReader.
+     * Reads an instance of SsoDetailsRequest from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SSODetailsRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of SsoDetailsRequest if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SSODetailsRequest.
+     * @throws IOException If an error occurs while reading the SsoDetailsRequest.
      */
-    public static SSODetailsRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static SsoDetailsRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SSODetailsRequest deserializedSSODetailsRequest = new SSODetailsRequest();
+            SsoDetailsRequest deserializedSsoDetailsRequest = new SsoDetailsRequest();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("userPrincipal".equals(fieldName)) {
-                    deserializedSSODetailsRequest.userPrincipal = reader.getString();
+                    deserializedSsoDetailsRequest.userPrincipal = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSSODetailsRequest;
+            return deserializedSsoDetailsRequest;
         });
     }
 }

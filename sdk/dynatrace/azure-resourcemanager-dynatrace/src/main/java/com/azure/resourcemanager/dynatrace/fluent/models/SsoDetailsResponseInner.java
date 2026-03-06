@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.dynatrace.models.SSOStatus;
+import com.azure.resourcemanager.dynatrace.models.SsoStatus;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,11 +17,11 @@ import java.util.List;
  * SSO details from the Dynatrace partner.
  */
 @Immutable
-public final class SSODetailsResponseInner implements JsonSerializable<SSODetailsResponseInner> {
+public final class SsoDetailsResponseInner implements JsonSerializable<SsoDetailsResponseInner> {
     /*
      * Whether the SSO is enabled for this resource or not.
      */
-    private SSOStatus isSsoEnabled;
+    private SsoStatus isSsoEnabled;
 
     /*
      * URL for Azure AD metadata
@@ -44,9 +44,9 @@ public final class SSODetailsResponseInner implements JsonSerializable<SSODetail
     private List<String> adminUsers;
 
     /**
-     * Creates an instance of SSODetailsResponseInner class.
+     * Creates an instance of SsoDetailsResponseInner class.
      */
-    private SSODetailsResponseInner() {
+    private SsoDetailsResponseInner() {
     }
 
     /**
@@ -54,7 +54,7 @@ public final class SSODetailsResponseInner implements JsonSerializable<SSODetail
      * 
      * @return the isSsoEnabled value.
      */
-    public SSOStatus isSsoEnabled() {
+    public SsoStatus isSsoEnabled() {
         return this.isSsoEnabled;
     }
 
@@ -109,38 +109,38 @@ public final class SSODetailsResponseInner implements JsonSerializable<SSODetail
     }
 
     /**
-     * Reads an instance of SSODetailsResponseInner from the JsonReader.
+     * Reads an instance of SsoDetailsResponseInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SSODetailsResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of SsoDetailsResponseInner if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SSODetailsResponseInner.
+     * @throws IOException If an error occurs while reading the SsoDetailsResponseInner.
      */
-    public static SSODetailsResponseInner fromJson(JsonReader jsonReader) throws IOException {
+    public static SsoDetailsResponseInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SSODetailsResponseInner deserializedSSODetailsResponseInner = new SSODetailsResponseInner();
+            SsoDetailsResponseInner deserializedSsoDetailsResponseInner = new SsoDetailsResponseInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("isSsoEnabled".equals(fieldName)) {
-                    deserializedSSODetailsResponseInner.isSsoEnabled = SSOStatus.fromString(reader.getString());
+                    deserializedSsoDetailsResponseInner.isSsoEnabled = SsoStatus.fromString(reader.getString());
                 } else if ("metadataUrl".equals(fieldName)) {
-                    deserializedSSODetailsResponseInner.metadataUrl = reader.getString();
+                    deserializedSsoDetailsResponseInner.metadataUrl = reader.getString();
                 } else if ("singleSignOnUrl".equals(fieldName)) {
-                    deserializedSSODetailsResponseInner.singleSignOnUrl = reader.getString();
+                    deserializedSsoDetailsResponseInner.singleSignOnUrl = reader.getString();
                 } else if ("aadDomains".equals(fieldName)) {
                     List<String> aadDomains = reader.readArray(reader1 -> reader1.getString());
-                    deserializedSSODetailsResponseInner.aadDomains = aadDomains;
+                    deserializedSsoDetailsResponseInner.aadDomains = aadDomains;
                 } else if ("adminUsers".equals(fieldName)) {
                     List<String> adminUsers = reader.readArray(reader1 -> reader1.getString());
-                    deserializedSSODetailsResponseInner.adminUsers = adminUsers;
+                    deserializedSsoDetailsResponseInner.adminUsers = adminUsers;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSSODetailsResponseInner;
+            return deserializedSsoDetailsResponseInner;
         });
     }
 }

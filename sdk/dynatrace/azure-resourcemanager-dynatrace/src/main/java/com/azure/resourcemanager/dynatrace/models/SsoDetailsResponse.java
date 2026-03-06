@@ -4,19 +4,19 @@
 
 package com.azure.resourcemanager.dynatrace.models;
 
-import com.azure.resourcemanager.dynatrace.fluent.models.SSODetailsResponseInner;
+import com.azure.resourcemanager.dynatrace.fluent.models.SsoDetailsResponseInner;
 import java.util.List;
 
 /**
- * An immutable client-side representation of SSODetailsResponse.
+ * An immutable client-side representation of SsoDetailsResponse.
  */
-public interface SSODetailsResponse {
+public interface SsoDetailsResponse {
     /**
      * Gets the isSsoEnabled property: Whether the SSO is enabled for this resource or not.
      * 
      * @return the isSsoEnabled value.
      */
-    SSOStatus isSsoEnabled();
+    SsoStatus isSsoEnabled();
 
     /**
      * Gets the metadataUrl property: URL for Azure AD metadata.
@@ -47,9 +47,9 @@ public interface SSODetailsResponse {
     List<String> adminUsers();
 
     /**
-     * Gets the inner com.azure.resourcemanager.dynatrace.fluent.models.SSODetailsResponseInner object.
+     * Gets the inner com.azure.resourcemanager.dynatrace.fluent.models.SsoDetailsResponseInner object.
      * 
      * @return the inner object.
      */
-    SSODetailsResponseInner innerModel();
+    SsoDetailsResponseInner innerModel();
 }

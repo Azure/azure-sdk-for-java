@@ -30,8 +30,8 @@ import com.azure.resourcemanager.dynatrace.models.MonitoredResource;
 import com.azure.resourcemanager.dynatrace.models.MonitoringStatus;
 import com.azure.resourcemanager.dynatrace.models.PlanData;
 import com.azure.resourcemanager.dynatrace.models.ProvisioningState;
-import com.azure.resourcemanager.dynatrace.models.SSODetailsRequest;
-import com.azure.resourcemanager.dynatrace.models.SSODetailsResponse;
+import com.azure.resourcemanager.dynatrace.models.SsoDetailsRequest;
+import com.azure.resourcemanager.dynatrace.models.SsoDetailsResponse;
 import com.azure.resourcemanager.dynatrace.models.UpgradePlanRequest;
 import com.azure.resourcemanager.dynatrace.models.UserInfo;
 import com.azure.resourcemanager.dynatrace.models.VMExtensionPayload;
@@ -266,12 +266,12 @@ public final class MonitorResourceImpl implements MonitorResource, MonitorResour
         serviceManager.monitors().upgradePlan(resourceGroupName, monitorName, request, context);
     }
 
-    public Response<SSODetailsResponse> getSSODetailsWithResponse(SSODetailsRequest request, Context context) {
-        return serviceManager.monitors().getSSODetailsWithResponse(resourceGroupName, monitorName, request, context);
+    public Response<SsoDetailsResponse> getSsoDetailsWithResponse(SsoDetailsRequest request, Context context) {
+        return serviceManager.monitors().getSsoDetailsWithResponse(resourceGroupName, monitorName, request, context);
     }
 
-    public SSODetailsResponse getSSODetails() {
-        return serviceManager.monitors().getSSODetails(resourceGroupName, monitorName);
+    public SsoDetailsResponse getSsoDetails() {
+        return serviceManager.monitors().getSsoDetails(resourceGroupName, monitorName);
     }
 
     public PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(LinkableEnvironmentRequest request) {
