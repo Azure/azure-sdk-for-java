@@ -311,10 +311,10 @@
 # ServiceOwners:                                                   @abhipsaMisra @azabbasi @barustum @drwill-ms @jamdavi @timtay-microsoft @vinagesh
 
 # PRLabel: %Discovery
-/sdk/discovery/                                                    @olawal @alchocro @anmaga
+/sdk/discovery/                                                    @oylawal @achocron
 
 # ServiceLabel: %Discovery
-# ServiceOwners:                                                   @oylawal @achocron
+# ServiceOwners:                                                   @achocron
 
 # PRLabel: %Document Intelligence
 /sdk/documentintelligence/                                         @Azure/azure-java-sdk @samvaity
