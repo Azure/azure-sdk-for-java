@@ -131,7 +131,7 @@ class ConnectionManager {
             // clients
             // Otherwise we continue from where we left off with the active clients list and rotate through.
             activeClients = getAvailableClients();
-        } else {
+        } else if (!configStore.isLoadBalancingEnabled()) {
             // If load balancing is not enabled, we want to ensure we are always using the most preferred available
             // client. This means
             // we check for available clients on each refresh and update the active clients list accordingly.
