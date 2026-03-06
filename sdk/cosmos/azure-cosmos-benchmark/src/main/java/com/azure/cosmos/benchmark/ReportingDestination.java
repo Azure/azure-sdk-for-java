@@ -6,13 +6,9 @@ package com.azure.cosmos.benchmark;
 /**
  * The destination for detailed benchmark metrics reporting.
  * Console summary is always enabled regardless of this setting.
+ * If no destination is configured, only console summary is active.
  */
 public enum ReportingDestination {
-    /**
-     * Console summary only (no detailed metrics export).
-     */
-    CONSOLE,
-
     /**
      * Per-metric CSV files via Dropwizard CsvReporter.
      */

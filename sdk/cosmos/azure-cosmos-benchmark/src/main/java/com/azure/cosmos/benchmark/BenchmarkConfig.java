@@ -37,7 +37,7 @@ public class BenchmarkConfig {
     private boolean enableNettyHttpMetrics = false;
 
     // -- Reporting --
-    private ReportingDestination reportingDestination = ReportingDestination.CONSOLE;
+    private ReportingDestination reportingDestination;
     private String reportingDirectory;
     private int printingInterval = 10;
 
@@ -207,9 +207,6 @@ public class BenchmarkConfig {
             if (metrics.has("reportingDestination")) {
                 reportingDestination = ReportingDestination.valueOf(
                     metrics.get("reportingDestination").asText().toUpperCase().replace("-", "_"));
-            } else if (reportingDirectory != null) {
-                // Backward compatibility: if reportingDirectory set but no explicit destination, default to CSV
-                reportingDestination = ReportingDestination.CSV;
             }
 
             // Application Insights config
@@ -227,17 +224,6 @@ public class BenchmarkConfig {
                 if (appInsights.has("testCategory")) {
                     appInsightsTestCategory = appInsights.get("testCategory").asText();
                 }
-            }
-
-            // Backward compatibility: check system properties / env vars for App Insights
-            if (appInsightsConnectionString == null) {
-                appInsightsConnectionString = System.getProperty("applicationinsights.connection.string",
-                    System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING"));
-            }
-            if (appInsightsInstrumentationKey == null) {
-                appInsightsInstrumentationKey = System.getProperty(
-                    "azure.cosmos.monitoring.azureMonitor.instrumentationKey",
-                    System.getenv("AZURE_INSTRUMENTATION_KEY"));
             }
         }
     }

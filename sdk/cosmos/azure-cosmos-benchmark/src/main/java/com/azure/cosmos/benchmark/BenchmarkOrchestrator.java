@@ -70,47 +70,44 @@ public class BenchmarkOrchestrator {
         ConsoleSummaryReporter consoleSummary = new ConsoleSummaryReporter(dropwizardBridge);
         consoleSummary.start(config.getPrintingInterval(), TimeUnit.SECONDS);
 
-        // Detailed reporter — based on reportingDestination (mutually exclusive)
+        // Detailed reporter — based on reportingDestination (mutually exclusive, optional)
         BenchmarkMetricsReporter csvReporter = null;
         CosmosTotalResultReporter cosmosReporter = null;
         MeterRegistry appInsightsRegistry = null;
 
-        switch (config.getReportingDestination()) {
-            case CSV:
-                if (config.getReportingDirectory() == null) {
-                    throw new IllegalArgumentException(
-                        "reportingDirectory is required when reportingDestination=CSV");
-                }
-                csvReporter = new BenchmarkMetricsReporter(dropwizardBridge, config.getReportingDirectory());
-                csvReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
-                break;
+        if (config.getReportingDestination() != null) {
+            switch (config.getReportingDestination()) {
+                case CSV:
+                    if (config.getReportingDirectory() == null) {
+                        throw new IllegalArgumentException(
+                            "reportingDirectory is required when reportingDestination=CSV");
+                    }
+                    csvReporter = new BenchmarkMetricsReporter(dropwizardBridge, config.getReportingDirectory());
+                    csvReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+                    break;
 
-            case COSMOSDB:
-                Set<String> ops = new LinkedHashSet<>();
-                int totalConcurrency = 0;
-                for (TenantWorkloadConfig t : config.getTenantWorkloads()) {
-                    ops.add(t.getOperation() != null ? t.getOperation() : "Unknown");
-                    totalConcurrency += t.getConcurrency();
-                }
-                cosmosReporter = CosmosTotalResultReporter.create(
-                    compositeRegistry, config, String.join("+", ops), totalConcurrency);
-                cosmosReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
-                break;
+                case COSMOSDB:
+                    Set<String> ops = new LinkedHashSet<>();
+                    int totalConcurrency = 0;
+                    for (TenantWorkloadConfig t : config.getTenantWorkloads()) {
+                        ops.add(t.getOperation() != null ? t.getOperation() : "Unknown");
+                        totalConcurrency += t.getConcurrency();
+                    }
+                    cosmosReporter = CosmosTotalResultReporter.create(
+                        compositeRegistry, config, String.join("+", ops), totalConcurrency);
+                    cosmosReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+                    break;
 
-            case APPLICATION_INSIGHTS:
-                appInsightsRegistry = buildAppInsightsMeterRegistry(config);
-                if (appInsightsRegistry != null) {
-                    compositeRegistry.add(appInsightsRegistry);
-                    logger.info("Application Insights registry added");
-                } else {
-                    logger.warn("APPLICATION_INSIGHTS destination selected but no connection configured");
-                }
-                break;
-
-            case CONSOLE:
-            default:
-                // Console-only, no additional detailed reporter
-                break;
+                case APPLICATION_INSIGHTS:
+                    appInsightsRegistry = buildAppInsightsMeterRegistry(config);
+                    if (appInsightsRegistry != null) {
+                        compositeRegistry.add(appInsightsRegistry);
+                        logger.info("Application Insights registry added");
+                    } else {
+                        logger.warn("APPLICATION_INSIGHTS destination selected but no connection configured");
+                    }
+                    break;
+            }
         }
 
         if (config.isEnableJvmStats()) {
