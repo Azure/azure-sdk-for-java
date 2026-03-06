@@ -62,10 +62,17 @@ public class BenchmarkOrchestrator {
 
         setGlobalSystemProperties(config);
 
-        // Set up shared Micrometer registry (composite: SimpleMeterRegistry + optional AzureMonitor)
+        // Set up shared Micrometer registry (composite: DropwizardBridge + optional AzureMonitor)
         CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
-        SimpleMeterRegistry simpleRegistry = new SimpleMeterRegistry();
-        compositeRegistry.add(simpleRegistry);
+
+        // Benchmark metrics reporter — DropwizardMeterRegistry bridge to CsvReporter/ConsoleReporter
+        Path metricsDir = null;
+        if (config.getReportingDirectory() != null) {
+            metricsDir = Paths.get(config.getReportingDirectory(), "metrics");
+        }
+        BenchmarkMetricsReporter reporter = new BenchmarkMetricsReporter(metricsDir);
+        compositeRegistry.add(reporter);
+        reporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
 
         MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
         if (cosmosMicrometerRegistry != null) {
@@ -83,15 +90,6 @@ public class BenchmarkOrchestrator {
 
         // Prepare all tenants (inject shared state, set defaults)
         prepareTenants(config, compositeRegistry);
-
-        // Benchmark metrics reporter (reads SDK-emitted meters from the shared registry)
-        Path metricsDir = null;
-        if (config.getReportingDirectory() != null) {
-            metricsDir = Paths.get(config.getReportingDirectory(), "metrics");
-        }
-        BenchmarkMetricsReporter reporter = new BenchmarkMetricsReporter(compositeRegistry, metricsDir);
-        reporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
-        logger.info("BenchmarkMetricsReporter started (interval={}s)", config.getPrintingInterval());
 
         // Optional: Result uploader
         CosmosClient resultUploaderClient = null;
