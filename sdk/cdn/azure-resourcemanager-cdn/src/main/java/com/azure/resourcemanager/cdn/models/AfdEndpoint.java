@@ -12,6 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure Front Door (AFD) endpoint that lives under a {@link CdnProfile}.
@@ -117,6 +118,13 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
     PagedIterable<Usage> listResourceUsage();
 
     /**
+     * Gets latest routes by sending http request.
+     *
+     * @return routes in this endpoint, indexed by name
+     */
+    Map<String, Route> routes();
+
+    /**
      * Grouping of AFD endpoint definition stages as part of a parent {@link CdnProfile} definition.
      */
     interface DefinitionStages {
@@ -157,6 +165,13 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
          * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends Attachable<ParentT> {
+            /**
+             * Starts the definition of a new route to be attached to this endpoint.
+             *
+             * @param name a new route name
+             * @return the first stage of a new route definition
+             */
+            Route.DefinitionStages.Blank<WithAttach<ParentT>> defineRoute(String name);
         }
 
         /**
@@ -215,6 +230,13 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
          * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends Attachable<ParentT> {
+            /**
+             * Starts the definition of a new route to be attached to this endpoint.
+             *
+             * @param name a new route name
+             * @return the first stage of a new route definition
+             */
+            Route.UpdateDefinitionStages.Blank<WithAttach<ParentT>> defineRoute(String name);
         }
 
         /**
@@ -251,5 +273,21 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
          * @return the next stage of the update
          */
         Update withEnforceMtls(EnforceMtlsEnabledState enforceMtls);
+
+        /**
+         * Begins the description of an update of an existing route in this endpoint.
+         *
+         * @param name the name of an existing route
+         * @return the first stage of the update of the route
+         */
+        Route.Update updateRoute(String name);
+
+        /**
+         * Removes a route from this endpoint.
+         *
+         * @param name the name of an existing route
+         * @return the next stage of the endpoint update
+         */
+        Update withoutRoute(String name);
     }
 }
