@@ -5,44 +5,42 @@ package com.azure.cosmos.benchmark;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.implementation.cpu.CpuMemoryReader;
 import com.azure.cosmos.models.PartitionKey;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Snapshot;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Timer;
-import io.micrometer.core.instrument.distribution.HistogramSnapshot;
-import io.micrometer.core.instrument.distribution.ValueAtPercentile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Periodically reads SDK-emitted Micrometer metrics from the shared {@link MeterRegistry}
- * and uploads aggregated benchmark results to a Cosmos DB container.
+ * Periodically samples SDK metrics from the Dropwizard bridge registry and on shutdown
+ * uploads aggregated benchmark results to a Cosmos DB container.
  *
- * <p>Tracks rolling success/failure rates (computed from counter deltas between report intervals)
- * and latency percentiles from the SDK's operation timer.</p>
+ * <p>Uses native Dropwizard {@link com.codahale.metrics.Meter} rates and
+ * {@link com.codahale.metrics.Timer} percentiles — no manual rate/percentile
+ * computation needed.</p>
  */
 public class CosmosTotalResultReporter {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTotalResultReporter.class);
     static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    // SDK metric names
-    private static final String OP_CALLS_METRIC = "cosmos.client.op.calls";
-    private static final String OP_LATENCY_METRIC = "cosmos.client.op.latency";
+    // SDK metric name prefix (bridged via HierarchicalNameMapper)
+    private static final String OP_CALLS_PREFIX = "cosmos.client.op.calls";
+    private static final String OP_LATENCY_PREFIX = "cosmos.client.op.latency";
 
-    private final MeterRegistry registry;
+    private final MetricRegistry dropwizardRegistry;
     private final CosmosContainer results;
     private final String operation;
     private final String testVariationName;
@@ -52,19 +50,8 @@ public class CosmosTotalResultReporter {
     private final CpuMemoryReader cpuReader;
     private final ScheduledExecutorService scheduler;
 
-    // Internal histograms for rolling aggregation (simple arrays of samples)
-    private final java.util.List<Double> successRateSamples = new java.util.ArrayList<>();
-    private final java.util.List<Double> failureRateSamples = new java.util.ArrayList<>();
-    private final java.util.List<Double> medianLatencySamples = new java.util.ArrayList<>();
-    private final java.util.List<Double> p99LatencySamples = new java.util.ArrayList<>();
-    private final java.util.List<Double> cpuUsageSamples = new java.util.ArrayList<>();
-
-    private Instant lastRecorded;
-    private double lastRecordedSuccessCount;
-    private double lastRecordedFailureCount;
-
     private CosmosTotalResultReporter(
-        MeterRegistry registry,
+        DropwizardBridgeMeterRegistry bridgeRegistry,
         CosmosContainer results,
         String operation,
         String testVariationName,
@@ -72,7 +59,7 @@ public class CosmosTotalResultReporter {
         String commitId,
         int concurrency) {
 
-        this.registry = registry;
+        this.dropwizardRegistry = bridgeRegistry.getDropwizardRegistry();
         this.results = results;
         this.operation = operation;
         this.testVariationName = testVariationName != null ? testVariationName : "";
@@ -80,7 +67,6 @@ public class CosmosTotalResultReporter {
         this.commitId = commitId != null ? commitId : "";
         this.concurrency = concurrency;
         this.cpuReader = new CpuMemoryReader();
-        this.lastRecorded = Instant.now();
         this.scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
             Thread t = new Thread(r, "cosmos-result-reporter");
             t.setDaemon(true);
@@ -96,48 +82,16 @@ public class CosmosTotalResultReporter {
     }
 
     /**
-     * Collect one sample of metrics for rolling aggregation.
+     * Log a periodic summary (for debugging). The real upload happens in {@link #stop()}.
      */
     public void report() {
-        // Compute success/failure rates from counter deltas
-        double successCount = sumCountersByName(OP_CALLS_METRIC, true);
-        double failureCount = sumCountersByName(OP_CALLS_METRIC, false);
-
-        Instant now = Instant.now();
-        double intervalInSeconds = Duration.between(lastRecorded, now).toMillis() / 1000.0;
-
-        if (intervalInSeconds > 0) {
-            cpuUsageSamples.add((double) cpuReader.getSystemWideCpuUsage());
-
-            if (successCount == 0 && failureCount == 0) {
-                lastRecorded = now;
-                return;
-            }
-
-            double successRate = (successCount - lastRecordedSuccessCount) / intervalInSeconds;
-            double failureRate = (failureCount - lastRecordedFailureCount) / intervalInSeconds;
-            successRateSamples.add(successRate);
-            failureRateSamples.add(failureRate);
-
-            lastRecordedSuccessCount = successCount;
-            lastRecordedFailureCount = failureCount;
-            lastRecorded = now;
-
-            // Read latency percentiles from SDK timer
-            Timer latencyTimer = findTimerByName(OP_LATENCY_METRIC);
-            if (latencyTimer != null) {
-                HistogramSnapshot snapshot = latencyTimer.takeSnapshot();
-                double median = 0, p99 = 0;
-                for (ValueAtPercentile vp : snapshot.percentileValues()) {
-                    if (vp.percentile() == 0.5) median = vp.value(TimeUnit.MILLISECONDS);
-                    else if (vp.percentile() == 0.99) p99 = vp.value(TimeUnit.MILLISECONDS);
-                }
-
-                if (median > 0) {
-                    medianLatencySamples.add(median);
-                    p99LatencySamples.add(p99);
-                }
-            }
+        double successRate = sumMeterRates(true);
+        double failureRate = sumMeterRates(false);
+        if (successRate > 0 || failureRate > 0) {
+            LOGGER.debug("Periodic: successRate={}/s failureRate={}/s cpu={}",
+                String.format("%.1f", successRate),
+                String.format("%.1f", failureRate),
+                String.format("%.1f%%", cpuReader.getSystemWideCpuUsage() * 100));
         }
     }
 
@@ -152,7 +106,6 @@ public class CosmosTotalResultReporter {
             Thread.currentThread().interrupt();
         }
 
-        report();
         uploadFinalResults();
     }
 
@@ -160,6 +113,25 @@ public class CosmosTotalResultReporter {
         DateTimeFormatter formatter = DateTimeFormatter
             .ofPattern("yyyy-MM-dd HH:mm:ss.nnnnnnn")
             .withZone(ZoneId.from(ZoneOffset.UTC));
+
+        // Read rates from Dropwizard Meters (native 1-minute EWMA rates)
+        double successRate = sumMeterRates(true);
+        double failureRate = sumMeterRates(false);
+
+        // Read latency percentiles from Dropwizard Timers
+        double medianMs = 0;
+        double p99Ms = 0;
+        for (Map.Entry<String, com.codahale.metrics.Timer> entry : dropwizardRegistry.getTimers().entrySet()) {
+            if (entry.getKey().contains(OP_LATENCY_PREFIX)) {
+                Snapshot snapshot = entry.getValue().getSnapshot();
+                medianMs += snapshot.getMedian();
+                p99Ms += snapshot.get99thPercentile();
+            }
+        }
+
+        // Dropwizard Timer reports in nanoseconds by default
+        medianMs = medianMs / 1_000_000.0;
+        p99Ms = p99Ms / 1_000_000.0;
 
         ObjectNode doc = OBJECT_MAPPER.createObjectNode();
         String id = UUID.randomUUID().toString();
@@ -170,63 +142,61 @@ public class CosmosTotalResultReporter {
         doc.put("BranchName", this.branchName);
         doc.put("CommitId", this.commitId);
         doc.put("Concurrency", this.concurrency);
-        doc.put("CpuUsage", percentile75(cpuUsageSamples));
-        doc.put("SuccessRate", percentile75(successRateSamples));
-        doc.put("FailureRate", percentile75(failureRateSamples));
-
-        double p99 = new BigDecimal(Double.toString(percentile75(p99LatencySamples)))
-            .setScale(2, RoundingMode.HALF_UP)
-            .doubleValue();
-        double median = new BigDecimal(Double.toString(percentile75(medianLatencySamples)))
-            .setScale(2, RoundingMode.HALF_UP)
-            .doubleValue();
-
-        doc.put("P99LatencyInMs", p99);
-        doc.put("MedianLatencyInMs", median);
+        doc.put("CpuUsage", cpuReader.getSystemWideCpuUsage());
+        doc.put("SuccessRate", new BigDecimal(successRate).setScale(2, RoundingMode.HALF_UP).doubleValue());
+        doc.put("FailureRate", new BigDecimal(failureRate).setScale(2, RoundingMode.HALF_UP).doubleValue());
+        doc.put("P99LatencyInMs", new BigDecimal(p99Ms).setScale(2, RoundingMode.HALF_UP).doubleValue());
+        doc.put("MedianLatencyInMs", new BigDecimal(medianMs).setScale(2, RoundingMode.HALF_UP).doubleValue());
 
         results.createItem(doc, new PartitionKey(id), null);
         LOGGER.info("Final results uploaded to {} - {}", results.getId(), doc.toPrettyString());
     }
 
-    private double sumCountersByName(String metricName, boolean successOnly) {
+    /**
+     * Sum the 1-minute rates of all Dropwizard Meters matching the operation calls prefix,
+     * filtered by success or failure (based on status code in the hierarchical name).
+     */
+    private double sumMeterRates(boolean successOnly) {
         double total = 0;
-        for (Counter counter : registry.find(metricName).counters()) {
-            String statusCode = counter.getId().getTag("OperationStatusCode");
-            if (statusCode == null) {
+        for (Map.Entry<String, com.codahale.metrics.Meter> entry : dropwizardRegistry.getMeters().entrySet()) {
+            String name = entry.getKey();
+            if (!name.contains(OP_CALLS_PREFIX)) {
                 continue;
             }
-            boolean isSuccess;
-            try {
-                int code = Integer.parseInt(statusCode);
-                isSuccess = code >= 200 && code < 300;
-            } catch (NumberFormatException e) {
-                isSuccess = false;
-            }
+            // The hierarchical name includes tags like ".OperationStatusCode.200."
+            // Extract status code to determine success/failure
+            boolean isSuccess = isSuccessStatusInName(name);
             if (successOnly == isSuccess) {
-                total += counter.count();
+                total += entry.getValue().getOneMinuteRate();
             }
         }
         return total;
     }
 
-    private Timer findTimerByName(String metricName) {
-        return registry.find(metricName).timer();
-    }
-
-    private static double percentile75(java.util.List<Double> samples) {
-        if (samples.isEmpty()) {
-            return 0;
+    private boolean isSuccessStatusInName(String hierarchicalName) {
+        // HierarchicalNameMapper.DEFAULT encodes tags as ".tagKey.tagValue."
+        // Look for ".OperationStatusCode.NNN." pattern
+        String marker = ".OperationStatusCode.";
+        int idx = hierarchicalName.indexOf(marker);
+        if (idx < 0) {
+            return false;
         }
-        java.util.List<Double> sorted = new java.util.ArrayList<>(samples);
-        java.util.Collections.sort(sorted);
-        int index = (int) Math.ceil(0.75 * sorted.size()) - 1;
-        return sorted.get(Math.max(0, index));
+        String rest = hierarchicalName.substring(idx + marker.length());
+        // Extract the status code value (next segment before '.')
+        int dotIdx = rest.indexOf('.');
+        String statusCodeStr = dotIdx > 0 ? rest.substring(0, dotIdx) : rest;
+        try {
+            int code = Integer.parseInt(statusCodeStr);
+            return code >= 200 && code < 300;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     /**
      * Returns a new {@link Builder} for {@link CosmosTotalResultReporter}.
      */
-    public static Builder forRegistry(MeterRegistry registry, CosmosContainer resultsContainer,
+    public static Builder forRegistry(DropwizardBridgeMeterRegistry registry, CosmosContainer resultsContainer,
                                       String operation, String testVariationName,
                                       String branchName, String commitId, int concurrency) {
         return new Builder(registry, resultsContainer, operation, testVariationName,
@@ -237,7 +207,7 @@ public class CosmosTotalResultReporter {
      * A builder for {@link CosmosTotalResultReporter} instances.
      */
     public static class Builder {
-        private final MeterRegistry registry;
+        private final DropwizardBridgeMeterRegistry registry;
         private final CosmosContainer resultsContainer;
         private final String operation;
         private final String testVariationName;
@@ -245,7 +215,7 @@ public class CosmosTotalResultReporter {
         private final String commitId;
         private final int concurrency;
 
-        private Builder(MeterRegistry registry, CosmosContainer resultsContainer,
+        private Builder(DropwizardBridgeMeterRegistry registry, CosmosContainer resultsContainer,
                         String operation, String testVariationName,
                         String branchName, String commitId, int concurrency) {
             this.registry = registry;
