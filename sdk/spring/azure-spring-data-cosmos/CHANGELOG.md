@@ -1,5 +1,15 @@
 ## Release History
 
+### 5.26.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 5.25.0 (2026-03-05)
 
 #### Other Changes
