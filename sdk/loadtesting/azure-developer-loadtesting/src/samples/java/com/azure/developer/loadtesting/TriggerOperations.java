@@ -19,12 +19,16 @@ import java.util.Arrays;
  */
 public final class TriggerOperations {
     /**
-     * Authenticates with the load testing resource and shows how to manage triggers.
+     * Authenticates with the load testing resource and shows how to manage
+     * triggers.
      *
      * @param args Unused. Arguments to the program.
      *
-     * @throws ClientAuthenticationException - when the credentials have insufficient permissions for load test resource.
-     * @throws ResourceNotFoundException - when the specified resource does not exist.
+     * @throws ClientAuthenticationException - when the credentials have
+     *                                       insufficient permissions for load test
+     *                                       resource.
+     * @throws ResourceNotFoundException     - when the specified resource does not
+     *                                       exist.
      */
     public static void main(String[] args) {
         createOrUpdateTrigger();
@@ -35,19 +39,19 @@ public final class TriggerOperations {
 
     public static void createOrUpdateTrigger() {
         LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildClient();
 
         String triggerId = "sample-trigger-id";
         String testId = "sample-test-id";
 
         ScheduleTestsTrigger trigger = new ScheduleTestsTrigger()
-            .setDisplayName("Sample Trigger")
-            .setDescription("A sample trigger that runs daily")
-            .setTestIds(Arrays.asList(testId))
-            .setStartDateTime(OffsetDateTime.now().plusDays(1))
-            .setRecurrence(new DailyRecurrence().setInterval(1));
+                .setDisplayName("Sample Trigger")
+                .setDescription("A sample trigger that runs daily")
+                .setTestIds(Arrays.asList(testId))
+                .setStartDateTime(OffsetDateTime.now().plusDays(1))
+                .setRecurrence(new DailyRecurrence().setInterval(1));
 
         Trigger response = client.createOrUpdateTrigger(triggerId, trigger);
 
@@ -57,9 +61,9 @@ public final class TriggerOperations {
 
     public static void getTrigger() {
         LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildClient();
 
         String triggerId = "sample-trigger-id";
 
@@ -72,9 +76,9 @@ public final class TriggerOperations {
 
     public static void listTriggers() {
         LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildClient();
 
         PagedIterable<Trigger> triggers = client.listTriggers();
 
@@ -88,9 +92,9 @@ public final class TriggerOperations {
 
     public static void deleteTrigger() {
         LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildClient();
 
         String triggerId = "sample-trigger-id";
 

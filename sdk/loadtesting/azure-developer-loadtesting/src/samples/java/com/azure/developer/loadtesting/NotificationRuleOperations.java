@@ -24,12 +24,16 @@ import java.util.Map;
  */
 public final class NotificationRuleOperations {
     /**
-     * Authenticates with the load testing resource and shows how to manage notification rules.
+     * Authenticates with the load testing resource and shows how to manage
+     * notification rules.
      *
      * @param args Unused. Arguments to the program.
      *
-     * @throws ClientAuthenticationException - when the credentials have insufficient permissions for load test resource.
-     * @throws ResourceNotFoundException - when the specified resource does not exist.
+     * @throws ClientAuthenticationException - when the credentials have
+     *                                       insufficient permissions for load test
+     *                                       resource.
+     * @throws ResourceNotFoundException     - when the specified resource does not
+     *                                       exist.
      */
     public static void main(String[] args) {
         createOrUpdateNotificationRule();
@@ -40,23 +44,23 @@ public final class NotificationRuleOperations {
 
     public static void createOrUpdateNotificationRule() {
         LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildClient();
 
         String notificationRuleId = "sample-notification-rule-id";
         String testId = "sample-test-id";
         String actionGroupId = "/subscriptions/<subscription-id>/resourceGroups/<resource-group>"
-            + "/providers/Microsoft.Insights/actionGroups/<action-group-name>";
+                + "/providers/Microsoft.Insights/actionGroups/<action-group-name>";
 
         // Build the event filter condition for test run completion
         TestRunEndedEventCondition condition = new TestRunEndedEventCondition()
-            .setTestRunStatuses(Arrays.asList(TestRunStatus.DONE, TestRunStatus.FAILED))
-            .setTestRunResults(Arrays.asList(PassFailTestResult.PASSED, PassFailTestResult.FAILED));
+                .setTestRunStatuses(Arrays.asList(TestRunStatus.DONE, TestRunStatus.FAILED))
+                .setTestRunResults(Arrays.asList(PassFailTestResult.PASSED, PassFailTestResult.FAILED));
 
         // Build the event filter
         TestRunEndedNotificationEventFilter eventFilter = new TestRunEndedNotificationEventFilter()
-            .setCondition(condition);
+                .setCondition(condition);
 
         // Build the event filters map
         Map<String, TestsNotificationEventFilter> eventFilters = new HashMap<>();
@@ -64,10 +68,10 @@ public final class NotificationRuleOperations {
 
         // Create the notification rule
         TestsNotificationRule rule = new TestsNotificationRule()
-            .setDisplayName("Sample Notification Rule")
-            .setTestIds(Arrays.asList(testId))
-            .setActionGroupIds(Arrays.asList(actionGroupId))
-            .setEventFilters(eventFilters);
+                .setDisplayName("Sample Notification Rule")
+                .setTestIds(Arrays.asList(testId))
+                .setActionGroupIds(Arrays.asList(actionGroupId))
+                .setEventFilters(eventFilters);
 
         NotificationRule response = client.createOrUpdateNotificationRule(notificationRuleId, rule);
 
@@ -77,9 +81,9 @@ public final class NotificationRuleOperations {
 
     public static void getNotificationRule() {
         LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildClient();
 
         String notificationRuleId = "sample-notification-rule-id";
 
@@ -91,9 +95,9 @@ public final class NotificationRuleOperations {
 
     public static void listNotificationRules() {
         LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildClient();
 
         PagedIterable<NotificationRule> notificationRules = client.listNotificationRules();
 
@@ -107,9 +111,9 @@ public final class NotificationRuleOperations {
 
     public static void deleteNotificationRule() {
         LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildClient();
 
         String notificationRuleId = "sample-notification-rule-id";
 

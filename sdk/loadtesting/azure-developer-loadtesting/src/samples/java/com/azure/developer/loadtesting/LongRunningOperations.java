@@ -17,7 +17,6 @@ import com.azure.json.JsonReader;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
