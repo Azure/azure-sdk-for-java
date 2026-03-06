@@ -19,10 +19,12 @@
 - [CheckNameAvailability](#namespaces_checknameavailability)
 - [CreateOrUpdate](#namespaces_createorupdate)
 - [CreateOrUpdateAuthorizationRule](#namespaces_createorupdateauthorizationrule)
+- [CreateOrUpdateNetworkRuleSet](#namespaces_createorupdatenetworkruleset)
 - [Delete](#namespaces_delete)
 - [DeleteAuthorizationRule](#namespaces_deleteauthorizationrule)
 - [GetAuthorizationRule](#namespaces_getauthorizationrule)
 - [GetByResourceGroup](#namespaces_getbyresourcegroup)
+- [GetNetworkRuleSet](#namespaces_getnetworkruleset)
 - [List](#namespaces_list)
 - [ListAuthorizationRules](#namespaces_listauthorizationrules)
 - [ListByResourceGroup](#namespaces_listbyresourcegroup)
@@ -34,7 +36,19 @@
 
 - [List](#operations_list)
 
-## WcfRelays
+## PrivateEndpointConnections
+
+- [CreateOrUpdate](#privateendpointconnections_createorupdate)
+- [Delete](#privateendpointconnections_delete)
+- [Get](#privateendpointconnections_get)
+- [List](#privateendpointconnections_list)
+
+## PrivateLinkResources
+
+- [Get](#privatelinkresources_get)
+- [List](#privatelinkresources_list)
+
+## WCFRelays
 
 - [CreateOrUpdate](#wcfrelays_createorupdate)
 - [CreateOrUpdateAuthorizationRule](#wcfrelays_createorupdateauthorizationrule)
@@ -54,9 +68,7 @@
  */
 public final class HybridConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/
-     * RelayHybridConnectionCreate.json
+     * x-ms-original-file: 2024-01-01/HybridConnection/RelayHybridConnectionCreate.json
      */
     /**
      * Sample code: RelayHybridConnectionCreate.
@@ -85,9 +97,7 @@ import java.util.Arrays;
  */
 public final class HybridConnectionsCreateOrUpdateAuthorizationRuleSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/
-     * RelayHybridConnectionAuthorizationRuleCreate.json
+     * x-ms-original-file: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleCreate.json
      */
     /**
      * Sample code: RelayHybridConnectionAuthorizationRuleCreate.
@@ -113,9 +123,7 @@ public final class HybridConnectionsCreateOrUpdateAuthorizationRuleSamples {
  */
 public final class HybridConnectionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/
-     * RelayHybridconnectionDelete.json
+     * x-ms-original-file: 2024-01-01/HybridConnection/RelayHybridconnectionDelete.json
      */
     /**
      * Sample code: RelayHybridconnectionDelete.
@@ -138,17 +146,15 @@ public final class HybridConnectionsDeleteSamples {
  */
 public final class HybridConnectionsDeleteAuthorizationRuleSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/
-     * RelayHybridConnectionAutorizationRuleDelete.json
+     * x-ms-original-file: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleDelete.json
      */
     /**
-     * Sample code: RelayHybridConnectionAutorizationRuleDelete.
+     * Sample code: RelayHybridConnectionAuthorizationRuleDelete.
      * 
      * @param manager Entry point to RelayManager.
      */
     public static void
-        relayHybridConnectionAutorizationRuleDelete(com.azure.resourcemanager.relay.RelayManager manager) {
+        relayHybridConnectionAuthorizationRuleDelete(com.azure.resourcemanager.relay.RelayManager manager) {
         manager.hybridConnections()
             .deleteAuthorizationRuleWithResponse("resourcegroup", "example-RelayNamespace-01",
                 "example-Relay-Hybrid-01", "example-RelayAuthRules-01", com.azure.core.util.Context.NONE);
@@ -164,9 +170,7 @@ public final class HybridConnectionsDeleteAuthorizationRuleSamples {
  */
 public final class HybridConnectionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/
-     * RelayHybridConnectionGet.json
+     * x-ms-original-file: 2024-01-01/HybridConnection/RelayHybridConnectionGet.json
      */
     /**
      * Sample code: RelayHybridConnectionGet.
@@ -189,16 +193,14 @@ public final class HybridConnectionsGetSamples {
  */
 public final class HybridConnectionsGetAuthorizationRuleSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/
-     * RelayHybridConnectionAutorizationRuleGet.json
+     * x-ms-original-file: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleGet.json
      */
     /**
-     * Sample code: RelayHybridConnectionAutorizationRuleGet.
+     * Sample code: RelayHybridConnectionAuthorizationRuleGet.
      * 
      * @param manager Entry point to RelayManager.
      */
-    public static void relayHybridConnectionAutorizationRuleGet(com.azure.resourcemanager.relay.RelayManager manager) {
+    public static void relayHybridConnectionAuthorizationRuleGet(com.azure.resourcemanager.relay.RelayManager manager) {
         manager.hybridConnections()
             .getAuthorizationRuleWithResponse("resourcegroup", "example-RelayNamespace-01", "example-Relay-Hybrid-01",
                 "example-RelayAuthRules-01", com.azure.core.util.Context.NONE);
@@ -214,17 +216,15 @@ public final class HybridConnectionsGetAuthorizationRuleSamples {
  */
 public final class HybridConnectionsListAuthorizationRulesSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/
-     * RelayHybridConnectionAutorizationRuleListAll.json
+     * x-ms-original-file: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListAll.json
      */
     /**
-     * Sample code: RelayHybridConnectionAutorizationRuleListAll.
+     * Sample code: RelayHybridConnectionAuthorizationRuleListAll.
      * 
      * @param manager Entry point to RelayManager.
      */
     public static void
-        relayHybridConnectionAutorizationRuleListAll(com.azure.resourcemanager.relay.RelayManager manager) {
+        relayHybridConnectionAuthorizationRuleListAll(com.azure.resourcemanager.relay.RelayManager manager) {
         manager.hybridConnections()
             .listAuthorizationRules("resourcegroup", "example-RelayNamespace-01", "example-Relay-Hybrid-01",
                 com.azure.core.util.Context.NONE);
@@ -240,9 +240,7 @@ public final class HybridConnectionsListAuthorizationRulesSamples {
  */
 public final class HybridConnectionsListByNamespaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/
-     * RelayHybridConnectionListAll.json
+     * x-ms-original-file: 2024-01-01/HybridConnection/RelayHybridConnectionListAll.json
      */
     /**
      * Sample code: RelayHybridConnectionListAll.
@@ -264,9 +262,7 @@ public final class HybridConnectionsListByNamespaceSamples {
  */
 public final class HybridConnectionsListKeysSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/
-     * RelayHybridConnectionAuthorizationRuleListKey.json
+     * x-ms-original-file: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListKey.json
      */
     /**
      * Sample code: RelayHybridConnectionAuthorizationRuleListKey.
@@ -293,17 +289,15 @@ import com.azure.resourcemanager.relay.models.RegenerateAccessKeyParameters;
  */
 public final class HybridConnectionsRegenerateKeysSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/
-     * RelayHybridConnectionAuthorizationRuleRegenrateKey.json
+     * x-ms-original-file: 2024-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleRegenerateKey.json
      */
     /**
-     * Sample code: RelayHybridConnectionAuthorizationRuleRegenrateKey.
+     * Sample code: RelayHybridConnectionAuthorizationRuleRegenerateKey.
      * 
      * @param manager Entry point to RelayManager.
      */
     public static void
-        relayHybridConnectionAuthorizationRuleRegenrateKey(com.azure.resourcemanager.relay.RelayManager manager) {
+        relayHybridConnectionAuthorizationRuleRegenerateKey(com.azure.resourcemanager.relay.RelayManager manager) {
         manager.hybridConnections()
             .regenerateKeysWithResponse("resourcegroup", "example-RelayNamespace-01", "example-Relay-Hybrid-01",
                 "example-RelayAuthRules-01", new RegenerateAccessKeyParameters().withKeyType(KeyType.PRIMARY_KEY),
@@ -322,8 +316,7 @@ import com.azure.resourcemanager.relay.models.CheckNameAvailability;
  */
 public final class NamespacesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/
-     * RelayNameSpaceCheckNameAvailability.json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceCheckNameAvailability.json
      */
     /**
      * Sample code: RelayCheckNameAvailability.
@@ -332,7 +325,7 @@ public final class NamespacesCheckNameAvailabilitySamples {
      */
     public static void relayCheckNameAvailability(com.azure.resourcemanager.relay.RelayManager manager) {
         manager.namespaces()
-            .checkNameAvailabilityWithResponse(new CheckNameAvailability().withName("sdk-Namespace1321"),
+            .checkNameAvailabilityWithResponse(new CheckNameAvailability().withName("example-RelayNamespace1321"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -342,6 +335,7 @@ public final class NamespacesCheckNameAvailabilitySamples {
 
 ```java
 import com.azure.resourcemanager.relay.models.Sku;
+import com.azure.resourcemanager.relay.models.SkuName;
 import com.azure.resourcemanager.relay.models.SkuTier;
 import java.util.HashMap;
 import java.util.Map;
@@ -351,9 +345,7 @@ import java.util.Map;
  */
 public final class NamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/RelayNameSpaceCreate.
-     * json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceCreate.json
      */
     /**
      * Sample code: RelayNamespaceCreate.
@@ -362,11 +354,11 @@ public final class NamespacesCreateOrUpdateSamples {
      */
     public static void relayNamespaceCreate(com.azure.resourcemanager.relay.RelayManager manager) {
         manager.namespaces()
-            .define("example-RelayNamespace-01")
-            .withRegion("West US")
+            .define("example-RelayNamespace-5849")
+            .withRegion("South Central US")
             .withExistingResourceGroup("resourcegroup")
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withSku(new Sku().withTier(SkuTier.STANDARD))
+            .withSku(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD))
             .create();
     }
 
@@ -395,8 +387,7 @@ import java.util.Arrays;
  */
 public final class NamespacesCreateOrUpdateAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/
-     * RelayNameSpaceAuthorizationRuleCreate.json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleCreate.json
      */
     /**
      * Sample code: RelayNameSpaceAuthorizationRuleCreate.
@@ -413,6 +404,43 @@ public final class NamespacesCreateOrUpdateAuthorizationRuleSamples {
 }
 ```
 
+### Namespaces_CreateOrUpdateNetworkRuleSet
+
+```java
+import com.azure.resourcemanager.relay.fluent.models.NetworkRuleSetInner;
+import com.azure.resourcemanager.relay.models.DefaultAction;
+import com.azure.resourcemanager.relay.models.NWRuleSetIpRules;
+import com.azure.resourcemanager.relay.models.NetworkRuleIPAction;
+import java.util.Arrays;
+
+/**
+ * Samples for Namespaces CreateOrUpdateNetworkRuleSet.
+ */
+public final class NamespacesCreateOrUpdateNetworkRuleSetSamples {
+    /*
+     * x-ms-original-file: 2024-01-01/VirtualNetworkRules/RelayNetworkRuleSetCreate.json
+     */
+    /**
+     * Sample code: NameSpaceNetworkRuleSetCreate.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void nameSpaceNetworkRuleSetCreate(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.namespaces()
+            .createOrUpdateNetworkRuleSetWithResponse("ResourceGroup", "example-RelayNamespace-6019",
+                new NetworkRuleSetInner().withTrustedServiceAccessEnabled(false)
+                    .withDefaultAction(DefaultAction.DENY)
+                    .withIpRules(Arrays.asList(
+                        new NWRuleSetIpRules().withIpMask("1.1.1.1").withAction(NetworkRuleIPAction.ALLOW),
+                        new NWRuleSetIpRules().withIpMask("1.1.1.2").withAction(NetworkRuleIPAction.ALLOW),
+                        new NWRuleSetIpRules().withIpMask("1.1.1.3").withAction(NetworkRuleIPAction.ALLOW),
+                        new NWRuleSetIpRules().withIpMask("1.1.1.4").withAction(NetworkRuleIPAction.ALLOW),
+                        new NWRuleSetIpRules().withIpMask("1.1.1.5").withAction(NetworkRuleIPAction.ALLOW))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Namespaces_Delete
 
 ```java
@@ -421,9 +449,7 @@ public final class NamespacesCreateOrUpdateAuthorizationRuleSamples {
  */
 public final class NamespacesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/RelayNameSpaceDelete.
-     * json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceDelete.json
      */
     /**
      * Sample code: RelayNameSpaceDelete.
@@ -431,7 +457,7 @@ public final class NamespacesDeleteSamples {
      * @param manager Entry point to RelayManager.
      */
     public static void relayNameSpaceDelete(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager.namespaces().delete("resourcegroup", "example-RelayNamespace-01", com.azure.core.util.Context.NONE);
+        manager.namespaces().delete("SouthCentralUS", "example-RelayNamespace-5849", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -444,15 +470,14 @@ public final class NamespacesDeleteSamples {
  */
 public final class NamespacesDeleteAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/
-     * RelayNameSpaceAutorizationRuleDelete.json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleDelete.json
      */
     /**
-     * Sample code: RelayNameSpaceAutorizationRuleDelete.
+     * Sample code: RelayNameSpaceAuthorizationRuleDelete.
      * 
      * @param manager Entry point to RelayManager.
      */
-    public static void relayNameSpaceAutorizationRuleDelete(com.azure.resourcemanager.relay.RelayManager manager) {
+    public static void relayNameSpaceAuthorizationRuleDelete(com.azure.resourcemanager.relay.RelayManager manager) {
         manager.namespaces()
             .deleteAuthorizationRuleWithResponse("resourcegroup", "example-RelayNamespace-01",
                 "example-RelayAuthRules-01", com.azure.core.util.Context.NONE);
@@ -468,15 +493,14 @@ public final class NamespacesDeleteAuthorizationRuleSamples {
  */
 public final class NamespacesGetAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/
-     * RelayNameSpaceAutorizationRuleGet.json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleGet.json
      */
     /**
-     * Sample code: RelayNameSpaceAutorizationRuleGet.
+     * Sample code: RelayNameSpaceAuthorizationRuleGet.
      * 
      * @param manager Entry point to RelayManager.
      */
-    public static void relayNameSpaceAutorizationRuleGet(com.azure.resourcemanager.relay.RelayManager manager) {
+    public static void relayNameSpaceAuthorizationRuleGet(com.azure.resourcemanager.relay.RelayManager manager) {
         manager.namespaces()
             .getAuthorizationRuleWithResponse("resourcegroup", "example-RelayNamespace-01", "example-RelayAuthRules-01",
                 com.azure.core.util.Context.NONE);
@@ -492,8 +516,7 @@ public final class NamespacesGetAuthorizationRuleSamples {
  */
 public final class NamespacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/RelayNameSpaceGet.json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceGet.json
      */
     /**
      * Sample code: RelayNameSpaceGet.
@@ -502,7 +525,30 @@ public final class NamespacesGetByResourceGroupSamples {
      */
     public static void relayNameSpaceGet(com.azure.resourcemanager.relay.RelayManager manager) {
         manager.namespaces()
-            .getByResourceGroupWithResponse("resourcegroup", "example-RelayNamespace-01",
+            .getByResourceGroupWithResponse("RG-eg", "example-RelayRelayNamespace-01",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Namespaces_GetNetworkRuleSet
+
+```java
+/**
+ * Samples for Namespaces GetNetworkRuleSet.
+ */
+public final class NamespacesGetNetworkRuleSetSamples {
+    /*
+     * x-ms-original-file: 2024-01-01/VirtualNetworkRules/RelayNetworkRuleSetGet.json
+     */
+    /**
+     * Sample code: NameSpaceNetworkRuleSetGet.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void nameSpaceNetworkRuleSetGet(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.namespaces()
+            .getNetworkRuleSetWithResponse("ResourceGroup", "example-RelayNamespace-6019",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -516,8 +562,7 @@ public final class NamespacesGetByResourceGroupSamples {
  */
 public final class NamespacesListSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/
-     * RelayNameSpaceListBySubscription.json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceListBySubscription.json
      */
     /**
      * Sample code: RelayNameSpaceListBySubscription.
@@ -538,15 +583,14 @@ public final class NamespacesListSamples {
  */
 public final class NamespacesListAuthorizationRulesSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/
-     * RelayNameSpaceAutorizationRuleListAll.json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListAll.json
      */
     /**
-     * Sample code: RelayNameSpaceAutorizationRuleListAll.
+     * Sample code: RelayNameSpaceAuthorizationRuleListAll.
      * 
      * @param manager Entry point to RelayManager.
      */
-    public static void relayNameSpaceAutorizationRuleListAll(com.azure.resourcemanager.relay.RelayManager manager) {
+    public static void relayNameSpaceAuthorizationRuleListAll(com.azure.resourcemanager.relay.RelayManager manager) {
         manager.namespaces()
             .listAuthorizationRules("resourcegroup", "example-RelayNamespace-01", com.azure.core.util.Context.NONE);
     }
@@ -561,8 +605,7 @@ public final class NamespacesListAuthorizationRulesSamples {
  */
 public final class NamespacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/
-     * RelayNameSpaceListByResourceGroup.json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceListByResourceGroup.json
      */
     /**
      * Sample code: RelayNameSpaceListByResourceGroup.
@@ -583,8 +626,7 @@ public final class NamespacesListByResourceGroupSamples {
  */
 public final class NamespacesListKeysSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/
-     * RelayNameSpaceAuthorizationRuleListKey.json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListKey.json
      */
     /**
      * Sample code: RelayNameSpaceAuthorizationRuleListKey.
@@ -610,16 +652,15 @@ import com.azure.resourcemanager.relay.models.RegenerateAccessKeyParameters;
  */
 public final class NamespacesRegenerateKeysSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/
-     * RelayNameSpaceAuthorizationRuleRegenrateKey.json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleRegenerateKey.json
      */
     /**
-     * Sample code: RelayNameSpaceAuthorizationRuleRegenrateKey.
+     * Sample code: RelayNameSpaceAuthorizationRuleRegenerateKey.
      * 
      * @param manager Entry point to RelayManager.
      */
     public static void
-        relayNameSpaceAuthorizationRuleRegenrateKey(com.azure.resourcemanager.relay.RelayManager manager) {
+        relayNameSpaceAuthorizationRuleRegenerateKey(com.azure.resourcemanager.relay.RelayManager manager) {
         manager.namespaces()
             .regenerateKeysWithResponse("resourcegroup", "example-RelayNamespace-01", "example-RelayAuthRules-01",
                 new RegenerateAccessKeyParameters().withKeyType(KeyType.PRIMARY_KEY), com.azure.core.util.Context.NONE);
@@ -639,9 +680,7 @@ import java.util.Map;
  */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/RelayNameSpaceUpdate.
-     * json
+     * x-ms-original-file: 2024-01-01/NameSpaces/RelayNameSpaceUpdate.json
      */
     /**
      * Sample code: RelayNameSpaceUpdate.
@@ -650,8 +689,7 @@ public final class NamespacesUpdateSamples {
      */
     public static void relayNameSpaceUpdate(com.azure.resourcemanager.relay.RelayManager manager) {
         RelayNamespace resource = manager.namespaces()
-            .getByResourceGroupWithResponse("resourcegroup", "example-RelayNamespace-01",
-                com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("RG-eg", "example-RelayRelayNamespace-01", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withTags(mapOf("tag3", "value3", "tag4", "value4", "tag5", "value5", "tag6", "value6"))
@@ -680,8 +718,7 @@ public final class NamespacesUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/RelayOperations_List.json
+     * x-ms-original-file: 2024-01-01/RelayOperations_List.json
      */
     /**
      * Sample code: RelayOperationsList.
@@ -694,18 +731,162 @@ public final class OperationsListSamples {
 }
 ```
 
-### WcfRelays_CreateOrUpdate
+### PrivateEndpointConnections_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.relay.models.ConnectionState;
+import com.azure.resourcemanager.relay.models.PrivateEndpoint;
+import com.azure.resourcemanager.relay.models.PrivateLinkConnectionStatus;
+
+/**
+ * Samples for PrivateEndpointConnections CreateOrUpdate.
+ */
+public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsCreate.json
+     */
+    /**
+     * Sample code: NameSpacePrivateEndPointConnectionCreate.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void nameSpacePrivateEndPointConnectionCreate(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.privateEndpointConnections()
+            .define("{privateEndpointConnection name}")
+            .withExistingNamespace("resourcegroup", "example-RelayNamespace-5849")
+            .withPrivateEndpoint(new PrivateEndpoint().withId(
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Network/privateEndpoints/ali-relay-pve-1"))
+            .withPrivateLinkServiceConnectionState(
+                new ConnectionState().withStatus(PrivateLinkConnectionStatus.APPROVED).withDescription("You may pass"))
+            .create();
+    }
+}
+```
+
+### PrivateEndpointConnections_Delete
+
+```java
+/**
+ * Samples for PrivateEndpointConnections Delete.
+ */
+public final class PrivateEndpointConnectionsDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsDelete.json
+     */
+    /**
+     * Sample code: NameSpacePrivateEndPointConnectionDelete.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void nameSpacePrivateEndPointConnectionDelete(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.privateEndpointConnections()
+            .delete("myResourceGroup", "example-RelayNamespace-5849", "{privateEndpointConnection name}",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnections_Get
+
+```java
+/**
+ * Samples for PrivateEndpointConnections Get.
+ */
+public final class PrivateEndpointConnectionsGetSamples {
+    /*
+     * x-ms-original-file: 2024-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsGet.json
+     */
+    /**
+     * Sample code: NameSpacePrivateEndPointConnectionGet.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void nameSpacePrivateEndPointConnectionGet(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.privateEndpointConnections()
+            .getWithResponse("myResourceGroup", "example-RelayNamespace-5849", "{privateEndpointConnection name}",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnections_List
+
+```java
+/**
+ * Samples for PrivateEndpointConnections List.
+ */
+public final class PrivateEndpointConnectionsListSamples {
+    /*
+     * x-ms-original-file: 2024-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsList.json
+     */
+    /**
+     * Sample code: PrivateEndpointConnectionsList.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void privateEndpointConnectionsList(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.privateEndpointConnections()
+            .list("myResourceGroup", "example-RelayNamespace-5849", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateLinkResources_Get
+
+```java
+/**
+ * Samples for PrivateLinkResources Get.
+ */
+public final class PrivateLinkResourcesGetSamples {
+    /*
+     * x-ms-original-file: 2024-01-01/PrivateEndpointConnections/PrivateLinkResourcesGet.json
+     */
+    /**
+     * Sample code: NameSpacePrivateEndPointConnectionGet.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void nameSpacePrivateEndPointConnectionGet(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.privateLinkResources()
+            .getWithResponse("resourcegroup", "example-RelayNamespace-5849", "{PrivateLinkResource name}",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateLinkResources_List
+
+```java
+/**
+ * Samples for PrivateLinkResources List.
+ */
+public final class PrivateLinkResourcesListSamples {
+    /*
+     * x-ms-original-file: 2024-01-01/PrivateEndpointConnections/PrivateLinkResourcesList.json
+     */
+    /**
+     * Sample code: NameSpacePrivateLinkResourcesGet.
+     * 
+     * @param manager Entry point to RelayManager.
+     */
+    public static void nameSpacePrivateLinkResourcesGet(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.privateLinkResources()
+            .listWithResponse("resourcegroup", "example-RelayNamespace-5849", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WCFRelays_CreateOrUpdate
 
 ```java
 import com.azure.resourcemanager.relay.models.Relaytype;
 
 /**
- * Samples for WcfRelays CreateOrUpdate.
+ * Samples for WCFRelays CreateOrUpdate.
  */
-public final class WcfRelaysCreateOrUpdateSamples {
+public final class WCFRelaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/Relay/RelayCreate.json
+     * x-ms-original-file: 2024-01-01/Relay/RelayCreate.json
      */
     /**
      * Sample code: RelayCreate.
@@ -713,7 +894,7 @@ public final class WcfRelaysCreateOrUpdateSamples {
      * @param manager Entry point to RelayManager.
      */
     public static void relayCreate(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager.wcfRelays()
+        manager.wCFRelays()
             .define("example-Relay-Wcf-1194")
             .withExistingNamespace("resourcegroup", "example-RelayNamespace-9953")
             .withRelayType(Relaytype.NET_TCP)
@@ -724,7 +905,7 @@ public final class WcfRelaysCreateOrUpdateSamples {
 }
 ```
 
-### WcfRelays_CreateOrUpdateAuthorizationRule
+### WCFRelays_CreateOrUpdateAuthorizationRule
 
 ```java
 import com.azure.resourcemanager.relay.fluent.models.AuthorizationRuleInner;
@@ -732,12 +913,11 @@ import com.azure.resourcemanager.relay.models.AccessRights;
 import java.util.Arrays;
 
 /**
- * Samples for WcfRelays CreateOrUpdateAuthorizationRule.
+ * Samples for WCFRelays CreateOrUpdateAuthorizationRule.
  */
-public final class WcfRelaysCreateOrUpdateAuthorizationRuleSamples {
+public final class WCFRelaysCreateOrUpdateAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/Relay/
-     * RelayAuthorizationRuleCreate.json
+     * x-ms-original-file: 2024-01-01/Relay/RelayAuthorizationRuleCreate.json
      */
     /**
      * Sample code: RelayAuthorizationRuleCreate.
@@ -745,7 +925,7 @@ public final class WcfRelaysCreateOrUpdateAuthorizationRuleSamples {
      * @param manager Entry point to RelayManager.
      */
     public static void relayAuthorizationRuleCreate(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager.wcfRelays()
+        manager.wCFRelays()
             .createOrUpdateAuthorizationRuleWithResponse("resourcegroup", "example-RelayNamespace-01",
                 "example-Relay-wcf-01", "example-RelayAuthRules-01",
                 new AuthorizationRuleInner().withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND)),
@@ -754,16 +934,15 @@ public final class WcfRelaysCreateOrUpdateAuthorizationRuleSamples {
 }
 ```
 
-### WcfRelays_Delete
+### WCFRelays_Delete
 
 ```java
 /**
- * Samples for WcfRelays Delete.
+ * Samples for WCFRelays Delete.
  */
-public final class WcfRelaysDeleteSamples {
+public final class WCFRelaysDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/Relay/RelayDelete.json
+     * x-ms-original-file: 2024-01-01/Relay/RelayDelete.json
      */
     /**
      * Sample code: RelayDelete.
@@ -771,48 +950,45 @@ public final class WcfRelaysDeleteSamples {
      * @param manager Entry point to RelayManager.
      */
     public static void relayDelete(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager.wcfRelays()
+        manager.wCFRelays()
             .deleteWithResponse("resourcegroup", "example-RelayNamespace-01", "example-Relay-wcf-01",
                 com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### WcfRelays_DeleteAuthorizationRule
+### WCFRelays_DeleteAuthorizationRule
 
 ```java
 /**
- * Samples for WcfRelays DeleteAuthorizationRule.
+ * Samples for WCFRelays DeleteAuthorizationRule.
  */
-public final class WcfRelaysDeleteAuthorizationRuleSamples {
+public final class WCFRelaysDeleteAuthorizationRuleSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/Relay/RelayAutorizationRuleDelete
-     * .json
+     * x-ms-original-file: 2024-01-01/Relay/RelayAuthorizationRuleDelete.json
      */
     /**
-     * Sample code: RelayAutorizationRuleDelete.
+     * Sample code: RelayAuthorizationRuleDelete.
      * 
      * @param manager Entry point to RelayManager.
      */
-    public static void relayAutorizationRuleDelete(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager.wcfRelays()
+    public static void relayAuthorizationRuleDelete(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.wCFRelays()
             .deleteAuthorizationRuleWithResponse("resourcegroup", "example-RelayNamespace-01", "example-Relay-wcf-01",
                 "example-RelayAuthRules-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### WcfRelays_Get
+### WCFRelays_Get
 
 ```java
 /**
- * Samples for WcfRelays Get.
+ * Samples for WCFRelays Get.
  */
-public final class WcfRelaysGetSamples {
+public final class WCFRelaysGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/Relay/RelayGet.json
+     * x-ms-original-file: 2024-01-01/Relay/RelayGet.json
      */
     /**
      * Sample code: RelayGet.
@@ -820,72 +996,68 @@ public final class WcfRelaysGetSamples {
      * @param manager Entry point to RelayManager.
      */
     public static void relayGet(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager.wcfRelays()
+        manager.wCFRelays()
             .getWithResponse("resourcegroup", "example-RelayNamespace-9953", "example-Relay-Wcf-1194",
                 com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### WcfRelays_GetAuthorizationRule
+### WCFRelays_GetAuthorizationRule
 
 ```java
 /**
- * Samples for WcfRelays GetAuthorizationRule.
+ * Samples for WCFRelays GetAuthorizationRule.
  */
-public final class WcfRelaysGetAuthorizationRuleSamples {
+public final class WCFRelaysGetAuthorizationRuleSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/Relay/RelayAutorizationRuleGet.
-     * json
+     * x-ms-original-file: 2024-01-01/Relay/RelayAuthorizationRuleGet.json
      */
     /**
-     * Sample code: RelayAutorizationRuleGet.
+     * Sample code: RelayAuthorizationRuleGet.
      * 
      * @param manager Entry point to RelayManager.
      */
-    public static void relayAutorizationRuleGet(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager.wcfRelays()
+    public static void relayAuthorizationRuleGet(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.wCFRelays()
             .getAuthorizationRuleWithResponse("resourcegroup", "example-RelayNamespace-01", "example-Relay-wcf-01",
                 "example-RelayAuthRules-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### WcfRelays_ListAuthorizationRules
+### WCFRelays_ListAuthorizationRules
 
 ```java
 /**
- * Samples for WcfRelays ListAuthorizationRules.
+ * Samples for WCFRelays ListAuthorizationRules.
  */
-public final class WcfRelaysListAuthorizationRulesSamples {
+public final class WCFRelaysListAuthorizationRulesSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/Relay/
-     * RelayAutorizationRuleListAll.json
+     * x-ms-original-file: 2024-01-01/Relay/RelayAuthorizationRuleListAll.json
      */
     /**
-     * Sample code: RelayAutorizationRuleListAll.
+     * Sample code: RelayAuthorizationRuleListAll.
      * 
      * @param manager Entry point to RelayManager.
      */
-    public static void relayAutorizationRuleListAll(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager.wcfRelays()
+    public static void relayAuthorizationRuleListAll(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.wCFRelays()
             .listAuthorizationRules("resourcegroup", "example-RelayNamespace-01", "example-Relay-Wcf-01",
                 com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### WcfRelays_ListByNamespace
+### WCFRelays_ListByNamespace
 
 ```java
 /**
- * Samples for WcfRelays ListByNamespace.
+ * Samples for WCFRelays ListByNamespace.
  */
-public final class WcfRelaysListByNamespaceSamples {
+public final class WCFRelaysListByNamespaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/Relay/RelayListAll.json
+     * x-ms-original-file: 2024-01-01/Relay/RelayListAll.json
      */
     /**
      * Sample code: RelayListAll.
@@ -893,22 +1065,21 @@ public final class WcfRelaysListByNamespaceSamples {
      * @param manager Entry point to RelayManager.
      */
     public static void relayListAll(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager.wcfRelays()
+        manager.wCFRelays()
             .listByNamespace("resourcegroup", "example-RelayNamespace-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### WcfRelays_ListKeys
+### WCFRelays_ListKeys
 
 ```java
 /**
- * Samples for WcfRelays ListKeys.
+ * Samples for WCFRelays ListKeys.
  */
-public final class WcfRelaysListKeysSamples {
+public final class WCFRelaysListKeysSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/Relay/
-     * RelayAuthorizationRuleListKey.json
+     * x-ms-original-file: 2024-01-01/Relay/RelayAuthorizationRuleListKey.json
      */
     /**
      * Sample code: RelayAuthorizationRuleListKey.json.
@@ -916,34 +1087,33 @@ public final class WcfRelaysListKeysSamples {
      * @param manager Entry point to RelayManager.
      */
     public static void relayAuthorizationRuleListKeyJson(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager.wcfRelays()
+        manager.wCFRelays()
             .listKeysWithResponse("resourcegroup", "example-RelayNamespace-01", "example-Relay-wcf-01",
                 "example-RelayAuthRules-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### WcfRelays_RegenerateKeys
+### WCFRelays_RegenerateKeys
 
 ```java
 import com.azure.resourcemanager.relay.models.KeyType;
 import com.azure.resourcemanager.relay.models.RegenerateAccessKeyParameters;
 
 /**
- * Samples for WcfRelays RegenerateKeys.
+ * Samples for WCFRelays RegenerateKeys.
  */
-public final class WcfRelaysRegenerateKeysSamples {
+public final class WCFRelaysRegenerateKeysSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/Relay/
-     * RelayAuthorizationRuleRegenrateKey.json
+     * x-ms-original-file: 2024-01-01/Relay/RelayAuthorizationRuleRegenerateKey.json
      */
     /**
-     * Sample code: RelayAuthorizationRuleRegenrateKey.json.
+     * Sample code: RelayAuthorizationRuleRegenerateKey.json.
      * 
      * @param manager Entry point to RelayManager.
      */
-    public static void relayAuthorizationRuleRegenrateKeyJson(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager.wcfRelays()
+    public static void relayAuthorizationRuleRegenerateKeyJson(com.azure.resourcemanager.relay.RelayManager manager) {
+        manager.wCFRelays()
             .regenerateKeysWithResponse("resourcegroup", "example-RelayNamespace-01", "example-Relay-wcf-01",
                 "example-RelayAuthRules-01", new RegenerateAccessKeyParameters().withKeyType(KeyType.PRIMARY_KEY),
                 com.azure.core.util.Context.NONE);
