@@ -3,7 +3,11 @@
 
 package com.azure.ai.agents.tools;
 
-import com.azure.ai.agents.*;
+import com.azure.ai.agents.AgentsClient;
+import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.ConversationsClient;
+import com.azure.ai.agents.ResponsesClient;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.OpenApiAnonymousAuthDetails;
@@ -50,7 +54,7 @@ public class OpenApiSample {
 
         // Load the OpenAPI spec from a JSON file
         Map<String, BinaryData> spec = OpenApiFunctionDefinition.readSpecFromFile(
-           SampleUtils.getResourcePath("assets/httpbin_openapi.json"));
+            SampleUtils.getResourcePath("assets/httpbin_openapi.json"));
 
         OpenApiFunctionDefinition toolDefinition = new OpenApiFunctionDefinition(
             "httpbin_get",
