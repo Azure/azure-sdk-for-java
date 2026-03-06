@@ -37,12 +37,21 @@ public class BenchmarkConfig {
     private boolean enableNettyHttpMetrics = false;
 
     // -- Reporting --
+    private ReportingDestination reportingDestination = ReportingDestination.CONSOLE;
     private String reportingDirectory;
     private int printingInterval = 10;
+
+    // -- CosmosDB result upload (used when reportingDestination = COSMOSDB) --
     private String resultUploadEndpoint;
     private String resultUploadKey;
     private String resultUploadDatabase;
     private String resultUploadContainer;
+
+    // -- Application Insights (used when reportingDestination = APPLICATION_INSIGHTS) --
+    private String appInsightsConnectionString;
+    private String appInsightsInstrumentationKey;
+    private int appInsightsStepSeconds = 10;
+    private String appInsightsTestCategory;
 
     // -- Run metadata (for result reporting) --
     private String testVariationName = "";
@@ -107,12 +116,17 @@ public class BenchmarkConfig {
     public boolean isEnableJvmStats() { return enableJvmStats; }
     public boolean isEnableNettyHttpMetrics() { return enableNettyHttpMetrics; }
 
+    public ReportingDestination getReportingDestination() { return reportingDestination; }
     public String getReportingDirectory() { return reportingDirectory; }
     public int getPrintingInterval() { return printingInterval; }
     public String getResultUploadEndpoint() { return resultUploadEndpoint; }
     public String getResultUploadKey() { return resultUploadKey; }
     public String getResultUploadDatabase() { return resultUploadDatabase; }
     public String getResultUploadContainer() { return resultUploadContainer; }
+    public String getAppInsightsConnectionString() { return appInsightsConnectionString; }
+    public String getAppInsightsInstrumentationKey() { return appInsightsInstrumentationKey; }
+    public int getAppInsightsStepSeconds() { return appInsightsStepSeconds; }
+    public String getAppInsightsTestCategory() { return appInsightsTestCategory; }
 
     public String getTestVariationName() { return testVariationName; }
     public String getBranchName() { return branchName; }
@@ -189,6 +203,41 @@ public class BenchmarkConfig {
             }
             if (metrics.has("reportingDirectory")) {
                 reportingDirectory = metrics.get("reportingDirectory").asText();
+            }
+            if (metrics.has("reportingDestination")) {
+                reportingDestination = ReportingDestination.valueOf(
+                    metrics.get("reportingDestination").asText().toUpperCase().replace("-", "_"));
+            } else if (reportingDirectory != null) {
+                // Backward compatibility: if reportingDirectory set but no explicit destination, default to CSV
+                reportingDestination = ReportingDestination.CSV;
+            }
+
+            // Application Insights config
+            JsonNode appInsights = metrics.get("applicationInsights");
+            if (appInsights != null && appInsights.isObject()) {
+                if (appInsights.has("connectionString")) {
+                    appInsightsConnectionString = appInsights.get("connectionString").asText();
+                }
+                if (appInsights.has("instrumentationKey")) {
+                    appInsightsInstrumentationKey = appInsights.get("instrumentationKey").asText();
+                }
+                if (appInsights.has("stepSeconds")) {
+                    appInsightsStepSeconds = Integer.parseInt(appInsights.get("stepSeconds").asText());
+                }
+                if (appInsights.has("testCategory")) {
+                    appInsightsTestCategory = appInsights.get("testCategory").asText();
+                }
+            }
+
+            // Backward compatibility: check system properties / env vars for App Insights
+            if (appInsightsConnectionString == null) {
+                appInsightsConnectionString = System.getProperty("applicationinsights.connection.string",
+                    System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING"));
+            }
+            if (appInsightsInstrumentationKey == null) {
+                appInsightsInstrumentationKey = System.getProperty(
+                    "azure.cosmos.monitoring.azureMonitor.instrumentationKey",
+                    System.getenv("AZURE_INSTRUMENTATION_KEY"));
             }
         }
     }

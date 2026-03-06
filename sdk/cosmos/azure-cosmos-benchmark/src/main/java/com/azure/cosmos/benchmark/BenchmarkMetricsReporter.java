@@ -3,10 +3,8 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.ScheduledReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,65 +13,44 @@ import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Periodically reports metrics from a {@link DropwizardBridgeMeterRegistry} using
- * Dropwizard's {@link CsvReporter} or {@link ConsoleReporter}.
+ * CSV metrics reporter that writes per-metric CSV files using the Dropwizard {@link CsvReporter}.
  *
- * <p>This class is a thin wrapper that creates the appropriate Dropwizard reporter
- * for the underlying {@link MetricRegistry} of a {@link DropwizardBridgeMeterRegistry}.
- * SDK-emitted Micrometer meters are bridged to Dropwizard by the registry; this reporter
- * simply handles the periodic output.</p>
+ * <p>Reads from a {@link DropwizardBridgeMeterRegistry} which bridges Micrometer meters
+ * (including SDK-emitted {@code cosmos.client.op.*} meters) to a Dropwizard {@link MetricRegistry}.
+ * The CsvReporter creates one CSV file per metric in the output directory.</p>
  */
 public class BenchmarkMetricsReporter {
 
     private static final Logger logger = LoggerFactory.getLogger(BenchmarkMetricsReporter.class);
 
-    private final ScheduledReporter reporter;
+    private final CsvReporter reporter;
 
     /**
-     * Create a benchmark metrics reporter.
+     * Create a CSV metrics reporter.
      *
      * @param meterRegistry      the Dropwizard bridge registry whose metrics to report
-     * @param reportingDirectory base reporting directory; if non-null, CSV files are written
-     *                           to a {@code metrics/} subdirectory under this path.
-     *                           If null, reports to console instead.
+     * @param reportingDirectory base reporting directory; CSV files are written
+     *                           to a {@code metrics/} subdirectory.
      */
     public BenchmarkMetricsReporter(DropwizardBridgeMeterRegistry meterRegistry, String reportingDirectory) {
         MetricRegistry dropwizardRegistry = meterRegistry.getDropwizardRegistry();
-
-        if (reportingDirectory != null) {
-            File dir = Paths.get(reportingDirectory, "metrics").toFile();
-            dir.mkdirs();
-            reporter = CsvReporter.forRegistry(dropwizardRegistry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .build(dir);
-            logger.info("BenchmarkMetricsReporter started (CSV) -> {}", dir);
-        } else {
-            reporter = ConsoleReporter.forRegistry(dropwizardRegistry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .build();
-            logger.info("BenchmarkMetricsReporter started (console)");
-        }
+        File dir = Paths.get(reportingDirectory, "metrics").toFile();
+        dir.mkdirs();
+        reporter = CsvReporter.forRegistry(dropwizardRegistry)
+            .convertDurationsTo(TimeUnit.MILLISECONDS)
+            .convertRatesTo(TimeUnit.SECONDS)
+            .build(dir);
+        logger.info("BenchmarkMetricsReporter started (CSV) -> {}", dir);
     }
 
-    /**
-     * Start periodic reporting.
-     */
     public void start(long interval, TimeUnit unit) {
         reporter.start(interval, unit);
     }
 
-    /**
-     * Force a single report snapshot.
-     */
     public void report() {
         reporter.report();
     }
 
-    /**
-     * Stop the reporter and close resources.
-     */
     public void stop() {
         reporter.report();
         reporter.stop();

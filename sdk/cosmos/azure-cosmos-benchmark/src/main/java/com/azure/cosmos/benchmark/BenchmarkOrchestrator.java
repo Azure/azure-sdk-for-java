@@ -16,7 +16,6 @@ import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
 import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,23 +57,60 @@ public class BenchmarkOrchestrator {
 
         setGlobalSystemProperties(config);
 
-        // Set up shared Micrometer registry (composite: Dropwizard bridge + optional AzureMonitor)
-        CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
-
-        // DropwizardBridgeMeterRegistry bridges Micrometer meters to a Dropwizard MetricRegistry.
-        // Added to the composite so SDK-emitted meters flow through to Dropwizard for reporting.
+        // DropwizardBridgeMeterRegistry bridges Micrometer meters to Dropwizard for
+        // console summary and CSV reporting.
         DropwizardBridgeMeterRegistry dropwizardBridge = new DropwizardBridgeMeterRegistry();
+
+        // Composite registry: always includes the Dropwizard bridge (for console summary).
+        // Additional registries added based on reportingDestination.
+        CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
         compositeRegistry.add(dropwizardBridge);
 
-        // Reporter reads from the Dropwizard bridge and writes to CSV or console.
-        BenchmarkMetricsReporter reporter = new BenchmarkMetricsReporter(
-            dropwizardBridge, config.getReportingDirectory());
-        reporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+        // Console summary — always on
+        ConsoleSummaryReporter consoleSummary = new ConsoleSummaryReporter(dropwizardBridge);
+        consoleSummary.start(config.getPrintingInterval(), TimeUnit.SECONDS);
 
-        MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
-        if (cosmosMicrometerRegistry != null) {
-            compositeRegistry.add(cosmosMicrometerRegistry);
-            logger.info("AzureMonitor registry added to composite registry");
+        // Detailed reporter — based on reportingDestination (mutually exclusive)
+        BenchmarkMetricsReporter csvReporter = null;
+        CosmosTotalResultReporter cosmosReporter = null;
+        MeterRegistry appInsightsRegistry = null;
+
+        switch (config.getReportingDestination()) {
+            case CSV:
+                if (config.getReportingDirectory() == null) {
+                    throw new IllegalArgumentException(
+                        "reportingDirectory is required when reportingDestination=CSV");
+                }
+                csvReporter = new BenchmarkMetricsReporter(dropwizardBridge, config.getReportingDirectory());
+                csvReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+                break;
+
+            case COSMOSDB:
+                Set<String> ops = new LinkedHashSet<>();
+                int totalConcurrency = 0;
+                for (TenantWorkloadConfig t : config.getTenantWorkloads()) {
+                    ops.add(t.getOperation() != null ? t.getOperation() : "Unknown");
+                    totalConcurrency += t.getConcurrency();
+                }
+                cosmosReporter = CosmosTotalResultReporter.create(
+                    compositeRegistry, config, String.join("+", ops), totalConcurrency);
+                cosmosReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+                break;
+
+            case APPLICATION_INSIGHTS:
+                appInsightsRegistry = buildAppInsightsMeterRegistry(config);
+                if (appInsightsRegistry != null) {
+                    compositeRegistry.add(appInsightsRegistry);
+                    logger.info("Application Insights registry added");
+                } else {
+                    logger.warn("APPLICATION_INSIGHTS destination selected but no connection configured");
+                }
+                break;
+
+            case CONSOLE:
+            default:
+                // Console-only, no additional detailed reporter
+                break;
         }
 
         if (config.isEnableJvmStats()) {
@@ -85,57 +121,44 @@ public class BenchmarkOrchestrator {
             logger.info("JVM stats enabled (gc, memory, threads, threadPrefix)");
         }
 
-        // Prepare all tenants (inject shared state, set defaults)
+        // Prepare all tenants (inject shared registry for SDK telemetry)
         prepareTenants(config, compositeRegistry);
 
-        // Result uploader — self-contained, no-op if no upload endpoint configured
-        Set<String> ops = new LinkedHashSet<>();
-        int totalConcurrency = 0;
-        for (TenantWorkloadConfig t : config.getTenantWorkloads()) {
-            ops.add(t.getOperation() != null ? t.getOperation() : "Unknown");
-            totalConcurrency += t.getConcurrency();
-        }
-        String operationSummary = String.join("+", ops);
-        CosmosTotalResultReporter resultReporter = CosmosTotalResultReporter.create(
-            dropwizardBridge, config, operationSummary, totalConcurrency);
-        resultReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
-
-        // Netty HTTP connection pool metrics reporter (only when enabled).
-        // Reactor Netty publishes pool gauges to Metrics.globalRegistry, so we add
-        // the dropwizardBridge there. This means Netty gauges flow through to
-        // Dropwizard CSV/Console reporting. If AzureMonitor is configured, it is also
-        // in the composite and receives these gauges.
+        // Netty HTTP connection pool metrics (only when enabled).
+        // Reactor Netty publishes pool gauges to Metrics.globalRegistry.
         NettyHttpMetricsReporter nettyMetricsReporter = null;
         boolean addedBridgeToGlobalRegistry = false;
         if (config.isEnableNettyHttpMetrics()) {
-            Metrics.addRegistry(dropwizardBridge);
+            Metrics.addRegistry(compositeRegistry);
             addedBridgeToGlobalRegistry = true;
-            logger.info("DropwizardBridge added to globalRegistry for Reactor Netty pool metrics");
+            logger.info("CompositeRegistry added to globalRegistry for Reactor Netty pool metrics");
 
             if (config.getReportingDirectory() != null) {
                 Path nettyMetricsDir = Paths.get(config.getReportingDirectory());
-                nettyMetricsReporter = new NettyHttpMetricsReporter(dropwizardBridge, nettyMetricsDir);
+                nettyMetricsReporter = new NettyHttpMetricsReporter(compositeRegistry, nettyMetricsDir);
                 nettyMetricsReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
             }
         }
 
-        reporter.report();
         logger.info("[LIFECYCLE] PRE_CREATE timestamp={}", Instant.now());
         logger.info("BenchmarkConfig: {}", config);
 
         // ======== Lifecycle loop ========
         try {
-            runLifecycleLoop(config, reporter);
+            runLifecycleLoop(config);
         } finally {
-            // Cleanup reporters
-            reporter.report();
-            reporter.stop();
-            resultReporter.stop();
+            consoleSummary.stop();
+            if (csvReporter != null) {
+                csvReporter.stop();
+            }
+            if (cosmosReporter != null) {
+                cosmosReporter.stop();
+            }
             if (nettyMetricsReporter != null) {
                 nettyMetricsReporter.stop();
             }
             if (addedBridgeToGlobalRegistry) {
-                Metrics.removeRegistry(dropwizardBridge);
+                Metrics.removeRegistry(compositeRegistry);
             }
             clearGlobalSystemProperties();
         }
@@ -143,8 +166,7 @@ public class BenchmarkOrchestrator {
 
     // ======== Lifecycle loop (create -> run -> close -> settle x N) ========
 
-    private void runLifecycleLoop(BenchmarkConfig config,
-                                  BenchmarkMetricsReporter reporter) throws Exception {
+    private void runLifecycleLoop(BenchmarkConfig config) throws Exception {
         int totalCycles = config.getCycles();
         List<TenantWorkloadConfig> tenants = config.getTenantWorkloads();
 
@@ -160,23 +182,19 @@ public class BenchmarkOrchestrator {
 
         try {
             for (int cycle = 1; cycle <= totalCycles; cycle++) {
-                reporter.report();
                 logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
 
                 // 1. Create clients
                 List<Benchmark> benchmarks = createBenchmarks(config);
-                reporter.report();
                 logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
                     cycle, benchmarks.size(), Instant.now());
 
                 // 2. Run workload in parallel
                 runWorkload(benchmarks, cycle, executor);
-                reporter.report();
                 logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
 
                 // 3. Close all clients
                 shutdownBenchmarks(benchmarks, cycle);
-                reporter.report();
                 logger.info("[LIFECYCLE] POST_CLOSE cycle={} timestamp={}", cycle, Instant.now());
 
                 // 4. Settle
@@ -192,7 +210,6 @@ public class BenchmarkOrchestrator {
                         System.gc();
                     }
                 }
-                reporter.report();
                 logger.info("[LIFECYCLE] POST_SETTLE cycle={} timestamp={}", cycle, Instant.now());
             }
         } finally {
@@ -359,45 +376,38 @@ public class BenchmarkOrchestrator {
         }
     }
 
-    // ======== Cosmos micrometer registry ========
+    // ======== Application Insights registry ========
 
-    private MeterRegistry buildCosmosMicrometerRegistry() {
-        String instrumentationKey = System.getProperty("azure.cosmos.monitoring.azureMonitor.instrumentationKey",
-            StringUtils.defaultString(
-                com.google.common.base.Strings.emptyToNull(
-                    System.getenv("AZURE_INSTRUMENTATION_KEY")), null));
-        String appInsightsConnStr = System.getProperty("applicationinsights.connection.string",
-            StringUtils.defaultString(
-                com.google.common.base.Strings.emptyToNull(
-                    System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")), null));
-        if (instrumentationKey == null && appInsightsConnStr == null) {
+    private MeterRegistry buildAppInsightsMeterRegistry(BenchmarkConfig config) {
+        String connStr = config.getAppInsightsConnectionString();
+        String instrKey = config.getAppInsightsInstrumentationKey();
+
+        if (instrKey == null && connStr == null) {
             return null;
         }
 
-        java.time.Duration step = java.time.Duration.ofSeconds(
-            Integer.getInteger("azure.cosmos.monitoring.azureMonitor.step", 10));
-        String testCategoryTag = System.getProperty("azure.cosmos.monitoring.azureMonitor.testCategory");
-        boolean enabled = !Boolean.getBoolean("azure.cosmos.monitoring.azureMonitor.disabled");
+        java.time.Duration step = java.time.Duration.ofSeconds(config.getAppInsightsStepSeconds());
+        String testCategoryTag = config.getAppInsightsTestCategory();
 
-        final String connStr = appInsightsConnStr;
-        final String instrKey = instrumentationKey;
+        final String finalConnStr = connStr;
+        final String finalInstrKey = instrKey;
         final io.micrometer.azuremonitor.AzureMonitorConfig amConfig = new io.micrometer.azuremonitor.AzureMonitorConfig() {
             @Override
             public String get(String key) { return null; }
 
             @Override
             public String instrumentationKey() {
-                return connStr != null ? null : instrKey;
+                return finalConnStr != null ? null : finalInstrKey;
             }
 
             @Override
-            public String connectionString() { return connStr; }
+            public String connectionString() { return finalConnStr; }
 
             @Override
             public java.time.Duration step() { return step; }
 
             @Override
-            public boolean enabled() { return enabled; }
+            public boolean enabled() { return true; }
         };
 
         String roleName = System.getenv("APPLICATIONINSIGHTS_ROLE_NAME");
@@ -408,7 +418,7 @@ public class BenchmarkOrchestrator {
         MeterRegistry registry = new io.micrometer.azuremonitor.AzureMonitorMeterRegistry(
             amConfig, io.micrometer.core.instrument.Clock.SYSTEM);
         java.util.List<io.micrometer.core.instrument.Tag> globalTags = new java.util.ArrayList<>();
-        if (!com.google.common.base.Strings.isNullOrEmpty(testCategoryTag)) {
+        if (testCategoryTag != null && !testCategoryTag.isEmpty()) {
             globalTags.add(io.micrometer.core.instrument.Tag.of("TestCategory", testCategoryTag));
         }
 

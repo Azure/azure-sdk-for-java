@@ -7,15 +7,17 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.implementation.cpu.CpuMemoryReader;
 import com.azure.cosmos.models.PartitionKey;
-import com.codahale.metrics.Counter;
-import com.codahale.metrics.Gauge;
-import com.codahale.metrics.Histogram;
-import com.codahale.metrics.Meter;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Snapshot;
-import com.codahale.metrics.Timer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.Meter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.distribution.HistogramSnapshot;
+import io.micrometer.core.instrument.distribution.ValueAtPercentile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,38 +27,38 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Periodically uploads all metrics from the Dropwizard bridge registry to a Cosmos DB container.
+ * Uploads all Micrometer metrics with full tag dimensions to a Cosmos DB container.
  *
- * <p>Each report interval, one document is uploaded per meter (Timer, Meter, Counter, Gauge),
- * preserving the full hierarchical name (which encodes all Micrometer tag dimensions).
- * This makes the data directly queryable in Kusto with full dimension support.</p>
+ * <p>Reads from the Micrometer {@link MeterRegistry} (not the Dropwizard bridge) to preserve
+ * explicit tag key-value pairs as individual document fields. This makes the data directly
+ * queryable in Kusto with full dimension support (Container, Operation, OperationStatusCode,
+ * ClientCorrelationId, RegionName, PartitionKeyRangeId, etc.).</p>
  *
  * <p>If no upload endpoint is configured, this reporter is a no-op.</p>
  *
- * <p>Uploaded document schema:</p>
+ * <p>Uploaded document schema per metric:</p>
  * <pre>
  * {
- *   "id": "uuid",
- *   "Timestamp": "2026-03-06 12:00:00.0000000",
- *   "MetricName": "cosmos.client.op.latency.Container.db/coll.Operation.ReadItem...",
- *   "MetricType": "timer",
- *   "Count": 1234,
- *   "MeanRate": 45.6,
- *   "OneMinuteRate": 50.2,
- *   "MedianMs": 2.34,
- *   "P75Ms": 3.45,
- *   "P95Ms": 5.67,
- *   "P99Ms": 12.34,
- *   "MaxMs": 45.67,
- *   "Value": null,
- *   "RunMetadata": { "Operation", "TestVariationName", "BranchName", "CommitId", "Concurrency", "CpuUsage" }
+ *   "id", "partition_key",
+ *   "Timestamp", "MetricName", "MetricType",
+ *   // All SDK tag dimensions as explicit fields:
+ *   "Container", "Operation", "OperationStatusCode", "ClientCorrelationId",
+ *   "RegionName", "RequestStatusCode", "RequestOperationType",
+ *   "ConsistencyLevel", "PartitionKeyRangeId", "ServiceEndpoint",
+ *   "ServiceAddress", "PartitionId", "ReplicaId", "OperationSubStatusCode",
+ *   // Metric values (populated based on MetricType):
+ *   "Count", "MeanRate", "OneMinuteRate",
+ *   "MinMs", "MaxMs", "MeanMs", "P50Ms", "P90Ms", "P95Ms", "P99Ms",
+ *   "Value",
+ *   // Run metadata:
+ *   "WorkloadId", "TestVariationName", "BranchName", "CommitId",
+ *   "Concurrency", "CpuPercent"
  * }
  * </pre>
  */
@@ -64,13 +66,13 @@ public class CosmosTotalResultReporter {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTotalResultReporter.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter
-        .ofPattern("yyyy-MM-dd HH:mm:ss.nnnnnnn")
+        .ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         .withZone(ZoneId.from(ZoneOffset.UTC));
 
-    private final MetricRegistry dropwizardRegistry;
+    private final MeterRegistry micrometerRegistry;
     private final CosmosClient cosmosClient;
     private final CosmosContainer resultsContainer;
-    private final String operation;
+    private final String workloadId;
     private final String testVariationName;
     private final String branchName;
     private final String commitId;
@@ -80,24 +82,23 @@ public class CosmosTotalResultReporter {
     private final boolean enabled;
 
     private CosmosTotalResultReporter(
-        DropwizardBridgeMeterRegistry bridgeRegistry,
+        MeterRegistry micrometerRegistry,
         BenchmarkConfig config,
-        String operation,
+        String workloadId,
         int concurrency) {
 
-        this.operation = operation;
+        this.workloadId = workloadId;
         this.testVariationName = config.getTestVariationName() != null ? config.getTestVariationName() : "";
         this.branchName = config.getBranchName() != null ? config.getBranchName() : "";
         this.commitId = config.getCommitId() != null ? config.getCommitId() : "";
         this.concurrency = concurrency;
         this.cpuReader = new CpuMemoryReader();
 
-        // Self-contained: create Cosmos client if upload is configured, else no-op
         if (config.getResultUploadEndpoint() != null
             && config.getResultUploadDatabase() != null
             && config.getResultUploadContainer() != null) {
 
-            this.dropwizardRegistry = bridgeRegistry.getDropwizardRegistry();
+            this.micrometerRegistry = micrometerRegistry;
             this.cosmosClient = new CosmosClientBuilder()
                 .endpoint(config.getResultUploadEndpoint())
                 .key(config.getResultUploadKey())
@@ -111,117 +112,56 @@ public class CosmosTotalResultReporter {
                 t.setDaemon(true);
                 return t;
             });
-
             LOGGER.info("CosmosTotalResultReporter enabled -> {}/{}",
                 config.getResultUploadDatabase(), config.getResultUploadContainer());
         } else {
-            this.dropwizardRegistry = null;
+            this.micrometerRegistry = null;
             this.cosmosClient = null;
             this.resultsContainer = null;
             this.enabled = false;
             this.scheduler = null;
-
             LOGGER.info("CosmosTotalResultReporter disabled (no upload endpoint configured)");
         }
     }
 
-    /**
-     * Create a CosmosTotalResultReporter. If no upload endpoint is configured in
-     * {@link BenchmarkConfig}, the reporter is a no-op.
-     */
     public static CosmosTotalResultReporter create(
-        DropwizardBridgeMeterRegistry bridgeRegistry,
+        MeterRegistry micrometerRegistry,
         BenchmarkConfig config,
-        String operation,
+        String workloadId,
         int concurrency) {
-        return new CosmosTotalResultReporter(bridgeRegistry, config, operation, concurrency);
+        return new CosmosTotalResultReporter(micrometerRegistry, config, workloadId, concurrency);
     }
 
-    /**
-     * Start periodic reporting.
-     */
     public void start(long interval, TimeUnit unit) {
-        if (!enabled) {
-            return;
-        }
+        if (!enabled) return;
         scheduler.scheduleAtFixedRate(this::report, interval, interval, unit);
     }
 
-    /**
-     * Upload one snapshot of all metrics to Cosmos DB.
-     */
     public void report() {
-        if (!enabled) {
-            return;
-        }
+        if (!enabled) return;
 
         String timestamp = TIMESTAMP_FORMATTER.format(Instant.now());
-        if (timestamp.length() > 27) {
-            timestamp = timestamp.substring(0, 27);
-        }
-        double cpuUsage = cpuReader.getSystemWideCpuUsage();
+        double cpuPercent = round(cpuReader.getSystemWideCpuUsage() * 100);
 
-        // Upload Timers (latency metrics — SDK ops, Netty, etc.)
-        for (Map.Entry<String, Timer> entry : dropwizardRegistry.getTimers().entrySet()) {
-            Timer timer = entry.getValue();
-            if (timer.getCount() == 0) {
-                continue;
+        for (Meter meter : micrometerRegistry.getMeters()) {
+            try {
+                if (meter instanceof Timer) {
+                    reportTimer(timestamp, (Timer) meter, cpuPercent);
+                } else if (meter instanceof Counter) {
+                    reportCounter(timestamp, (Counter) meter, cpuPercent);
+                } else if (meter instanceof Gauge) {
+                    reportGauge(timestamp, (Gauge) meter, cpuPercent);
+                } else if (meter instanceof DistributionSummary) {
+                    reportDistributionSummary(timestamp, (DistributionSummary) meter, cpuPercent);
+                }
+            } catch (Exception e) {
+                LOGGER.warn("Failed to upload metric: {}", meter.getId().getName(), e);
             }
-            Snapshot snapshot = timer.getSnapshot();
-            ObjectNode doc = createBaseDoc(timestamp, entry.getKey(), "timer", cpuUsage);
-            doc.put("Count", timer.getCount());
-            doc.put("MeanRate", round(timer.getMeanRate()));
-            doc.put("OneMinuteRate", round(timer.getOneMinuteRate()));
-            // Dropwizard Timer reports in nanoseconds
-            doc.put("MedianMs", round(snapshot.getMedian() / 1_000_000.0));
-            doc.put("P75Ms", round(snapshot.get75thPercentile() / 1_000_000.0));
-            doc.put("P95Ms", round(snapshot.get95thPercentile() / 1_000_000.0));
-            doc.put("P99Ms", round(snapshot.get99thPercentile() / 1_000_000.0));
-            doc.put("MaxMs", round(snapshot.getMax() / 1_000_000.0));
-            uploadDoc(doc);
-        }
-
-        // Upload Meters (rate metrics — success/failure counts)
-        for (Map.Entry<String, Meter> entry : dropwizardRegistry.getMeters().entrySet()) {
-            Meter meter = entry.getValue();
-            if (meter.getCount() == 0) {
-                continue;
-            }
-            ObjectNode doc = createBaseDoc(timestamp, entry.getKey(), "meter", cpuUsage);
-            doc.put("Count", meter.getCount());
-            doc.put("MeanRate", round(meter.getMeanRate()));
-            doc.put("OneMinuteRate", round(meter.getOneMinuteRate()));
-            uploadDoc(doc);
-        }
-
-        // Upload Gauges (connection pools, JVM stats, Netty pool metrics)
-        for (Map.Entry<String, Gauge> entry : dropwizardRegistry.getGauges().entrySet()) {
-            Object value = entry.getValue().getValue();
-            if (value instanceof Number) {
-                ObjectNode doc = createBaseDoc(timestamp, entry.getKey(), "gauge", cpuUsage);
-                doc.put("Value", ((Number) value).doubleValue());
-                uploadDoc(doc);
-            }
-        }
-
-        // Upload Counters
-        for (Map.Entry<String, Counter> entry : dropwizardRegistry.getCounters().entrySet()) {
-            if (entry.getValue().getCount() == 0) {
-                continue;
-            }
-            ObjectNode doc = createBaseDoc(timestamp, entry.getKey(), "counter", cpuUsage);
-            doc.put("Count", entry.getValue().getCount());
-            uploadDoc(doc);
         }
     }
 
-    /**
-     * Stop reporting and clean up resources.
-     */
     public void stop() {
-        if (!enabled) {
-            return;
-        }
+        if (!enabled) return;
 
         scheduler.shutdown();
         try {
@@ -230,30 +170,96 @@ public class CosmosTotalResultReporter {
             Thread.currentThread().interrupt();
         }
 
-        // Final upload
         report();
 
         if (cosmosClient != null) {
             cosmosClient.close();
         }
-
         LOGGER.info("CosmosTotalResultReporter stopped");
     }
 
-    private ObjectNode createBaseDoc(String timestamp, String metricName, String metricType, double cpuUsage) {
+    private void reportTimer(String timestamp, Timer timer, double cpuPercent) {
+        if (timer.count() == 0) return;
+
+        ObjectNode doc = createBaseDoc(timestamp, timer, "timer", cpuPercent);
+        doc.put("Count", timer.count());
+        doc.put("MeanRate", round(timer.count() / Math.max(1, timer.totalTime(TimeUnit.SECONDS))));
+
+        HistogramSnapshot snapshot = timer.takeSnapshot();
+        doc.put("MeanMs", round(timer.mean(TimeUnit.MILLISECONDS)));
+        doc.put("MaxMs", round(snapshot.max(TimeUnit.MILLISECONDS)));
+
+        for (ValueAtPercentile vp : snapshot.percentileValues()) {
+            double ms = vp.value(TimeUnit.MILLISECONDS);
+            double p = vp.percentile();
+            if (p == 0.5) doc.put("P50Ms", round(ms));
+            else if (p == 0.9) doc.put("P90Ms", round(ms));
+            else if (p == 0.95) doc.put("P95Ms", round(ms));
+            else if (p == 0.99) doc.put("P99Ms", round(ms));
+        }
+
+        uploadDoc(doc);
+    }
+
+    private void reportCounter(String timestamp, Counter counter, double cpuPercent) {
+        if (counter.count() == 0) return;
+
+        ObjectNode doc = createBaseDoc(timestamp, counter, "counter", cpuPercent);
+        doc.put("Count", (long) counter.count());
+        uploadDoc(doc);
+    }
+
+    private void reportGauge(String timestamp, Gauge gauge, double cpuPercent) {
+        double value = gauge.value();
+        if (Double.isNaN(value)) return;
+
+        ObjectNode doc = createBaseDoc(timestamp, gauge, "gauge", cpuPercent);
+        doc.put("Value", round(value));
+        uploadDoc(doc);
+    }
+
+    private void reportDistributionSummary(String timestamp, DistributionSummary summary, double cpuPercent) {
+        if (summary.count() == 0) return;
+
+        ObjectNode doc = createBaseDoc(timestamp, summary, "distribution", cpuPercent);
+        doc.put("Count", summary.count());
+        doc.put("MeanMs", round(summary.mean()));
+        doc.put("MaxMs", round(summary.max()));
+
+        HistogramSnapshot snapshot = summary.takeSnapshot();
+        for (ValueAtPercentile vp : snapshot.percentileValues()) {
+            double p = vp.percentile();
+            if (p == 0.5) doc.put("P50Ms", round(vp.value()));
+            else if (p == 0.9) doc.put("P90Ms", round(vp.value()));
+            else if (p == 0.95) doc.put("P95Ms", round(vp.value()));
+            else if (p == 0.99) doc.put("P99Ms", round(vp.value()));
+        }
+
+        uploadDoc(doc);
+    }
+
+    private ObjectNode createBaseDoc(String timestamp, Meter meter, String metricType, double cpuPercent) {
         ObjectNode doc = OBJECT_MAPPER.createObjectNode();
         String id = UUID.randomUUID().toString();
         doc.put("id", id);
+        doc.put("partition_key", id);
         doc.put("Timestamp", timestamp);
-        doc.put("MetricName", metricName);
+        doc.put("MetricName", meter.getId().getName());
         doc.put("MetricType", metricType);
-        // Run metadata for Kusto pivoting
-        doc.put("Operation", this.operation);
+
+        // Emit all tag dimensions as explicit fields
+        for (Tag tag : meter.getId().getTags()) {
+            doc.put(tag.getKey(), tag.getValue());
+        }
+
+        // Run metadata
+        doc.put("WorkloadId", this.workloadId);
         doc.put("TestVariationName", this.testVariationName);
         doc.put("BranchName", this.branchName);
         doc.put("CommitId", this.commitId);
         doc.put("Concurrency", this.concurrency);
-        doc.put("CpuUsage", round(cpuUsage));
+        doc.put("CpuPercent", cpuPercent);
+
         return doc;
     }
 
@@ -262,7 +268,7 @@ public class CosmosTotalResultReporter {
             String id = doc.get("id").asText();
             resultsContainer.createItem(doc, new PartitionKey(id), null);
         } catch (Exception e) {
-            LOGGER.warn("Failed to upload metric: {}", doc.get("MetricName"), e);
+            LOGGER.warn("Failed to upload metric doc: {}", doc.get("MetricName"), e);
         }
     }
 
