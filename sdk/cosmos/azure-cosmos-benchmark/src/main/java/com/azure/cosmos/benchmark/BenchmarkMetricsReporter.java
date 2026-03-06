@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,20 +32,22 @@ public class BenchmarkMetricsReporter {
     /**
      * Create a benchmark metrics reporter.
      *
-     * @param meterRegistry the Dropwizard bridge registry whose metrics to report
-     * @param csvOutputDir  directory for CSV output; if null, uses console reporter
+     * @param meterRegistry      the Dropwizard bridge registry whose metrics to report
+     * @param reportingDirectory base reporting directory; if non-null, CSV files are written
+     *                           to a {@code metrics/} subdirectory under this path.
+     *                           If null, reports to console instead.
      */
-    public BenchmarkMetricsReporter(DropwizardBridgeMeterRegistry meterRegistry, Path csvOutputDir) {
+    public BenchmarkMetricsReporter(DropwizardBridgeMeterRegistry meterRegistry, String reportingDirectory) {
         MetricRegistry dropwizardRegistry = meterRegistry.getDropwizardRegistry();
 
-        if (csvOutputDir != null) {
-            File dir = csvOutputDir.toFile();
+        if (reportingDirectory != null) {
+            File dir = Paths.get(reportingDirectory, "metrics").toFile();
             dir.mkdirs();
             reporter = CsvReporter.forRegistry(dropwizardRegistry)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .build(dir);
-            logger.info("BenchmarkMetricsReporter started (CSV) -> {}", csvOutputDir);
+            logger.info("BenchmarkMetricsReporter started (CSV) -> {}", dir);
         } else {
             reporter = ConsoleReporter.forRegistry(dropwizardRegistry)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)

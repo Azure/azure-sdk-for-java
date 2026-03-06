@@ -22,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
@@ -70,11 +69,8 @@ public class BenchmarkOrchestrator {
         compositeRegistry.add(dropwizardBridge);
 
         // Reporter reads from the Dropwizard bridge and writes to CSV or console.
-        Path metricsDir = null;
-        if (config.getReportingDirectory() != null) {
-            metricsDir = Paths.get(config.getReportingDirectory(), "metrics");
-        }
-        BenchmarkMetricsReporter reporter = new BenchmarkMetricsReporter(dropwizardBridge, metricsDir);
+        BenchmarkMetricsReporter reporter = new BenchmarkMetricsReporter(
+            dropwizardBridge, config.getReportingDirectory());
         reporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
 
         MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
@@ -111,8 +107,11 @@ public class BenchmarkOrchestrator {
                 totalConcurrency += t.getConcurrency();
             }
             String operationSummary = String.join("+", ops);
+            // CosmosTotalResultReporter reads SDK metrics and uploads aggregated results to Cosmos DB.
+            // Intentionally separate from BenchmarkMetricsReporter (which handles CSV/console output) —
+            // different concerns and lifecycles.
             resultReporter = CosmosTotalResultReporter
-                .forRegistry(compositeRegistry,
+                .forRegistry(dropwizardBridge,
                     resultUploaderClient
                         .getDatabase(config.getResultUploadDatabase())
                         .getContainer(config.getResultUploadContainer()),
@@ -129,18 +128,19 @@ public class BenchmarkOrchestrator {
 
         // Netty HTTP connection pool metrics reporter (only when enabled).
         // Reactor Netty publishes pool gauges to Metrics.globalRegistry, so we add
-        // the compositeRegistry there. This means Netty gauges flow through to
-        // Dropwizard CSV/Console reporting and App Insights automatically.
+        // the dropwizardBridge there. This means Netty gauges flow through to
+        // Dropwizard CSV/Console reporting. If AzureMonitor is configured, it is also
+        // in the composite and receives these gauges.
         NettyHttpMetricsReporter nettyMetricsReporter = null;
-        boolean addedCompositeToGlobalRegistry = false;
+        boolean addedBridgeToGlobalRegistry = false;
         if (config.isEnableNettyHttpMetrics()) {
-            Metrics.addRegistry(compositeRegistry);
-            addedCompositeToGlobalRegistry = true;
-            logger.info("CompositeRegistry added to globalRegistry for Reactor Netty pool metrics");
+            Metrics.addRegistry(dropwizardBridge);
+            addedBridgeToGlobalRegistry = true;
+            logger.info("DropwizardBridge added to globalRegistry for Reactor Netty pool metrics");
 
             if (config.getReportingDirectory() != null) {
                 Path nettyMetricsDir = Paths.get(config.getReportingDirectory());
-                nettyMetricsReporter = new NettyHttpMetricsReporter(compositeRegistry, nettyMetricsDir);
+                nettyMetricsReporter = new NettyHttpMetricsReporter(dropwizardBridge, nettyMetricsDir);
                 nettyMetricsReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
             }
         }
@@ -166,8 +166,8 @@ public class BenchmarkOrchestrator {
             if (nettyMetricsReporter != null) {
                 nettyMetricsReporter.stop();
             }
-            if (addedCompositeToGlobalRegistry) {
-                Metrics.removeRegistry(compositeRegistry);
+            if (addedBridgeToGlobalRegistry) {
+                Metrics.removeRegistry(dropwizardBridge);
             }
             clearGlobalSystemProperties();
         }
