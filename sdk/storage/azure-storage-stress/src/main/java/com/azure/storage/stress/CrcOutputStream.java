@@ -30,9 +30,12 @@ public class CrcOutputStream extends OutputStream {
         length += len;
     }
 
+    // Uses tryEmitValue so that double-close (e.g. explicit close + try-with-resources)
+    // doesn't throw on the second call.
     @Override
     public void close() throws IOException {
-        sink.emitValue(new ContentInfo(crc.getValue(), length, head), Sinks.EmitFailureHandler.FAIL_FAST);
+        //old: sink.emitValue(new ContentInfo(crc.getValue(), length, head), Sinks.EmitFailureHandler.FAIL_FAST);
+        sink.tryEmitValue(new ContentInfo(crc.getValue(), length, head));
         super.close();
     }
 
