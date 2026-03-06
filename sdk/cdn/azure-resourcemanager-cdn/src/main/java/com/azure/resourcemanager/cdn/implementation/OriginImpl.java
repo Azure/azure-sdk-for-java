@@ -45,8 +45,9 @@ class OriginImpl extends ExternalChildResourceImpl<Origin, AfdOriginInner, Origi
     }
 
     @Override
-    public ResourceReference azureOrigin() {
-        return this.innerModel().azureOrigin();
+    public String azureOriginResourceId() {
+        ResourceReference ref = this.innerModel().azureOrigin();
+        return ref == null ? null : ref.id();
     }
 
     @Override
@@ -189,8 +190,10 @@ class OriginImpl extends ExternalChildResourceImpl<Origin, AfdOriginInner, Origi
     }
 
     @Override
-    public OriginImpl withAzureOrigin(ResourceReference azureOrigin) {
-        this.innerModel().withAzureOrigin(azureOrigin);
+    public OriginImpl withAzureOriginResourceId(String azureOriginResourceId) {
+        this.innerModel()
+            .withAzureOrigin(
+                azureOriginResourceId == null ? null : new ResourceReference().withId(azureOriginResourceId));
         return this;
     }
 

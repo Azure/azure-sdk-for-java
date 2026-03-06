@@ -24,11 +24,11 @@ public interface Origin extends ExternalChildResource<Origin, OriginGroup>, HasI
     String originGroupName();
 
     /**
-     * Gets the resource reference to the Azure origin resource.
+     * Gets the resource ID of the Azure origin resource.
      *
-     * @return the Azure origin resource reference
+     * @return the Azure origin resource ID
      */
-    ResourceReference azureOrigin();
+    String azureOriginResourceId();
 
     /**
      * Gets the address of the origin.
@@ -148,12 +148,12 @@ public interface Origin extends ExternalChildResource<Origin, OriginGroup>, HasI
          */
         interface WithAttach<ParentT> extends Attachable<ParentT> {
             /**
-             * Specifies a resource reference to an Azure origin resource.
+             * Specifies the resource ID of an Azure origin resource.
              *
-             * @param azureOrigin the Azure origin resource reference
+             * @param azureOriginResourceId the Azure origin resource ID
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAzureOrigin(ResourceReference azureOrigin);
+            WithAttach<ParentT> withAzureOriginResourceId(String azureOriginResourceId);
 
             /**
              * Specifies the HTTP port for the origin.
@@ -287,12 +287,12 @@ public interface Origin extends ExternalChildResource<Origin, OriginGroup>, HasI
          */
         interface WithAttach<ParentT> extends Attachable<ParentT> {
             /**
-             * Specifies a resource reference to an Azure origin resource.
+             * Specifies the resource ID of an Azure origin resource.
              *
-             * @param azureOrigin the Azure origin resource reference
+             * @param azureOriginResourceId the Azure origin resource ID
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAzureOrigin(ResourceReference azureOrigin);
+            WithAttach<ParentT> withAzureOriginResourceId(String azureOriginResourceId);
 
             /**
              * Specifies the HTTP port for the origin.
@@ -396,12 +396,12 @@ public interface Origin extends ExternalChildResource<Origin, OriginGroup>, HasI
         Update withHostname(String hostname);
 
         /**
-         * Specifies a resource reference to an Azure origin resource.
+         * Specifies the resource ID of an Azure origin resource.
          *
-         * @param azureOrigin the Azure origin resource reference
+         * @param azureOriginResourceId the Azure origin resource ID
          * @return the next stage of the update
          */
-        Update withAzureOrigin(ResourceReference azureOrigin);
+        Update withAzureOriginResourceId(String azureOriginResourceId);
 
         /**
          * Specifies the HTTP port for the origin.
