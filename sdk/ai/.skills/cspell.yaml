@@ -1,7 +1,7 @@
 import:
   - ../../../.vscode/cspell.json
 overrides:
-  - filename: "**/sdk/ai/.skills/**/SKILL.md"
+  - filename: "**/sdk/ai/.skills/*"
     words:
     - Danimal
     - Dcheckstyle
@@ -9,6 +9,7 @@ overrides:
     - Djacoco
     - dpkg
     - Drevapi
+    - Dspotbugs
     - Dspotless
     - FQCN
-    - java
+    - javap
