@@ -46,7 +46,7 @@ public class BenchmarkOrchestrator {
         logger.info("  Cycles:    {}", config.getCycles());
         logger.info("  Tenants:   {}", config.getTenantWorkloads().size());
         logger.info("  Run ID:    {}", testRunId);
-        logger.info("  Output:    {}", config.getReportingDirectory());
+        logger.info("  Output:    {}", config.getReportingDestination());
 
         if (config.getTenantWorkloads().isEmpty()) {
             logger.error("No tenants provided");
@@ -76,11 +76,7 @@ public class BenchmarkOrchestrator {
         if (config.getReportingDestination() != null) {
             switch (config.getReportingDestination()) {
                 case CSV:
-                    if (config.getReportingDirectory() == null) {
-                        throw new IllegalArgumentException(
-                            "reportingDirectory is required when reportingDestination=CSV");
-                    }
-                    csvReporter = new CsvMetricsReporter(dropwizardBridge, config.getReportingDirectory());
+                    csvReporter = new CsvMetricsReporter(dropwizardBridge, config.getCsvReportingDirectory());
                     csvReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
                     break;
 
@@ -366,9 +362,8 @@ public class BenchmarkOrchestrator {
 
     private MeterRegistry buildAppInsightsMeterRegistry(BenchmarkConfig config) {
         String connStr = config.getAppInsightsConnectionString();
-        String instrKey = config.getAppInsightsInstrumentationKey();
 
-        if (instrKey == null && connStr == null) {
+        if (connStr == null) {
             return null;
         }
 
@@ -376,15 +371,9 @@ public class BenchmarkOrchestrator {
         String testCategoryTag = config.getAppInsightsTestCategory();
 
         final String finalConnStr = connStr;
-        final String finalInstrKey = instrKey;
         final io.micrometer.azuremonitor.AzureMonitorConfig amConfig = new io.micrometer.azuremonitor.AzureMonitorConfig() {
             @Override
             public String get(String key) { return null; }
-
-            @Override
-            public String instrumentationKey() {
-                return finalConnStr != null ? null : finalInstrKey;
-            }
 
             @Override
             public String connectionString() { return finalConnStr; }

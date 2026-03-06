@@ -88,24 +88,24 @@ public class CosmosMetricsReporter {
         int concurrency) {
 
         this.workloadId = workloadId;
-        this.testVariationName = config.getTestVariationName() != null ? config.getTestVariationName() : "";
-        this.branchName = config.getBranchName() != null ? config.getBranchName() : "";
-        this.commitId = config.getCommitId() != null ? config.getCommitId() : "";
+        this.testVariationName = config.getCosmosReporterTestVariationName() != null ? config.getCosmosReporterTestVariationName() : "";
+        this.branchName = config.getCosmosReporterBranchName() != null ? config.getCosmosReporterBranchName() : "";
+        this.commitId = config.getCosmosReporterCommitId() != null ? config.getCosmosReporterCommitId() : "";
         this.concurrency = concurrency;
         this.cpuReader = new CpuMemoryReader();
 
-        if (config.getResultUploadEndpoint() != null
-            && config.getResultUploadDatabase() != null
-            && config.getResultUploadContainer() != null) {
+        if (config.getCosmosReporterEndpoint() != null
+            && config.getCosmosReporterDatabase() != null
+            && config.getCosmosReporterContainer() != null) {
 
             this.micrometerRegistry = micrometerRegistry;
             this.cosmosClient = new CosmosClientBuilder()
-                .endpoint(config.getResultUploadEndpoint())
-                .key(config.getResultUploadKey())
+                .endpoint(config.getCosmosReporterEndpoint())
+                .key(config.getCosmosReporterKey())
                 .buildClient();
             this.resultsContainer = cosmosClient
-                .getDatabase(config.getResultUploadDatabase())
-                .getContainer(config.getResultUploadContainer());
+                .getDatabase(config.getCosmosReporterDatabase())
+                .getContainer(config.getCosmosReporterContainer());
             this.enabled = true;
             this.scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
                 Thread t = new Thread(r, "cosmos-result-reporter");
@@ -113,7 +113,7 @@ public class CosmosMetricsReporter {
                 return t;
             });
             LOGGER.info("CosmosMetricsReporter enabled -> {}/{}",
-                config.getResultUploadDatabase(), config.getResultUploadContainer());
+                config.getCosmosReporterDatabase(), config.getCosmosReporterContainer());
         } else {
             this.micrometerRegistry = null;
             this.cosmosClient = null;
