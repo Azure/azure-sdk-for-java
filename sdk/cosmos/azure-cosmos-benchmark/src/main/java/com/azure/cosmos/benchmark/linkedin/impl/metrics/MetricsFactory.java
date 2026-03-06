@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.benchmark.linkedin.impl.metrics;
 
-import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.benchmark.linkedin.impl.Metrics;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
 import com.codahale.metrics.MetricRegistry;
@@ -20,7 +20,7 @@ public class MetricsFactory {
 
     private final MetricRegistry _metricsRegistry;
     private final Clock _clock;
-    private final Configuration.Environment _environment;
+    private final TenantWorkloadConfig.Environment _environment;
 
     // Local cache enables reusing the same Metric instance
     //   {CollectionKey -> {OperationName -> Metrics} map}
@@ -28,7 +28,7 @@ public class MetricsFactory {
 
     public MetricsFactory(final MetricRegistry metricsRegistry,
         final Clock clock,
-        final Configuration.Environment environment) {
+        final TenantWorkloadConfig.Environment environment) {
         Preconditions.checkNotNull(metricsRegistry, "The MetricsRegistry can not be null");
         Preconditions.checkNotNull(clock, "Need a non-null Clock instance for latency tracking");
         Preconditions.checkNotNull(environment, "Need a valid value for the CTL environment");

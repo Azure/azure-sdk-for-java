@@ -8,7 +8,7 @@ import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.Deployment;
 import com.azure.ai.projects.models.DeploymentType;
 import com.azure.ai.projects.models.FileDatasetVersion;
-import com.azure.ai.projects.models.Index;
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -231,7 +231,7 @@ public class ClientTestBase extends TestProxyTestBase {
      * @param expectedName The expected name of the index, or null if no specific name is expected
      * @param expectedVersion The expected version of the index, or null if no specific version is expected
      */
-    protected void assertValidIndex(Index index, String expectedName, String expectedVersion) {
+    protected void assertValidIndex(AIProjectIndex index, String expectedName, String expectedVersion) {
         Assertions.assertNotNull(index);
         Assertions.assertNotNull(index.getName());
         Assertions.assertNotNull(index.getVersion());
