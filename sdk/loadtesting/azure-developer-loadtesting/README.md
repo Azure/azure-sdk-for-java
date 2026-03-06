@@ -280,8 +280,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src
 [sample_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples
-[data_plane_uri]: https://learn.microsoft.com/rest/api/loadtesting/data-plane-uri
-[api_reference_doc]: https://learn.microsoft.com/rest/api/loadtesting/
+[data_plane_uri]: https://learn.microsoft.com/rest/api/apptesting/loadtest/data-plane-uri
+[api_reference_doc]: https://learn.microsoft.com/rest/api/apptesting/loadtest/
 [product_documentation]: https://azure.microsoft.com/services/load-testing/
 [jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
