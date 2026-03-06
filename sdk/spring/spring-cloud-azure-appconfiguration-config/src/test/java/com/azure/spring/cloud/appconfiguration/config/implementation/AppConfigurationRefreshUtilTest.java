@@ -455,17 +455,23 @@ public class AppConfigurationRefreshUtilTest {
     @Test
     public void refreshStoresCheckFeatureFlagTestNoChange(TestInfo testInfo) {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
-        configStore.setEndpoint(endpoint);
-        configStore.setFeatureFlags(featureStore);
-        configStore.setMonitoring(monitoring);
+        setupFeatureFlagLoad();
 
-        setupFeatureFlagLoadBasic();
+        // Set up feature flag state so it can be checked
+        WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(
+            new SettingSelector().setKeyFilter(FEATURE_FLAG_PREFIX).setLabelFilter(EMPTY_LABEL),
+            watchKeysFeatureFlags);
+        FeatureFlagState ffState = new FeatureFlagState(List.of(featureFlags),
+            Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
+
+        when(currentStateMock.getLoadState(endpoint)).thenReturn(true);
+        when(currentStateMock.getStateFeatureFlag(endpoint)).thenReturn(ffState);
+        when(clientOriginMock.checkWatchKeys(Mockito.any(), Mockito.any(Context.class))).thenReturn(false);
 
         RefreshEventData eventData = refreshUtil.refreshStoresCheck(clientFactoryMock,
             Duration.ofMinutes(10), (long) 60, replicaLookUpMock);
         assertFalse(eventData.getDoRefresh());
-        verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
-            Mockito.any(Context.class));
+        verify(currentStateMock, times(1)).updateFeatureFlagStateRefresh(Mockito.any(), Mockito.any());
     }
 
     @Test
