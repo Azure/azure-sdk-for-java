@@ -216,7 +216,9 @@ public class BenchmarkOrchestrator {
                 logger.info("[LIFECYCLE] POST_SETTLE cycle={} timestamp={}", cycle, Instant.now());
             }
         } finally {
+            logger.info("[LIFECYCLE] Disposing benchmark scheduler...");
             benchmarkScheduler.dispose();
+            logger.info("[LIFECYCLE] Benchmark scheduler disposed");
             executor.shutdown();
             try {
                 if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
