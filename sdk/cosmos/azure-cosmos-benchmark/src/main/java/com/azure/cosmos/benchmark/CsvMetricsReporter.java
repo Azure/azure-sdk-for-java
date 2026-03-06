@@ -19,9 +19,9 @@ import java.util.concurrent.TimeUnit;
  * (including SDK-emitted {@code cosmos.client.op.*} meters) to a Dropwizard {@link MetricRegistry}.
  * The CsvReporter creates one CSV file per metric in the output directory.</p>
  */
-public class BenchmarkMetricsReporter {
+public class CsvMetricsReporter {
 
-    private static final Logger logger = LoggerFactory.getLogger(BenchmarkMetricsReporter.class);
+    private static final Logger logger = LoggerFactory.getLogger(CsvMetricsReporter.class);
 
     private final CsvReporter reporter;
 
@@ -32,7 +32,7 @@ public class BenchmarkMetricsReporter {
      * @param reportingDirectory base reporting directory; CSV files are written
      *                           to a {@code metrics/} subdirectory.
      */
-    public BenchmarkMetricsReporter(DropwizardBridgeMeterRegistry meterRegistry, String reportingDirectory) {
+    public CsvMetricsReporter(DropwizardBridgeMeterRegistry meterRegistry, String reportingDirectory) {
         MetricRegistry dropwizardRegistry = meterRegistry.getDropwizardRegistry();
         File dir = Paths.get(reportingDirectory, "metrics").toFile();
         dir.mkdirs();
@@ -40,7 +40,7 @@ public class BenchmarkMetricsReporter {
             .convertDurationsTo(TimeUnit.MILLISECONDS)
             .convertRatesTo(TimeUnit.SECONDS)
             .build(dir);
-        logger.info("BenchmarkMetricsReporter started (CSV) -> {}", dir);
+        logger.info("CsvMetricsReporter started (CSV) -> {}", dir);
     }
 
     public void start(long interval, TimeUnit unit) {

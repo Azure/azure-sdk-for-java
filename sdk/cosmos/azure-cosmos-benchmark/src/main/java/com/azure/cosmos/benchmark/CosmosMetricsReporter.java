@@ -62,8 +62,8 @@ import java.util.concurrent.TimeUnit;
  * }
  * </pre>
  */
-public class CosmosTotalResultReporter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTotalResultReporter.class);
+public class CosmosMetricsReporter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosMetricsReporter.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter
         .ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -81,7 +81,7 @@ public class CosmosTotalResultReporter {
     private final ScheduledExecutorService scheduler;
     private final boolean enabled;
 
-    private CosmosTotalResultReporter(
+    private CosmosMetricsReporter(
         MeterRegistry micrometerRegistry,
         BenchmarkConfig config,
         String workloadId,
@@ -112,7 +112,7 @@ public class CosmosTotalResultReporter {
                 t.setDaemon(true);
                 return t;
             });
-            LOGGER.info("CosmosTotalResultReporter enabled -> {}/{}",
+            LOGGER.info("CosmosMetricsReporter enabled -> {}/{}",
                 config.getResultUploadDatabase(), config.getResultUploadContainer());
         } else {
             this.micrometerRegistry = null;
@@ -120,16 +120,16 @@ public class CosmosTotalResultReporter {
             this.resultsContainer = null;
             this.enabled = false;
             this.scheduler = null;
-            LOGGER.info("CosmosTotalResultReporter disabled (no upload endpoint configured)");
+            LOGGER.info("CosmosMetricsReporter disabled (no upload endpoint configured)");
         }
     }
 
-    public static CosmosTotalResultReporter create(
+    public static CosmosMetricsReporter create(
         MeterRegistry micrometerRegistry,
         BenchmarkConfig config,
         String workloadId,
         int concurrency) {
-        return new CosmosTotalResultReporter(micrometerRegistry, config, workloadId, concurrency);
+        return new CosmosMetricsReporter(micrometerRegistry, config, workloadId, concurrency);
     }
 
     public void start(long interval, TimeUnit unit) {
@@ -175,7 +175,7 @@ public class CosmosTotalResultReporter {
         if (cosmosClient != null) {
             cosmosClient.close();
         }
-        LOGGER.info("CosmosTotalResultReporter stopped");
+        LOGGER.info("CosmosMetricsReporter stopped");
     }
 
     private void reportTimer(String timestamp, Timer timer, double cpuPercent) {

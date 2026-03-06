@@ -19,8 +19,6 @@ import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -71,8 +69,8 @@ public class BenchmarkOrchestrator {
         consoleSummary.start(config.getPrintingInterval(), TimeUnit.SECONDS);
 
         // Detailed reporter — based on reportingDestination (mutually exclusive, optional)
-        BenchmarkMetricsReporter csvReporter = null;
-        CosmosTotalResultReporter cosmosReporter = null;
+        CsvMetricsReporter csvReporter = null;
+        CosmosMetricsReporter cosmosReporter = null;
         MeterRegistry appInsightsRegistry = null;
 
         if (config.getReportingDestination() != null) {
@@ -82,7 +80,7 @@ public class BenchmarkOrchestrator {
                         throw new IllegalArgumentException(
                             "reportingDirectory is required when reportingDestination=CSV");
                     }
-                    csvReporter = new BenchmarkMetricsReporter(dropwizardBridge, config.getReportingDirectory());
+                    csvReporter = new CsvMetricsReporter(dropwizardBridge, config.getReportingDirectory());
                     csvReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
                     break;
 
@@ -93,7 +91,7 @@ public class BenchmarkOrchestrator {
                         ops.add(t.getOperation() != null ? t.getOperation() : "Unknown");
                         totalConcurrency += t.getConcurrency();
                     }
-                    cosmosReporter = CosmosTotalResultReporter.create(
+                    cosmosReporter = CosmosMetricsReporter.create(
                         compositeRegistry, config, String.join("+", ops), totalConcurrency);
                     cosmosReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
                     break;
@@ -121,20 +119,14 @@ public class BenchmarkOrchestrator {
         // Prepare all tenants (inject shared registry for SDK telemetry)
         prepareTenants(config, compositeRegistry);
 
-        // Netty HTTP connection pool metrics (only when enabled).
-        // Reactor Netty publishes pool gauges to Metrics.globalRegistry.
-        NettyHttpMetricsReporter nettyMetricsReporter = null;
-        boolean addedBridgeToGlobalRegistry = false;
+        // Netty HTTP connection pool metrics: when enabled, add the composite registry
+        // to Metrics.globalRegistry so Reactor Netty pool gauges flow through to
+        // whichever reporting destination is active.
+        boolean addedToGlobalRegistry = false;
         if (config.isEnableNettyHttpMetrics()) {
             Metrics.addRegistry(compositeRegistry);
-            addedBridgeToGlobalRegistry = true;
+            addedToGlobalRegistry = true;
             logger.info("CompositeRegistry added to globalRegistry for Reactor Netty pool metrics");
-
-            if (config.getReportingDirectory() != null) {
-                Path nettyMetricsDir = Paths.get(config.getReportingDirectory());
-                nettyMetricsReporter = new NettyHttpMetricsReporter(compositeRegistry, nettyMetricsDir);
-                nettyMetricsReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
-            }
         }
 
         logger.info("[LIFECYCLE] PRE_CREATE timestamp={}", Instant.now());
@@ -151,10 +143,7 @@ public class BenchmarkOrchestrator {
             if (cosmosReporter != null) {
                 cosmosReporter.stop();
             }
-            if (nettyMetricsReporter != null) {
-                nettyMetricsReporter.stop();
-            }
-            if (addedBridgeToGlobalRegistry) {
+            if (addedToGlobalRegistry) {
                 Metrics.removeRegistry(compositeRegistry);
             }
             clearGlobalSystemProperties();
