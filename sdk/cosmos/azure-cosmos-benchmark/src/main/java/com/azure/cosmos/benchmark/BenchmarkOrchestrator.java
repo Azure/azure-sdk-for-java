@@ -128,14 +128,19 @@ public class BenchmarkOrchestrator {
 
         // Netty HTTP connection pool metrics reporter (only when enabled).
         // Reactor Netty publishes pool gauges to Metrics.globalRegistry, so we add
-        // a SimpleMeterRegistry there to capture them (separate from the composite registry
-        // used for SDK operation metrics).
+        // registries there to capture them.
         NettyHttpMetricsReporter nettyMetricsReporter = null;
         SimpleMeterRegistry nettyHttpMeterRegistry = null;
         if (config.isEnableNettyHttpMetrics() && config.getReportingDirectory() != null) {
             nettyHttpMeterRegistry = new SimpleMeterRegistry();
             Metrics.addRegistry(nettyHttpMeterRegistry);
             logger.info("SimpleMeterRegistry added to globalRegistry for Reactor Netty pool gauge backing");
+
+            // Also send Netty metrics to Application Insights if configured
+            if (cosmosMicrometerRegistry != null) {
+                Metrics.addRegistry(cosmosMicrometerRegistry);
+                logger.info("AzureMonitor registry also added to globalRegistry for Netty metrics");
+            }
 
             Path nettyMetricsDir = Paths.get(config.getReportingDirectory());
             nettyMetricsReporter = new NettyHttpMetricsReporter(nettyHttpMeterRegistry, nettyMetricsDir);
@@ -165,6 +170,9 @@ public class BenchmarkOrchestrator {
             }
             if (nettyHttpMeterRegistry != null) {
                 Metrics.removeRegistry(nettyHttpMeterRegistry);
+            }
+            if (nettyMetricsReporter != null && cosmosMicrometerRegistry != null) {
+                Metrics.removeRegistry(cosmosMicrometerRegistry);
             }
             clearGlobalSystemProperties();
         }
